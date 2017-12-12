@@ -113,8 +113,9 @@ var Login = function() {
 				//loginBtn.start();
 				$(".loginBtn").find(".fa").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
 				var params = { 
-				   "email" : $("#email-login").val(), 
-                   "pwd" : $("#password-login").val() 
+				   "email" : $("#email-login").val() , 
+                   "pwd" : $("#password-login").val() ,
+                   "remember" : $("#formLogin #remember").prop("checked") 
                 };
 			      
 		    	$.ajax({
@@ -208,6 +209,7 @@ var Login = function() {
 		    		  }
 		    	  },
 		    	  error: function(data) {
+		    	  	console.log(data);
 		    	  	$(".loginBtn").find(".fa").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
 		    	  	toastr.error("Something went really bad : contact your administrator !");
 		    	  	//loginBtn.stop();

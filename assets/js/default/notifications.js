@@ -97,27 +97,28 @@ function removeNotification(id)
     });
 }
 
-/*function removeAllNotifications()
+function removeAllNotifications()
 { 
 	//Ancienne markAllAsRead
 	$.ajax({
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/notification/markallnotificationasread",
+        url: baseUrl+"/"+moduleId+"/notification/removeall",
         dataType : 'json'
     })
     .done( function (data) {
     	mylog.dir(data);
-        if ( data && data.result ) {               
-        	$(".notifList li.notifLi").remove();
-        	mylog.log("notifications cleared ",data);
-        	$(".sb-toggle-right").trigger("click");
+        if ( data && data.result ) {    
+	        refreshNotifications(userId,"citoyens","","menuTop");   
+        	//$(".notifList li.notifLi").remove();
+        	//mylog.log("notifications cleared ",data);
+        	//$(".sb-toggle-right").trigger("click");
         } else {
             toastr.error("no notifications found ");
         }
         notifCount();
     });
 	
-}*/
+}
 
 function refreshNotifications(elementId,elementType,element,event)
 {

@@ -305,7 +305,7 @@ $this->renderPartial($layoutPath.'header',
 
     var all_interop_data = [];
     var city_data = {};
-
+    
     var headerParams = {
         "wikidata"    : { color: "grey",   icon: "group",   name: "Wikidata" },
         "datagouv"    : { color: "red",   icon: "bullhorn",   name: "DataGouv" },
@@ -434,16 +434,16 @@ $this->renderPartial($layoutPath.'header',
 
     function getUrlForInteropResearch(indexMin, indexMax) {
 
-        all_interop_url = [];
+        var all_interop_url = [];
         var url_interop = "";
 
-        city_id = getCityId();
-        type_zone = getTypeZone();
+        var city_id = getCityId();
+        var type_zone = getTypeZone();
 
-        city_data = getCityDataById(city_id, type_zone);
+        var city_data = getCityDataById(city_id, type_zone);
 
-        var geoShape = getGeoShapeForOsm(city_data.geoShape);
-        var geofilter = getGeofilterPolygon(city_data.geoShape);
+        var geoShape = typeof city_data.geoShape != "undefined" ? getGeoShapeForOsm(city_data.geoShape) : {};
+        var geofilter = typeof city_data.geoShape != "undefined" ? getGeofilterPolygon(city_data.geoShape) : {};
         var city_wikidataID = city_data.wikidataID;
         var city_insee = city_data.insee;
 
@@ -614,12 +614,12 @@ $this->renderPartial($layoutPath.'header',
 
 	            if (data.length > 0) {
 	                if (data[0]["source"]["key"] == "convert_ods" || data[0]["source"]["key"] == "convert_datanova" || data[0]["source"]["key"] == "convert_educ_struct" || data[0]["source"]["key"] == "convert_educ_etab" || data[0]["source"]["key"] == "convert_educ_membre" || data[0]["source"]["key"] == "convert_educ_ecole") {
-	                    part_data = data;
+	                    var part_data = data;
 	                } else {
-	                    part_data = data.slice(startNow, endNow);
+	                    var part_data = data.slice(startNow, endNow);
 	                }
 	            } else {
-	                part_data = [];
+	                var part_data = [];
 	            }
 
 	            mylog.log('PART_DATA POUR CHAQUE INTEROP RESEARCH : ', part_data);
@@ -758,7 +758,7 @@ $this->renderPartial($layoutPath.'header',
 		                        setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"),
 		                        $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
 		                        $(this).data("region-communexion"), $(this).data("country-communexion") ) ;
-		                        activateGlobalCommunexion(true);
+		                        activateGlobalCommunexion(true, true);
 		                    });
 
 		                    $.unblockUI();

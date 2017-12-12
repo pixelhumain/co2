@@ -81,7 +81,7 @@
                src="<?php echo @$thumbAuthor; ?>" 
                height=40>
 
-          <div class="pull-left padding-5 col-md-7 col-sm-7" style="line-height: 15px;"> 
+          <div class="pull-left padding-5 col-md-7 col-sm-7 text-left" style="line-height: 15px;"> 
             <?php  //if(@$media["lastAuthorShare"]["name"]!=@$nameAuthor){ ?>
             <a href="#page.type.<?php echo $authorType ?>.id.<?php echo $authorId ?>" class="lbh">
               <?php echo @$nameAuthor; ?>
@@ -137,11 +137,20 @@
         <br>
 
         <span class="margin-top-5">
-          <?php if(@$media["type"]=="news") { ?>
-            <i class="fa fa-pencil-square"></i> a publié 
-            <a href="#page.type.<?php echo @$media["type"]; ?>.id.<?php echo @$media["_id"]; ?>" class="lbh">
-              un message
-            </a>
+          <?php if(@$media["type"]=="news") { 
+            $where="";
+              if(@$media["target"]["id"] != @$authorId && @$media["verb"] != "create") { 
+                if(@$media["target"]["id"] != @$contextId){ 
+                     $where=Yii::t("news","in the newspaper of {who}",
+                        array("{who}"=>'<a href="#page.type.'.@$media["target"]["type"].'.id.'.@$media["target"]["id"].'" class="lbh">'.@$media["target"]["name"].' </a>')); 
+                 }else if(@$media["target"]["id"] == @$contextId && @$contextId == Yii::app()->session["userId"] ){ 
+                    $where=Yii::t("news","in your newspaper");
+                }else if(@$media["target"]["id"] == @$contextId && @$contextId != Yii::app()->session["userId"] ){ 
+                    $where=Yii::t("news","in this newspaper");
+                } 
+               } ?>
+
+            <i class="fa fa-pencil-square"></i> <?php echo Yii::t("news", "published {what} {where}", array("{what}"=>'<a href="#page.type.'.@$media["type"].'.id.'.@$media["_id"].'" class="lbh">'.Yii::t("news","a message").'</a>',"{where}"=>$where)) ?>
           <?php } ?>
         
          
@@ -160,9 +169,7 @@
               <?php echo @$media["object"]["authorName"]; ?>
               </a>
             <?php } ?>
-          <?php } ?>
-
-          <?php if(@$media["target"]["id"] != @$authorId && 
+             <?php if(@$media["target"]["id"] != @$authorId && 
                    @$media["verb"] != "create") { ?>
             <?php if(@$media["target"]["id"] != @$contextId){ ?>
                   dans le journal de 
@@ -177,6 +184,9 @@
             <?php } ?>
           <?php } ?>
 
+          <?php } ?>
+
+         
            <?php if(@$media["scope"] && @$media["scope"]["type"]){
             if($media["scope"]["type"]=="public"){
               $scopeIcon="globe";
@@ -237,9 +247,12 @@
       </span>
     <?php } ?>
     
-    <?php if(!empty(@$media["text"])){ ?>
+    <?php if(!empty(@$media["text"]) && (!@$media["reportAbuseCount"] || @$media["reportAbuseCount"] < 4)){ ?>
       <div id="newsContent<?php echo $key ?>" data-pk="<?php echo $key ?>" 
            class="newsContent no-padding"><?php echo $media["text"]; ?>
+      </div>
+      <?php }else if(@$media["reportAbuseCount"] >= 4){ ?>
+      <div class="newsContent no-padding letter-red">Contenu masqué
       </div>
     <?php } ?>
 

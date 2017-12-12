@@ -1,62 +1,21 @@
 <style>
-	#panel-first-step{
-		text-align: center;
-		margin-top:20px;
-	}
-	#panel-first-step button{
-		margin-bottom:5px;
-	}
-
-	#ajax-modal .modal-content,
-	#formContact .modal-content{
-		background-color: rgba(0,0,0,0.6);
-	}
-	
-	#ajax-modal .container,
-	#formContact .container{
-		background-color: white;
-		border-radius: 4px;
-	}
-
-	#ajax-modal.portfolio-modal,
-	#formContact.portfolio-modal {
-		background-color: transparent;
-	}
-
-	#ajax-modal .close-modal .lr,
-	#ajax-modal .close-modal .rl,
-	#formContact .close-modal .lr,
-	#formContact .close-modal .rl{
-		background-color: white;
-	}
-
 	.dropdown_searchListNW{
 		min-height: 100%;
 	}
-
-
 </style>
 
 <div class="col-md-12 no-padding" id="repertory" >
+	<div id="dropdown_search_result" class="col-md-12 col-sm-12 col-xs-12"></div>
 	<div id="dropdown_search" class="col-md-12 container list-group-item dropdown_searchListNW"></div>
 </div>
-<div class="col-md-12 padding-10" id="ficheInfoDetail"></div>
+<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="ficheInfoDetail"></div>
 
 <script type="text/javascript">
-//Icons by default categories
-var linksTagImages = new Object();
 var contextMapNetwork = [];
-var allElement = new Array();
-var allTags = new Object();
-var allTypes = new Object();
 var indexStepInit = 100;
 var searchPrefTag = null ;
 var indexStep = indexStepInit;
-var currentIndexMin = 0;
-var currentIndexMax = indexStep;
 var scrollEnd = false;
-var totalData = 0;
-var timeout = null;
 
 var tagsActived = {};
 var disableActived = false;
@@ -68,14 +27,10 @@ var searchValNetwork = "";
 var loadingData = false;
 var mapElements = new Array();
 var tagsFilter = new Array();
-var mix = "";
-
-var topMenuActivated = true;
 
 var nwVar = {
 	mainTag : [],
 	sourceKey : [],
-	searchType : [],
 	searchTag : [],
 	searchCategory : [],
 	searchLocalityNAME : [],
@@ -83,17 +38,7 @@ var nwVar = {
 	searchLocalityDEPARTEMENT : [],
 	searchLocalityINSEE : [],
 	searchLocalityREGION : [],
-
-	allmainTag : [],
-	allsourceKey : [],
-	allsearchType : [],
-	allsearchTag : [],
-	allsearchCategory : [],
-	allsearchLocalityNAME : [],
-	allsearchLocalityCODE_POSTAL_INSEE : [],
-	allsearchLocalityDEPARTEMENT : [],
-	allsearchLocalityINSEE : [],
-	allsearchLocalityREGION : [],
+	searchType : [],
 }
 
 jQuery(document).ready(function() {
@@ -108,18 +53,12 @@ jQuery(document).ready(function() {
 	else
 		showMapNetwork(false);
 
-	$(".main-menu-left.inSig").hide();
 	$("#right_tool_map").removeClass("hidden-sm").hide( 700 );
 
-	topMenuActivated = true;
 	hideScrollTop = true;
 	checkScroll();
 	var timeoutSearch = setTimeout(function(){ }, 100);
-
 	setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
-	$(".moduleLabel").html("<i class='fa fa-connectdevelop'></i> <span id='main-title-menu'>Cartographie des Tiers-Lieux </span> <span class='text-red'>MEL</span>");
-	$('.tooltips').tooltip();
-	
 	mylog.log("indexStepInit", indexStepInit);
 	startSearchSimply(0, indexStepInit);
 });
@@ -130,34 +69,29 @@ function initVar(){
 	if( typeof networkJson.request.pagination != "undefined" && networkJson.request.pagination > 0)
 		indexStepInit = networkJson.request.pagination ;
 
-  	if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
-   		$.each(networkJson.filter.linksTag, function(index, value){ 
-   			if(typeof value != "undefined"){
-   				linksTagImages[value] = {};
-   			}
-   		});
-   	}
+	citiesActived = ( ((typeof networkJson.request.searchLocalityNAME == "undefined") || networkJson == null) ? [] : networkJson.request.searchLocalityNAME);
 
-   	citiesActived = ( ((typeof networkJson.request.searchLocalityNAME == "undefined") || networkJson == null) ? [] : networkJson.request.searchLocalityNAME);
+	if( notEmpty(citiesActived) ){
+		var cA = [];
+		$.each(citiesActived,function(k,v){
+			cA.push(v.toUpperCase());
+		});
+		citiesActived = cA ;
+	}
 
-   	indexStep = indexStepInit;
-   	var allSearchParams = ["mainTag", "sourceKey", "searchType", "searchTag","searchCategory","searchLocalityNAME","searchLocalityCODE_POSTAL_INSEE","searchLocalityDEPARTEMENT","searchLocalityINSEE","searchLocalityREGION"];
-   	$.each(allSearchParams,function(k,v){
-   		mylog.log("allSearchParams" );
+	indexStep = indexStepInit;
+	var allSearchParams = ["mainTag", "sourceKey", "searchType", "searchTag","searchCategory","searchLocalityNAME","searchLocalityCODE_POSTAL_INSEE","searchLocalityDEPARTEMENT","searchLocalityINSEE","searchLocalityREGION"];
+	$.each(allSearchParams,function(k,v){
 		nwVar[v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
-		nwVar["all"+v] = ( ( typeof networkJson.request[v] != "undefined" && $.isArray(networkJson.request[v]) ) ? networkJson.request[v] : [] );
 	});
 
-
-	var btnSearch = '<div class="btn-group btn-group-lg tooltips" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Recherche par nom">'+
+	var btnSearch = '<div class="btn-group btn-group-lg tooltips" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+trad.searchbyname+'">'+
 					'<button type="button" class="btn btn-map " id="btn-search">'+
 					'<i class="fa fa-chevron-left"></i></button>'+
 				'</div>';
 	$("#btn-back").parent().replaceWith(btnSearch);
-
 	$("#mapLegende").addClass("hidden");
 }
-
 
 function addTooltips(){
 	mylog.log("addTooltips");
@@ -171,7 +105,6 @@ function addTooltips(){
 		});
 	}
 }
-
 
 function bindNetwork(){
 	mylog.log("bindNetwork");
@@ -189,12 +122,18 @@ function bindNetwork(){
 		tagsActived = {};
 		disableActived = false;
 		citiesActived = ( ((typeof networkJson.request.searchLocalityNAME == "undefined") || networkJson == null) ? [] : networkJson.request.searchLocalityNAME);
+		if( notEmpty(citiesActived) ){
+			var cA = [];
+			$.each(citiesActived,function(k,v){
+				cA.push(v.toUpperCase());
+			});
+			citiesActived = cA ;
+		}
 		typesActived = [] ;
 		rolesActived = [] ;
 		searchValNetwork = "";
 		chargement();
 	});
-
 
 	$("#btn-search").click(function(){
 		mylog.log("#btn-search", $("#right_tool_map").is(":visible"));
@@ -222,7 +161,7 @@ function bindNetwork(){
 			$(this).find(".firstIcon").removeClass("fa-angle-left").addClass("fa-filter");
 		}
 	});
-	
+
 	$(".showHideMoreTitleMap").click(function(){
 		mylog.log(".showHideMoreTitleMap");
 		if($(this).find("i").hasClass("fa-angle-down")){
@@ -239,66 +178,12 @@ function bindNetwork(){
 		
 	});
 
-
 	if( typeof networkJson.mode == "undefined" || networkJson.mode != "client"){ 
 		$('#searchBarText').keyup(function(e){
 			clearTimeout(timeoutSearch);
 			timeoutSearch = setTimeout(function(){ startSearchSimply(0, indexStepInit); }, 800);
 		});
-	} 
-	
-	/***** CHANGE THE VIEW PARAMS  *****/
-	// $('#dropdown_params').show();
-	
-	$('#dropdown_paramsBtn').click(function(event){
-		mylog.log("#dropdown_paramsBtn");
-		event.preventDefault();
-		if($('#dropdown_paramsBtn').hasClass('active')){
-			$('#dropdown_params').fadeOut();
-			$('#dropdown_params').removeClass('col-md-3');
-			$('#dropdown_search').removeClass('col-md-9');
-			$('#dropdown_search').addClass('col-md-12');
-			$('#dropdown_paramsBtn').removeClass('active');
-		}
-		else{
-			$('#dropdown_params').addClass('col-md-3');
-			$('#dropdown_params').fadeIn();
-			$('#dropdown_search').addClass('col-md-9');
-			$('#dropdown_search').removeClass('col-md-12');
-			$('#dropdown_paramsBtn').addClass('active');
-		}
-	});
-
-	/***** CHANGE THE VIEW GRID OR LIST *****/
-	$('#grid').hide();
-	$('#list').click(function(event){
-		mylog.log("#list");
-		event.preventDefault();
-		$('#dropdown_search .item').addClass('list-group-item');
-		$('.entityTop').removeClass('row');
-		$('.entityMiddle').removeClass('row');
-		$('.entityBottom').removeClass('row');
-		$('.entityTop').addClass('col-md-2');
-		$('.entityMiddle').addClass('col-md-12');
-		$('.entityBottom').addClass('col-md-4');
-		$('#grid').show();
-		$('#list').hide();
-	});
-
-	$('#grid').click(function(event){
-		mylog.log("#grid");
-		event.preventDefault();
-		$('#dropdown_search .item').removeClass('list-group-item');
-		$('#dropdown_search .item').addClass('grid-group-item');
-		$('.entityTop').addClass('row');
-		$('.entityMiddle').addClass('row');
-		$('.entityBottom').addClass('row');
-		$('.entityTop').removeClass('col-md-2');
-		$('.entityMiddle').removeClass('col-md-12');
-		$('.entityBottom').removeClass('col-md-4');
-		$('#list').show();
-		$('#grid').hide();
-	});
+	}
 }
 
 function showMapNetwork(show){
@@ -313,15 +198,12 @@ function showMapNetwork(show){
 	if(show){
 		isMapEnd =true;
 		showNotif(false);
-
 		$("#mapLegende").html("");
 		$("#mapLegende").hide();
-
 		showMenuNetwork(true);
 		if(Sig.currentMarkerPopupOpen != null){
 			Sig.currentMarkerPopupOpen.fire('click');
 		}
-
 		$(".btn-group-map").show( 700 );
 		$(".main-bottom-menu").show( 700 );
 		$(".btn-menu5, .btn-menu-add").hide();
@@ -331,7 +213,7 @@ function showMapNetwork(show){
 			top: -1000,
 			opacity:0,
 		}, 'slow' );
-
+		setTitle(networkJson.name , "", networkJson.name+ " : "+networkJson.skin.title, networkJson.name,networkJson.skin.shortDescription);
 		setTimeout(function(){ 
 			$(".my-main-container").hide();
 		}, 1000);
@@ -342,7 +224,6 @@ function showMapNetwork(show){
 		hideMapLegende();
 		$(".btn-group-map").hide( 700 );
 		$(".main-bottom-menu").hide( 700 );
-		$("#dropdown_params").show( 700 );
 		showMenuNetwork(false);
 		$(".btn-menu5, .btn-menu-add").show();
 		$(".panel_map").hide(1);
@@ -351,7 +232,7 @@ function showMapNetwork(show){
 			top: 50,
 			opacity:1
 		}, 'slow' );
-
+		setTitle(networkJson.name , "", networkJson.name+ " : "+networkJson.skin.title, networkJson.name,networkJson.skin.shortDescription);
 		setTimeout(function(){ 
 			$(".my-main-container").show();
 			if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )
@@ -378,8 +259,9 @@ function showMenuNetwork(show){
 		$("#titleMapTop").show( 700 );
 		$("#btn-menu-launch").show( 700 );
 		$("#btn-toogle-map").html("<i class='fa fa-list'></i>");
-		$("#btn-toogle-map").attr("data-original-title", "Annuaire");
-		$("#btn-toogle-map").attr("title", "Annuaire");
+		$("#btn-toogle-map").attr("title", trad.list);
+		$("#btn-toogle-map").attr("data-original-title", trad.list);
+		$("#btn-toogle-map").removeClass("resizer");
 		$(".main-menu-left").hide( 700 );
 		$("#menuTopList").hide( 700 );
 		$(".main-top-menu").removeClass("bg-white");
@@ -388,7 +270,8 @@ function showMenuNetwork(show){
 		$("#titleMapTop").hide( 700 );
 		$("#btn-menu-launch").hide( 700 );
 		$("#btn-toogle-map").html("<i class='fa fa-map-marker'></i>");
-		$("#btn-toogle-map").attr("data-original-title", "Carte");
+		$("#btn-toogle-map").attr("data-original-title", trad.map);
+		$("#btn-toogle-map").addClass("resizer");
 		$("#menuTopList").show( 700 );
 		$(".main-top-menu").addClass("bg-white");
 		if($("#btn-menu-launch").hasClass("active"))
@@ -411,23 +294,14 @@ function startSearchSimply(indexMin, indexMax){
 	var name = $('#searchBarText').val();
 	if(typeof indexMin == "undefined") indexMin = 0;
 	if(typeof indexMax == "undefined") indexMax = indexStep;
-	currentIndexMin = indexMin;
-	currentIndexMax = indexMax;
+	// currentIndexMin = indexMin;
+	// currentIndexMax = indexMax;
 	if(indexMin == 0 && indexMax == indexStep) {
-		totalData = 0;
+		//totalData = 0;
 		mapElements = new Array();
 	}
 	// if(name.length>=3 || name.length == 0){
 	var locality = "";
-	/*communexionActivated=true;
-	levelCommunexion = 1;
-	if(communexionActivated){
-		if(levelCommunexion == 1) locality = inseeCommunexion;
-		if(levelCommunexion == 2) locality = cpCommunexion;
-		if(levelCommunexion == 3) locality = cpCommunexion.substr(0, 2);
-		if(levelCommunexion == 4) locality = inseeCommunexion;
-		if(levelCommunexion == 5) locality = "";
-	}*/
 	autoCompleteSearchSimply(name, locality, indexMin, indexMax);
 }
 
@@ -439,15 +313,8 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 		3 : "DEPARTEMENT",
 		4 : "REGION"
 	};
-	var searchBy = levelCommunexionName[levelCommunexion];
-	// searchBy = "NAME";
-	/*mylog.log("searchLocalityNAME : ",nwVar.searchLocalityNAME);
-	mylog.log("searchLocalityCODE_POSTAL_INSEE : ",nwVar.searchLocalityCODE_POSTAL_INSEE);
-	mylog.log("searchLocalityDEPARTEMENT : ",nwVar.searchLocalityDEPARTEMENT);
-	mylog.log("searchLocalityINSEE : ",nwVar.searchLocalityINSEE);
-	mylog.log("searchLocalityREGION : ",nwVar.searchLocalityREGION);
-	mylog.log("searchTag : ",nwVar.searchTag);
-	mylog.log("searchCategory : ",nwVar.searchCategory);*/
+	//var searchBy = levelCommunexionName[levelCommunexion];
+
 
 	//To merge Category and tags which are finally all tags
 	var searchTagGlobal = [];
@@ -458,7 +325,6 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	var searchTagsSimply = {} ;
 	if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
 		$.each(searchTagGlobal, function(i, o) {
-
 			$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
 
 				if(typeof valueNet.tags[o] != "undefined"){
@@ -482,7 +348,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	var data = {
 		"name" : name,
 		"locality" : "xxxx",
-		"searchType" : nwVar.allsearchType,
+		"searchType" : nwVar.searchType,
 		"searchTag" : searchTagGlobal,
 		"filtreTag" : searchTagsSimply,
 		"searchLocalityNAME" : nwVar.searchLocalityNAME,
@@ -490,7 +356,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 		"searchLocalityDEPARTEMENT" : nwVar.searchLocalityDEPARTEMENT,
 		"searchLocalityINSEE" : nwVar.searchLocalityINSEE,
 		"searchLocalityREGION" : nwVar.searchLocalityREGION,
-		"searchBy" : searchBy,
+		//"searchBy" : searchBy,
 		"indexMin" : indexMin,
 		"indexMax" : indexMax,
 		//"sourceKey" : sourceKey,
@@ -518,302 +384,190 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	$(".btn-start-search").addClass("bg-azure");
 	$(".btn-start-search").removeClass("bg-dark");
 	//$("#dropdown_search").css({"display" : "inline" });
-	if(indexMin > 0)
-	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
-	else
-	$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
+	//if(indexMin > 0)
+	//$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
+	//else
+	//$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	if(isMapEnd){
 		$.blockUI({
-			message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> En cours ...</span></h1>"
+			message : "<div class='col-xs-12 text-center'><div class='col-md-offset-2 col-md-8 bg-white'><h1 class='homestead text-red'><span class='text-dark'>Welcome on</span><br/><span>"+networkJson.skin.title+"</span><br/></h1><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> Initialization of map</span></div></div>",
 		});
 	}
-		
-	$.ajax({
-		type: "POST",
-		url: baseUrl+"/" + moduleId + "/search/simplyautocomplete",
-		data: data,
-		dataType: "json",
-		error: function (data){
-			console.log("error");
-			console.dir(data);
-		},
-		success: function(data){
-			mylog.log("!data.res", !data.res);
-			if(!data.res){toastr.error(data.content); }
-			else
-			{
-				if(data.res.length){
-					var countData = 0;
-					$.each(data.res, function(i, v) { if(v.length!=0){ countData++; } });
-
-					totalData += countData;
-					if(typeof networkJson.request.oneElement != "undefined" && networkJson.request.oneElement == true){
-						filterTags(data.filters.tags);
-						filterType(data.filters.types);
-						$("#divRolesMenu").removeClass("hidden");
-					}else{
-  						$("#divRolesMenu").addClass("hidden");
-  					}
-					
-					bindAutocomplete();
-					str = "";
-					var city, postalCode = "";
-					var mapElements = new Array();
-					allTags = data.filters;
-
-					//parcours la liste des résultats de la recherche
-					$.each(data.res, function(i, o) {
-						var typeIco = i;
-						var ico = mapIconTop["default"];
-						var color = mapColorIconTop["default"];
-
-						typeIco = o.type;
-						ico = ("undefined" != typeof mapIconTop[typeIco]) ? mapIconTop[typeIco] : mapIconTop["default"];
-						color = ("undefined" != typeof mapColorIconTop[typeIco]) ? mapColorIconTop[typeIco] : mapColorIconTop["default"];
-
-						htmlIco ="<i class='fa "+ ico +" text-"+color+"'></i>";
-						if("undefined" != typeof o.profilThumbImageUrl && o.profilThumbImageUrl != ""){
-							var htmlIco= "<img width='80' height='80' alt='' class='img-circle bg-"+color+"' src='"+baseUrl+o.profilThumbImageUrl+"'/>";
-						}
-
-						city="";
-						var postalCode = o.cp
-						if (o.address != null) {
-							city = o.address.addressLocality;
-							postalCode = o.cp ? o.cp : o.address.postalCode ? o.address.postalCode : "";
-						}
-
-						//console.dir(o);
-						var id = getObjectId(o);
-						var tagsClasses = "";
-						var insee = o.insee ? o.insee : "";
-						type = o.type;
-						if(type=="citoyen") type = "person";
-
-						//Consolidate types
-						if(type != "undefined" && type != null){
-							if(typeof allTypes[type] != "undefined"){
-								allTypes[type] = allTypes[type] + 1;
-							}
-							else{
-								allTypes[type] = 1;
-							}
-						}
-
-						var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
-						var url = baseUrl+'/'+moduleId+ "/default/dir#" + type + ".simply.id." + id;
-						// var onclick = 'loadByHash("#organization.simply.id.' + id + '");';
-						var onclick = 'getAjaxFiche("#page.type.'+o.typeSig+'.id.'+id+'",1);';
-						var onclickCp = "";
-						var target = " target='_blank'";
-						var dataId = "";
-						if(type == "city"){
-							url = "javascript:"; //#main-col-search";
-							onclick = 'setScopeValue($(this))'; //"'+o.name.replace("'", "\'")+'");';
-							onclickCp = 'setScopeValue($(this));';
-							target = "";
-							dataId = o.name; //.replace("'", "\'");
-						}
-
-						//var tags = "";
-						var find = false;
-						var tags = "";
-						var elTagsList = "";
-						if(typeof o.tags != "undefined" && o.tags != null){
-							$.each(o.tags, function(key, value){
-								if(value != ""){
-									tags += "<a href='javascript:;' class='badge bg-red btn-tag tagFilter padding-5' data-tag-value='"+slugify(value)+"'>#" + value + "</a> ";
-									elTagsList += slugify(value)+" ";
-									if(find == false && value in linksTagImages == true){
-										find = true;
-										o.typeSig = "organizations";
-										o.type = "organizations";
-									}
-								}
-							});
-						}
-
-						mapElements.push(o);
-						contextMapNetwork.push(o);
-						// console.log(tagsClasses);
-						var name = typeof o.name != "undefined" ? o.name : "";
-						var website = (typeof o.url != "undefined" || o.url != null) ? o.url : "";
-						var postalCode = (	typeof o.address != "undefined" &&
-											typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
-
-						if(postalCode == "") postalCode = typeof o.cp != "undefined" ? o.cp : "";
-						var cityName = (typeof o.address != "undefined" &&
-										typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
-
-						var fullLocality = postalCode + " " + cityName;
-						fullLocality = fullLocality.trim();
-						var description = (	typeof o.shortDescription != "undefined" &&
-											o.shortDescription != null) ? o.shortDescription : "";
-						if(description == "") description = (	typeof o.description != "undefined" &&
-																o.description != null) ? o.description : "";
-						description = "";
-						if(o.profilMediumImageUrl != "undefined" && o.profilMediumImageUrl != "")
-							pathmedium = baseUrl+o.profilMediumImageUrl;
-						else
-							pathmedium = "<?php echo $this->module->assetsUrl ?>/images/thumbnail-default.jpg";
-						shortDescription = (	typeof o.shortDescription != "undefined" &&
-												o.shortDescription != null ) ? o.shortDescription : "";
-
-						var startDate = (typeof o.startDate != "undefined") ? "Du "+dateToStr(o.startDate, "fr", true, true) : null;
-						var endDate   = (typeof o.endDate   != "undefined") ? "Au "+dateToStr(o.endDate, "fr", true, true)   : null;
-
-						var disabledBorder = ((typeof o.disabled != "undefined" && o.disabled == true) ? "border-red elementDisabled" : "" );
-						var disabledText = ((typeof o.disabled != "undefined" && o.disabled == true) ? '<h1 id="disabledList" class="text-red"><?php echo Yii::t("common", "Disabled"); ?></h1>' : "" );
 
 
-						/***** VERSION SIMPLY *****/
-						str += "<div id='"+id+"' class='row list-group-item item searchEntity "+mix+" "+elTagsList+" "+fullLocality+" "+disabledBorder+"' >";
-						if( typeof networkJson.result.displayImage != "undefined"){
-							str += '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 padding-10 center">'+
-							'<img class="img-responsive thumbnail" src="'+pathmedium+'" alt="Image"'+ name+'".></div>';
-						}
-						
-						str += "<div class='entityMiddle col-md-5 name' onclick='"+onclick+"'>";
-						str += disabledText;
-						str += "<a class='entityName text-dark'>" + name + "</a><br/>";
-						if(website != null && website.trim() != "")
-							str += "<i class='fa fa-desktop fa_url'></i> <a href='"+website+"' target='_blank'>"+website+"</a><br/>";
+	if( notNull(networkJson.dataSrc) ) {
+		mylog.log("networkJson.dataSrc");
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/" + moduleId + "/element/getdatabyurl",
+			data: { url : networkJson.dataSrc , json : false},
+			dataType: "json",
+			error: function (data){
+				mylog.log("error");
+				mylog.dir(data);
+			},
+			success: function (data) { 
+				mylog.log("data", data);
 
-						if( typeof networkJson.result.fullLocality != "undefined" && fullLocality != ""){
-							str += "<div class='entityLocality'><i class='fa fa-home'></i> " + fullLocality + "</div><br/>";
-						}
-						
-						str += "</div>";
+				if(notNull(data.entities)){
+					var val = {
+						res : []
+					} ;
 
+					$.each(data.entities, function(i, v) {
+						v["id"] = i;
+						val.res.push(v);
+					});
 
-						if( typeof networkJson.result.displayType != "undefined"){
-							str += "<div class='entityMiddle col-md-2 type '>";
-							typeIco = "";
-							str += htmlIco+"" + typeIco + "";
-							str += "</div>";
-						}
-
-						if( typeof networkJson.result.displayShortDescription != "undefined"){
-							str += "<div class='entityMiddle col-md-5 type '>"+shortDescription+"</div>";
-						}
-
-						target = "";
-						str += "<div class='entityBottom col-md-5'>";
-						str += "<hr>";
-						if(tags=="") tags = "<a href='javascript:;' class='badge bg-red btn-tag'>#</a>";
-						str += tags;
-						str += "</div>";
-						str += "</div>";
-					}); //end each
-				
-					if(str == "") {
-						$(".btn-start-search").html("<i class='fa fa-search'></i>");
-						if(indexMin == 0){
-							//ajout du footer
-							var msg = trad.noresult;
-							if(name == "" && locality == "") 
-								msg = "<h3 class='text-dark'><i class='fa fa-3x fa-keyboard-o'></i><br> Préciser votre recherche pour plus de résultats ...</h3>";
-							str += '<div class="center" id="footerDropdown">';
-							str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-white'>"+msg+"</label><br/>";
-							str += "</div>";
-							$("#dropdown_search").html(str);
-							$("#searchBarText").focus();
-						}
-					}
-					else {
-						//ajout du footer
-
-						str += '</div><div class="center col-md-12" id="footerDropdown">';
-						str += "<hr style='float:left; width:100%;'/><label id='countResult' class='text-white'></label><br/>";
-						
-						if( typeof networkJson.mode != "undefined" && networkJson.mode != "client" ){
-							str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
-							str += "</div>";
-						}
-
-						//si on n'est pas sur une première recherche (chargement de la suite des résultat)
-						if(indexMin > 0){
-							//on supprime l'ancien bouton "afficher plus de résultat"
-							$("#btnShowMoreResult").remove();
-							//on supprimer le footer (avec nb résultats)
-							$("#footerDropdown").remove();
-							//on calcul la valeur du nouveau scrollTop
-							var heightContainer = $(".my-main-container")[0].scrollHeight - 180;
-							//on affiche le résultat à l'écran
-							$("#dropdown_search").append(str);
-						//si on est sur une première recherche
-						}else{
-							//on affiche le résultat à l'écran
-							$("#dropdown_search").html(str);
-							//on scroll pour coller le haut de l'arbre au menuTop
-							// $(".my-main-container").scrollTop(95);
-						}
-
-						//On met à jour les filtres
-						if( typeof networkJson.mode != "undefined" && networkJson.mode == "client" ){
-							loadClientFilters(allTypes, allTags);
-						} else{ 
-							loadServerFilters(allTypes, allTags);
-						}
-
-						//on affiche par liste par défaut
-						$('#list').click();
-						//remet l'icon "loupe" du bouton search
-						$(".btn-start-search").html("<i class='fa fa-search'></i>");
-
-						//active le chargement de la suite des résultat au survol du bouton "afficher plus de résultats"
-						//(au cas où le scroll n'ait pas lancé le chargement comme prévu)
-						$("#btnShowMoreResult").mouseenter(function(){
-							if(!loadingData){
-								startSearchSimply(indexMin+indexStep, indexMax+indexStep);
-								$("#btnShowMoreResult").mouseenter(function(){});
-							}
-						});
-
-						//initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
-						// initBtnLink();
-					} //end else (str=="")
-
-					//signal que le chargement est terminé
-					mylog.log("test");
-					loadingData = false;
-
-					if( typeof networkJson.mode != "undefined" && networkJson.mode == "client" ){
-						loadClientFeatures();
-					} else{ 
-						loadServerFeatures();
-					}
-					//quand la recherche est terminé, on remet la couleur normal du bouton search
-					$(".btn-start-search").removeClass("bg-azure");
+					data = val ;
 				}
-				
-			}
-			// console.log("scrollEnd ? ", scrollEnd, indexMax, countData , indexMin);
 
-			//si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
-			if(indexMax - countData > indexMin){
-				$("#btnShowMoreResult").remove();
-				scrollEnd = true;
-			}else{
-				scrollEnd = false;
+				dataSuccess(data, indexMin, indexMax, locality); 
 			}
-			//affiche les éléments sur la carte
-			Sig.restartMap();
-			Sig.showMapElements(Sig.map, mapElements);
-			//on affiche le nombre de résultat en bas
-			var s = "";
-			var length = ($( "div.searchEntity" ).length);
-			if(length > 1) s = "s";
-			$("#countResult").html(length+" résultat"+s);
-			$.unblockUI();
+		});
+	} else {
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/" + moduleId + "/search/simplyautocomplete",
+			data: data,
+			dataType: "json",
+			error: function (data){
+				mylog.log("error");
+				mylog.dir(data);
+			},
+			success: function(data){
+				dataSuccess(data, indexMin, indexMax); 
+			}
+		});
+	}
+}
+
+function dataSuccess(data, indexMin, indexMax, locality){
+	mylog.log("dataSuccess", data, !data.res, indexMin, indexMax, locality);
+	if(!data.res) {
+		toastr.error(data.content); 
+	} else {
+		if(data.res.length){
+			var countData = 0;
+			$.each(data.res, function(i, v) { if(v.length!=0){ countData++; } });
+
+			if(typeof networkJson.request.oneElement != "undefined" && networkJson.request.oneElement == true){
+				filterTags(data.filters.tags);
+				filterType(data.filters.types);
+				$("#divRolesMenu").removeClass("hidden");
+			} else {
+				$("#divRolesMenu").addClass("hidden");
+			}
+			
+			bindAutocomplete();
+			str = "";
+			var city, postalCode = "";
+			var mapElements = new Array();
+			var htmlCO2 = "";
+			htmlCO2 = directory.showResultsDirectoryHtml(data.res);
+			//parcours la liste des résultats de la recherche
+			countResult=Object.keys(data.res).length;
+			mylog.log("data.res ", data.res);
+			$.each(data.res, function(i, o) {
+				mylog.log("Search ", o);
+				mylog.log("Tags element", o.tags);
+				mapElements.push(o);
+				contextMapNetwork.push(o);
+			}); //end each
+		
+			if(str == "") {
+				$(".btn-start-search").html("<i class='fa fa-search'></i>");
+				if(indexMin == 0){
+					//ajout du footer
+					var msg = trad.noresult;
+					if(name == "" && notNull(locality) && locality == "") 
+						msg = "<h3 class='text-dark'><i class='fa fa-3x fa-keyboard-o'></i><br> Préciser votre recherche pour plus de résultats ...</h3>";
+					str += '<div class="center" id="footerDropdown">';
+					str += "<hr style='float:left; width:100%;'/><label style='margin-bottom:10px; margin-left:15px;' class='text-white'>"+msg+"</label><br/>";
+					str += "</div>";
+					$("#dropdown_search").html(str);
+					$("#searchBarText").focus();
+				}
+			}
+			else {
+				//ajout du footer
+				str += '</div><div class="center col-md-12" id="footerDropdown">';
+				str += "<hr style='float:left; width:100%;'/><label id='countResult' class='text-white'></label><br/>";
+				
+				if( typeof networkJson.mode != "undefined" && networkJson.mode != "client" ){
+					str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
+					str += "</div>";
+				}
+
+				//si on n'est pas sur une première recherche (chargement de la suite des résultat)
+				if(indexMin > 0){
+					//on supprime l'ancien bouton "afficher plus de résultat"
+					$("#btnShowMoreResult").remove();
+					//on supprimer le footer (avec nb résultats)
+					$("#footerDropdown").remove();
+					//on calcul la valeur du nouveau scrollTop
+					var heightContainer = $(".my-main-container")[0].scrollHeight - 180;
+					//on affiche le résultat à l'écran
+					$("#dropdown_search").append(str);
+				//si on est sur une première recherche
+				}else{
+					//on affiche le résultat à l'écran
+					$("#dropdown_search").html(str);
+				}
+
+				$("#dropdown_search").html(htmlCO2);
+				refreshResultHeader(countResult);
+
+				//On met à jour les filtres
+				loadFilters();
+				initBtnLink();
+				//on affiche par liste par défaut
+				$('#list').click();
+				//remet l'icon "loupe" du bouton search
+				$(".btn-start-search").html("<i class='fa fa-search'></i>");
+
+				//active le chargement de la suite des résultat au survol du bouton "afficher plus de résultats"
+				//(au cas où le scroll n'ait pas lancé le chargement comme prévu)
+				$("#btnShowMoreResult").mouseenter(function(){
+					if(!loadingData){
+						startSearchSimply(indexMin+indexStep, indexMax+indexStep);
+						$("#btnShowMoreResult").mouseenter(function(){});
+					}
+				});
+			} //end else (str=="")
+
+			//signal que le chargement est terminé
+			mylog.log("test");
+			loadingData = false;
+			//quand la recherche est terminé, on remet la couleur normal du bouton search
+			$(".btn-start-search").removeClass("bg-azure");
 		}
-	});
+		
+	}
+	// console.log("scrollEnd ? ", scrollEnd, indexMax, countData , indexMin);
+
+	//si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
+	if(indexMax - countData > indexMin){
+		$("#btnShowMoreResult").remove();
+		scrollEnd = true;
+	}else{
+		scrollEnd = false;
+	}
+	//affiche les éléments sur la carte
+	Sig.restartMap();
+	Sig.showMapElements(Sig.map, mapElements);
+	//on affiche le nombre de résultat en bas
+	var s = "";
+	var length = ($( "div.searchEntity" ).length);
+	if(length > 1) s = "s";
+	$("#countResult").html(length+" résultat"+s);
+	$.unblockUI();
 }
 
 function tagActivedUpdate(checked, tag, parent){
 	mylog.log("tagActivedUpdate", checked, tag, parent,tagsActived, typeof tagsActived[parent], (typeof tagsActived[parent] == "undefined"));
 	if(checked== false){
-		tagsActived[parent].splice($.inArray(tag, tagsActived),1);
+		tagsActived[parent].splice($.inArray(tag, tagsActived[parent]),1);
 	}
 	else{
 		if(typeof tagsActived[parent] == "undefined"){
@@ -822,25 +576,37 @@ function tagActivedUpdate(checked, tag, parent){
 		tagsActived[parent].push(tag);
 	}
 }
-
+function refreshResultHeader(count){
+	if(count=="loading"){
+		str='<h4 style="font-weight:300" class=" text-dark padding-10">'+
+			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
+		  '</h4>';
+	}
+	else{             
+		if(count == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> "+trad.noresult;
+        else if(count == 1) totalDataGSMSG = count + " "+trad.result;   
+        else if(count > 1)  totalDataGSMSG = count + " "+trad.results;   
+        str='<h4 style="font-weight:300" class=" text-dark padding-10">'+
+			totalDataGSMSG+
+		'</h4>';
+	}
+	$("#dropdown_search_result").html(str);
+}
 function chargement(){
 	mylog.log("chargement");
-	processingBlockUi();
+	$(".searchEntityContainer").hide(700);
+	refreshResultHeader("loading");
 	setTimeout(function(){ updateMap(); }, 1000);
 }
 
 function bindAutocomplete(){
 	$(".tagFilterAuto").off().click(function(e){
-		
 		mylog.log(".tagFilter",  $(this));
-		mylog.log($(this).is( ':checked' ), $(this).prop( 'checked' ), $(this).attr( 'checked' ));
 		var checked = $(this).is( ':checked' );
 		var val = $(this).attr("value");
 		tagActivedUpdate(checked, val, "tags");
 		chargement();
-		
 	});
-
 
 	$(".typeFilterAuto").off().click(function(e){ 
 		var checked = $(this).is( ':checked' );
@@ -859,11 +625,9 @@ function bindAutocomplete(){
 }
 
 
-function loadServerFeatures(){
 
-}
-
-function loadServerFilters(types,tags){
+function loadFilters(){
+	mylog.log("loadFilters");
 	var displayLimit = 10;
 	var classToHide = "";
 	var i = 0;
@@ -872,15 +636,6 @@ function loadServerFilters(types,tags){
 	$('.villeFilter').prop("checked", false );
 	$('.tagFilter').prop("checked", false );
 	$('.categoryFilter').prop("checked", false );
-
-	//One by One Tag
-	/*$.each(nwVar.searchTag, function(index, value){
-		//Display
-		$('.tagFilter[value="'+value+'"]').prop("checked", true );
-		if($('.tagFilter[value="'+value+'"]').length)breadcum = breadcum+"<span class='label label-danger tagFilter' value='"+value+"'>"+$('.tagFilter[value="'+value+'"]').attr("data-label")+"</span> ";
-		//Open menu
-		manageCollapse(value,true);
-	});*/
 
 	$.each(nwVar.searchLocalityNAME, function(index, value){
 		//Display
@@ -895,13 +650,23 @@ function loadServerFilters(types,tags){
 		breadcum = breadcum+"<span class='label label-danger categoryFilter' value='"+value+"'>"+value+"</span> ";
 	}); 
 
-	$(".tagFilter").off().click(function(e){
+	$(".tagFilter").click(function(e){
 		mylog.log(".tagFilter",  $(this));
-		mylog.log($(this).is( ':checked' ), $(this).prop( 'checked' ), $(this).attr( 'checked' ));
-		var checked = $(this).is( ':checked' );
-		var filtre = $(this).attr("value");
-		var parent = $(this).data("parent")
+		mylog.log("label :", $(this).hasClass( "active" ));
+
+		var checked = false;
+		if($(this).hasClass( "active" ) == false){
+			$(this).addClass("active");
+			checked = true;
+			
+		}else{
+			$(this).removeClass("active");
+		}
+
+		var filtre = $(this).data("filtre");
+		var parent = $(this).data("parent");
 		mylog.log("parent",parent);
+		mylog.log("filtre",filtre);
 		if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
 			$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
 				if(typeof valueNet.tags[filtre] != "undefined"){
@@ -918,12 +683,20 @@ function loadServerFilters(types,tags){
 			});
 		}
 
-		chargement();	  	
+		chargement();  	
 	});
 
 	$(".villeFilter").off().click(function(e){
-		var checked = $(this).is( ':checked' );
-		var ville = $(this).attr("value");
+		mylog.log(".villeFilter",  $(this));
+		var checked = false;
+		if($(this).hasClass( "active" ) == false){
+			$(this).addClass("active");
+			checked = true;
+		}else{
+			$(this).removeClass("active");
+		}
+
+		var ville = $(this).data("value");
 		cityActivedUpdate(checked, ville);
 		chargement();
 	});
@@ -972,7 +745,6 @@ function breadcrumGuide(level, url){
 	}
 }
 
-
 function getAjaxFiche(url, breadcrumLevel){
 	mylog.log("getAjaxFiche Network", url, breadcrumLevel);
 	$("#ficheInfoDetail").empty();
@@ -981,62 +753,81 @@ function getAjaxFiche(url, breadcrumLevel){
 	}
 	
 	if(isMapEnd){
-		pathTitle="Cartographie";
+		pathTitle= trad.cartography;
 		pathIcon = "map-marker";
 		showMapNetwork();
 	}else{
-		pathTitle="Annuaire";
+		pathTitle= trad.list;
 		pathIcon = "list";
 	}
-
 	allReadyLoad = true;
-	//location.hash = url;
 	urlHash=url;
-	mylog.log("urlHash", urlHash);
-	if( urlHash.indexOf("type") < 0 && 
-		urlHash.indexOf("default.view") < 0 && 
-		urlHash.indexOf("gallery") < 0 && 
-		urlHash.indexOf("news") < 0 &&
-		urlHash.indexOf("network") < 0 && 
-		urlHash.indexOf("invite") < 0){
-
-		urlSplit=urlHash.replace( "#","" ).split(".");
-		mylog.log(urlHash);
-
-		if(urlSplit[0]=="person")
-			urlType="citoyens";
+	pageView=false;
+	if(urlHash.indexOf("page") >= 0){
+		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+				mylog.log("url", url);
+				$("#repertory").hide( 700 );
+				$(".main-menu-left").hide( 700 );
+				$("#ficheInfoDetail").show( 700 );
+				$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
+				
+				$.blockUI({
+					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>"+trad.currentlyloading+" ...</span></h4>"
+				});
+				mylog.log("networkParams", networkParams);
+				
+				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
+					$.unblockUI();
+					mylog.log(contextData);
+					//Construct breadcrumb
+					if(breadcrumLevel != false){
+						$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
+						$("#breadcrum").append($html);
+					}
+				},"html");
+	}
+	else if( 	urlHash.indexOf("default.view") < 0 &&
+				urlHash.indexOf("news") < 0 &&
+				urlHash.indexOf("network") < 0 && 
+				urlHash.indexOf("invite") < 0 ){
+		pageView=true;
+		var urlSplit=urlHash.replace( "#","" ).split(".");
+		if(typeof urlSplit == "string")
+			slug=urlSplit;
 		else
-			urlType=urlSplit[0]+"s";
-
-		urlHash="#element."+urlSplit[1]+".type."+urlType+".id."+urlSplit[3];
+			slug=urlSplit[0];
+		$.ajax({
+  			type: "POST",
+  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+  			dataType: "json",
+  			success: function(data){
+		  		if(data.result){
+		  			var urlHash="#page.type."+data.contextType+".id."+data.contextId;
+		  		}
+		  		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+				mylog.log("url", url);
+				$("#repertory").hide( 700 );
+				$(".main-menu-left").hide( 700 );
+				$("#ficheInfoDetail").show( 700 );
+				$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
+				
+				$.blockUI({
+					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>"+trad.currentlyloading+" ...</span></h4>"
+				});
+				mylog.log("networkParams", networkParams);
+				
+				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
+					$.unblockUI();
+					mylog.log(contextData);
+					//Construct breadcrumb
+					if(breadcrumLevel != false){
+						$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
+						$("#breadcrum").append($html);
+					}
+				},"html");
+			}
+		});
 	}
-
-	if(urlHash.indexOf("news") >= 0){
-		urlHash=urlHash+"&isFirst=1";
-	}
-	mylog.log("urlHash2", urlHash);
-	url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
-	mylog.log("url", url);
-	$("#repertory").hide( 700 );
-	$(".main-menu-left").hide( 700 );
-	$("#ficheInfoDetail").show( 700 );
-	$(".main-col-search").removeClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3").addClass("col-md-12 col-sm-12");
-	
-	$.blockUI({
-		message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>Chargement en cours ...</span></h4>"
-	});
-
-	mylog.log("networkParams", networkParams);
-	
-	getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
-		$.unblockUI();
-		mylog.log(contextData);
-		//Construct breadcrumb
-		if(breadcrumLevel != false){
-			$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
-			$("#breadcrum").append($html);
-		}
-	},"html");
 }
 
 
@@ -1044,17 +835,15 @@ function reverseToRepertory(){
 	mylog.log("reverseToRepertory", isMapEnd);
 	if(isMapEnd)
 		showMapNetwork();
-
 	updateMap();
 	$("#ficheInfoDetail").hide( 700 );
 	$(".main-col-search").removeClass("col-md-12 col-sm-12").addClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3");
-	$("#dropdown_search").show();
+	//$("#dropdown_search").show();
 	$("#repertory").show();
 	$(".main-menu-left").show( 700 );
-	$html = '<a href="javascript:;" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">Liste</a>';
+	$html = '<a href="javascript:;" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">'+trad.list+'</a>';
 	$("#breadcrum").html($html);
 	history.replaceState(null, '', window.location.href.split('#')[0]);
-	
 }
 
 //if all tags exist returns true
@@ -1064,15 +853,14 @@ function reverseToRepertory(){
 //console.log( and( ["atelier","commun"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
 //console.log( and( ["coco","atelier"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
 //console.log( and( ["coco","atelier",'commun'], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
-function and(tags,tagList)
-{
+function and(tags,tagList) {
 	var res = true ;
 	$.each(tags,function(i,t){
 		reg = new RegExp("^"+t+"$","i");
 		if( inArrayRegex(tagList,reg) == false ){
-    		res = false;
-	        return false;
-	    }
+			res = false;
+			return false;
+		}
 	});
 	return res;
 }
@@ -1084,8 +872,7 @@ console.log( or( ["atelier","coco"], [ "mobilité", "atelier", "commun", "tiers-
 console.log( or( ["atelier","commun"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
 console.log( or( ["coco","atelier"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));
 console.log( or( ["coco","n"], [ "mobilité", "atelier", "commun", "tiers-lieux" ] ));*/
-function or(tags,tagList)
-{
+function or(tags,tagList) {
 	res = (!tags.length) ? true :false;
 	$.each(tags,function(i,t){
 		reg = new RegExp("^"+t+"$","i");
@@ -1093,11 +880,9 @@ function or(tags,tagList)
     		res = true;
 	        return false;
 	    }
-		
 	});
 	return res;
 }
-
 
 function inArrayRegex(tab,regex){
 	res = false;
@@ -1110,40 +895,20 @@ function inArrayRegex(tab,regex){
 	return res;
 }
 
-
-function tagActivedUpdate(checked, tag, parent){
-	mylog.log("tagActivedUpdate", checked, tag, parent,tagsActived, typeof tagsActived[parent], (typeof tagsActived[parent] == "undefined"));
-	if(checked== false){
-		tagsActived[parent].splice($.inArray(tag, tagsActived),1);
-	}
-	else{
-		if(typeof tagsActived[parent] == "undefined"){
-			tagsActived[parent] = [];
-		}
-		tagsActived[parent].push(tag);
-	}
-
-	//tagsActived = orAndAnd(tagsActived) ;
-	//mylog.log("tagsActived", tagsActived);
-}
-
 function cityActivedUpdate(checked, city){
 	mylog.log("cityActivedUpdate", checked, city);
 	if(checked== false){
-		citiesActived.splice($.inArray(city, citiesActived),1);
-	}
-	else{
-		citiesActived.push(city);
+		citiesActived.splice($.inArray(city.toUpperCase(), citiesActived),1);
+	} else {
+		citiesActived.push(city.toUpperCase());
 	}
 }
-
 
 function  typeActivedUpdate(checked, type){
 	mylog.log("typeActivedUpdate", checked, type);
 	if(checked== false){
 		typesActived.splice($.inArray(type, typesActived),1);
-	}
-	else{
+	} else {
 		typesActived.push(type);
 	}
 }
@@ -1152,13 +917,10 @@ function  rolesActivedUpdate(checked, role){
 	mylog.log("rolesActivedUpdate", checked, role);
 	if(checked== false){
 		rolesActived.splice($.inArray(role, rolesActived),1);
-	}
-	else{
+	} else {
 		rolesActived.push(role);
 	}
 }
-
-
 
 function addTab(tab, tab2){
 	mylog.log("addTab", tab, tab2);
@@ -1217,11 +979,9 @@ function andAndOr(allFiltres){
 	return res ;
 }
 
-
-
 function updateMap(){
 	mylog.log("updateMap", tagsActived, disableActived);
-
+	$(".searchEntityContainer").hide();
 	var params = ((typeof networkJson.filter == "undefined" && typeof networkJson.filter.paramsFiltre == "undefined") ? null :  networkJson.filter.paramsFiltre);
 	var test = [];
 	var verb = "and";
@@ -1232,27 +992,22 @@ function updateMap(){
 		 mylog.log("elementNetwork", elementNetwork);
 	}
 
-	//mylog.log("params", params);
 	if ( params != null && ( (params.conditionBlock == "and" || typeof params.conditionBlock == "undefined" ) && params.conditionTagsInBlock == "and" ) )
 		test = getAllTags(tagsActived);
 	else if ( params != null && ( (params.conditionTagsInBlock == "or" || typeof params.conditionTagsInBlock == "undefined" ) && params.conditionBlock == "or" ) ) {
 		test = getAllTags(tagsActived);
 		verb = "or";
-	}
-	else if ( params != null && ( (params.conditionBlock == "or" || typeof params.conditionBlock == "undefined" ) && 
+	} else if ( params != null && ( (params.conditionBlock == "or" || typeof params.conditionBlock == "undefined" ) && 
 			(params.conditionTagsInBlock == "and" || typeof params.conditionTagsInBlock == "undefined") ) ) {
-		//verb = "or";
 		test = andAndOr(tagsActived);
-	}
-	else
+	} else
 		test = orAndAnd(tagsActived);
 
-	mylog.log("test", test);
+	mylog.log("testNetwork", test);
 
 	mylog.log("searchValNetwork", searchValNetwork);
 	var filteredList = [];
 	var add = false;
-	$(".searchEntity").hide();
 	if(test.length > 0){
 		$.each(test,function(keyTags,tags){
 			$.each(contextMapNetwork,function(k,v){
@@ -1260,31 +1015,25 @@ function updateMap(){
 					add = ( (verb == "and") ? and( tags, v.tags ) : or( tags, v.tags ) );
 				else
 					add= false;
-				mylog.log("configFiltre", disableActived, v.disabled, citiesActived, typesActived, rolesActived);
+				mylog.log("configFiltre", add, disableActived, v.disabled, v.address.addressLocality, citiesActived, typesActived, rolesActived);
 				if(	add && 
 					( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
 					( citiesActived.length == 0  || 
 						(	typeof v.address != "undefined" && 
 							typeof v.address.addressLocality != "undefined" && 
-							$.inArray( v.address.addressLocality, citiesActived ) >= 0  ) ) &&
-
-
+							$.inArray( v.address.addressLocality.toUpperCase(), citiesActived ) >= 0  ) ) &&
 					( typesActived.length == 0  || 
 						(	typeof v.typeSig != "undefined" && 
 							$.inArray( v.typeSig, typesActived ) >= 0  ) ) &&
 					( rolesActived.length == 0  || 
 						(isLinks(v, elementNetwork[0]) ) ) && 
 
-					/*( 	(typeof searchVal == "undefined") || 
-						( 	v.name.search( new RegExp( searchVal, "i" ) ) >= 0 || 
-							v.address.addressLocality.search( new RegExp( searchVal, "i" ) ) >= 0 ) ) )  {*/
-
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0  ) ) )  {
-					
+					mylog.log("v.tags", v.tags);
 					filteredList = addTabMap(v, filteredList);
-					$("#"+v.id).show();
+					$(".container_"+v.type+"_"+v.id).show();
 				}
 			});
 		});
@@ -1292,41 +1041,34 @@ function updateMap(){
 		if( disableActived == true || citiesActived.length > 0 || 
 			typesActived.length > 0 || rolesActived.length > 0 || 
 			searchValNetwork.length > 0)  {
-
 			$.each(contextMapNetwork,function(k,v){
 				if(	( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
 					( citiesActived.length == 0  || 
 						(	typeof v.address != "undefined" && 
 							typeof v.address.addressLocality != "undefined" && 
-							$.inArray( v.address.addressLocality, citiesActived ) >= 0 ) ) &&
+							$.inArray( v.address.addressLocality.toUpperCase(), citiesActived ) >= 0 ) ) &&
 					( typesActived.length == 0  || 
 						(	typeof v.typeSig != "undefined" && 
 							$.inArray( v.typeSig, typesActived ) >= 0  ) ) &&
 					( rolesActived.length == 0  || 
 						(isLinks(v, elementNetwork[0]) ) )  && 
 
-					/*( 	(typeof searchVal == "undefined") || 
-						( 	v.name.search( new RegExp( searchVal, "i" ) ) >= 0 || 
-							v.address.addressLocality.search( new RegExp( searchVal, "i" ) ) >= 0 ) ) )  {*/
-
-
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0 ) ) ) {
-
-
 					filteredList = addTabMap(v, filteredList);
-					$("#"+v.id).show();
 				}
 			});
 		}else{
-			/*$.each(contextMapNetwork,function(k,v){
-				filteredList = addTabMap(v, filteredList);
-			});*/
 			filteredList = contextMapNetwork;
-			$(".searchEntity").show();
 		}
 	}
+	$.each(filteredList, function(e,v){
+		$(".contain_"+v.type+"_"+v.id).show(700);
+	});
+
+	countResult=filteredList.length;
+	refreshResultHeader(countResult);
 	mylog.log("filteredList", filteredList);
 	Sig.restartMap();
 	Sig.showMapElements(Sig.map,filteredList);
@@ -1339,7 +1081,6 @@ function addTabMap(element, tab){
 	return tab;
 }
 
-
 function isLinks(element, id){
 	mylog.log("isLinks", element, id);
 	var res = false ;
@@ -1350,7 +1091,6 @@ function isLinks(element, id){
 			if(v == "creator" && element.creator == id){
 					res = true ;
 					return true;
-				
 			}else if(	v == "admin" && 
 						element.links != null &&
 						typeof element.links["members"] != "undefined" && 
@@ -1376,7 +1116,7 @@ function filterTags(tags){
 	if(typeof tags != "undefined" ){
 		str = '<div class="panel-heading">'+
 	          '<h4 class="panel-title" onclick="manageCollapse(\'tags\', \'false\')">'+
-	            '<a data-toggle="collapse" href="#tags" style="color:#719FAB" data-label="tags">Tous les tags'+ 
+	            '<a data-toggle="collapse" href="#tags" style="color:#719FAB" data-label="tags">'+trad.alltags+ 
 	              '<i class="fa fa-chevron-right right" aria-hidden="true" id="fa_tags"></i>'+
 	            '</a>'+
 	          '</h4>'+
@@ -1387,7 +1127,6 @@ function filterTags(tags){
 	          			 str += '<li class="list-group-item"><input type="checkbox" class="checkbox tagFilterAuto" value="'+k+'" data-parent="tags" data-label="'+k+'"/>'+k+' (' +v+ ')</li>'
 	          		});
 	        str +=  '</ul> </div>';
-
 	    $("#divTagsMenu").append(str);
     }
 }
@@ -1398,7 +1137,7 @@ function filterType(types){
 	if(typeof tags != "undefined" ){
 		str = '<div class="panel-heading">'+
 	          '<h4 class="panel-title" onclick="manageCollapse(\'types\', \'false\')">'+
-	            '<a data-toggle="collapse" href="#types" style="color:#719FAB" data-label="types">Tous les types'+ 
+	            '<a data-toggle="collapse" href="#types" style="color:#719FAB" data-label="types">'+trad.alltypes+  
 	              '<i class="fa fa-chevron-right right" aria-hidden="true" id="fa_tags"></i>'+
 	            '</a>'+
 	          '</h4>'+
@@ -1409,7 +1148,6 @@ function filterType(types){
 	          			 str += '<li class="list-group-item"><input type="checkbox" class="checkbox typeFilterAuto" value="'+k+'" data-parent="types" data-label="'+k+'"/>'+trad[k]+' (' +v+ ')</li>'
 	          		});
 	        str +=  '</ul> </div>';
-
 	    $("#divTypesMenu").append(str);
 	}
 }

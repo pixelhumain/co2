@@ -1,8 +1,8 @@
 {
 	"common" : { 
-		"name" : "Commons",
-		"icon" : "fa-thumbs-o-up",
-		"tags" : ["commun"]
+		"name" : "Sport",
+		"icon" : "fa-futbol-o",
+		"tags" : ["sport"]
 	}, 
 	"food": {
 		"name" : "Agriculture | Food",
@@ -11,7 +11,7 @@
 	},  
 	"health": {
 		"name" : "Health",
-		"icon" : "fa-heartbeat",
+		"icon" : "fa-heart-o",
 		"tags" : ["santé"]
 	},  
 	"waste": {

@@ -31,6 +31,7 @@
 		'/js/sig/map_findPlace.js' ,
 		'/js/sig/map_findPlace.js' ,
 		'/js/sig/map_charts.js',
+		'/js/smartconso/smartSig.js',
 	);
 
 	if(@$leaflet) $cssAndScriptFiles = array_merge($leaflet, $cssAndScriptFiles);

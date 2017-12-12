@@ -70,7 +70,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 		$headerName= "Journal de l'organisation";//.$contextName;
 		$topTitle= "Journal de l'organisation";//.$contextName;
 		if(@$canManageNews && $canManageNews==true)
-			$textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or this community");
+			$textForm = Yii::t("common","Post a message in the wall of").
+                  " <b>".$contextName."</b>";
 		else
 			$textForm = Yii::t("common","Write a private message to")." ".$contextName;
 	}
@@ -120,7 +121,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 		$headerName= "Journal du projet";//.$contextName;
 		$topTitle = "Journal du projet";//.$contextName;
 		if(@$canManageNews && $canManageNews==true)
-			$textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
+			$textForm = Yii::t("common","Post a message in the wall of").
+                  " <b>".$contextName."</b>";
 		else
 			$textForm = Yii::t("common","Write a private message to")." ".$contextName;
 	}else if( isset($type) && $type == Event::COLLECTION && isset($parent) ){
@@ -134,7 +136,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 		$headerName= "Journal de l'événement";//.$contextName;
 		$topTitle = "Journal de l'événement";//.$contextName;
 		if(@$canManageNews && $canManageNews==true)
-			$textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
+			$textForm = Yii::t("common","Post a message in the wall of").
+                  " <b>".$contextName."</b>";
 		else
 			$textForm = Yii::t("common","Write a private message to")." ".$contextName;
 
@@ -233,18 +236,18 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 .thumb_sel .next_thumb:hover {
 	background: url(<?php echo $this->module->assetsUrl ?>/images/news/thumb_selection.gif) no-repeat -26px 0px;
 }
-#dropdown_search{
+.extract_url #dropdown_search{
 	display:none;
     border: 1px solid #eee;
     max-height: 160px;
     overflow-y: auto;
     position: relative;
 }
-#dropdown_search .li-dropdown-scope{
+.extract_url #dropdown_search .li-dropdown-scope{
 	text-align: left;
 	width:100%;
 }
-#dropdown_search .li-dropdown-scope a{
+.extract_url #dropdown_search .li-dropdown-scope a{
 	font-size:12px;
 	    line-height: 25px;
 }
@@ -322,39 +325,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 <div id="formCreateNewsTemp" style="float: none;display:none;" class="center-block">
 	<div class='no-padding form-create-news-container col-sm-12'>
 
-	<?php if(false) { ?>
-		<div class="col-xs-12" style="margin-top: 10px; margin-bottom: 10px; margin-left: 0px;padding: 0px 10px;"  id="list_type_news">
-		  
-		  <div class="btn-group btn-group-sm inline-block" id="menu-type-news">
-		    <button class="btn btn-default btn-type-news tooltips text-dark active" 
-		    		data-toggle="tooltip" data-placement="top" title="Messages" data-type="news">
-		      <i class="fa fa-check-circle-o search_news hidden"></i> <i class="fa fa-rss"></i> 
-		      <span class="hidden-xs hidden-sm hidden-md">Message</span>
-		    </button>
-		    <button class="btn btn-default btn-type-news tooltips text-dark" 
-		    		data-toggle="tooltip" data-placement="top" title="Idée" data-type="idea">
-		      <i class="fa fa-circle-o search_organizations hidden"></i> <i class="fa fa-info-circle"></i> 
-		      <span class="hidden-xs hidden-sm hidden-md">Idée</span>
-		    </button>
-		    <button class="btn btn-default btn-type-news tooltips text-dark" 
-		    		data-toggle="tooltip" data-placement="top" title="Question" data-type="question">
-		      <i class="fa fa-circle-o search_projects hidden"></i> <i class="fa fa-question-circle"></i> 
-		      <span class="hidden-xs hidden-sm hidden-md">Question</span>
-		    </button>
-		    <button class="btn btn-default btn-type-news tooltips text-dark" 
-		    		data-toggle="tooltip" data-placement="top" title="Annonce" data-type="announce">
-		      <i class="fa fa-circle-o search_events hidden"></i> <i class="fa fa-ticket"></i> 
-		      <span class="hidden-xs hidden-sm hidden-md">Annonce</span>
-		    </button>
-		    <button class="btn btn-default btn-type-news tooltips text-dark" 
-		    		data-toggle="tooltip" data-placement="top" title="Information" data-type="information">
-		      <i class="fa fa-circle-o search_needs hidden"></i> <i class="fa fa-newspaper-o"></i> 
-		      <span class="hidden-xs hidden-sm hidden-md">Information</span>
-		    </button>
-		  </div>
-
-		</div>
-	<?php } ?>
 
 		<h5 class='padding-10 partition-light no-margin text-left header-form-create-news' style="margin-bottom:-40px !important;"><i class='fa fa-angle-down'></i> <i class="fa fa-file-text-o"></i> <span id="info-write-msg"><?php echo $textForm; ?></span>
 		<a class="btn btn-xs pull-right" style="margin-top: -4px;" onclick="javasctipt:showFormBlock(false);">

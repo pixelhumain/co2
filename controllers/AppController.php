@@ -152,16 +152,16 @@ class AppController extends CommunecterController {
 
 
 
-    public function actionFreedom(){
+    /*public function actionFreedom(){
         CO2Stat::incNbLoad("co2-annonces"); 
         $params = array("type" => "classified");
         echo $this->renderPartial("search", $params, true);
-    }
+    }*/
 
 
     public function actionLive(){
         CO2Stat::incNbLoad("co2-live"); 
-        $params = array();//"type" => "classified");
+        $params = array();
         echo $this->renderPartial("live", $params, true);
     }
 
@@ -251,6 +251,14 @@ class AppController extends CommunecterController {
 
         $page = @$p ? $p : "apropos";
         echo $this->renderPartial("info/" . $CO2DomainName . "/" . $page, array(), true);
+    }
+
+    public function actionSmartconso($p="home"){ //error_log("ecoconso");
+        $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? 
+                               Yii::app()->params["CO2DomainName"] : "CO2";
+
+        $page = @$p ? $p : "home";
+        echo $this->renderPartial("../smartconso/" . $page, array(), true);
     }
 
     public function actionCity($insee, $postalCode){

@@ -1,5 +1,55 @@
 
+<style>
+	#resLilo, #resEcosia{
+		padding-top:20px;
+	}
+    #resLilo .result a,
+    #resEcosia a.result-title.js-result-title{
+        color: #4285f4;
+        font-size: 16px;
+    }
+    #resLilo .result .resulturl,
+    a.result-url.js-result-url{
+        color: #34a853;
+        font-size: 14px;
+        display: block;
+    }
 
+    #resEcosia p.result-snippet,
+    #resLilo .resultthumbnail {
+	    font-size: 13px !important;
+	    color: #606060;
+	}
+    
+    #resLilo .result,
+    #resEcosia .result.js-result.card-mobile{
+        margin-bottom:25px;
+    }
+
+    #resLilo .addivwhite.top,
+    #resLilo h2,
+    #resLilo .news,
+    #resLilo .searchmore,
+    #resLilo .related-searches,
+    #resLilo .images,
+    #resLilo .image,
+    #resLilo nav,
+    #resLilo .wordcorrection,
+
+    #resEcosia .card-title-result-count,
+    #resEcosia .card-query-context,
+    #resEcosia .disclaimer,
+    #resEcosia .pagination,
+    #resEcosia .card-top-ad,
+    #resEcosia .col-md-12,
+    #resEcosia .videos {
+    	display: none;
+    }
+
+    .btn-link.bg-blue-k:focus, .btn-link.bg-blue-k:hover{
+    	color:white;
+    }
+</style>
 
 <hr>
 <button class="btn btn-default menu-btn-back-category btn-second margin-bottom-5 margin-top-5" id="btn-new-search">
@@ -21,13 +71,16 @@
 	<?php echo @$category ? " <small class='letter-blue'><i class='fa' id='fa-category'></i> ".$category."</small>" : ""; ?>
 	<?php echo @$search ? " <small class='letter-blue'> <i class='fa fa-search'></i> ".$search."</small><br>" : "<br>"; ?>
 </h3>	
-<h3 style="margin:0 0 20px 0;">
+<h4 style="margin:0 0 20px 0;">
 	<div class="margin-top-5">
 		<i class="fa fa-angle-down"></i> 
 		<?php echo sizeof($siteurls) > 0 ? sizeof($siteurls) : "aucun"; ?> 
 		résultat<?php echo sizeof($siteurls) > 1 ? "s" : ""; ?> 
+		<?php if(sizeof($siteurls) == 0){ ?> 
+			<small>sur kgougle</small>
+		<?php } ?>
 	</div>
-</h3>
+</h4>
 
 
 
@@ -73,7 +126,7 @@
 				<?php if(@$siteurl["favicon"]){ ?>
 					<img src='<?php echo $siteurl["favicon"]; ?>' height=17 class="margin-right-5" style="margin-top:-3px;" alt="">
 				<?php } ?> 
-				<?php echo $siteurl["title"]; ?>
+				<?php echo @$siteurl["title"]; ?>
 			</a>
 			<button class="btn btn-xs bg-white btn-edit-url tooltips hidden-xs" title="modifier"
 					data-target="#modalEditUrl" data-toggle="modal" data-placement="right"
@@ -90,8 +143,9 @@
 		<span class="siteurl_desc letter-grey"><?php echo @$siteurl["description"]; ?></span><br>
 		<?php } ?>
 
-		<span class="siteurl_desc letter-grey hidden">
-			<?php if(Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ) { ?>
+		
+		<?php if(Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ) { ?>
+		<span class="siteurl_desc letter-grey">
 				<b>
 					<?php if(!empty($siteurl["categories"])) foreach ($siteurl["categories"] as $key2 => $category) { ?>
 					$<?php echo $category; ?>  
@@ -102,18 +156,61 @@
 						#<?php echo $tag; ?> 
 					<?php } ?>
 				</b>
-			<?php } ?>
 		</span>
-		<br>
+		<?php if(!empty($siteurl["categories"]) || !empty($siteurl["tags"])){ echo "<br>"; } ?>
+		<?php } ?>
+
+		<?php if(@$siteurl["status"]=="locked" && Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ){ ?>
+			<button class="btn btn-success btn-xs btn-change-status" 
+					data-status="validated" data-idurl="<?php echo $siteurl["_id"]; ?>">
+				Valider
+			</button><br><br>
+		<?php } ?>
 	</div>
 <?php } ?>
+
 </div>
 
-<?php //if(sizeof($siteurls) < 3){ 
+<div class="col-xs-12 col-sm-12 col-md-10 moreResult">	
+	<hr>
+	<h6 style="margin-top: 32px; margin-bottom: 32px;">
+		<i class="fa fa-angle-down"></i> Résultats <span class="hidden-xs">complémentaires</span>
+	</h6>
 
+
+	<ul class="nav nav-tabs">
+	  <li class="active">
+	  	<a data-toggle="tab" href="#resLilo">
+	  		<img style="margin-bottom:5px;" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/lilo-logo.svg" height=25>
+	  	</a>
+	  </li>
+	  <li>
+		  <a data-toggle="tab" href="#resEcosia">
+		  	<img style="margin-top:-10px;" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/ecosia_logo.png" height=40>
+		  </a>
+	  </li>
+	</ul>
+
+	<div class="tab-content">
+	  <div id="resLilo" class="tab-pane fade in active">
+	  	<?php if(sizeof($siteurls) >= 4){ ?>
+	  		<button class="btn btn-success" id="btn-start-lilo"><i class="fa fa-search"></i> Lancer une recherche complémentaire</button>
+	  	<?php } ?>
+	  </div>
+	  <div id="resEcosia" class="tab-pane fade">
+	  	<?php if(sizeof($siteurls) >= 4){ ?>
+	  		<button class="btn btn-success" id="btn-start-ecosia"><i class="fa fa-search"></i> Lancer une recherche complémentaire</button>
+	  	<?php } ?>
+	  	
+	  </div>
+	</div>
+</div>
+
+
+<?php //if(sizeof($siteurls) < 3){ 
 	$searchG = str_replace(" ", "+", $search);
 ?>
-<div class="col-md-12 margin-bottom-50" style="margin-top:0px;">
+<!-- <div class="col-xs-12 margin-bottom-50 hidden" style="margin-top:0px;">
 	<hr>
 	<h5 class="text-right">
 		<a href="https://www.ecosia.org/search?q=<?php echo $searchG; ?>" target="_blank">
@@ -128,17 +225,17 @@
 	    	<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/google.png" height=25>
     	</a>
 	</h5>
-</div>
+</div> -->
 <?php //} ?>
 
 
 
 <?php if(sizeof($siteurls) >= 0){ ?>
-<div class="col-md-12 margin-bottom-50 text-right" style="">
+<div class="col-xs-12 margin-bottom-50 text-right footerWebSearch" style="margin-top:30px;">
 	<hr class="margin-top-5">
 	<span>
 		<small><b>
-		Vous connaissez un site qui n'est pas référencé ici ?<br> 
+		Vous connaissez un site qui n'est pas référencé sur kgougle ?<br> 
 		Ajoutez le <span class="letter-green">gratuitement</span> dans la base de données, et faites-en profiter tout le monde !
 		</b></small>
 	</span><br><br>
@@ -148,13 +245,19 @@
 	</a> 
 </div>
 <?php } ?>
+
+<?php  foreach ($siteurls as $key => $siteurl) { $siteurls[$key]["wordsFound"] = ""; } ?>
+
 <script type="text/javascript" >
   
-var siteurls = <?php echo json_encode($siteurls) ? json_encode($siteurls) : "{}"; ?>;
+var siteurls = <?php echo json_encode($siteurls) ; ?>;
+
 var search = "<?php echo $search; ?>";
+var nbUrl = <?php echo sizeof($siteurls); ?>;
+var siteEditing = false;
 
 jQuery(document).ready(function() { 
-
+	console.log("website on map", siteurls);
     Sig.showMapElements(Sig.map, siteurls);
 	
    		
@@ -166,11 +269,13 @@ jQuery(document).ready(function() {
    $(".btn-edit-url").click(function(){ console.log("siteurls", siteurls);
    		var id = $(this).data("idurl");
    		var site = siteurls[id];
+   		siteEditing = site;
    		$("#form-idurl").val(site["_id"]['$id']);
 	    $("#form-url").val(site.url);
 	    $("#form-title").val(site.title);
 	    $("#form-description").val(site.description);
-
+		$("#form-street").val(site.address.streetAddress);
+    
 	    if(typeof site.geo != "undefined"){
 	    	$("#form-lat").val(site.geo.latitude);
 		    $("#form-lng").val(site.geo.longitude);
@@ -188,6 +293,7 @@ jQuery(document).ready(function() {
 	        $("#btn-geoloc").data("city-insee", site.address.codeInsee);
 	        $("#btn-geoloc").data("city-lat", site.geo.latitude);
 	        $("#btn-geoloc").data("city-lng", site.geo.longitude);
+	        NE_localityId = site.address.localityId;
 	        NE_insee = site.address.codeInsee;
 			NE_lat = site.geo.latitude;
 			NE_lng = site.geo.longitude;
@@ -198,6 +304,25 @@ jQuery(document).ready(function() {
 			NE_level1 = site.address.level1;
 			NE_region = site.address.regionName;
 	        $("#name-city-selected").html(site.address.addressLocality + ", " + site.address.postalCode);
+
+	        coordinatesPreLoadedFormMap = [NE_lat, NE_lng];
+	        formInMap.formType = "url";
+
+	        if(site.address.streetAddress != "")
+	        	$("#form-street, #btn-find-position").show();         
+	        
+	        $("#btn-find-position").off().click(function(){ noShowAjaxModal = true;
+	            showMap(true);
+	    		
+	            var street = $("#form-street").val();
+	            formInMap.showMarkerNewElement();
+	        	preLoadAddress(true, NE_localityId, "NC", NE_insee, NE_city, NE_cp, NE_lat, NE_lng, street);
+	            
+	            if(street != ""){
+	                formInMap.searchAdressNewElement();
+	            }
+	        });
+
 	    }else{
 	    	$("#form-street, #btn-find-position").hide();
     		$("#name-city-selected").html("");
@@ -207,6 +332,8 @@ jQuery(document).ready(function() {
 
 	    $(".portfolio-item").removeClass("selected");
 	    categoriesSelected = new Array();
+
+	    if(typeof site.categories != "undefined")
 	    $.each(site.categories, function(key, val){
 	    	$(".portfolio-item.cat-"+val).addClass("selected");
 	    	console.log("cat", val);
@@ -231,6 +358,27 @@ jQuery(document).ready(function() {
    $("#searchResults .btn-favory").click(function(){
    		var id = $(this).data("idfav");
    		addToFavorites(id);
+   });
+
+   $(".btn-change-status").click(function(){
+   		var status = $(this).data("status");
+   		var urlId = $(this).data("idurl");
+   		if(typeof changeStatus != "undefined")
+   			changeStatus(urlId, status)
+   });
+
+   if(nbUrl <= 3 && typeof isWebAdmin == "undefined") {
+   	if(search == "") search = currentCategory;
+   	console.log("web search", search);
+   	searchLilo(search);
+   	searchEcosia(search);
+   }
+
+   $("#btn-start-lilo, #btn-start-ecosia").click(function(){
+   	if(search == "") search = currentCategory;
+   	console.log("web search", search);
+   	searchLilo(search);
+   	searchEcosia(search);
    });
 
 

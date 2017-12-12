@@ -411,7 +411,7 @@ ul.dropdown-menu-collection > li > a:hover{
 			sure = confirm("Vous êtes sûr ?");
 		}
 		else if(action == "new" || action == "update")
-			params.name = prompt('Nom de la collection ?',name);
+			params.name = prompt(tradDynForm.collectionname+' ?',name);
 		if(action == "update")
 			params.oldname = name;
 		if(sure)

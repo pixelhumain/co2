@@ -1,5 +1,5 @@
 function isLiveGlobal(){
-	return (location.hash.indexOf("#live") == 0 || location.hash.indexOf("#city.detail") == 0);
+	return (location.hash.indexOf("#live") == 0 || location.hash.indexOf("#freedom") >= 0 || location.hash.indexOf("#city.detail") == 0);
 	return typeof liveScopeType != "undefined";// && liveScopeType == "global";
 }
 /*
@@ -542,7 +542,7 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	$(idTextArea).val(textNews);
 	
 	//$(idTextArea).mentionsInput("update", data.mentions);
-	if(data.mentions.length != 0){
+	if(typeof data.mentions != "undefined" && data.mentions.length != 0){
 		text=data.text;
 		$.each(data.mentions, function(e,v){
 			if(typeof v.slug != "undefined")
@@ -782,13 +782,13 @@ function showFormBlock(bool){
 		if(isLiveGlobal()){
 			scopeHtml ="";
 
-			if( typeof $.cookie('communexionName') !== "undefined" && $.cookie('communexionName') != "false" && communexion.state){
+			if( typeof communexion != "undefined" && notEmpty(communexion.values)){
 				scopeHtml +='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-	            				'data-toggle="tooltip" data-placement="top" title="Communecter avec '+$.cookie('communexionName')+'" '+
-	                        	'data-scope-value="'+$.cookie('communexionValue')+'" '+
-	                        	'data-scope-name="'+$.cookie('communexionName')+'" '+
-	                        	'data-scope-level="'+$.cookie('communexionLevel')+'" '+
-	                        	'data-scope-type="'+$.cookie('communexionType')+'" '+
+	            				'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
+	                        	 'data-scope-value="'+communexion.currentValue+'" '+
+                            	'data-scope-name="'+communexion.currentName+'" '+
+                            	'data-scope-level="'+communexion.currentLevel+'" '+
+                            	'data-scope-type="'+communexion.communexionType+'" '+
 	            				'id="btn-my-co">'+
 	            				'<i class="fa fa-university"></i>'+
 	            			'</a>';
@@ -809,7 +809,7 @@ function showFormBlock(bool){
                                 'title="Sélectionner des lieux de recherche">'+
                                 '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
                             '</a>'+ 
-                            'Selectionner les endroits de publications <i class="fa fa-angle-right"></i>'+ 
+                            'Zone(s) de publication <i class="fa fa-angle-right"></i>'+ 
                         '</h5>'+
                         '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
             				$(".scope-min-header").html()+
@@ -1466,20 +1466,21 @@ function getMediaFiles(o,newsId, edit){
 	return html;
 }	
 function deleteImage(id,name,hideMsg,communevent){
+	var imgToDelete=id;
 	if(communevent==true)
 		path="communevent";
 	else
-		path="album";
+		path="commuencter";
 	$.ajax({
-			url : baseUrl+"/"+moduleId+"/document/delete/dir/communecter/type/"+contextParentType+"/parentId/"+contextParentId,			
+			url : baseUrl+"/"+moduleId+"/document/delete/dir/"+moduleId+"/type/"+contextParentType+"/id/"+contextParentId,			
 			type: "POST",
-			data: {"name": name, "parentId": contextParentId, "parentType": contextParentType, "path" : path, "docId" : id},
+			data: {"name": name, "parentId": contextParentId, "parentType": contextParentType, "path" : path, "ids" : [id]},
 			dataType: "json",
 			success: function(data){
 				if(data.result){
 					if(hideMsg!=true){
 						countImg=$("#results img").length;
-						$("#deleteImg"+data.id).parents().eq(1).remove();
+						$("#deleteImg"+imgToDelete).parents().eq(1).remove();
 						idImg=countImg-1;
 						if(idImg==0){
 							$("#results").empty().hide();

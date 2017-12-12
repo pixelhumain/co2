@@ -13,6 +13,34 @@
 .timeline-panel .container-img-profil{
   max-height: 250px;
 }
+
+.timeline-panel#nbAbuse3,
+.timeline-panel#nbAbuse4 {
+  background-color: #ffe4e4 !important;
+  border: 2px solid #ffacac;
+}
+
+.timeline-panel#nbAbuse3 .timeline_text{
+  color: #c29898 !important;
+}
+
+.timeline-panel#nbAbuse4 .timeline_text{
+  color: #dacbcb !important;
+}
+.timeline-panel#nbAbuse3::before,
+.timeline-panel#nbAbuse4::before{
+  border-left: 15px solid #ffacac;
+  border-left-width: 15px;
+}
+
+li.timeline-inverted .timeline-panel#nbAbuse3::before,
+li.timeline-inverted .timeline-panel#nbAbuse4::before{
+  border-right-color: #ffacac !important;
+  border-right: 15 solid #ffacac!important;
+  border-left:0px!important;
+}
+
+
 </style>
 
 <?php 
@@ -55,7 +83,31 @@ foreach($news as $key => $media){
     <div class="timeline-badge primary">
       <a><i class="glyphicon glyphicon-record" rel="tooltip"></i></a>
     </div>
-    <div class="timeline-panel">
+    <div class="timeline-panel"
+         id="nbAbuse<?php echo @$media["reportAbuseCount"]; ?>">
+         <?php 
+            $params = CO2::getThemeParams();
+            $abuseMax = $params["nbReportCoModeration"];
+
+            if( @$media["reportAbuseCount"] >= $abuseMax){ ?>
+           <h6 class="pull-left">
+              <small class="pull-left margin-left-10 letter-orange">
+                <i class="fa fa-flag"></i> Ce contenu a été signalé <?php echo @$media["reportAbuseCount"]; ?> fois !
+                <?php if(@$media["reportAbuseCount"] < $abuseMax){ ?>
+                  <br><b>participez à la modération en signalant le contenu qui vous semble innaproprié</b>
+                <?php }else{ ?>
+                  <br><b>participez à la modération en votant</b>
+                <?php } ?>
+              </small>
+           </h6>
+           <?php if(@$media["reportAbuseCount"] >= $abuseMax && isset(Yii::app()->session["userId"])){ ?>
+           <button class="btn btn-link bg-orange pull-right margin-right-10 margin-top-10 btn-start-moderation"
+                   data-newsid="<?php echo @$media["_id"]; ?>" 
+                   data-toggle="modal" data-target="#modal-moderation">
+              <i class="fa fa-balance-scale"></i> Modération
+          </button>
+          <?php } ?>
+         <?php } ?>
       <?php 
         $this->renderPartial('../news/timeline-panel', 
                     array(  "key"=>$key,
@@ -81,12 +133,12 @@ foreach($news as $key => $media){
 <?php } ?>
 
 <?php if(@$isFirst == true && sizeof($news)==0){ ?>
-    <li id='noMoreNews' class='text-left padding-15'>
+    <li id='noMoreNews' class='text-left padding-15 letter-blue shadow2'>
       <i class='fa fa-ban'></i>
-      Aucune actualité
+      <?php echo Yii::t("common", "No news in this timeline") ?>
     </li>
 <?php }else if(sizeof($news)==0 && @$actionController != "save"){
-    echo "<li id='noMoreNews' class='text-left'><i class='fa fa-ban'></i> ".Yii::t("common", "No more news")."</li>";
+    echo "<li id='noMoreNews' class='text-left letter-blue shadow2'><i class='fa fa-ban'></i> ".Yii::t("common", "No more news")."</li>";
 } ?>
 <script type="text/javascript">
   var news=<?php echo json_encode($news) ?>;
@@ -111,27 +163,25 @@ foreach($news as $key => $media){
     
     $.each(news, function(e,v){
       updateNews[e]= v;
-      if(typeof v._id.$id != "undefined")
-      if($(".newsActivityStream"+v._id.$id).length>0)
-         $("#news"+v._id.$id).remove();
+        if(typeof v._id.$id != "undefined")
+        if($("#news-list .newsActivityStream"+v._id.$id).length>0)
+           $("#news-list #news"+v._id.$id).remove();
 
-      if(typeof v.object != "undefined"){ 
-        if($(".newsActivityStream"+v.object.id).length>0)
-          $("#news"+v.object.id).remove();
+        if(typeof v.object != "undefined"){ 
+          if($("#news-list .newsActivityStream"+v.object.id).length>0)
+            $("#news-list #news"+v.object.id).remove();
 
-        $(".newsActivityStream"+v.object.id).each(function(b, ob){
-          if(b>0) {
-            var parent = $(ob).parent().parent().parent();
-            parent.remove();
-          }
-        });
-
+          $("#news-list .newsActivityStream"+v.object.id).each(function(b, ob){
+            if(b>0) {
+              var parent = $(ob).parent().parent().parent();
+              parent.remove();
+            }
+          });
         if(v.object.type != "news"){
           var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type);
           $(".newsActivityStream"+v.object.id).html(html);
         }
       }
-
     });
 
     $.each(news, function(e,v){
@@ -210,6 +260,11 @@ foreach($news as $key => $media){
     <?php if(sizeof($news)==0){ ?>
         scrollEnd = true;
       <?php } ?>
+
+      $(".btn-start-moderation").off().click(function(){
+        var newsid = $(this).data("newsid");
+        uiModeration.getNewsToModerate(newsid);
+      });
 
       initBtnLink();
   });

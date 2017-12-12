@@ -14,7 +14,7 @@
 
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
-	<div class="padding-top-15" id="onepage">
+	<div class="padding-top-15">
 		<?php 
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
@@ -34,7 +34,9 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
-                $this->renderPartial('../element/profilSocial', $params ); 
+                $page = @$_GET["tpl"]=="onepage" ? "onepage" : "profilSocial";
+
+                $this->renderPartial('../element/'.$page, $params ); 
             }
 
 

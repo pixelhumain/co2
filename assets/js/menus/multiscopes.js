@@ -10,13 +10,13 @@ function saveMultiScope(){
 	if(userId != null && userId != ""){
 		if(!notEmpty(myMultiScopes)) myMultiScopes = {};
 		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/person/updatemultiscope",
-	        data: {"multiscopes" : myMultiScopes},
-	       	dataType: "json",
-	    	success: function(data){
-	    		mylog.log("updatemultiscope success");	    		
-		    },
+			type: "POST",
+			url: baseUrl+"/"+moduleId+"/person/updatemultiscope",
+			data: {"multiscopes" : myMultiScopes},
+			dataType: "json",
+			success: function(data){
+				mylog.log("updatemultiscope success");	    		
+			},
 			error: function(error){
 				mylog.log("Une erreur est survenue pendant l'enregistrement des scopes");
 			}
@@ -30,9 +30,7 @@ function saveMultiScope(){
 }
 function saveCookieMultiscope(){ 
 	mylog.log("saveCookieMultiscope", typeof myMultiScopes, myMultiScopes);
-	$.cookie('multiscopes',   	JSON.stringify(myMultiScopes), { expires: 365, path: location.pathname });
-	/*if(location.hash.indexOf("#city.detail")==0)
-		urlCtrl.loadByHash("#default.live");*/
+	$.cookie('multiscopes', JSON.stringify(myMultiScopes), { expires: 365, path: '/' });
 }
 
 function autocompleteMultiScope(){
@@ -40,61 +38,61 @@ function autocompleteMultiScope(){
 	var countryCode = $('#select-country').val();
 	$("#dropdown-multi-scope-found").html("<li><i class='fa fa-refresh fa-spin'></i></li>");
 	$.ajax({
-        type: "POST",
-        url: baseUrl+"/"+moduleId+"/city/autocompletemultiscope",
-        data: {
-        		type: currentScopeType, 
-        		scopeValue: scopeValue,
-        		countryCode: countryCode
-        },
-       	dataType: "json",
-    	success: function(data){
-    		mylog.log("autocompleteMultiScope() success");
-    		mylog.dir(data);
-    		$("#dropdown-multi-scope-found").html(trad.noresult);
-    		html="";
-    		var allCP = new Array();
-    		var allCities = new Array();
-    		$.each(data.cities, function(key, value){
-    			if(currentScopeType == "city") { //mylog.log("in scope city");
-    				//val = value.country + '_' + value.insee;
-    				val = key;
-		    		lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
-		    		lblList = lbl + ((typeof value.level3Name!= "undefined") ? " (" +value.level3Name + ")" : "");
-		    		html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+		type: "POST",
+		url: baseUrl+"/"+moduleId+"/city/autocompletemultiscope",
+		data: {
+				type: currentScopeType, 
+				scopeValue: scopeValue,
+				countryCode: countryCode
+		},
+		dataType: "json",
+		success: function(data){
+			mylog.log("autocompleteMultiScope() success");
+			mylog.dir(data);
+			$("#dropdown-multi-scope-found").html(trad.noresult);
+			html="";
+			var allCP = new Array();
+			var allCities = new Array();
+			$.each(data.cities, function(key, value){
+				if(currentScopeType == "city") { //mylog.log("in scope city");
+					//val = value.country + '_' + value.insee;
+					val = key;
+					lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
+					lblList = lbl + ((typeof value.level3Name!= "undefined") ? " (" +value.level3Name + ")" : "");
+					html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
 
-    			};
-    			if(currentScopeType == "cp") { 
-    				$.each(value.postalCodes, function(key, valueCP){ //mylog.log(allCities);
+				};
+				if(currentScopeType == "cp") { 
+					$.each(value.postalCodes, function(key, valueCP){ //mylog.log(allCities);
 						val = valueCP.postalCode;
 						lbl = valueCP.postalCode ;
 						lblList = valueCP.name + ", " +valueCP.postalCode ;
-						html += '<li><a href="javascript:;" class="addScope" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
-    				});
-    			}; 
-    			
-    			if(currentScopeType == "zone"){
-    				val = key;
-		    		lbl = (typeof value.name!= "undefined") ? value.name : ""; 
-		    		lblList = lbl + " (" +value.countryCode + ")";
-		    		level = value.level[0];
-    				html += '<li><a href="javascript:;" class="addScope" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+						html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+					});
+				}; 
+				
+				if(currentScopeType == "zone"){
+					val = key;
+					lbl = (typeof value.name!= "undefined") ? value.name : ""; 
+					lblList = lbl + " (" +value.countryCode + ")";
+					level = value.level[0];
+					html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
 
-	    		}
-    		});
-    		if(html != "")
-    		$("#dropdown-multi-scope-found").html(html);
-    		$("#dropdown-multi-scope-found").mouseleave(function(){
-    			$(this).hide();
-    		});
+				}
+			});
+			if(html != "")
+			$("#dropdown-multi-scope-found").html(html);
+			$("#dropdown-multi-scope-found").mouseleave(function(){
+				$(this).hide();
+			});
 
-    		$(".addScope").click(function(){
-    			addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"));
-    		});
-    		
-	    },
+			$(".addScope").click(function(){
+				addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
+			});
+			
+		},
 		error: function(error){
-    		$("#dropdown-multi-scope-found").html("error");
+			$("#dropdown-multi-scope-found").html("error");
 			mylog.log("Une erreur est survenue pendant autocompleteMultiScope");
 		}
 	});
@@ -132,17 +130,33 @@ function showCountScope(){
 	//showTagsScopesMin(".list_tags_scopes");
 	showEmptyMsg();
 }
+
 function selectAllScopes(select){
-	if(typeof select == "undefined"){ select = true;
-		$.each(myMultiScopes, function(key, value){
-			 if(value.active) select = false;
-		});
+	mylog.log("selectAllScopes", select);
+	// if(typeof select == "undefined"){ 
+	// 	select = true;
+	// 	$.each(myMultiScopes, function(key, value){
+	// 		 if(value.active) 
+	// 		 	select = false;
+	// 	});
+	// }
+
+	if(typeof select == "undefined"){ 
+		select = false;
 	}
+
 	$.each(myMultiScopes, function(key, value){
-		 toogleScopeMultiscope(key, select);
+		value.active = select ;
+		myMultiScopes[key] = value ;
 	});
+
+	$.each(myMultiScopes, function(key, value){
+		scopeActive(key);
+	});
+
 	saveMultiScope();
 }
+
 function showScopeInMultiscope(scopeValue){ 
 	mylog.log("showScopeInMultiscope()", scopeValue);
 	var html = "";
@@ -187,7 +201,7 @@ function showScopeInMultiscope(scopeValue){
 
 //scopeValue est la valeur utilisée pour la recherche
 //scopeName est la valeur affichée
-function addScopeToMultiscope(scopeValue, scopeName, scopeLevel){
+function addScopeToMultiscope(scopeValue, scopeName, scopeLevel, scopeCountry){
 	mylog.log("addScopeToMultiscope", scopeValue, scopeName);
 	if(scopeValue == "") return;
 	if(!scopeExists(scopeValue)){ 
@@ -205,7 +219,12 @@ function addScopeToMultiscope(scopeValue, scopeName, scopeLevel){
 				scopeType = "level4";
 			myMultiScopes[scopeValue].type = scopeType ;
 			myMultiScopes[scopeValue].level = scopeLevel ;
+
+
 		}
+
+		if(notNull(scopeCountry))
+			myMultiScopes[scopeValue].countryCode = scopeCountry ;
 		//myMultiScopes[scopeValue].type = scopeType ;
 		mylog.log("myMultiScopes")
 		//alert();
@@ -230,7 +249,8 @@ function deleteScopeInMultiscope(scopeValue){ mylog.log("deleteScopeInMultiscope
 	//mylog.dir(myMultiScopes);
 }
 
-function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(scopeValue)", scopeValue);
+function toogleScopeMultiscope(scopeValue){ 
+	mylog.log("toogleScopeMultiscope(scopeValue)", scopeValue);
 	if(scopeExists(scopeValue)){
 		myMultiScopes[scopeValue].active = !myMultiScopes[scopeValue].active;
 		
@@ -246,7 +266,7 @@ function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(sco
 			$("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
 			$("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
 		}*/
-		console.log("before rebuildSearchScopeInput from toogleScope");
+		mylog.log("before rebuildSearchScopeInput from toogleScope");
 		 //rebuildSearchScopeInput();
 		 setTimeout(function(){ rebuildSearchScopeInput() }, 1000);
 	}else{
@@ -257,20 +277,32 @@ function toogleScopeMultiscope(scopeValue){ mylog.log("toogleScopeMultiscope(sco
 function getMultiScopeList(){ return myMultiScopes; }
 
 
-function getLocalityForSearch(){
+function getLocalityForSearch(noScope){
 
 	if(typeof communexion.state == "undefined") communexion.state = false;
 
-	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), communexion.state);
+	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), communexion.state, communexion.communexionType);
 	if(communexion.state == true ){
-      var searchLocality = {}
-      searchLocality[communexion.currentValue] = { type : communexion.currentLevel, 
-                                                    name : communexion.currentName,
-                                                    active : true };
-    }else{
-      var searchLocality = getMultiScopeForSearch();
-    }
-    return searchLocality;
+		var searchLocality = {};
+		if(communexion.communexionType == "cp"){
+			searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
+															name : communexion.currentName,
+															cp : communexion.values.cp,
+															active : true };
+		}
+		else{
+			searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
+															name : communexion.currentName,
+															active : true };
+		}
+
+	}else if(notNull(noScope) && noScope){
+		var searchLocality = {};
+	}
+	else{
+		var searchLocality = getMultiScopeForSearch();
+	}
+	return searchLocality;
 }
 
 function getMultiScopeForSearch(){ 
@@ -373,8 +405,8 @@ function lockScopeOnCityKey(cityKey, cityName){
 	if(cp != "") url += ".postalCode." + cityKeyPart(cityKey, "cp");
 	
 	$(".city-name-locked").html("<a href='javascript:' class='text-red'>"+
-									"<i class='fa fa-lock tooltips' id='cadenas' data-toggle='tooltip' data-placement='top' title='Débloquer'></i>"+
-								"</a> <a href='"+url+"' class='lbh homestead text-red tooltips' data-toggle='tooltip' data-placement='top' title='Retourner sur la page'>"+ cityName + "</a>" );
+									"<i class='fa fa-lock tooltips' id='cadenas' data-toggle='tooltip' data-placement='top' title='"+trad.Unblock+"'></i>"+
+								"</a> <a href='"+url+"' class='lbh homestead text-red tooltips' data-toggle='tooltip' data-placement='top' title='"+trad.backtopage+"'>"+ cityName + "</a>" );
 
 	$(".city-name-locked").click(function(){
 		rebuildSearchScopeInput();
@@ -392,38 +424,64 @@ function openDropdownMultiscope(){
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 }
 
-function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values){  
+function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo){  
 
-	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, values);
+	mylog.log("setGlobalScope !", scopeValue, scopeName, scopeType, scopeLevel, notSearch);
+	mylog.log("notSearch", notSearch, notNull(notSearch))
 
 	if(scopeValue == "") return;
 	
 	mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
-	$("#searchLocalityCITYKEY").val("");
-	$("#searchLocalityCODE_POSTAL").val("");
-	$("#searchLocalityZONE").val("");
-	if(scopeType == "city") {$("#searchLocalityCITYKEY").val(scopeValue);} 
-	if(scopeType == "cp") $("#searchLocalityCODE_POSTAL").val(scopeValue);
-	if(scopeType == "zone") $("#searchLocalityZONE").val(scopeValue);
-	$("#searchLocalityLEVEL").val(scopeLevel);
 	$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 
 	communexion.currentLevel = scopeLevel;
 	communexion.currentName = scopeName;
 	communexion.currentValue = scopeValue;
+	communexion.communexionType = scopeType;
 
-	if(values)
+	if(values){
+		if(typeof values == "string")
+			values = jQuery.parseJSON(values);
 		communexion.values = values;
+	}
+	mylog.log("communexion before save", communexion);
 
-	$.cookie('communexion', communexion, { expires: 365, path: "/" });
+	if( notNull(testCo) && testCo == false)
+		$.cookie('communexion', communexion, { expires: 365, path: "/" });
+
+	if($("#communexionNameHome").length){
+		$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+scopeName+'</span></span>');
+		$("#liveNowCoName").html("<span class='text-red'> à "+ scopeName +"</span>");
+		$("#main-search-bar").val("");
+		$(".info_co, .input_co").addClass("hidden");
+		$("#change_co").removeClass("hidden");
+		$("#dropdown_search").html("");
+		var searchParams = {
+	      "tpl":"/pod/nowList",
+	      "indexMin" : 0, 
+	      "indexMax" : 30 
+	    };
+		if(notNull(scopeValue)){
+			communexion.state = true;
+			searchParams.searchLocality =   getLocalityForSearch(true);
+		}
+
+	    ajaxPost( "#nowList", baseUrl+'/'+moduleId+'/element/getdatadetail/type/0/id/0/dataName/liveNow?tpl=nowList',
+						searchParams, function(data) {
+						bindLBHLinks();
+		} , "html" );
+	}
 
 
+	if(!notNull(notSearch) || notSearch == true)
+ 		activateGlobalCommunexion(true);
 
 	//rebuildSearchScopeInput();
-	activateGlobalCommunexion(true);
+	
 	//startSearch(0, indexStepInit, searchCallback);
 	//loadByHash(location.hash);
 }
+
 
 //vision city : scoping global for all applications
 //levelCO == city cp dep region

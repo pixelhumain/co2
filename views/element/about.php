@@ -193,13 +193,13 @@
 
 
 
-		<?php if($type != Person::COLLECTION){ ?>
+		<?php if($type != Person::COLLECTION && $type != Organization::COLLECTION){ ?>
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
 				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
-					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Parenthood"); ?>
+					<span><i class="fa fa-link"></i></span> <?php echo Yii::t("common","Carried by"); ?>
 				</div>
 				<div id="parentAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
-					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Parenthood"); ?> :</span>
+					<span class="visible-xs pull-left margin-right-5"><i class="fa fa-desktop"></i> <?php echo Yii::t("common","Carried by"); ?> :</span>
 				<?php 
 					if(!empty($element["parent"])){ ?>
 						<a href="#page.type.<?php  echo $element['parentType']; ?>.id.<?php  echo $element['parentId']; ?>" class="lbh"> 
@@ -397,11 +397,12 @@
 					 				: "").
 					 			'</span>';
 					echo $address;
-					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) {
-						echo '<br><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">'.
-								Yii::t("common", "Connect to your city")./*'</a> <a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" data-id="explainCommunectMe">'. 
-								Yii::t("common", "Why ?").*/'</a>';
-					}
+					if( empty($element["address"]["codeInsee"]) && Yii::app()->session["userId"] == (String) $element["_id"]) { ?>
+						<br><a href="javascript:;" class="cobtn btn btn-danger btn-sm" style="margin: 10px 0px;">
+								<?php echo Yii::t("common", "Connect to your city") ?></a> 
+							<a href="javascript:;" class="whycobtn btn btn-default btn-sm explainLink" style="margin: 10px 0px;" onclick="showDefinition('explainCommunectMe',true)">
+								<?php echo  Yii::t("common", "Why ?") ?></a>
+					<?php }
 			}else
 				echo '<i>'.Yii::t("common","Not specified").'</i>';
 			?>
@@ -544,6 +545,7 @@
     <?php } ?> 
 </div>
 
+<?php $this->renderPartial('../pod/whycommunexion',array()); ?>
 
 <script type="text/javascript">
 
@@ -560,6 +562,7 @@
 		inintDescs();
 		//changeHiddenFields();
 		bindAboutPodElement();
+		bindExplainLinks();
 
 		$("#small_profil").html($("#menu-name").html());
 		$("#menu-name").html("");

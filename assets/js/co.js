@@ -53,7 +53,7 @@ function checkPoll(){
 }
 function setLanguage(lang){
 	$.cookie('lang', lang, { expires: 365, path: "/" });
-	toastr.success("Changement de la langue en cours");
+	toastr.success(trad.changelanguageprocessing);
 	//window.reloadurlCtrl.loadByHash(location.hash);
 	location.reload();
 }
@@ -248,15 +248,15 @@ function openModal(key,collection,id,tpl,savePath,isSub){
 	});
 }
 
-function updateField(type,id,name,value,reload, toastr){ 
+function updateField(type,id,name,value,reload, useToastr){ 
     	
 	$.ajax({
 	  type: "POST",
 	  url: baseUrl+"/"+moduleId+"/"+type+"/updatefield", 
-	  data: { "pk" : id ,"name" : name, value : value },
+	  data: { "pk" : id ,"name" : name, "value" : value },
 	  success: function(data){
 		if(data.result) {
-			if(toastr==null)
+			if(useToastr==null)
         		toastr.success(data.msg);
         	if(reload)
         		urlCtrl.loadByHash(location.hash);
@@ -645,6 +645,7 @@ var urlCtrl = {
 	    "#project.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#chart.addchartsv" : {title:'EDIT CHART ', icon : 'puzzle-piece' },
 	    "#gantt.addtimesheetsv" : {title:'EDIT TIMELINE ', icon : 'tasks' },
+	    "#graph.viewer" : {title:'GRAPE VIEW', icon : 'share-alt', useHeader: true },
 	    //"#news.detail" : {title:'NEWS DETAIL ', icon : 'rss' },
 	    //"#news.index.type" : {title:'NEWS INDEX ', icon : 'rss', menuId:"menu-btn-news-network","urlExtraParam":"isFirst=1" },
 	    "#need.detail" : {title:'NEED DETAIL ', icon : 'cubes' },
@@ -841,11 +842,11 @@ var urlCtrl = {
 		mylog.log("loadByHash", hash, back );
 		if(typeof globalTheme != "undefined" && globalTheme=="network"){
 			mylog.log("globalTheme", globalTheme);
-			if( hash.indexOf("#network") >= 0 &&
-				location.hash.indexOf("#network") >= 0 || hash=="#" || hash==""){ 
+			if( /*hash.indexOf("#network") < 0 &&
+				location.hash.indexOf("#network") >= 0 &&*/ hash!="#" && hash!=""){ 
 				mylog.log("network");
-			}
-			else{
+			//}
+			//else{
 				mylog.log("network2");
 				count=$(".breadcrumAnchor").length;
 				//case on reload view
@@ -998,7 +999,7 @@ also switches the global Title and Icon
 
 function  processingBlockUi() { 
 	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
-			'<i class="fa fa-spin fa-circle-o-notch"></i><br>Chargement en cours...'+
+			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
 		  '</h4>';
 
 	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
@@ -1529,7 +1530,9 @@ function  bindTags() {
 }
 
 function  bindExplainLinks() { 
-	$(".explainLink").click(function() {  
+	mylog.log("bindExplainLinks");
+	$(".explainLink").click(function() { 
+		mylog.log("explainLink");
 	    showDefinition( $(this).data("id") );
 	    return false;
 	 });
@@ -1831,14 +1834,16 @@ function globalSearch(searchValue,types,contact){
 				}
 				//var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
 				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
-					htmlIco= "<img width='30' height='30' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
+					htmlIco= "<img width='25' height='25' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
 				}
 				
 				if(contact == true){
 					cotmp[id] = {id:id, name : elem.name};
-					str += 	"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='col-sm-12 col-sm-3 btn btn-xs btn-default w50p text-left padding-5' >"+
-								"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
-							"</a>";
+					str += 	"<div class='col-xs-6 col-sm-4 col-md-4 padding-10'>"+
+								"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='btn btn-xs btn-default w50p' >"+
+									htmlIco + " " + elem.name + "</br>" + where +
+								"</a>" +
+							"</div>";
 					msg = "Verifiez si le contact est dans Communecter";
 				}else{
 					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger w50p text-left padding-5 margin-5' style='height:42px' >"+
@@ -2159,7 +2164,7 @@ function inMyContacts (type,id) {
 	var res = false ;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
-			mylog.log("val", val);
+			//mylog.log("val", val);
 			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
 				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
 				res = true;
@@ -2463,7 +2468,7 @@ var collection = {
 				sure = confirm("Vous êtes sûr ?");
 			}
 			else if(action == "new" || action == "update")
-				params.name = prompt('Nom de la collection ?',name);
+				params.name = prompt(tradDynForm.collectionname+' ?',name);
 			if(action == "update")
 				params.oldname = name;
 			
@@ -2911,8 +2916,7 @@ var dyFObj = {
 		            	// mylog.log("data.id", data.id, data.url);
 		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
 				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
-				        	
-				        if (typeof afterSave == "function"){
+				       if (typeof afterSave == "function"){
 		            		afterSave(data);
 		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		            	} else {
@@ -3201,51 +3205,59 @@ var dyFInputs = {
 	    dyFInputs.locationObj.countLocation = 0 ;
 	    dyFInputs.locationObj.addresses = (typeof dyFObj.elementData != "undefined" && dyFObj.elementData != null && typeof dyFObj.elementData.map.addresses != "undefined") ? dyFObj.elementData.map.addresses  :  [] ;
 	    updateLocality = false;
-
 	    // Initialize tags list for network in form of element
-		if(typeof networkJson != 'undefined' && typeof networkJson.add != "undefined"  && typeof typeObj != "undefined" ){
+		if(	typeof networkJson != 'undefined' && 
+			typeof networkJson.add != "undefined"  && 
+			typeof typeObj != "undefined" ){
 			$.each(networkJson.add, function(key, v) {
-				if(typeof networkJson.request.sourceKey != "undefined"){
-					sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
-					typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
-				}
-
-				if(v){
-					if(typeof networkJson.request.searchTag != "undefined"){
-						typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+				mylog.log("key", key);
+				if( typeof typeObj[key].dynForm != "undefined" ){
+					if(typeof networkJson.request.sourceKey != "undefined"){
+						sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
+						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 					}
 
+					if(v){
 
-					if(notNull(networkJson.dynForm)){
-						mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
-						mylog.log("networkTags", networkTags);
-						if(typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+						if(typeof networkJson.request.searchTag != "undefined"){
+							typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
+						}
+
+						if(	typeof typeObj[key] != "undefined" &&
+							typeof typeObj[key].dynForm != "undefined" && 
+							typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+							mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
+							mylog.log("networkTags", networkTags);
 							typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
 							if(typeof networkJson.request.mainTag != "undefined")
 								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
 						}
-						mylog.log("networkJson.dynForm");
-						mylog.log("networkJson.dynForm", "networkJson.dynForm");
-						if(notNull(networkJson.dynForm.extra)){
-							var nbListTags = 1 ;
-							mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
-							mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
-							while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
-								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
-									"inputType" : "tags",
-									"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
-									"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-									"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-									"label" : networkJson.dynForm.extra["tags"+nbListTags].list
-								};
-								nbListTags++;
+
+						if(notNull(networkJson.dynForm)){
+							mylog.log("networkJson.dynForm");
+							mylog.log("networkJson.dynForm", "networkJson.dynForm");
+							if(notNull(networkJson.dynForm.extra)){
+								var nbListTags = 1 ;
 								mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
 								mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+								while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
+									typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
+										"inputType" : "tags",
+										"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
+										"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+										"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
+										"label" : networkJson.dynForm.extra["tags"+nbListTags].list
+									};
+									nbListTags++;
+									mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
+									mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
+								}
+								delete typeObj[key].dynForm.jsonSchema.properties.tags;
 							}
-							delete typeObj[key].dynForm.jsonSchema.properties.tags;
 						}
 					}
 				}
+				
 			});
 		}
 		
@@ -3337,21 +3349,23 @@ var dyFInputs = {
         inputType : "custom",
         html:"<div id='similarLink'><div id='listSameName'></div></div>",
     },
-    inputSelect :function(label, placeholder, list, rules) { 
+    inputSelect :function(label, placeholder, list, rules) {
+    	mylog.log("inputSelect", label, placeholder, list, rules);
 		var inputObj = {
 			inputType : "select",
 			label : ( notEmpty(label) ? label : "" ),
-			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : trad.choose ),
 			options : ( notEmpty(list) ? list : [] ),
 			rules : ( notEmpty(rules) ? rules : {} )
 		};
 		return inputObj;
 	},
 	inputSelectGroup :function(label, placeholder, list, group, rules, init) { 
+		mylog.log("inputSelectGroup", label, placeholder, list, rules);
 		var inputObj = {
 			inputType : "select",
 			label : ( notEmpty(label) ? label : "" ),
-			placeholder : ( notEmpty(placeholder) ? placeholder : "Choisir" ),
+			placeholder : ( notEmpty(placeholder) ? placeholder : trad.choose ),
 			options : ( notEmpty(list) ? list : [] ),
 			groupOptions : ( notEmpty(group) ? group : [] ),
 			rules : ( notEmpty(rules) ? rules : {} ),
@@ -4295,6 +4309,7 @@ var typeObj = {
 	people : { sameAs:"person" },
 	citoyen : { sameAs:"person" },
 	citoyens : { sameAs:"person" },
+	contact : { col : "citoyens", ctrl : "contact", titleClass : "bg-yellow", bgClass : "bgPerson", color:"yellow", icon:"user" },
 	
 	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
 		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
@@ -4890,12 +4905,15 @@ function getContextDataLinks(){
 		success: function(data){
 			mylog.log("getContextDataLinks data", data);
 			Sig.restartMap();
-			contextData.map = {
-				data : data,
-				icon : "link",
-				title : "La communauté de <b>"+contextData.name+"</b>"
-			} ;
-			Sig.showMapElements(Sig.map, data, "link", "La communauté de <b>"+contextData.name+"</b>");
+			if(notNull(contextData)){
+				contextData.map = {
+					data : data,
+					icon : "link",
+					title : trad.thecommunityof+" <b>"+contextData.name+"</b>"
+				} ;
+				Sig.showMapElements(Sig.map, data, "link", trad.thecommunityof+" <b>"+contextData.name+"</b>");
+			}
+			
 			//showMap();
 		},
 		error: function (error) {

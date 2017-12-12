@@ -5,7 +5,7 @@
  */
 class CommunecterController extends Controller
 {
-  public $version = "v0.1.4";
+  public $version = "v0.2.2.2";
   public $versionDate = "29/07/2016 19:12";
   public $title = "Communectez";
   public $subTitle = "se connecter à sa commune";
@@ -150,6 +150,7 @@ class CommunecterController extends Controller
       "twostepregister"      => array("href" => "/ph/co2/default/twostepregister"),
       "switch"               => array("href" => "/ph/co2/default/switch"),
       "live"                 => array("href" => "/ph/co2/default/live"),
+      "sitemap"                 => array("href" => "/ph/co2/default/sitemap"),
     ),
     "city"=> array(
       "index"               => array("href" => "/ph/co2/city/index", "public" => true),
@@ -285,6 +286,7 @@ class CommunecterController extends Controller
 
         "get"      => array("href" => "/ph/co2/person/get"),
         "getcontactsbymails"      => array("href" => "/ph/co2/person/getcontactsbymails"),
+        "updatescopeinter" => array("href" => "/ph/co2/person/updatescopeinter"),
     ),
     "organization"=> array(
       "addorganizationform" => array("href" => "/ph/co2/organization/addorganizationform",
@@ -432,6 +434,7 @@ class CommunecterController extends Controller
       "moderate"     => array( "href" => "/ph/co2/comment/moderate"),
       "delete"       => array( "href" => "/ph/co2/comment/delete"),
       "updatefield"  => array( "href" => "/ph/co2/comment/updatefield"),
+      "update"  => array( "href" => "/ph/co2/comment/update"),
       "countcommentsfrom" => array( "href" => "/ph/co2/comment/countcommentsfrom"),
     ),
     "action"=> array(
@@ -440,13 +443,14 @@ class CommunecterController extends Controller
     "notification"=> array(
       "getnotifications"          => array("href" => "/ph/co2/notification/get","json" => true),
       "marknotificationasread"    => array("href" => "/ph/co2/notification/remove"),
-      "markallnotificationasread" => array("href" => "/ph/co2/notification/removeall"),
+      "removeall" => array("href" => "/ph/co2/notification/removeall"),
       "update"                    => array("href" => "/ph/co2/notification/update"),
     ),
     "gamification"=> array(
       "index" => array("href" => "/ph/co2/gamification/index"),
     ),
     "graph"=> array(
+      "getdata" => array("href" => "/ph/co2/graph/getdata"),
       "viewer" => array("href" => "/ph/co2/graph/viewer"),
     ),
     "log"=> array(
@@ -465,6 +469,7 @@ class CommunecterController extends Controller
       "updatefield"         => array("href" => "/ph/co2/element/updatefield"),
       "updatefields"        => array("href" => "/ph/co2/element/updatefields"),
       "updateblock"         => array("href" => "/ph/co2/element/updateblock"),
+      "updatestatus"         => array("href" => "/ph/co2/element/updatestatus"),
       "detail"              => array("href" => "/ph/co2/element/detail", "public" => true),
       "getalllinks"         => array("href" => "/ph/co2/element/getalllinks"),
       "geturls"             => array("href" => "/ph/co2/element/geturls"),
@@ -483,8 +488,9 @@ class CommunecterController extends Controller
       "about"               => array("href" => "/ph/co2/element/about"),
       "getdatadetail"       => array("href" => "/ph/co2/element/getdatadetail"),
       "stopdelete"          => array("href" => "/ph/co2/element/stopdelete"),
-      'getthumbpath'    => array("href" => "/ph/co2/element/getThumbPath"),
-      'getcommunexion'    => array("href" => "/ph/co2/element/getcommunexion"),
+      'getthumbpath'        => array("href" => "/ph/co2/element/getThumbPath"),
+      'getcommunexion'      => array("href" => "/ph/co2/element/getcommunexion"),
+      'getdatabyurl'        => array("href" => "/ph/co2/element/getdatabyurl"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),
@@ -504,8 +510,9 @@ class CommunecterController extends Controller
       "agenda"            => array('href' => "/ph/co2/app/agenda",            "public" => true),
       "power"             => array('href' => "/ph/co2/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/co2/app/superadmin",        "public" => false),
-      "admin"             => array('href' => "/ph/co2/app/admin",      "public" => false),
+      "admin"             => array('href' => "/ph/co2/app/admin",             "public" => false),
       "info"              => array('href' => "/ph/co2/app/info",              "public" => true),
+      "smartconso"          => array('href' => "/ph/co2/app/smartconso",      "public" => true),
       "city"              => array('href' => "/ph/co2/app/city",              "public" => false),
       "chat"              => array('href' => "/ph/co2/app/chat",              "public" => true),
       "sendmailformcontact" => array('href' => "/ph/co2/app/sendmailformcontact", "public" => true),
@@ -543,7 +550,7 @@ class CommunecterController extends Controller
     //creates an issue with Json requests : to clear add josn:true on the page definition here 
     //if( Yii::app()->request->isAjaxRequest && (!isset( $page["json"] )) )
       //echo "<script type='text/javascript'> userId = '".Yii::app()->session['userId']."'; var blackfly = 'sosos';</script>";
-    
+    Yii::app()->params["version"] = $this->version ;
     if( @$_GET["theme"] ){
       Yii::app()->theme = $_GET["theme"];
       Yii::app()->session["theme"] = $_GET["theme"];
@@ -610,8 +617,10 @@ class CommunecterController extends Controller
       $this->title = (isset($page["title"])) ? $page["title"] : $this->title;
       $this->subTitle = (isset($page["subTitle"])) ? $page["subTitle"] : $this->subTitle;
       $this->pageTitle = (isset($page["pageTitle"])) ? $page["pageTitle"] : $this->pageTitle;
-      $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
-      CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
+      if(!empty(Yii::app()->session["userId"]))
+        $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
+      if( $_SERVER['SERVER_NAME'] == "127.0.0.1" || $_SERVER['SERVER_NAME'] == "localhost" )
+        CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
     }
 
     //load any DB config Params

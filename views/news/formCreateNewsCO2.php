@@ -170,7 +170,7 @@
   padding:0 !important;
 }
 .updateMention .mentions-input-box .mentions{ 
-  padding:10px 5px !important;
+  padding:10px !important;
 }
 </style>
 <?php 
@@ -188,13 +188,14 @@
     $titleRestricted = "Restreint";
     $private = Yii::t("common","Visible only to the members"); 
     $titlePrivate = "Privé";
-    $scopeBegin= ucfirst(Yii::t("common", "my network"));  
+    $scopeBegin= ucfirst(Yii::t("common", "followers"));  
     $public = true;
     $iconBegin= "connectdevelop";
     $headerName= "Journal de l'organisation";//.$contextName;
     $topTitle= "Journal de l'organisation";//.$contextName;
     if(@$canManageNews && $canManageNews==true)
-      $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
+      $textForm = Yii::t("common","Post a message in the wall of").
+                  " <b>".$contextName."</b>";
     else
       $textForm = Yii::t("common","Write a private message to")." ".$contextName;
   }
@@ -207,9 +208,9 @@
       $contextIcon = "<i class='fa fa-circle text-yellow'></i> <i class='fa fa-user text-dark'></i> ";
       $contextTitle =  Yii::t("common", "DIRECTORY of")." ".$contextName;
       if(@Yii::app()->session["userId"] && $contextParentId==Yii::app()->session["userId"]){
-        $restricted = Yii::t("common","Visible to all");
+        $restricted = Yii::t("common","Visible to all on my wall and published on my network");
         $private = Yii::t("common","Visible only to me");
-        $textForm = Yii::t("common","Write a public message visible on the wall of selected places");
+        $textForm = Yii::t("common","Published a message in your wall for your network");
       } 
       if(Yii::app()->session["userId"] ==$contextParentId){
         $headerName= "Mon journal";
@@ -228,7 +229,7 @@
       $private = Yii::t("common","Visible only to me");
       $textForm = Yii::t("common","Published a message in your wall for your network");
     }
-    $scopeBegin= ucfirst(Yii::t("common", "my network")); 
+    $scopeBegin= ucfirst(Yii::t("common", "followers")); 
     $iconBegin= "connectdevelop";
   }
   else if( isset($type) && $type == Project::COLLECTION && isset($parent) ){
@@ -237,13 +238,14 @@
     $contextTitle = Yii::t("common", "Contributors of project");
     $restricted = Yii::t("common","Visible to all on this wall and published on community's network");
     $private = Yii::t("common","Visible only to the project's contributors"); 
-    $scopeBegin= ucfirst(Yii::t("common", "my network"));  
+    $scopeBegin= ucfirst(Yii::t("common", "followers"));  
     $iconBegin= "connectdevelop";
     $public = true;
     $headerName= "Journal du projet";//.$contextName;
     $topTitle = "Journal du projet";//.$contextName;
     if(@$canManageNews && $canManageNews==true)
-      $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
+     $textForm = Yii::t("common","Post a message in the wall of").
+                  " <b>".$contextName."</b>";
     else
       $textForm = Yii::t("common","Write a private message to")." ".$contextName;
   }else if( isset($type) && $type == Event::COLLECTION && isset($parent) ){
@@ -251,13 +253,14 @@
     $contextIcon = "calendar";
     $contextTitle = Yii::t("common", "Contributors of event");
     $restricted = Yii::t("common","Visible to all on this wall and published on community's network");
-    $scopeBegin= ucfirst(Yii::t("common", "my network")); 
+    $scopeBegin= ucfirst(Yii::t("common", "followers")); 
     $iconBegin= "connectdevelop";
     $headerName= "Journal de l'événement";//.$contextName;
     $topTitle = "Journal de l'événement";//.$contextName;
     $public = true;
     //if(@$canManageNews && $canManageNews==true)
-      $textForm = Yii::t("common","Post a message in the wall of")." ".$contextName.", ".Yii::t("common","publicly shared or to this community");
+      $textForm = Yii::t("common","Post a message in the wall of").
+                  " <b>".$contextName."</b>";
     //else
       //$textForm = Yii::t("common","Write a private message to")." ".$contextName;
 
@@ -367,7 +370,7 @@
             <?php } ?>
             <?php if(@$restricted){ ?>
               <li>
-              <a href="javascript:;" id="scope-my-network" class="scopeShare" data-value="restricted"><h4 class="list-group-item-heading"><i class="fa fa-connectdevelop"></i> <?php echo ucfirst(Yii::t("common", "my network")) ?></h4>
+              <a href="javascript:;" id="scope-my-network" class="scopeShare" data-value="restricted"><h4 class="list-group-item-heading"><i class="fa fa-connectdevelop"></i> <?php echo ucfirst(Yii::t("common", "followers")) ?></h4>
                 <p class="list-group-item-text small"><?php echo $restricted ?></p>
               </a>
             </li>
@@ -414,7 +417,7 @@
                   <img height=20 width=20 src='<?php echo $this->module->assetsUrl.'/images/thumb/default_'.$contextParentType.'.png' ?>'>  
                 <?php } ?>
                 <?php echo $contextName ?></h4>
-                <p class="list-group-item-text small">Afficher <?php echo $contextName ?> comme auteur</p>
+                <p class="list-group-item-text small"><?php echo Yii::t("form", "Show {who} as author",array("{who}"=>$contextName)) ?></p>
               </a>
             </li>
             <li>
@@ -424,8 +427,8 @@
                 <?php } else {  ?>
                   <img height=20 width=20 src='<?php echo $this->module->assetsUrl.'/images/thumb/default_citoyens.png' ?>'>  
                 <?php } ?>
-                <?php echo ucfirst(Yii::t("common", "Moi")) ?></h4>
-                <p class="list-group-item-text small"><?php echo "Je suis l'auteur" ?></p>
+                <?php echo ucfirst(Yii::t("common", "Me")) ?></h4>
+                <p class="list-group-item-text small"><?php echo Yii::t("form","I am the author") ?></p>
               </a>
             </li>
           </ul>

@@ -24,6 +24,7 @@ class CommentController extends CommunecterController {
 	        'countcommentsfrom'		=> 'citizenToolKit.controllers.comment.CountCommentsAction',
 	        'delete'				=> 'citizenToolKit.controllers.comment.DeleteAction',
 	        'updatefield'			=> 'citizenToolKit.controllers.comment.UpdateFieldAction',
+	        'update'				=> 'citizenToolKit.controllers.comment.UpdateAction',
 	    );
 	}
 

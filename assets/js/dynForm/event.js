@@ -140,7 +140,7 @@ dynForm = {
 	            		endDateParent = "2100/01/01 00:00";
 	            		if( parentId != "" ){
 	            			//Search in the current context
-	            			if (typeof contextData != "undefined") {
+	            			if (typeof contextData != "undefined" && notNull(contextData)) {
 	            				if (contextData.type == "events" && contextData.id == parentId) {
 	            					mylog.warn("event found in contextData : ",contextData.startDate+"|"+contextData.endDate);
 		            				startDateParent = contextData.startDate;

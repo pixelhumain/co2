@@ -125,14 +125,14 @@
             title="<?php echo Yii::t("common","Create a new page") ?>">
                 <i class="fa fa-times" style="font-size:18px;"></i>
         </button>
-        <h5 class="text-center letter-green margin-top-25">Créer une page</h5>
+        <h5 class="text-center letter-green margin-top-25"><?php echo Yii::t("form","Create a page") ?></h5>
         <h5 class="text-center">
             <small>             
-                <span class="text-green">associations</span> 
-                <span class="text-azure">entreprises</span> 
-                <span class="text-purple">projets</span> 
-                <span class="text-turq">groupes</span>
-                <span class="text-red">service public</span>
+                <span class="text-green"><?php echo Yii::t("common","NGOs") ?></span> 
+                <span class="text-azure"><?php echo Yii::t("common","Local Business") ?></span> 
+                <span class="text-purple"><?php echo Yii::t("common","Projects") ?></span> 
+                <span class="text-turq"><?php echo Yii::t("common","Groups") ?></span>
+                <span class="text-red"><?php echo Yii::t("common","Government Organization") ?></span>
             </small>
         </h5><br>
     </div>
@@ -153,6 +153,15 @@ var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
+
+
+
+<?php if(@$type=="events"){ ?>
+  var STARTDATE = new Date();
+  var ENDDATE = new Date();
+  var startWinDATE = new Date();
+  var agendaWinMonth = 0;
+<?php } ?>
 
 //var TPL = "kgougle";
 
@@ -211,15 +220,20 @@ jQuery(document).ready(function() {
             }
         });
 
+
+
         loadingData = false; 
         initTypeSearch(type);
         startSearch(0, indexStepInit, searchCallback);
-
+            initSearchInterface();
     },"html");
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js
 
-    
+
+
+    calculateAgendaWindow(0);
+
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
             //KScrollTo("#content-social");  
@@ -240,11 +254,13 @@ function showResultInCalendar(mapElements){
     //mylog.dir(mapElements);
 
     var events = new Array();
+    var fstDate = "";
     console.log("data mapElements", mapElements);
     $.each(mapElements, function(key, thisEvent){
     
         var startDate = exists(thisEvent["startDateTime"]) ? thisEvent["startDateTime"].substr(0, 10) : "";
         var endDate = exists(thisEvent["endDateTime"]) ? thisEvent["endDateTime"].substr(0, 10) : "";
+
         var cp = "";
         var loc = "";
         if(thisEvent["address"] != null){
@@ -271,18 +287,32 @@ function showResultInCalendar(mapElements){
 
     $(".calendar").html($(".responsive-calendar-init").html());
 
-    var aujourdhui = new Date();
+    var aujourdhui = startWinDATE; //new Date();
+    //console.log("aujourdhui", aujourdhui);
     var  month = (aujourdhui.getMonth()+1).toString();
     if(aujourdhui.getMonth() < 10) month = "0" + month;
     var date = aujourdhui.getFullYear().toString() + "-" + month;
 
-    console.log("data events", events);
+    //console.log("data events", events, "time", date);
     $(".responsive-calendar").responsiveCalendar({
           time: date,
           events: events
         });
 
     $(".responsive-calendar").show();
+
+
+    /*$("#btn-month-next").click(function(){
+        agendaWinMonth++;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+    });
+    $("#btn-month-before").click(function(){
+        agendaWinMonth--;
+        calculateAgendaWindow(agendaWinMonth);
+        startSearch(0, indexStep, searchCallback);
+    });*/
+
 
     calendarInit = true;
 }

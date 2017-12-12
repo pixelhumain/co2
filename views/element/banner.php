@@ -141,7 +141,7 @@
     	
     	<div class="col-xs-12 col-sm-9 col-md-9 col-lg-10 text-white pull-right">
 			<?php if (@$element["status"] == "deletePending") { ?> 
-				<h4 class="text-left padding-left-15 pull-left no-margin letter-red">En cours de suppression</h4><br>
+				<h4 class="text-left padding-left-15 pull-left no-margin letter-red"><?php echo Yii::t("common","Being suppressed") ?></h4><br>
 			<?php } ?>
 			<h4 class="text-left padding-left-15 pull-left no-margin">
 				<span id="nameHeader">
@@ -224,6 +224,7 @@
 			</div>
 		<?php } ?>
 	<?php if($type==Event::COLLECTION || $type==Poi::COLLECTION || $type==Project::COLLECTION){ ?>
+	<?php if(@$element['parent'] || @$element['organizerId'] ){ ?>
 		<div class="section-date pull-right">
 			<?php if($type==Event::COLLECTION){ ?>
 				<div class="header-banner"  style="font-size: 14px;font-weight: none;"></div>
@@ -236,7 +237,7 @@
 							if($type==Event::COLLECTION){
 								$msg = Yii::t("common","Planned on") ;
 							}else{
-								$msg = Yii::t("common","Parenthood") ;
+								$msg = Yii::t("common","Carried by") ;
 							}
 
 						$icon = Element::getFaIcon($element['parentType']);
@@ -257,6 +258,7 @@
 				</div>
 			</div>
 	    </div>
+	<?php } ?>
 	<?php } ?>
 	</div>
 

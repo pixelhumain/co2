@@ -327,10 +327,15 @@
 			<li><hr></li>
 		<?php } ?>
 		
-		<?php if(!@$front || (@$front && $front["event"]==true)){ ?>
+		<?php if(!@$front || (@$front && $front["event"]==true)){ 
+			if($type==Event::COLLECTION)
+				$label=Yii::t("common","Program");
+			else
+				$label=Yii::t("common","Agenda");
+			?>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="events" data-icon="calendar">
-					<i class="fa fa-calendar"></i> <?php echo Yii::t("common","Events"); ?>
+					<i class="fa fa-calendar"></i> <?php echo $label; ?>
 				</a>
 			</li>
 			<?php if ($type==Person::COLLECTION){ ?>
@@ -374,13 +379,18 @@
 
 	<?php } ?>
 
-	<!-- <li class="">
-		<a href="javascript:" class="ssmla load-data-directory" data-type-dir="dda" data-icon="gavel">
-			<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Cooperative space"); ?>
-		</a>
-	</li>
-
-	<li><hr></li> -->
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
+			  $type==Event::COLLECTION || $type==Person::COLLECTION){  
+			$hash = @$element["slug"] ? 
+					"#".$element["slug"] :
+					"#page.type.".$type.".id.".$element["_id"];
+	?>
+		<li>
+			<a href="<?php echo $hash; ?>?tpl=onepage"  class="lbh letter-blue">
+				<i class="fa fa-desktop"></i> <?php echo Yii::t("common","My web page"); ?>
+			</a>
+		</li>			
+	<?php } ?>
 </ul>
 
 

@@ -9,10 +9,14 @@
 				'/css/default/directory.css',	
 				'/js/comments.js',
 				'/css/profilSocial.css',
+				'/css/calendar.css',
 		) , 
 	Yii::app()->theme->baseUrl. '/assets');
 
-
+ $cssAnsScriptFilesModule = array(
+    '/js/default/calendar.js',
+  );
+  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
 	$cssAnsScriptFilesTheme = array(
 		"/plugins/jquery-cropbox/jquery.cropbox.css",
@@ -22,6 +26,9 @@
 		//MARKDOWN
 		'/plugins/to-markdown/to-markdown.js',
 		'/plugins/jquery.qrcode/jquery-qrcode.min.js',
+		'/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
+        '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
+        '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -88,7 +95,7 @@
 #ajax-modal .close-modal .rl,
 #formContact .close-modal .lr,
 #formContact .close-modal .rl{
-	background-color: white;
+	background-color: #fff;
 }
 
 #btn-show-activity-onmap{
@@ -579,10 +586,12 @@
 			$classDescH="hidden"; 
 			$classBtnDescH="<i class='fa fa-angle-down'></i> ".Yii::t("common","show description"); 
 				
+			if(!isset($linksBtn["isFollowing"]) && !isset($linksBtn["isAdmin"]) )
+				$classDescH = "";
 
-		if($typeItem != Person::COLLECTION){ 
+			if($typeItem != Person::COLLECTION){ 
 		?>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:20px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:30px;">
 				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
 					<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","Main description") ?></b>
@@ -602,6 +611,7 @@
 				<hr>
 			</div>
 		<?php }else{ $marginCentral="50"; } ?>
+
 		<!-- Permet de faire le convertion en HTML -->
 		<span id="descriptionMarkdown" name="descriptionMarkdown"  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 
@@ -679,8 +689,7 @@
     if(typeof contextData.slug != "undefined")
      	navInSlug=true;
    
-    var hashUrlPage= ( (typeof networkParams != "undefined") ? "?src="+networkParams : "" )+
-    				 ( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
+	var hashUrlPage= ( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
     
     if(location.hash.indexOf("#page")>=0){
     	strHash="";
@@ -689,7 +698,7 @@
     		strHash=".view"+hashPage[1];
     	}
     	replaceSlug=true;
-    	history.replaceState("#page.type."+contextData.type+".id."+contextData.id, "", "#"+contextData.slug+strHash);
+    	history.replaceState("#page.type."+contextData.type+".id."+contextData.id, "", hashUrlPage+strHash);
     	//location.hash=;
     }
     

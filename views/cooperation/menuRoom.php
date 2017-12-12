@@ -207,7 +207,7 @@
 									<?php if(@$proposal["status"] == $thisStatus){ ?>
 										<li class="submenucoop sub-proposals no-padding col-lg-4 col-md-6 col-sm-6 " 
 											data-name-search="<?php echo str_replace('"', '', @$proposal["title"]); ?>">
-										<a href="#page.type.<?php echo $proposal['parentType']; ?>.id.<?php echo @$proposal['parentId']; ?>.view.coop.room.<?php echo @$proposal['idParentRoom']; ?>.proposal.<?php echo @$proposal['_id']; ?>" class="load-coop-data " data-type="proposal" 
+										<a href="javascript:;" class="load-coop-data " data-type="proposal" 
 											data-status="<?php echo @$proposal["status"]; ?>" 
 										   	data-dataid="<?php echo (string)@$proposal["_id"]; ?>">
 									  		
@@ -341,7 +341,7 @@
 							foreach($resolutionList as $key => $resolution){ ?>
 								<li class="submenucoop sub-resolutions no-padding col-lg-4 col-md-6 col-sm-6"
 									data-name-search="<?php echo str_replace('"', '', @$resolution["title"]); ?>">
-									<a href="#page.type.<?php echo $resolution['parentType']; ?>.id.<?php echo $resolution['parentId']; ?>.view.coop.room.<?php echo $resolution['idParentRoom']; ?>.resolution.<?php echo $resolution['_id']; ?>" class="load-coop-data" data-type="resolution" 
+									<a href="javascript:;" class="load-coop-data" data-type="resolution" 
 									   data-status="<?php echo @$resolution["status"]; ?>" 
 									   data-dataid="<?php echo (string)@$resolution["_id"]; ?>">
 
@@ -401,7 +401,7 @@
 							foreach($actionList as $key => $action){ ?>
 								<li class="submenucoop sub-actions no-padding col-lg-4 col-md-6 col-sm-6"
 									data-name-search="<?php echo str_replace('"', '', @$action["name"]); ?>">
-									<a href="#page.type.<?php echo $action['parentType']; ?>.id.<?php echo $action['parentId']; ?>.view.coop.room.<?php echo $action['idParentRoom']; ?>.action.<?php echo $action['_id']; ?>" 
+									<a href="javascript:;" 
 										class="load-coop-data" data-type="action"
 										data-status="<?php echo @$action["status"]; ?>" 
 								   		data-dataid="<?php echo (string)@$action["_id"]; ?>">
@@ -499,9 +499,15 @@
 		uiCoop.initDragAndDrop();
 		uiCoop.initSearchInMenuRoom();
 
-		if(currentRoomId != "")
-		location.hash = "#page.type." + contextData.type + ".id." + contextData.id + 
-						".view.coop.room." + currentRoomId;
+		if(currentRoomId != ""){
+			addCoopHash=".view.coop.room." + currentRoomId;
+			if(typeof hashUrlPage != "undefined")
+				location.hash = hashUrlPage +addCoopHash;
+			else if(notNull(contextData) && typeof contextData.slug != "undefined")
+				location.hash = "#" + contextData.slug + addCoopHash;
+			else
+				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;
+		}
 
 	});
 

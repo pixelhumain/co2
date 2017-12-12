@@ -6,6 +6,7 @@
 
     echo Preference::showPreference($element, $type, "locality", Yii::app()->session["userId"]) ? "yes" : "no";*/
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+    $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? Yii::app()->params["CO2DomainName"] : "CO2";
 ?>
 
 <style> 
@@ -27,7 +28,8 @@
 <?php } ?>
 
 <div class="col-xs-12 no-padding col-nowList"  data-tpl="pod.nowList">
-	<?php if((!@$scope || @$scope=="")){ 
+	<?php
+     if( (!@$scope || @$scope=="") && $open == true){ 
 			if($type=="citoyens" && $id==@Yii::app()->session["userId"]){ 
 			 $this->renderPartial($layoutPath.'pod.'.Yii::app()->params["CO2DomainName"].".notCommunected");
             } 
@@ -39,15 +41,15 @@
 
             <br>
 
-             <?php $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? Yii::app()->params["CO2DomainName"] : "CO2";
-                  if($CO2DomainName == "kgougle"){ ?>
+             <?php
+                if($CO2DomainName == "kgougle"){ ?>
                     <button class="btn btn-link letter-red btn-xs pull-left no-padding btn-change-loc" 
                             data-toggle="modal" data-target="#modalLocalization">
-                        <i class="fa fa-map-marker"></i> <?php echo $scope; ?>
+                        <i class="fa fa-map-marker"></i> <?php echo $scope["name"]; ?>
                     </button>
                     <br>
             <?php }else{ ?>
-                <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope; ?></small>
+                <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope["name"]; ?></small>
             <?php } ?>
         </h6>
 
@@ -61,8 +63,9 @@
         </center>
         <br>
         <!-- <hr class="margin-5 margin-bottom-10"> -->
+        <?php
+        foreach ($result as $key => $v) { 
 
-        <?php foreach ($result as $key => $v) { 
             $specs = Element::getElementSpecsByType(@$v["type"]);
 
             $type = null;
@@ -118,17 +121,20 @@
     <?php } ?>
 </div>
 
-<?php $this->renderPartial($layoutPath.'modals/'.Yii::app()->params["CO2DomainName"]."/citiesNC"); ?>
+<?php if($CO2DomainName == "kgougle"){ 
+        $this->renderPartial($layoutPath.'modals/'.Yii::app()->params["CO2DomainName"]."/citiesNC");
+      } 
+?>
 
 <script type="text/javascript" >
 
 var localActivity = <?php echo json_encode($result); ?>;
 
 jQuery(document).ready(function() {
-    console.log("LIVENOW", localActivity);
+    mylog.log("LIVENOW", localActivity);
     $.each(localActivity, function(key, data){
         if(typeof data.geo != "undefined" && data.geo.latitude == "")
-        console.log("LIVENOW geo", data.geo, data);
+        mylog.log("LIVENOW geo", data.geo, data);
     });
     // $(".elemt_date").each(function() {
     //     var elementTime = $(this).children(".dateTZ").attr("data-time");
@@ -146,12 +152,12 @@ jQuery(document).ready(function() {
     $(".el-nowList").click(function(){
         var id = $(this).data("id");
         var type = $(this).data("type");
-        console.log("try open", id, type);
+        mylog.log("try open", id, type);
         var data = "";
         $.each(localActivity, function(key, value){
             if(key==id) data = Object.assign({}, value);
         });
-        console.log("try open data", data);
+        mylog.log("try open data", data);
 
         $(".el-nowList").removeClass("hidden");
         $(this).addClass("hidden");
@@ -160,7 +166,7 @@ jQuery(document).ready(function() {
         
         if(data!=""){
             var html = directory.showResultsDirectoryHtml(new Array(data), type);
-            console.log("try open html", html);
+            mylog.log("try open html", html);
             $("#localActivity"+type+id).html(html);
             $("#localActivity"+type+id).removeClass("hidden");
             $("#localActivity"+type+id).off().mouseleave(function(){
@@ -177,8 +183,8 @@ jQuery(document).ready(function() {
         communecterUser();
     });
 
-    if(typeof contextData.address.addressLocality != "undefined")
-    $(".btn-change-loc").append(" - " + contextData.address.addressLocality);
+    if(typeof contextData != "undefined" && notNull(contextData) && typeof contextData.address != "undefined" && typeof contextData.address.addressLocality != "undefined")
+        $(".btn-change-loc").append(" - " + contextData.address.addressLocality);
 });
 
 function enlargeNow() { 

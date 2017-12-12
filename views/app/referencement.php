@@ -3,27 +3,19 @@
 	//HtmlHelper::registerCssAndScriptsFiles( array('/js/default/formInMap.js') , $this->module->assetsUrl);
 
     HtmlHelper::registerCssAndScriptsFiles( 
-        array(  '/css/referencement.css',) , 
+        array(  '/css/referencement.css',
+                '/js/referencement.js') , 
         Yii::app()->theme->baseUrl. '/assets');
-
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "referencement",
-                                 )); 
+                                "page" => "referencement" )); 
 ?>
 
 <style>
-	/*.name .pastille {
-	    margin-top: -44px;
-	    display: block;
-	    text-align: right;
-	    max-width: 82%;
-	    font-size: 0.3em;
-	    margin-bottom: 22px;
-	}*/
+	
 	
 </style>
 
@@ -215,6 +207,7 @@ console.log("CITIES", cities);
 jQuery(document).ready(function() {
     initKInterface();
     buildListCategoriesForm();
+    
     mapBg = Sig.loadMap("mapCanvas", initSigParams);
     Sig.showIcoLoading(false);
 
@@ -256,11 +249,12 @@ jQuery(document).ready(function() {
 
     $(".btn-scope").click(function(){
     	//h4-name-city btn-select-city name-city-selected
-    	var cityName = $(this).data("name");
-    	var cityCp = $(this).data("cp");
-    	var cityInsee = $(this).data("insee");
-    	var cityLat = $(this).data("lat");
-        var cityLng = $(this).data("lng");
+    	var cityId = $(this).data("city-id");
+        var cityName = $(this).data("city-name");
+        var cityCp = $(this).data("city-cp");
+    	var cityInsee = $(this).data("city-insee");
+    	var cityLat = $(this).data("city-lat");
+    	var cityLng = $(this).data("city-lng");
 
         var id = $(this).data("locid");
         var l1 = $(this).data("level1");
@@ -274,29 +268,26 @@ jQuery(document).ready(function() {
     	$("#h4-name-city, #form-street, #btn-find-position, #name-city-selected").show();
     	$("#name-city-selected").html(cityName + ", " + cityCp);
 
-    	coordinatesPreLoadedFormMap = [cityLat, cityLng];
-        formInMap.formType = "url";
-        formInMap.bindFormInMap();
-	    formInMap.showMarkerNewElement(false, coordinatesPreLoadedFormMap);
-	    preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "", 
-                        id, l1, l1n, l3, l3n, l4, l4n);
+    	formInMap.formType = "url";
+        coordinatesPreLoadedFormMap = [cityLat, cityLng];
+	    formInMap.showMarkerNewElement();
+	    preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
 
         formInMap.add(true, $(this));
        // formInMap.add(true, data);
 
 	    $("#btn-find-position").off().click(function(){
 	    	showMap(true);
-            $("#newElement_country").val("NC");
-            //$("#divCity").removeClass("hidden");
-	    	if(Sig.markerFindPlace == null)
-	    		formInMap.showMarkerNewElement();
+
+	    	if(Sig.markerFindPlace == null){
+                formInMap.showMarkerNewElement();
+            }
    	
 	    	var street = $("#form-street").val();
-    		preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street, 
-                            id, l1, l1n, l3, l3n, l4, l4n);
+    		preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);
     		
-    		//if(street != "")
-    			//searchAdressNewElement();	    	
+    		if(street != "")
+    			formInMap.searchAdressNewElement();	    	
 	    });
     });
 
@@ -492,7 +483,7 @@ function refUrl(url){
     $.ajax({ 
     	url: "//cors-anywhere.herokuapp.com/" + url, // 'http://google.fr', 
     	//crossOrigin: true,
-    	timeout:10000,
+    	timeout:20000,
         success:
 			function(data) {
 				
@@ -647,7 +638,8 @@ function sendReferencement(){
 
 	if(urlValidated != "" && title != "" /*&& description != "" && keywords.length > 0 && categoriesSelected.length > 0*/){
 
-		var address = contextData; //getAddressObj(); //formInMap.js
+        var address = typeof locObj != "undefined" ? locObj : {}; 
+        //formInMap.createLocalityObj(true); //formInMap.js
 
 
 		var urlObj = {

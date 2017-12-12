@@ -99,6 +99,8 @@
         margin-top: 207px;
         text-align: right;
     }
+
+    
     @media screen and (max-width: 1024px) {
         #mainCategories .portfolio .portfolio-item{
             height: 110px;

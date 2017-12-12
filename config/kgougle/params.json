@@ -1,10 +1,12 @@
 { 
       "title" : "Kgougle",
       "metaImg" : "/assets/img/KGOUGLE-logo-min.png",
-      "metaDesc" : "Le moteur de recherche des cagous",
+      "metaTitle" : "Le moteur de recherche des cagous",
+      "metaDesc" : "Réseau social associatif, gratuit, open-source, éthique, citoyen",
       "devises" : { "CFP" : "CFP" },
       "deviseDefault" : "CFP",
-
+      "nbAdminModeration" : 3,
+      "nbReportCoModeration" : 3,
       "pages" : 
       {
       	"#app.index":
@@ -57,20 +59,20 @@
                   "mainTitle" : "Fil d'actu <span class='letter-red'>média</span>",
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
-      	"#live": {
+            "#freedom": {
                   "inMenu" : true, 
                   "useHeader" : true, 
                   "open" : false, 
-                  "subdomain" : "live", 
-                  "subdomainName" : "Live",
+                  "subdomain" : "freedom", 
+                  "subdomainName" : "Freedom",
                   "hash":"#app.live",
                   "icon" : "stack-exchange", 
-                  "mainTitle" : "Fil d'actu Fil d'actu <span class='letter-red'>citoyen</span>",
-                  "placeholderMainSearch" : "search in live ..."
+                  "mainTitle" : "Fil de discussion <span class='letter-red'>citoyen</span>",
+                  "placeholderMainSearch" : "Rechercher dans le fil de discussion ..."
             },
-
-            "#social":
-      	  	{"inMenu" : true, 
+                 
+            "#social": {
+                  "inMenu" : true, 
                   "useHeader" : true, 
                   "open" : true,
                   "subdomain" : "social", 
@@ -81,6 +83,7 @@
                   "placeholderMainSearch" : "rechercher une page ...",
                   "lblBtnCreate" : "Créer une page",
                   "colorBtnCreate" : "green"},
+
 
       	"#annonces":
       	  	{"inMenu" : true, 
@@ -139,7 +142,30 @@
                   "hash" : "#app.info",
                   "icon" : "search", 
                   "mainTitle" : "Le moteur de recherche des Cagous",
-                  "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."}
+                  "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."},
+
+            "#admin": {
+                  "inMenu" : false, 
+                  "useHeader" : true, 
+                  "open" : true, 
+                  "subdomain" : "admin", 
+                  "subdomainName" : "admin",
+                  "hash":"#admin",
+                  "icon" : "grav", 
+                  "mainTitle" : "Partie Admin",
+                  "placeholderMainSearch" : "Admin ..."
+            },
+            "#smartconso": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : false, 
+                  "subdomain" : "smartconso", 
+                  "subdomainName" : "smartconso",
+                  "hash":"#app.smartconso",
+                  "icon" : "recycle", 
+                  "mainTitle" : "Consommons mieux en Nouvelle-Calédonie",
+                  "placeholderMainSearch" : "rechercher ..."
+            }
       } 								  
 
 }

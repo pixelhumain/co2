@@ -15,22 +15,32 @@
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
+    $page = "live";
+    
+    if(Yii::app()->params["CO2DomainName"] == "kgougle")
+        $page = "freedom";
+
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "type" => @$type,
-                                "page" => "live",
+                                "page" => $page,
                                 "explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") ); 
     $randImg = rand(1, 2);
+    $page = "live";
     //$randImg = 1;
+
+    $params = CO2::getThemeParams();
 ?>
 
 <style>
+    <?php if($params["title"] != "Kgougle") { ?>
     header {
       background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/live/pexels-<?php echo $randImg; ?>.jpeg") top center;
         min-height:300px;
     }
+    <?php } ?>
      
 	.scope-min-header{
         float: left;
@@ -67,6 +77,20 @@
 	#btn-my-co{
 		margin-top: 15px;
 	}
+
+    #newsstream{
+        min-height:500px;
+    }
+
+    #newsstream .loader,
+    #noMoreNews{
+       border-radius: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        display: table;
+        padding: 15px;
+        margin-top: 15px;
+    }
 </style>
 <div class="row padding-10 bg-white">
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
@@ -89,7 +113,7 @@
 </div>
 
 
-<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>"live")); ?>
+<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>$page)); ?>
 
 
 <script type="text/javascript" >
@@ -108,6 +132,8 @@ var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
 					 //"information":"<i class='fa fa-newspaper-o'></i> Les informations"
 					};
 
+var page = "<?php echo $page; ?>";
+var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 
 var scrollEnd = false;
 <?php if(@$type && !empty($type)){ ?>
@@ -125,21 +151,21 @@ var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 jQuery(document).ready(function() {
 
 	$(".subsub").hide();
-	setTitle("", "", "Live");
+
+	//setTitle("", "", titlePage);
 
 	/*var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
 	if(typeof liveTypeName[liveType] != "undefined") 
 		 liveType = " > "+liveTypeName[liveType];
 	else liveType = ", la boite à outils citoyenne connectée " + liveType;
 */
-	setTitle("Live", "Live");
 	//initFilterLive();
 	//showTagsScopesMin("#list_tags_scopes");
 	$("#btn-slidup-scopetags").click(function(){
       slidupScopetagsMin();
     });
 	$('#btn-start-search').click(function(e){
-		startNewsSearch(false);
+		startNewsSearch(true);
     });
 		
 	
@@ -152,7 +178,7 @@ jQuery(document).ready(function() {
 	//init loading in scroll
    
     initKInterface();//{"affixTop":10});
-    initFreedomInterface();
+    //initFreedomInterface();
     
     Sig.restartMap(Sig.map);
 
@@ -162,7 +188,7 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
-            loadStream();
+            startNewsSearch(true); 
             KScrollTo("#content-social");
         }
     });
@@ -174,7 +200,7 @@ jQuery(document).ready(function() {
         $("#main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){            
-            loadStream();
+            startNewsSearch(true);
             KScrollTo("#content-social");
          }
     });
@@ -183,15 +209,21 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
-            loadStream();
+            startNewsSearch(true);
          }
     });
 
-    $("#menu-map-btn-start-search, #main-search-bar-addon").click(function(){
-        loadStream();
+    $("#main-btn-start-search, #main-search-bar-addon, .menu-btn-start-search").click(function(){
+        startNewsSearch(true);
+    });
+    $(".subModuleTitle .btn-refresh").click(function(){
+        $("#main-search-bar").val("");
+        $("#second-search-bar").val("");
+        startNewsSearch(true);
     });
 
 
+    setTitle(titlePage, "stack-exchange", "freedom ");
     //KScrollTo(".main-btn-scopes");
 });
 

@@ -1,6 +1,6 @@
 <?php 
     HtmlHelper::registerCssAndScriptsFiles( 
-        array(  '/css/referencement.css',) , 
+        array(  '/css/referencement.css','/js/referencement.js',) , 
         Yii::app()->theme->baseUrl. '/assets');
 ?>
 
@@ -193,6 +193,9 @@ var contextData;
 var formType = "poi";
 var coordinatesPreLoadedFormMap = [0, 0];
 
+var coordinatesPreLoadedFormMap = new Array(0, 0);
+var noShowAjaxModal = false;
+
 jQuery(document).ready(function() {
 
     mapBg = Sig.loadMap("mapCanvas", initSigParams);
@@ -229,50 +232,44 @@ jQuery(document).ready(function() {
     });
 
     $("#form-street, #btn-find-position").hide();
-    
-    $(".btn-scope").click(function(){
-        //h4-name-city btn-select-city name-city-selected
-        var cityName = $(this).data("name");
-        var cityCp = $(this).data("cp");
-        var cityInsee = $(this).data("insee");
-        var cityLat = $(this).data("lat");
-        var cityLng = $(this).data("lng");
 
-        var id = $(this).data("locid");
-        var l1 = $(this).data("level1");
-        var l1n = $(this).data("level1name");
-        var l3 = $(this).data("level3");
-        var l3n = $(this).data("level3name");
-        var l4 = $(this).data("level4");
-        var l4n = $(this).data("level4name");
-        
+    $(".btn-scope").click(function(){ noShowAjaxModal = true;
+        //h4-name-city btn-select-city name-city-selected
+        var cityId = $(this).data("city-id");
+        var cityName = $(this).data("city-name");
+        var cityCp = $(this).data("city-cp");
+        var cityInsee = $(this).data("city-insee");
+        var cityLat = $(this).data("city-lat");
+        var cityLng = $(this).data("city-lng");
 
         $("#h4-name-city, #form-street, #btn-find-position, #name-city-selected").show();
         $("#name-city-selected").html(cityName + ", " + cityCp);
 
-        coordinatesPreLoadedFormMap = [cityLat, cityLng];
+        if(mapBg == null){
+            mapBg = Sig.loadMap("mapCanvas", initSigParams);
+            Sig.showIcoLoading(false);
+        }
+
         formInMap.formType = "url";
-        formInMap.bindFormInMap();
-        formInMap.showMarkerNewElement(false, coordinatesPreLoadedFormMap);
-        preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "", 
-                        id, l1, l1n, l3, l3n, l4, l4n);
+        coordinatesPreLoadedFormMap = [cityLat, cityLng];
+        formInMap.showMarkerNewElement();
+        preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
 
         formInMap.add(true, $(this));
        // formInMap.add(true, data);
 
         $("#btn-find-position").off().click(function(){
             showMap(true);
-            $("#newElement_country").val("NC");
-            //$("#divCity").removeClass("hidden");
-            if(Sig.markerFindPlace == null)
+
+            if(Sig.markerFindPlace == null){
                 formInMap.showMarkerNewElement();
+            }
     
             var street = $("#form-street").val();
-            preLoadAddress(true, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street, 
-                            id, l1, l1n, l3, l3n, l4, l4n);
+            preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);
             
-            //if(street != "")
-                //searchAdressNewElement();         
+            if(street != "")
+                formInMap.searchAdressNewElement();         
         });
     });
 
@@ -364,7 +361,12 @@ function sendReferencement(){
     
     var status = $("#form-status").val();
 
-    var address = contextData;//getAddressObj(); //formInMap.js
+    var address = {};
+    if(typeof locObj != "undefined" && locObj != false)
+        address = locObj; 
+    else if(typeof siteEditing != "undefined" && siteEditing != false){
+        address = siteEditing;
+    }
 
     var urlObj = {
             url : url,
@@ -384,6 +386,7 @@ function sendReferencement(){
 
     console.log("UPDATE THIS URL DATA ?", urlObj, id);
    
+    //alert("ok ?"); return;
     $.ajax({
         type: "POST",
         url: baseUrl+"/"+moduleId+"/app/superadmin/action/updateurlmetadata",
@@ -407,6 +410,8 @@ function sendReferencement(){
             console.log("save referencement success");
 
             $("#modalEditUrl").modal("hide");
+            noShowAjaxModal = false;
+            locObj = false;
         },
         error: function(data){
             toastr.error("Une erreur est survenue pendant l'envoi de votre demande", data);

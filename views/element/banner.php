@@ -268,7 +268,7 @@
 <div id="uploadScropResizeAndSaveImage" style="display:none;padding:0px 60px;">
 	<div class="close-modal" data-dismiss="modal"><div class="lr"><div class="rl"></div></div></div>
 	<div class="col-lg-12">
-		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" 
+		<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGOS/<?php echo Yii::app()->params["CO2DomainName"]; ?>/logo-head-search.png" 
 			 class="inline margin-top-25 margin-bottom-5" height="50">
         <br>
 	</div>
@@ -278,7 +278,7 @@
 		</h3>
 	</div>
 	<div class="panel-body">
-		<div class='col-md-offset-1' id='cropContainer'>
+		<div class='' id='cropContainer'>
 			<img src='' id='cropImage' class='' style=''/>
 			<div class='col-md-12'>
 				<button class='btn btn-success text-white imageCrop saveBanner'><i class="fa fa-send"></i> <?php echo Yii::t("common","Save") ?></button>

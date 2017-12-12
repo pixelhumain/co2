@@ -34,7 +34,8 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
-                $page = @$_GET["tpl"]=="onepage" ? "onepage" : "profilSocial";
+                //var_dump(@$_GET["web"]);exit;
+                $page = isset($_GET["net"]) ? "onepage" : "profilSocial";
 
                 $this->renderPartial('../element/'.$page, $params ); 
             }

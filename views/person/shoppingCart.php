@@ -115,7 +115,10 @@
         <div class="contentCheckout shadow2 col-md-12 no-padding text-center"></div>
         <div class="contentCB shadow2 col-md-12 no-padding text-center"></div>
         <div class='col-md-12 pull-right btn-cart margin-top-20 no-padding'>
-            <a href='javascript:;' onclick='shopping.buyCart();' class='btn bg-orange text-white pull-right col-md-3' onclick=''>Validate</a>
+            <a href='javascript:;' onclick='shopping.buyCart();' 
+               class='btn bg-orange text-white pull-right col-md-3' onclick=''>
+               Validate
+            </a>
             <a href='javascript:;' class='btn bg-orange pull-right col-md-3 text-white close-modal' >Continue</a>
         </div>
     </div>
@@ -124,7 +127,7 @@
 <?php 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     $this->renderPartial('../element/terla/associated', array()); 
-    $this->renderPartial($layoutPath.'footer', array("subdomain"=>"page")); 
+    //$this->renderPartial($layoutPath.'footer', array("subdomain"=>"page")); 
 ?>
 <script type="text/javascript">
     var totalCart=0;

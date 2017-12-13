@@ -379,8 +379,8 @@
 
 	<?php } ?>
 
-	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
-			  $type==Event::COLLECTION || $type==Person::COLLECTION && false){  
+	<?php if (false/*$type==Project::COLLECTION || $type==Organization::COLLECTION || 
+			  $type==Event::COLLECTION || $type==Person::COLLECTION*/){  
 			$hash = @$element["slug"] ? 
 					"#".$element["slug"] :
 					"#page.type.".$type.".id.".$element["_id"];

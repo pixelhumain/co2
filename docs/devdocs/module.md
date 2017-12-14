@@ -10,7 +10,7 @@ Un fichier ` config/overwrite.php ` va être mis dans chaque nouveau module. Ce 
     - NewmodModule.php
     - config/overwrite.php
 3) Ajouter dans pixelhumain/ph/protected/config/overwrite.php le nouveau module dans la liste 
-
+4) Au besoin crée vous un thème dans pixelhumain/ph/themes ( a détailler cette partie)
 
 ## Fichier 
 

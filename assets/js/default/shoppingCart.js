@@ -364,8 +364,15 @@ var shopping = {
     			"</div></div>";
     	return { cart : str , checkout : cStr };
     },
-    checkout : function() { 
-    	getAjax(".contentCB", baseUrl+'/'+moduleId+"/pay?amount="+shopping.checkoutObj.total+"&cur=EUR&card=CB_VISA_MASTERCARD", null,"html");
+    checkout : function(typeCB) { 
+    	$(".contentCB").html("<i class='fa fa-spin fa-circle-o-notch'></i>");
+    	$(".cbType").removeClass("activePay");
+    	typeCB = (typeCB) ? typeCB : "CB_VISA_MASTERCARD";
+    	$("."+typeCB).addClass("activePay");
+
+    	params = "?amount="+shopping.checkoutObj.total+"&cur=EUR&card="+typeCB;
+    	
+    	getAjax(".contentCB", baseUrl+'/'+moduleId+"/pay"+params, null,"html");
     	$("#shoppingCart").addClass("hide");
     	$("#checkoutCart").removeClass("hide");
     },

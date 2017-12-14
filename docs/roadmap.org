@@ -265,15 +265,6 @@ Liste des notifications déjà lues => #370 #453
 >>>> [ ] application launcher + activater like linux 
 [X] remake error in CO
 [X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
-[ ] integration du system de paiement Mango
-  [ ] create User 
-  [ ] create User Wallet 
-  [ ] create Seller 
-  [ ] create seller wallet 
-  [ ] Payin Cash
-    [ ] creates a CardRegistration 
-  [ ] setle transaction 
-  [ ] build payment interface
 >>>> [ ] faciliter la création de page static 
       [ ] avec du contenu MD
       [ ] un slideshow MD

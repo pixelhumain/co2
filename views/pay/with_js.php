@@ -32,42 +32,57 @@ $returnUrl .= 'pay/done';
 
 
 <div id ="divForm">
-    <label>Full Name</label>
-    <label><?php print $createdUser->FirstName . ' ' . $createdUser->LastName; ?></label>
-    <br />createdCardRegister->Id : <?php print $createdCardRegister->Id; ?>
-    <br />createdUser->Id : <?php print $createdUser->Id; ?>
+    
+    <div class="hide">
+        <label>Full Name</label>
+        <label><?php print $createdUser->FirstName . ' ' . $createdUser->LastName; ?></label>
+        <br />createdCardRegister->Id : <?php print $createdCardRegister->Id; ?>
+        <br />createdUser->Id : <?php 
+        print $createdUser->Id; 
+        $cbImgs = array(
+            "CB_VISA_MASTERCARD" => "visaMaster.png",
+            "MAESTRO" => "maestro.png",
+            "DINERS" => "diners.jpg"
+        );
+        ?>
+    </div>
     <div class="clear"></div>
 
     <label>Amount</label>
     <label><?php print $amount . ' ' . $currency; ?></label>
     <div class="clear"></div>
+    
+    <div class="col-md-6">
+    <img src="<?php echo Yii::app()->controller->module->assetsUrl?>/images/pay/<?php echo $cbImgs[$createdCardRegister->CardType]?>" width=150/>
+    </div>
+    <div class="col-md-6">
+        <form id="paymentForm">
+            <label for="cardNumber">Card Number</label>
+            <input type="text" name="cardNumber" value="4706750000000009" />
+            <div class="clear"></div>
 
-    <form id="paymentForm">
-        <label for="cardNumber">Card Number</label>
-        <input type="text" name="cardNumber" value="4706750000000009" />
-        <div class="clear"></div>
+            <label for="cardExpirationDate">Expiration Date</label>
+            <input type="text" name="cardExpirationDate" value="0118" />
+            <div class="clear"></div>
 
-        <label for="cardExpirationDate">Expiration Date</label>
-        <input type="text" name="cardExpirationDate" value="0118" />
-        <div class="clear"></div>
+            <label for="cardCvx">CVV</label>
+            <input type="text" name="cardCvx" value="123" />
+            <div class="clear"></div>
+            <br>
 
-        <label for="cardCvx">CVV</label>
-        <input type="text" name="cardCvx" value="123" />
-        <div class="clear"></div>
-        <br>
-
-        <input type="button" value="Register with Ajax (will fail for non supporting CORS browsers)" id="payAjax" />
-        <div class="clear"></div>
-        <br>
-        <?php /*
-        <input type="button" value="Register with Ajax or redirect if no CORS support" id="payAjaxOrRedirect" />
-        <div class="clear"></div>
-		<br>
-		
-        <input type="button" value="Register with redirect and then pay" id="payRedirect" />
-        <div class="clear"></div>
-        */?>
-    </form>
+            <input type="button" value="Register with Ajax (will fail for non supporting CORS browsers)" id="payAjax" />
+            <div class="clear"></div>
+            <br>
+            <?php /*
+            <input type="button" value="Register with Ajax or redirect if no CORS support" id="payAjaxOrRedirect" />
+            <div class="clear"></div>
+    		<br>
+    		
+            <input type="button" value="Register with redirect and then pay" id="payRedirect" />
+            <div class="clear"></div>
+            */?>
+        </form>
+    </div>
 
 </div>
 
@@ -142,7 +157,7 @@ function payin (cardId) {
         currency : "EUR"
     };
     ajaxPost( "#checkoutCart", baseUrl+"/"+moduleId+'/pay/in' , params, function() { 
-        alert("return from payin");
+        //alert("return from payin");
      } , "html" );
 
 }

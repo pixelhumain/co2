@@ -112,7 +112,22 @@
     </div>
 
     <div class="col-md-10 col-md-offset-1 contentOnePage" style="margin-top:100px">
+    
+        <style type="text/css">
+            .cbType{
+                padding: 5px;
+            }
+            .activePay{
+                border: 2px solid #333;
+             }
+        </style>
         <div class="contentCheckout shadow2 col-md-12 no-padding text-center"></div>
+        <div class=" shadow2 col-md-12 padding-20 text-center">
+            Cliquez pour changer de mode de paiement :<br/>
+            <a href='javascript:;' onclick="shopping.checkout('CB_VISA_MASTERCARD')"><img class="cbType CB_VISA_MASTERCARD activePay" src="<?php echo Yii::app()->controller->module->assetsUrl?>/images/pay/visaMaster.png" height=50/> </a>
+             <a href='javascript:;' onclick="shopping.checkout('MAESTRO')"><img class="cbType MAESTRO" src="<?php echo Yii::app()->controller->module->assetsUrl?>/images/pay/maestro.png" height=50/></a>
+            <a href='javascript:;' onclick="shopping.checkout('DINERS')"><img class="cbType DINERS"  src="<?php echo Yii::app()->controller->module->assetsUrl?>/images/pay/diners.jpg" height=50/></a> 
+        </div>
         <div class="contentCB shadow2 col-md-12 no-padding text-center"></div>
         <div class='col-md-12 pull-right btn-cart margin-top-20 no-padding'>
             <a href='javascript:;' onclick='shopping.buyCart();' class='btn bg-orange text-white pull-right col-md-3' onclick=''>Validate</a>

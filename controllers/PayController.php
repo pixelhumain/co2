@@ -55,8 +55,8 @@ class PayController extends CommunecterController {
 
 			$cardRegister = new \MangoPay\CardRegistration();
 			$cardRegister->UserId = $mUser->Id;
-			$cardRegister->Currency = (@$_GET["cur"]) ? $_GET["cur"] : "EUR";
-			$cardRegister->CardType = (@$_GET["card"]) ? $_GET["card"] : "CB_VISA_MASTERCARD"; //or alternatively MAESTRO or DINERS etc
+			$cardRegister->Currency = (!empty($_GET["cur"])) ? $_GET["cur"] : "EUR";
+			$cardRegister->CardType = (!empty($_GET["card"])) ? $_GET["card"] : "CB_VISA_MASTERCARD"; //or alternatively MAESTRO or DINERS etc
 			$createdCardRegister = $api->CardRegistrations->Create($cardRegister);
 
 

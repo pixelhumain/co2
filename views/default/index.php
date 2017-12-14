@@ -22,6 +22,7 @@ on garde les librairies specifique au module dans le module
 
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+	HtmlHelper::registerCssAndScriptsFilesOverwrite();
 
 	function random_pic()
     {

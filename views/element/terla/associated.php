@@ -1,4 +1,4 @@
-<div class="col-xs-12 associated">
+<div class="col-xs-12 associated margin-bottom-15">
 
    <div class="col-xs-4 col-sm-3 text-right letter-lightgray"><h5>Associated product</h5></div>
    <div class="col-xs-4 col-sm-7"><hr></div>

@@ -1,14 +1,10 @@
 <?php 
 
   HtmlHelper::registerCssAndScriptsFiles( 
-    array(
-        '/css/calendar.css',
-    ) , 
-  Yii::app()->theme->baseUrl. '/assets');
- $cssAnsScriptFilesModule = array(
-    '/js/default/calendar.js',
-  );
-  HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+    array('/css/calendar.css',) ,Yii::app()->theme->baseUrl. '/assets');
+ 
+  HtmlHelper::registerCssAndScriptsFiles(
+    array('/js/default/calendar.js',), $this->module->assetsUrl);
 
   $cssAnsScriptFilesTheme = array(
     '/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
@@ -74,7 +70,7 @@
    }
    .dateHeader{
         /*border-bottom: 1px solid rgba(0,0,0,0.1);*/
-        padding: 15px 0px;
+        padding: 15px;
    }
    .contentHoursSession{
     border-top: 1px solid rgba(0,0,0,0.1);
@@ -107,6 +103,13 @@
       margin-top: 100px;
    }
 
+   .fc-center h2{
+    margin-top: 10px !important;
+    font-size: 20px !important;
+    color: #EF5B34;
+
+   }
+
 </style>
 <div id="circuit">
     <?php if(!@$viewRender){ ?> 
@@ -117,53 +120,81 @@
     </div>
     <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12 contentOnePage">
     <?php } ?>
-      <div class="circuitsInfo shadow2 col-md-12 col-sm-12 col-xs-12 no-padding text-center">
-        <h2 id="name"></h2>
-        <span id="description" class="text-dark"></span><br/>
-        <span id="capacity">Capacity : <span class="capacityValue"></span></span><br/>
-        <span id="frequency">Frequency : <span class="frequencyValue"></span></span>
-        <h3 id="total">Total of circuit per person : <span class="totalValue"></span> €</h3>
-        <div class='col-md-12 col-sm-12 col-xs-12 btn-cart margin-top-20 margin-bottom-20 no-padding text-center'>
+      <div class="circuitsInfo shadow2 col-md-12 col-sm-12 col-xs-12 padding-20 text-left margin-top-50">
+        <h2 id="name" class="letter-orange"></h2>
+        <hr>
+        <span id="description" class="text-dark"></span>
+        <hr>
+        <span id="capacity"><?php echo Yii::t("common","Capacity") ?> : <span class="capacityValue"></span></span>
+        <br/>
+        <span id="frequency"><?php echo Yii::t("common","Frequency") ?> : <span class="frequencyValue"></span></span>
+        <hr>
+        <h4 id="total"><?php echo Yii::t("common","Total of circuit per person") ?> : <span class="totalValue"></span> €</h4>
+        
+        <div class='col-md-12 col-sm-12 col-xs-12 btn-cart margin-top-20 margin-bottom-20 no-padding text-left'>
           <?php if(!@$manage){ ?>
-            <a href='#activities' class='letter-blue lbh'>
-                <?php echo Yii::t("common","Continue cart") ?>
+
+              <a href='#activities' class='btn btn-link letter-blue lbh padding-top-5'>
+                <i class='fa fa-chevron-right'></i> <?php echo Yii::t("common","Continue cart") ?>
               </a>
-              <a href='javascript:;' onclick='circuit.backup();' class='btn bg-orange col-md-4 col-sm-4 col-md-offset-2 col-sm-offset-2 col-xs-10 col-xs-offset-1'>
+              <a href='javascript:;' onclick='circuit.backup();' 
+                 class='btn bg-orange col-md-4 col-sm-4 col-xs-12 margin-right-5 margin-bottom-5'>
                 <i class='fa fa-floppy-o'></i> <?php echo Yii::t("common","Backup") ?>
               </a>
-              <a href='javascript:;' onclick='circuit.save();' class='btn btn-success col-md-4 col-sm-4 col-xs-10 col-xs-offset-1'>
-                <i class='fa fa-check'></i><?php echo Yii::t("common","Save")?>
+              <a href='javascript:;' onclick='circuit.save();' 
+                 class='btn btn-success col-md-4 col-sm-4 col-xs-12 margin-right-5'>
+                <i class='fa fa-check'></i> <?php echo Yii::t("common","Save")?>
               </a>
+
           <?php }else if($manage=="backup"){ ?>
-            <a href="javascript:;" id="goBackToThisCart" class="btn btn-success col-md-4 col-sm-4 col-md-offset-2 col-sm-offset-2 col-xs-10 col-xs-offset-1" data-id="<?php echo @$backup ?>">
+            <a href="javascript:;" id="goBackToThisCart" 
+                class="btn btn-success col-md-4 col-sm-4 col-md-offset-2 col-sm-offset-2 col-xs-10 col-xs-offset-1" 
+                data-id="<?php echo @$backup ?>">
               <i class="fa fa-ravelry"></i> <?php echo Yii::t("common","Continue this cart") ?>
             </a>
-            <a href="javascript:;" id="deleteBackup" class="btn btn-danger col-md-4 col-sm-4 col-xs-10 col-xs-offset-1" data-id="<?php echo @$backup ?>">
+            <a href="javascript:;" id="deleteBackup" class="btn btn-danger col-md-4 col-sm-4 col-xs-10 col-xs-offset-1" 
+               data-id="<?php echo @$backup ?>">
               <i class="fa fa-trash"></i> <?php echo Yii::t("common","Delete") ?>
             </a>
+
           <?php }else if($manage=="admin"){ ?>
-            <a href="javascript:alert('pourtoi rapha, edit information circuits')" class="btn btn-default" data-id="<?php echo @$backup ?>"><i class="fa fa-pencil"></i> <?php echo Yii::t("common","Edit infos") ?></a>
-            <a href="javascript:alert('go to circuit.obj to continue building cart si pas de résa')" class="btn btn-default" data-id="<?php echo @$backup ?>">
+            <a href="javascript:alert('pourtoi rapha, edit information circuits')" class="btn btn-default" 
+               data-id="<?php echo @$backup ?>"><i class="fa fa-pencil"></i> <?php echo Yii::t("common","Edit infos") ?>
+            </a>
+            <a href="javascript:alert('go to circuit.obj to continue building cart si pas de résa')" 
+               class="btn btn-default" data-id="<?php echo @$backup ?>">
               <i class="fa fa-ravelry"></i> <?php echo Yii::t("common","Update circuit") ?>
             </a>
             <a href="javascript:alert('delete this circuit if no résa');" class="btn btn-danger">
               <i class="fa fa-trash"></i> <?php echo Yii::t("common","Delete") ?>
             </a>
+
           <?php }else if($manage=="buy"){ ?>
-              <span class="text-dark">Choose the quantity</span><br/>
-              <div class="col-md-6 col-sm-6 col-md-offset-4 col-sm-offset-4 col-xs-10 col-xs-offset-1 margin-bottom-20">
-                <input type="number" name="quantity" value="1" min="1" max="<?php echo $object["capacity"] ?>" id='bookingFor' class="form-control"/>
-              </div>
-              <a href='javascript:;' class='btn bg-orange col-md-6 col-sm-6 col-md-offset-4 col-sm-offset-4 col-xs-10 col-xs-offset-1 convertToShoppingCart'>
+            <hr>
+            <span class="text-dark"><?php echo Yii::t("common","Choose the quantity") ?></span><br/>
+            <div class="col-md-6 col-sm-6 col-xs-12 no-padding margin-bottom-20">
+              <input type="number" name="quantity" value="1" min="1" max="<?php echo $object["capacity"] ?>" 
+                     id='bookingFor' class="form-control"/>
+            </div>
+            <div class='col-md-6 col-sm-6 col-xs-12'>
+              <a href='javascript:;' class='btn bg-orange convertToShoppingCart'>
                 <i class='fa fa-shopping-cart'></i> <?php echo Yii::t("terla","Buy this circuit") ?>
               </a>
+            </div>
           <?php } ?>
         </div>
       </div>
-    	<div class="contentCalendarCircuit shadow2 col-md-12 col-sm-12 col-xs-12 no-padding text-center">
-      </div>
       <div class="contentCircuit shadow2 col-md-12 col-sm-12 col-xs-12 no-padding text-center">
     	</div>
+
+      <div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-top-50 margin-bottom-50">
+        <button class="btn btn-link bg-orange" id="btn-show-calendar">
+          <i class="fa fa-calendar"></i> Afficher le calendrier
+        </button>
+      </div>
+
+      <div class="contentCalendarCircuit shadow2 col-md-12 col-sm-12 col-xs-12 no-padding text-center">
+      </div>
     <?php if(!@$viewRender){ ?>
     </div>
     <?php } ?>
@@ -171,19 +202,22 @@
 
 <?php 
   if(!@$viewRender){
-    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.'; 
-    $this->renderPartial($layoutPath.'footer', array("subdomain"=>"page"));
+    //$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.'; 
+    //$this->renderPartial($layoutPath.'footer', array("subdomain"=>"page"));
   } 
 ?>
 <script type="text/javascript">
     var totalCircuit=0;
+
     <?php if(@$object){ ?>
       var circuitObj=<?php echo json_encode($object) ?>;
     <?php }else{ ?>
       var circuitObj=circuit.obj;
     <?php } ?>
+
     var openDetails=[];
     var eventsCircuit=[];
+
 	jQuery(document).ready(function() {	
         //if(typeof params.name != "undefined" && params.name != "")
       initBtnLink();
@@ -192,6 +226,8 @@
         bookingFor=$("#bookingFor").val();
         circuit.goToShoppingCart(circuitObj,bookingFor);
       });
+
+
       htmlCart = "";
       if(circuitObj.countQuantity > 0 ){
       	circuitView = circuit.generateCircuitView(circuitObj);
@@ -199,6 +235,7 @@
       } else {
       	htmlCircuit=circuit.generateEmptyCircuitView();
       }
+
       circuit.initHeaderCircuit(circuitObj);
       $(".contentCircuit").html(htmlCircuit);
       if(notEmpty(eventsCircuit)){
@@ -216,6 +253,12 @@
             $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(circuitObj.start));
         });
       }
+
+
+      $(".contentCalendarCircuit").hide();
+      $("#btn-show-calendar").click(function(){
+        $(".contentCalendarCircuit").toggle();
+      });
 //      bindCartEvent();
     });
     

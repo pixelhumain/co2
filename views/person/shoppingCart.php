@@ -93,11 +93,11 @@
 <div id="shoppingCart">
     <div class="headerTitleStanalone">
         <div class='col-md-6 no-padding'>
-            <span>Shopping cart</span>
+            <span><?php echo Yii::t("common","Shopping cart") ?></span>
         </div>
     </div>
     <div class="col-md-10 col-md-offset-1 contentOnePage">
-    	<div class="contentCart shadow2 col-md-12 no-padding text-center">
+    	<div class="contentCart shadow2 col-md-12 padding-15 text-center">
     	</div>
     </div>
 </div>
@@ -107,19 +107,19 @@
 
     <div class="headerTitleStanalone">
         <div class='col-md-6 no-padding'>
-            <span>Checkout</span>
+            <span><?php echo Yii::t("common","Checkout") ?></span>
         </div>
     </div>
 
     <div class="col-md-10 col-md-offset-1 contentOnePage" style="margin-top:100px">
-        <div class="contentCheckout shadow2 col-md-12 no-padding text-center"></div>
-        <div class="contentCB shadow2 col-md-12 no-padding text-center"></div>
+        <div class="contentCheckout shadow2 col-xs-12 no-padding text-center"></div>
+        <div class="contentCB shadow2 col-xs-12 padding-15 text-left margin-top-25"></div>
         <div class='col-md-12 pull-right btn-cart margin-top-20 no-padding'>
-            <a href='javascript:;' onclick='shopping.buyCart();' 
-               class='btn bg-orange text-white pull-right col-md-3' onclick=''>
+            <button onclick='shopping.buyCart();' 
+               class='btn btn-link bg-orange text-white pull-right'>
                Validate
             </a>
-            <a href='javascript:;' class='btn bg-orange pull-right col-md-3 text-white close-modal' >Continue</a>
+            <button class='btn btn-link letter-orange pull-right text-white margin-right-5' data-toggle="modal">Continue</a>
         </div>
     </div>
 

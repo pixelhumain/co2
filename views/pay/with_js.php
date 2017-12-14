@@ -34,31 +34,35 @@ $returnUrl .= 'pay/done';
 <div id ="divForm">
     <label>Full Name</label>
     <label><?php print $createdUser->FirstName . ' ' . $createdUser->LastName; ?></label>
-    <br />createdCardRegister->Id : <?php print $createdCardRegister->Id; ?>
-    <br />createdUser->Id : <?php print $createdUser->Id; ?>
-    <div class="clear"></div>
+    <br/>createdCardRegister -> Id : <?php print $createdCardRegister->Id; ?>
+    <br/>createdUser -> Id : <?php print $createdUser->Id; ?>
+    
+    <hr>
 
     <label>Amount</label>
     <label><?php print $amount . ' ' . $currency; ?></label>
-    <div class="clear"></div>
+    
+    <hr>
 
     <form id="paymentForm">
-        <label for="cardNumber">Card Number</label>
-        <input type="text" name="cardNumber" value="4706750000000009" />
-        <div class="clear"></div>
+        <label for="cardNumber" class="col-xs-12 col-md-3 col-sm-4 text-right">Card Number</label>
+        <input type="text" name="cardNumber" value="4706750000000009" class="col-xs-12 col-md-7"/><br>
+        <div class="col-xs-12 margin-top-5"></div>
 
-        <label for="cardExpirationDate">Expiration Date</label>
-        <input type="text" name="cardExpirationDate" value="0118" />
-        <div class="clear"></div>
+        <label for="cardExpirationDate" class="col-xs-12 col-md-3 col-sm-4 text-right">Expiration Date</label>
+        <input type="text" name="cardExpirationDate" value="0118" class="col-xs-12 col-md-7"/><br>
+        <div class="col-xs-12 margin-top-5"></div>
 
-        <label for="cardCvx">CVV</label>
-        <input type="text" name="cardCvx" value="123" />
-        <div class="clear"></div>
-        <br>
+        <label for="cardCvx" class="col-xs-12 col-md-3 col-sm-4 text-right">CVV</label>
+        <input type="text" name="cardCvx" value="123" class="col-xs-12 col-md-7"/><br>
+        
 
-        <input type="button" value="Register with Ajax (will fail for non supporting CORS browsers)" id="payAjax" />
-        <div class="clear"></div>
-        <br>
+        <br><br><hr>
+
+        <input  type="button" class="pull-right" 
+                value="Register with Ajax (will fail for non supporting CORS browsers)" id="payAjax" />
+        
+        
         <?php /*
         <input type="button" value="Register with Ajax or redirect if no CORS support" id="payAjaxOrRedirect" />
         <div class="clear"></div>

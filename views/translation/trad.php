@@ -171,6 +171,11 @@ var trad = {
 	"Mode" : "Mode",
 
 	"all" : "Tous", 
+	
+	"products" : "<?php echo Yii::t("common","products") ?>", 
+	"services" : "<?php echo Yii::t("common","services") ?>", 
+	"circuits" : "<?php echo Yii::t("common","circuits") ?>", 
+	
 
 	"Project maturity" : "<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id)?>",
 	"idea" : "<?php echo Yii::t("project","idea")?>",
@@ -404,6 +409,13 @@ var trad = {
 	"testAOtherCommunexion" : "<?php echo Yii::t("home", "Test a other communexion") ?>",
 	"allcitieswiththispostalcode" : "<?php echo Yii::t("common", "All cities with this postal code") ?>",
 	"allDay" : "<?php echo Yii::t("common", "All day") ?>",
+
+	"Checkout" : "<?php echo Yii::t("common", "Checkout") ?>",
+	"Continue" : "<?php echo Yii::t("common", "Continue") ?>",
+	"Total of your order" : "<?php echo Yii::t("common", "Total of your order") ?>",
+
+	"Leave your comment" : "<?php echo Yii::t("common", "Leave your comment") ?>",
+	"Your comment" : "<?php echo Yii::t("common", "Your comment") ?>",
 
 };
 

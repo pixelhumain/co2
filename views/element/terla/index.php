@@ -3,7 +3,7 @@
 	.headerTitleStanalone{
 		left:-25px;
 		right:0px;
-		top:88px;
+		top:99px;
 	}
 	.contentOnePage{
 		margin-top: 135px;
@@ -53,7 +53,7 @@
 	}
 </style>
 <div class="headerTitleStanalone">
-	<span>My Dashboard</span> 
+	<span><?php echo Yii::t("terla", "My Dashboard"); ?></span> 
 	<?php if(!@$element["professional"]){ ?> 
 		<!--<button class="createPro bg-orange"><?php echo Yii::t("terla", "Create a professional account"); ?></button>-->
 	<?php } ?>
@@ -90,7 +90,7 @@
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link letter-lightgray" href="javascript:;" id="btn-history">
-		    	<?php echo Yii::t("common","My travels") ?>
+		    	<?php echo Yii::t("common","My circuits") ?>
 		    </a>
 		  </li>
 		  <!--<li class="nav-item">

@@ -131,11 +131,6 @@
 </style>
  
 <div class="container-result-search">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 724cb96... Merge branch 'terla' of https://github.com/pixelhumain/co2 into terla
       <?php if(@$_GET['type']!="") { ?>
         <?php $typeSelected = $_GET['type']; ?>
         <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
@@ -155,17 +150,13 @@
         </h4>
         <?php } ?>
      <?php if($typeSelected == "cities"){ ?>   
-<<<<<<< HEAD
-=======
-afazdazazdzada
+
       <?php if(@$_GET['type']!="") {
         $typeSelected = $_GET['type'];
         if($typeSelected == "persons") $typeSelected = "citoyens" ;
         $spec = Element::getElementSpecsByType($typeSelected);
       if($typeSelected == "cities"){ ?>   
->>>>>>> 724cb96b7b991212b32d40ca02a293c892836c48
-=======
->>>>>>> parent of 724cb96... Merge branch 'terla' of https://github.com/pixelhumain/co2 into terla
+
       <p class="text-center bold"> Recherchez une commune à laquelle vous communecter.<br>
           Une fois communecté, toutes vos recherches seront automatiquement filtrées en fonction de la commune choisie.
       </p>
@@ -494,27 +485,11 @@ afazdazazdzada
                         ));
           } 
         ?>
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-        <?php $col = ( !in_array($typeSelected, array("classified","products","services","circuits","events","vote","all","place") )) ? 10 : 8; ?>
-        <?php if(Yii::app()->params["CO2DomainName"] == "terla"){
-          $col = 8;
-        } ?>
-=======
-<<<<<<< HEAD
-        <?php $col = 8; 
-          echo '<div>Ajout des services sur le circuit <span id="headerServices"></span></div>';
-         ?>
-=======
-=======
->>>>>>> parent of 724cb96... Merge branch 'terla' of https://github.com/pixelhumain/co2 into terla
-
         <?php $col = ( !in_array($typeSelected, 
                        array("classified","products","services","circuits","events","vote","all","place") )) ? 10 : 8; ?>
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
->>>>>>> 724cb96b7b991212b32d40ca02a293c892836c48
+
         
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
         <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 

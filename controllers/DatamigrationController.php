@@ -2519,12 +2519,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-=======
->>>>>>> parent of 724cb96... Merge branch 'terla' of https://github.com/pixelhumain/co2 into terla
 	public function actionBatchOwnToHas() {
 		ini_set('memory_limit', '-1');
 		$where = array(	"ownACity" => true);
@@ -2545,11 +2539,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
->>>>>>> parent of 724cb96... Merge branch 'terla' of https://github.com/pixelhumain/co2 into terla
 	public function actionBatchZoneUnsetKey(){
 		ini_set('memory_limit', '-1');
 		$nbelement = 0 ;

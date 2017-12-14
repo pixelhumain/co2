@@ -318,9 +318,18 @@ afazdazazdzada
                   array("typeSelected"=>$typeSelected,
                         ));
         ?>
+<<<<<<< HEAD
         <?php $col = 8; 
           echo '<div>Ajout des services sur le circuit <span id="headerServices"></span></div>';
          ?>
+=======
+
+        <?php $col = ( !in_array($typeSelected, 
+                       array("classified","products","services","circuits","events","vote","all","place") )) ? 10 : 8; ?>
+        
+        <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
+        
+>>>>>>> a759dd8a283f289d0cdeb9b95603554747aee778
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
       <?php } ?>
   </div>
@@ -364,7 +373,7 @@ var headerParams = {
 
   "products"    : { color: "orange",   icon: "shopping-basket",   name: trad.products },
   "services"    : { color: "orange",   icon: "sun-o",   name: trad.services },
-  "circuits"    : { color: "orange",   icon: "ravelry",   name: trad.ravelry },
+  "circuits"    : { color: "orange",   icon: "ravelry",   name: trad.circuits },
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )

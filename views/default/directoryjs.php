@@ -149,19 +149,12 @@
           </span>
         </h4>
         <?php } ?>
-     <?php if($typeSelected == "cities"){ ?>   
 
-      <?php if(@$_GET['type']!="") {
-        $typeSelected = $_GET['type'];
-        if($typeSelected == "persons") $typeSelected = "citoyens" ;
-        $spec = Element::getElementSpecsByType($typeSelected);
-      if($typeSelected == "cities"){ ?>   
-
+      <?php if($typeSelected == "cities"){ ?>   
       <p class="text-center bold"> Recherchez une commune à laquelle vous communecter.<br>
           Une fois communecté, toutes vos recherches seront automatiquement filtrées en fonction de la commune choisie.
       </p>
     <?php } ?>
-
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
         <!-- <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5> -->
         <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 

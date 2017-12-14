@@ -259,10 +259,10 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			}else{
 				if(subType=="circuits"){
 					if(actionType=="backup")
-						obj=parentList[parentId].object;
+						circuit.obj=parentList[parentId].object;
 					else
-						obj=parentList[parentId];
-					getViewCircuit(obj, parentId);
+						circuit.obj=parentList[parentId];
+					getViewCircuit(circuit.obj, parentId);
 				}
 				else
 					list.initList(parentList[parentId].object, actionType);

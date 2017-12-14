@@ -22,7 +22,10 @@ on garde les librairies specifique au module dans le module
 
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+<<<<<<< HEAD
 	HtmlHelper::registerCssAndScriptsFilesOverwrite();
+=======
+>>>>>>> parent of 724cb96... Merge branch 'terla' of https://github.com/pixelhumain/co2 into terla
 
 	function random_pic()
     {

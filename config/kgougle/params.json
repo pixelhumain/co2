@@ -1,0 +1,168 @@
+{ 
+      "title" : "Kgougle",
+      "metaImg" : "/assets/img/KGOUGLE-logo-min.png",
+      "metaDesc" : "Le moteur de recherche des cagous",
+      "devises" : { "CFP" : "CFP" },
+      "deviseDefault" : "CFP",
+
+      "pages" : 
+      {
+      	"#app.index":
+                  {"redirect":"web"},
+      	
+            "#welcome": {
+                  "inMenu" : false, 
+                  "useHeader" : false, 
+                  "open" : true, 
+                  "subdomain" : "welcome", 
+                  "subdomainName" : "Accueil",
+                  "hash" : "#app.welcome",
+                  "icon" : "", 
+                  "mainTitle" : "La porte d'entrée sur le web Calédonien",
+                  "placeholderMainSearch" : "Rechercher quelque chose ...",
+                  "lblBtnCreate" : "Créer quelque chose",
+                  "colorBtnCreate" : "green"
+            },
+
+      	"#web":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true, 
+                  "subdomain" : "web", 
+                  "subdomainName" : "web",
+                  "hash" : "#app.web",
+                  "icon" : "search", 
+                  "mainTitle" : "Le moteur de recherche des cagous",
+                  "placeholderMainSearch" : "Que recherchez-vous ?"},
+
+      	"#referencement":
+      	  	{"inMenu" : false, 
+                  "useHeader" : true,
+                  "open" : true, 
+                  "subdomain" : "referencement", 
+                  "subdomainName" : "referencement",
+                  "hash" : "#app.referencement",
+                  "icon" : "search", 
+                  "mainTitle" : "Référencer une page",
+                  "placeholderMainSearch" : ""},
+
+      	"#actu":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true,
+                  "subdomain" : "actu", 
+                  "subdomainName" : "Actu",
+                  "hash" : "#app.media",
+                  "icon" : "newspaper-o", 
+                  "mainTitle" : "Fil d'actu <span class='letter-red'>média</span>",
+                  "placeholderMainSearch" : "rechercher dans l'actu ..."},
+
+      	"#live": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : false, 
+                  "subdomain" : "live", 
+                  "subdomainName" : "Live",
+                  "hash":"#app.live",
+                  "icon" : "stack-exchange", 
+                  "mainTitle" : "Fil d'actu Fil d'actu <span class='letter-red'>citoyen</span>",
+                  "placeholderMainSearch" : "search in live ..."
+            },
+
+            "#social":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true,
+                  "subdomain" : "social", 
+                  "subdomainName" : "social",
+                  "hash" : "#app.search",
+                  "icon" : "user-circle-o", 
+                  "mainTitle" : "Réseau social citoyen",
+                  "placeholderMainSearch" : "rechercher une page ...",
+                  "lblBtnCreate" : "Créer une page",
+                  "colorBtnCreate" : "green"},
+
+      	"#annonces":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : false,
+                  "subdomain" : "annonces", 
+                  "subdomainName" : "annonces",
+                  "hash" : "#app.annonces",
+                  "icon" : "bullhorn", 
+                  "mainTitle" : "Toutes vos annonces en direct",
+                  "placeholderMainSearch" : "rechercher parmis les annonces  ...",
+                  "lblBtnCreate" : "Publier une annonce",
+                  "colorBtnCreate" : "azure"},
+
+      	"#agenda":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true,
+                  "subdomain" : "agenda", 
+                  "subdomainName" : "agenda",
+                  "hash" : "#app.agenda",
+                  "icon" : "calendar", 
+                  "mainTitle" : "L'agenda collaboratif des Calédoniens",
+                  "placeholderMainSearch" : "rechercher un événement  ...",
+                  "lblBtnCreate" : "Créer un événement",
+                  "colorBtnCreate" : "orange"},
+
+            "#power":
+      	  	{"inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : false,
+                  "subdomain" : "power", 
+                  "subdomainName" : "power",
+                  "hash" : "#app.power",
+                  "icon" : "hand-rock-o", 
+                  "mainTitle" : "L'espace collaboratif des Calédoniens.",
+                  "placeholderMainSearch" : "rechercher parmis les propositions"},
+
+      	"#page":
+      	  	{"inMenu" : false, 
+                  "useHeader" : false, 
+                  "open" : true,
+                  "subdomain" : "page", 
+                  "subdomainName" : "page",
+                  "hash" : "#app.page",
+                  "icon" : "", 
+                  "mainTitle" : "Le réseau social Calédonien",
+                  "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."},
+
+      	"#info":
+      	  	{"inMenu" : false, 
+                  "useHeader" : false, 
+                  "open" : true,
+                  "subdomain" : "apropos", 
+                  "subdomainName" : "Info",
+                  "hash" : "#app.info",
+                  "icon" : "search", 
+                  "mainTitle" : "Le moteur de recherche des Cagous",
+                  "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."},
+
+            "#admin": {
+                  "inMenu" : false, 
+                  "useHeader" : true, 
+                  "open" : true, 
+                  "subdomain" : "admin", 
+                  "subdomainName" : "admin",
+                  "hash":"#admin",
+                  "icon" : "grav", 
+                  "mainTitle" : "Partie Admin",
+                  "placeholderMainSearch" : "Admin ..."
+            },
+            "#smartconso": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true, 
+                  "subdomain" : "smartconso", 
+                  "subdomainName" : "smartconso",
+                  "hash":"#app.smartconso.p.home",
+                  "icon" : "recycle", 
+                  "mainTitle" : "Consommons mieux en Nouvelle-Calédonie",
+                  "placeholderMainSearch" : "rechercher ..."
+            }
+      } 								  
+
+}

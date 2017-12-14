@@ -1,0 +1,784 @@
+// This file helps any devlopper to update his environment in order to make it work
+// according to the new development
+// Add a datetime or better a commit id linked to the modification
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+
+---------------------------------------
+----- BASH DE REPRISE DES DONNEES -----
+---------------------------------------
+
+* Version C0.22
+
+** @Rapha
+*** Batch qui tranforme les adresses des elements dans le nouveau formats
+co2/datamigration/BatchInterElement
+
+*** Batch qui tranforme les adresses des news dans le nouveau formats
+co2/datamigration/BatchInterNews
+
+----------------------------------------------------
+
+* Version C0.21.7
+
+** @BOUBOULE
+*** [!!!A passer le slugelement + SUPPRESSION DES CITOYENS SANS NOOOOM!!!] Bash de reprise sur les slugs citoyens et supprime les citoyens sans nom !!!!
+** Crée les slugs à partir des usernames et si n'y a pas d'username (premiers utilisateurs) crée les usernames à la volée
+co2/datamigration/slugifycitoyens
+
+*** Bash de reprise sur les slugs organizations, projects, events
+** Crée les slugs à partir des name + entrée dans les collections
+co2/datamigration/slugifyelement
+
+*** Bash de reprise du les notifications avec ajout du param updated dans toutes les notifs et suppression des notifs sans params $created
+co2/datamigration/CreatorUpdatedOnNotifications
+
+*** Bash sur les clés des event en francais: "concours"=>"contest" et "exposition"=>"exhibition"
+co2/datamigration/ChangeEventFrenchType
+*** Bash sur les type des poi: si type existe pas => "other", si type == poi => "other", si clé francaise => clé anglaise etc
+co2/datamigration/ChangePoiType
+
+*** A faire Bash de reprise des clés francaises POI (ex ressourceMaterielle to materialRessource) et CLASSIFIED
+TODO @TIBOR @BOUBOULE
+
+*** Bash on document used for profil and banner of element => Add boolean current : true
+co2/dataMigration/AddCurrentToDoc
+
+*** Script de relance des 2000 citoyens en attente d'inscription suite à invitation
+** Enregistrement de cron avec le template relaunchInvitation
+co2/dataMigration/relaunchinvitation 
+
+
+* MISE EN PRODUCTION CO2 
+** @Rapha
+*** Ajoute un zeo au cp
+/co2/datamigration/AddZeroPostalCode
+*** initialise les multiscopes
+/co2/datamigration/InitMultiScope
+*** ajout des geoShape au ville qui en ont pas
+/co2/datamigration/AddGeoShapeMissing
+*** change le type des telephones de object en array
+/co2/datamigration/ChangePhoneObjectToArray
+*** departement manquant
+/co2/datamigration/ChangePhoneObjectToArray
+
+** @Bouboule : 
+**** Bash de reprise des data dans les chart des projets
+/co2/datamigration/RefactorChartProjectData
+**** Bash de reprise des data dans notifications 
+****** Create notify.id as object with isUnread and isUnseen
+/co2/datamigration/UpOldNotifications
+**** Bash of object.type inbstead of object.objectType on news(!!!important with notification reactor!!!!)
+/co2/datamigration/ObjectObjectTypeNewsToObjectType
+**** Bash of sharedBy on news (refactor share) - create an array sharedBy with the author and date
+/co2/datamigration/SharedByRefactor
+**** Bash delete organizations properties !!
+co2/datamigration/RemovePropertiesOfOrganizations
+**** Params config => Mettre les deux variables à jour (celle ci sont bonnes pour la prod) => utliser dans l'accueil
+    "openatlasId" => "555eba56c655675cdd65bf19",
+    "communecterId" => "55dafac4e41d75571d848360"
+**** Supprimer les news avec un media string
+db.getCollection('news').find({ "media" : {'$type': 2},"created":{'$lt':new Date('Jun 01, 2016')}}).count()
+152 news avec un media de type string enregistrer entre janvier 2016 et mai 2016 (avant la mise en ligne de Juin)
+qui font sauté les fils des pages !! 
+**** Supprimer les news de type needs (après avoir lancer le bash ObjectObjectTypeNewsToObjectType) 
+db.getCollection('news').find("object.type":"needs") 
+
+----------------------------------------------------
+* Version 0.2
+
+[ ] MEQA 
+  [X] tagging : ph,ctk, communecter master actuel en v0.17 : v.0.17 PH-DORY 
+
+          tag v0.0.17     co2         prod
+                    |     |           |
+  master ---------------------     ------------
+                        /             \ 
+                       /               \
+  dev -----------------                 ---------
+                                          \
+                                           future devs 
+                                           ---- internationalisation ----------------  
+                                           tiers lieux ------------
+                                           dda ---------------
+MEQA
+  [X] master en v.02 
+  [X] paramsQA en v.02
+  [X] copy BDD PROD to QA
+    [X] dump PROD 
+    [X] restore QA + drop
+  [ ] transfert des images
+  [X] update ph, ctk , co2  
+  [X] script de devlog 
+
+MEP 
+  [X] update code
+  [X] paramsconfigPROD en v.02
+  [X] script de devlog 
+
+----------------------------------------------------
+
+* Version 0.17
+** @Rapha : Ajout un attribu descriptionHtml = true
+/communecter/datamigration/DescInHtml
+
+* Hot fix 0.16.3
+** @Rapha : Corrige les mauvais types des organisations
+db.organizations.find({$and: [ { type :  { $ne: "NGO" } }, { type :  { $ne: "Group" } } , { type :  { $ne: "LocalBusiness" } }, { type :  { $ne: "GovernmentOrganization" } } ] }
+).forEach(function(doc)
+{
+  if(typeof doc.type != "undefined"){
+    if(doc.type == "Entreprise" )
+      db.organizations.update({"_id":doc._id},{'$set':{'type': 'LocalBusiness'}});
+
+    if(doc.type == "Association" )
+      db.organizations.update({"_id":doc._id},{'$set':{'type': 'NGO'}});
+
+    if(doc.type == "Groupe Gouvernemental" )
+      db.organizations.update({"_id":doc._id},{'$set':{'type': 'GovernmentOrganization'}});
+
+    if(doc.type == "Groupe" )
+      db.organizations.update({"_id":doc._id},{'$set':{'type': 'Group'}});
+
+    print( '"'+doc.name+'" => '+ doc.type ); 
+  }else{
+    db.organizations.update({"_id":doc._id},{'$set':{'type': 'Group'}});
+    print( '"'+doc.name+'" => else' ); 
+  }
+});
+
+
+* Hot Fix 0.16.1
+** @Rapha : enleve l'encodage en html sur les noms des éléments
+/communecter/datamigration/NameHtmlSpecialCharsDecode
+
+** @Rapha : Ajoute les nom des dep et régions au addresse des elements
+/communecter/datamigration/AddDepAndRegionAndCountryInAddress
+
+** @Sylvain : ajout des paramètres rocketChat dans paramsconfig
+//rocketchat params
+'rocketchatEnabled' => false,
+'rocketchatURL' => "http://chat.lescommuns.org",
+
+* Hot Fix 0.16
+** @Rapha : Fix Organisation avec country = Réunion
+/communecter/datamigration/FixBugCoutryReunion
+
+----------------------------------------------------
+* Notragora
+add params in protected/config/
+-- paramsconfig.php => redirect/filter/logoUrl in $mailConfig 
+                    => front in $params
+----------------------------------------------------
+* Version 0.16
+** @Rapha : Suppression des links en doublons sur les orgas
+/communecter/datamigration/DeleteLinksHimSelf
+
+** @tango : Batch de reprise des geo.Point sur les elements
+exécuter updateGeoPosElement.org sur la base
+Exemple : 
+mongo localhost:10019/bdname --username user --password pass updateGeoPosElements.org > result.txt
+
+** @Rapha : Update Geo Belgique sur les codes postal
+/communecter/datamigration/UpdateCitiesBelgiqueGeo
+
+----------------------------------------------------
+* Version 0.15
+
+** @Rapha : Séparer Mayotte et la Réunion au niveau de la régions
+db.cities.find({'region': '04'}).forEach(function(doc)
+{
+  if(typeof doc.insee != "undefined"){
+    if(doc.insee.indexOf("976")>=0 )
+        db.cities.update({"_id":doc._id},{'$set':{'region': '06'}});
+  }
+});
+
+** @Rapha : Mettre les bon numéro de département 
+db.cities.find({'dep': '97'}).forEach(function(doc)
+{
+  if(typeof doc.insee != "undefined"){
+    if(doc.insee.indexOf("971")>=0 )
+        db.cities.update({"_id":doc._id},{'$set':{'dep':'971'}});
+    else if(doc.insee.indexOf("972")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'dep':'972'}});
+    else if(doc.insee.indexOf("973")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'dep':'973'}});
+    else if(doc.insee.indexOf("974")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'dep':'974'}});
+    else if(doc.insee.indexOf("975")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'dep':'975'}});
+    else if(doc.insee.indexOf("976")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'dep':'976'}});
+  }
+});
+
+** @Rapha
+Update Region 
+http://qa.communecter.org/communecter/datamigration/updateRegion
+
+** @tib : Update sur element
+db.citoyens.find({}).forEach(function(doc){ 
+    if(!doc.updated){
+        var d = new Date();
+        db.citoyens.update({"_id":doc._id},{'$set':{'updated': Math.round(d.getTime()/1000)-1814400} })
+        //print(doc.email+" | "+d.getTime() )
+     }
+})
+db.projects.find({}).forEach(function(doc){ 
+    if(!doc.updated){
+        var d = new Date();
+        db.projects.update({"_id":doc._id},{'$set':{'updated': Math.round(d.getTime()/1000)-1814400} })
+        //print(doc.email+" | "+d.getTime() )
+     }
+})
+db.events.find({}).forEach(function(doc){ 
+    if(!doc.updated){
+        var d = new Date();
+        db.events.update({"_id":doc._id},{'$set':{'updated': Math.round(d.getTime()/1000)-1814400} })
+        //print(doc.email+" | "+d.getTime() )
+     }
+})
+db.organizations.find({}).forEach(function(doc){ 
+    if(!doc.updated){
+        var d = new Date();
+        db.organizations.update({"_id":doc._id},{'$set':{'updated': Math.round(d.getTime()/1000)-1814400} })
+        //print(doc.email+" | "+d.getTime() )
+     }
+})
+
+db.cities.find({dep:/987/}).forEach(function(doc)
+{
+    print( '"'+doc.name+'" => array("'+doc.regionName+'","'+doc.region+'"),' ); 
+   db.cities.update({"_id":doc._id},{'$set':{'region': '07','regionName':'POLYNESIE'} })
+});
+db.cities.find({dep:/986/}).forEach(function(doc)
+{
+    print( '"'+doc.name+'" => array("'+doc.regionName+'","'+doc.region+'"),' ); 
+   db.cities.update({"_id":doc._id},{'$set':{'region': '07','regionName':'POLYNESIE'} })
+});
+db.cities.find({dep:/988/}).forEach(function(doc)
+{
+    print( '"'+doc.name+'" => array("'+doc.regionName+'","'+doc.region+'"),' ); 
+   db.cities.update({"_id":doc._id},{'$set':{'region': '08','regionName':'NOUVELLE-CALEDONIE'} })
+});
+
+** @Sylvain/Thomas/Tib : Créer les index corrects sur cities
+db.cities.dropIndexes();
+db.cities.createIndex({"geoPosition": "2dsphere"});
+db.cities.createIndex({"postalCodes.geoPosition": "2dsphere"});
+db.cities.createIndex({"geoShape" : "2dsphere" });
+db.cities.createIndex({"insee" : 1});
+db.cities.createIndex({"region" : 1});
+db.cities.createIndex({"dep" : 1});
+db.cities.createIndex({"cp" : 1});
+db.cities.createIndex({"country" : 1});
+db.cities.createIndex({"postalCodes.name" : 1});
+db.cities.createIndex({"postalCodes.postalCode" : 1});
+
+
+----------------------------------------------------
+//deja mis sur dev
+db.cities.find().forEach(function(doc)
+{
+  if(typeof doc.insee != "undefined"){
+    //print(doc.country+"_"+doc.insee); 
+    
+    if(doc.postalCodes){
+        doc.postalCodes.forEach(function(v)
+        {
+        //print(">>"+doc.country+"_"+doc.insee+"_"+v.postalCode); 
+            //if(v.postalCode == "97450")
+            //{
+                var d = new Date();
+                var categs = ["Agriculture / Alimentation", "Santé","Déchets","Aménagement, Transport, Construction","Éducation, Petite-enfance","Citoyenneté","Economie Social et Solidaire","Energie-Climat","Culture / Animation ","Biodiversité "];
+                categs.forEach(function(c)
+                {
+                    print(c+">>"+doc.country+"_"+doc.insee+"_"+v.postalCode);
+                    db.actionRooms.insert({
+                        "email" : "contact@communecter.org",
+                        "name" : c,
+                        "type" : "vote",
+                        "parentType" : "cities",
+                        "parentId" : doc.country+"_"+doc.insee+"-"+v.postalCode,
+                        "created" : parseInt(Math.round(d.getTime()/1000)),
+                        "updated" : parseInt(Math.round(d.getTime()/1000))
+                    });
+                });
+            //}
+        });
+    }  
+  }
+});
+ var t = {};
+db.cities.find().forEach(function(doc)
+{
+  if(!t[ doc.region ] ){
+      t[ doc.region ] = doc.regionName;
+    print( '"'+doc.regionName+'" => array("'+doc.regionName+'","'+doc.region+'"),' ); 
+  }
+});
+
+----------------------------------------------------
+Version 0.14
+
+@Bouboule:
+1.ph/communecter/test/addpersonmediumimage will run actionAddPersonMediumImage()
+		=> Add medium Image for each entity (Person/Organization/Event/Project)
+		=> Create image in folder /medium and size 400px x 400 px
+2.communecter/test/addeventmediumimage actionAddEventMediumImage()
+3.communecter/test/addprojectmediumimage actionAddProjectMediumImage()
+5.communecter/test/addorgamediumimage actionAddOrgaMediumImage()
+
+@Rapha Ajout et Modification des préférences pour Orga/Project/Event
+db.organizations.find({"preferences" : {$exists : false}}).forEach(function(doc){ 
+    db.organizations.update({"_id":doc._id},{
+                '$set':{'preferences': {"publicFields" : [], "privateFields" : [], "isOpenData" : true}}
+         })
+});
+
+db.organizations.find({"preferences" : {$exists : true}}).forEach(function(doc){ 
+    db.organizations.update({"_id":doc._id},{
+                '$set':{'preferences': {"publicFields" : doc.preferences.publicFields, "privateFields" : doc.preferences.privateFields, "isOpenData" : true}}
+         })
+});
+
+db.events.find({"preferences" : {$exists : false}}).forEach(function(doc){ 
+    db.events.update({"_id":doc._id},{
+                '$set':{'preferences': {"publicFields" : [], "privateFields" : [], "isOpenData" : true}}
+         })
+});
+
+db.events.find({"preferences" : {$exists : true}}).forEach(function(doc){ 
+    db.events.update({"_id":doc._id},{
+                '$set':{'preferences': {"publicFields" : doc.preferences.publicFields, "privateFields" : doc.preferences.privateFields, "isOpenData" : true}}
+         })
+});
+
+
+db.projects.find({"preferences" : {$exists : false}}).forEach(function(doc){ 
+    db.projects.update({"_id":doc._id},{
+                '$set':{'preferences': {"publicFields" : [], "privateFields" : [], "isOpenData" : true}}
+         })
+});
+
+db.projects.find({"preferences" : {$exists : true}}).forEach(function(doc){ 
+    db.projects.update({"_id":doc._id},{
+                '$set':{'preferences': {"publicFields" : doc.preferences.publicFields, "privateFields" : doc.preferences.privateFields, "isOpenData" : true}}
+         })
+});
+
+
+Version 0.13
+----------------------------------------------------
+@Rapha
+Transforme les telephones au format String dans le nouveaux format
+db.citoyens.find().forEach(function(doc){ 
+    if(typeof doc.telephone == "string") { 
+         print(doc.name);
+         db.citoyens.update({"_id":doc._id},{
+                '$set':{'telephone': {"fixe" : {0 : doc.telephone } }}
+         })
+    }
+});
+
+db.organizations.find().forEach(function(doc){ 
+    if(typeof doc.telephone == "string") { 
+         print(doc.name);
+         db.organizations.update({"_id":doc._id},{
+                '$set':{'telephone': {"fixe" : {0 : doc.telephone } }}
+         })
+    }
+});
+
+@Chil
+Efface le flag "refactorAction" mis dans comment et news via la précédente fonction RefractorNewsCommentsActions
+Executer l'url /communecter/test/DeleteAttributRefactorAction 
+
+
+db.getCollection('events').find({"geoPosition.type":"point"});
+
+//script d'inversion coordinates
+db.events.find({}).forEach( function(c){ 
+    if( c.geo && c.geo.longitude ){
+        print(c.geo.longitude)
+        
+        db.events.update({_id:c._id}, {$set: {'geoPosition': {
+            type: "Point",
+            'coordinates': [parseFloat(c.geo.longitude), parseFloat(c.geo.latitude)]
+          }}});
+  geoPos}
+})
+---------------------------------------------------
+Version 0.12
+
+@Bouboule (clement.damiens@gmail.com)
+1.Push in params config 'communeventUrl' => "https://communevent.communecter.org"
+2.Bash on news (already done on qa and dev)
+	21-ph/communecter/datamigration/refactornews will run actionRefactorNews()
+		=> Remove all id and type in and object target.id, target.type
+		=> Modify target type city to target.id=author, target.type=Person::COLLECTION
+		=> Add @params type string "news" OR "activityStream"
+		
+	22-ph/communecter/datamigration/deletenewsganttsneeds will run actionDeleteNewsGanttsNeeds()
+		=> Delete news type "activityStream" where object.objectType is "needs" OR "gantts"
+		
+	23-ph/communecter/datamigration/washingnewsnoscopetype will run actionWashingNewsNoScopeType() (CAREFULLY CAUSE NO CHECK)
+		=> Delete news where scope is undefined
+		
+	24-ph/communecter/datamigration/washingnewstargetnotexist will run actionWashingNewsTargetNotExist()
+		=> Delete news where target object is undefined
+		=> Check if target is defined else delete news
+		
+		
+3.Bash on documents (only on qa)
+	31-ph/communecter/datamigration/WashIncorrectAndOldDataDocument will run WashIncorrectAndOldDataDocument()
+		=> Wash data with array in params @size which could be string
+		=> Wash data with no type or no id, represent the target of the document
+		=> Wash data with no contentKey
+	32-ph/communecter/datamigration/changesizedocumenttobytesnumber will run actionChangeSizeDocumentToBytesNumber() 
+		=> Modify @params string $size to a number in bytes
+	33- [!!!!!!!!!!!! CAREFULLY THIS METHOD IS FOR COMMUNECTER AND NOT FOR GRANDDIR !!!!!!!!!!!!!!!!!]
+	ph/communecter/datamigration/refactorcontentkey will run actionRefactorContentKey() 
+		=> Update @params string contentKey type "person.dashboard.profil" to "profil"
+		=> String use is "profil" OR "slider"
+
+@Sylvain
+Create index on citizen email
+db.citizen.createIndex({"email": 1} , { unique: true })
+
+----------------------------------------------------
+2016/05/23 => Récupérer statistiques sur les logs
+@Chil
+Executer l'url /communecter/test/CreateLastLogStatistics
+
+----------------------------------------------------
+2016/05/20 => Structure en tableau + insertion de la date du jour pour les actions + dans la collections news et comments
+@Chil
+Executer l'url /communecter/test/RefactorNewsCommentsActions
+
+----------------------------------------------------
+2016/05/20 => Suppression des password dans la collection log
+@Chil
+Executer l'url /communecter/test/LogDeletePasswordCitoyen
+
+
+
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+----------------------------------------------------
+
+@Rapha
+Ajout du type course dans la liste des events
+db.getCollection('lists').find({name : "eventTypes"}).forEach(function(doc){
+    if(typeof  doc.listcourse == "undefined" ){
+        db.lists.update({"_id":doc._id},{
+            '$set':{'list.course': "Formation" }
+        }) 
+    }
+});
+@Rapha
+Change le type Array en Object de socialNetwork 
+db.citoyens.find().forEach(function(doc){ 
+    if(doc.socialNetwork instanceof Array == true) { 
+         print(doc.name);
+         db.citoyens.update({"_id":doc._id},{
+                '$set':{'socialNetwork': {} }
+         })
+    }
+});
+
+@Tib
+db.cities.find().forEach(function(doc)
+{
+  if(typeof doc.insee != "undefined"){
+    print(doc.country+"_"+doc.insee); 
+    db.organizations.update({"_id":doc._id},{
+        '$set':{'_id': doc.country+"_"+doc.insee}
+    })
+  }
+});
+
+SBA - Add numberOfInvit on every citizen
+db.citoyens.find().forEach(function(doc){ 
+    if(doc.numberOfInvit == null) { 
+         print(doc.name); 
+         db.citoyens.update({"_id":doc._id},{
+                '$set':{'numberOfInvit': NumberLong(10)}
+         }) 
+    }
+});
+---------------------------------------------------
+2016/03/18
+
+Mettre en cron les statistiques
+communecter/stat/createglobalstat
+
+----------------------------------------------------
+
+
+2016/03/01
+@Raphael
+Add "'isOpendata': true" for all projects which have sourceKey == "patapouf"
+
+db.organizations.find().forEach(function(doc){ 
+    if(doc.source != null) { 
+        if(doc.source.key == "patapouf"){ 
+            print(doc.name); 
+            db.organizations.update({"_id":doc._id},{
+                '$set':{'isOpendata': true}
+            }) 
+        } 
+    }
+});
+
+
+
+----------------------------------------------------
+set up indexes 
+db.cities.createIndex({"geoPosition": "2dsphere"});
+db.cities.createIndex({"postalCodes.geoPosition": "2dsphere"});
+----------------------------------------------------
+benchmarkin mongo 
+
+var timeStart = new Date();
+for(var i = 0 ; i < 70000 ; i++){
+    //db.test.insert({name:"test"+i}); //prend 30s > 
+    db.test.insert({name:"test"+i,email:"test"+i,toto:"test"+i,coco:"test"+i});//prend 33s  > 7Mb
+    db.test.insert({name:"test"+i,email:"test"+i,toto:"test"+i,coco:"test"+i,namex:"test"+i,emailx:"test"+i,totox:"test"+i,cocox:"test"+i});   // 36s > 13Mb
+    //pour 200K entré : 108s et 38Mb
+}
+var timeEnd = new Date();
+print(timeEnd-timeStart);
+----------------------------------------------------
+//adding countries to cities
+db.cities.find().forEach(function(doc)
+{
+  if(typeof doc.insee != "undefined"){
+    if(doc.insee.indexOf("971")>=0 )
+        db.cities.update({"_id":doc._id},{'$set':{'country':'GP'}});
+    else if(doc.insee.indexOf("972")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'country':'MQ'}});
+    else if(doc.insee.indexOf("973")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'country':'GF'}});
+    else if(doc.insee.indexOf("974")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'country':'RE'}});
+    else if(doc.insee.indexOf("975")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'country':'PM'}});
+    else if(doc.insee.indexOf("976")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'country':'YT'}});
+    else if(doc.insee.indexOf("988")==0 )
+        db.cities.update({"_id":doc._id},{'$set':{'country':'NC'}});
+    else
+        db.cities.update({"_id":doc._id},{'$set':{'country':'FR'}});
+  }
+});
+----------------------------------------------------
+//adding regionName to cities Nouvelle-Caledonie
+db.cities.find().forEach(function(doc)
+{
+    if(typeof doc.insee != "undefined"){
+        if(doc.insee.indexOf("988")==0 )
+            db.cities.update({"_id":doc._id},{'$set':{'regionName':'Nouvelle-Calédonie', 'depName':'Nouvelle-Calédonie'}});
+    }
+});
+----------------------------------------------------
+Update username on citizen collection.
+To launch with mongodb
+
+db.citoyens.find().forEach(function(doc){
+    if(doc.username == null) { 
+        var username = doc.email.substr(0, doc.email.indexOf('@'));
+        print(doc.name+" :  "+doc.email+": "+username);
+        db.citoyens.update({"_id":doc._id},{'$set':{'username':username}})
+    }
+});
+
+----------------------------------------------------
+Init scripts
+
+#import lists 
+cd communecter/data
+mongoimport --db pixelhumain --collection lists lists.json --jsonArray;
+
+----------------------------------------------------
+https://www.google.com/url?q=https%3A%2F%2Fgit-scm.com%2Fbook%2Ffr%2Fv1%2FLes-branches-avec-Git-Les-branches-distantes&sa=D&sntz=1&usg=AFQjCNHT0E5vbg_-BUC7xIm7guTVRBzG1Q
+
+//1. Créer une branche locale
+git branch granddir-V.0.1
+//2. Pusher la branche sur le serveur distant
+git push origin granddir-V.0.1
+//3. Si besoin checkout d'une branche distante sur une branche en local 
+//3.1 Récupérer les branches distantes nouvellement créée
+git fetch origin
+//3.2 récupérer le contenu d'une branche distante
+git checkout -b granddir-V.0.1 origin/granddir-V.0.1
+
+
+//Azot live branch
+git checkout -b azot-live-0.1 origin/azot-live-0.1
+
+
+git remote show origin
+If the remote branch you want to checkout is under "New remote branches" and not "Tracked remote branches" then you need to fetch them first:
+git remote update
+git fetch
+Now it should work:
+git checkout -b local-name origin/remote-name
+----------------------------------------------------
+
+//SBA : 12/08/2015
+New role object on Citoyen collection
+1/Backup your citoyen collection
+2/Launch the following code on your mongodb 
+db.citoyens.find().forEach(function(citoyen){
+    if(citoyen.roles == null) { 
+        print(citoyen.name+" roles is null ");
+        db.citoyens.update({"_id":citoyen._id}, 
+                    {'$set':{'roles': { 
+                        "standalonePageAccess" : true
+                    }}}
+        );
+    }
+});
+
+//SBA : 30/04/2015
+Update your config/main.php
+Now all the parameters link to your environment are stored in paramsconfig.php
+
+----------------------------------------------------
+
+//SBA : 30/04/2015 :
+How to Load cities collection
+Download the ville de france file on git : https://raw.githubusercontent.com/pixelhumain/Villes-de-France/master/cities.js
+Drop or rename any existing "cities" collection
+Load the new collection
+mongoimport --db pixelhumain --collection cities PATH_TO_MY_FILE\cities.js --jsonArray
+
+----------------------------------------------------
+//TKA : 28/04/2015  : 
+execute composer update to install Captcha libs
+and add the secret key to your paramsconfig.php
+----------------------------------------------------
+#TKA : 28/04/2015  : mettre a jour les cp dans cities
+
+db.cities.find().forEach(function(doc){
+    if(doc.insee.length == 4){ 
+        print(doc.name+" cp "+doc.insee.length+": "+doc.insee);
+        db.cities.update({"_id":doc._id},{'$set':{'insee':"0"+doc.insee}})
+    }
+});
+
+db.cities.find().forEach(function(doc){
+    if(doc.cp.length == 4){ 
+        print(doc.name+" cp "+doc.cp.length+": "+doc.cp);
+        db.cities.update({"_id":doc._id},{'$set':{'cp':"0"+doc.cp}})
+    }
+});
+
+----------------------------------------------------
+//TKA - 24/2/15
+db.organizations.update({type:"entreprise"},{"$set":{type:"LocalBusiness"}},{"multi":1})
+db.organizations.update({type:"association"},{"$set":{type:"NGO"}},{"multi":1})
+db.organizations.update({type:"group"},{"$set":{type:"Group"}},{"multi":1})
+
+DB lists update documents
+{
+    "name" : "organisationTypes",
+    "list" : {
+        "NGO" : "Association",
+        "LocalBusiness" : "Entreprise",
+        "Group" : "Group"
+    }
+}
+
+---------------------------------------------------
+
+Modifier un mail
+db.organizations.find().forEach(function(doc){ 
+    if(doc.email == "vanespen.amaury@gmail.com"){ 
+        print(doc.name+" :: " + doc.email); 
+        db.organizations.update({"_id":doc._id},{
+            '$set':{'email':""}
+        }) 
+    } 
+});
+
+TANGO - 22/05/2017
+---------------------------------------------------
+batch refactor news for SHARE
+---------------------------------------------------
+
+db.news.find({}).forEach(function(doc){ 
+    if(typeof doc.targetIsAuthor !="undefined" && doc.targetIsAuthor == "true"){
+        db.news.update({"_id":doc._id},{'$set':
+        {'sharedBy':[
+            {'id': doc.target.id,
+             'type':doc.target.type,
+             'updated': doc.created 
+            }]
+        }})
+    }else{
+        db.news.update({"_id":doc._id},{'$set':
+        {'sharedBy':[
+            {'id': doc.author,
+             'type':'citoyens',
+             'updated': doc.created 
+            }]
+        }})
+     }
+})
+
+
+TANGO - 22/05/2017
+---------------------------------------------------
+set localityid to all NC cities
+---------------------------------------------------
+
+db.cities.find().forEach(function(doc){ 
+    if(doc.country == "NC"){ 
+        print(doc.name+" :: " + doc.country + " - " + doc._id.str); 
+        db.cities.update({"_id":doc._id},{
+            '$set':{'localityId':doc._id.str}
+        }) 
+    } 
+});
+
+
+db.cities.find().forEach(function(doc){ 
+    if(doc.country == "NC"){ 
+        print(doc.name+" :: " + doc.postalCodes[0].kanakName); 
+
+        if(typeof doc.postalCodes[0].kanakName != "undefined"){
+          db.cities.update({"_id":doc._id},{
+              '$set':{'kanakName':doc.postalCodes[0].kanakName}
+          });
+        } else {
+          db.cities.update({"_id":doc._id},{
+              '$set':{'kanakName':doc.postalCodes[0].name}
+          });
+        }
+    } 
+});
+
+
+---------------------------------------------------
+Activer / Désactiver MAPBOX
+
+In file : pixelhumain/ph/protected/config/paramsconfig.php
+Default params :
+  'mapboxActive'      => true, //set to false to disable MapBox on no-local-server = prod || dev || qa (use OSM)
+  'forceMapboxActive' => false,//set to true  to use MapBox on local-server
+  'mapboxToken' => '', //pense à mettre le Token sur QA et prod pour utiliser mapbox

@@ -1,0 +1,62 @@
+{
+	"common" : { 
+		"name" : "Commons",
+		"icon" : "fa-thumbs-o-up",
+		"tags" : ["commun"]
+	}, 
+	"food": {
+		"name" : "Agriculture | Food",
+		"icon" : "fa-cutlery",
+		"tags" : ["agriculture","alimentation"]
+	},  
+	"health": {
+		"name" : "Health",
+		"icon" : "fa-heartbeat",
+		"tags" : ["santé"]
+	},  
+	"waste": {
+		"name" : "Waste",
+		"icon" : "fa-trash-o ",
+		"tags" : ["déchets"]
+	},  
+	"building": {
+		"name" : "Development | Transport | Construction",
+		"icon" : "fa-bus",
+		"tags" : ["aménagement","transport","construction"]
+	},  
+	"education": {
+		"name" : "Education | Childhood",
+		"icon" : "fa-book",
+		"tags" : ["éducation","petite Enfance"]
+	},  
+	"citizen": {
+		"name" : "Citizenship",
+		"icon" : "fa-user-circle-o",
+		"tags" : ["citoyenneté"]
+	},  
+	"economy": {
+		"name" : "Economy",
+		"icon" : "fa-money",
+		"tags" : [ "ess","economie social solidaire" ]
+	},  
+	"energy": {
+		"name" : "Energy | Climate",
+		"icon" : "fa-sun-o",
+		"tags" : ["energie" ,"climat"]
+	},  
+	"culture": {
+		"name" : "Culture | Animation",
+		"icon" : "fa-universal-access",
+		"tags" : ["culture" ,"animation"]
+	},  
+	"biodiversity": {
+		"name" : "Biodiversity",
+		"icon" : "fa-tree",
+		"tags" : ["biodiversité"]
+	},  
+	"tic": {
+		"name" : "ICT | Numeric | Internet",
+		"icon" : "fa-laptop",
+		"tags" : ["numérique","tic","internet"]
+	}
+}

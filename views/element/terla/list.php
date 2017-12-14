@@ -134,7 +134,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 				if(@$value["countOrderItem"])
 					$count=$value["countOrderItem"];
 				else if(@$subType && $subType==Circuit::COLLECTION && $actionType!="backup")
-					$count=$value["countQuantity"];
+					$count=(empty($value["countQuantity"]) ? 0 : $value["countQuantity"] );
 				else
 					$count=$value["object"]["countQuantity"];
 				?>

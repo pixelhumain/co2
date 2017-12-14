@@ -147,11 +147,12 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 
 </div>
 <script type="text/javascript">
-	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
+	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>;
 	var edit=true;
 	var subView="<?php echo @$_GET['view']; ?>";
 	var hashUrlPage = "#page.type."+contextData.type+".id."+contextData.id;
 	jQuery(document).ready(function() {
+		circuit.obj = contextData;
 		bindButtonMenu();
 		getProfilSubview(subView);
 		KScrollTo("#topPosKScroll");

@@ -254,33 +254,14 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
       	
 	});
 	function initBtnAddToCircuit(){
-		if(circuit.obj.frequency=="unique"){
+		if(notNull(contextData)){
 			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-available-calendar pull-right" '+
 						'data-toggle="modal" '+ 
 						'data-target="#modal-available">'+
 								'Add to circuit'+
 					'</a>';
-		}else if(circuit.obj.frequency=="weekly"){
-			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-add-circuit pull-right" '+
-						'data-toggle="modal" '+ 
-						'data-target="#modal-available">'+
-								'Add to circuit'+
-					'</a>';
-		}else if(circuit.obj.frequency=="twoweekly"){
-			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-add-circuit pull-right" '+
-						'data-toggle="modal" '+ 
-						'data-target="#modal-available">'+
-								'Add to circuit'+
-					'</a>';
-		}
-		else if(circuit.obj.frequency=="monthly"){
-			btn='<a href="javascript:;" class="col-md-12 btn bg-orange ssmla btn-add-circuit pull-right" '+
-						'data-toggle="modal" '+ 
-						'data-target="#modal-available">'+
-								'Add to circuit'+
-					'</a>';
-		}
-		$(".btn-admin-add-circuit").append(btn);
+			$(".btn-admin-add-circuit").append(btn);
+		}	
 	}
 	
 	

@@ -208,13 +208,7 @@
 ?>
 <script type="text/javascript">
     var totalCircuit=0;
-
-    <?php if(@$object){ ?>
-      var circuitObj=<?php echo json_encode($object) ?>;
-    <?php }else{ ?>
-      var circuitObj=circuit.obj;
-    <?php } ?>
-
+    var contextData=<?php echo json_encode($object) ?>;
     var openDetails=[];
     var eventsCircuit=[];
 
@@ -224,33 +218,33 @@
       //circuit.obj.total=0;
       $(".convertToShoppingCart").click(function(){
         bookingFor=$("#bookingFor").val();
-        circuit.goToShoppingCart(circuitObj,bookingFor);
+        circuit.goToShoppingCart(contextData,bookingFor);
       });
 
 
       htmlCart = "";
-      if(circuitObj.countQuantity > 0 ){
-      	circuitView = circuit.generateCircuitView(circuitObj);
+      if(contextData.countQuantity > 0 ){
+      	circuitView = circuit.generateCircuitView(contextData);
         htmlCircuit = circuitView.circuit;
       } else {
       	htmlCircuit=circuit.generateEmptyCircuitView();
       }
 
-      circuit.initHeaderCircuit(circuitObj);
+      circuit.initHeaderCircuit(contextData);
       $(".contentCircuit").html(htmlCircuit);
       if(notEmpty(eventsCircuit)){
         startCal=null;
         //if(typeof circuit.obj.start != "undefined")
           //startCal=circuit.obj.start;
         calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);
-        if(typeof circuitObj.start != "undefined"){
-          $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(circuitObj.start));
+        if(typeof contextData.start != "undefined"){
+          $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(contextData.start));
         }
         $(window).on('resize', function(){
           $(".contentCalendarCircuit").fullCalendar('destroy');
           calendar.showCalendar(".contentCalendarCircuit", eventsCircuit, "agendaWeek",startCal);
-          if(typeof circuitObj.start != "undefined")
-            $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(circuitObj.start));
+          if(typeof contextData.start != "undefined")
+            $(".contentCalendarCircuit").fullCalendar("gotoDate", moment(contextData.start));
         });
       }
 

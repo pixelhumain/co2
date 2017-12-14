@@ -329,11 +329,14 @@ function showCalendar() {
         		
     		});
     		element.find(".add-session").on('click', function (e) {
-    			if(circuit.obj.show){
-		    		circuit.addEvent(element, event);
-		    	}else{
-		    		shopping.addEvent(element, event);
+    			if(notNull(contextData)){
+		    		contextData.addEvent(element, event);
 		    	}
+    			// if(circuit.obj.show){
+		    	// 	circuit.addEvent(element, event);
+		    	// }else{
+		    	// 	shopping.addEvent(element, event);
+		    	// }
         		
     		});
 		}

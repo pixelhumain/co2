@@ -18,7 +18,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		padding-right: 50px;
 		left:-25px;
 		right:-25px;
-		top:88px;
+		top:99px;
 	}
 	.headerTitleStanalone span{
 		padding-top: 5px;

@@ -14,6 +14,7 @@
 	#content-social{
 		margin-top: 70px;
 		min-height:700px;
+		background-color: white;
 	}
 	.addServices, .show-form-new-circuit{
 		display:none;

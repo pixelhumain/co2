@@ -224,10 +224,12 @@ var circuit = {
 			else
 				circuit.obj.countQuantity--;
 		}
+
 		if(circuit.obj.show)
 			$('.btn-circuit').removeClass('hide');
 		else
 			$('.btn-circuit').addClass('hide');
+
 		if(circuit.obj.countQuantity > 0){
 			$(".circuit-count").html(circuit.obj.countQuantity);
 			$('.circuit-count').removeClass('hide');
@@ -282,7 +284,7 @@ var circuit = {
     	typeHtml="";
     	if(Object.keys(listItem).length){
 	        typeHtml="<div class='col-md-12 col-sm-12 col-xs-12 headerCategory margin-top-20 margin-bottom-10'>"+
-	                "<h2 class='letter-orange mainTitle text-left' style='text-transform:uppercase;'>"+label+"</h2>"+
+	                "<h2 class='letter-orange mainTitle text-left'>"+trad[label]+"</h2>"+
 	        "</div>";
     	}
         $.each(listItem,function(e,data){
@@ -307,12 +309,14 @@ var circuit = {
             itemHtml += "<div class='description'>"+data.description+"</div><br>";
                 itemHtml +="</div>";
                 if(edit){
-                	itemHtml +="<div class='col-md-2 col-sm-2 col-xs-2 text-center pull-right'><span>"+
-                		"<a href='javascript:;' class='letter-lightgray' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\");' style='line-height:120px;'><i class='fa fa-trash fa-2x'></i></a>"+
-                		"</span></div>";
+                	itemHtml +=	"<div class='col-md-2 col-sm-2 col-xs-2 text-right pull-right'>"+
+                					"<a href='javascript:;' class='btn btn-link' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\");'>"+
+                						"<i class='fa fa-trash fa-2x'></i>"+
+                					"</a>"+
+                				"</div>";
                 }
                 if(typeof data.reservations != "undefined"){
-            itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail no-padding'>"; 
+            itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 dateHoursDetail no-padding margin-top-15'>"; 
                     $.each(data.reservations, function(date, value){
                         dateStr=directory.getDateFormated({startDate:date}, true);
                         if(circuit.obj.show && circuit.obj.frequency=="unique"){
@@ -326,15 +330,14 @@ var circuit = {
 								circuit.obj.end=date;
 						}
                         arrayDate=date.split("-");
-            itemHtml += "<div class='col-md-12 col-sm-12 col-xs-12 bookDate"+date+" shadow2 margin-bottom-10'>"+
-                            "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader'>"+
-                                "<h4 class='pull-left margin-bottom-5 no-margin col-md-5 col-sm-5 col-xs-5 no-padding'><i class='fa fa-calendar'></i> "+dateStr+"</h4>";
+            itemHtml += "<div class='col-md-4 col-sm-4 col-xs-4 bookDate"+date+" margin-bottom-10'>"+
+                            "<div class='col-md-12 col-sm-12 col-xs-12 dateHeader shadow2'>"+
+                                "<h5 class='pull-left margin-bottom-5 no-margin col-md-12 col-sm-12 col-xs-12 no-padding'><i class='fa fa-calendar'></i> "+dateStr+"</h5>";
                                 if(edit){
-            itemHtml +=				"<div class='pull-right'>"+
-                                    	"<a href='javascript:;' class='text-red' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\",\""+date+"\");'>"+
-                                        	"<i class='fa fa-trash'></i> Remove this date"+
-                                        "</a>"+
-                              	  	"</div>";
+            itemHtml +=				"<br>"+
+                                	"<a href='javascript:;' class='text-red' onclick='circuit.removeInCircuit(\""+itemId+"\", \""+itemType+"\",true,\""+data.type+"\",\""+date+"\");'>"+
+                                    	"<i class='fa fa-trash'></i> Remove this date"+
+                                    "</a>";
                             	}
                            itemHtml += "</div>";
                             

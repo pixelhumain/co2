@@ -131,7 +131,6 @@
 </style>
  
 <div class="container-result-search">
-
       <?php if(@$_GET['type']!="") { ?>
         <?php $typeSelected = $_GET['type']; ?>
         <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
@@ -151,6 +150,13 @@
         </h4>
         <?php } ?>
      <?php if($typeSelected == "cities"){ ?>   
+
+      <?php if(@$_GET['type']!="") {
+        $typeSelected = $_GET['type'];
+        if($typeSelected == "persons") $typeSelected = "citoyens" ;
+        $spec = Element::getElementSpecsByType($typeSelected);
+      if($typeSelected == "cities"){ ?>   
+
       <p class="text-center bold"> Recherchez une commune à laquelle vous communecter.<br>
           Une fois communecté, toutes vos recherches seront automatiquement filtrées en fonction de la commune choisie.
       </p>
@@ -479,9 +485,11 @@
                         ));
           } 
         ?>
-
-        <?php $col = ( !in_array($typeSelected, array("classified","products","services","circuits","events","vote","all","place") )) ? 10 : 8; ?>
+        <?php $col = ( !in_array($typeSelected, 
+                       array("classified","products","services","circuits","events","vote","all","place") )) ? 10 : 8; ?>
+        
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
+
         
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
         <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
@@ -529,7 +537,7 @@ var headerParams = {
 
   "products"    : { color: "orange",   icon: "shopping-basket",   name: trad.products },
   "services"    : { color: "orange",   icon: "sun-o",   name: trad.services },
-  "circuits"    : { color: "orange",   icon: "ravelry",   name: trad.ravelry },
+  "circuits"    : { color: "orange",   icon: "ravelry",   name: trad.circuits },
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )

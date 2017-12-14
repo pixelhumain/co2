@@ -329,37 +329,37 @@ var shopping = {
     				"<a href='javascript:alert(\"Kill all mother fuck\")' class='text-white padding-5' onclick=''><i class='fa fa-trash'></i> Empty</a>"+
     			"</div>"+
     		"</div>"+
-    		"<div class='col-md-11' style='margin-left:4.133333333%'>";
+    		"<div class='col-xs-12'>";
     		str+=htmls.itemHtml;
-    		str+="<div class='col-md-12 bg-orange-1 padding-5 margin-top-20'>"+
-    				"<div class='pull-right'>"+
-    					"<h3 class='letter-orange no-margin totalPrice'>Total of your order: "+shopping.totalCart+" euros</h3>"+
+    		str+="<div class='col-xs-12 bg-orange padding-10 margin-top-20 radius-5 text-right'>"+
+    				"<h4 class='text-white no-margin totalPrice'>"+
+    					"<small class='text-white'>"+trad["Total of your order"] + " : </small>"+shopping.totalCart+
+    					"<small class='text-white'> euros</small>"+
+    				"</h4>"+
+    			"</div>";
+    		str+="<div class='col-xs-12 pull-right btn-cart margin-top-20 no-padding'>"+
+					"<button onclick='shopping.checkout();' class='btn btn-link bg-orange text-white pull-right'>"+trad["Checkout"] +"</button>"+
+					"<button class='btn btn-link letter-orange pull-right margin-right-10 text-white' data-toggle='modal'>"+trad["Continue"] +"</button>"+
+    				"<div class='margin-top-10 pull-left'>"+
+    					"* folder fee included and delivery tax not included"+
     				"</div>"+
-    			"</div>";
-    		str+="<div class='col-md-12 pull-right btn-cart margin-top-20 no-padding'>"+
-    					"<a href='javascript:;' onclick='shopping.checkout();' class='btn bg-orange text-white pull-right col-md-3' onclick=''>Checkout</a>"+
-    					"<a href='javascript:;' class='btn bg-orange pull-right col-md-3 text-white close-modal' >Continue</a>"+
-    			"</div>";
-    		str+="<div class='col-md-12 margin-top-10 text-left'>"+
-    				"<span>* folder fee included and delivery tax not included</span>"+
-    			"</div></div>";
+    			"</div>" +
+    		"</div>";
 
 		//******************************************
 		// CHECKOUT 
 		//******************************************
-		cStr = "<div class='col-md-12 bg-orange padding-10'>"+
+		cStr = "<div class='col-xs-12 bg-orange padding-10'>"+
     			"<div class='pull-left'>"+
-    				"<span class='text-white'> CHECKOUT </span>"+
+    				"<span class='text-white'> " + trad["Checkout"] + " </span>"+
     			"</div>"+
     		"</div>"+
-    		"<div class='col-md-11' style='margin-left:4.133333333%'>";
+    		"<div class='col-xs-12'>";
     		cStr += htmls.sellerHtml;
-    		cStr += "<div class='col-md-12 bg-orange-1 padding-5 margin-top-20'>"+
-    				"<div class='pull-right'>"+
-    					"<h3 class='letter-orange no-margin totalPrice'>Passer à la caisse: "+shopping.totalCart+" euros</h3>"+
-    				"</div>"+
-    			"</div>";
-    		cStr += "<div class='col-md-12 margin-top-10 text-left'>"+
+    		cStr += "<div class='pull-right bg-orange text-right padding-5 margin-top-20 radius-5'>"+
+    					"<h4 class='text-white no-margin totalPrice'>Passer à la caisse : "+shopping.totalCart+" euros</h4>"+
+    				"</div>";
+    		cStr += "<div class='col-xs-12 padding-15 text-right'>"+
     				"<span>* folder fee included and delivery tax not included</span>"+
     			"</div></div>";
     	return { cart : str , checkout : cStr };
@@ -406,12 +406,13 @@ var shopping = {
         var sellerHtml = "";
         $.each(shopping.checkoutObj.sellers,function(id,seller){
             console.log(seller);
-            sellerHtml += "<div class='col-md-12 headerCategory margin-top-20'>"+
-            "<div class='col-md-12'>"+
-                "<h2 class='letter-orange mainTitle text-left'>"+id+"<h3 class='pull-right subTitleCart letter-orange'>"+seller.total+" ttc<h3></h2>"+
-            "</div>"+
-            
-        "</div>";
+            sellerHtml += 	"<div class='col-md-12 headerCategory margin-top-20'>"+
+					            "<div class='col-md-12'>"+
+					                "<h5 class='letter-orange text-left'>"+id+
+					                	"<span class='pull-right subTitleCart'>"+seller.total+" ttc</span>"+
+					                "<h5>"+
+					            "</div>"+            
+        					"</div>";
         });
 
         return { "itemHtml" : itemHtml , "sellerHtml" : sellerHtml };

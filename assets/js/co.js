@@ -2582,12 +2582,14 @@ var list = {
 			btnAction="<a href='#page.type."+type+".id."+data._id.$id+"' class='lbh btn bg-orange linkBtnList'>Manage it</a>";
 		else if(action=="history"){
 			btnAction="save";
-			labelAction="Leave your comment";
+			labelAction=trad["Leave your comment"];
 			if(typeof data.comment != "undefined"){
 				btnAction="show";
 				labelAction="Show your comment";
 			}
-			btnAction="<a href='javascript:;' class='btn bg-green orderItemComment linkBtnList' data-id='"+data._id.$id+"' data-action='"+btnAction+"'>"+labelAction+"</a>";
+			btnAction="<button class='btn btn-link bg-green-k orderItemComment linkBtnList' data-id='"+data._id.$id+"' data-action='"+btnAction+"'>"+
+						labelAction+
+					  "</button>";
 		}
     	if(!data.useMinSize)
         	data.imgProfil = "<i class='fa fa-image fa-3x'></i>";
@@ -2614,10 +2616,7 @@ var list = {
 				btnAction+
 			"</div>";
 		if(action=="history"){
-			str+= "<div class='col-md-12 col-sm-12 col-xs-12'>"+
-				"<div id='content-comment-"+data._id.$id+"' class='col-md-5 col-sm-5 col-xs-6 pull-right contentRatingComment'>"+
-				"</div>"+
-			"</div>"
+			str+= "<div id='content-comment-"+data._id.$id+"' class='col-xs-12 no-padding contentRatingComment'></div>";
 		}
 		if(action=="backup"){
 			if(typeof data.reservations != "undefined"){

@@ -39,7 +39,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	}
 	.contentListItem .linkBtnList{
 		position: absolute;
-	    right: 30px;
+	    right: 0px;
 	    bottom: 10px;
 	    min-width: 170px;
 	    border-radius: 2px;
@@ -148,18 +148,37 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	<?php if(!@$subType || $subType!=Circuit::COLLECTION){ ?>
 	<div id="headerList" class="col-md-9 col-sm-9 col-xs-9 margin-bottom-20">
 		<h4 class="col-md-12 col-sm-12 title no-padding letter-orange"><?php echo $nameHeader ?></h4>
-		<span>Price of this command: <span class="price"><?php echo $priceHeader ?> <?php echo $currencyHeader ?></span></span> 
+		<?php if($actionType=="history"){ ?>
+			<br/>
+			<a href='#circuit.index.id.<?php echo $circuitId ?>.tpl.show' data-modalshow="$circuitId" 
+				class="lbhp btn bg-orange pull-right" id="programView">
+				<?php echo Yii::t("common", "Show programmation") ?>
+			</a>
+		<?php } ?>
+		
+		<span>
+			<?php echo Yii::t("common", "Price of this command") ?> : 
+			<span class="price"><?php echo $priceHeader ?> <?php echo $currencyHeader ?></span>
+		</span> 
+
 		<a href="<?php echo Yii::app()->createUrl('/co2/pdf/create/id/'.$key) ;?>" target="_blank">
 			<i class='fa fa-file-pdf-o'></i>
 		</a><br/>
-		<span class="purchases"><i><?php echo $countHeader; ?> purchase<?php if ($countHeader >1) echo "s" ?></i></span>
-		<?php if($actionType=="history"){ ?>
-			<br/><a href='#circuit.index.id.<?php echo $circuitId ?>.tpl.show' data-modalshow="$circuitId" class="lbhp btn bg-orange" id="programView">Show programmation</a>
-		<?php } ?>
+
+		<span class="purchases">
+			<i><?php echo $countHeader; ?> <?php echo Yii::t("common", "purchase") ?>
+				<?php if ($countHeader >1) echo "s" ?>
+			</i>
+		</span>
+
 		<?php if($actionType=="backup") { ?>
 			<div class="pull-right">
-				<a href="javascript:;" id="goBackToThisCart" class="btn btn-success" data-id="<?php echo $key ?>">Continue this cart</a>
-				<a href="javascript:;" id="deleteBackup" class="btn btn-danger" data-id="<?php echo $key ?>">Delete</a>
+				<a href="javascript:;" id="goBackToThisCart" class="btn btn-success" data-id="<?php echo $key ?>">
+					<?php echo Yii::t("common", "Continue this cart") ?>
+				</a>
+				<a href="javascript:;" id="deleteBackup" class="btn btn-danger" data-id="<?php echo $key ?>">
+					<?php echo Yii::t("common", "Delete") ?>
+				</a>
 			</div>
 		<?php } ?>
 	</div>

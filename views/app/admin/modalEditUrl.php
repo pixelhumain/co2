@@ -189,11 +189,18 @@
 ?>
 
 <script type="text/javascript">
+var contextData;
+var formType = "poi";
+var coordinatesPreLoadedFormMap = [0, 0];
 
 var coordinatesPreLoadedFormMap = new Array(0, 0);
 var noShowAjaxModal = false;
 
 jQuery(document).ready(function() {
+
+    mapBg = Sig.loadMap("mapCanvas", initSigParams);
+    Sig.showIcoLoading(false);
+
     $(".btn-save-maj-metadata").click(function(){
         sendReferencement();
     });
@@ -263,11 +270,71 @@ jQuery(document).ready(function() {
         });
     });
 
-    
-
     buildListCategoriesForm();
 });
 
+function preLoadAddress(bool, addressCountry, cityInsee, cityName, cityCp, cityLat, cityLng, street, 
+                        id, l1, l1n, l3, l3n, l4, l4n){
+    contextData = {
+        "address": {
+             "@type" : "PostalAddress",
+            "codeInsee" : "98818",
+            "streetAddress" : street,
+            "postalCode" : cityCp,
+            "addressLocality" : cityName,
+            "level1" : l1,
+            "level1Name" : l1n,
+            "addressCountry" : addressCountry,
+            "localityId" : id,
+            "level3" : l3,
+            "level3Name" : l3n,
+            "level4" : l4,
+            "level4Name" : l4n
+        },
+        "geo" : {
+            "@type" : "GeoCoordinates",
+            "latitude" : cityLat,
+            "longitude" : cityLng
+        },
+        "geoPosition": {
+            "type" : "Point",
+            "coordinates" : [ 
+                cityLng, 
+                cityLat
+            ]
+        }
+    };
+
+    /*
+        "address" : {
+            "@type" : "PostalAddress",
+            "codeInsee" : "98818",
+            "streetAddress" : "",
+            "postalCode" : "98800",
+            "addressLocality" : "NOUMEA",
+            "level1" : "58be4bd194ef47e31d0ddbcb",
+            "level1Name" : "Nouvelle-Calédonie",
+            "addressCountry" : "NC",
+            "localityId" : "54c0965cf6b95c141800a58a",
+            "level3" : "59e9947176a1678016ee7ced",
+            "level3Name" : "Province Sud",
+            "level4" : "59e996fb76a1678016ee7cf0",
+            "level4Name" : "Drubea-Kapumè"
+        },
+        "geo" : {
+            "@type" : "GeoCoordinates",
+            "latitude" : "-22.286872708692744",
+            "longitude" : "166.4531707763672"
+        },
+        "geoPosition" : {
+            "type" : "Point",
+            "coordinates" : [ 
+                166.453170776367, 
+                -22.2868727086927
+            ]
+        },
+    */
+}
 function sendReferencement(){
     console.log("start referencement");
 

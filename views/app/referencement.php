@@ -247,7 +247,7 @@ jQuery(document).ready(function() {
         $("#info-select-cat").addClass("hidden");
     });
 
-    $(".btn-scope").click(function(){
+    $(".btn-scope").click(function(){ console.log(".btn-scope");
     	//h4-name-city btn-select-city name-city-selected
     	var cityId = $(this).data("city-id");
         var cityName = $(this).data("city-name");
@@ -267,6 +267,8 @@ jQuery(document).ready(function() {
 
     	$("#h4-name-city, #form-street, #btn-find-position, #name-city-selected").show();
     	$("#name-city-selected").html(cityName + ", " + cityCp);
+
+        console.log(".btn-scope", cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng);
 
     	formInMap.formType = "url";
         coordinatesPreLoadedFormMap = [cityLat, cityLng];

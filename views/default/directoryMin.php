@@ -1,7 +1,28 @@
 <style>
-    
-.el-nowList:hover{
+
+.el-dirMin:hover{
     width: 100%;
+    background-color: #f6f6f6;
+}
+
+.el-dirMin{
+    background-color: white;
+}
+
+.el-dirMin .address{
+    display: inline;
+}
+.el-dirMin:hover .address{
+    display: inline;
+}
+
+.el-dirMin .tags{
+    margin: -10px 0 5px 0;
+}
+.el-dirMin small.letter-red{
+    margin: 0px 5px 5px 2px;
+    display: inline;
+    font-size: 11px;
 }
 
 </style>
@@ -27,7 +48,7 @@
         $v["updatedLbl"] = Translate::pastTime(@$v["updated"], "timestamp");
     ?>
 
-    <a href="<?php echo $elUrl; ?>" class="<?php if(!@$target){ ?>lbh<?php } ?> shadow2 margin-bottom-5 col-xs-12 no-padding el-nowList <?php echo $type." ". $class; ?>" <?php if(@$target=="blank") { ?> target="_blank"<?php } ?>>
+    <a href="<?php echo $elUrl; ?>" class="<?php if(!@$target){ ?>lbh<?php } ?> shadow2 margin-bottom-5 col-xs-12 no-padding el-dirMin <?php echo $type." ". $class; ?>" <?php if(@$target=="blank") { ?> target="_blank"<?php } ?>>
         <div class="pull-left no-padding cnt-img">
             <div class="add2fav elemt_img">
                 <img src="<?php echo $img ?>" class="pull-left hidden-xs">
@@ -53,5 +74,15 @@
             </span>
             <?php } ?> 
         </div>
+
+        <?php if(@$v["tags"]) { ?>
+        <div class="pull-left elipsis tags">
+            <?php foreach($v["tags"] as $tag) { ?>        
+            <small class="letter-red bold">
+                #<?php echo $tag; ?> 
+            </small>
+            <?php } ?> 
+        </div>
+        <?php } ?> 
     </a>
 <?php } ?>

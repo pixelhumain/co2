@@ -1,25 +1,41 @@
 
 <style>
-	#resUrl .el-nowList,
-	#resUrl .el-nowList:hover{
-		width:48%;
-		margin-right:2%;
-		float:left;
+	
+	#resUrl .el-dirMin,
+	#resUrl .el-dirMin:hover{
+	    width:48%;
+	    margin-right:2%;
+	    float:left;
+	    min-height:60px;
 	}
 
-	#resUrl .el-nowList:hover{
-		background-color: #f6f6f6;
-	}
 
 	#resUrl .titleDirMin{
 		display: none;
 	}
+
+    @media (max-width: 767px) {
+    	#resUrl .el-dirMin,
+		#resUrl .el-dirMin:hover{
+	    width:100%;
+	    margin-right:0%;
+    }
+
 </style>
 
 <hr>
 <button class="btn btn-default menu-btn-back-category btn-second margin-bottom-5 margin-top-5" id="btn-new-search">
 	<i class="fa fa-undo"></i> Nouvelle recherche
+</button> 
+
+<?php if(sizeof($siteurls) > 0 || sizeof($elements) > 0) { ?> 
+<button class="btn btn-default margin-left-10 bold btn-show-onmap btn-second margin-bottom-5 margin-top-5 hidden-xs">
+	<i class="fa fa-map"></i> Afficher sur la carte
 </button>
+<button class="btn btn-default margin-left-10 bold btn-show-onmap btn-second margin-bottom-5 margin-top-5 visible-xs pull-right">
+	<i class="fa fa-map"></i>
+</button>
+<?php } ?>
 
 <hr>
 <?php if($category == "Météo"){ ?>
@@ -202,8 +218,13 @@
 
 <?php  foreach ($siteurls as $key => $siteurl) { $siteurls[$key]["wordsFound"] = ""; } ?>
 
+
+<?php $contextMap = array_merge($siteurls, $elements) ; ?>;
+
 <script type="text/javascript" >
   
+var contextMap = <?php echo json_encode($contextMap) ; ?>;
+
 var siteurls = <?php echo json_encode($siteurls) ; ?>;
 var nbUrl = <?php echo sizeof($siteurls); ?>;
 
@@ -216,11 +237,9 @@ var search = "<?php echo $search; ?>";
 var siteEditing = false;
 
 jQuery(document).ready(function() { 
-	console.log("website on map", siteurls);
-    Sig.showMapElements(Sig.map, siteurls);
-	
-	var elementDir = directory.showResultsDirectoryHtml(elements);
 
+	console.log("website on map", contextMap);
+    Sig.showMapElements(Sig.map, contextMap);
 
     $("#sub-menu-right").html("");
 	if(nbElement > 0 && nbUrl > 0){
@@ -236,6 +255,10 @@ jQuery(document).ready(function() {
    		var url = $(this).attr("href");
    		incNbClick(url);
     });
+
+    $(".btn-show-onmap").off().click(function(){
+		showMap(true);
+	});
 
     $(".btn-edit-url").click(function(){ console.log("siteurls", siteurls);
    		var id = $(this).data("idurl");

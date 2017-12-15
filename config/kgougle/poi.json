@@ -1,56 +1,148 @@
 {
     "sections" : {
         
+        "resource": {
+            "label":"Resource", 
+            "labelFront":"Resource",      
+            "key" : "resource",     
+            "icon" : "cubes",               
+            "section":2, 
+            "color":"azure",
+            "filters" : "resourceFilters"
+        },
+        "place": {
+            "label":"Place", 
+            "labelFront":"Place",      
+            "key" : "place",     
+            "icon" : "map-marker",               
+            "section":2, 
+            "color":"azure",
+            "filters" : "placeFilters"
+        },
 
-        "link"          : { "label": "Lien, Url","key":"link","icon":"map-marker"},
-        "tool"          : { "label": "Outil","key":"tool","icon":"map-marker"},
-        "machine"       : { "label": "Machine","key":"machine","icon":"map-marker"},
-        "software"      : { "label": "Software","key":"software","icon":"map-marker"},
-        "rh"            : { "label": "Ressource Humaine","key":"rh","icon":"map-marker"},
-        "RessourceMaterielle" : { "label": "Ressource Materielle","key":"RessourceMaterielle","icon":"map-marker"},
-        "RessourceFinanciere" : { "label": "Ressource Financiere","key":"RessourceFinanciere","icon":"map-marker"},
-        "ficheBlanche" : { "label": "Fiche Blanche","key":"ficheBlanche","icon":"map-marker"},
-        "poi"           : { "label":"points d'intérêt","key":"poi","icon":"map-marker"},
-        "geoJson"       : { "label": "Url au format geojson ou vers une umap","key":"geoJson","icon":"map-marker"},
-        "compostPickup" : { "label": "récolte de composte","key":"compostPickup","icon":"map-marker"},
-        "video"         : { "label": "video","key":"video","icon":"map-marker"},
-        "sharedLibrary" : { "label": "bibliothèque partagée","key":"sharedLibrary","icon":"map-marker"},
-        "artPiece"      : { "label": "oeuvres","key":"artPiece","icon":"map-marker"},
-        "recoveryCenter": { "label": "ressourcerie","key":"recoveryCenter","icon":"map-marker"},
-        "trash"         : { "label": "poubelle","key":"trash","icon":"map-marker"},
-        "history"       : { "label": "histoire","key":"history","icon":"map-marker"},
-        "something2See" : { "label": "chose a voir","key":"something2See","icon":"map-marker"},
-        "funPlace"      : { "label": "endroit Sympas (skatepark, vue...)","key":"funPlace","icon":"map-marker"},
-        "place"         : { "label": "place publique","key":"place","icon":"map-marker"},
-        "streetArts"    : { "label": "arts de rue","key":"streetArts","icon":"map-marker"},
-        "openScene"     : { "label": "scène ouverte","key":"openScene","icon":"map-marker"},
-        "stand"         : { "label": "stand","key":"stand","icon":"map-marker"},
-        "parking"       : { "label": "Parking","key":"parking","icon":"map-marker"}
-        
+        "interest": {
+            "label":"Interest", 
+            "labelFront":"Interest",      
+            "key" : "interest",     
+            "icon" : "question-circle-o",               
+            "section":2, 
+            "color":"azure",
+            "filters" : "interestFilters"
+        },
+        "other": {
+            "label":"Other", 
+            "labelFront":"Other",      
+            "key" : "other",     
+            "icon" : "plus-circle",               
+            "section":2, 
+            "color":"azure",
+            "filters" : "open"
+        }
+
     },
-    "filters":{
-         "TiersLieux" : 
-            {   "icon" : "home",
+    "filters" : {
+        "Technology" : 
+            {   "icon" : "laptop",
+                "subcat" : ["TV / Video", "IT", "Touchpads", "Telephony", "Camera", "Audio device"]
+            }, 
+         
+         "Property" : 
+            {   "icon" : "building",
+                "subcat" : ["House", "Flat", "Ground", "Parking", "Office"]
+            }, 
+         
+         "Vehicles" : 
+            {   "icon" : "car",
                 "subcat" : 
-                [   "Fablab",
-                    "Repaire Café",
-                    "Coworking", 
-                    "Salle reunion",
-                    "Jardin Partagé",
-                    "Urbaine",
-                    "Rurale"
+                [   "Car", 
+                    "SUV", 
+                    "Utility", 
+                    "Moto", 
+                    "Scooter", 
+                    "Boat", 
+                    "Small car", 
+                    "Bikes",
+                    "Car equipment",
+                    "2-wheeled equipment",
+                    "Boat equipment",
+                    "Bike equipment"
                 ]
             }, 
 
-        "Maison" :  {  
-             "icon" : "home",
-            "subcat" : 
-            [    "Electroménager",
-                 "Mobilier", 
-                 "Équipement bébé", 
-                 "Animaux", 
-                 "Divers"
-            ]
+         "Home" :  
+            {   "icon" : "home",
+                "subcat" : 
+                [    "Household appliances",
+                     "Furniture", 
+                     "Baby equipment", 
+                     "Animals", 
+                     "Various"
+                ]
+            },
+
+         "Leisure" :  
+            {   "icon" : "smile-o",
+                "subcat" : 
+                [    "Sports", 
+                     "Musical instrument", 
+                     "Sound system", 
+                     "CD / DVD",
+                     "Toy", 
+                     "Games", 
+                     "Books / Comics", 
+                     "Collections", 
+                     "DIY", 
+                     "Gardening", 
+                     "Art / Deco", 
+                     "Model making", 
+                     "Childcare", 
+                     "Animals", 
+                     "Various"
+                ]
+            },
+
+        "Fashion" : 
+            {   "icon" : "shopping-bag",
+                "subcat" :  
+                [    "Clothes", 
+                     "Shoes", 
+                     "Accessories", 
+                     "Watches", 
+                     "Jewels"
+                ]
+            }
+    },
+    "resourceFilters" : {
+        "Digital" : {
+            "icon":"desktop",
+            "subcat" : [ "link" , "Chat", "Wiki","Drive","ConferenceTool", "Pad", "Kanban","DecisionTool", "Software", "GeoJson" , "Video" , "Documentation", "Server", "Database", "Banq" ]
+        },
+        "Physical" : {
+            "icon":"cogs",
+            "subcat" : ["Tool","Machine","Human ressource","Material ressource","Financial ressource","Shared library","Food","sharedObject"]
+        }
+    },
+    "interestFilters" : {
+        "Points" : {
+            "icon":"map-marker",
+            "subcat" : [ "history", "artPiece" ,"streetArt" ]
+        },
+        "Lifepath" : {
+            "icon":"clock",
+            "subcat" : [ "event", "thought" ]
+        }
+    },
+    "placeFilters" : {
+        "meetingPoint" : {
+            "icon":"map-marker"
+        },
+        "Urban" : {
+            "icon":"building-o",
+            "subcat" : [ "recoveryCenter","trash","something2See","funPlace","place","openScene","stand","parking"]
+        },
+        "Rural" : {
+            "icon":"tree",
+            "subcat" : [ "compost", "recoveryCenter","trash","something2See","funPlace","place","openScene","stand","parking"]
         }
     }
 }

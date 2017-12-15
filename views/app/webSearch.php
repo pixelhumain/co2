@@ -41,7 +41,7 @@
 	<div class="margin-top-5">
 		<i class="fa fa-angle-down"></i> 
 		<?php echo sizeof($siteurls) > 0 ? sizeof($siteurls) : ""; ?> 
-		<?php echo sizeof($siteurls) == 0 && sizeof($elements) > 0 ? sizeof($elements) : "aucun"; ?> 
+		<?php if(sizeof($siteurls) == 0) echo sizeof($elements) > 0 ? sizeof($elements) : "aucun"; ?> 
 		résultat<?php echo sizeof($siteurls) > 1 ? "s" : ""; ?> 
 		<?php if(sizeof($siteurls) == 0){ ?> 
 			<small>sur kgougle</small>
@@ -221,12 +221,13 @@ jQuery(document).ready(function() {
 	
 	var elementDir = directory.showResultsDirectoryHtml(elements);
 
+
+    $("#sub-menu-right").html("");
 	if(nbElement > 0 && nbUrl > 0){
    		$("#sub-menu-right").html($("#directoryMin").html());
 	}
     else if(nbElement > 0 && nbUrl == 0){
     	$("#resUrl").html($("#directoryMin").html());
-    	$("#sub-menu-right").html("");
     }
     
     $("#directoryMin").html("");

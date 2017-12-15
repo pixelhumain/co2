@@ -51,7 +51,7 @@
         </div>
 
         <?php if(@$v["tags"]) { ?>
-        <div class="pull-left elipsis tags">
+        <div class="pull-left elipsis el-tags">
             <?php foreach($v["tags"] as $tag) { ?>        
             <small class="letter-red bold">
                 #<?php echo $tag; ?> 

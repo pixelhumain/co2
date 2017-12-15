@@ -5204,7 +5204,6 @@ function initKInterface(params){ console.log("initKInterface");
     });
 
     bindLBHLinks();
-    initSearchInterface();
     
     $(".tooltips").tooltip();
     

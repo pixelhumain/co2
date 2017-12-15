@@ -24,6 +24,7 @@
             $class = "no-img";
 
         $elUrl = Element::getHash($v);
+        $v["updatedLbl"] = Translate::pastTime(@$v["updated"], "timestamp");
     ?>
 
     <a href="<?php echo $elUrl; ?>" class="<?php if(!@$target){ ?>lbh<?php } ?> shadow2 margin-bottom-5 col-xs-12 no-padding el-nowList <?php echo $type." ". $class; ?>" <?php if(@$target=="blank") { ?> target="_blank"<?php } ?>>
@@ -43,7 +44,7 @@
         </div><br>
         <div class="elemt_date pull-left text-left elipsis">
             <span class="dateTZ">
-                <?php echo @$v["updatedLbl"];?>
+                <?php echo @$v["updatedLbl"]; ?>
                 <?php if(@$v["price"]) echo " | <span class='text-azure'>" .@$v["price"].' '.@$v["devise"].'</span>';?> 
             </span> 
             <?php if(@$v["address"]["addressLocality"]) { ?>        

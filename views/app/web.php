@@ -10,32 +10,18 @@
     $cssAnsScriptFiles = array(
     '/assets/css/circle.css',
     '/assets/js/web.js',
-  //  '/assets/css/referencement.css'
+    '/assets/css/profilSocial.css',
+    //'/assets/css/default/directory.css',
+    '/assets/css/web.css'
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl); 
 
-       
 ?>
 
 <style>
-    #sectionSearchResults{
-        min-height:700px;
-        /*margin-left:80px;*/
-        padding-bottom:50px;
-    }
-    #sub-menu-left {
-        margin-top: 207px;
-        text-align: right;
-    }
-
-    #mainCategories .portfolio .portfolio-item{
-        height:100px;
-    }
-
     <?php 
         $btnAnc = array("blue"      =>array("color1"=>"#4285f4", 
-                                            "color2"=>"#1c6df5"),
-                        );
+                                            "color2"=>"#1c6df5"));
     ?>
 
     <?php foreach($btnAnc as $color => $params){ ?>
@@ -58,76 +44,6 @@
         color: <?php echo $params["color1"]; ?>;
     }
     <?php } ?>
-
-
-    #btn-onepage-main-menu{
-        position: fixed;
-        top:110px;
-        left:20px;
-        border-radius: 1px;
-        letter-spacing: 2px;
-        border:2px solid white;
-        border-radius:100px;
-        height:40px;
-        /*width:60px;*/
-    }
-
-    .siteurl_title{
-        font-size:17px!important;
-    }
-    .siteurl_hostname{
-        font-size:14px!important;
-    }
-    .siteurl_desc{
-        font-size:13px!important;
-        color:#606060;
-    }
-    .portfolio.p1{
-        padding-top:20px;
-    }
-
-    .btn-fast-access{
-        font-size: 24px;
-    }
-
-    #section-fav{
-        max-height: 50px;
-        overflow: hidden;
-    }
-
-    #sub-menu-left{
-        margin-top: 207px;
-        text-align: right;
-    }
-
-    #main-btn-referencement{
-        padding-top: 8px;
-    }
-
-    
-    @media screen and (max-width: 1024px) {
-        #mainCategories .portfolio .portfolio-item{
-            height: 110px;
-        }
-        #mainCategories .portfolio .portfolio-item button.portfolio-link{
-            margin-top: 15px;
-        }
-    }
-
-    @media (max-width: 767px) {
-
-        .category-search-link h4{
-            font-size: 0.8em;
-        }
-        #mainCategories h3{
-            font-size: 1.3em;
-        }
-        #sub-menu-left {
-            margin-top: 5px;
-            padding:15px;
-            text-align: left;
-        }
-    }
 </style>
 
 
@@ -195,9 +111,9 @@
 
 <section class="no-padding hidden" id="sectionSearchResults">
     <div class="row padding-10">
-        <div class="col-md-2 col-sm-2 text-right" id="sub-menu-left"></div>
-        <div class="col-md-7 col-sm-9 col-lg-8" id="searchResults"></div>
-        <div class="col-md-2 col-sm-1 text-left" id="sub-menu-right"></div>
+        <div class="col-md-1 hidden-sm col-lg-1 text-right" id="sub-menu-left"></div>
+        <div class="col-md-7 col-sm-8 col-lg-7" id="searchResults"></div>
+        <div class="col-md-4 col-sm-4 col-lg-3 text-left padding-25" id="sub-menu-right"></div>
     </div>
 </section>
 

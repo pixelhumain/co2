@@ -125,7 +125,7 @@
             title="<?php echo Yii::t("common","Create a new page") ?>">
                 <i class="fa fa-times" style="font-size:18px;"></i>
         </button>
-        <h5 class="text-center letter-green margin-top-25"><?php echo Yii::t("form","Create a page") ?></h5>
+        <h5 class="text-center letter-green margin-top-25"><?php echo Yii::t("common","Create a page") ?></h5>
         <h5 class="text-center">
             <small>             
                 <span class="text-green"><?php echo Yii::t("common","NGOs") ?></span> 

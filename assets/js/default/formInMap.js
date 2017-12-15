@@ -429,10 +429,12 @@ var formInMap = {
 				$("#dropdown-newElement_"+currentScopeType+"-found").show();
 
 				$(".item-city-found, .item-cp-found").click(function(){
+					console.log("click on .item-cp-found");
 					formInMap.add(true, $(this), inseeGeoSHapes);
 				});
 
 				$(".item-city-found-uncomplete").click(function(){
+					console.log("click on .item-city-found-uncomplete");
 					formInMap.add(false, $(this), inseeGeoSHapes);
 				});
 			},

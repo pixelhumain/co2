@@ -289,7 +289,7 @@ jQuery(document).ready(function() {
     		preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, street);
     		
     		if(street != "")
-    			formInMap.searchAdressNewElement();	    	
+    			formInMap.searchAdressNewElement();	//lol    	
 	    });
     });
 

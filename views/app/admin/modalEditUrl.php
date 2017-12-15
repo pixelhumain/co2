@@ -255,9 +255,6 @@ jQuery(document).ready(function() {
         formInMap.showMarkerNewElement();
         preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");
 
-        formInMap.add(true, $(this));
-       // formInMap.add(true, data);
-
         $("#btn-find-position").off().click(function(){
             showMap(true);
 

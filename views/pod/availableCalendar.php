@@ -107,6 +107,15 @@
   var availableCal = [];
   jQuery(document).ready(function() {
       showCalendar();
+      mylog.log("element", element);
+      mylog.log("itemType", itemType);
+      mylog.log("itemId", itemId);
+      mylog.log("subType", subType);
+      mylog.log("dateToShow, $eventDetail, eventClass, eventCategory", dateToShow, $eventDetail, eventClass, eventCategory);
+      mylog.log("widgetNotes", widgetNotes, "sliderNotes", sliderNotes, "$note", $note);
+      mylog.log(" oTable, contributors, subViewElement, subViewContent, subViewIndex",  oTable, contributors, subViewElement, subViewContent, subViewIndex);
+      mylog.log("element", element);
+      mylog.log("element", element);
 
       $(window).on('resize', function(){
   			$('#calendar').fullCalendar('destroy');
@@ -124,6 +133,7 @@
 					url: baseUrl+"/"+moduleId+"/orderitem/get", 
 					data:{"id":itemId,"type":itemType,"start": new Date()},
 				  success: function(data){
+				  	mylog.log("orderitem/get data", data);
 					if(data.result) {
 						if(Object.keys(data.items).length > 0){
 							$.each(data.items,function(e,v){
@@ -189,6 +199,7 @@ function buildCalObj(eventObj) {
 }
 
 function showCalendar() {
+	mylog.info("showCalendar");
 	//mylog.info("addTasks2Calendar",events);//,taskCalendar);
 	hiddenDays=[];
 	
@@ -329,14 +340,12 @@ function showCalendar() {
         		
     		});
     		element.find(".add-session").on('click', function (e) {
-    			if(notNull(contextData)){
-		    		contextData.addEvent(element, event);
+    			mylog.log("add-session", element, event);
+    			if(circuit.obj.show){
+		    		circuit.addEvent(element, event);
+		    	}else{
+		    		shopping.addEvent(element, event);
 		    	}
-    			// if(circuit.obj.show){
-		    	// 	circuit.addEvent(element, event);
-		    	// }else{
-		    	// 	shopping.addEvent(element, event);
-		    	// }
         		
     		});
 		}

@@ -155,6 +155,7 @@
 			return false;
 		}else
 			$this.parent().find(".alert-danger").remove();
+		
 		circuit.obj.show=true;
 		circuit.obj.name=$("#create-new-circuit #name").val();
 		circuit.obj.description=$("#create-new-circuit #description").val();

@@ -245,6 +245,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		if($(".btn-admin-add-circuit").length > 0)
       		initBtnAddToCircuit();
 		$(".btn-available-calendar").off().on("click",function(){
+			mylog.log(".btn-available-calendar");
       		setTimeout(function(){
  		 		$('#calendar').fullCalendar('gotoDate', new Date());
  		 		setCategoryColor();

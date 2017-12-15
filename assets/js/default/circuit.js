@@ -22,6 +22,7 @@ var circuit = {
 		};
 	},
 	addToCircuit: function(id, type, ranges){
+		mylog.log("addToCircuit", id, type, ranges);
 		incCart=true;
 		if(typeof userId != "undefined" && userId != ""){
 			//if(typeof circuit.obj[type] == "undefined")
@@ -172,6 +173,7 @@ var circuit = {
 		}
 	},
 	addEvent : function($this,data){
+		mylog.log("addEvent", $this,data);
 		bookDate=data.start.format('YYYY-MM-DD');
 		var ranges = new Object;
 		ranges.date=bookDate;

@@ -17,12 +17,17 @@
 }
 
 .el-dirMin .tags{
-    margin: -10px 0 5px 0;
+    margin: -14px 0 0px 0;
+    max-width: 70%;
 }
 .el-dirMin small.letter-red{
     margin: 0px 5px 5px 2px;
     display: inline;
     font-size: 11px;
+}
+
+.el-dirMin .elemt_name, .el-dirMin .elemt_date{
+    height: 24px;
 }
 
 </style>

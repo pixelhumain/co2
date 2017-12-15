@@ -444,7 +444,7 @@ var formInMap = {
 	},
 
 	add : function(complete, data, inseeGeoSHapes){
-		mylog.log("add2", complete, data, inseeGeoSHapes);
+		console.log("add2", complete, data, inseeGeoSHapes);
 		
 		formInMap.NE_insee = data.data("insee");
 		formInMap.NE_lat = data.data("lat");
@@ -460,7 +460,7 @@ var formInMap = {
 		formInMap.NE_level1 = (notEmpty(data.data("level1")) ? data.data("level1") : null) ;
 		formInMap.NE_level1Name = (notEmpty(data.data("level1name")) ? data.data("level1name") : null) ;
 
-		mylog.log("NE_localityId", data.data("locid"));
+		console.log("NE_localityId", data.data("locid"));
 		formInMap.NE_localityId = data.data("locid");
 
 		if(complete == true){
@@ -586,7 +586,7 @@ var formInMap = {
 			showMap(false);
 			Sig.clearMap();
 			if(location.hash != "#referencement" && location.hash != "#web" && 
-				typeof noShowAjaxModal == "undefined" || noShowAjaxModal == false)
+				(typeof noShowAjaxModal == "undefined" || noShowAjaxModal == false))
 				$('#ajax-modal').modal("show");
 		}else{
 

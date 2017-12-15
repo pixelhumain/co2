@@ -243,7 +243,7 @@ jQuery(document).ready(function() {
             Sig.showIcoLoading(false);
         }
 
-        formInMap.formType = "url";
+        formInMap.formType = "url"; // lol rions ensemble
         coordinatesPreLoadedFormMap = [cityLat, cityLng];
         formInMap.showMarkerNewElement();
         preLoadAddress(true, cityId, "NC", cityInsee, cityName, cityCp, cityLat, cityLng, "");

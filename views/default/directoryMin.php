@@ -1,35 +1,5 @@
 <style>
 
-.el-dirMin:hover{
-    width: 100%;
-    background-color: #f6f6f6;
-}
-
-.el-dirMin{
-    background-color: white;
-}
-
-.el-dirMin .address{
-    display: inline;
-}
-.el-dirMin:hover .address{
-    display: inline;
-}
-
-.el-dirMin .tags{
-    margin: -14px 0 0px 0;
-    max-width: 70%;
-}
-.el-dirMin small.letter-red{
-    margin: 0px 5px 5px 2px;
-    display: inline;
-    font-size: 11px;
-}
-
-.el-dirMin .elemt_name, .el-dirMin .elemt_date{
-    height: 24px;
-}
-
 </style>
 
 <?php if(sizeof($result) > 0 && @$title){ ?>

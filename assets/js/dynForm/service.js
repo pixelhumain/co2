@@ -9,8 +9,7 @@ dynForm = {
 	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
     				$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
-	    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-							  					  .addClass("bg-azure");
+	    			
 	    		 	$("#ajaxFormModal #toBeValidated").val(true);
 	    		 	$("#ajax-modal-modal-title").html(
 	    		 		$("#ajax-modal-modal-title").html()+
@@ -18,6 +17,8 @@ dynForm = {
 	    		}
 	    	},
 	    	onload : function(data){
+	    		$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+							  					  .addClass("bg-azure");
 	    	},
 	    	/*,
 	    	loadData : function(data){

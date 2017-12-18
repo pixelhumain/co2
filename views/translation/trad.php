@@ -417,6 +417,14 @@ var trad = {
 	"Leave your comment" : "<?php echo Yii::t("common", "Leave your comment") ?>",
 	"Your comment" : "<?php echo Yii::t("common", "Your comment") ?>",
 
+	"sleeping" : 		 "<?php echo Yii::t("common", "Sleeping") ?>",
+	"restaurant" : 		 "<?php echo Yii::t("common", "Restaurant") ?>",
+	"funnytime" : 	 "<?php echo Yii::t("common", "Funny activity") ?>",
+	"transport" : 		 "<?php echo Yii::t("common", "Transport") ?>",
+	"siteToSee" :  "<?php echo Yii::t("common", "Uncredible site") ?>",
+	"artisants" : 		 "<?php echo Yii::t("common", "Artisants") ?>",
+	"guideAccom" : "<?php echo Yii::t("common", "Guide and helper") ?>",
+	
 };
 
 var tradDynForm = {

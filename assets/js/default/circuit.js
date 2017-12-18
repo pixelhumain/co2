@@ -286,8 +286,8 @@ var circuit = {
     	typeHtml="";
     	if(Object.keys(listItem).length){
 	        typeHtml="<div class='col-md-12 col-sm-12 col-xs-12 headerCategory margin-top-20 margin-bottom-10'>"+
-	                "<h2 class='letter-orange mainTitle text-left'>"+trad[label]+"</h2>"+
-	        "</div>";
+			                "<h2 class='letter-orange mainTitle text-left'>"+trad[label]+"</h2>"+
+			        "</div>";
     	}
         $.each(listItem,function(e,data){
             typeHtml+=circuit.getViewItem(e, data, type, edit);

@@ -1479,4 +1479,11 @@ La vie en santé;Santé;;
 		$tpl = $this->renderPartial('application.views.pdf.test', array(), true);
 		Pdf::createPdf($tpl);
 	}
+
+
+	public function actionListcountries(){
+		$res = Zone::getListCountry();
+		Rest::json($res);
+		Yii::app()->end();
+	}
 }

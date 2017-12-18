@@ -407,6 +407,7 @@ var trad = {
 	"allthecity" : "<?php echo Yii::t("common", "All the city") ?>",
 	"welcomeon" : "<?php echo Yii::t("home", "Welcome on") ?>",
 	"initofmap" : "<?php echo Yii::t("common", "Initialization of map") ?>",
+	"knowmore" : "<?php echo Yii::t("common", "Know more") ?>",
 
 };
 

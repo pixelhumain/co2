@@ -49,12 +49,32 @@
   white-space: pre-line; 
   word-wrap: break-word;
 }
+
+.select2-container-multi .select2-choices .select2-search-choice{
+  background-color: white !important;
+  box-shadow: none;
+  background-image: none;
+  padding: 8px 8px 8px 22px;
+  margin: 8px 0px 0px 8px;
+  color: #ea4335 !important;
+  border: 1px #ea4335 solid;
+}
+
+.select2-container-multi .select2-search-choice-close{
+  left: 2px;
+  margin: 4px;
+}
+.select2-search-choice-close::before {
+  color: #ea4335 !important;
+}
+
+
 </style>
 <script type="text/javascript" >
 var updateNews= new Object;
 </script>
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-15" 
-     style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
+     style="<?php if(!@$isLive){ ?>padding-left:25px!important;<?php } ?>">
 
   <?php //var_dump($params); 
         $params = array(
@@ -149,6 +169,9 @@ function initForm(){ console.log("initForm initForm");
   initTags();
   initFormImages();
   mentionsInit.get("textarea.mention");
+
+  if(typeof tagQDJ != "undefined" && tagQDJ != null) //tag question du jour
+    $("#form-news #tags").select2("val",new Array(tagQDJ));
 }
 
 function initTags(){

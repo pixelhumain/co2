@@ -275,6 +275,7 @@ foreach($news as $key => $media){
       uiModeration.getNewsToModerate(newsid);
     });
 
+    
     initBtnLink();
   });
 </script>

@@ -125,9 +125,11 @@ var Login = function() {
 		    	  success: function(data){ 
 		    		  if(data.result){
 		    		  	
-		    		  	$.cookie("email", $("#email-login").val(), { expires: 180, path : "/" });
-		    		  	$.cookie("pwd", $("#password-login").val(), { expires: 180, path : "/" });
-		    		  	$.cookie("remember", $("#remember").val(), { expires: 180, path : "/" });
+		    		  	if($("#remember").prop("checked")){
+			    		  	$.cookie("email", $("#email-login").val(), { expires: 180, path : "/" });
+			    		  	$.cookie("pwd", $("#password-login").val(), { expires: 180, path : "/" });
+			    		  	$.cookie("remember", $("#remember").prop("checked"), { expires: 180, path : "/" });
+			    		}
 
 		    		  	//alert("dyFObj.openForm"+dyFObj.openFormAfterLogin.type);
 		    		  	var url = requestedUrl;

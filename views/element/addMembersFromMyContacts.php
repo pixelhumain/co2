@@ -742,10 +742,10 @@ function filterContact(searchVal){
 		//masque/affiche tous les contacts présents dans la liste
 		if(searchVal != "")	$(".btn-select-contact").hide();
 		else				$(".btn-select-contact").show();
-		//recherche la valeur recherché dans les 3 champs "name", "cp", et "city"
-		$.each($(".scope-name-contact"), function() { checkSearch($(this), searchVal); });
-		$.each($(".scope-cp-contact"), 	 function()	{ checkSearch($(this), searchVal); });
-		$.each($(".scope-city-contact"), function() { checkSearch($(this), searchVal); });
+		//recherche la valeur recherché dans les 3 champs "name", "cp", et "city" 
+	    $.each($(".name-contact"), function() { checkSearch($(this), searchVal); }); 
+	    $.each($(".cp-contact"),    function()  { checkSearch($(this), searchVal); }); 
+	    $.each($(".city-contact"), function() { checkSearch($(this), searchVal); }); 
 	}else if(addLinkSearchMode == "all"){
 		if(searchVal.length>2){
 	    	clearTimeout(timeout);

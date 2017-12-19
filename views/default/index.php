@@ -22,6 +22,14 @@ on garde les librairies specifique au module dans le module
 
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+	
+		
+	if(isset( Yii::app()->request->cookies['remember'] ) && Yii::app()->request->cookies['remember']->value == "true" &&
+	   isset( Yii::app()->request->cookies['email'] ) && 
+	   isset( Yii::app()->request->cookies['pwd'] ) && @Yii::app()->request->cookies['pwd']->value != "null"){
+		$res = Person::login(Yii::app()->request->cookies['email']->value, Yii::app()->request->cookies['pwd']->value, false);
+		//var_dump(Yii::app()->request->cookies['email']->value); exit;
+	}
 
 	function random_pic()
     {

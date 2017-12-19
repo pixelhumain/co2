@@ -259,8 +259,9 @@
     <?php if(@$media["tags"] && @$media["type"] != "activityStream") 
           foreach ($media["tags"] as $keyy => $tag) { 
             if($tag != "") { ?>
-            <a href="javascript:;" class="filter btn no-padding" data-filter=".'+tag+'">
-              <span class="text-red">#<?php echo $tag; ?></span>
+            <a href="javascript:;" class="btn-tag-news btn no-padding" 
+               data-filter="<?php echo strpos($tag, "#")===false ? "#" : ""; echo $tag; ?>">
+              <span class="text-red"><?php echo strpos($tag, "#")===false ? "#" : ""; echo $tag; ?></span>
             </a>
     <?php }} ?>
 

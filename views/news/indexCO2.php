@@ -1,47 +1,4 @@
 <?php 
-$cssAnsScriptFilesModule = array(
-  '/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css',
-  '/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/wysiwyg-color.css',
-  '/plugins/bootstrap-datetimepicker/css/datetimepicker.css',
-  //'/plugins/x-editable/css/bootstrap-editable.css',
-  '/plugins/select2/select2.css',
-  //X-editable...
-  '/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' , 
-//  '/plugins/x-editable/js/bootstrap-editable.js' , 
-  //'/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js' , 
-  //'/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5.js' , 
-  //'/plugins/wysihtml5/wysihtml5.js',
-  '/plugins/jquery.scrollTo/jquery.scrollTo.min.js',
-  '/plugins/ScrollToFixed/jquery-scrolltofixed-min.js',
-  '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
-  '/plugins/jquery.appear/jquery.appear.js',
-  '/plugins/jquery.elastic/elastic.js',
-  '/plugins/underscore-master/underscore.js',
-  '/plugins/jquery-mentions-input-master/jquery.mentionsInput.js',
-  '/plugins/jquery-mentions-input-master/jquery.mentionsInput.css',
-  '/plugins/jquery-mentions-input-master/lib/jquery.events.input.js',
-  
-);
-//error_log("BasURL : ".Yii::app()->request->baseUrl);
-HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->request->baseUrl);
-
-
-    $cssAnsScriptFilesModule = array(
-      '/js/news/autosize.js',
-      '/js/news/newsHtml.js',
-      '/js/menus/multi_tags_scopes.js',
-      '/js/cooperation/uiModeration.js',
-      '/js/cooperation/uiCoop.js',
-    );
-    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
-
-
-    $cssAnsScriptFilesModule = array(
-      '/css/news/newsSV.css',
-      '/css/cooperation.css',
-      '/js/comments.js',
-    );
-    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->theme->baseUrl."/assets");
 
     $timezone = "";
 		$pair = false;
@@ -92,12 +49,32 @@ HtmlHelper::registerCssAndScriptsFiles( $cssAnsScriptFilesModule ,Yii::app()->re
   white-space: pre-line; 
   word-wrap: break-word;
 }
+
+.select2-container-multi .select2-choices .select2-search-choice{
+  background-color: white !important;
+  box-shadow: none;
+  background-image: none;
+  padding: 8px 8px 8px 22px;
+  margin: 8px 0px 0px 8px;
+  color: #ea4335 !important;
+  border: 1px #ea4335 solid;
+}
+
+.select2-container-multi .select2-search-choice-close{
+  left: 2px;
+  margin: 4px;
+}
+.select2-search-choice-close::before {
+  color: #ea4335 !important;
+}
+
+
 </style>
 <script type="text/javascript" >
 var updateNews= new Object;
 </script>
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-15" 
-     style="<?php if(!@isLive){ ?>padding-left:25px!important;<?php } ?>">
+     style="<?php if(!@$isLive){ ?>padding-left:25px!important;<?php } ?>">
 
   <?php //var_dump($params); 
         $params = array(
@@ -192,6 +169,9 @@ function initForm(){ console.log("initForm initForm");
   initTags();
   initFormImages();
   mentionsInit.get("textarea.mention");
+
+  if(typeof tagQDJ != "undefined" && tagQDJ != null) //tag question du jour
+    $("#form-news #tags").select2("val",new Array(tagQDJ));
 }
 
 function initTags(){

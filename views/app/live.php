@@ -1,5 +1,7 @@
 <?php 
 
+    $this->renderPartial("../news/newsAssets");
+    
 	HtmlHelper::registerCssAndScriptsFiles( 
 			array('/css/timeline2.css',
 				  '/css/news/index.css',
@@ -91,8 +93,12 @@
         padding: 15px;
         margin-top: 15px;
     }
+
+    .subModuleTitle{
+        display: none;
+    }
 </style>
-<div class="row padding-10 bg-white">
+<div class="row padding-10 bg-white live-container">
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
 	<div id="container-scope-filter" class="col-md-offset-1 col-md-11 col-lg-offset-1 col-lg-11 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
 		<?php

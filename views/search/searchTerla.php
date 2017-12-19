@@ -108,7 +108,7 @@
 			<?php } ?>
 
 			<a href="#page.type.<?php echo @$value["type"]; ?>.<?php echo @$value["_id"]; ?>" 
-				class="btn btn-link bg-orange pull-left"><i class="fa fa-link"></i>
+				class="btn btn-link bg-orange pull-left lbh"><i class="fa fa-link"></i>
 			</a> 
 
 			<h5 class="name-res-search pull-left margin-left-15">
@@ -117,7 +117,7 @@
 
 			<a href="#page.type.<?php echo @$value["type"]; ?>.<?php echo @$value["_id"]; ?>" 
 			   class="lbh btn btn-link bg-orange pull-right">
-			   VIEW DETAILS
+			   <?php echo Yii::t("common", "VIEW DETAILS"); ?>
 			</a>
 
 			<br><br><hr>
@@ -129,7 +129,7 @@
 </div>
 
 <script type="text/javascript" >
-
+alert("yo");
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
@@ -141,7 +141,7 @@ var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdom
 
 var currentKFormType = "";
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function() { 
 
     setTitle("", "", titlePage);
 

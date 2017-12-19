@@ -1,5 +1,5 @@
 function initSearchInterface(){
-    
+    console.log("runin initSearchInterface");
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
@@ -18,7 +18,9 @@ function initSearchInterface(){
         //$("#main-search-bar").val($(this).val());
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
-            initTypeSearch(typeInit);
+            console.log("typeInit", typeInit);
+            if(typeInit == "all") initTypeSearch("allSig");
+            else initTypeSearch(typeInit);
             startSearchTerla(0, indexStepInit, searchCallback);
             //$(".btn-directory-type").removeClass("active");
             //KScrollTo("#content-social");
@@ -36,7 +38,7 @@ function initSearchInterface(){
          }
     });
 
-    $("#menu-map-btn-start-search, #main-search-bar-addon").off().click(function(){
+    $("#menu-map-btn-start-search, #menu-btn-start-search, #main-search-bar-addon").off().click(function(){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         console.log("typeInit", typeInit);
@@ -68,6 +70,9 @@ function initSearchInterface(){
         if(type=="vote") type="entry";
         dyFObj.openForm(type);
     });
+
+    console.log("runin initSearchInterface end");
+    
 }
 
 function startSearchTerla(indexMin, indexMax, callBack){
@@ -84,7 +89,7 @@ function startSearchTerla(indexMin, indexMax, callBack){
     };
 
     //alert();
-    $.blockUI();
+    $.blockUI({ message : themeObj.blockUi.processingMsg});
     $.ajax({
         type: "POST",
         url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
@@ -92,11 +97,12 @@ function startSearchTerla(indexMin, indexMax, callBack){
         //dataType: "json",
         error: function (data){
              mylog.log(">>> error autocomplete search"); 
-             mylog.dir(data);   
+             //mylog.dir(data);   
              $(".main-container").html(data.responseText);  
              $("#searchVal").html(name);  
              //signal que le chargement est terminé
             loadingData = false;     
+            $.unblockUI();
         },
         success: function(data){ 
             mylog.log(">>> success startSearchTerla", data); //mylog.dir(data);

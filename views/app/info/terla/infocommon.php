@@ -18,3 +18,11 @@
     <div class="headerTitle"> <?php echo Yii::t("terla", $title); ?></div>
 </div>
 </header>
+
+<script>
+
+    jQuery(document).ready(function() { 
+        //initSearchInterface();
+    });
+
+</script>

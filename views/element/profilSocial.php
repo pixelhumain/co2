@@ -708,7 +708,7 @@
 	var proposalId = "<?php echo @$_GET['proposal']; ?>";
 	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
 	var actionId = "<?php echo @$_GET['action']; ?>";
-
+	var isLiveNews = "";
 
 	jQuery(document).ready(function() {
 		bindButtonMenu();

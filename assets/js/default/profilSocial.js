@@ -474,14 +474,14 @@ function loadAdminDashboard(week){
 function loadNewsStream(isLiveBool){
 
 	KScrollTo("#profil_imgPreview");
-	
-	isLive = isLiveBool==true ? "/isLive/true" : ""; 
+	//isLiveNews=isLiveBool;
+	isLiveNews = isLiveBool==true ? "/isLive/true" : ""; 
 	dateLimit = 0;
 	scrollEnd = false;
 	loadingData = true;
 	toogleNotif(true);
 
-	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLive+"/date/"+dateLimit+
+	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLiveNews+"/date/"+dateLimit+
 			  "?isFirst=1&tpl=co2&renderPartial=true";
 	
 	setTimeout(function(){ //attend que le scroll retourn en haut (kscrollto)
@@ -494,7 +494,7 @@ function loadNewsStream(isLiveBool){
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();
 				          if( $(this).scrollTop() >= heightWindow - 400){
-				            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep, isLiveBool);
+				            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
 				          }
 				    }
 				});
@@ -817,7 +817,7 @@ var loading = "<div class='loader text-dark text-center'>"+
 			"<span class='text-dark'>"+trad.currentlyloading+" ...</span>" + 
 		"</div>";
 
-function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
+function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 	loadingData = true;
 	currentIndexMin = indexMin;
 	currentIndexMax = indexMax;
@@ -825,8 +825,8 @@ function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROF
 
 	if(typeof dateLimit == "undefined") dateLimit = 0;
 
-	isLive = isLiveBool==true ? "/isLive/true" : "";
-	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLive+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
+	//isLive = isLiveBool==true ? "/isLive/true" : "";
+	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLiveNews+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
 	$.ajax({ 
         type: "POST",
         url: baseUrl+"/"+moduleId+'/'+url,

@@ -93,6 +93,10 @@
         padding: 15px;
         margin-top: 15px;
     }
+
+    .subModuleTitle{
+        display: none;
+    }
 </style>
 <div class="row padding-10 bg-white live-container">
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">

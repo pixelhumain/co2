@@ -124,7 +124,7 @@
 			"subdomainName" : "page",
 			"hash":"#app.page",
 			"icon" : "", 
-			"mainTitle" : "Le réseau social à effet de sert",
+			"mainTitle" : "Terla",
 			"placeholderMainSearch" : "search ..."
 		},
 
@@ -136,7 +136,7 @@
 			"subdomainName" : "Info",
 			"hash":"#app.info",
 			"icon" : "info-circle", 
-			"mainTitle" : "Le réseau social à effet de sert",
+			"mainTitle" : "Terla",
 			"placeholderMainSearch" : "search..."
 		},
 

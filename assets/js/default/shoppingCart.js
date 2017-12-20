@@ -341,7 +341,7 @@ var shopping = {
 					"<button onclick='shopping.checkout();' class='btn btn-link bg-orange text-white pull-right'>"+trad["Checkout"] +"</button>"+
 					"<button class='btn btn-link letter-orange pull-right margin-right-10 text-white' data-toggle='modal'>"+trad["Continue"] +"</button>"+
     				"<div class='margin-top-10 pull-left'>"+
-    					"* folder fee included and delivery tax not included"+
+    					"* "+trad["folder fee included and delivery tax not included"] + ""+
     				"</div>"+
     			"</div>" +
     		"</div>";
@@ -360,7 +360,7 @@ var shopping = {
     					"<h4 class='text-white no-margin totalPrice'>Passer à la caisse : "+shopping.totalCart+" euros</h4>"+
     				"</div>";
     		cStr += "<div class='col-xs-12 padding-15 text-right'>"+
-    				"<span>* folder fee included and delivery tax not included</span>"+
+    				"<span>* "+trad["folder fee included and delivery tax not included"] + "</span>"+
     			"</div></div>";
     	return { cart : str , checkout : cStr };
     },

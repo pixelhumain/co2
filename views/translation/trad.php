@@ -412,6 +412,7 @@ var trad = {
 
 	"Checkout" : "<?php echo Yii::t("common", "Checkout") ?>",
 	"Continue" : "<?php echo Yii::t("common", "Continue") ?>",
+	"Validate" : "<?php echo Yii::t("common", "Validate") ?>",
 	"Total of your order" : "<?php echo Yii::t("common", "Total of your order") ?>",
 
 	"Leave your comment" : "<?php echo Yii::t("common", "Leave your comment") ?>",
@@ -425,6 +426,8 @@ var trad = {
 	"artisants" : 		 "<?php echo Yii::t("common", "Artisants") ?>",
 	"guideAccom" : "<?php echo Yii::t("common", "Guide and helper") ?>",
 	
+	"folder fee included and delivery tax not included" : 
+		"<?php echo Yii::t("common", "folder fee included and delivery tax not included") ?>",
 };
 
 var tradDynForm = {

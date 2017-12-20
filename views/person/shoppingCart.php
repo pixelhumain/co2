@@ -132,9 +132,9 @@
         <div class='col-md-12 pull-right btn-cart margin-top-20 no-padding'>
             <button onclick='shopping.buyCart();' 
                class='btn btn-link bg-orange text-white pull-right'>
-               Validate
+               <?php echo Yii::t("common", "Validate") ?>
             </a>
-            <button class='btn btn-link letter-orange pull-right text-white margin-right-5' data-toggle="modal">Continue</a>
+            <button class='btn btn-link letter-orange pull-right text-white margin-right-5' data-toggle="modal"><?php echo Yii::t("common", "Continue") ?></a>
         </div>
     </div>
 

@@ -334,7 +334,8 @@
 			<?php }  ?>
 		<?php }  ?>
 			
-		<?php if ( $type==Place::COLLECTION ){  
+		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
+				  $type==Event::COLLECTION || $type==Person::COLLECTION || $type==Place::COLLECTION ){  
 					if(!@$front || (@$front && $front["poi"])){ 
 		?>
 			<li>

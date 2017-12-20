@@ -84,10 +84,24 @@
     "subdomainName" : "Lieux",
     "hash" : "#app.search.type.place",
     "icon" : "map-marker", 
-    "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
+    "mainTitle" : "Moteur de Lieux <span class='text-red'>territoriales</span>",
     "placeholderMainSearch" : "Rechercher un lieu ...",
     "lblBtnCreate" : "Ajouter un lieu",
     "colorBtnCreate" : "green"
+},
+
+"#ressource":
+    {"inMenu" : true, 
+    "useHeader" : true, 
+    "open" : true, 
+    "subdomain" : "ressource", 
+    "subdomainName" : "Ressources",
+    "hash" : "#app.search.type.ressource",
+    "icon" : "cubes", 
+    "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
+    "placeholderMainSearch" : "Rechercher un ressource ...",
+    "lblBtnCreate" : "Ajouter une ressource",
+    "colorBtnCreate" : "purple"
 },
 
 		"#page": {

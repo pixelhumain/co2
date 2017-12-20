@@ -30,6 +30,11 @@
             "label":"Rural",           
             "key" : "rural",  
             "icon" : "tree"
+        },
+        "travel": {
+            "label":"Travel",           
+            "key" : "travel",  
+            "icon" : "car"
         }
         
     },

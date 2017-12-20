@@ -1,9 +1,20 @@
 {
     "sections" : {
-        "tool": {
-            "label":"Tool",           
-            "key" : "tool",  
-            "icon" : "cutlery"
+        
+        "need": {
+            "label":"Need",           
+            "key" : "need",  
+            "icon" : "hand-o-up"
+        },
+        "offer": {
+            "label":"Offer",           
+            "key" : "offer",  
+            "icon" : "hand-o-down"
+        },
+        "service": {
+            "label":"Service",           
+            "key" : "service",  
+            "icon" : "exchange"
         },
         "competence": {
             "label":"Competence",      
@@ -15,6 +26,21 @@
                     "Electrician", 
                     "Journalist",
                     "Community Manager"
+                ]
+        },
+        "humanRessource": {
+            "label":"Human Ressource",           
+            "key" : "humanRessource",  
+            "icon" : "user"
+        },
+        "tool": {
+            "label":"Tool",           
+            "key" : "tool",  
+            "icon" : "cutlery",
+            "subcat" : 
+                [   
+                    "Open",
+                    "Private"
                 ]
         },
         "documentation": {

@@ -18,6 +18,12 @@ dynForm = {
 					$(".sectionBtntagList").hide();
 	    		} else
 	    			$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+
+	    		if(contextData.type && contextData.id )
+	    		{
+    				$('#ajaxFormModal #parentId').val(contextData.id);
+	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
+	    		}	
 	    	},
 	    },
 	    beforeSave : function(){

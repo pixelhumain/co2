@@ -24,6 +24,7 @@
     if(@$type=="classified"){ $page = "annonces"; }
     if(@$type=="vote")      { $page = "power"; }
     if(@$type=="place")     { $page = "place"; }
+    if(@$type=="ressource")     { $page = "ressource"; }
 
     if(@$type=="cities")    { $lblCreate = ""; }
 

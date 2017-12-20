@@ -2537,7 +2537,7 @@ var dyFObj = {
 	    if(userId)
 		{
 			formInMap.formType = type;
-			dyFObj.getDynFormObj(type, function() { 
+			dyFObj.getDynFormObj(type, function(afterLoad,data) { 
 				dyFObj.starBuild(afterLoad,data);
 			},afterLoad, data);
 		} else {
@@ -2571,6 +2571,12 @@ var dyFObj = {
 		}else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
 			//via themeObj.dynForm.folder overload
+			if (jsonHelper.notNull("typeObj."+type+".sameAs") ) {
+				if(data == null) data = {};
+				data.section = type;
+				type = typeObj[type].sameAs;
+				mylog.log(" switching types to Parent ", type);	
+			}
 			var dfPath = (jsonHelper.notNull( "themeObj.dynForm.folder" ) ) ? themeObj.dynForm.folder : moduleUrl+'/js/dynForm/';
 			lazyLoad( dfPath+type+'.js', 
 				null,
@@ -2582,7 +2588,7 @@ var dyFObj = {
 				  	dyFInputs.get(type).dynForm = dynForm;
 					dyFObj.elementObj = dyFInputs.get(type);
 					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
-    				callback( afterLoad, data );
+					callback( afterLoad, data );
 			});
 		}
 	},
@@ -2633,8 +2639,11 @@ var dyFObj = {
 				        //alert(afterLoad+"|"+typeof dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
 			        
-			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
+			        if(typeof afterLoad == "function")
+			        	afterLoad(data);
+			        else if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads."+afterLoad, "function") )
 			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads[afterLoad](data);
+
 			        //incase we need a second global post process
 			        if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload", "function") )
 			        	dyFObj.elementObj.dynForm.jsonSchema.onLoads.onload(data);
@@ -3481,7 +3490,12 @@ var typeObj = {
 	"place":{  col:"place",ctrl:"place",color:"green",icon:"map-marker", titleClass : "bg-azure"},
 	"TiersLieux" : {sameAs:"place",color: "azure",icon: "home"},
 	"Maison" : {sameAs:"place", color: "azure",icon: "home"},
-	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube", titleClass : "bg-azure" },
+	"ressource":{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube", titleClass : "bg-azure", 
+	subTypes : ["need", "offer","service","competence","tool","documentation","Machine","transport",
+				"offices","internet","activity","wiki","visio","drive","openWifi"] },
+	"need" : {sameAs:"ressource", color: "azure",icon: "hand-o-up"},
+	"offer" : {sameAs:"ressource", color: "azure",icon: "hand-o-down"},
+	"service" : {sameAs:"ressource", color: "azure",icon: "exchange"},
 
 	"siteurl":{ col:"siteurl",ctrl:"siteurl"},
 	"organization" : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},

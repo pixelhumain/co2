@@ -86,6 +86,7 @@ var Login = function() {
 			}
 		});
 	};
+
 	var runLoginValidator = function() {
 		var form = $('.form-login');
 		var loginBtn = null;
@@ -126,8 +127,10 @@ var Login = function() {
 		    		  if(data.result){
 		    		  	
 		    		  	if($("#remember").prop("checked")){
-			    		  	$.cookie("email", $("#email-login").val(), { expires: 180, path : "/" });
-			    		  	$.cookie("pwd", $("#password-login").val(), { expires: 180, path : "/" });
+		    		  		var pwdEncrypt = encryptPwd($("#password-login").val());
+			    		  	var emailEncrypt = encryptPwd($("#email-login").val());
+			    		  	$.cookie("lyame", emailEncrypt, { expires: 180, path : "/" });
+			    		  	$.cookie("drowsp", pwdEncrypt, { expires: 180, path : "/" });
 			    		  	$.cookie("remember", $("#remember").prop("checked"), { expires: 180, path : "/" });
 			    		}
 
@@ -545,4 +548,27 @@ function initRegister() {
 	$(".form-register #password3").val("");
 	$(".form-register #passwordAgain").val("");
 	$(".form-register #inviteCode").val("");
+}
+
+
+var CryptoJSAesJson = {
+    stringify: function (cipherParams) {
+        var j = {ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64)};
+        if (cipherParams.iv) j.iv = cipherParams.iv.toString();
+        if (cipherParams.salt) j.s = cipherParams.salt.toString();
+        return JSON.stringify(j);
+    },
+    parse: function (jsonStr) {
+        var j = JSON.parse(jsonStr);
+        var cipherParams = CryptoJS.lib.CipherParams.create({ciphertext: CryptoJS.enc.Base64.parse(j.ct)});
+        if (j.iv) cipherParams.iv = CryptoJS.enc.Hex.parse(j.iv);
+        if (j.s) cipherParams.salt = CryptoJS.enc.Hex.parse(j.s);
+        return cipherParams;
+    }
+};
+
+function encryptPwd(pwd){
+	var secureKey = 'JbQmfH"h^W7q86JU1V(<64aEv';
+	var encrypted = CryptoJS.AES.encrypt(JSON.stringify(pwd), secureKey, {format: CryptoJSAesJson});
+	return encrypted.toString();
 }

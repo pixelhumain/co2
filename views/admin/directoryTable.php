@@ -13,23 +13,38 @@ $this->renderPartial($layoutPath.'header',
                     array(  "layoutPath"=>$layoutPath , 
                             "page" => "admin") ); 
 ?>
+<style type="text/css">
+.simple-pagination li a, .simple-pagination li span {
+    border: none;
+    box-shadow: none !important;
+    background: none !important;
+    color: #2C3E50 !important;
+    font-size: 16px !important;
+    font-weight: 500;
+}
+.simple-pagination li.active span{
+	color: #d9534f !important;
+    font-size: 24px !important;	
+}
+</style>
 <div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<h3>Search by name :</h3><br/>
-		<div id="" class="col-sm-3 col-md-4 col-lg-4">
+	<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+		<div id="" class="" style="width:80%;  display: -webkit-inline-box;">
 	                <input type="text" class="form-control" id="input-search-table" 
-	                        placeholder="search by name">
-	    </div>
-	    <button class="btn btn-default hidden-xs pull-left menu-btn-start-search-admin btn-directory-type">
+	                        placeholder="search by name or by #tag, ex: 'commun' or '#commun'">
+	    <button class="btn btn-default hidden-xs menu-btn-start-search-admin btn-directory-type">
 	        <i class="fa fa-search"></i>
 	    </button>
+	    </div>
     </div>
-	<div class="panel-heading border-light">
-		<h4 class="panel-title"><i class="fa fa-globe fa-2x text-green"></i> Filtered by types : </h4>
+	<div class="panel-heading border-light text-center col-md-12 col-sm-12 col-xs-12 margin-top-10">
 		<a href="javascript:;" onclick="applyStateFilter('<?php echo Person::COLLECTION ?>')" class="filter<?php echo Person::COLLECTION ?> btn btn-xs btn-default active btncountsearch"> People <span class="badge badge-warning countPeople" id="countcitoyens"> <?php echo @$results["count"]["citoyens"] ?></span></a>
 		<a href="javascript:;" onclick="applyStateFilter('<?php echo Organization::COLLECTION ?>')" class="filter<?php echo Organization::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Organizations <span class="badge badge-warning countOrganizations" id="countorganizations"> <?php echo @$results["count"]["organizations"] ?></span></a> 
 		<a href="javascript:;" onclick="applyStateFilter('<?php echo Event::COLLECTION ?>')" class="filter<?php echo Event::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Events <span class="badge badge-warning countEvents" id="countevents"> <?php echo @$results["count"]["events"] ?></span></a> 
 		<a href="javascript:;" onclick="applyStateFilter('<?php echo Project::COLLECTION ?>')" class="filter<?php echo Project::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Projects <span class="badge badge-warning countProjects" id="countprojects"> <?php echo @$results["count"]["projects"] ?></span></a>
+		<a href="javascript:;" onclick="applyStateFilter('<?php echo Poi::COLLECTION ?>')" class="filter<?php echo Poi::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Pois <span class="badge badge-warning countPoi" id="countpoi"> <?php echo @$results["count"]["poi"] ?></span></a>
+		<a href="javascript:;" onclick="applyStateFilter('<?php echo Classified::COLLECTION ?>')" class="filter<?php echo Classified::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Classifieds <span class="badge badge-warning countClassified" id="countclassified"> <?php echo @$results["count"]["classified"] ?></span></a>
+		<a href="javascript:;" onclick="applyStateFilter('<?php echo News::COLLECTION ?>')" class="filter<?php echo News::COLLECTION ?> btn btn-xs btn-default btncountsearch"> News <span class="badge badge-warning countNews" id="countnews"> <?php echo @$results["count"]["news"] ?></span></a>
 		<!--<a href="javascript:;" onclick="clearAllFilters('')" class="btn btn-xs btn-default"> All</a></h4>-->
 	</div>
 	<!--<div class="panel-tools padding-20">
@@ -41,7 +56,7 @@ $this->renderPartial($layoutPath.'header',
 		<a href="javascript:;" onclick="dyFObj.openForm('person')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Invite Someone "><i class="fa fa-plus"></i> <i class="fa fa-user"></i></a>
 		<?php } ?>
 	</div>-->
-	<div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20"></div>
+	<div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20 text-center"></div>
 	<div class="panel-body">
 		<div>	
 			<?php //var_dump($projects) ?>
@@ -145,9 +160,12 @@ var icons = {
 	projects : "fa-lightbulb-o",
 	events : "fa-calendar",
 	citoyens : "fa-user",
+	classified : "fa-bullhorn",
+	poi : "fa-map-marker",
+	news : "fa-newspaper-o"
 };
 var search={
-	value:"",
+	value:null,
 	page:"",
 	type:"<?php echo Person::COLLECTION ?>"
 };
@@ -163,7 +181,12 @@ jQuery(document).ready(function() {
         if(e.keyCode == 13){
             search.page=0;
             search.value = $(this).val();
+            if(search.value=="")
+            	search.value=true;
             startAdminSearch(true);
+            // Init of search for count
+            if(search.value===true)
+            	search.value=null;
          }
     });
     initPageTable(results.count.citoyens);
@@ -245,7 +268,7 @@ function startAdminSearch(initPage){
 }
 function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 		strHTML="";
-		if(typeof e._id =="undefined" || typeof e.name == "undefined" || e.name == "" )
+		if(typeof e._id =="undefined" || ((typeof e.name == "undefined" || e.name == "") && (e.text == "undefined" || e.text == "")) )
 			return strHTML;
 		actions = "";
 		classes = "";
@@ -320,7 +343,11 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 		/* **************************************
 		* NAME
 		***************************************** */
-		strHTML += '<td><a href="#page.type.'+type+'.id.'+id+'" class="lbh" target="_blank">'+e.name+'</a></td>';
+		if(typeof e.name != "undefined")
+			title=e.name;
+		else if(typeof e.text != "undefined")
+			title=e.text;
+		strHTML += '<td><a href="#page.type.'+type+'.id.'+id+'" class="lbh" target="_blank">'+title+'</a></td>';
 		
 		/* **************************************
 		* EMAIL for admin use only
@@ -450,11 +477,11 @@ function applyStateFilter(str)
 	startAdminSearch(true);
 	//directoryTable.DataTable().column( 0 ).search( str , true , false ).draw();
 }
-function clearAllFilters(str){ 
+/*function clearAllFilters(str){ 
 	directoryTable.DataTable().column( 0 ).search( str , true , false ).draw();
 	directoryTable.DataTable().column( 2 ).search( str , true , false ).draw();
 	directoryTable.DataTable().column( 3 ).search( str , true , false ).draw();
-}
+}*/
 function applyTagFilter(str)
 {
 	mylog.log("applyTagFilter",str);

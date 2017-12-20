@@ -526,7 +526,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 						$(thiselement).attr("data-ownerlink","follow");
 						$(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
 						removeFloopEntity(data.parentId, type);
-						toastr.success(trad["You are not following"]+data.parentEntity.name);
+						toastr.success(trad["You are not following"]+" "+data.parentEntity.name);
 					} else {
 					   toastr.error("You leave succesfully");
 					}

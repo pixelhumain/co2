@@ -4827,9 +4827,9 @@ function initKInterface(params){ console.log("initKInterface");
     });
 
 
-    $(".logout").click(function(){ console.log("YOU ARE GOING TO LOGOUT");
-    	$.cookie("email", "null", { expires: 180, path : "/" });
-	  	$.cookie("pwd", "null", { expires: 180, path : "/" });
+    $(".logout").click(function(){ 
+    	$.cookie("lyame", "null", { expires: 180, path : "/" });
+	  	$.cookie("drowsp", "null", { expires: 180, path : "/" });
 	  	$.cookie("remember", false, { expires: 180, path : "/" });
     	window.location.href=baseUrl+"/co2/person/logout";
     });

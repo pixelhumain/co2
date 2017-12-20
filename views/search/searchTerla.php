@@ -129,7 +129,7 @@
 </div>
 
 <script type="text/javascript" >
-alert("yo");
+
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";

@@ -95,7 +95,7 @@
 			"subdomainName" : "Agenda",
 			"hash":"#app.agenda",
 			"icon" : "calendar", 
-			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
+			"mainTitle" : "Agenda",
 			"placeholderMainSearch" : "search an event ...",
 			"lblBtnCreate" : "Create an event",
 			"colorBtnCreate" : "orange"

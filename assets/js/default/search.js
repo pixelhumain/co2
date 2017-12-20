@@ -1,5 +1,5 @@
 function initSearchInterface(){
-    console.log("runin initSearchInterface");
+    //console.log("runin initSearchInterface");
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
@@ -71,7 +71,7 @@ function initSearchInterface(){
         dyFObj.openForm(type);
     });
 
-    console.log("runin initSearchInterface end");
+    //console.log("runin initSearchInterface end");
     
 }
 

@@ -9,6 +9,7 @@
     $cssAnsScriptFilesModule = array(
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
+    '/js/default/directory.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -48,11 +49,12 @@
 
 <style>
     header .headerImg{
-        background-image: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion1.jpg");
+        background-image: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion5.jpg");
         background-size: 100% auto;
         height: 300px;
         margin-top: 45px;
         background-repeat: no-repeat;
+        background-position: bottom center;
         /*opacity: 0.3;
         background-color: black;*/
     }
@@ -69,6 +71,10 @@
 
     #dropdown_search{
         margin-top:20px;
+    }
+
+    .container{
+        padding-bottom:0px !important;
     }
 </style>
 
@@ -156,7 +162,7 @@
 </div>
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
-<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array()); ?>
+<?php $this->renderPartial($layoutPath.'footer', array()); ?>
 
 <?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
 
@@ -244,8 +250,6 @@ jQuery(document).ready(function() {
     },"html");
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js
-
-
 
     calculateAgendaWindow(0);
 

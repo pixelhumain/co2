@@ -425,6 +425,12 @@
 									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
 								</a>
 							</li>
+
+							<li class="text-left">
+				               	<a href='javascript:;' onclick='loadMD()' >
+									<i class='fa fa-file-text-o'></i> <?php echo Yii::t("common","Markdown Version"); ?>
+								</a>
+				            </li>
 							
 							<li class="text-left">
 				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
@@ -782,6 +788,8 @@
 				rcObj.loadChat("","citoyens", true, true);
 			else if(sub=="contacts")
 				loadContacts();
+			else if(sub=="md")
+				loadMD();
 			else if(sub=="settings")
 				loadSettings();
 			else if(sub=="coop"){

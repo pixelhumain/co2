@@ -1299,7 +1299,7 @@ var smallMenu = {
 		   	//else collection.buildCollectionList( "linkList" ,"#listCollections",function(){ $("#listCollections").html("<h4 class=''>Collections</h4>"); });
 
 		   	if (typeof callback == "function") 
-				callback();
+				callback(data);
 	    } );
 	},
 	build : function  (params,build_func,callback) { 

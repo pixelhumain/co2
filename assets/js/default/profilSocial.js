@@ -655,6 +655,26 @@ function loadContacts(){
 }
 
 
+function loadMD(){
+	showLoader('#central-container');
+	getAjax('', baseUrl+'/api/person/get/id/'+contextData.id+"/format/md",
+				function(data){ 
+					descHtml = dataHelper.markdownToHtml(data) ; 
+					$('#central-container').html(descHtml);
+				}
+	,"html");
+}
+
+function loadMD_(){
+	toogleNotif(false);
+	smallMenu.openAjax(baseUrl+'/api/person/get/id/'+contextData.id+"/format/md",'Markdown','fa-file-text-o','dark',null,null,function(data) { 
+		
+		$("#openModal div.modal-content div.container")
+	});
+	bindLBHLinks();
+}
+
+
 
 //todo add count on each tag
     function getfilterRoles(roles) { 

@@ -7,7 +7,11 @@ $cssAnsScriptFilesModule = array(
 	'/plugins/jquery-simplePagination/simplePagination.css'
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
-
+$cssAnsScriptFilesModule = array(
+    '/assets/css/default/responsive-calendar.css',
+    '/assets/css/default/search.css',
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 //header + menu
 $this->renderPartial($layoutPath.'header', 
@@ -31,12 +35,55 @@ $this->renderPartial($layoutPath.'header',
 <div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 	<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 		<div id="" class="" style="width:80%;  display: -webkit-inline-box;">
-	                <input type="text" class="form-control" id="input-search-table" 
+	        <input type="text" class="form-control" id="input-search-table" 
 	                        placeholder="search by name or by #tag, ex: 'commun' or '#commun'">
 	    <button class="btn btn-default hidden-xs menu-btn-start-search-admin btn-directory-type">
 	        <i class="fa fa-search"></i>
 	    </button>
 	    </div>
+    </div>
+    <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
+    </div>
+    <div>
+
+    	<a href="#live" class="#liveModBtn lbh btn btn-link letter-red pull-right btn-menu-to-app hidden-top hidden-xs
+                             tooltips" data-placement="bottom" data-original-title="Live">
+                    <i class="fa fa-search"></i>
+
+                     <span class="">All</span> 
+                                    </a>
+
+    	<a href="#live" class="#liveModBtn lbh btn btn-link letter-red pull-right btn-menu-to-app hidden-top hidden-xs
+                             tooltips" data-placement="bottom" data-original-title="Live">
+                    <i class="fa fa-connectdevelop"></i>
+
+                     <span class="">Acteurs et initiaves</span> 
+                                    </a>
+    	<a href="#live" class="#liveModBtn lbh btn btn-link letter-red pull-right btn-menu-to-app hidden-top hidden-xs
+                             tooltips" data-placement="bottom" data-original-title="Live">
+                    <i class="fa fa-newspaper-o"></i>
+
+                     <span class="">Live</span> 
+                                    </a>
+        <a href="#agenda" class="#agendaModBtn lbh btn btn-link letter-red pull-right btn-menu-to-app hidden-top hidden-xs
+                             tooltips" data-placement="bottom" data-original-title="Agenda">
+                    <i class="fa fa-calendar"></i>
+
+                    <span class="">Agenda</span> 
+                                    </a>
+        <a href="#annonces" class="#agendaModBtn lbh btn btn-link letter-red pull-right btn-menu-to-app hidden-top hidden-xs
+                             tooltips" data-placement="bottom" data-original-title="Agenda">
+                    <i class="fa fa-bullhorn"></i>
+
+                    <span class="">Entraide</span>
+                                    </a>
+        <a href="#annonces" class="#agendaModBtn lbh btn btn-link letter-red pull-right btn-menu-to-app hidden-top hidden-xs
+                             tooltips" data-placement="bottom" data-original-title="Agenda">
+                    <i class="fa fa-monney"></i>
+
+                    <span class="">Market</span>
+                                    </a>
     </div>
 	<div class="panel-heading border-light text-center col-md-12 col-sm-12 col-xs-12 margin-top-10">
 		<a href="javascript:;" onclick="applyStateFilter('<?php echo Person::COLLECTION ?>')" class="filter<?php echo Person::COLLECTION ?> btn btn-xs btn-default active btncountsearch"> People <span class="badge badge-warning countPeople" id="countcitoyens"> <?php echo @$results["count"]["citoyens"] ?></span></a>

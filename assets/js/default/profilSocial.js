@@ -971,7 +971,6 @@ function inintDescs() {
 	if($("#descriptionMarkdown").html().length > 0){
 		descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
 	}
-	
 	$("#descriptionAbout").html(descHtml);
 	$("#descProfilsocial").html(descHtml);
 	mylog.log("descHtml", descHtml);

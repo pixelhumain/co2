@@ -29,6 +29,11 @@
 		'/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
         '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
         '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
+        "/plugins/d3/d3.js",
+        "/plugins/d3/d3-flextree.js",
+        "/plugins/d3/view.mindmap.js",
+        "/plugins/d3/view.mindmap.css",
+        
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -429,6 +434,12 @@
 							<li class="text-left">
 				               	<a href='javascript:;' onclick='loadMD()' >
 									<i class='fa fa-file-text-o'></i> <?php echo Yii::t("common","Markdown Version"); ?>
+								</a>
+				            </li>
+							
+							<li class="text-left">
+				               	<a href='javascript:;' onclick='loadMindMap()' >
+									<i class='fa fa-sitemap'></i> <?php echo Yii::t("common","Mindmap View"); ?>
 								</a>
 				            </li>
 							

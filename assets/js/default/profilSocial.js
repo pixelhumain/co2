@@ -665,16 +665,27 @@ function loadMD(){
 	,"html");
 }
 
-function loadMD_(){
-	toogleNotif(false);
-	smallMenu.openAjax(baseUrl+'/api/person/get/id/'+contextData.id+"/format/md",'Markdown','fa-file-text-o','dark',null,null,function(data) { 
-		
-		$("#openModal div.modal-content div.container")
+function loadMindMap(){
+	showLoader('#central-container');
+
+	/*if( ! jQuery.isFunction(jQuery.datetimepicker) ) {
+				lazyLoad( baseUrl+'/plugins/xdan.datetimepicker/jquery.datetimepicker.full.min.js', 
+						  baseUrl+'/plugins/xdan.datetimepicker/jquery.datetimepicker.min.css',
+						  callback);
+		    }*/
+	
+	d3.json(baseUrl+'/api/person/get/id/'+contextData.id+"/format/tree", function(error, data) {
+	  if (error) throw error;
+	  
+	  $('#central-container').html("<svg id='mindmap' style='width:100%;height:800px'></svg>");
+	  mylog.log( data );
+	  markmap('svg#mindmap', data, {
+	    preset: 'default', // or colorful
+	    linkShape: 'diagonal' // or bracket
+	  });
 	});
-	bindLBHLinks();
+					
 }
-
-
 
 //todo add count on each tag
     function getfilterRoles(roles) { 

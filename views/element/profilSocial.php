@@ -442,6 +442,12 @@
 									<i class='fa fa-sitemap'></i> <?php echo Yii::t("common","Mindmap View"); ?>
 								</a>
 				            </li>
+
+				            <li class="text-left">
+				               	<a href='javascript:;' onclick='loadGraph()' >
+									<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
+								</a>
+				            </li>
 							
 							<li class="text-left">
 				               	<a href='javascript:;' id="btn-update-password" class='text-red'>

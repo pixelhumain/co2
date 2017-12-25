@@ -12,8 +12,22 @@
   stroke-width: 0px;
 }
 
+.graph{
+    float: right;
+}
+#tags{
+    background-color: #eee;
+    width:200px;
+    float: left;
+    height:600px;
+}
+#tags a{
+    color: #333;
+    text-decoration: none;
+}
 </style>
-<svg width="1200" height="600"></svg>
+<div  id="tags" ></div>
+<svg id="graph" width="900" height="600"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
@@ -24,9 +38,15 @@ var svg = d3.select("svg"),
     
 var radius = 15; 
 
+console.log(<?php echo json_encode($data); ?>);
+var tags = <?php echo json_encode($tags); ?>;
 var nodes_data = <?php echo json_encode($data); ?>;
 var links_data = <?php echo json_encode($links); ?>;
 
+tags.forEach(function (t) {
+    if (t != "") 
+        document.getElementById("tags").innerHTML = document.getElementById("tags").innerHTML + "<a href='/ph/co2/graph/search/tag/"+t+"'>#"+t+"</a><br/>";
+  })
 
 //set up the simulation and add forces  
 var simulation = d3.forceSimulation()

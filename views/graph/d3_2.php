@@ -89,6 +89,7 @@ var node = g.append("g")
         .selectAll("circle")
         .data(nodes_data)
         .enter()
+        
         .append("circle")
         .attr("r", radius)
         .attr("fill", circleColour)

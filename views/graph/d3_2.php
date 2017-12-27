@@ -9,7 +9,7 @@
 
 .nodes circle {
   stroke: black	;
-  stroke-width: 0px;
+  stroke-width: 1px;
 }
 
 .graph{
@@ -26,11 +26,24 @@
     text-decoration: none;
 }
 </style>
-<div  id="tags" ></div>
-<svg id="graph" width="900" height="600"></svg>
+<div  id="tags" >
+    <input id="search" type="text" placeholder="#tag, free search, >types" onkeypress="return runScript(event)"/><br/><br/>
+</div>
+<svg id="graph" width="1100" height="600"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
+function runScript(e) {
+    if (e.keyCode == 13) {
+        s = document.getElementById("search").value;
+        if (s.indexOf("#") == 0 )
+            window.location.href = "/ph/co2/graph/search/tag/"+s.substring(1);
+        else if (s.indexOf(">") == 0 )
+            window.location.href = "/ph/co2/graph/search/type/"+s.substring(1);
+        else
+            window.location.href = "/ph/co2/graph/search/q/"+s;
+    }
+}
 //create somewhere to put the force directed graph
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
@@ -39,6 +52,7 @@ var svg = d3.select("svg"),
 var radius = 15; 
 
 console.log(<?php echo json_encode($data); ?>);
+console.log(<?php echo json_encode(@$list); ?>);
 var tags = <?php echo json_encode($tags); ?>;
 var nodes_data = <?php echo json_encode($data); ?>;
 var links_data = <?php echo json_encode($links); ?>;
@@ -91,7 +105,7 @@ var node = g.append("g")
         .enter()
         
         .append("circle")
-        .attr("r", radius)
+        .attr("r", circleSize)
         .attr("fill", circleColour)
         .on('click', selectNode);
 /*
@@ -134,13 +148,37 @@ zoom_handler(svg);
 //Function to choose what color circle we have
 //Let's return blue for males and red for females
 function circleColour(d){
-	if(d.level ==0){
+	
+    if(d.type == "tag")
+        return "steelblue";
+    else if(d.type == "events")
+        return "#FFA200";
+    else if(d.type == "projects")
         return "purple";
+    else if( d.type == "organizations" )
+        return "#93C020";
+    else if(d.type == "citoyens")
+        return "#FFC600";
+    
+    if(d.level ==0){
+        return "black";
     }else if(d.level ==1){
-		return "red";
+		return "#c62f80";
 	} else {
 		return "#cccccc";
 	}
+}
+
+function circleSize(d){
+    r = 10; 
+    if(d.level ==1 || d.level == 0)
+        return 20;
+    if(d.linkSize > 0)
+        r += d.linkSize;
+    if(r>30)
+        r = 30;
+    //console.log("radius", r, d.linkSize);
+    return r;
 }
 
 //Function to choose the line colour and thickness 
@@ -196,10 +234,12 @@ function tickActions() {
 } 
 
 function selectNode(selectedNode) {
-  console.log(selectedNode);
-  types = ["citoyen", "organization", "project", "event"];
-  if(selectedNode.id.length > 20 )
-    window.location.href = "/ph/co2/graph/d3/id/"+selectedNode.id+"/type/"+types[selectedNode.group-1];
-  }
+    console.log(selectedNode);
+    types = ["citoyen", "organization", "project", "event"];
+    if(selectedNode.id.length > 20 )
+        window.location.href = "/ph/co2/graph/d3/id/"+selectedNode.id+"/type/"+types[selectedNode.group-1];
+    else if (selectedNode.type == "tag")
+    window.location.href = "/ph/co2/graph/search/tag/"+selectedNode.label;
+}
 
 </script>

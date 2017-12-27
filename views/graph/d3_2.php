@@ -123,14 +123,14 @@ var node = g.append("g")
         .attr("r", circleSize)
         .attr("fill", circleColour)
         .on('click', selectNode);
-/*
+
 node.append("image")
       .attr("xlink:href", "https://github.com/favicon.ico")
       .attr("x", -8)
       .attr("y", -8)
       .attr("width", 16)
       .attr("height", 16);
-*/
+
 var text = g.append("g")
         .attr("class", "texts")
         .selectAll("text")
@@ -166,13 +166,13 @@ function circleColour(d){
 	
     if(d.type == "tag")
         return "steelblue";
-    else if(d.type == "event")
+    else if(d.type == "event" || d.type == "event")
         return "#FFA200";
-    else if(d.type == "project")
+    else if(d.type == "project" || d.type == "projects")
         return "purple";
-    else if( d.type == "organization" )
+    else if( d.type == "organization" || d.type == "organizations" )
         return "#93C020";
-    else if(d.type == "citoyens")
+    else if(d.type == "citoyens" || d.type == "citoyen" )
         return "#FFC600";
     
     if(d.level ==0){

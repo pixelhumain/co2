@@ -16,7 +16,8 @@
     float: right;
 }
 #tags{
-    background-color: #eee;
+    padding-top: 20px;
+    background-color: #fff;
     width:200px;
     float: left;
     height:600px;
@@ -25,10 +26,24 @@
     color: #333;
     text-decoration: none;
 }
+#sectionList a{
+    color: red;
+    text-decoration: none;
+}
+#search{
+    float:right;
+}
+#title{
+    background-color: #eee;
+    height:60px;
+    font-size: 2em;
+    padding:5px;
+}
 </style>
 <div  id="tags" >
-    <input id="search" type="text" placeholder="#tag, free search, >types" onkeypress="return runScript(event)"/><br/><br/>
+    <div id="sectionList"></div>
 </div>
+
 <svg id="graph" width="1100" height="600"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
@@ -151,11 +166,11 @@ function circleColour(d){
 	
     if(d.type == "tag")
         return "steelblue";
-    else if(d.type == "events")
+    else if(d.type == "event")
         return "#FFA200";
-    else if(d.type == "projects")
+    else if(d.type == "project")
         return "purple";
-    else if( d.type == "organizations" )
+    else if( d.type == "organization" )
         return "#93C020";
     else if(d.type == "citoyens")
         return "#FFC600";
@@ -236,7 +251,17 @@ function tickActions() {
 function selectNode(selectedNode) {
     console.log(selectedNode);
     types = ["citoyen", "organization", "project", "event"];
-    if(selectedNode.id.length > 20 )
+    if(selectedNode.level == 1 && selectedNode.id != "tags" ){
+        document.getElementById("sectionList").innerHTML = "<b>"+selectedNode.label+"</b><br/>";
+
+        links_data.forEach(function (t) {
+        if (t.source.id == selectedNode.id) 
+            document.getElementById("sectionList").innerHTML += "<a href='/ph/co2/graph/d3/id/"+t.target.id+"/type/"+t.target.type+"'> "+t.target.label+"</a><br/>";
+      })
+        document.getElementById("sectionList").innerHTML += "<br/><br/>"
+    }
+
+    else if(selectedNode.id.length > 20 )
         window.location.href = "/ph/co2/graph/d3/id/"+selectedNode.id+"/type/"+types[selectedNode.group-1];
     else if (selectedNode.type == "tag")
     window.location.href = "/ph/co2/graph/search/tag/"+selectedNode.label;

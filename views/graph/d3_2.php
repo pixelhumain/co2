@@ -18,7 +18,7 @@
 #tags{
     padding-top: 20px;
     background-color: #fff;
-    width:200px;
+    width:20%;
     float: left;
     height:600px;
 }
@@ -44,7 +44,7 @@
     <div id="sectionList"></div>
 </div>
 
-<svg id="graph" width="1100" height="600"></svg>
+<svg id="graph" width="600" height="600"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
@@ -52,12 +52,18 @@ function runScript(e) {
     if (e.keyCode == 13) {
         s = document.getElementById("search").value;
         if (s.indexOf("#") == 0 )
-            window.location.href = "/ph/co2/graph/search/tag/"+s.substring(1);
+            open("graph/search/tag/"+s.substring(1) );
         else if (s.indexOf(">") == 0 )
-            window.location.href = "/ph/co2/graph/search/type/"+s.substring(1);
+            open("graph/search/type/"+s.substring(1) ) ;
         else
-            window.location.href = "/ph/co2/graph/search/q/"+s;
+            open("graph/search/q/"+s );
     }
+}
+function open (url) { 
+    if(typeof $ != "undefined")
+        smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
+    else 
+        window.location.href = "/ph/co2/"+url;   
 }
 //create somewhere to put the force directed graph
 var svg = d3.select("svg"),
@@ -121,15 +127,25 @@ var node = g.append("g")
         
         .append("circle")
         .attr("r", circleSize)
-        .attr("fill", circleColour)
+        //.attr("fill", "url(#img)")
+        .attr("fill", circleColour )
         .on('click', selectNode);
+/*
+var defs = g.append("g:defs");
 
-node.append("image")
-      .attr("xlink:href", "https://github.com/favicon.ico")
-      .attr("x", -8)
-      .attr("y", -8)
-      .attr("width", 16)
-      .attr("height", 16);
+defs.append("g:pattern")
+.attr("id", "img")
+.attr("patternUnits", "userSpaceOnUse")
+.attr("width", "50")
+.attr("height", "50")
+.append("g:image")
+.attr("xlink:href", "https://github.com/favicon.ico")
+.attr("x", 0)
+.attr("y", 0)
+.attr("width", 50)
+.attr("height", 50);
+*/
+
 
 var text = g.append("g")
         .attr("class", "texts")
@@ -262,9 +278,13 @@ function selectNode(selectedNode) {
     }
 
     else if(selectedNode.id.length > 20 )
-        window.location.href = "/ph/co2/graph/d3/id/"+selectedNode.id+"/type/"+types[selectedNode.group-1];
+        open( "graph/d3/id/"+selectedNode.id+"/type/"+types[selectedNode.group-1] );
     else if (selectedNode.type == "tag")
-    window.location.href = "/ph/co2/graph/search/tag/"+selectedNode.label;
+        open( "graph/search/tag/"+selectedNode.label );
 }
 
+if(typeof $ != "undefined")
+    $("#graph").css("width","80%")
+else 
+    document.getElementById("graph").style.width = "80%";
 </script>

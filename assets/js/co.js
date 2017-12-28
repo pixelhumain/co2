@@ -5023,3 +5023,107 @@ $(document).ready(function() {
 	if(notNull(userId) && userId!="") 
 		bindRightClicks();
 });
+
+var co = {
+	help : function () { 
+		url = urlCtrl.convertToPath("#default.view.page.links");
+	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
+	},
+	lang : function () { 
+		smallMenu.open("<h1>Explain COLang</h1>");
+	},
+	mands : function () { 
+		str = "";
+		$.each(co,function (k,v) { 
+			str += "<a class='btn' href='javascript:;' onclick='co."+k+"()'>co."+k+"</a><br/>";
+		})
+		smallMenu.open("<h1>All Commands</h1>"+str);
+	},
+	tools : function () { 
+		smallMenu.open("<h1>Internal Tools and projects</h1>");
+	},
+	nect : function () { 
+		if(!userId)
+			$('#modalLogin').modal("show");
+		else 
+			toastr.success("allready Loggued in!!");
+	},
+	tribute : function () { 
+		window.open('https://www.helloasso.com/associations/open-atlas/collectes/communecter/don', '_blank');
+	},
+	graph : function () { 
+		lazyLoad( "https://d3js.org/d3.v4.min.js", null, function() { 
+			smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/graph/d3/id/"+userId+"/type/citoyen");
+		} );
+	},
+	agenda : function () { 
+		urlCtrl.loadByHash("#agenda");
+	},
+	search : function () { 
+		urlCtrl.loadByHash("#search");
+	},
+	live : function () { 
+		urlCtrl.loadByHash("#live");
+	},
+	web : function () { 
+		urlCtrl.loadByHash("#web");
+	},
+	annonces : function () { 
+		urlCtrl.loadByHash("#annonces");
+	},
+	chat : function () { 
+		if(userId)
+			rcObj.loadChat("","citoyens", true, true) 
+		else co.nect();
+	},
+	notif : function () { 
+		
+	},
+	add : function (str) { 
+		strT = str.split(".");
+		type = {
+			"org":"organization",
+			"o":"organization",
+			"pr" : "project",
+			"ev" : "event",
+			"e" : "event",
+			"p" : "person",
+			"poi" : "poi"
+		}
+		if( type[ strT[2] ] )
+			dyFObj.openForm(strT[2]);
+		//else todo
+		// free add form 
+		// set a type 
+	},
+	o : function () { 
+		if(userId)
+			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.organizations");
+		else co.nect();
+	},
+	e : function () { 
+		if(userId)
+			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.evens");
+		else co.nect();
+	},
+	pr : function () { 
+		if(userId)
+			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.projects");
+		else co.nect();
+	},
+	p : function () { 
+		if(userId)
+			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.follows");
+		else co.nect();
+	},
+	poi : function () { 
+		if(userId)
+			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.poi");
+		else co.nect();
+	},
+	info : function () { 
+		if(userId)
+			urlCtrl.loadByHash("#"+userConnected.username+".view.detail");
+		else co.nect();
+	},
+}	

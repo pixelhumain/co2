@@ -1,6 +1,6 @@
 function initSearchInterface(){
     
-    $("#main-search-bar").keyup(function(e){
+  /*  $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
@@ -9,6 +9,21 @@ function initSearchInterface(){
             $(".btn-directory-type").removeClass("active");
             KScrollTo("#content-social");
         }
+    });*/
+    $("#main-search-bar").keyup(function(e){
+        $("#second-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        if(e.keyCode == 13){
+            searchPage=0;
+            search.value = $(this).val();
+            pageCount=true;
+            if(typeof search.value == "undefined")
+                startSearch(0, indexStepInit, searchCallback);
+            else
+                autoCompleteSearch(search.value, null, null, null, null);
+            pageCount=false;
+            KScrollTo("#dropdown_search");
+         }
     });
     $("#main-search-bar").change(function(){
         $("#second-search-bar").val($(this).val());
@@ -18,12 +33,29 @@ function initSearchInterface(){
         $("#main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
+            //initTypeSearch(typeInit);
+            searchPage=0;
+            search.value = $(this).val();
+            pageCount=true;
+            if(typeof search.value == "undefined")
+                startSearch(0, indexStepInit, searchCallback);
+            else
+                autoCompleteSearch(search.value, null, null, null, null);
+            $(".btn-directory-type").removeClass("active");
+            KScrollTo("#content-social");
+         }
+    });
+
+   /* $("#second-search-bar").keyup(function(e){
+        $("#main-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        if(e.keyCode == 13){
             initTypeSearch(typeInit);
             startSearch(0, indexStepInit, searchCallback);
             $(".btn-directory-type").removeClass("active");
             KScrollTo("#content-social");
          }
-    });
+    });*/
 
     $("#input-search-map").off().keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());

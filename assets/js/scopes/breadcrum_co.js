@@ -12,7 +12,6 @@ function scopeActive(scopeValue){
 }
 
 function bindCommunexionScopeEvents(){
-    bindSearchCity();
     $(".btn-decommunecter").off().on('click',function(){
         activateGlobalCommunexion(false); 
     });
@@ -24,8 +23,9 @@ function bindCommunexionScopeEvents(){
         var testCo = false;
         if($(this).hasClass("communecterSearch")){
             testCo = true;
-            myScopes.open.cities = trad.allcitieswiththispostalcode
-            $("#main-search-bar").val("");
+            //communexion.cities = trad.allcitieswiththispostalcode
+            $("#searchOnCity").val("");
+            $(".dropdown-result-global-search").hide(700).html("");
             if(location.hash.indexOf("#search")){
                 notSearch = false;
             }
@@ -84,8 +84,8 @@ function bindCommunexionScopeEvents(){
     });
 
     $(".start-new-communexion").off().on("click",function(){
-        mylog.log("start-new-communexion", typeof myScopes.communexion.currentName);
-        if (typeof myScopes.communexion.currentName !== 'undefined'){
+        mylog.log("start-new-communexion", typeof communexion.currentName);
+        if (typeof communexion.currentName !== 'undefined'){
             activateGlobalCommunexion(true, true);
             if(actionOnSetGlobalScope=="save")
                 $(".item-globalscope-checker").attr('disabled', true);
@@ -99,16 +99,18 @@ function activateGlobalCommunexion(active, firstLoad, testCo){
 	mylog.log("activateGlobalCommunexion", active, firstLoad);
     mylog.log("activateGlobalCommunexion actionOnSetGlobalScope", actionOnSetGlobalScope);
     $.cookie('communexionActivated', active, { expires: 365, path: "/" });
+    //communexion.state=active;
     if(active){
-        headerHtml='<i class="fa fa-university"></i> ' + myScopes.communexion.currentName + "<small class='text-dark'>.CO</small>";
         //if(firstLoad)
         if(notNull(testCo) && testCo==false){
             myScopes.communexion.state=active;
             valuesOfBreadcrum=myScopes.communexion;
-            domBreadcrum="#breacrum-container";
+            domBreadcrum="#communexion-container";
+            iconHeader="university";
         }else{
             valuesOfBreadcrum=myScopes.open;
             domBreadcrum="#open-breacrum-container";
+            iconHeader="search";
         }
         $(domBreadcrum).html(getBreadcrumCommunexion(valuesOfBreadcrum));
         if(actionOnSetGlobalScope=="save")
@@ -120,11 +122,14 @@ function activateGlobalCommunexion(active, firstLoad, testCo){
             else
                 startSearch(0, indexStepInit,searchCallback);
         }
+        headerHtml='<i class="fa fa-'+iconHeader+'"></i> ' + valuesOfBreadcrum.currentName + "<small class='text-dark'>.CO</small>";
         bindCommunexionScopeEvents();
     }else{
-        headerHtml='<a href="#" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
+       // headerHtml='';
+        headerHtml='<i class="fa fa-search"></i> Multi-Scope<small class="text-dark">.CO</small>';
+       /* headerHtml='<a href="#" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
                 '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline">'+
-                '</a>';
+                '</a>';*/
         saveCookieMultiscope();
         showTagsScopesMin();
         bindCommunexionScopeEvents();
@@ -137,6 +142,7 @@ function activateGlobalCommunexion(active, firstLoad, testCo){
         }
     }
     $("#main-scope-name").html(headerHtml);
+    //bindSearchCity();
     $('.tooltips').tooltip();
 }
 function getBreadcrumCommunexion(communexion){
@@ -150,23 +156,19 @@ function getBreadcrumCommunexion(communexion){
         });
     }
 
-
-    htmlCommunexion='<div class="breadcrum-communexion col-md-12">';
+    htmlCommunexion="";
+    //htmlCommunexion='<div class="breadcrum-communexion col-md-12">';
     if(actionOnSetGlobalScope=="filter"){
-        scopeHtml+='<div id="input-sec-search" class="hidden-xs col-sm-4 col-md-4 col-lg-6">'+
-               '<input type="text" class="form-control input-global-search" id="searchOnCity" placeholder="Go to city ?">'+
-                '<div class="dropdown-result-global-search hidden-xs col-sm-6 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div></div>'+
-                '</div>';
-        htmlCommunexion+='<button class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
-            '<i class="fa fa-times"></i>'+
-        '</button>';
+       // htmlCommunexion+='<button class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
+        //    '<i class="fa fa-times"></i>'+
+        //'</button>';
     }else{
-        htmlCommunexion+='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
-            '<i class="fa fa-times"></i>'+
-        '</a>';
+       // htmlCommunexion+='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
+         //   '<i class="fa fa-times"></i>'+
+        //'</a>';
     }
 
-	htmlCommunexion+=	'<i class="fa fa-university fa-2x text-red"></i>'+
+	//htmlCommunexion+=	'<i class="fa fa-university fa-2x text-red"></i>'+
 							'<div class="getFormLive" style="display:inline-block;">';
 
 	if(communexion.values && communexion.values.level2){
@@ -253,7 +255,7 @@ function getBreadcrumCommunexion(communexion){
                     '<i class="fa fa-angle-right"></i>  '+communexion.values.cityName+
                 '</button>';
     }
-    htmlCommunexion+= '</div>'+
-        '</div>';
+    htmlCommunexion+= '</div>';
+     //   '</div>';
     return htmlCommunexion;
 }

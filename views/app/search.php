@@ -48,11 +48,11 @@
 
 <style>
     <?php if($params["title"] != "Kgougle") { ?>
-    header {
+   /* header {
       background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/<?php echo $page; ?>/pexels-<?php echo $randImg; ?>.jpeg") center center;
       /*opacity: 0.3;
       background-color: black;*/
-    }
+    /*}*/
     
     
     <?php } ?>

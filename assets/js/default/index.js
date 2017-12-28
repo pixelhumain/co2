@@ -446,7 +446,7 @@ function setInputPlaceValue(thisBtn){
 	startNewCommunexion();
 }
 
-var communexionActivated = false;
+//var communexionActivated = false;
 function toogleCommunexion(init){ //this = jQuery Element
   
   if(init != true)

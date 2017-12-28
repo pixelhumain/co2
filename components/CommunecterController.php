@@ -507,6 +507,7 @@ class CommunecterController extends Controller
       "mediacrawler"      => array('href' => "/ph/co2/app/mediacrawler",      "public" => false),
       "page"              => array('href' => "/ph/co2/app/page",              "public" => true),
       "search"            => array('href' => "/ph/co2/app/search",            "public" => true),
+      "territorial"       => array('href' => "/ph/co2/app/territorial",            "public" => true),
       "agenda"            => array('href' => "/ph/co2/app/agenda",            "public" => true),
       "power"             => array('href' => "/ph/co2/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/co2/app/superadmin",        "public" => false),

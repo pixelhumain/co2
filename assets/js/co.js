@@ -4848,6 +4848,11 @@ function initKInterface(params){ console.log("initKInterface");
     console.log("affixTop", affixTop);
     if(affixTop > 0){
       // Offset for Main Navigation
+      $("#affix-territorial-menu").affix({
+          offset: {
+              top: affixTop
+          }
+      });
       $('#mainNav').affix({
           offset: {
               top: affixTop

@@ -27,8 +27,9 @@
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "type" => @$type,
-                                "page" => $page,
-                                "explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") ); 
+                                "page" => $page
+                                //"explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") 
+                                )); 
     $randImg = rand(1, 2);
     $page = "live";
     //$randImg = 1;
@@ -38,20 +39,20 @@
 
 <style>
     <?php if($params["title"] != "Kgougle") { ?>
-    header {
+   /* header {
       background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/live/pexels-<?php echo $randImg; ?>.jpeg") top center;
         min-height:300px;
-    }
+    }*/
     <?php } ?>
      
-	.scope-min-header{
+	/*.scope-min-header{
         float: left;
         margin-top: 23px;
         margin-left: 35px;
     }
     .main-btn-scopes{
     	margin-top:0px !important;
-    }
+    }*/
     #formCreateNewsTemp .form-create-news-container{
     max-width: inherit !important;
 	}
@@ -76,13 +77,13 @@
 		background: white;
 	}
 
-	#btn-my-co{
+	/*#btn-my-co{
 		margin-top: 15px;
 	}
 
     #newsstream{
         min-height:500px;
-    }
+    }*/
 
     #newsstream .loader,
     #noMoreNews{
@@ -94,9 +95,9 @@
         margin-top: 15px;
     }
 
-    .subModuleTitle{
+   /* .subModuleTitle{
         display: none;
-    }
+    }*/
 </style>
 <div class="row padding-10 bg-white live-container">
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">

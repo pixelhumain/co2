@@ -1027,11 +1027,12 @@ function removeAddress(form){
 
 									$(".communecter-btn").removeClass("hidden");
 								}
-								communexion.currentLevel = null;
-								communexion.currentName = null;
-								communexion.currentValue = null;
-								communexion.values = null;
-								communexion.state = false;
+								myScopes.communexion.currentLevel = null;
+								myScopes.communexion.currentName = null;
+								myScopes.communexion.currentValue = null;
+								myScopes.communexion.values = null;
+								myScopes.communexion.state = false;
+								localStorage.setItem("myScopes",JSON.stringify(myScopes));
 								toastr.success(data.msg);
 								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	}

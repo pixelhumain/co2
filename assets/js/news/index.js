@@ -782,13 +782,13 @@ function showFormBlock(bool){
 		if(isLiveGlobal()){
 			scopeHtml ="";
 
-			if( typeof communexion != "undefined" && notEmpty(communexion.values)){
+			if( typeof myScopes.communexion != "undefined" && notEmpty(myScopes.communexion.values)){
 				scopeHtml +='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-	            				'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
-	                        	 'data-scope-value="'+communexion.currentValue+'" '+
-                            	'data-scope-name="'+communexion.currentName+'" '+
-                            	'data-scope-level="'+communexion.currentLevel+'" '+
-                            	'data-scope-type="'+communexion.communexionType+'" '+
+	            				'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+myScopes.communexion.currentName+'" '+
+	                        	 'data-scope-value="'+myScopes.communexion.currentValue+'" '+
+                            	'data-scope-name="'+myScopes.communexion.currentName+'" '+
+                            	'data-scope-level="'+myScopes.communexion.currentLevel+'" '+
+                            	'data-scope-type="'+myScopes.communexion.communexionType+'" '+
 	            				'id="btn-my-co">'+
 	            				'<i class="fa fa-university"></i>'+
 	            			'</a>';
@@ -814,7 +814,7 @@ function showFormBlock(bool){
                         '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
             				$(".scope-min-header").html()+
             			'</div>';
-			if(communexion.state){
+			if(myScopes.communexion.state){
 				scopeHtml='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitter la communexion">'+
                 			'<i class="fa fa-sign-in"></i>'+
             				'</a>'+
@@ -823,7 +823,7 @@ function showFormBlock(bool){
 			actionOnSetGlobalScope="save";
 			$("#scopeListContainerForm").append(scopeHtml);
 			$(".item-globalscope-checker:last-child").trigger("click").removeClass("inactive");
-			if(communexion.state)
+			if(myScopes.communexion.state)
             	$(".item-globalscope-checker").attr('disabled', true);
 			$("#container-scope-filter").hide();
 			bindCommunexionScopeEvents();

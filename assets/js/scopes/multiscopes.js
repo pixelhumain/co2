@@ -29,9 +29,9 @@ function saveMultiScope(){
 	saveCookieMultiscope();
 }
 function saveCookieMultiscope(){ 
-	//mylog.log("saveCookieMultiscope", typeof myMultiScopes, myMultiScopes);
+	mylog.log("saveCookieMultiscope", typeof myScopes.multiscopes, myScopes.multiscopes);
 	//$.cookie('multiscopes', JSON.stringify(myMultiScopes), { expires: 365, path: '/' });
-	localStorage.setItem("myScopes.multiscopes",JSON.stringify(myScopes));
+	localStorage.setItem("myScopes",JSON.stringify(myScopes));
 }
 
 function autocompleteMultiScope(){
@@ -283,25 +283,30 @@ function getLocalityForSearch(noScope){
 	if(typeof myScopes.communexion.state == "undefined") myScopes.communexion.state = false;
 
 	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), myScopes.communexion.state, myScopes.communexion.communexionType);
-	if(myScopes.communexion.state == true ){
-		var searchLocality = {};
-		if(myScopes.communexion.communexionType == "cp"){
-			searchLocality[myScopes.communexion.currentValue] = {	type : myScopes.communexion.currentLevel, 
-															name : myScopes.communexion.currentName,
-															cp : myScopes.communexion.values.cp,
+	var searchLocality = {};
+	if(notNull(noScope) && noScope){
+		searchLocality = {};
+	}
+	else if(myScopes.type=="communexion" || (myScopes.type=="open-scope" && Object.keys(myScopes.open).length > 0) ){
+		if(myScopes.type=="communexion")
+			communexion=myScopes.communexion;
+		else
+			communexion=myScopes.open;
+		if(communexion.communexionType == "cp"){
+			searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
+															name : communexion.currentName,
+															cp : communexion.values.cp,
 															active : true };
 		}
 		else{
-			searchLocality[myScopes.communexion.currentValue] = {	type : myScopes.communexion.currentLevel, 
-															name : myScopes.communexion.currentName,
+			searchLocality[communexion.currentValue] = {	type : "city", 
+															name : communexion.currentName,
 															active : true };
 		}
 
-	}else if(notNull(noScope) && noScope){
-		var searchLocality = {};
 	}
-	else{
-		var searchLocality = getMultiScopeForSearch();
+	else if(myScopes.type=="multiscope"){
+		searchLocality = getMultiScopeForSearch();
 	}
 	return searchLocality;
 }
@@ -434,27 +439,36 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 	
 	mylog.log("myMultiScopes", myScopes.multiscopes, indexStepInit);
 	$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
-
+	communexion= new Object;
 	communexion.currentLevel = scopeLevel;
 	communexion.currentName = scopeName;
 	communexion.currentValue = scopeValue;
 	communexion.communexionType = scopeType;
-
-	if(values){
-		if(typeof values == "string")
-			values = jQuery.parseJSON(values);
-		communexion.values = values;
-	}
+	communexion.communexionType = scopeType;
+	
 	mylog.log("communexion before save", communexion);
 
 	if( notNull(testCo)){
+		if(values){
+			if(typeof values == "string")
+				values = jQuery.parseJSON(values);
+			communexion.values = values;
+		}else if(testCo == false)
+			communexion.values=myScopes.communexion.values;
+		else
+			communexion.values=myScopes.open.values;
 		if(testCo == false){
+			//if(typeof myScopes.communexion.values != "undefined") communexion.values=myScopes.communexion.values;
+			//if(typeof myScopes.communexion.cities != "undefined") communexion.cities=myScopes.communexion.cities;
 			myScopes.communexion=communexion;
 			localStorage.setItem("myScopes",JSON.stringify(myScopes));
 			//$.cookie('communexion', communexion, { expires: 365, path: "/" });
 		}
-		else
+		else{
+			//if(typeof myScopes.open.values != "undefined") communexion.values=myScopes.open.values;
+			//if(typeof myScopes.open.cities != "undefined") communexion.cities=myScopes.open.cities;
 			myScopes.open=communexion;
+		}
 	}
 
 	if($("#communexionNameHome").length){
@@ -482,7 +496,7 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 
 
 	if(!notNull(notSearch) || notSearch == true)
- 		activateGlobalCommunexion(true, null, testCo);
+ 		activateGlobalCommunexion(true,null, testCo);
 
 	//rebuildSearchScopeInput();
 	

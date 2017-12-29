@@ -494,9 +494,9 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 		} , "html" );
 	}
 
-
-	if(!notNull(notSearch) || notSearch == true)
+	if(!notNull(notSearch) || notSearch == true){
  		activateGlobalCommunexion(true,null, testCo);
+	}
 
 	//rebuildSearchScopeInput();
 	

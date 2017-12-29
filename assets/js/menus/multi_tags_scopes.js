@@ -135,7 +135,7 @@ function bindSearchCity(){
     $("#searchOnCity").off().on("keyup", function(e){
         if(e.keyCode == 13){
             //initTypeSearch("cities");
-            searchTypeGS = ["cities"]
+            searchTypeGS = ["cities"];
             startGlobalSearch(0, 30, "#searchOnCity");
             //startSearch($(this).val(), null, null);
             //$(".btn-directory-type").removeClass("active");

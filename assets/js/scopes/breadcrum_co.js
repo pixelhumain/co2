@@ -16,7 +16,7 @@ function bindCommunexionScopeEvents(){
         activateGlobalCommunexion(false); 
     });
 
-    $(".item-globalscope-checker").click(function(){  
+    $(".item-globalscope-checker").off().on('click', function(){  
         $(".item-globalscope-checker").addClass("inactive");
         $(this).removeClass("inactive");
         var notSearch = $(this).data("scope-notsearch");
@@ -26,9 +26,9 @@ function bindCommunexionScopeEvents(){
             //communexion.cities = trad.allcitieswiththispostalcode
             $("#searchOnCity").val("");
             $(".dropdown-result-global-search").hide(700).html("");
-            if(location.hash.indexOf("#search")){
-                notSearch = false;
-            }
+            //if(location.hash.indexOf("#search")){
+              //  notSearch = false;
+            //}
         }
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),

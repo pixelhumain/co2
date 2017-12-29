@@ -443,11 +443,7 @@
 								</a>
 				            </li>
 
-				            <li class="text-left">
-				               	<a href='javascript:;' onclick='loadGraph()' >
-									<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
-								</a>
-				            </li>
+				            
 							
 							<li class="text-left">
 				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
@@ -457,6 +453,11 @@
 
 				            <?php } ?>
 			            <?php } ?>
+			            <li class="text-left">
+				               	<a href='javascript:;' onclick='co.graph()' >
+									<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
+								</a>
+				            </li>
 			  		</ul>
 		  		</li>
 		  	</ul>

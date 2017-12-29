@@ -15,14 +15,14 @@
 .graph{
     float: right;
 }
-#tags{
+#graphtags{
     padding-top: 20px;
     background-color: #fff;
     width:20%;
     float: left;
     height:600px;
 }
-#tags a{
+#graphtags a{
     color: #333;
     text-decoration: none;
 }
@@ -32,15 +32,16 @@
 }
 #search{
     float:right;
+    margin-right: 100px;
 }
 #title{
     background-color: #eee;
-    height:60px;
+    height:80px;
     font-size: 2em;
     padding:5px;
 }
 </style>
-<div  id="tags" >
+<div  id="graphtags"  class="hide">
     <div id="sectionList"></div>
 </div>
 
@@ -77,11 +78,6 @@ console.log(<?php echo json_encode(@$list); ?>);
 var tags = <?php echo json_encode($tags); ?>;
 var nodes_data = <?php echo json_encode($data); ?>;
 var links_data = <?php echo json_encode($links); ?>;
-
-tags.forEach(function (t) {
-    if (t != "") 
-        document.getElementById("tags").innerHTML = document.getElementById("tags").innerHTML + "<a href='/ph/co2/graph/search/tag/"+t+"'>#"+t+"</a><br/>";
-  })
 
 //set up the simulation and add forces  
 var simulation = d3.forceSimulation()
@@ -131,6 +127,8 @@ var node = g.append("g")
         .attr("fill", circleColour )
         .on('click', selectNode);
 /*
+https://bl.ocks.org/mbostock/950642
+
 var defs = g.append("g:defs");
 
 defs.append("g:pattern")
@@ -267,16 +265,20 @@ function tickActions() {
 function selectNode(selectedNode) {
     console.log(selectedNode);
     types = ["citoyen", "organization", "project", "event"];
-    if(selectedNode.level == 1 && selectedNode.id != "tags" ){
+    if(selectedNode.level == 0)
+        return;
+    else if(selectedNode.id == "tags" )
+        $("#graphtags").toggleClass("hide");
+    else if(selectedNode.level == 1  ){
+        $("#graphtags").toggleClass("hide");
         document.getElementById("sectionList").innerHTML = "<b>"+selectedNode.label+"</b><br/>";
 
         links_data.forEach(function (t) {
         if (t.source.id == selectedNode.id) 
             document.getElementById("sectionList").innerHTML += "<a href='/ph/co2/graph/d3/id/"+t.target.id+"/type/"+t.target.type+"'> "+t.target.label+"</a><br/>";
-      })
+        })
         document.getElementById("sectionList").innerHTML += "<br/><br/>"
     }
-
     else if(selectedNode.id.length > 20 )
         open( "graph/d3/id/"+selectedNode.id+"/type/"+types[selectedNode.group-1] );
     else if (selectedNode.type == "tag")
@@ -287,4 +289,13 @@ if(typeof $ != "undefined")
     $("#graph").css("width","80%")
 else 
     document.getElementById("graph").style.width = "80%";
+
+tags.forEach(function (t) {
+    if (t != "") {
+            document.getElementById("graphtags").innerHTML = document.getElementById("graphtags").innerHTML+ "<a href=\"javascript:open('graph/search/tag/"+t+"')\">#"+t+"</a><br/>";
+    }
+  })
+
+//if(urlCtrl && location.hash != "<?php echo @$colink ?>")
+  //  urlCtrl.loadByHash("<?php echo  @$colink ?>");
 </script>

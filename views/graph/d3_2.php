@@ -18,7 +18,7 @@
 #graphtags{
     padding-top: 20px;
     background-color: #fff;
-    width:20%;
+    width:0%;
     float: left;
     height:600px;
 }
@@ -41,7 +41,12 @@
     padding:5px;
 }
 </style>
-<div  id="graphtags"  class="hide">
+<div id='title'> 
+    <div class='pull-left'><?php echo $title?> </div> 
+    <input id='search' type='text' placeholder='#tag, free search, >types' onkeypress='return runScript(event)'/>
+</div>
+
+<div  id="graphtags" class="hide">
     <div id="sectionList"></div>
 </div>
 
@@ -267,9 +272,13 @@ function selectNode(selectedNode) {
     types = ["citoyen", "organization", "project", "event"];
     if(selectedNode.level == 0)
         return;
-    else if(selectedNode.id == "tags" )
+    else if(selectedNode.id == "tags" ){
+        $("#graphtags").css("width","20%");
+        $("#graph").css("width","80%");
         $("#graphtags").toggleClass("hide");
-    else if(selectedNode.level == 1  ){
+    } else if(selectedNode.level == 1  ){
+        $("#graphtags").css("width","20%");
+        $("#graph").css("width","80%");
         $("#graphtags").toggleClass("hide");
         document.getElementById("sectionList").innerHTML = "<b>"+selectedNode.label+"</b><br/>";
 
@@ -286,9 +295,9 @@ function selectNode(selectedNode) {
 }
 
 if(typeof $ != "undefined")
-    $("#graph").css("width","80%")
+    $("#graph").css("width","100%")
 else 
-    document.getElementById("graph").style.width = "80%";
+    document.getElementById("graph").style.width = "100%";
 
 tags.forEach(function (t) {
     if (t != "") {

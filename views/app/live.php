@@ -101,11 +101,11 @@
 </style>
 <div class="row padding-10 bg-white live-container">
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<div id="container-scope-filter" class="col-md-offset-1 col-md-11 col-lg-offset-1 col-lg-11 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
+	<!--<div id="container-scope-filter" class="col-md-offset-1 col-md-11 col-lg-offset-1 col-lg-11 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
 		<?php
 	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
 	    ?>
-	</div>
+	</div>-->
 
 	<div class="col-lg-1 col-md-1 hidden-sm hidden-xs text-right hidden-xs" id="sub-menu-left"></div>
 
@@ -156,7 +156,6 @@ var	dateLimit=0;
 var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 //var scrollEnd = false;
 jQuery(document).ready(function() {
-
 	$(".subsub").hide();
 
 	//setTitle("", "", titlePage);
@@ -178,7 +177,7 @@ jQuery(document).ready(function() {
 	
     
     searchPage = true;
-	//startNewsSearch(true);
+	startNewsSearch(true);
 
 	$(".titleNowEvents .btnhidden").hide();
 

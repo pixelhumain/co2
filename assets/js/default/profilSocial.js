@@ -494,7 +494,7 @@ function loadNewsStream(isLiveBool){
 	            $(window).bind("scroll",function(){ 
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();
-				          if( $(this).scrollTop() >= heightWindow - 400){
+				          if( $(this).scrollTop() >= heightWindow - 1000){
 				            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep, isLiveBool);
 				          }
 				    }

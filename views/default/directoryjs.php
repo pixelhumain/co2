@@ -383,9 +383,10 @@
                 <i class="fa fa-money"></i> <?php echo Yii::t("common","Money") ?>
               </label>
               <select class="form-control" name="devise" id="devise" style="">
-                <?php foreach($devises as $key => $devise){ ?>
+                <?php if(@$devises){ 
+                  foreach($devises as $key => $devise){ ?>
                   <option class="bold" value="<?php echo $key; ?>"><?php echo $devise; ?></option>
-                <?php } ?>
+                <?php } } ?>
               </select>
             </div>
 

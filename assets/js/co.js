@@ -3495,18 +3495,23 @@ function initKInterface(params){ console.log("initKInterface");
     	urlCtrl.loadByHash("#info.p.apropos")
     });
 
-    var affixTop = 300;
+    var affixTop = 100;
     if(notEmpty(params)){
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];
     }
     console.log("affixTop", affixTop);
     if(affixTop > 0){
       // Offset for Main Navigation
-      $("#affix-territorial-menu").affix({
+      $("#affix-sub-menu").affix({
           offset: {
               top: affixTop
           }
       });
+      /*$("#affix-filters-menu").affix({
+          offset: {
+              top: affixTop
+          }
+      });*/
       $('#mainNav').affix({
           offset: {
               top: affixTop

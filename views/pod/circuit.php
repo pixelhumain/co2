@@ -208,7 +208,11 @@
 ?>
 <script type="text/javascript">
     var totalCircuit=0;
-    var contextData=<?php echo json_encode($object) ?>;
+    <?php if(@$object){ ?>;
+    var contextData=<?php echo json_encode(@$object) ?>;
+    <?php }else{ ?>
+      var contextData=circuit.obj;
+    <?php } ?>
     var openDetails=[];
     var eventsCircuit=[];
 

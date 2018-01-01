@@ -3778,7 +3778,12 @@ var typeObj = {
 	rooms : {sameAs:"room"},
 	room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
 	discuss : {col:"actionRooms",ctrl:"room"},
-
+	product:{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",  icon:"shopping-basket"}, 
+  	products : {sameAs:"product"}, 
+	service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",  icon:"sun-o"}, 
+	services : {sameAs:"service"}, 
+	circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",  icon:"ravelry"}, 
+	circuits : {sameAs:"circuit"}, 
 	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
 		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
 	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",

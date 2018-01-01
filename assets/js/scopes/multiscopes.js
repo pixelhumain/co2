@@ -280,33 +280,36 @@ function getMultiScopeList(){ return myScopes.multiscopes; }
 
 function getLocalityForSearch(noScope){
 
-	if(typeof myScopes.communexion.state == "undefined") myScopes.communexion.state = false;
+	
 
-	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), myScopes.communexion.state, myScopes.communexion.communexionType);
+	//mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), myScopes.communexion.state, myScopes.communexion.communexionType);
 	var searchLocality = {};
-	if(notNull(noScope) && noScope){
-		searchLocality = {};
-	}
-	else if(myScopes.type=="communexion" || (myScopes.type=="open-scope" && Object.keys(myScopes.open).length > 0) ){
-		if(myScopes.type=="communexion")
-			communexion=myScopes.communexion;
-		else
-			communexion=myScopes.open;
-		if(communexion.communexionType == "cp"){
-			searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
-															name : communexion.currentName,
-															cp : communexion.values.cp,
-															active : true };
+	if(typeof myScopes != "undefined"){
+		if(typeof myScopes.communexion.state == "undefined") myScopes.communexion.state = false;
+		if(notNull(noScope) && noScope){
+			searchLocality = {};
 		}
-		else{
-			searchLocality[communexion.currentValue] = {	type : "city", 
-															name : communexion.currentName,
-															active : true };
-		}
+		else if(myScopes.type=="communexion" || (myScopes.type=="open-scope" && Object.keys(myScopes.open).length > 0) ){
+			if(myScopes.type=="communexion")
+				communexion=myScopes.communexion;
+			else
+				communexion=myScopes.open;
+			if(communexion.communexionType == "cp"){
+				searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
+																name : communexion.currentName,
+																cp : communexion.values.cp,
+																active : true };
+			}
+			else{
+				searchLocality[communexion.currentValue] = {	type : "city", 
+																name : communexion.currentName,
+																active : true };
+			}
 
-	}
-	else if(myScopes.type=="multiscope"){
-		searchLocality = getMultiScopeForSearch();
+		}
+		else if(myScopes.type=="multiscope"){
+			searchLocality = getMultiScopeForSearch();
+		}
 	}
 	return searchLocality;
 }

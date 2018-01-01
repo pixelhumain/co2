@@ -116,7 +116,10 @@ var mapElements = new Array();
 
 function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
-	var searchLocality = getLocalityForSearch();
+  //if(typeof myScopes != "undefined" )
+    var searchLocality = getLocalityForSearch();
+  //else
+
     
     var data = {
       "name" : name, 
@@ -188,28 +191,29 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
             } 
             else 
             {
-              /*var countData = 0;
+              console.log("fuckkkkiiiiiing",data);
+              var countData = 0;
             	$.each(data, function(i, v) { 
                 if(v.length!=0){ 
                   countData++; 
                 } 
               });
               
-              totalData += countData;*/
+              totalData += countData;
             
               str = "";
               var city, postalCode = "";
 
               //parcours la liste des résultats de la recherche
               //mylog.dir(data);
-              //resultsStr=trad.result;
-              //if(totalData > 1)
-                //resultsStr=trad.results;
-             // str += '<div class="col-md-12 text-left" id="">';
-             // str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark pull-left'>"+
-               //         "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
-              //str += "<small class='resultTypes'>";
-              /*if(typeof headerParams != "undefined"){
+              resultsStr=trad.result;
+              if(totalData > 1)
+                resultsStr=trad.results;
+              str += '<div class="col-md-12 text-left" id="">';
+              str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark pull-left'>"+
+                        "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
+              str += "<small class='resultTypes'>";
+              if(typeof headerParams != "undefined"){
                 var countNbTag=0;
                 $.each( searchType, function(key, val){ countNbTag++;
                   mylog.log(">>> each autocomplete search",val);
@@ -231,11 +235,11 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
                             "#"+key+
                           "</span> ";
                 });
-              }*/
-              //str += "</small>";
-              //str += "</h4>";
-              //str += "<hr style='float:left; width:100%;'/>";
-              //str += "</div>";
+              }
+              str += "</small>";
+              str += "</h4>";
+              str += "<hr style='float:left; width:100%;'/>";
+              str += "</div>";
               
              // if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1  && totalData == 0){
               //		str += '<span class="col-md-12 col-sm-12 col-xs-12 letter-blue padding-10"><i class="fa fa-info-circle"></i>'+ trad.youwillfindonlycities+'!</span>';
@@ -245,6 +249,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               //console.log(data.results);
               if(typeof pageCount != "undefined" && pageCount)
                 initPageTable(searchCount[search.type]);
+             // alert();
               str += directory.showResultsDirectoryHtml(data);
               
               if(str == "") { 
@@ -2172,6 +2177,7 @@ var directory = {
                               '#page.type.'+params.parentType+'.id.' + params.parentId : "";
 
                 if( params.type == "poi" && params.source  && params.source.key.substring(0,7) == "convert") {
+                  alert();
                   var interop_type = getTypeInteropData(params.source.key);
                   params.type = "poi.interop."+interop_type;
                 }
@@ -2233,25 +2239,23 @@ var directory = {
                 else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place","ressource"] )>=0) 
                   str += directory.elementPanelHtml(params);  
                 
+                else if(params.type == "events")
+                  str += directory.eventPanelHtml(params);  
+                
+                //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
+                //    str += directory.roomsPanelHtml(params,itemType);  
+                
+                else if(params.type == "classified"){
+                  if(contextData != null)
                     str += directory.elementPanelHtml(params);  
-                  
-                  else if(params.type == "events")
-                    str += directory.eventPanelHtml(params);  
-                  
-                  //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
-                  //    str += directory.roomsPanelHtml(params,itemType);  
-                  
-                  else if(params.type == "classified"){
-                    if(contextData != null)
-                      str += directory.elementPanelHtml(params);  
-                    else
-                      str += directory.classifiedPanelHtml(params);
-                  }
-                  else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
-                    str += directory.coopPanelHtml(params);  
                   else
-                    str += directory.defaultPanelHtml(params);
+                    str += directory.classifiedPanelHtml(params);
                 }
+                else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+                  str += directory.coopPanelHtml(params);  
+                else
+                  str += directory.defaultPanelHtml(params);
+              }
               /*  else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
                   str += directory.coopPanelHtml(params);  
                 else if(params.type.substring(0,11) == "poi.interop")

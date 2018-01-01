@@ -997,6 +997,7 @@ also switches the global Title and Icon
 **************/
 
 function  processingBlockUi() { 
+	mylog.log("processingBlockUi");
 	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
 			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
 		  '</h4>';
@@ -1542,6 +1543,7 @@ function  bindExplainLinks() {
 function  bindLBHLinks() { 
 	$(".lbh").off().on("click",function(e) {  	
 		e.preventDefault();
+		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
 		mylog.warn("***************************************");
@@ -1551,6 +1553,7 @@ function  bindLBHLinks() {
 	//open any url in a modal window
 	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();
+		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));

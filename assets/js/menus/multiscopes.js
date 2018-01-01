@@ -425,7 +425,7 @@ function openDropdownMultiscope(){
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 }
 
-function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo){  
+function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, search, testCo){  
 
 	mylog.log("setGlobalScope !", scopeValue, scopeName, scopeType, scopeLevel, notSearch);
 	mylog.log("notSearch", notSearch, notNull(notSearch))
@@ -440,10 +440,13 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 	communexion.currentValue = scopeValue;
 	communexion.communexionType = scopeType;
 
-	if(values){
+	if( notNull(values)) {
 		if(typeof values == "string")
 			values = jQuery.parseJSON(values);
 		communexion.values = values;
+
+		if( notNull(values.cities) )
+			communexion.cities = values.cities;
 	}
 	mylog.log("communexion before save", communexion);
 
@@ -483,6 +486,9 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 
 	if(!notNull(notSearch) || notSearch == true)
  		activateGlobalCommunexion(true, null, testCo);
+
+	// if(!notNull(notSearch) || notSearch == true)
+ // 		activateGlobalCommunexion(true);
 
 	//rebuildSearchScopeInput();
 	

@@ -318,10 +318,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               bindCommunexionScopeEvents();
               $(".start-new-communexion").click(function(){
                   $("#main-search-bar, #second-search-bar, #input-search-map").val("");
-                  setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
-                                   $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                                    $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
-                  
+                  // setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
+                  //                  $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+                  //                   $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
+                  itenGlobalScopeChecker($(this));
                   urlCtrl.loadByHash("#search")
               });
 

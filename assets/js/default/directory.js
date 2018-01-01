@@ -571,7 +571,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
 						$(thiselement).attr("data-ownerlink","follow");
 						$(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
 						removeFloopEntity(data.parentId, type);
-						toastr.success(trad["You are not following"]+data.parentEntity.name);
+						toastr.success(trad["You are not following"]+" "+data.parentEntity.name);
 					} else {
 					   toastr.error("You leave succesfully");
 					}
@@ -775,7 +775,7 @@ var directory = {
     defaultPanelHtml : function(params){
       mylog.log("----------- defaultPanelHtml",params, params.type,params.name, params.url);
       str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
+      str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
       if(params.itemType!="city" && (params.useMinSize))
@@ -943,7 +943,7 @@ var directory = {
     		str = "";
     		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
     		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-    		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+    		str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		
         var addFollowBtn = ( $.inArray(params.type, ["poi","ressource"])>=0 )  ? false : true;
@@ -953,8 +953,9 @@ var directory = {
     		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
     			isFollowed=false;
 
-    			if(typeof params.isFollowed != "undefined" ) 
+    			if(typeof params.isFollowed != "undefined" )
     				isFollowed=true;
+          mylog.log("isFollowed", params.isFollowed, isFollowed);
     			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
     			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
     			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
@@ -1023,7 +1024,7 @@ var directory = {
             
             str += thisLocality;
             
-            str += "<div class='entityDescription'>" + params.description + "</div>";
+            str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
             /*
               if(params.startDate != null)
@@ -1055,7 +1056,7 @@ var directory = {
         params.tags.push(interop_type);
 
       str = "";  
-      str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
+      str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
       if(params.itemType!="city" && (params.useMinSize))
@@ -1159,7 +1160,8 @@ var directory = {
     previewedObj : null,
     preview : function(params,hash){
 
-      //mylog.log("----------- preview",params,params.name, hash);
+      mylog.log("----------- preview",params,params.name, hash);
+      mylog.log("----------- preview id : ",params.id);
       directory.previewedObj = {
           hash : hash,
           params : params
@@ -1197,12 +1199,17 @@ var directory = {
           
           str += "<h4 class='text-azure'>"+price+"</h4>";
 
+
           if(typeof params.category != "undefined"){
-              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + params.section + "</span> > "+params.category;
-                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + tradCategory[ params.section ]+ "</span> > "+tradCategory[ params.category ];
+                if(typeof params.subtype != "undefined") str += " > " + tradCategory[ params.subtype ];
               str += "</div><hr>";
             }
-
+          if(typeof params.typePoi != "undefined"){
+              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + trad[params.type] + "</span> > "+trad[params.typePoi];
+                
+              str += "</div><hr>";
+            }
          //if(typeof hash != "undefined"){
             var nav = directory.findNextPrev(hash);
             if(typeof params.name != "undefined" && params.name != "")
@@ -1233,6 +1240,9 @@ var directory = {
           if(typeof params.contactInfo != "undefined" && params.contactInfo != ""){
             str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> Contact : " + params.contactInfo + "</div>";
             str += "<hr class='col-xs-12'>";
+          } else {
+            str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> <a class='lbh btn btn-azure' href='#page.type.citoyens.id." + params.creator + "'>Contact la personne</a></div>";
+            str += "<hr class='col-xs-12'>";
           }
 
           var thisLocality = "";
@@ -1258,6 +1268,7 @@ var directory = {
 
         str += "</div>";
 
+        //alert(params.id);
         getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/"+params.type+"/tpl/json" , function( data ) { 
           var c = 1;
           $.each(data.list,function(k,v) { 
@@ -1693,7 +1704,7 @@ var directory = {
         if(directory.dirLog) mylog.log("-----------cityPanelHtml");
         mylog.log("-----------cityPanelHtml", params);
         str = "";  
-        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+        str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 margin-bottom-10 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
         str +=    "<div class='searchEntity'>";
 
                 if(params.updated != null)
@@ -1756,13 +1767,21 @@ var directory = {
                   valuesScopes.level2Name = params.level2Name ;
                 }
 
+                if( notEmpty( params.cities ) ){
+                  valuesScopes.cities = params.cities ;
+                }
+
+                if( notEmpty( params.postalCodes ) ){
+                  valuesScopes.postalCodes = params.postalCodes ;
+                }
+
                 str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + params.id  + "' " + 
                                 "data-scope-name='" + params.name + "' " +
                                 "data-scope-level='city' " +
                                 "data-scope-type='city' " +
                                 "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-notsearch='"+true+"' " +
+                                "data-scope-search='"+false+"' " +
                                 ">"+
                                     "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
                                 "</button>";
@@ -1931,7 +1950,7 @@ var directory = {
       //else if(params.type == "actions") params.hash = "#rooms.action.id."+params.id;
    
       str = "";  
-      str += "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-4 searchEntityContainer "+itemType+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-xs-12 col-sm-8 col-md-6 col-lg-4 searchEntityContainer "+itemType+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity'>";
 
       str += "<a href='"+params.hash+"' class='container-img-profil add2fav'>" + params.imgProfil + "</a>";
@@ -2075,18 +2094,20 @@ var directory = {
           if(i!="count"){
           if(directory.dirLog) mylog.log("params", params, typeof params);
 
-          mylog.log("params", params, typeof params);
+          mylog.log("params", params);
+          mylog.log("params interoperability", location.hash.indexOf("#interoperability"));
 
           if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
-            params['id'] = params['_id'];
-          } else if (typeof(params.id) == "undefined") {
-            params['id'] = Math.random();
-            params['type'] = "poi";
+            params.id = params['_id'];
+          } else if (typeof(params.id) == "undefined" && location.hash.indexOf("#interoperability") >= 0) {
+            params.id = Math.random();
+            params.type = "poi";
           }
 
-          mylog.log("params", params["name"] , params.name, params.id, params["id"], typeof params["id"]);
+          mylog.log("--->>> params", params["name"] , params.name, params.id, params.type );
+          mylog.log("--->>> params.id", params.id, params["_id"], notNull(params["_id"]), notNull(params.id));
 
-          if(notNull(params["_id"]) || notNull(params["id"])){
+          if(notNull(params["_id"]) || notNull(params.id)){
 
             itemType=(contentType) ? contentType : params.type;
             mylog.log("params itemType", itemType);
@@ -2110,7 +2131,9 @@ var directory = {
                 if(typeof edit != "undefined" && edit != false)
                   params.edit = edit;
                 
-                if(typeof( typeObj[itemType] ) == "undefined") {
+                if ( params.type && $.inArray(params.type, typeObj.classified.subTypes )>=0  ) {
+                  itemType = "classified";
+                } else if(typeof( typeObj[itemType] ) == "undefined") {
                   itemType="poi";
                 }
 
@@ -2198,7 +2221,7 @@ var directory = {
                     if(typeof value != "undefined" && value != "" && value != "undefined"){
                       var tagTrad = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
                       thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"' data-tag-label='"+tagTrad+"'>#" + tagTrad + "</span> ";
-                      console.log("sluggify", value, slugify(value, true));
+                      // mylog.log("sluggify", value, slugify(value, true));
                       params.elTagsList += slugify(value, true)+" ";
                     }
                   });
@@ -2266,6 +2289,7 @@ var directory = {
             }
 
           }else{
+            mylog.log("pas d'id");
             if(contentType == "urls")
                 str += directory.urlPanelHtml(params, i);
             if(contentType == "contacts")
@@ -2446,7 +2470,7 @@ var directory = {
         $.each( $(directory.elemClass),function(k,o){
             $.each($(o).find(".btn-tag"),function(i,oT){
                 var realTag = $(oT).data('tag-label');
-                console.log("realTag", realTag);
+                // mylog.log("realTag", realTag);
 
                 var oTag = $(oT).data('tag-value').toLowerCase();
                 if( notEmpty( oTag ) && !inArray( oTag,directory.tagsT ) ){

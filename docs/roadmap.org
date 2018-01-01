@@ -81,6 +81,77 @@ Report Abuse on element
 Notification intelligentes => 685
 Liste des notifications déjà lues => #370 #453
 
+* idea
+  [ ] menu > drop answers > show nb of members + nb of links
+  [ ] new menu List or shortcut: last visited links
+  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+ ** feature 
+  [ ] 4 question scrum : on organisation : 
+  [ ] offrir a tous : le ppt, slideshow intégré 
+  [ ] sur detail element montrer la filère , valoriser les tags
+  [ ] lifepath : ultra personnel tag
+    - can use POI's type lifepath > private | public
+    - can be used for following any item
+  [ ] Shop : Listing produit
+    [ ] listing en mode bullet points
+    [ ] POI type produit , prix 
+      [ ] subtype : sandwich plat 
+  ** interoperabilty + data mining : 
+    [ ] use FB social graph to mine events and organisation 
+  ** COMOBI
+    [ ] global phone app : btn add to communecter 
+      - activable anywhere on anything 
+        - FB link 
+        - url site 
+        - event (FB, Google) 
+  ** ERgonomie 
+    [ ] menuLeft dynamic avec l'activité 
+      - faire remonté les point menu qui ont des nouveauté
+  ** news 
+    @pitonStLeu, pouvoir référencer une commune
+  [ ] baniere ou image : remerciement, cité un auteur pour la réutilisation 
+  c'est le minimum dans le copytalisme 
+  ** Event communication 
+    [ ] comunicate an email like event@co.org anyone can add it to a mailing list 
+    the event would be added by someone 
+    [ ] in time this mail box could even become a task box that anyone could act upon
+  ** Open Science 
+    [ ] photo-identification collaborative : 
+      - créer group 
+      - POI + photo + hashtag en commun , ex : #baleineReunion
+      - Btn sameAs : open Search Box + find Element + choose name 
+      - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
+        > POI : #baleineREunion + url 
+  ** dynsurvey proposal 
+    - dynForm & dynSurvey Builder
+    - room > create survey as proposal 
+    - instead of voting, people will answer a answer
+    - each question can be of certain type 
+      - texte 
+      - values
+        - fixed
+        - percentage
+  ** Qui est là, Action en cours, Todo, Todo Perso  : dans un e communauté 
+    une vision à un temps t, de toutes les ressources d'une CO 
+      - en mode web 
+      - mobi
+  ** Keyboard nav
+    Ctrl + ? > opens floop > type > reduce selection
+    
+
+* ************************************************************    
+* Version C0.21.8  : en cours
+8 correpsond le nb de nouvelle fonctionalité
+- DDA refactored
+- internationalisation
+- integration de rocket Chat 
+- creation de dossier sur les album 
+- mini GED avec upload de document
+- gestion des role sur les membres
+- traduction 
+- ??? module Tiers Lieux , Ressources
+* ************************************************************  
+
 * Action Terrain 
   [ ] journée Biodiversité Pointoss coupe coupe l'accacia (Galabert)
 * Action Projet
@@ -116,8 +187,6 @@ Liste des notifications déjà lues => #370 #453
     [ ] Features
       [X] Messagerie -> Rocket chat
         [ ] creer une instance
-      [ ] Payement -> A faire 
-        [ ] mangoPay
       [ ] Acceuil
       [ ] La Carte
       [ ] Sauvegarde -> Collection 
@@ -467,12 +536,6 @@ Liste des notifications déjà lues => #370 #453
   ** @Tib et @Tango 
     [ ] lancé DDA sur plusieur communauté test
       [ ] pour : CGPME (vienne sveloupoule@cpmereunion.re), nancy mine, Pref, Digi Reunion 
-      [ ] proposition pour 15 spetembre 
-        [ ] idée sur axe regionnaux 
-        [ ] nationaux 
-        [ ] filiere
-        [ ] échanges poser les questions
-        [ ] lister vos actions concrete
     [ ] quick adder : copy link , set type 
       - get page data > fill form > save 
       - fill contact form 

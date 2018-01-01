@@ -5,7 +5,7 @@
  */
 class CommunecterController extends Controller
 {
-  public $version = "v0.2.2.2";
+  public $version = "v0.2.2.22";
   public $versionDate = "29/07/2016 19:12";
   public $title = "Communectez";
   public $subTitle = "se connecter à sa commune";
@@ -125,6 +125,10 @@ class CommunecterController extends Controller
     ),
     "tool" => array(
       "get"    => array("href" => "/ph/co2/tool/get")
+    ),
+    "cron" => array(
+      "docron"    => array("href" => "/ph/co2/cron/docron"),
+      "checkdeletepending"    => array("href" => "/ph/co2/cron/checkdeletepending")
     ),
     "rocketchat" => array(
       "index"    => array("href" => "/ph/co2/rocketchat/index"),

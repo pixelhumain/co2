@@ -35,6 +35,8 @@ on garde les librairies specifique au module dans le module
 	   	$res = Person::login($emailDecrypt, $pwdDecrypt, false);
 	}
 
+	//HtmlHelper::registerCssAndScriptsFilesOverwrite();
+
 	function random_pic()
     {
         if(file_exists ( "../../modules/communecter/assets/images/proverb" )){

@@ -145,9 +145,9 @@
 				//mylog.log("markerName", markerName);
 				var iconUrl = assetPath+'/images/sig/markers/icons_carto/'+markerName+'.png';
 
-				if(typeof thisData.profilMarkerImageUrl !== "undefined" && thisData.profilMarkerImageUrl != ""){ 
-					iconUrl = baseUrl + thisData.profilMarkerImageUrl;
-				}
+				//if(typeof thisData.profilMarkerImageUrl !== "undefined" && thisData.profilMarkerImageUrl != ""){ 
+				//	iconUrl = baseUrl + thisData.profilMarkerImageUrl;
+				//}
 
 				if (thisData.typeSig && thisData.typeSig.substr(0,11) == "poi.interop") {
 					var iconUrl = getimgProfilPathForInteropDataOnMap(thisData.typeSig);
@@ -155,9 +155,15 @@
 
 				return L.icon({
 				    iconUrl: iconUrl,
+				    iconSize: [33, 44], //38, 95],
+				    iconAnchor: [16, 37],//22, 94],
+				    popupAnchor: [0, -40]//-3, -76]
+
+				    /* CO2
 				    iconSize: [53, 60], //38, 95],
 				    iconAnchor: [27, 57],//22, 94],
 				    popupAnchor: [0, -55]//-3, -76]
+				    */
 				});
 			};
 
@@ -859,8 +865,8 @@
 					if( typeof noFitBoundAroundMe == "undefined" || noFitBoundAroundMe != true){
 						if("undefined" != typeof this.markersLayer.getBounds() &&
 						   "undefined" != typeof this.markersLayer.getBounds()._northEast ){
-							thisMap.fitBounds(this.markersLayer.getBounds(), { 'maxZoom' : 14, 'animate':false });
-							//thisMap.zoomOut();
+							thisMap.fitBounds(this.markersLayer.getBounds(), { 'maxZoom' : 15, 'animate':false });
+							thisMap.zoomOut();
 						}
 					}
 

@@ -1,0 +1,56 @@
+Existed Functionnality:
+[X] create travellers account
+[ ] Become professional 
+	[X] add label for citoyens
+	[X] alert admin
+	[ ] Admin moderation
+	[ ] link organization with juridical infos
+[ ] Add services & products
+	[X] Form and openingHours
+	[X] Add label to be validated 
+	[ ] Admin validation 
+[X] Shopping cart - Create your personal circuits
+[X] Backups - Save you current cart
+[X] Visualiser les items
+[X] Evaluer les prestations que j'ai acheté
+[X] Dashbord product
+	[X] GuestBook
+	[ ] Visualiser les réservations
+
+Roadmap:
+* affichage du circuit
+	[ ] design dans directory #circuits
+	[ ] design du pod/circuit.php
+	[ ] Ajouter le pod/sliderMedia.php au circuit en compilant des images des services proposés 
+		|| ajouter média et images dans circuit directement
+[ ] Générer les cartos circuits (dans default/circuit.js)
+	[ ] Button dans le pod circuit
+[ ] Générer la liste des circuits dans la map
+	[ ] Afficher au click la map des services proposés par circuits
+[ ] Gérer la quantité déjà réservée par circuit (bookingFor stocké dans les Orders avec l'id du circuit)
+[ ] Dynform circuit + enlever la frequency "unique" || "everyweek" MAIS frequency== "unique" à initialiser tout de même dans le circuit.obj !!!!
+* Filtrage circuit
+	[ ] Par quantité souhaitée suivant la quantité restant
+	[ ] Par date de début et de fin 
+[ ] Visualiser les réservations sur un circuit
+	[X] Alert mail lors de la résa d'un circuit aux admin terla
+	[ ] Générer la liste des orders réservés pour un circuit #admin.view.circuits
+[ ] Dashboard services à continuer
+	[ ] Pour l'avoir allez sur #admin.view.services et cliquez sur un service
+[ ] Ajouter les liens des services dans la vues circuits pour avoir la preview par service tout de même 
+* Bugs:
+[ ] Pod circuit constructions 
+	[ ] Delete service and session tricky js bug
+[ ]Comment rating => Dashboard voyageurs (section my travellers) 
+	[ ] Bug sur le "show comment" (bricolle js)
+[ ] Bug quand on passe d'un backup à l'enregistrement du circuit [backup coté CTK n'est pas dans le data binding de l'objet Circuit]
+	[ ] Si id de backup dans circuit/SaveAction.php faire un le Backup::delete($_Post["backup"]) et enlever l'entrée backup pour le insert du circuit
+[ ] Tricky bug dans composition des circuits pour afficher les calendars des services
+[ ] Btn de navigation #admin.view.circuits avec event qui se répéte passer les event en off().on("click")
+* Cart
+[ ] open Cart > close cart > open cart > total * 2
+* Remarques:
+Les dates de début et de fin des circuits sont générées directement suivant le service ajouté commencant le premier et le service ajouté terminant le circuit
+  Paiement
+    - rmq : tout neau service appartiendra à l'admin terlà 
+    - donc tout les encaissement iront au compte terlà

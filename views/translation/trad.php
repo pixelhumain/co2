@@ -172,6 +172,11 @@ var trad = {
 	"Mode" : "Mode",
 
 	"all" : "Tous", 
+	
+	"products" : "<?php echo Yii::t("common","products") ?>", 
+	"services" : "<?php echo Yii::t("common","services") ?>", 
+	"circuits" : "<?php echo Yii::t("common","circuits") ?>", 
+	
 
 	"Project maturity" : "<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id)?>",
 	"idea" : "<?php echo Yii::t("project","idea")?>",
@@ -404,7 +409,26 @@ var trad = {
 	"youwillfindonlycities" : "<?php echo Yii::t("docs","You will find only cities <b>which match data</b>.<br/> If you <b>don't find</b> a city, feel free <b>to create an organization, a project, an event, on this geographical zone...</b><br/><br/><b>Then you will find this result here</b>") ?>",
 	"testAOtherCommunexion" : "<?php echo Yii::t("home", "Test a other communexion") ?>",
 	"allcitieswiththispostalcode" : "<?php echo Yii::t("common", "All cities with this postal code") ?>",
+	"allDay" : "<?php echo Yii::t("common", "All day") ?>",
 
+	"Checkout" : "<?php echo Yii::t("common", "Checkout") ?>",
+	"Continue" : "<?php echo Yii::t("common", "Continue") ?>",
+	"Validate" : "<?php echo Yii::t("common", "Validate") ?>",
+	"Total of your order" : "<?php echo Yii::t("common", "Total of your order") ?>",
+
+	"Leave your comment" : "<?php echo Yii::t("common", "Leave your comment") ?>",
+	"Your comment" : "<?php echo Yii::t("common", "Your comment") ?>",
+
+	"sleeping" : 		 "<?php echo Yii::t("common", "Sleeping") ?>",
+	"restaurant" : 		 "<?php echo Yii::t("common", "Restaurant") ?>",
+	"funnytime" : 	 "<?php echo Yii::t("common", "Funny activity") ?>",
+	"transport" : 		 "<?php echo Yii::t("common", "Transport") ?>",
+	"siteToSee" :  "<?php echo Yii::t("common", "Uncredible site") ?>",
+	"artisants" : 		 "<?php echo Yii::t("common", "Artisants") ?>",
+	"guideAccom" : "<?php echo Yii::t("common", "Guide and helper") ?>",
+	
+	"folder fee included and delivery tax not included" : 
+		"<?php echo Yii::t("common", "folder fee included and delivery tax not included") ?>",
 };
 
 var tradDynForm = {
@@ -440,6 +464,8 @@ var tradDynForm = {
 	"textproposal":"<?php echo Yii::t("form","Your proposal") ?>",
 	"eventTypes":"<?php echo Yii::t("form","Event type") ?>",
 	"organizationType":"<?php echo Yii::t("form","Organization type") ?>",
+	"servicesTypes":"<?php echo Yii::t("form","Service type") ?>",
+	"quantity":"<?php echo Yii::t("form","Quantity available") ?>",
 	"nameofyour":"<?php echo Yii::t("form","Name of your") ?>",
 	"titleofyour":"<?php echo Yii::t("form","Title of your") ?>",
 	"tags":"<?php echo Yii::t("form","Tags") ?>",
@@ -463,6 +489,7 @@ var tradDynForm = {
 	"yes":"<?php echo Yii::t("common","Yes") ?>",
 	"no":"<?php echo Yii::t("common","No") ?>",
 	"allday":"<?php echo Yii::t("form","All the day") ?>",
+	"allweek":"<?php echo Yii::t("form","All the week") ?>",
 	"startDate":"<?php echo Yii::t("form","Start date") ?>",
 	"endDate":"<?php echo Yii::t("form","End date") ?>",
 	"theendDate":"<?php echo Yii::t("form","the start date") ?>",

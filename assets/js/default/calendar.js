@@ -76,12 +76,16 @@ var calendar = {
         //console.log("eventcaleanr",eventObj);
         var taskCal = null;
         if(eventObj.startDate && eventObj.startDate != "") {
-            if(typeof eventObj.startDateDB != "undefined")
+            if(typeof eventObj.startDateCal != "undefined")
+              var startDate = moment(eventObj.startDateCal).local();
+            else if(typeof eventObj.startDateDB != "undefined")
               var startDate = moment(eventObj.startDateDB).local();
             else
               var startDate = moment(eventObj.startDate).local();
             var endDate = null;
             if(eventObj.endDate && eventObj.endDate != "" ){
+                if(typeof eventObj.endDateCal != "undefined")
+                  endDate = moment(eventObj.endDateCal).local();
                 if(typeof eventObj.endDateDB != "undefined")
                     endDate = moment(eventObj.endDateDB).local();
                 else
@@ -106,7 +110,7 @@ var calendar = {
            // console.log("eventObj",eventObj);
             taskCal = {
                 "title" : eventObj.name + " : "+tradCategory[eventObj.typeEvent],
-                "id" : eventObj['_id']['$id'],
+                
                 "content" : (eventObj.description && eventObj.description != "" ) ? eventObj.description : "",
                 "start" : startDate.format(),
                 "end" : ( endDate ) ? endDate.format() : startDate.format(),
@@ -126,13 +130,19 @@ var calendar = {
                 //"backgroundColor":calendar.templateColor[eventObj.typeEvent],
                 "links":eventObj.links,
             }
+            if(typeof eventObj.imgProfil != "undefined")
+              taskCal.imgProfil=eventObj.imgProfil;
+            if(typeof eventObj.id != "undefined")
+              taskCal.id = eventObj.id;
+            else
+              taskCal.id = eventObj._id.$id;
             if(eventObj.allDay )
                 taskCal.allDay = eventObj.allDay;
             //mylog.log(taskCal);
         }
         return taskCal;
     },
-    showCalendar : function (domElement, events) {
+    showCalendar : function (domElement, events, initMode, initDate) {
         calendarObject = [];
         console.log("showEvent",events);
         if(events){
@@ -142,9 +152,15 @@ var calendar = {
                     calendarObject.push( eventCal );
             });
         }
-        mylog.log(calendar);
-        dateToShow = new Date();
-        
+        //mylog.log(calendar);
+        if(typeof initDate != "undefined" && notNull(initDate) ){
+          splitInit=initDate.split("-");
+          dateToShow = new Date(splitInit[0], splitInit[1]-1, splitInit[2]);
+        }
+        else{
+          initDate=null;
+          dateToShow = new Date();
+        }
         $(domElement).fullCalendar({
             header : {
             		left : 'prev,next',
@@ -155,9 +171,11 @@ var calendar = {
             year : dateToShow.getFullYear(),
             month : dateToShow.getMonth(),
             date : dateToShow.getDate(),
+            //gotoDate:moment(initDate),
             editable : false,
             eventBackgroundColor: '#FFA200',
             textColor: '#fff',
+            defaultView: initMode,
             events : calendarObject,
             eventLimit: true,
             timezone : 'local',
@@ -258,7 +276,7 @@ var calendar = {
       var url = '#page.type.'+typeElement+'.id.'+data.id;
       onclick = 'calendar.closePopovers();urlCtrl.loadByHash("'+url+'");';
 
-        popupContent += "<div class='' id='popup"+id+"'>";
+      popupContent += "<div class='' id='popup"+data.id+"'>";
       popupContent += "<div class='main-panel'>"
                     +   "<div class='col-md-12 col-sm-12 col-xs-12 no-padding'>"
                     +      "<div class='thumbnail-profil' style='max-height: 200px;text-align: -webkit-center; overflow-y: hidden;background-color: #cccccc;'><img src='" + imgProfilPath + "' class='popup-info-profil-thumb img-responsive'></div>"      

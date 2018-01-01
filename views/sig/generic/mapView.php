@@ -39,10 +39,14 @@
 	<div class="bg-main-menu bgpixeltree_sig"></div>
 
 	<?php if($sigParams['useRightList']){ ?>
-		<div id="right_tool_map" class="hidden-xs hidden-sm">
+
+		
+
+		<div id="right_tool_map" class="hidden-xs hidden-sm min">
 			<div id="right_tool_map_search">
 			<!-- 	HEADER -->
 				<div class="right_tool_map_header">
+
 					<?php if($sigParams['usePanel']){ ?>
 					<div class="btn-group btn-group-lg dropdown  pull-right" id="btn-tags">
 						<button type="button" class="btn btn-map dropdown-toggle" id="btn-panel" data-toggle="dropdown">
@@ -72,6 +76,10 @@
 				<span class="right_tool_map_header_title"><?php echo Yii::t("common", "Results"); ?></span>
 					<span class="right_tool_map_header_info"> / </span>
 					
+					<button class="btn btn-link bg-orange btn-open-right-list">
+						<i class="fa fa-angle-left"></i>
+					</button>
+						
 				</div>
 				
 				<!-- 	PSEUDO SEARCH -->
@@ -175,27 +183,7 @@
 							<span><?php echo Yii::t("common", "Country"); ?> :</span>
 							<span id='country_sumery_value'></span>
 						</div>
-						<!--
-						<div id='insee_sumery' class='col-md-6'>
-							<span>Insee :</span>
-							<span id='insee_sumery_value'></span>
-						</div>
-						<div id='dep_sumery' class='col-md-6'>
-							<span>Departement :</span>
-							<span id='dep_sumery_value'></span>
-						</div>
-						<div id='region_sumery' class='col-md-6'>
-							<span>Région :</span>
-							<span id='region_sumery_value'></span>
-						</div>
-						<div id='lat_sumery' class='col-md-6'>
-							<span>Latitude :</span>
-							<span id='lat_sumery_value'></span>
-						</div>
-						<div id='lng_sumery' class='col-md-6'>
-							<span>Longitude :</span>
-							<span id='lng_sumery_value'></span>
-						</div> -->
+						
 						<input type='hidden' name='newElement_insee'>
 						<input type='hidden' name='newElement_lat'>
 						<input type='hidden' name='newElement_lng'>
@@ -214,7 +202,7 @@
 		</div>
 		
 		<div id="modalItemNotLocated" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
+		  <div class="modal-dialog">
 
 			    <!-- Modal content-->
 			    <div class="modal-content">
@@ -229,8 +217,8 @@
 			      </div>
 			    </div>
 
-			  </div>
-			</div>
+		  </div>
+		</div>
 	<?php } ?>
 
 
@@ -302,6 +290,12 @@
 			<?php } ?>			
 			
 		</div>
+
+		<div class="filterMenuMap">
+			<?php $this->renderPartial("../default/panels/filterMenu", 
+	                  			array("typeSelected"=>"services")); 
+	        ?>
+        </div>
 
 		<?php if(!isset($sigParams['useHorizontalAroundMe']) || 
 				@$sigParams['useHorizontalAroundMe'] != true ){ ?>

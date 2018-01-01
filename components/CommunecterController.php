@@ -103,6 +103,7 @@ class CommunecterController extends Controller
       "createfile" => array("href" => "/ph/co2/admin/createfile"),
       "mailerrordashboard" => array("href" => "/ph/co2/admin/mailerrordashboard"),
       "cities" => array("href" => "/ph/co2/admin/cities"),
+      "circuits" => array("href" => "/ph/co2/admin/circuits"),
     ),
     
     "adminpublic" => array(
@@ -286,6 +287,7 @@ class CommunecterController extends Controller
 
         "get"      => array("href" => "/ph/co2/person/get"),
         "getcontactsbymails"      => array("href" => "/ph/co2/person/getcontactsbymails"),
+        "shoppingcart"      => array("href" => "/ph/co2/person/shoppingcart"),
         "updatescopeinter" => array("href" => "/ph/co2/person/updatescopeinter"),
     ),
     "organization"=> array(
@@ -368,6 +370,7 @@ class CommunecterController extends Controller
       "photovideo"   => array("href" => "ph/co2/pod/photovideo"),
       "fileupload"   => array("href" => "ph/co2/pod/fileupload"),
       "activitylist"   => array("href" => "ph/co2/pod/activitylist"),
+      "circuit"      => array("href" => "/ph/co2/pod/circuit"),
     ),
     "bookmark" => array(
       "delete"        => array("href" => "ph/communecter/bookmark/delete"),
@@ -437,6 +440,28 @@ class CommunecterController extends Controller
       "update"  => array( "href" => "/ph/co2/comment/update"),
       "countcommentsfrom" => array( "href" => "/ph/co2/comment/countcommentsfrom"),
     ),
+    "order"=> array(
+       "save"   => array("href" => "/ph/co2/order/save"),
+       "get"   => array("href" => "/ph/co2/order/get"),
+    ),
+    "circuit"=> array(
+       "save"   => array("href" => "/ph/co2/circuit/save"),
+       "index"   => array("href" => "/ph/co2/circuit/index"),
+    ),
+    "pay"=> array(
+       "index"   => array("href" => "/ph/co2/pay/index"),
+       "in"   => array("href" => "/ph/co2/pay/in"),
+    ),
+    "backup"=> array(
+       "save"   => array("href" => "/ph/co2/backup/save"),
+       "delete"   => array("href" => "/ph/co2/backup/delete"),
+       "update"   => array("href" => "/ph/co2/backup/update"),
+      // "get"   => array("href" => "/ph/co2/order/get"),
+    ),
+    "orderitem"=> array(
+       "save"   => array("href" => "/ph/co2/orderitem/save"),
+       "get"   => array("href" => "/ph/co2/orderitem/get"),
+    ),
     "action"=> array(
        "addaction"   => array("href" => "/ph/co2/action/addaction"),
     ),
@@ -452,8 +477,8 @@ class CommunecterController extends Controller
     "graph"=> array(
       "getdata" => array("href" => "/ph/co2/graph/getdata"),
       "viewer" => array("href" => "/ph/co2/graph/viewer"),
-      "d3" => array("href" => "/ph/co2/graph/d3"),
       "search" => array("href" => "/ph/co2/graph/search"),
+      "d3" => array("href" => "/ph/co2/graph/d3"),
     ),
     "log"=> array(
       "monitoring" => array("href" => "/ph/co2/log/monitoring"),
@@ -482,6 +507,7 @@ class CommunecterController extends Controller
       "addmembers"          => array("href" => "/ph/co2/element/addmembers", "public" => true),
       "aroundme"            => array("href" => "/ph/co2/element/aroundme"),
       "save"                => array("href" => "/ph/co2/element/save"),
+      "list"                => array("href" => "/ph/co2/element/list"),
       "savecontact"         => array("href" => "/ph/co2/element/savecontact"),
       "saveurl"             => array("href" => "/ph/co2/element/saveurl"),
       "get"                 => array("href" => "/ph/co2/element/get"),
@@ -493,6 +519,7 @@ class CommunecterController extends Controller
       'getthumbpath'        => array("href" => "/ph/co2/element/getThumbPath"),
       'getcommunexion'      => array("href" => "/ph/co2/element/getcommunexion"),
       'getdatabyurl'        => array("href" => "/ph/co2/element/getdatabyurl"),
+      "invoice"                => array("href" => "/ph/co2/element/invoice"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),
@@ -509,11 +536,14 @@ class CommunecterController extends Controller
       "mediacrawler"      => array('href' => "/ph/co2/app/mediacrawler",      "public" => false),
       "page"              => array('href' => "/ph/co2/app/page",              "public" => true),
       "search"            => array('href' => "/ph/co2/app/search",            "public" => true),
+      "activities"              => array('href' => "/ph/co2/app/search",              "public" => true),
+      "store"            => array('href' => "/ph/co2/app/search",            "public" => true),
+      "circuits"            => array('href' => "/ph/co2/app/search",            "public" => true),
       "territorial"       => array('href' => "/ph/co2/app/territorial",            "public" => true),
       "agenda"            => array('href' => "/ph/co2/app/agenda",            "public" => true),
       "power"             => array('href' => "/ph/co2/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/co2/app/superadmin",        "public" => false),
-      "admin"             => array('href' => "/ph/co2/app/admin",             "public" => false),
+      "admin"             => array('href' => "/ph/co2/app/admin",             "public" => true),
       "info"              => array('href' => "/ph/co2/app/info",              "public" => true),
       "smartconso"          => array('href' => "/ph/co2/app/smartconso",      "public" => true),
       "city"              => array('href' => "/ph/co2/app/city",              "public" => false),
@@ -569,7 +599,6 @@ class CommunecterController extends Controller
 
     if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
-
     if( Yii::app()->controller->id != "test")
       $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
     $pagesWithoutLogin = array(

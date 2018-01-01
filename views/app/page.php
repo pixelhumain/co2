@@ -9,7 +9,7 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
 
-    if($this->module->id != "network")
+    if($this->module->id != "network" && $type!=Classified::COLLECTION && ($type!=Product::COLLECTION || ($element["creator"]==Yii::app()->session["userId"] && $view != "show")))
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page") ); 
@@ -17,7 +17,7 @@
 
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
-	<div class="padding-top-15">
+	<div class="padding-top-15" id="onepage">
 		<?php 
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
@@ -37,11 +37,10 @@
 
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
-
-                //var_dump(@$_GET["web"]);exit;
-                $page = isset($_GET["net"]) ? "onepage" : "profilSocial";
-
-                $this->renderPartial('../element/'.$page, $params ); 
+                if(Yii::app()->params["CO2DomainName"] == "terla")
+                    $this->renderPartial('../element/terla/index', $params );
+                else
+                    $this->renderPartial('../element/profilSocial', $params ); 
             }
 
             if($type == News::COLLECTION){
@@ -69,7 +68,34 @@
 
                 $this->renderPartial('../classified/standalone', $params ); 
             }
+            if($type == Product::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
 
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+                if(($element["creator"]==Yii::app()->session["userId"] || @Yii::app()->session["superAdmin"]) && $view != "show")
+                    $this->renderPartial('../element/terla/dashboard', $params );
+                else
+                    $this->renderPartial('../element/standalone', $params ); 
+            }
+            if($type == Service::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+                if($element["creator"]==Yii::app()->session["userId"] && $view != "show")
+                    $this->renderPartial('../element/terla/dashboard', $params );
+                else
+                    $this->renderPartial('../element/standalone', $params ); 
+            }
             if($type == Survey::COLLECTION){
                 $params = array("survey"=>$element , 
                                 "page" => "page",
@@ -102,10 +128,10 @@ var view = "<?php echo @$view; ?>";
 var indexStepGS = 20;
 
 jQuery(document).ready(function() {
-	
-	initKInterface({"affixTop":0});
+    
+	//initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
-	initPageInterface();
+	//initPageInterface();
     // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 	// 	initPageInterface();

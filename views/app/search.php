@@ -9,6 +9,7 @@
     $cssAnsScriptFilesModule = array(
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
+    '/js/default/directory.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -48,6 +49,16 @@
 ?>
 
 <style>
+    header .headerImg{
+        background-image: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion5.jpg");
+        background-size: 100% auto;
+        height: 300px;
+        margin-top: 45px;
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        /*opacity: 0.3;
+        background-color: black;*/
+    }
     <?php if($params["title"] != "Kgougle") { ?>
    /* header {
       background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/<?php echo $page; ?>/pexels-<?php echo $randImg; ?>.jpeg") center center;
@@ -55,8 +66,23 @@
       background-color: black;*/
     /*}*/
     
-    
-    <?php } ?>
+    #main-scope-name a{
+        height: 130px;
+        background-color: rgba(255, 255, 255, 0.9);
+        width: 130px;
+        display: inline-block;
+        padding-top: 30px;
+        border-radius: 50%;
+        padding-right: 4px;
+    }
+
+    #dropdown_search{
+        margin-top:20px;
+    }
+
+    .container{
+        padding-bottom:0px !important;
+    }
 </style>
 
 
@@ -86,7 +112,7 @@
     </div>
     <?php } ?>
 
-    <?php if(@$type!="cities"){ ?>
+    <?php if(@$type!="cities" && Yii::app()->params["CO2DomainName"] != "terla"){ ?>
         <div class="col-md-2 col-sm-2 col-xs-12 no-padding">
             <?php if(@$type=="all"){ ?>
             <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips"
@@ -108,16 +134,17 @@
         <?php //var_dump(Yii::app()->request->cookies['communexionActivated']);
               //var_dump(CO2::getCommunexionCookies()); 
         ?>
-
+        <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
         <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
             <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
         </div>
+        <?php } ?>
     <?php } ?>
 
 
 	<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="page"></div>
 
-    <?php if(@$type=="all" && !empty(Yii::app()->session["userId"]) ){ ?>
+    <?php if(@$type=="all" && !empty(Yii::app()->session["userId"]) && Yii::app()->params["CO2DomainName"] != "terla" ){ ?>
     <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
         <!-- <hr style="margin-bottom:-20px;"> -->
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
@@ -142,7 +169,7 @@
 </div>
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
-<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array()); ?>
+<?php $this->renderPartial($layoutPath.'footer', array()); ?>
 
 <?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
 
@@ -230,8 +257,6 @@ jQuery(document).ready(function() {
     },"html");
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js
-
-
 
     calculateAgendaWindow(0);
 

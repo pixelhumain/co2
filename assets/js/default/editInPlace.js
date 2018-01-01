@@ -7,7 +7,7 @@ function bindAboutPodElement() {
 		$("#editElementDetail").on("click", function(){
 			switchModeElement();
 		});
-	}
+}
 
 	function changeHiddenFields() { 
 		mylog.log("-----------------changeHiddenFields----------------------");

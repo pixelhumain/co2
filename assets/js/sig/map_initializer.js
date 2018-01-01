@@ -60,6 +60,18 @@
 				});
 				//lorsqu'on active/désactive le filtre par zone
 				$(this.cssModuleName + " #chk-scope").click(function (){ thisSig.checkListElementMap(thisMap); });
+
+				$(".btn-open-right-list").click(function(){
+					if($("#right_tool_map").hasClass("min")){
+						$("#right_tool_map").removeClass("min");
+						$(this).html("<i class='fa fa-angle-right'></i>");
+					}else{
+						$("#right_tool_map").addClass("min");
+						$(this).html("<i class='fa fa-angle-left'></i>");
+					}
+					thisSig.constructUI();
+
+				});
 			}
 
 			//initialise les boutons zoom-in et zoom-out
@@ -345,7 +357,18 @@
 
 											"address" 			: "MARKER",
 
-											"classified" 		: "classified-marker-default"
+											"classified" 		: "classified-marker-default",
+											"service" 			: "services/medical",
+											"product" 			: "services/medical",
+											"products" 			: "services/shopping",
+											
+											"services.sleeping" : "services/real-estate",
+											"services.restaurant":"services/restaurants",
+									        "services.funnytime":"services/entertainment",
+									        "services.transport":"services/automotive",
+									        "services.siteToSee":"services/photography",
+									        "services.artisants":"services/employment",
+									        "services.guideAccom":"services/professional"
 
 									  };
 
@@ -385,8 +408,8 @@
 											"poi.video" 		: { ico : "video-camera", color : "dark" 	},
 											"poi.interop.wiki" 	: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.datagouv" 	: { ico : "folder-open", color : "yellow" 	},
-											"poi.interop.osm" 	: { ico : "folder-open", color : "yellow" 	},
-											"poi.interop.ods" 	: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.osm" 		: { ico : "folder-open", color : "yellow" 	},
+											"poi.interop.ods" 		: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.datanova" 	: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.poleemploi" 	: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.educ_etab" 	: { ico : "folder-open", color : "yellow" 	},
@@ -402,6 +425,8 @@
 											"address" 			: { ico : "map-marker", color : "red" 	},
 
 											"classified" 		: { ico : "bullhorn", color : "azure" 	},
+
+											"services" 			: { ico : "handshake-o", color : "orange" 	},
 
 									  };
 
@@ -457,7 +482,7 @@
 
 		Sig.getIcoNameByType = function (data){
 			var type = this.getTypeSigOfData(data);
-			mylog.log("getIcoNameByType",this.icoMarkersMap,  data, type);
+			mylog.log("getIcoNameByType",this.icoMarkersMap[type],  data);
 			if(this.icoMarkersMap[type] != null){
 					return this.icoMarkersMap[type];
 			}else{  return this.icoMarkersMap['default']; }

@@ -424,7 +424,7 @@ var Login = function() {
 	};
 	return {
 		//main function to initiate template pages
-		init : function() {
+		init : function() { console.log("init after register");
 			addCustomValidators();
 			runBoxToShow();
 			runSetDefaultValidation();

@@ -106,7 +106,8 @@ var formInMap = {
 			$("#divStreetAddress").removeClass("hidden");
 
 		$("#right_tool_map_locality").removeClass("hidden");
-		$("#right_tool_map_search").addClass("hidden");
+		$("#right_tool_map_search, #sub-menu-left").addClass("hidden");
+		$("#right_tool_map").removeClass("min");
 		if(typeof networkJson == "undefined" || networkJson == null)
 			$("#mapLegende").addClass("hidden");
 	},
@@ -558,7 +559,8 @@ var formInMap = {
 
 	backToForm : function(cancel){
 		$("#right_tool_map_locality").addClass("hidden");
-		$("#right_tool_map_search").removeClass("hidden");
+		$("#right_tool_map_search, #sub-menu-left").removeClass("hidden");
+		$("#right_tool_map").addClass("min");
 		if(typeof networkJson == "undefined" || networkJson == null)
 			$("#mapLegende").removeClass("hidden");
 		mylog.log("backToForm 2");
@@ -662,7 +664,7 @@ var formInMap = {
 						Sig.restartMap();
 						mylog.log("right_tool_map_locality");
 						$("#right_tool_map_locality").addClass("hidden");
-						$("#right_tool_map_search").removeClass("hidden");
+						$("#right_tool_map_search, #sub-menu-left").removeClass("hidden");
 						if(typeof networkJson == "undefined" || networkJson == null)
 							$("#mapLegende").removeClass("hidden");
 						mylog.log("contextData", contextData.type, contextData.id);

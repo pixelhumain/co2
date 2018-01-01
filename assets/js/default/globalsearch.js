@@ -60,7 +60,7 @@ function startGlobalSearch(indexMin, indexMax, input){
 
 
 function autoCompleteSearchGS(search, indexMin, indexMax){
-    mylog.log("autoCompleteSearchGS");
+    mylog.log("autoCompleteSearchGS",search);
 
     var data = {"name" : search, "locality" : "", "searchType" : searchTypeGS, "searchBy" : "ALL",
                 "indexMin" : indexMin, "indexMax" : indexMax  };
@@ -74,6 +74,19 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
       "<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</h5>");
       
     showIsLoading(true);
+
+    if(search.indexOf("co.") === 0 )
+    {
+      searchT = search.split(".");
+      if( searchT[1] && typeof co[ searchT[1] ] == "function" )
+      {
+        co[ searchT[1] ](search);
+        return;
+      } else {
+        co.mands();
+      }
+    }
+
     $.ajax({
       type: "POST",
           url: baseUrl+"/" + moduleId + "/search/globalautocomplete",

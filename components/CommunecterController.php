@@ -452,6 +452,8 @@ class CommunecterController extends Controller
     "graph"=> array(
       "getdata" => array("href" => "/ph/co2/graph/getdata"),
       "viewer" => array("href" => "/ph/co2/graph/viewer"),
+      "d3" => array("href" => "/ph/co2/graph/d3"),
+      "search" => array("href" => "/ph/co2/graph/search"),
     ),
     "log"=> array(
       "monitoring" => array("href" => "/ph/co2/log/monitoring"),

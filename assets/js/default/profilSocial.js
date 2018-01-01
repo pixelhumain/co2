@@ -655,6 +655,43 @@ function loadContacts(){
 }
 
 
+function loadMD(){
+	showLoader('#central-container');
+	getAjax('', baseUrl+'/api/person/get/id/'+contextData.id+"/format/md",
+				function(data){ 
+					descHtml = dataHelper.markdownToHtml(data) ; 
+					$('#central-container').html(descHtml);
+				}
+	,"html");
+}
+
+function loadMindMap(){
+	showLoader('#central-container');
+
+	/*if( ! jQuery.isFunction(jQuery.datetimepicker) ) {
+				lazyLoad( baseUrl+'/plugins/xdan.datetimepicker/jquery.datetimepicker.full.min.js', 
+						  baseUrl+'/plugins/xdan.datetimepicker/jquery.datetimepicker.min.css',
+						  callback);
+		    }*/
+	
+	d3.json(baseUrl+'/api/person/get/id/'+contextData.id+"/format/tree", function(error, data) {
+	  if (error) throw error;
+	  
+	  $('#central-container').html("<svg id='mindmap' style='width:100%;height:800px'></svg>");
+	  mylog.log( data );
+	  markmap('svg#mindmap', data, {
+	    preset: 'default', // or colorful
+	    linkShape: 'diagonal' // or bracket
+	  });
+	});
+					
+}
+
+function loadGraph(){
+	window.location.href = baseUrl+"/"+moduleId+"/graph/d3/id/585bdfdaf6ca47b6118b4583/type/citoyen";
+}
+
+
 
 //todo add count on each tag
     function getfilterRoles(roles) { 

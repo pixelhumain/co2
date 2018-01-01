@@ -62,7 +62,7 @@
                   "subdomain" : "web", 
                   "subdomainName" : "web",
                   "hash" : "#app.web",
-                  "icon" : "search", 
+                  "icon" : "globe", 
                   "mainTitle" : "Moteur de recherche",
                   "placeholderMainSearch" : "Que recherchez-vous ?"},
 

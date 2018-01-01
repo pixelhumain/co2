@@ -18,7 +18,9 @@ class GraphController extends CommunecterController {
 	{
 	    return array(
 	        'getdata'  => 'citizenToolKit.controllers.graph.GetDataAction',
-	        'viewer'   => 'citizenToolKit.controllers.graph.ViewerAction'
+	        'viewer'   => 'citizenToolKit.controllers.graph.ViewerAction',
+	        'd3'   => 'citizenToolKit.controllers.graph.D3Action',
+	        'search'   => 'citizenToolKit.controllers.graph.SearchAction'
 	    );
 	}
 }

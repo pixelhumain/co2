@@ -102,7 +102,7 @@ function activateGlobalCommunexion(active, firstLoad, testCo){
     //communexion.state=active;
     if(active){
         //if(firstLoad)
-        if(notNull(testCo) && testCo==false){
+        if(myScopes.type=="communexion"){//notNull(testCo) && testCo==false){
             myScopes.communexion.state=active;
             valuesOfBreadcrum=myScopes.communexion;
             domBreadcrum="#communexion-container";

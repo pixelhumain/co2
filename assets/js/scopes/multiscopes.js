@@ -301,7 +301,7 @@ function getLocalityForSearch(noScope){
 																active : true };
 			}
 			else{
-				searchLocality[communexion.currentValue] = {	type : "city", 
+				searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
 																name : communexion.currentName,
 																active : true };
 			}
@@ -456,11 +456,11 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 			if(typeof values == "string")
 				values = jQuery.parseJSON(values);
 			communexion.values = values;
-		}else if(testCo == false)
+		}else if(myScopes.type=="communexion")
 			communexion.values=myScopes.communexion.values;
 		else
 			communexion.values=myScopes.open.values;
-		if(testCo == false){
+		if(myScopes.type=="communexion"){
 			//if(typeof myScopes.communexion.values != "undefined") communexion.values=myScopes.communexion.values;
 			//if(typeof myScopes.communexion.cities != "undefined") communexion.cities=myScopes.communexion.cities;
 			myScopes.communexion=communexion;

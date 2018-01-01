@@ -213,18 +213,13 @@ class AppController extends CommunecterController {
         //var_dump($type); exit;
             
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
-            $type == Project::COLLECTION || $type == Organization::COLLECTION )    
+            $type == Project::COLLECTION || $type == Organization::COLLECTION || 
+            $type == Poi::COLLECTION || $type == Place::COLLECTION || $type == Ressource::COLLECTION || 
+            $type == Classified::COLLECTION)    
             $element = Element::getByTypeAndId($type, $id);
 
         else if($type == News::COLLECTION){
             $element = News::getById($id);
-        }
-
-        else if($type == Classified::COLLECTION){
-            $element = Classified::getById($id);
-        }
-        else if($type == Poi::COLLECTION){
-            $element = Poi::getById($id);
         }
         else if($type == Survey::COLLECTION){
             $element = Survey::getById($id);

@@ -210,10 +210,20 @@ Liste des notifications déjà lues => #370 #453
 
 * GFX 
   ** @Edith 
-    [ ] Aide Design Site 
+    [ ] Aide Design Site Open Atlas 
+      [ ] uniformisation du menu 
+      [ ] Accueil a droite (1er lien 
+      [ ] regle 3 typo maxi 
+      [ ] @Edith : 5 couleurs
+      [ ] soit en BD de Guillaume , soit en photo montage 
+        [ ] brainstorming idée phtoos 
     [ ] Aide Design de la Gazette 
+      [ ] a revoir a 
     [ ] Aide Plaquette 
-    [ ] Participation Design Local
+    [ ] Participation Design Local 
+      [ ] convertion des affiches Smarterre en double face 
+        [ ] face 1 : présentation d'une thématique 
+        [ ] face 2 : activité , orga, projet, events, actu 
   ** @Steph 
     [ ] Design deco du CoBus
 
@@ -606,8 +616,18 @@ Liste des notifications déjà lues => #370 #453
     [ ] opendata sources + interop
       [ ] connecter des scripts api 
         [ ] scope geo
+          [ ] chaque collectivité qui a de l'opendata sur data.gouv aura sa vue dans CO 
+          [ ] a voir comment plugguer les data a des graphiques ou des D3js
+            [ ] voir avec prompto peut etre 
         [ ] thematique ou tag 
         [ ] perso
+    [ ] utiliser module url et faire interopérer 
+      [ ] ex : j'ajoute une url data.gouv , visualisation , ajouter le type "opendata"
+      [ ] j'ajoute une url youtube visualisation
+      [ ] j'ajoute une umap ou un geojson 
+      [ ] j'ajoute un Rocket Chat, on peut y acceder 
+    [ ] chantier tags : appliqué a PROD 
+      [ ] mettre en collection et géré les traduction 
   ** @Daniel
     [ ] SSO
   ** @Marc 

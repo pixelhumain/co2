@@ -21,7 +21,8 @@
 		<?php 
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
-               $type == Project::COLLECTION || $type == Organization::COLLECTION){
+               $type == Project::COLLECTION || $type == Organization::COLLECTION || 
+               $type == Place::COLLECTION){
     			$params = array("element"=>$element , 
     							"page" => "page",
     							"edit"=>$edit,
@@ -42,7 +43,6 @@
 
                 $this->renderPartial('../element/'.$page, $params ); 
             }
-
 
             if($type == News::COLLECTION){
                 $params = array("element"=>$element , 

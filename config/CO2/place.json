@@ -3,7 +3,8 @@
         "all": {
             "label":"Tous",           
             "key" : "all",  
-            "icon" : "cloud"
+            "icon" : "cloud",
+            "excludeFromForm" : true
         },
         "common": {
             "label":"Commun",           
@@ -29,6 +30,11 @@
             "label":"Rural",           
             "key" : "rural",  
             "icon" : "tree"
+        },
+        "travel": {
+            "label":"Travel",           
+            "key" : "travel",  
+            "icon" : "car"
         }
         
     },

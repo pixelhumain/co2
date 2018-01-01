@@ -481,7 +481,7 @@ var headerParams = {
   "place"         : { color: "green",   icon: "map-marker",   name: trad.places },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad.classifieds },
   "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
-
+  "ressource"         : { color: "purple",   icon: "cubes",   name: "Ressource" },
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -535,7 +535,7 @@ function setHeaderDirectory(type){
 }
 
 var searchType = [ "persons" ];
-var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities","place" ];
+var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities","place","ressource" ];
 
 var personCOLLECTION = "<?php echo Person::COLLECTION ?>";
 var userId = '<?php echo isset( Yii::app()->session["userId"] ) ? Yii::app() -> session["userId"] : null; ?>';
@@ -556,7 +556,7 @@ jQuery(document).ready(function() {
 
 
   searchType = (typeSelected == null) ? [ "persons" ] : [ typeSelected ];
-  allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","place" ];
+  allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","place","ressource" ];
 	topMenuActivated = true;
 	hideScrollTop = true; 
   loadingData = false;

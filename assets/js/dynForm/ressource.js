@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : "Formulaire d'un ressource",
+	    title : "Formulaire d'une ressource",
 	    icon : "map-marker",
 	    type : "object",
 	    onLoads : {
@@ -12,8 +12,18 @@ dynForm = {
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		}
 	    	}, 
-	    	onload : function(){
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    	onload : function(data){
+	    		if(data && data.section){
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.section+"</h4>");
+					$(".sectionBtntagList").hide();
+	    		} else
+	    			$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
+
+	    		if(contextData.type && contextData.id )
+	    		{
+    				$('#ajaxFormModal #parentId').val(contextData.id);
+	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
+	    		}	
 	    	},
 	    },
 	    beforeSave : function(){
@@ -37,7 +47,7 @@ dynForm = {
 	    },
 	    beforeBuild : function(){
 	    	dyFObj.setMongoId('ressource', function(){
-	    		uploadObj.gotoUrl = '#page.type.ressource.id.'+uploadObj.id;
+	    		uploadObj.gotoUrl = (contextData != null && contextData.type && contextData.id ) ? "#page.type."+contextData.type+".id."+contextData.id+".view.directory.dir.ressource" : location.hash;
 	    	});
 	    },
 		afterSave : function(){
@@ -86,12 +96,13 @@ dynForm = {
 						//$(".sectionBtn:not(.active)").hide();
 						
 						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
+						$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 						$(".sectionBtntagList").hide();
 	            	});
 	            }
             },
             section : dyFInputs.inputHidden(),
-	        typeBtn :{
+/*	        typeBtn :{
                 label : "Type de ressource ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir une catégorie",
@@ -140,7 +151,7 @@ dynForm = {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : dyFInputs.inputHidden(),
+            subtype : dyFInputs.inputHidden(),*/
             name : dyFInputs.name("ressource"),
 	        image : dyFInputs.image(),
             description : dyFInputs.textarea("Description", "..."),

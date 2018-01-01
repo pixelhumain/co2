@@ -116,7 +116,7 @@ var headerParams = {
   "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
   "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
   "cities"        : { color: "red",     icon: "university",   name: "communes" },
-  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
+  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" }
 }
 function setHeaderDirectory(type){
  

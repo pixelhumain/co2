@@ -940,7 +940,7 @@ var directory = {
     		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+params.type+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		
-        var addFollowBtn = ( $.inArray(params.type, ["poi"])>=0 )  ? false : true;
+        var addFollowBtn = ( $.inArray(params.type, ["poi","ressource"])>=0 )  ? false : true;
         if(typeof params.edit  != "undefined")
               str += this.getAdminToolBar(params);
             
@@ -954,17 +954,20 @@ var directory = {
     			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
     			" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
     			"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-    			"</a>";          
+    			"</a>";
     		}
 
         if(params.updated != null )
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["actif"]+" </span>" + params.updated + "</div>";
         
-        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
+        var linkAction = ( $.inArray(params.type, ["poi","ressource","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
-       // if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
+          // if(typeof params.size == "undefined" || params.size == "max")
+
+          var canEditClass = ( params.creator == userId || params.author == userId || params.parentId == userId || dyFObj.canUserEdit() ) ? " canEditThis" : "";
+          var extraClasses = "add2fav "+canEditClass+" "+linkAction;  
+          str += "<a href='"+params.hash+"' class='container-img-profil  "+extraClasses+">" + params.imgProfil + "</a>";
 
         str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
@@ -972,7 +975,7 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.hash+"' class='add2fav "+linkAction+">" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class=' "+extraClasses+">" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
@@ -981,7 +984,7 @@ var directory = {
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark  "+extraClasses+">"+
                       iconFaReply + params.name + 
                    "</a>";  
                     
@@ -1007,7 +1010,7 @@ var directory = {
                                  
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality add2fav "+linkAction+">"+
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality  "+extraClasses+">"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -2105,7 +2108,7 @@ var directory = {
                 if(params.type == "cities")
                   str += directory.cityPanelHtml(params);  
                 
-                else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place"])>=0) 
+                else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place","ressource"] )>=0) 
                   str += directory.elementPanelHtml(params);  
                 
                 else if(params.type == "events")

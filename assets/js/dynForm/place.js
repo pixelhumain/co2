@@ -13,7 +13,14 @@ dynForm = {
 	    		}
 	    	}, 
 	    	onload : function(){
-	    		$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").hide();
+	    		
+	    		if(typeof data != "undefined" && data.section && data.type && data.subtype ){
+	    			$("#ajaxFormModal #id").val(data.id);
+	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+data.section+" > "+data.type+" > "+data.subtype+"</h4>" );
+					$(".sectionBtntagList").hide();
+					$(".typeBtntagList").hide();
+	    		} else
+	    			$(".typeBtntagList, .nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags, #btn-submit-form").hide();
 	    	},
 	    },
 	    beforeSave : function(){
@@ -37,7 +44,7 @@ dynForm = {
 	    },
 	    beforeBuild : function(){
 	    	dyFObj.setMongoId('place',function(){
-	    		uploadObj.gotoUrl = '#page.type.places.id.'+uploadObj.id;
+	    		uploadObj.gotoUrl = '#page.type.place.id.'+uploadObj.id;
 	    	});
 	    },
 		afterSave : function(){
@@ -90,7 +97,7 @@ dynForm = {
 	            	});
 	            }
             },
-            section : dyFInputs.hidden,
+            section : dyFInputs.inputHidden(),
 	        typeBtn :{
                 label : "Type de lieu ? ",
 	            inputType : "tagList",
@@ -135,12 +142,12 @@ dynForm = {
 	            	});
 	            }
             },
-            type : dyFInputs.hidden,
+            type : dyFInputs.inputHidden(),
             subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
             },
-            subtype : dyFInputs.hidden,
+            subtype : dyFInputs.inputHidden(),
             name : dyFInputs.name("place"),
 	        image : dyFInputs.image( ),
             //description : dyFInputs.description,
@@ -153,8 +160,8 @@ dynForm = {
                 html: "<a class='btn btn-default text-dark w100p' href='javascript:;' onclick='$(\".urlsarray\").slideToggle()'><i class='fa fa-plus'></i> options (urls)</a>",
             },
             urls : dyFInputs.urlsOptionnel,
-            parentId : dyFInputs.hidden,
-            parentType : dyFInputs.hidden,
+            parentId : dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden()
 	    }
 	}
 };

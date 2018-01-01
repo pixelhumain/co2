@@ -1944,7 +1944,7 @@ function getMediaFromUrlContent(className, appendClassName,nbParent){
             //replace thmubnail position text
             $("#total_imgs").html((img_arr_pos) +' of '+ total_images);
         }
-    });
+    }); 
     var getUrl  = $(className); //url to extract from text field
     var appendClassName = appendClassName;
     getUrl.bind("input keyup",function(e) { //user types url in text field        

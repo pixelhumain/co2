@@ -131,7 +131,7 @@ jQuery(document).ready(function() {
     
 	//initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
-	//initPageInterface();
+	initPageInterface();
     // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 	// 	initPageInterface();

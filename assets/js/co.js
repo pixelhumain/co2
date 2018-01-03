@@ -2804,9 +2804,11 @@ var keyboardNav = {
 		"67" : function(){$('#openModal').modal('hide');dyFObj.openForm('classified')},//c : classified
 		"69" : function(){$('#openModal').modal('hide');dyFObj.openForm('event')}, //e : event
 		"70" : function(){$('#openModal').modal('hide'); $(".searchIcon").trigger("click") },//f : find
-		"72" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help') },//h : help
+		"71" : function(){ co.graph() },//g graph
+		"72" : function(){ co.help() },//h : help
 		"73" : function(){$('#openModal').modal('hide');dyFObj.openForm('person')},//i : invite
 		"76" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/links')},//l : links and infos
+		"77" : function(){ co.mind() },//m graph
 		"79" : function(){$('#openModal').modal('hide');dyFObj.openForm('organization')},//o : orga
 		"80" : function(){$('#openModal').modal('hide');dyFObj.openForm('project')},//p : project
 		"82" : function(){$('#openModal').modal('hide');smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
@@ -3468,6 +3470,13 @@ var typeObj = {
 
 
 var co = {
+	ctrl : {
+		lbh : function (url) { 
+			if(userId)
+				urlCtrl.loadByHash(url);
+			else co.nect();
+		}
+	},
 	help : function () { 
 		url = urlCtrl.convertToPath("#default.view.page.links");
 	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
@@ -3482,8 +3491,9 @@ var co = {
 		})
 		smallMenu.open("<h1>All Commands</h1>"+str);
 	},
+	//co.rss : function () {  },
 	tools : function () { 
-		smallMenu.open("<h1>Internal Tools and projects</h1>");
+		smallMenu.open("<h1>Connected Tools and Open Apps Ecosystem</h1>");
 	},
 	nect : function () { 
 		if(!userId)
@@ -3505,7 +3515,7 @@ var co = {
 		} );
 	},
 	mind : function () { 
-		if(userId)
+		if( contextData && contextData.type == "citoyens")
 			smallMenu.open("Mindmap",null,null,function() {
 				mm = null;
 				d3.json(baseUrl+'/api/person/get/id/'+contextData.id+"/format/tree", function(error, data) {
@@ -3521,28 +3531,44 @@ var co = {
 			});
 		else co.nect();
 	},
-	agenda : function () { 
-		urlCtrl.loadByHash("#agenda");
+	md : function (str) { 
+		if( contextData && contextData.type == "citoyens")
+			co.open(baseUrl+'/api/person/get/id/'+contextData.id+"/format/md","md");
+		else 
+			toastr.error("No context to build a markdown!!");
 	},
-	search : function () { 
-		urlCtrl.loadByHash("#search");
+	open : function (url,type) { 
+		title = null;
+		callback = null;
+		if(type == "md"){
+			title = "Markdown";
+			callback = function() {
+				getAjax('', url, function(data){ 
+						descHtml = dataHelper.markdownToHtml(data) ; 
+						$("#openModal div.modal-content div.container").html(descHtml);
+					}
+				,"html");
+			}
+		} 
+		else if(type == "youtube") {
+			title = "Youtube";
+			callback = function() { $("#openModal div.modal-content div.container").html('<iframe width="560" height="315" src="'+url+'" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>');}
+		}
+
+		if(title){
+			smallMenu.open(title,null,null,callback);
+		} else
+			toastr.error("Type not found!!");
 	},
-	live : function () { 
-		urlCtrl.loadByHash("#live");
-	},
-	web : function () { 
-		urlCtrl.loadByHash("#web");
-	},
-	annonces : function () { 
-		urlCtrl.loadByHash("#annonces");
-	},
+	agenda : function () { urlCtrl.loadByHash("#agenda");},
+	search : function () { urlCtrl.loadByHash("#search");},
+	live : function () { urlCtrl.loadByHash("#live");	},
+	web : function () { urlCtrl.loadByHash("#web");	},
+	annonces : function () { urlCtrl.loadByHash("#annonces");	},
 	chat : function () { 
 		if(userId)
 			rcObj.loadChat("","citoyens", true, true) 
 		else co.nect();
-	},
-	notif : function () { 
-		
 	},
 	add : function (str) { 
 		strT = str.split(".");
@@ -3561,34 +3587,13 @@ var co = {
 		// free add form 
 		// set a type 
 	},
-	o : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.organizations");
-		else co.nect();
-	},
-	e : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.evens");
-		else co.nect();
-	},
-	pr : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.projects");
-		else co.nect();
-	},
-	p : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.follows");
-		else co.nect();
-	},
-	poi : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.poi");
-		else co.nect();
-	},
-	info : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.detail");
-		else co.nect();
-	},
+	// *****************************************
+	// Connected person stuff
+	// ****************************************
+	o : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.organizations");},
+	e : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.evens");},
+	pr : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.projects");},
+	p : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.follows");},
+	poi : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.poi");},
+	info : function () { co.ctrl.lbh("#"+userConnected.username+".view.detail");},
 }	

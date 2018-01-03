@@ -29,6 +29,11 @@
 		'/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
         '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
         '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
+        "/plugins/d3/d3.js",
+        "/plugins/d3/d3-flextree.js",
+        "/plugins/d3/view.mindmap.js",
+        "/plugins/d3/view.mindmap.css",
+        
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -196,7 +201,7 @@
     	  <div class="identity-min">
 	    	  <img class="pull-left hidden-xs" src="<?php echo $thumbAuthor; ?>" height=45>
 	    	  <div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left"></div>
-			  <div class="col-lg-1 col-md-2 col-sm-2 pull-left no-padding">
+			  <div class="col-lg-1 col-md-2 col-sm-2 col-xs-5 pull-left no-padding">
 	    	  	<div class="text-left padding-left-15" id="second-name-element">
 					<span id="nameHeader">
 						<h5 class="elipsis"><?php echo @$element["name"]; ?></h5>
@@ -425,6 +430,20 @@
 									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
 								</a>
 							</li>
+
+							<li class="text-left">
+				               	<a href='javascript:;' onclick='loadMD()' >
+									<i class='fa fa-file-text-o'></i> <?php echo Yii::t("common","Markdown Version"); ?>
+								</a>
+				            </li>
+							
+							<li class="text-left">
+				               	<a href='javascript:;' onclick='loadMindMap()' >
+									<i class='fa fa-sitemap'></i> <?php echo Yii::t("common","Mindmap View"); ?>
+								</a>
+				            </li>
+
+				            
 							
 							<li class="text-left">
 				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
@@ -432,6 +451,7 @@
 								</a>
 				            </li>
 
+<<<<<<< HEAD
 				            <?php }
 
 				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {  
@@ -444,6 +464,15 @@
 									</a>
 					            </li>
 			            <?php } } ?>
+=======
+				            <?php } ?>
+			            <?php } ?>
+			            <li class="text-left">
+				               	<a href='javascript:;' onclick='co.graph()' >
+									<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
+								</a>
+				            </li>
+>>>>>>> e42f37c74278b9c9713bb910db291709792919e4
 			  		</ul>
 		  		</li>
 		  	</ul>
@@ -699,7 +728,9 @@
     if(typeof contextData.slug != "undefined")
      	navInSlug=true;
    
-	var hashUrlPage= ( (typeof contextData.slug != "undefined") ? "#"+contextData.slug : "#page.type."+contextData.type+".id."+contextData.id);
+	var hashUrlPage= ( (typeof contextData.slug != "undefined") ? 
+						"#"+contextData.slug : 
+						"#page.type."+contextData.type+".id."+contextData.id);
     
     if(location.hash.indexOf("#page")>=0){
     	strHash="";
@@ -790,6 +821,8 @@
 				rcObj.loadChat("","citoyens", true, true);
 			else if(sub=="contacts")
 				loadContacts();
+			else if(sub=="md")
+				loadMD();
 			else if(sub=="settings")
 				loadSettings();
 			else if(sub=="coop"){

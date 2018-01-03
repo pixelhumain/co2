@@ -1,60 +1,41 @@
 
 <style>
-	#resLilo, #resEcosia{
-		padding-top:20px;
+	
+	#resUrl .el-dirMin,
+	#resUrl .el-dirMin:hover{
+	    width:48%;
+	    margin-right:2%;
+	    float:left;
+	    min-height:60px;
 	}
-    #resLilo .result a,
-    #resEcosia a.result-title.js-result-title{
-        color: #4285f4;
-        font-size: 16px;
-    }
-    #resLilo .result .resulturl,
-    a.result-url.js-result-url{
-        color: #34a853;
-        font-size: 14px;
-        display: block;
-    }
 
-    #resEcosia p.result-snippet,
-    #resLilo .resultthumbnail {
-	    font-size: 13px !important;
-	    color: #606060;
+
+	#resUrl .titleDirMin{
+		display: none;
 	}
-    
-    #resLilo .result,
-    #resEcosia .result.js-result.card-mobile{
-        margin-bottom:25px;
+
+    @media (max-width: 767px) {
+    	#resUrl .el-dirMin,
+		#resUrl .el-dirMin:hover{
+	    width:100%;
+	    margin-right:0%;
     }
 
-    #resLilo .addivwhite.top,
-    #resLilo h2,
-    #resLilo .news,
-    #resLilo .searchmore,
-    #resLilo .related-searches,
-    #resLilo .images,
-    #resLilo .image,
-    #resLilo nav,
-    #resLilo .wordcorrection,
-
-    #resEcosia .card-title-result-count,
-    #resEcosia .card-query-context,
-    #resEcosia .disclaimer,
-    #resEcosia .pagination,
-    #resEcosia .card-top-ad,
-    #resEcosia .col-md-12,
-    #resEcosia .videos {
-    	display: none;
-    }
-
-    .btn-link.bg-blue-k:focus, .btn-link.bg-blue-k:hover{
-    	color:white;
-    }
 </style>
 
 <hr>
 <button class="btn btn-default menu-btn-back-category btn-second margin-bottom-5 margin-top-5" id="btn-new-search">
 	<i class="fa fa-undo"></i> Nouvelle recherche
+</button> 
+
+<?php if(sizeof($siteurls) > 0 || sizeof($elements) > 0) { ?> 
+<button class="btn btn-default margin-left-10 bold btn-show-onmap btn-second margin-bottom-5 margin-top-5 hidden-xs">
+	<i class="fa fa-map"></i> Afficher sur la carte
 </button>
+<button class="btn btn-default margin-left-10 bold btn-show-onmap btn-second margin-bottom-5 margin-top-5 visible-xs pull-right">
+	<i class="fa fa-map"></i>
+</button>
+<?php } ?>
 
 <hr>
 <?php if($category == "Météo"){ ?>
@@ -67,14 +48,16 @@
 		<hr>
 	</div>
 <?php } ?>
+
 <h3 id="titleWebSearch"  style="margin:20px 0 0 4px;">
 	<?php echo @$category ? " <small class='letter-blue'><i class='fa' id='fa-category'></i> ".$category."</small>" : ""; ?>
-	<?php echo @$search ? " <small class='letter-blue'> <i class='fa fa-search'></i> ".$search."</small><br>" : "<br>"; ?>
+	<?php echo @$search ? " <small class='letter-blue mysearch'> <i class='fa fa-search'></i> ".$search."</small><br>" : "<br>"; ?>
 </h3>	
 <h4 style="margin:0 0 20px 0;">
 	<div class="margin-top-5">
 		<i class="fa fa-angle-down"></i> 
-		<?php echo sizeof($siteurls) > 0 ? sizeof($siteurls) : "aucun"; ?> 
+		<?php echo sizeof($siteurls) > 0 ? sizeof($siteurls) : ""; ?> 
+		<?php if(sizeof($siteurls) == 0) echo sizeof($elements) > 0 ? sizeof($elements) : "aucun"; ?> 
 		résultat<?php echo sizeof($siteurls) > 1 ? "s" : ""; ?> 
 		<?php if(sizeof($siteurls) == 0){ ?> 
 			<small>sur kgougle</small>
@@ -84,35 +67,34 @@
 
 
 
-<div class="col-md-10 margin-bottom-15" style="">
+<div class="col-xs-12 margin-bottom-15" id="resUrl">
 <?php  foreach ($siteurls as $key => $siteurl) { ?>
 
-<?php 
-	//bold keywords found
-	$siteurl["urlDisplay"] = $siteurl["url"];
-	
-	if(isset($siteurl["wordsFound"]))
-	foreach ($siteurl["wordsFound"] as $key2 => $regexWF) { 
-		if($regexWF!=""){
-			$regexWFR = Search::accentToRegex($regexWF);
-			$siteurl["urlDisplay"] = 	preg_replace("/(*UTF8)".$regexWFR."/" , "<b>$0</b>", @$siteurl["urlDisplay"]);
-			$siteurl["title"] = 		preg_replace("/(*UTF8)".$regexWFR."/i", "<b>$0</b>", @$siteurl["title"]);
-			$siteurl["description"] = 	preg_replace("/(*UTF8)".$regexWFR."/i", "<b>$0</b>", @$siteurl["description"]);
+	<?php 
+		//bold keywords found
+		$siteurl["urlDisplay"] = $siteurl["url"];
+		
+		if(isset($siteurl["wordsFound"]))
+		foreach ($siteurl["wordsFound"] as $key2 => $regexWF) { 
+			if($regexWF!=""){
+				$regexWFR = Search::accentToRegex($regexWF);
+				$siteurl["urlDisplay"] = 	preg_replace("/(*UTF8)".$regexWFR."/" , "<b>$0</b>", @$siteurl["urlDisplay"]);
+				$siteurl["title"] = 		preg_replace("/(*UTF8)".$regexWFR."/i", "<b>$0</b>", @$siteurl["title"]);
+				$siteurl["description"] = 	preg_replace("/(*UTF8)".$regexWFR."/i", "<b>$0</b>", @$siteurl["description"]);
+			}
 		}
-	}
 
 
-	if(isset($arraySearch))
-	foreach ($arraySearch as $key2 => $regexWF) {  
-		if($regexWF!=""){
-			$regexWFR = Search::accentToRegex($regexWF);
-			$siteurl["urlDisplay"] = 	preg_replace("/(*UTF8)".$regexWFR."/" , "<b>$0</b>", @$siteurl["urlDisplay"]);
-			$siteurl["title"] = 		preg_replace("/(*UTF8)".$regexWFR."/i", "<b>$0</b>", @$siteurl["title"]);
-			$siteurl["description"] = 	preg_replace("/(*UTF8)".$regexWFR."/i", "<b>$0</b>", @$siteurl["description"]);
+		if(isset($arraySearch))
+		foreach ($arraySearch as $key2 => $regexWF) {  
+			if($regexWF!=""){
+				$regexWFR = Search::accentToRegex($regexWF);
+				$siteurl["urlDisplay"] = 	preg_replace("/(*UTF8)".$regexWFR."/" , "<b>$0</b>", @$siteurl["urlDisplay"]);
+				$siteurl["title"] = 		preg_replace("/(*UTF8)".$regexWFR."/i", "<b>$0</b>", @$siteurl["title"]);
+				$siteurl["description"] = 	preg_replace("/(*UTF8)".$regexWFR."/i", "<b>$0</b>", @$siteurl["description"]);
+			}
 		}
-	}
-?>
-
+	?>
 
 	<div class="col-md-12 margin-bottom-15 url-<?php echo $siteurl['_id']; ?> url-div">
 
@@ -171,7 +153,18 @@
 
 </div>
 
-<div class="col-xs-12 col-sm-12 col-md-10 moreResult">	
+
+<div class="hidden" id="directoryMin">	
+	<?php $this->renderPartial('../default/directoryMin', 
+			array("result"=>$elements, 
+				  "title"=>"Pages <span class='letter-blue'>K</span>".
+				  				 "<span class='letter-yellow'>GOU</span>".
+				  				 "<span class='letter-green'>GLE</span>",
+				  //"target"=>"blank"
+				  )); ?>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 moreResult">	
 	<hr>
 	<h6 style="margin-top: 32px; margin-bottom: 32px;">
 		<i class="fa fa-angle-down"></i> Résultats <span class="hidden-xs">complémentaires</span>
@@ -207,29 +200,6 @@
 </div>
 
 
-<?php //if(sizeof($siteurls) < 3){ 
-	$searchG = str_replace(" ", "+", $search);
-?>
-<!-- <div class="col-xs-12 margin-bottom-50 hidden" style="margin-top:0px;">
-	<hr>
-	<h5 class="text-right">
-		<a href="https://www.ecosia.org/search?q=<?php echo $searchG; ?>" target="_blank">
-			<i class="fa fa-fw fa-angle-right"></i> continuer la recherche sur <span class="visible-xs"><br></span>
-	    	<img style="margin-top:-10px;" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/ecosia_logo.png" height=60>
-    	</a>
-	</h5>
-	<hr>
-	<h5 class="text-right">
-		<a href="https://www.google.com/search?q=<?php echo $searchG; ?>" target="_blank">
-			<i class="fa fa-fw fa-angle-right"></i> continuer la recherche sur  <span class="visible-xs"><br></span>
-	    	<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/google.png" height=25>
-    	</a>
-	</h5>
-</div> -->
-<?php //} ?>
-
-
-
 <?php if(sizeof($siteurls) >= 0){ ?>
 <div class="col-xs-12 margin-bottom-50 text-right footerWebSearch" style="margin-top:30px;">
 	<hr class="margin-top-5">
@@ -248,25 +218,49 @@
 
 <?php  foreach ($siteurls as $key => $siteurl) { $siteurls[$key]["wordsFound"] = ""; } ?>
 
+
+<?php $contextMap = array_merge($siteurls, $elements) ; ?>;
+
 <script type="text/javascript" >
   
+var contextMap = <?php echo json_encode($contextMap) ; ?>;
+
 var siteurls = <?php echo json_encode($siteurls) ; ?>;
+var nbUrl = <?php echo sizeof($siteurls); ?>;
+
+var elements = <?php echo json_encode($elements) ; ?>;
+var nbElement = <?php echo sizeof($elements); ?>;
+
+console.log("elements found", elements);
 
 var search = "<?php echo $search; ?>";
-var nbUrl = <?php echo sizeof($siteurls); ?>;
 var siteEditing = false;
 
 jQuery(document).ready(function() { 
-	console.log("website on map", siteurls);
-    Sig.showMapElements(Sig.map, siteurls);
-	
-   		
-   $(".siteurl_title").click(function(){
+
+	console.log("website on map", contextMap);
+    Sig.showMapElements(Sig.map, contextMap);
+
+    $("#sub-menu-right").html("");
+	if(nbElement > 0 && nbUrl > 0){
+   		$("#sub-menu-right").html($("#directoryMin").html());
+	}
+    else if(nbElement > 0 && nbUrl == 0){
+    	$("#resUrl").html($("#directoryMin").html());
+    }
+    
+    $("#directoryMin").html("");
+
+    $(".siteurl_title").click(function(){
    		var url = $(this).attr("href");
    		incNbClick(url);
-   });
+    });
 
-   $(".btn-edit-url").click(function(){ console.log("siteurls", siteurls);
+    $(".btn-show-onmap").off().click(function(){
+		showMap(true);
+	});
+
+    $(".btn-edit-url").click(function(){ console.log("siteurls", siteurls);
    		var id = $(this).data("idurl");
    		var site = siteurls[id];
    		siteEditing = site;

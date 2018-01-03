@@ -161,6 +161,15 @@ foreach($news as $key => $media){
       initCommentsTools(news);
     <?php } ?>
     
+
+    //alert("bind me");
+    $(".live-container #news-list .btn-tag-news").off().click(function(){ console.log("yahiyaho");
+        var tag = $(this).data("filter");
+        $("#second-search-bar, #main-search-bar").val(tag);
+        startNewsSearch(true);
+        KScrollTo("#container-scope-filter");
+    });
+
     $.each(news, function(e,v){
       updateNews[e]= v;
         if(typeof v._id.$id != "undefined")
@@ -258,14 +267,15 @@ foreach($news as $key => $media){
 
 
     <?php if(sizeof($news)==0){ ?>
-        scrollEnd = true;
-      <?php } ?>
+      scrollEnd = true;
+    <?php } ?>
 
-      $(".btn-start-moderation").off().click(function(){
-        var newsid = $(this).data("newsid");
-        uiModeration.getNewsToModerate(newsid);
-      });
+    $(".btn-start-moderation").off().click(function(){
+      var newsid = $(this).data("newsid");
+      uiModeration.getNewsToModerate(newsid);
+    });
 
-      initBtnLink();
+    
+    initBtnLink();
   });
 </script>

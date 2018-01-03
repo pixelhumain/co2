@@ -31,12 +31,14 @@ dynForm = {
 	    },
 	    beforeSave : function(){
 	    	
+	    	var tagAndTypes = "";
 	    	if( $("#ajaxFormModal #section").val() )
 	    		tagAndTypes += $("#ajaxFormModal #section").val();
 	    	if( $("#ajaxFormModal #type").val() )
 	    		tagAndTypes += ","+$("#ajaxFormModal #type").val();
 	    	if( $("#ajaxFormModal #subtype").val() )
 	    		tagAndTypes += ","+$("#ajaxFormModal #subtype").val();
+
 	    	$("#ajaxFormModal #tags").val( tagAndTypes );
 
 	    	if( typeof $("#ajaxFormModal #description").code === 'function' )  

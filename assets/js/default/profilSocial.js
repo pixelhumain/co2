@@ -364,7 +364,7 @@ function bindButtonOpenForm(){
     });
 }
 
-function loadDataDirectory(dataName, dataIcon, edit){ console.log("loadDataDirectory");
+function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirectory");
 	showLoader('#central-container');
 
 	var dataIcon = $(".load-data-directory[data-type-dir="+dataName+"]").data("icon");
@@ -438,7 +438,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 			str = " n'a aucun";
 		html += elementName + " a " + countData+" <b> point de contact"+s;
 		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
-			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'contact\')">';
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'sub\')">';
 	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
 	    }
 
@@ -474,14 +474,14 @@ function loadAdminDashboard(week){
 function loadNewsStream(isLiveBool){
 
 	KScrollTo("#profil_imgPreview");
-	
-	isLive = isLiveBool==true ? "/isLive/true" : ""; 
+	//isLiveNews=isLiveBool;
+	isLiveNews = isLiveBool==true ? "/isLive/true" : ""; 
 	dateLimit = 0;
 	scrollEnd = false;
 	loadingData = true;
 	toogleNotif(true);
 
-	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLive+"/date/"+dateLimit+
+	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLiveNews+"/date/"+dateLimit+
 			  "?isFirst=1&tpl=co2&renderPartial=true";
 	
 	setTimeout(function(){ //attend que le scroll retourn en haut (kscrollto)
@@ -494,7 +494,7 @@ function loadNewsStream(isLiveBool){
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();
 				          if( $(this).scrollTop() >= heightWindow - 400){
-				            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep, isLiveBool);
+				            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
 				          }
 				    }
 				});
@@ -625,6 +625,7 @@ function loadContacts(){
 	getAjax('', baseUrl+'/'+moduleId+'/element/getcontacts/type/'+contextData.type+
 				'/id/'+contextData.id,
 				function(data){ 
+					mylog.log("loadContacts", data);
 					displayInTheContainer(data, "contacts", "envelope", "contacts");
 					$(".openFormContact").click(function(){
 			    		var idReceiver = $(this).data("id-receiver");
@@ -633,7 +634,7 @@ function loadContacts(){
 			    		
 			    		var contactMail = $(this).data("email");
 			    		var contactName = $(this).data("name");
-			    		//console.log('contactMail', contactMail);
+			    		//mylog.log('contactMail', contactMail);
 			    		$("#formContact .contact-email").html(contactMail);
 			    		$("#formContact #contact-name").html(contactName);
 
@@ -696,7 +697,7 @@ function loadGraph(){
 
 //todo add count on each tag
     function getfilterRoles(roles) { 
-    	console.log("getfilterRoles roles",roles);
+    	mylog.log("getfilterRoles roles",roles);
     	if(typeof roles == "undefined") {
     		$("#listRoles").hide();
     		return;
@@ -726,10 +727,10 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	var n=0;
 	listRoles={};
 	$.each(data, function(key, val){ 
-		//console.log("rolesShox",val);
+		mylog.log("rolesShox",key, val);
 		if(typeof key != "undefined") n++; 
 		if(typeof val.rolesLink != "undefined"){
-			console.log(val.rolesLink);
+			mylog.log(val.rolesLink);
 			$.each(val.rolesLink, function(i,v){
 				//Push new roles in rolesList
 				if(v != "" && !rolesList.includes(v))
@@ -769,7 +770,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 					"<div id='profil-content-calendar' class='col-md-12 col-sm-12 col-xs-12 margin-bottom-20'></div>";
 		mapElements = [];
 		
-		console.log("listRoles",listRoles);
+		mylog.log("listRoles",listRoles);
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
@@ -782,7 +783,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 					colName="favoris";
 				html += "<a class='btn btn-default col-xs-12 shadow2 padding-10 margin-bottom-20' onclick='$(\"."+colName+"\").toggleClass(\"hide\")' ><h2><i class='fa fa-star'></i> "+colName+" ("+Object.keys(val.list).length+")</h2></a>"+
 						"<div class='"+colName+" hide'>";
-				console.log("list", val);
+				mylog.log("list", val);
 				if(val.count==0)
 					html +="<span class='col-xs-12 text-dark margin-bottom-20'>"+trad.noelementinthiscollection+"</span>";
 				else{
@@ -855,7 +856,7 @@ var loading = "<div class='loader text-dark text-center'>"+
 			"<span class='text-dark'>"+trad.currentlyloading+" ...</span>" + 
 		"</div>";
 
-function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
+function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 	loadingData = true;
 	currentIndexMin = indexMin;
 	currentIndexMax = indexMax;
@@ -863,8 +864,8 @@ function loadStream(indexMin, indexMax, isLiveBool){ mylog.log("LOAD STREAM PROF
 
 	if(typeof dateLimit == "undefined") dateLimit = 0;
 
-	isLive = isLiveBool==true ? "/isLive/true" : "";
-	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLive+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
+	//isLive = isLiveBool==true ? "/isLive/true" : "";
+	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLiveNews+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
 	$.ajax({ 
         type: "POST",
         url: baseUrl+"/"+moduleId+'/'+url,
@@ -1009,7 +1010,6 @@ function inintDescs() {
 	if($("#descriptionMarkdown").html().length > 0){
 		descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
 	}
-	
 	$("#descriptionAbout").html(descHtml);
 	$("#descProfilsocial").html(descHtml);
 	mylog.log("descHtml", descHtml);

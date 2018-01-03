@@ -39,6 +39,7 @@ class ElementController extends CommunecterController {
           'getthumbpath'       => 'citizenToolKit.controllers.element.GetThumbPathAction',
           'getcommunexion'       => 'citizenToolKit.controllers.element.GetCommunexionAction',
           'getdatabyurl'       => 'citizenToolKit.controllers.element.GetDataByUrlAction',
+          'network'       => 'citizenToolKit.controllers.element.NetworkAction',
       );
   }
 }

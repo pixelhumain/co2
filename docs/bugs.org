@@ -1,7 +1,12 @@
 * ************************************************************    
 * Correction de bugs CO2
 * ************************************************************
-
+[ ] Particper à un événement du directory (agenda)
+  [ ] Je participe > erreur floopdrawer - undefined endDate in function isOldElement
+  [ ] Création d'un entrée undefined dans myContacts qui en continuant la navigation (exemple mon profil > mon agenda) 
+    ==> Erreur dans la fonction inMyContacts (type,id) car undefined _id
+  [ ] Si je participe à un evenement passé.. ma participation est bien prise en compte et j'ai au retour le btn de déconnexion
+    [ ] Quand je clique sur le btn de déconnexion, il me dit que je suis bien déconnecté or au refresh on voit que je suis tjrs participant et le btn de déconnexion lui n'est plus visible
 
 
 

@@ -13,7 +13,7 @@ function bindAboutPodElement() {
 		mylog.log("-----------------changeHiddenFields----------------------");
 		//
 		listFields = [	"username", "birthDate", "email", "avancement", "url", "fixe",
-						"mobile","fax", "facebook", "twitter", "gpplus", "github", "skype", "telegram","diaspora","mastodon"];
+						"mobile","fax", "facebook", "twitter", "gpplus", "github", "skype", "instagram","telegram","diaspora","mastodon"];
 		
 		$.each(listFields, function(i,value) {
 			mylog.log("listFields", value, typeof contextData[value]);
@@ -575,7 +575,19 @@ function bindAboutPodElement() {
 						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
-					    	removeFieldUpdateDynForm(contextData.type);
+					    	//removeFieldUpdateDynForm(contextData.type);
+
+					    	var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus", "instagram", "diaspora", "mastodon"];
+							$.each(SNetwork, function(key, val){ 
+								mylog.log("val", val);
+								mylog.log("val2", $("#ajaxFormModal #"+val).val(), $("#ajaxFormModal #"+val).length);
+								if(	notNull(contextData["socialNetwork"]) && 
+									notNull(contextData["socialNetwork"][val]) &&
+									( 	$("#ajaxFormModal #"+val).length &&
+										$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] ) ) {
+									$("#ajaxFormModal #"+val).remove();
+								}
+							});
 					    },
 						afterSave : function(data){
 							mylog.dir(data);
@@ -586,7 +598,10 @@ function bindAboutPodElement() {
 
 								if(typeof data.resultGoods.values.telegram != "undefined"){
 									contextData.socialNetwork.telegram = data.resultGoods.values.telegram.trim();
-									changeNetwork('#telegramAbout', contextData.socialNetwork.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.socialNetwork.telegram);
+									if(contextData.socialNetwork.telegram.length != 0 )
+										changeNetwork('#divTelegram', '#telegramAbout', 'https://web.telegram.org/#/im?p=@'+contextData.socialNetwork.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.socialNetwork.telegram);
+									else
+										changeNetwork('#divTelegram', '#telegramAbout', contextData.socialNetwork.telegram, contextData.socialNetwork.telegram);
 								}
 
 								if(typeof data.resultGoods.values.diaspora != "undefined"){
@@ -601,27 +616,32 @@ function bindAboutPodElement() {
 
 								if(typeof data.resultGoods.values.facebook != "undefined"){
 									contextData.socialNetwork.facebook = data.resultGoods.values.facebook.trim();
-									changeNetwork('#facebookAbout', contextData.socialNetwork.facebook, contextData.socialNetwork.facebook);
+									changeNetwork('#divFacebook','#facebookAbout', contextData.socialNetwork.facebook, contextData.socialNetwork.facebook);
 								}
 
 								if(typeof data.resultGoods.values.twitter != "undefined"){
 									contextData.socialNetwork.twitter = data.resultGoods.values.twitter.trim();
-									changeNetwork('#twitterAbout', contextData.socialNetwork.twitter, contextData.socialNetwork.twitter);
+									changeNetwork('#divTwitter','#twitterAbout', contextData.socialNetwork.twitter, contextData.socialNetwork.twitter);
 								}
 
 								if(typeof data.resultGoods.values.github != "undefined"){
 									contextData.socialNetwork.github = data.resultGoods.values.github.trim();
-									changeNetwork('#githubAbout', contextData.socialNetwork.github, contextData.socialNetwork.github);
+									changeNetwork('#divGithub','#githubAbout', contextData.socialNetwork.github, contextData.socialNetwork.github);
 								}
 
 								if(typeof data.resultGoods.values.skype != "undefined"){
 									contextData.socialNetwork.skype = data.resultGoods.values.skype.trim();
-									changeNetwork('#skypeAbout', contextData.socialNetwork.skype, contextData.socialNetwork.skype);
+									changeNetwork('#divSkype','#skypeAbout', contextData.socialNetwork.skype, contextData.socialNetwork.skype);
 								}
 
 								if(typeof data.resultGoods.values.gpplus != "undefined"){
 									contextData.socialNetwork.gpplus = data.resultGoods.values.gpplus.trim();
-									changeNetwork('#gpplusAbout', contextData.socialNetwork.gpplus, contextData.socialNetwork.gpplus);
+									changeNetwork('#divGpplus','#gpplusAbout', contextData.socialNetwork.gpplus, contextData.socialNetwork.gpplus);
+								}
+
+								if(typeof data.resultGoods.values.instagram != "undefined"){
+									contextData.socialNetwork.instagram = data.resultGoods.values.instagram.trim();
+									changeNetwork('#divInstagram','#instagramAbout', contextData.socialNetwork.instagram, contextData.socialNetwork.instagram);
 								}
 							}
 							dyFObj.closeForm();
@@ -635,8 +655,9 @@ function bindAboutPodElement() {
 							skype : dyFInputs.inputUrl(tradDynForm["linkSkype"]),
 							github : dyFInputs.inputUrl(tradDynForm["linkGithub"]), 
 							gpplus : dyFInputs.inputUrl(tradDynForm["linkGplus"]),
-					        twitter : dyFInputs.inputUrl(tradDynForm["linkTwitter"]),
-					        facebook :  dyFInputs.inputUrl(tradDynForm["linkFacebook"]),
+							twitter : dyFInputs.inputUrl(tradDynForm["linkTwitter"]),
+							facebook :  dyFInputs.inputUrl(tradDynForm["linkFacebook"]),
+							instagram :  dyFInputs.inputUrl(tradDynForm["linkInstagram"]),
 					        diaspora :  dyFInputs.inputUrl(tradDynForm["linkDiaspora"]),
 					        mastodon :  dyFInputs.inputUrl(tradDynForm["linkMastodon"]),
 						}
@@ -650,8 +671,8 @@ function bindAboutPodElement() {
 
 			var dataUpdate = {
 				block : "network",
-		        id : contextData.id,
-		        typeElement : contextData.type,
+				id : contextData.id,
+				typeElement : contextData.type,
 			};
 
 			if(notEmpty(contextData.socialNetwork) )
@@ -668,6 +689,8 @@ function bindAboutPodElement() {
 					dataUpdate.telegram = contextData.socialNetwork.telegram;
 				if( notEmpty(contextData.socialNetwork.facebook) )
 					dataUpdate.facebook = contextData.socialNetwork.facebook;
+				if(notEmpty(contextData.socialNetwork.instagram))
+					dataUpdate.instagram = contextData.socialNetwork.instagram;
 				if( notEmpty(contextData.socialNetwork.diaspora) )
 					dataUpdate.diaspora = contextData.socialNetwork.diaspora;
 				if( notEmpty(contextData.socialNetwork.mastodon) )
@@ -735,10 +758,18 @@ function bindAboutPodElement() {
 			};
 			dyFObj.openForm(form, "sub", dataUpdate);		
 	}
-	function changeNetwork(id, url, str){
-		mylog.log("changeNetwork", id, url, str);
-		$(id).attr('href', url);
-		$(id).html(str);
+	function changeNetwork(id, idUrl, url, str){
+		mylog.log("changeNetwork", id, idUrl, url, str, str.length);
+		//$(id).attr('href', url);
+
+		if(str.length == 0)
+			$(id).html(trad.notSpecified);
+		else
+			$(id).html('<a href="'+idUrl+'" target="_blank" id="'+id+'" class="socialIcon" >'+str+'</a>');
+
+
+
+		
 	}
 
 	function parsePhone(arrayPhones){
@@ -851,7 +882,7 @@ function bindAboutPodElement() {
 		if(telephone != "undefined")
 			dataUpdate.phone = telephone;
 		mylog.log("dataUpdate", dataUpdate);
-		dyFObj.openForm ('contactPoint','contact', dataUpdate);
+		dyFObj.openForm ('contactPoint','sub', dataUpdate);
 	}
 	function updateDocument(id, title) {
 		mylog.log("updateDocument", id, name);

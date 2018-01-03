@@ -132,10 +132,14 @@ var localActivity = <?php echo json_encode($result); ?>;
 
 jQuery(document).ready(function() {
     mylog.log("LIVENOW", localActivity);
+    mapElements = localActivity;
     $.each(localActivity, function(key, data){
         if(typeof data.geo != "undefined" && data.geo.latitude == "")
-        mylog.log("LIVENOW geo", data.geo, data);
+            mylog.log("LIVENOW geo", data.geo, data);
+        mapElements[key].id = key;
     });
+    //needed to open preview
+    
     // $(".elemt_date").each(function() {
     //     var elementTime = $(this).children(".dateTZ").attr("data-time");
     //     var elementDate = new Date(elementTime * 1000);

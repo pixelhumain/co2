@@ -1,53 +1,234 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<style>
 
-<svg width="960" height="600"></svg>
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
 
+.nodes circle {
+  stroke: black	;
+  stroke-width: 1px;
+}
+
+.graph{
+    float: right;
+}
+#graphtags{
+    padding-top: 20px;
+    background-color: #fff;
+    width:0%;
+    float: left;
+    height:600px;
+}
+#graphtags a{
+    color: #333;
+    text-decoration: none;
+}
+#sectionList a{
+    color: red;
+    text-decoration: none;
+}
+#search{
+    float:right;
+    margin-right: 100px;
+}
+#title{
+    background-color: #eee;
+    height:80px;
+    font-size: 2em;
+    padding:5px;
+}
+</style>
+<div id='title'> 
+<?php   
+$l = $title;
+if( !empty( @$link ) )
+    $l = '<a class="lbh" data-dismiss="modal" href="<?php echo $link?>">'.$title. '<i class="fa fa-link"></i></a>';
+?>
+    <div class='pull-left'><?php echo $l?></div> 
+    <input id='search' type='text' placeholder='#tag, free search, >types' onkeypress='return runScript(event)'/>
+</div>
+
+<div  id="graphtags" class="hide">
+    <div id="sectionList"></div>
+</div>
+
+<svg id="graph" width="600" height="600"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
+
+function runScript(e) {
+    if (e.keyCode == 13) {
+        s = document.getElementById("search").value;
+        if (s.indexOf("#") == 0 )
+            open("graph/search/tag/"+s.substring(1) );
+        else if (s.indexOf(">") == 0 )
+            open("graph/search/type/"+s.substring(1) ) ;
+        else
+            open("graph/search/q/"+s );
+    }
+}
+function open (url) { 
+    if(typeof $ != "undefined")
+        smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
+    else 
+        window.location.href = "/ph/co2/"+url;   
+}
+//create somewhere to put the force directed graph
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+    
+var radius = 15; 
+
 console.log(<?php echo json_encode($data); ?>);
-var baseNodes = <?php echo json_encode($data); ?>;
-var baseLinks = <?php echo json_encode($links); ?>;
+console.log(<?php echo json_encode(@$list); ?>);
+var tags = <?php echo json_encode($tags); ?>;
+var nodes_data = <?php echo json_encode($data); ?>;
+var links_data = <?php echo json_encode($links); ?>;
 
-var nodes = [...baseNodes]
-var links = [...baseLinks]
+//set up the simulation and add forces  
+var simulation = d3.forceSimulation()
+					.nodes(nodes_data);
+                              
+var link_force =  d3.forceLink(links_data)
+                        .id( function(d) { return d.id; } )
+                        .strength( function (d) { return d.strength; } );             
+         
+var charge_force = d3.forceManyBody()
+    .strength(-120); 
+    
+var center_force = d3.forceCenter(width / 2, height / 2);  
+                      
+simulation
+    .force("charge_force", charge_force)
+    .force("center_force", center_force)
+    .force("links",link_force)
+ ;
 
-function getNeighbors(node) {
-  return baseLinks.reduce(function (neighbors, link) {
-      if (link.target.id === node.id) {
-        neighbors.push(link.source.id)
-      } else if (link.source.id === node.id) {
-        neighbors.push(link.target.id)
-      }
-      return neighbors
-    },
-    [node.id]
-  )
+//add tick instructions: 
+simulation.on("tick", tickActions );
+
+//add encompassing group for the zoom 
+var g = svg.append("g")
+    .attr("class", "everything");
+
+//draw lines for the links 
+var link = g.append("g")
+      .attr("class", "links")
+    .selectAll("line")
+    .data(links_data)
+    .enter().append("line")
+      .attr("stroke-width", 1)
+      .style("stroke", linkColour);        
+
+//draw circles for the nodes 
+var node = g.append("g")
+        .attr("class", "nodes") 
+        .selectAll("circle")
+        .data(nodes_data)
+        .enter()
+        
+        .append("circle")
+        .attr("r", circleSize)
+        //.attr("fill", "url(#img)")
+        .attr("fill", circleColour )
+        .on('click', selectNode);
+/*
+https://bl.ocks.org/mbostock/950642
+
+var defs = g.append("g:defs");
+
+defs.append("g:pattern")
+.attr("id", "img")
+.attr("patternUnits", "userSpaceOnUse")
+.attr("width", "50")
+.attr("height", "50")
+.append("g:image")
+.attr("xlink:href", "https://github.com/favicon.ico")
+.attr("x", 0)
+.attr("y", 0)
+.attr("width", 50)
+.attr("height", 50);
+*/
+
+
+var text = g.append("g")
+        .attr("class", "texts")
+        .selectAll("text")
+        .data(nodes_data)
+        .enter()
+        .append('text')
+        .text(function (node) { return node.label })
+        .attr('font-size', 25)
+        .attr('dx', 15)
+        .attr('dy', 4)
+
+
+//add drag capabilities  
+var drag_handler = d3.drag()
+	.on("start", drag_start)
+	.on("drag", drag_drag)
+	.on("end", drag_end);	
+	
+drag_handler(node);
+
+
+//add zoom capabilities 
+var zoom_handler = d3.zoom()
+    .on("zoom", zoom_actions);
+
+zoom_handler(svg);     
+
+/** Functions **/
+
+//Function to choose what color circle we have
+//Let's return blue for males and red for females
+function circleColour(d){
+	
+    if(d.type == "tag")
+        return "steelblue";
+    else if(d.type == "event" || d.type == "event")
+        return "#FFA200";
+    else if(d.type == "project" || d.type == "projects")
+        return "purple";
+    else if( d.type == "organization" || d.type == "organizations" )
+        return "#93C020";
+    else if(d.type == "citoyens" || d.type == "citoyen" )
+        return "#FFC600";
+    
+    if(d.level ==0){
+        return "black";
+    }else if(d.level ==1){
+		return "#c62f80";
+	} else {
+		return "#cccccc";
+	}
 }
 
-function isNeighborLink(node, link) {
-  return link.target.id === node.id || link.source.id === node.id
+function circleSize(d){
+    r = 10; 
+    if(d.level ==1 || d.level == 0)
+        return 20;
+    if(d.linkSize > 0)
+        r += d.linkSize;
+    if(r>30)
+        r = 30;
+    //console.log("radius", r, d.linkSize);
+    return r;
 }
 
-
-function getNodeColor(node, neighbors) {
-  if(node.level === 0) return "purple";
-
-  if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
-    return node.level === 1 ? 'blue' : 'green'
-  }
-
-
-  return node.level === 1 ? 'red' : 'gray'
-}
-
-
-function getLinkColor(node, link) {
-  return isNeighborLink(node, link) ? 'green' : '#E5E5E5'
-}
-
-function getTextColor(node, neighbors) {
-  return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
+//Function to choose the line colour and thickness 
+//If the link type is "A" return green 
+//If the link type is "E" return red 
+function linkColour(d){
+	if(d.type == "A"){
+		return "green";
+	} else {
+		return "#333333";
+	}
 }
 
 //Drag functions 
@@ -57,6 +238,7 @@ function drag_start(d) {
     d.fx = d.x;
     d.fy = d.y;
 }
+
 //make sure you can't drag the circle outside the box
 function drag_drag(d) {
   d.fx = d3.event.x;
@@ -72,206 +254,63 @@ function drag_end(d) {
 //Zoom functions 
 function zoom_actions(){
     g.attr("transform", d3.event.transform)
-}   
-
-var width = window.innerWidth
-var height = window.innerHeight
-
-var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height");
-
-//add drag capabilities  
-var drag_handler = d3.drag()
-  .on("start", drag_start)
-  .on("drag", drag_drag)
-  .on("end", drag_end); 
-  
-//drag_handler(nodeElements);
-
-
-//add zoom capabilities 
-var zoom_handler = d3.zoom()
-    .on("zoom", zoom_actions);
-
-zoom_handler(svg);  
-
-
-
-var linkElements,
-  nodeElements,
-  textElements
-
-// we use svg groups to logically group the elements together
-var linkGroup = svg.append('g').attr('class', 'links')
-var nodeGroup = svg.append('g').attr('class', 'nodes')
-var textGroup = svg.append('g').attr('class', 'texts')
-
-// we use this reference to select/deselect
-// after clicking the same element twice
-var selectedId
-
-// simulation setup with all forces
-var linkForce = d3
-  .forceLink()
-  .id(function (link) { return link.id })
-  .strength(function (link) { return link.strength })
-
-var simulation = d3
-  .forceSimulation()
-  .force('link', linkForce)
-  .force('charge', d3.forceManyBody().strength(-120))
-  .force('center', d3.forceCenter(width / 2, height / 2))
-
-var dragDrop = d3.drag().on('start', function (node) {
-  node.fx = node.x
-  node.fy = node.y
-}).on('drag', function (node) {
-  simulation.alphaTarget(0.7).restart()
-  node.fx = d3.event.x
-  node.fy = d3.event.y
-}).on('end', function (node) {
-  if (!d3.event.active) {
-    simulation.alphaTarget(0)
-  }
-  node.fx = null
-  node.fy = null
-})
-
-// select node is called on every click
-// we either update the data according to the selection
-// or reset the data if the same node is clicked twice
-function selectNode(selectedNode) {
-  console.log(selectedNode);
-  types = ["citoyen", "organization", "project", "event"];
-  window.location.href = "/ph/co2/graph/d3/id/"+selectedNode.id+"/type/"+types[selectedNode.group-1];
-  /*if (selectedId === selectedNode.id) {
-    selectedId = undefined
-    resetData()
-    updateSimulation()
-  } else {
-    selectedId = selectedNode.id
-    updateData(selectedNode)
-    updateSimulation()
-  }
-
-  var neighbors = getNeighbors(selectedNode)
-
-  // we modify the styles to highlight selected nodes
-  nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-  textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
-  linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
-  */
 }
 
-// this helper simple adds all nodes and links
-// that are missing, to recreate the initial state
-function resetData() {
-  var nodeIds = nodes.map(function (node) { return node.id })
+function tickActions() {
+    //update circle positions each tick of the simulation 
+       node
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+        text
+      .attr('x', function (d) { return d.x })
+      .attr('y', function (d) { return d.y })
+    //update link positions 
+    link
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+} 
 
-  baseNodes.forEach(function (node) {
-    if (nodeIds.indexOf(node.id) === -1) {
-      nodes.push(node)
+function selectNode(selectedNode) {
+    console.log(selectedNode);
+    types = ["citoyen", "organization", "project", "event"];
+    if(selectedNode.level == 0)
+        return;
+    else if(selectedNode.id == "tags" ){
+        $("#graphtags").css("width","20%");
+        $("#graph").css("width","80%");
+        $("#graphtags").toggleClass("hide");
+    } else if(selectedNode.level == 1  ){
+        $("#graphtags").css("width","20%");
+        $("#graph").css("width","80%");
+        $("#graphtags").toggleClass("hide");
+        document.getElementById("sectionList").innerHTML = "<b>"+selectedNode.label+"</b><br/>";
+
+        links_data.forEach(function (t) {
+        if (t.source.id == selectedNode.id) 
+            document.getElementById("sectionList").innerHTML += "<a href='/ph/co2/graph/d3/id/"+t.target.id+"/type/"+t.target.type+"'> "+t.target.label+"</a><br/>";
+        })
+        document.getElementById("sectionList").innerHTML += "<br/><br/>"
+    }
+    else if(selectedNode.id.length > 20 )
+        open( "graph/d3/id/"+selectedNode.id+"/type/"+types[selectedNode.group-1] );
+    else if (selectedNode.type == "tag")
+        open( "graph/search/tag/"+selectedNode.label );
+}
+
+if(typeof $ != "undefined")
+    $("#graph").css("width","100%")
+else 
+    document.getElementById("graph").style.width = "100%";
+
+tags.forEach(function (t) {
+    if (t != "") {
+            document.getElementById("graphtags").innerHTML = document.getElementById("graphtags").innerHTML+ "<a href=\"javascript:open('graph/search/tag/"+t+"')\">#"+t+"</a><br/>";
     }
   })
 
-  links = baseLinks
-}
-
-// diffing and mutating the data
-function updateData(selectedNode) {
-  var neighbors = getNeighbors(selectedNode)
-  var newNodes = baseNodes.filter(function (node) {
-    return neighbors.indexOf(node.id) > -1 || node.level === 1
-  })
-
-  var diff = {
-    removed: nodes.filter(function (node) { return newNodes.indexOf(node) === -1 }),
-    added: newNodes.filter(function (node) { return nodes.indexOf(node) === -1 })
-  }
-
-  diff.removed.forEach(function (node) { nodes.splice(nodes.indexOf(node), 1) })
-  diff.added.forEach(function (node) { nodes.push(node) })
-
-  links = baseLinks.filter(function (link) {
-    return link.target.id === selectedNode.id || link.source.id === selectedNode.id
-  })
-}
-
-function updateGraph() {
-  // links
-  linkElements = linkGroup.selectAll('line')
-    .data(links, function (link) {
-      return link.target.id + link.source.id
-    })
-
-  linkElements.exit().remove()
-
-  var linkEnter = linkElements
-    .enter().append('line')
-    .attr('stroke-width', 1)
-    .attr('stroke', 'rgba(50, 50, 50, 0.2)')
-
-  linkElements = linkEnter.merge(linkElements)
-
-  // nodes
-  nodeElements = nodeGroup.selectAll('circle')
-    .data(nodes, function (node) { return node.id })
-
-  nodeElements.exit().remove()
-
-  var nodeEnter = nodeElements
-    .enter()
-    .append('circle')
-    .attr('r', 15)
-    .attr('fill', function (node) { return getNodeColor(node) })
-    .call(dragDrop)
-    // we link the selectNode method here
-    // to update the graph on every click
-    .on('click', selectNode)
-
-  nodeElements = nodeEnter.merge(nodeElements)
-
-  // texts
-  textElements = textGroup.selectAll('text')
-    .data(nodes, function (node) { return node.id })
-
-  textElements.exit().remove()
-
-  var textEnter = textElements
-    .enter()
-    .append('text')
-    .text(function (node) { return node.label })
-    .attr('font-size', 25)
-    .attr('dx', 15)
-    .attr('dy', 4)
-
-  textElements = textEnter.merge(textElements)
-}
-
-function updateSimulation() {
-  updateGraph()
-
-  simulation.nodes(nodes).on('tick', () => {
-    nodeElements
-      .attr('cx', function (node) { return node.x })
-      .attr('cy', function (node) { return node.y })
-    textElements
-      .attr('x', function (node) { return node.x })
-      .attr('y', function (node) { return node.y })
-    linkElements
-      .attr('x1', function (link) { return link.source.x })
-      .attr('y1', function (link) { return link.source.y })
-      .attr('x2', function (link) { return link.target.x })
-      .attr('y2', function (link) { return link.target.y })
-  })
-
-  simulation.force('link').links(links)
-  simulation.alphaTarget(0.7).restart()
-}
-
-// last but not least, we call updateSimulation
-// to trigger the initial render
-updateSimulation()
+if(typeof $ != "undefined")
+    bindLBHLinks();
 
 </script>

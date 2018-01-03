@@ -450,8 +450,6 @@
 									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 								</a>
 				            </li>
-
-<<<<<<< HEAD
 				            <?php }
 
 				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {  
@@ -464,15 +462,11 @@
 									</a>
 					            </li>
 			            <?php } } ?>
-=======
-				            <?php } ?>
-			            <?php } ?>
 			            <li class="text-left">
 				               	<a href='javascript:;' onclick='co.graph()' >
 									<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
 								</a>
 				            </li>
->>>>>>> e42f37c74278b9c9713bb910db291709792919e4
 			  		</ul>
 		  		</li>
 		  	</ul>

@@ -661,6 +661,7 @@ function loadMD(){
 				function(data){ 
 					descHtml = dataHelper.markdownToHtml(data) ; 
 					$('#central-container').html(descHtml);
+					bindLBHLinks();
 				}
 	,"html");
 }

@@ -518,6 +518,8 @@ var tradDynForm = {
 	"linkGplus":"<?php echo Yii::t("form","Link to Google Plus") ?>",
 	"linkFacebook":"<?php echo Yii::t("form","Link to Facebook") ?>",
 	"linkTwitter":"<?php echo Yii::t("form","Link to Twitter") ?>",
+	"linkDiaspora":"<?php echo Yii::t("form","Link to Diaspora") ?>",
+	"linkMastodon":"<?php echo Yii::t("form","Link to Mastodon") ?>",
 	"mobile":"<?php echo Yii::t("form","Mobile") ?>",
 	"fax":"<?php echo Yii::t("form","Fax") ?>",
 	"fix":"<?php echo Yii::t("form","Fix") ?>",
@@ -591,6 +593,7 @@ var tradDynForm = {
 	"invalidextension": "<?php echo Yii::t("form", "invalid format") ?>",
 	"extensionacceptable": "<?php echo Yii::t("form", "Available extension(s)") ?>",
 	"collectionname": "<?php echo Yii::t("form", "Name of the collection") ?>",
+	"isPublic": "<?php echo Yii::t("form", "is Public and will show Every where") ?>",
 };
 
 var tradCategory = {

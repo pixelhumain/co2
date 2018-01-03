@@ -3475,7 +3475,32 @@ var co = {
 			if(userId)
 				urlCtrl.loadByHash(url);
 			else co.nect();
-		}
+		},
+		open : function (url,type) { 
+			title = null;
+			callback = null;
+
+			if(type == "md"){
+				title = "Markdown";
+				callback = function() {
+					getAjax('', url, function(data){ 
+							descHtml = dataHelper.markdownToHtml(data) ; 
+							$("#openModal div.modal-content div.container").html(descHtml);
+						}
+					,"html");
+				}
+			} 
+			
+			else if(type == "youtube") {
+				title = "Youtube";
+				callback = function() { $("#openModal div.modal-content div.container").html('<iframe width="560" height="315" src="'+url+'" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>');}
+			}
+
+			if(title){
+				smallMenu.open(title,null,null,callback);
+			} else
+				toastr.error("Type not found!!");
+		},
 	},
 	help : function () { 
 		url = urlCtrl.convertToPath("#default.view.page.links");
@@ -3533,32 +3558,9 @@ var co = {
 	},
 	md : function (str) { 
 		if( contextData && contextData.type == "citoyens")
-			co.open(baseUrl+'/api/person/get/id/'+contextData.id+"/format/md","md");
+			co.ctrl.open(baseUrl+'/api/person/get/id/'+contextData.id+"/format/md","md");
 		else 
 			toastr.error("No context to build a markdown!!");
-	},
-	open : function (url,type) { 
-		title = null;
-		callback = null;
-		if(type == "md"){
-			title = "Markdown";
-			callback = function() {
-				getAjax('', url, function(data){ 
-						descHtml = dataHelper.markdownToHtml(data) ; 
-						$("#openModal div.modal-content div.container").html(descHtml);
-					}
-				,"html");
-			}
-		} 
-		else if(type == "youtube") {
-			title = "Youtube";
-			callback = function() { $("#openModal div.modal-content div.container").html('<iframe width="560" height="315" src="'+url+'" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>');}
-		}
-
-		if(title){
-			smallMenu.open(title,null,null,callback);
-		} else
-			toastr.error("Type not found!!");
 	},
 	agenda : function () { urlCtrl.loadByHash("#agenda");},
 	search : function () { urlCtrl.loadByHash("#search");},

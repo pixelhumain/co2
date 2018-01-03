@@ -463,6 +463,8 @@
 	if($type!=Poi::COLLECTION){ 
 		$skype = (!empty($element["socialNetwork"]["skype"])? $element["socialNetwork"]["skype"]:"javascript:;") ;
 		$telegram =  (!empty($element["socialNetwork"]["telegram"])? "https://web.telegram.org/#/im?p=@".$element["socialNetwork"]["telegram"]:"javascript:;") ;
+		$diaspora =  (!empty($element["socialNetwork"]["diaspora"])? $element["socialNetwork"]["diaspora"]:"javascript:;") ;
+		$mastodon =  (!empty($element["socialNetwork"]["mastodon"])? $element["socialNetwork"]["mastodon"]:"javascript:;") ;
 		$facebook = (!empty($element["socialNetwork"]["facebook"])? $element["socialNetwork"]["facebook"]:"javascript:;") ;
 		$twitter =  (!empty($element["socialNetwork"]["twitter"])? $element["socialNetwork"]["twitter"]:"javascript:;") ;
 		$googleplus =  (!empty($element["socialNetwork"]["googleplus"])? $element["socialNetwork"]["googleplus"]:"javascript:;") ;
@@ -482,6 +484,25 @@
 			<?php } ?>
 		</div>
 		<div class="panel-body no-padding">
+			
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Diaspora">
+				<span><i class="fa fa-diaspora"></i></span> 
+				<?php if ($diaspora != "javascript:;"){ ?>
+					<a href="<?php echo $diaspora ; ?>" target="_blank" id="diasporaAbout" class="socialIcon "><?php echo  $diaspora ; ?></a>
+				<?php } else { 
+					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+				} ?>
+			</div>
+
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Mastodon">
+				<span><i class="fa fa-mastodon"></i></span> 
+				<?php if ($mastodon != "javascript:;"){ ?>
+					<a href="<?php echo $mastodon ; ?>" target="_blank" id="mastodonAbout" class="socialIcon "><?php echo  $mastodon ; ?></a>
+				<?php } else { 
+					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
+				} ?>
+			</div>
+
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Facebook">
 				<span><i class="fa fa-facebook"></i></span> 
 				<?php if ($facebook != "javascript:;"){ ?>
@@ -490,6 +511,7 @@
 					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
 				} ?>
 			</div>
+
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Twitter">
 				<span><i class="fa fa-twitter"></i></span> 
 				<?php if ($twitter != "javascript:;"){ ?>
@@ -498,6 +520,7 @@
 					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
 				} ?>
 			</div>
+
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Instagram">
 				<span><i class="fa fa-instagram"></i></span> 
 				<?php if ($instagram != "javascript:;"){ ?>
@@ -506,6 +529,7 @@
 					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
 				} ?>
 			</div>
+
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Skype" >
 				<span><i class="fa fa-skype"></i></span> 
 				<?php if ($skype != "javascript:;"){ ?>
@@ -514,6 +538,7 @@
 					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
 				} ?>
 			</div>
+
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Google Plus">
 				<span><i class="fa fa-google-plus"></i></span> 
 				<?php if ($googleplus != "javascript:;"){ ?>
@@ -522,6 +547,7 @@
 					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
 				} ?>
 			</div>
+
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="GitHub">
 				<span><i class="fa fa-github"></i></span> 
 				<?php if ($github != "javascript:;"){ ?>
@@ -530,6 +556,7 @@
 					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
 				} ?>
 			</div>
+
 			<?php if($type==Person::COLLECTION){ ?> 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Telegram">
 				<span><i class="fa fa-telegram"></i></span> 

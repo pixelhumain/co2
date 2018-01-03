@@ -538,7 +538,7 @@
 					?>
 					<div class="text-right padding-10">
 						<?php if(@$edit==true) { ?>
-						<button onclick="elementLib.openForm ( 'contactPoint','contact')" 
+						<button onclick="elementLib.openForm ( 'contactPoint','sub')" 
 								class="btn btn-default letter-blue margin-top-5">
 					    	<b><i class="fa fa-plus"></i> Ajouter un contact </b>
 						</button>

@@ -242,21 +242,17 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   }else{
                         var citykey = o.country + "_" + o.insee + "-" + o.cp;
                         str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding searchEntity start-new-communexion' ";
-                        str +=    "data-scope-value='" + citykey + "' " + 
-                                  "data-scope-name='" + o.name + "' " + 
-                                  "data-scope-type='city' " + 
-                                  "data-insee-communexion='" + o.insee + "' "+ 
-                                  "data-name-communexion='" + o.name + "' "+ 
-                                  "data-cp-communexion='" + o.cp + "' "+ 
-                                  "data-region-communexion='" + o.regionName + "' "+ 
-                                  "data-dep-communexion='" + o.depName + "' "+ 
-                                  "data-country-communexion='" + o.country + "' ";
-                        str += ">";
+                        str +=  "data-scope-value='" + o.id  + "' " + 
+                                "data-scope-name='" + o.name + "' " +
+                                "data-scope-level='city' " +
+                                "data-scope-type='city' " +
+                                "data-scope-values='"+JSON.stringify(o)+"' " +
+                                "data-scope-search='"+false+"' " +
+                                ">";
                         str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
                         str +=   htmlIco;
                         str += "</div>";
                         str += "<div class='col-md-10 col-sm-10 col-xs-10 entityRight'>";
-
                         str += "<div class='entityName text-dark'>" + name + "</div>";
                           
                           str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
@@ -291,10 +287,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
             
               $(".start-new-communexion").click(function(){
                   $("#main-search-bar, #second-search-bar, #input-search-map").val("");
-                  setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
-                                   $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                                    $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
-                  
+                  // setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
+                  //                  $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
+                  //                   $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
+                  itenGlobalScopeChecker($(this));
                   urlCtrl.loadByHash("#search")
               });
 

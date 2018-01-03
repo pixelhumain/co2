@@ -18,7 +18,7 @@
     "description" : "STRING",
     "shortDescription" : "STRING",
     "url" : "STRING",
-    "image" : "STRING",
+    "urlImg" : "STRING",
     "urlFacebook" : "STRING",
     "urlTwitter" : "STRING",
     "source" : {

@@ -578,6 +578,8 @@ function stepTwo(){
 		path : $("#pathElement").val()
 	};
 
+	mylog.log("params", params);
+
 	if(typeFile == "json" || typeFile == "js" || typeFile == "geojson")
 		params["file"] = file ;
 	else

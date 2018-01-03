@@ -289,8 +289,7 @@ function getLocalityForSearch(noScope){
 															name : communexion.currentName,
 															cp : communexion.values.cp,
 															active : true };
-		}
-		else{
+		} else {
 			searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
 															name : communexion.currentName,
 															active : true };
@@ -424,14 +423,10 @@ function openDropdownMultiscope(){
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 }
 
-function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo){  
-
-	mylog.log("setGlobalScope !", scopeValue, scopeName, scopeType, scopeLevel, notSearch);
-	mylog.log("notSearch", notSearch, notNull(notSearch))
+function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, search, testCo){
+	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, values, search, testCo);
 
 	if(scopeValue == "") return;
-	
-	mylog.log("myMultiScopes", myMultiScopes, indexStepInit);
 	$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 
 	communexion.currentLevel = scopeLevel;
@@ -439,10 +434,13 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 	communexion.currentValue = scopeValue;
 	communexion.communexionType = scopeType;
 
-	if(values){
+	if( notNull(values)) {
 		if(typeof values == "string")
 			values = jQuery.parseJSON(values);
 		communexion.values = values;
+
+		if( notNull(values.cities) )
+			communexion.cities = values.cities;
 	}
 	mylog.log("communexion before save", communexion);
 
@@ -472,9 +470,11 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 		} , "html" );
 	}
 
-
-	if(!notNull(notSearch) || notSearch == true)
+	if(notNull(search) && search == true)
  		activateGlobalCommunexion(true);
+
+	// if(!notNull(notSearch) || notSearch == true)
+ // 		activateGlobalCommunexion(true);
 
 	//rebuildSearchScopeInput();
 	

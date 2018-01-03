@@ -487,20 +487,24 @@
 			
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Diaspora">
 				<span><i class="fa fa-diaspora"></i></span> 
+				<span id="divDiaspora">
 				<?php if ($diaspora != "javascript:;"){ ?>
 					<a href="<?php echo $diaspora ; ?>" target="_blank" id="diasporaAbout" class="socialIcon "><?php echo  $diaspora ; ?></a>
 				<?php } else { 
 					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
 				} ?>
+				</span>
 			</div>
 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Mastodon">
 				<span><i class="fa fa-mastodon"></i></span> 
+				<span id="divMastodon">
 				<?php if ($mastodon != "javascript:;"){ ?>
 					<a href="<?php echo $mastodon ; ?>" target="_blank" id="mastodonAbout" class="socialIcon "><?php echo  $mastodon ; ?></a>
 				<?php } else { 
 					echo '<i>'.Yii::t("common","Not specified").'</i>' ; 
 				} ?>
+				</span>
 			</div>
 
 			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation social padding-10 tooltips" data-toggle="tooltip" data-placement="left" title="Facebook">

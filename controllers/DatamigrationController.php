@@ -3518,5 +3518,33 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}else 
 			echo "Pas d'envoie pour toi ma cocote !! Tu vas aller au four plutot";
 	}
+
+
+	public function actionRegionList(){
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbelement = 0 ;
+			$erreur = array();
+			$region = array();
+			$aggregate = array(
+			    array(
+			        '$group' => array(
+			            "_id" => array(	"level3Name" => '$level3Name',
+			        					"country" => '$country'),
+			        ),
+			    ),
+			);
+
+			$cities = PHDB::aggregate( City::COLLECTION, $aggregate);
+			
+			//var_dump($cities);
+			if(!empty($cities["result"])){
+				foreach (@$cities["result"] as $keyElt => $city) {
+					if(!empty($city["_id"]["level3Name"]) && (!empty($city["_id"]["country"]) && $city["_id"]["country"] == "FR") )		
+						echo '"'.$city["_id"]["level3Name"].'"<br/>';
+				}
+			}
+		//}
+	}
 }
 

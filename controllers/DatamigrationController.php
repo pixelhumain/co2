@@ -2485,21 +2485,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
-	public function actionBatchInterRemoveGeoShapeZone() {
-		ini_set('memory_limit', '-1');
-		$zones = PHDB::find(Zone::COLLECTION, array("geoShape" => array('$exists' => 1) ));
-		$nbelement = 0 ;
-		foreach ($zones as $key => $zone) {
-			$res = PHDB::update( Zone::COLLECTION, 
-								  	array("_id"=>new MongoId($key)),
-									array('$unset' => array("geoShape" =>  ""))
-					);
-			$nbelement++;
-						
-		}
-		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
-	}
-
 	public function actionBatchInterCountry() {
 		ini_set('memory_limit', '-1');
 		$where = array(	"level" => "1");
@@ -2519,8 +2504,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo  "NB Element mis à jours: " .$nbelement."<br>" ;
 	}
 
-<<<<<<< HEAD
-=======
 	public function actionBatchOwnToHas() {
 		ini_set('memory_limit', '-1');
 		$where = array(	"ownACity" => true);
@@ -2542,7 +2525,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	}
 
 
->>>>>>> master
 	public function actionBatchZoneUnsetKey(){
 		ini_set('memory_limit', '-1');
 		$nbelement = 0 ;
@@ -3535,6 +3517,59 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			echo $v." utilisateur non inscrit (validé) qui ont un mail de marde<br>";
 		}else 
 			echo "Pas d'envoie pour toi ma cocote !! Tu vas aller au four plutot";
+	}
+
+
+	public function actionRegionList(){
+		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbelement = 0 ;
+			$erreur = array();
+			$region = array();
+			$aggregate = array(
+			    array(
+			        '$group' => array(
+			            "_id" => array(	"level3Name" => '$level3Name',
+			        					"country" => '$country'),
+			        ),
+			    ),
+			);
+
+			$cities = PHDB::aggregate( City::COLLECTION, $aggregate);
+			
+			//var_dump($cities);
+			if(!empty($cities["result"])){
+				foreach (@$cities["result"] as $keyElt => $city) {
+					if(!empty($city["_id"]["level3Name"]) && (!empty($city["_id"]["country"]) && $city["_id"]["country"] == "FR") )		
+						echo '"'.$city["_id"]["level3Name"].'"<br/>';
+				}
+			}
+		//}
+	}
+
+
+
+	public function actionPublicEvent(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$where = array("public" => array('$exists' => 0));
+		$fields = array("name");
+
+		$events = PHDB::find( Event::COLLECTION, $where, $fields);
+		
+		foreach ($events as $key => $value) {
+			// if(!empty($value["name"]))
+			// 	echo $key." : ".$value["name"]."<br/>";
+
+			$res = PHDB::update(Event::COLLECTION, 
+			  	array("_id"=>new MongoId($key)),
+                array('$set' => array("public" => true ))
+            );
+            $nbelement++;
+		}	
+
+		echo $nbelement." elements mis a jours";
+		
 	}
 }
 

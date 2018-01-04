@@ -108,7 +108,10 @@ function addTooltips(){
 
 function bindNetwork(){
 	mylog.log("bindNetwork");
-	$('#btn-toogle-map').click(function(e){ showMapNetwork(); });
+	$('#btn-toogle-map').click(function(e){ 
+		showMapNetwork(); 
+		updateMap(); 
+	});
 	
 	$('.reset').on('click', function() {
 		mylog.log(".reset");
@@ -209,6 +212,8 @@ function showMapNetwork(show){
 		$(".btn-menu5, .btn-menu-add").hide();
 		$("#btn-toogle-map").css("display","inline !important");
 		$("#btn-toogle-map").show();
+		$(".btn-group-map").removeClass("hidden");
+		
 		$(".my-main-container").animate({
 			top: -1000,
 			opacity:0,
@@ -390,7 +395,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	//$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	if(isMapEnd){
 		$.blockUI({
-			message : "<div class='col-xs-12 text-center'><div class='col-md-offset-2 col-md-8 bg-white'><h1 class='homestead text-red'><span class='text-dark'>Welcome on</span><br/><span>"+networkJson.skin.title+"</span><br/></h1><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> Initialization of map</span></div></div>",
+			message : "<div class='col-xs-12 text-center'><div class='col-md-offset-2 col-md-8 bg-white'><h1 class='homestead text-red'><span class='text-dark'>"+trad.welcomeon+"</span><br/><span>"+networkJson.skin.title+"</span><br/></h1><i class='fa fa-spin fa-circle-o-notch'></i><span class='text-dark'> "+trad.initofmap+" </span></div></div>",
 		});
 	}
 
@@ -837,7 +842,7 @@ function reverseToRepertory(){
 		showMapNetwork();
 	updateMap();
 	$("#ficheInfoDetail").hide( 700 );
-	$(".main-col-search").removeClass("col-md-12 col-sm-12").addClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3");
+	$("#dropdown_search").show();;
 	//$("#dropdown_search").show();
 	$("#repertory").show();
 	$(".main-menu-left").show( 700 );
@@ -982,7 +987,7 @@ function andAndOr(allFiltres){
 function updateMap(){
 	mylog.log("updateMap", tagsActived, disableActived);
 	$(".searchEntityContainer").hide();
-	var params = ((typeof networkJson.filter == "undefined" && typeof networkJson.filter.paramsFiltre == "undefined") ? null :  networkJson.filter.paramsFiltre);
+	var params = ((typeof networkJson.filter == "undefined" || typeof networkJson.filter.paramsFiltre == "undefined") ? null :  networkJson.filter.paramsFiltre);
 	var test = [];
 	var verb = "and";
 	var elementNetwork = [];

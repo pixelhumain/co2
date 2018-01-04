@@ -998,6 +998,7 @@ also switches the global Title and Icon
 **************/
 
 function  processingBlockUi() { 
+	mylog.log("processingBlockUi");
 	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
 			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
 		  '</h4>';
@@ -1299,7 +1300,7 @@ var smallMenu = {
 		   	//else collection.buildCollectionList( "linkList" ,"#listCollections",function(){ $("#listCollections").html("<h4 class=''>Collections</h4>"); });
 
 		   	if (typeof callback == "function") 
-				callback();
+				callback(data);
 	    } );
 	},
 	build : function  (params,build_func,callback) { 
@@ -1396,7 +1397,7 @@ var smallMenu = {
 	//content Loader can go into a block
 	//smallMenu.open("Recherche","blockUI")
 	//smallMenu.open("Recherche","bootbox")
-	open : function (content,type,color) { 
+	open : function (content,type,color,callback) { 
 		//alert("small menu open");
 		//add somewhere in page
 		if(!smallMenu.inBlockUI){
@@ -1446,6 +1447,8 @@ var smallMenu = {
 					$(smallMenu.destination).css("cssText", "width: 83.5% !important;left: 16.5% !important;");
 			}
 			bindLBHLinks();
+			if (typeof callback == "function") 
+				callback();
 		}
 	}
 }
@@ -1541,6 +1544,7 @@ function  bindExplainLinks() {
 function  bindLBHLinks() { 
 	$(".lbh").off().on("click",function(e) {  		
 		e.preventDefault();
+		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks",$(this).attr("href"));
 		mylog.warn("***************************************");
@@ -1550,6 +1554,7 @@ function  bindLBHLinks() {
 	//open any url in a modal window
 	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();
+		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
 		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
@@ -2692,1703 +2697,6 @@ var mentionsInit = {
 		$(domElement).mentionsInput('reset');
 	}
 }
-var uploadObj = {
-	type : null,
-	id : null,
-	gotoUrl : null,
-	isSub : false,
-	update  : false,
-	folder : "communecter", //on force pour pas casser toutes les vielles images
-	contentKey : "profil",
-	path : null,
-	extra : null,
-	set : function(type,id, file){
-		if(notNull(file) && file){
-			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
-			uploadObj.type = type;
-			uploadObj.id = id;
-			uploadObj.path = baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+type+"/ownerId/"+id+"/input/qqfile/docType/file";
-		}
-		else if(typeof type != "undefined"){
-			mylog.log("set uploadObj", id,type,uploadObj.folder,uploadObj.contentKey);
-			uploadObj.type = type;
-			uploadObj.id = id;
-			uploadObj.path = baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+type+"/ownerId/"+id+"/input/qqfile/contentKey/"+uploadObj.contentKey;
-		} else {
-			uploadObj.type = null;
-			uploadObj.id = null;
-			uploadObj.path = null;
-		}
-	}
-};
-
-var dyFObj = {
-	elementObj : null,
-	elementData : null,
-	subElementObj : null,
-	subElementData : null,
-	activeElem : null,
-	activeModal : null,
-	//rules to show hide submit btn, used anwhere on blur and can be 
-	//completed by specific rules on dynForm Obj
-	//ex : dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf
-	canSubmitIf : function () { 
-    	var valid = true;
-    	//on peut ajouter des regles dans la map definition 
-    	if(	jsonHelper.notNull("dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf", "function") )
-    		valid = dyFObj.elementObj.dynForm.jsonSchema.canSubmitIf();
-    	if( $('#ajaxFormModal #name').length == 0 || $('#ajaxFormModal #name').val() != "" && valid )
-    		$('#btn-submit-form').show();
-    	else 
-    		$('#btn-submit-form').hide();
-		//tmp
-		$('#btn-submit-form').show();
-    },
-	formatData : function (formData, collection,ctrl) { 
-		mylog.warn("----------- formatData",formData, collection,ctrl);
-		formData.collection = collection;
-		formData.key = ctrl;
-		if( $.isArray(formData.id) )
-			formData.id = formData.id[0]; //this shouldn't happen, occurs in survey
-
-		if(dyFInputs.locationObj.centerLocation){
-			//formData.multiscopes = elementLocation;
-			formData.address = dyFInputs.locationObj.centerLocation.address;
-			formData.geo = dyFInputs.locationObj.centerLocation.geo;
-			formData.geoPosition = dyFInputs.locationObj.centerLocation.geoPosition;
-			if( dyFInputs.locationObj.elementLocations.length ){
-				$.each( dyFInputs.locationObj.elementLocations,function (i,v) { 
-					mylog.log("elementLocations v", v);
-					if(typeof v != "undefined" && typeof v.center != "undefined" ){
-						dyFInputs.locationObj.elementLocations.splice(i, 1);
-					}
-				});
-				formData.addresses = dyFInputs.locationObj.elementLocations;
-			}
-		}
-		
-		formData.medias = [];
-		$(".resultGetUrl").each(function(){
-			if($(this).html() != ""){
-				mediaObject=new Object;	
-				if($(this).find(".type").val()=="url_content"){
-					mediaObject.type=$(this).find(".type").val();
-					if($(this).find(".name").length)
-						mediaObject.name=$(this).find(".name").val();
-					if($(this).find(".description").length)
-						mediaObject.description=$(this).find(".description").val();
-					mediaObject.content=new Object;
-					mediaObject.content.type=$(this).find(".media_type").val(),
-					mediaObject.content.url=$(this).find(".url").val(),
-					mediaObject.content.image=$(this).find(".img_link").val();
-					if($(this).find(".size_img").length)
-						mediaObject.content.imageSize=$(this).find(".size_img").val();
-					if($("#form-news #results .video_link_value").length)
-						mediaObject.content.videoLink=$(this).find(".video_link_value").val();
-				}
-				else{
-					mediaObject.type=$(this).find(".type").val(),
-					mediaObject.countImages=$(this).find(".count_images").val(),
-					mediaObject.images=[];
-					$(".imagesNews").each(function(){
-						mediaObject.images.push($(this).val());	
-					});
-				}
-				formData.medias.push(mediaObject);
-			}
-		});
-		if( typeof formData.source != "undefined" && formData.source != "" ){
-			formData.source = { insertOrign : "network",
-								keys : [ 
-									formData.source
-								],
-								key : formData.source
-							}
-		}
-		
-		if( typeof formData.tags != "undefined" && formData.tags != "" )
-			formData.tags = formData.tags.split(",");
-		
-		
-		// Add collections and genres of notragora in tags
-		if( typeof formData.collections != "undefined" && formData.collections != "" ){
-			collectionsTagsSave=formData.collections.split(",");
-			if(!formData.tags)formData.tags = [];
-			$.each(collectionsTagsSave, function(i, e) {
-				formData.tags.push(e);
-			});
-			delete formData['collections'];
-		}
-
-		if( typeof formData.genres != "undefined" && formData.genres != "" ){
-			genresTagsSave=formData.genres.split(",");
-			if(!formData.tags)formData.tags = [];
-			$.each(genresTagsSave, function(i, e) {
-				formData.tags.push(e);
-			});
-			delete formData['genres'];
-		}
-
-		if(typeof formData.isUpdate == "undefined" || !formData.isUpdate)
-			removeEmptyAttr(formData);
-		else
-			delete formData["isUpdate"];
-
-		mylog.dir(formData);
-		return formData;
-	},
-
-	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) { 
-		//alert("saveElement");
-		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
-		formData = $(formId).serializeFormJSON();
-		mylog.log("before",formData);
-
-		if( jsonHelper.notNull( "dyFObj.elementObj.dynForm.jsonSchema.formatData","function") )
-			formData = dyFObj.elementObj.dynForm.jsonSchema.formatData(formData);
-
-		formData = dyFObj.formatData(formData,collection,ctrl);
-		mylog.log("saveElement", formData);
-		formData.medias = [];
-		$(".resultGetUrl").each(function(){
-			if($(this).html() != ""){
-				mediaObject=new Object;	
-				if($(this).find(".type").val()=="url_content"){
-					mediaObject.type=$(this).find(".type").val();
-					if($(this).find(".name").length)
-						mediaObject.name=$(this).find(".name").val();
-					if($(this).find(".description").length)
-						mediaObject.description=$(this).find(".description").val();
-					mediaObject.content=new Object;
-					mediaObject.content.type=$(this).find(".media_type").val(),
-					mediaObject.content.url=$(this).find(".url").val(),
-					mediaObject.content.image=$(this).find(".img_link").val();
-					if($(this).find(".size_img").length)
-						mediaObject.content.imageSize=$(this).find(".size_img").val();
-					if($(this).find(".video_link_value").length)
-						mediaObject.content.videoLink=$(this).find(".video_link_value").val();
-				}
-				else{
-					mediaObject.type=$(this).find(".type").val(),
-					mediaObject.countImages=$(this).find(".count_images").val(),
-					mediaObject.images=[];
-					$(".imagesNews").each(function(){
-						mediaObject.images.push($(this).val());	
-					});
-				}
-				formData.medias.push(mediaObject);
-			}
-		});
-		if(formData.medias.length == 0)
-			delete formData.medias;
-		mylog.log("beforeAjax",formData);
-
-		if( dyFObj.elementObj.dynForm.jsonSchema.debug ){
-			mylog.log("debug dyn Form xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-			mylog.dir(formData);
-			dyFObj.closeForm();
-			mylog.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-		} else {
-			$.ajax( {
-		    	type: "POST",
-		    	url: (saveUrl) ? saveUrl : baseUrl+"/"+moduleId+"/element/save",
-		    	data: formData,
-		    	dataType: "json",
-		    	success: function(data){
-		    		mylog.warn("saveElement ajax result");
-		    		mylog.dir(data);
-					if(data.result == false){
-		                toastr.error(data.msg);
-		                //reset save btn 
-		                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
-							$( settings.formId ).submit();	        	
-				        });
-		           	}
-		            else {
-		            	if(typeof data.msg != "undefined") 
-		            		toastr.success(data.msg);
-		            	else{
-		            		if(typeof data.resultGoods != "undefined" && typeof data.resultGoods.msg != "undefined")
-		            			toastr.success(data.resultGoods.msg);
-		            		if(typeof data.resultErrors != "undefined" && typeof data.resultErrors.msg != "undefined")
-		            			toastr.error(data.resultErrors.msg);
-		            	}
-		            	// mylog.log("data.id", data.id, data.url);
-		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
-				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
-				       if (typeof afterSave == "function"){
-		            		afterSave(data);
-		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-		            	} else {
-							dyFObj.closeForm();
-			                if(data.url){
-			                	mylog.log("urlReload data.url", data.url);
-			                	urlCtrl.loadByHash( data.url );
-			                }
-			                else if(data.id){
-			                	mylog.log("urlReload", '#'+ctrl+'.detail.id.'+data.id);
-				        		urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
-			                }
-						}
-		            }
-		            uploadObj.set()
-		    	}
-		    });
-		}
-	},
-	closeForm : function() {
-		$('#ajax-modal').modal("hide");
-	    //clear the unecessary DOM 
-	    $("#ajaxFormModal").html(''); 
-	   	uploadObj.set();
-	    uploadObj.update = false;
-	},
-	editElement : function (type,id){
-		mylog.warn("--------------- editElement ",type,id);
-		//get ajax of the elemetn content
-		uploadObj.set(type,id);
-		uploadObj.update = true;
-
-		$.ajax({
-	        type: "GET",
-	        url: baseUrl+"/"+moduleId+"/element/get/type/"+type+"/id/"+id,
-	        dataType : "json"
-	    })
-	    .done(function (data) {
-	        if ( data && data.result ) {
-	        	//toastr.info(type+" found");
-	        	
-				//onLoad fill inputs
-				//will be sued in the dynform  as update 
-				data.map.id = data.map["_id"]["$id"];
-				if(typeof typeObj[type].formatData == "function")
-					data = typeObj[type].formatData();
-
-				delete data.map["_id"];
-				mylog.dir(data);
-				console.log("editElement", data);
-				dyFObj.elementData = data;
-				dyFObj.openForm( dyFInputs.get(type).ctrl ,null, data.map);
-	        } else {
-	           toastr.error("something went wrong!! please try again.");
-	        }
-	    });
-	},
-	
-	//entry point function for opening dynForms
-	openForm : function  (type, afterLoad,data,isSub) { 
-	    //mylog.clear();
-	    $.unblockUI();
-	    $("#openModal").modal("hide");
-	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
-	    mylog.dir(data);
-	    uploadObj.contentKey="profil"; 
-	    dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
-	    dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
-      	/*if(type=="addPhoto") 
-        	uploadObj.contentKey="slider";*/ 
-	    //BOUBOULE ICI ACTIVER LEVENEMENT
-	    //initKSpec();
-	    if(userId)
-		{
-			formInMap.formType = type;
-			dyFObj.getDynFormObj(type, function() { 
-				dyFObj.starBuild(afterLoad,data);
-			},afterLoad, data);
-		} else {
-			dyFObj.openFormAfterLogin = {
-				type : type, 
-				afterLoad : afterLoad,
-				data : data
-			};
-			toastr.error(tradDynForm["mustbeconnectforcreateform"]);
-			$('#modalLogin').modal("show");
-		}
-	},
-	//get the specification of a given dynform
-	//can be of 3 types 
-	//(string) :: will get the definition if exist in typeObj[key].dybnForm
-	//if doesn't exist tries to lazyload it from assets/js/dynForm
-	//(object) :: is dynformp definition
-	getDynFormObj : function(type, callback,afterLoad, data ){
-		//alert(type+'.js');
-		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
-		if(typeof type == "object"){
-			mylog.log(" object directly Loaded : ", type);
-			dyFObj[dyFObj.activeElem] = type;
-			if( notNull(type.col) ) uploadObj.type = type.col;
-    		callback(type, afterLoad, data);
-		}else if( jsonHelper.notNull( "typeObj."+type+".dynForm" , "object") ){
-			mylog.log(" typeObj Loaded : ", type);
-			dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
-			if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
-    		callback( dyFObj[dyFObj.activeElem], afterLoad, data );
-		}else {
-			//TODO : pouvoir surchargé le dossier dynform dans le theme
-			//via themeObj.dynForm.folder overload
-			var dfPath = (jsonHelper.notNull( "themeObj.dynForm.folder") ) ? themeObj.dynForm.folder : moduleUrl+'/js/dynForm/';
-			lazyLoad( dfPath+type+'.js', 
-				null,
-				function() { 
-					//alert(dfPath+type+'.js');
-					mylog.log("lazyLoaded",moduleUrl+'/js/dynForm/'+type+'.js');
-					mylog.dir(dynForm);
-					//typeObj[type].dynForm = dynForm;
-				  	dyFInputs.get(type).dynForm = dynForm;
-					dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
-					if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
-    				callback( afterLoad, data );
-			});
-		}
-	},
-	//prepare information for the modal panel 
-	//and launches the build process
-	starBuild : function  (afterLoad, data) { 
-		mylog.warn("------------ starBuild",dyFObj[dyFObj.activeElem], afterLoad, data,dyFObj.activeModal );
-		mylog.dir(dyFObj[dyFObj.activeElem]);
-		$(dyFObj.activeModal+" .modal-header").removeClass("bgEvent bgOrga bgProject bgPerson bgDDA");//.addClass(dyFObj[elem].bgClass);
-		$(dyFObj.activeModal+" #ajax-modal-modal-title").html("<i class='fa fa-refresh fa-spin'></i> Chargement en cours. Merci de patienter.");
-		$(dyFObj.activeModal+" #ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
-		
-	  	$(dyFObj.activeModal+" #ajax-modal-modal-body").html( "<div class='row bg-white'>"+
-	  										"<div class='col-sm-10 col-sm-offset-1'>"+
-							              	"<div class='space20'></div>"+
-							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
-							              	"<form id='ajaxFormModal' enctype='multipart/form-data'></form>"+
-							              	"</div>"+
-							              "</div>");
-	  	$(dyFObj.activeModal+' .modal-footer').hide();
-	  	$(dyFObj.activeModal).modal("show");
-
-	  	dyFInputs.init();
-	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
-	  	data = ( notNull(data) ) ? data : {}; 
-	  	dyFObj.buildDynForm(afterLoad, data,dyFObj[dyFObj.activeElem],dyFObj.activeModal+" #ajaxFormModal");
-	  	//if(typeof dyFObj[dyFObj.currentKFormType].color != "undefined")
-	  		//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  	  //.addClass(dyFObj[dyFObj.currentKFormType].color);
-		//alert("CO "+typeObj[currentKFormType].color);
-                    
-	  	//$(dyFObj.activeModal+" #ajax-modal-modal-title").html((typeof dyFObj[dyFObj.activeElem].title != "undefined") ? dyFObj[dyFObj.activeElem].title : "");
-	},
-	/*subDynForm : function(type, afterLoad,data) {
-		smallMenu.open();
-		$("#openModal div.modal-content div.container")..html( "<div class='row bg-white'>"+
-	  										"<div class='col-sm-10 col-sm-offset-1'>"+
-							              	"<div class='space20'></div>"+
-							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
-							              	"<form id='subFormModal' enctype='multipart/form-data'></form>"+
-							              	"</div>"+
-							              "</div>");
-		dyFObj.buildDynForm(afterLoad, data,dyFObj.subElementObj,"#openModal #subFormModal");
-
-	},*/
-	buildDynForm : function (afterLoad,data,obj,formId) { 
-		mylog.warn("--------------- buildDynForm", dyFObj[dyFObj.activeElem], afterLoad,data);
-		if(userId)
-		{ 
-			var form = $.dynForm({
-			      formId : formId,
-			      formObj : dyFObj[dyFObj.activeElem].dynForm,
-			      formValues : data,
-			      beforeBuild : function  () {
-
-			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") )
-				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
-			      },
-			      onLoad : function  () {
-
-			      	if( jsonHelper.notNull("themeObj.dynForm.onLoadPanel","function") ){
-			      		themeObj.dynForm.onLoadPanel(dyFObj[dyFObj.activeElem]);
-			      	} else {
-				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.icon+"'></i> "+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.title);
-				        //alert(afterLoad+"|"+typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad]);
-			    	}
-			        
-			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads."+afterLoad, "function") )
-			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad](data);
-			        //incase we need a second global post process
-			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads.onload", "function") )
-			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads.onload(data);
-				    
-			        bindLBHLinks();
-			      },
-			      onSave : function(){
-
-			      	if( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave == "function")
-			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave();
-
-			        var afterSave = ( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave == "function") ? dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterSave : null;
-			        mylog.log("onSave ", dyFObj.activeElem, dyFObj[dyFObj.activeElem].saveUrl, dyFObj[dyFObj.activeElem].save);
-			        if( dyFObj[dyFObj.activeElem].save )
-			        	dyFObj[dyFObj.activeElem].save(dyFObj.activeModal+" #ajaxFormModal");
-			        if( dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save )
-			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save(); //use this for subDynForms
-			        else if(dyFObj[dyFObj.activeElem].saveUrl)
-			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, dyFObj[dyFObj.activeElem].saveUrl, afterSave );
-			        else
-			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, null, afterSave );
-			        return false;
-			    }
-			});
-			mylog.dir(form);
-		} else {
-			toastr.error("Vous devez être connecté pour afficher les formulaires de création");
-			$('#modalLogin').modal("show");
-		}
-	},
-
-	//generate Id for upload feature of this element 
-	setMongoId : function(type,callback) { 
-		uploadObj.type = type;
-		mylog.warn("uploadObj ",uploadObj);
-		if( !$("#ajaxFormModal #id").val() && !uploadObj.update )
-		{
-			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
-				mylog.log("setMongoId uploadObj.id", data.id);
-				uploadObj.set(type,data.id);
-				$("#ajaxFormModal #id").val(data.id);
-				if( typeof callback === "function" )
-                	callback();
-			});
-		}
-	},
-	editDynForm : function(title, icon, properties, fct, data, saveUrl, onLoads, beforeSave, afterSave) {
-		mylog.warn("---------------------- editDynForm ------------------");
-		var form = {
-			dynForm:{
-				jsonSchema : {
-					title : title,
-					icon : icon,
-					properties : properties
-				}
-			}
-		};
-
-		if(typeof saveUrl != "undefined" )
-			form.saveUrl = saveUrl;
-
-		if(typeof onLoads != "undefined" )
-			form.dynForm.jsonSchema.onLoads = onLoads;
-
-		if(typeof beforeSave != "undefined" )
-			form.dynForm.jsonSchema.beforeSave = beforeSave;
-
-		if(typeof afterSave != "undefined" )
-			form.dynForm.jsonSchema.afterSave = afterSave;
-
-		mylog.dir(form);
-
-		dyFObj.openForm(form, fct, data);
-	},
-	canUserEdit : function ( ) {
-		var res = false;
-		if( userId && userConnected && userConnected.links && contextData ){
-			if(contextData.type == "organizations" && userConnected.links.memberOf[contextData.id].isAdmin )
-				res = true;
-			if(contextData.type == "events" && userConnected.links.events[contextData.id].isAdmin )
-				res = true;
-			if(contextData.type == "projects" && userConnected.links.projects[contextData.id].isAdmin )
-				res = true;
-		}
-		return res;
-	}
-}
-//TODO : refactor into dyfObj.inputs
-var dyFInputs = {
-
-	init : function() {
-		 //global variables clean up
-		dyFInputs.locationObj.elementLocation = null;
-	    dyFInputs.locationObj.elementLocations = [];
-	    dyFInputs.locationObj.centerLocation = null;
-	    dyFInputs.locationObj.countLocation = 0 ;
-	    dyFInputs.locationObj.addresses = (typeof dyFObj.elementData != "undefined" && dyFObj.elementData != null && typeof dyFObj.elementData.map.addresses != "undefined") ? dyFObj.elementData.map.addresses  :  [] ;
-	    updateLocality = false;
-	    // Initialize tags list for network in form of element
-		if(	typeof networkJson != 'undefined' && 
-			typeof networkJson.add != "undefined"  && 
-			typeof typeObj != "undefined" ){
-			$.each(networkJson.add, function(key, v) {
-				mylog.log("key", key);
-				if( typeof typeObj[key].dynForm != "undefined" ){
-					if(typeof networkJson.request.sourceKey != "undefined"){
-						sourceObject = {inputType:"hidden", value : networkJson.request.sourceKey[0]};
-						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
-					}
-
-					if(v){
-
-						if(typeof networkJson.request.searchTag != "undefined"){
-							typeObj[key].dynForm.jsonSchema.properties.tags.data = networkJson.request.searchTag;
-						}
-
-						if(	typeof typeObj[key] != "undefined" &&
-							typeof typeObj[key].dynForm != "undefined" && 
-							typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
-							mylog.log("tags", typeof typeObj[key].dynForm.jsonSchema.properties.tags, typeObj[key].dynForm.jsonSchema.properties.tags);
-							mylog.log("networkTags", networkTags);
-							typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
-							if(typeof networkJson.request.mainTag != "undefined")
-								typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = networkJson.request.mainTag[0];
-						}
-
-						if(notNull(networkJson.dynForm)){
-							mylog.log("networkJson.dynForm");
-							mylog.log("networkJson.dynForm", "networkJson.dynForm");
-							if(notNull(networkJson.dynForm.extra)){
-								var nbListTags = 1 ;
-								mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
-								mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
-								while(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags)){
-									typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
-										"inputType" : "tags",
-										"placeholder" : networkJson.dynForm.extra["tags"+nbListTags].placeholder,
-										"values" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-										"data" : networkTagsCategory[ networkJson.dynForm.extra["tags"+nbListTags].list ],
-										"label" : networkJson.dynForm.extra["tags"+nbListTags].list
-									};
-									nbListTags++;
-									mylog.log("networkJson.dynForm.extra.tags", "networkJson.dynForm.extra.tags"+nbListTags);
-									mylog.log(jsonHelper.notNull("networkJson.dynForm.extra.tags"+nbListTags));
-								}
-								delete typeObj[key].dynForm.jsonSchema.properties.tags;
-							}
-						}
-					}
-				}
-				
-			});
-		}
-		
-	},
-
-	inputText :function(label, placeholder, rules, custom) { 
-		var inputObj = {
-			label : label,
-	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
-	        inputType : "text",
-	        rules : ( notEmpty(rules) ? rules : {} ),
-	        custom : ( notEmpty(custom) ? custom : "" )
-	    };
-	    mylog.log("inputText ", inputObj);
-    	return inputObj;
-    },
-    slug :function(label, placeholder, rules) { 
-    	console.log("rooooles",rules);
-		var inputObj = {
-			label : label,
-	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
-	        inputType : "text",
-	        rules : ( notEmpty(rules) ? rules : "")
-	    };
-    	inputObj.init = function(){
-        	$("#ajaxFormModal #slug").bind("input keyup",function(e) {
-        		$(this).val(slugify($(this).val(), true));
-        		if($("#ajaxFormModal #slug").val().length >= 3 )
-            		slugUnique($(this).val());
-            	else
-            		$("#ajaxFormModal #slug").parent().removeClass("has-success").addClass("has-error").find("span").text("Please enter at least 3 characters.");
-            	//dyFObj.canSubmitIf();
-        	});
-	    }
-	    mylog.log("dyFInputs ", inputObj);
-    	return inputObj;
-    },
-	name :function(type, rules, addElement, extraOnBlur) { 
-		var inputObj = {
-	    	placeholder : "... ",
-	        inputType : "text",
-	        rules : ( notEmpty(rules) ? rules : { required : true } )
-	    };
-	    if(type){
-	    	console.log("NAMEOFYOUR", dyFInputs.get(type).ctrl, trad[dyFInputs.get(type).ctrl]);
-	    	inputObj.label = tradDynForm["nameofyour"]+" " + trad[dyFInputs.get(type).ctrl]+" ";
-	    	if(type=="classified") 
-	    		inputObj.label = tradDynForm["titleofyour"]+" "+ trad[type]+" ";
-
-	    	inputObj.placeholder = inputObj.label + " ...";
-
-	    	inputObj.init = function(){
-	        	$("#ajaxFormModal #name ").off().on("blur",function(){
-	        		if($("#ajaxFormModal #name ").val().length > 3 )
-	            		globalSearch($(this).val(),[ dyFInputs.get(type).col, "organizations" ], addElement );
-	            	
-	            	dyFObj.canSubmitIf();
-	        	});
-	        }
-	    }else{
-	    	inputObj.label = "Nom ";
-	    }
-	    mylog.log("dyFInputs ", inputObj);
-    	return inputObj;
-    },
-    username : {
-    	placeholder : "username",
-        inputType : "text",
-        label : "Username",
-        rules : { required : true },
-        init : function(){
-        	$("#ajaxFormModal #username ").off().on("blur",function(){
-        		if($("#ajaxFormModal #username ").val().length > 2 ){
-            		var res = isUniqueUsername($(this).val());
-            		$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
-            		var msg = "Username existe déjà";
-            		var color = " text-red"
-            		if(res){
-            			msg = "Username est bon";
-            			color = " text-green"
-            		}
-            		
-            		$("#listSameName").html("<div class='col-sm-12 light-border"+color+"'> <i class='fa fa-eye'></i> "+msg+" : </div>");
-            	}
-            });
-        }
-    },
-    similarLink : {
-        inputType : "custom",
-        html:"<div id='similarLink'><div id='listSameName'></div></div>",
-    },
-    inputSelect :function(label, placeholder, list, rules) {
-    	mylog.log("inputSelect", label, placeholder, list, rules);
-		var inputObj = {
-			inputType : "select",
-			label : ( notEmpty(label) ? label : "" ),
-			placeholder : ( notEmpty(placeholder) ? placeholder : trad.choose ),
-			options : ( notEmpty(list) ? list : [] ),
-			rules : ( notEmpty(rules) ? rules : {} )
-		};
-		return inputObj;
-	},
-	inputSelectGroup :function(label, placeholder, list, group, rules, init) { 
-		mylog.log("inputSelectGroup", label, placeholder, list, rules);
-		var inputObj = {
-			inputType : "select",
-			label : ( notEmpty(label) ? label : "" ),
-			placeholder : ( notEmpty(placeholder) ? placeholder : trad.choose ),
-			options : ( notEmpty(list) ? list : [] ),
-			groupOptions : ( notEmpty(group) ? group : [] ),
-			rules : ( notEmpty(rules) ? rules : {} ),
-			init : ( notEmpty(init) ? init : function(){} )
-		};
-		return inputObj;
-	},
-	organizerId : function( organizerId, organizerType ){
-		return dyFInputs.inputSelectGroup( 	tradDynForm["whoorganizedevent"]+" ?", 
-											tradDynForm["whoorganize"]+" ?", 
-											firstOptions(), 
-											parentList( ["organizations","projects"], organizerId, organizerType ), 
-											{ required : true },
-											function(){
-												$("#ajaxFormModal #organizerId").off().on("change",function(){
-													
-													var organizerId = $(this).val();
-													var organizerType = "notfound";
-													if(organizerId == "dontKnow" )
-														organizerType = "dontKnow";
-													else if( $('#organizerId').find(':selected').data('type') && typeObj[$('#organizerId').find(':selected').data('type')] )
-														organizerType = $('#organizerId').find(':selected').data('type');
-													else
-														organizerType = typeObj["person"].col;
-
-													mylog.warn( "organizer",organizerId,organizerType, $('#organizerId').find(':selected').data('type') );
-													$("#ajaxFormModal #organizerType").val( organizerType );
-												});
-											});
-	},
-	tags : function(list, placeholder, label) { 
-    	tagsL = (list) ? list : tagsList;
-    	return {
-			inputType : "tags",
-			placeholder : placeholder != null ? placeholder : tradDynForm["tags"],
-			values : tagsL,
-			label : (label != null) ? label : tradDynForm["addtags"]
-		}
-	},
-	radio : function(label,keyValues) { 
-    	return {
-    		label : (label != null) ? label : "",
-			inputType : "radio",
-			options : keyValues
-		}
-	},
-    imageAddPhoto : {
-    	inputType : "uploader",
-    	showUploadBtn : true,
-    	init : function() { 
-    		setTimeout( function()
-    		{
-    			
-        		$('#trigger-upload').click(function(e) {
-        			alert("initImageTrigger");
-        			$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		        	urlCtrl.loadByHash(location.hash);
-        			$('#ajax-modal').modal("hide");
-		        });
-				//$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-				//	  					  	  .addClass("bg-dark");
-    		 	
-    		 	//$("#ajax-modal-modal-title").html("<i class='fa fa-camera'></i> Publier une photo");
-
-        	},1500);
-    	}
-    },
-    image :function() { 
-    	
-    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
-    		uploadObj.gotoUrl = location.hash ;
-    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
-
-    	return {
-	    	inputType : "uploader",
-	    	docType : "image",
-	    	label : tradDynForm["imageshere"]+" :", 
-	    	showUploadBtn : false,
-	    	template:'qq-template-gallery',
-	    	filetypes:['jpeg', 'jpg', 'gif', 'png'],
-	    	afterUploadComplete : function(){
-	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
-		    	dyFObj.closeForm();
-				//alert( "image upload then goto : "+uploadObj.gotoUrl );
-	            urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
-		    }
-    	}
-    },
-    file :function() { 
-    	
-    	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
-    		uploadObj.gotoUrl = location.hash ;
-    	mylog.log("image upload then gotoUrl", uploadObj.gotoUrl) ;
-
-    	return {
-	    	inputType : "uploader",
-	    	label : tradDynForm.fileshere+" :", 
-	    	showUploadBtn : false,
-	    	docType : "file",
-	    	template:'qq-template-manual-trigger',
-	    	filetypes:["pdf","xls","xlsx","doc","docx","ppt","pptx","odt","ods","odp"],
-	    	afterUploadComplete : function(){
-	    		//alert("afterUploadComplete :: "+uploadObj.gotoUrl);
-		    	dyFObj.closeForm();
-				//alert( "image upload then goto : "+uploadObj.gotoUrl );
-				if(location.hash.indexOf("view.library")>0){
-					navCollections=[];
-					buildNewBreadcrum("files");
-					getViewGallery(1,"","files");
-				}		
-				else
-	            	urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
-		    }
-    	}
-    },
-    textarea :function (label,placeholder,rules) {  
-    	var inputObj = {
-    		inputType : "textarea",
-	    	label : ( notEmpty(label) ? label : "Votre message ..." ),
-	    	placeholder : ( notEmpty(placeholder) ? placeholder : "Votre message ..." ),
-	    	rules : ( notEmpty(rules) ? rules : { } ),
-	    	init : function(){
-	    		mylog.log("textarea init");
-	    		if($(".maxlengthTextarea").length){
-	    			mylog.log("textarea init2");
-	    			$(".maxlengthTextarea").off().keyup(function(){
-						var name = "#" + $(this).attr("id") ;
-						mylog.log(".maxlengthTextarea", "#ajaxFormModal "+name, $(this).attr("id"), $("#ajaxFormModal "+name).val().length, $(this).val().length);
-						$("#ajaxFormModal #maxlength"+$(this).attr("id")).html($("#ajaxFormModal "+name).val().length);
-					});
-	    		}
-	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
-	        }
-	    };
-	    return inputObj;
-	},
-
-	password : function  (title, rules) {  
-    	var title = (title) ? title : trad["New password"];
-    	var ph = "";
-    	var rules = (rules) ? rules : { required : true } ;
-	    var res = {
-	    	label : title,
-	    	inputType : "password",
-	    	placeholder : ph,
-	    	rules : rules
-	    }
-	    return res;
-	},
-    price :function(label, placeholder, rules, custom) { 
-		var inputObj = dyFInputs.inputText(tradDynForm["pricesymbole"], tradDynForm["pricesymbole"]+" ...") ;
-	    inputObj.init = function(){
-    		$('input#price').filter_input({regex:'[0-9]'});
-      	};
-    	return inputObj;
-    },
-
-    text :function (label,placeholder,rules) {  
-    	var inputObj = {
-    		inputType : "text",
-	    	label : ( notEmpty(label) ? label : tradDynForm["mainemail"] ),
-	    	placeholder : ( notEmpty(placeholder) ? placeholder : "exemple@mail.com" ),
-	    	rules : ( notEmpty(rules) ? rules : { email: true } )
-	    }
-	    console.log("create form input email", inputObj);
-	    return inputObj;
-	},
-	
-	emailOptionnel :function (label,placeholder,rules) {  
-    	var inputObj = dyFInputs.text(label, placeholder, rules);
-    	inputObj.init = function(){
-			$(".emailtext").css("display","none");
-		};
-	    return inputObj;
-	},
-	createNews: function (){
-		var inputObj = {
-			inputType : "createNews",
-			label : "ta mere",
-       		placeholder:"",
-       		rules: "",
-       		params : {"targetId":contextData.id, "targetType":contextData.type, 
-     					"targetImg":contextData.profilThumbImageUrl, "targetName":contextData.name, 
-     					"authorId":userId,"authorImg":userConnected.profilThumbImageUrl, "authorName":userConnected.name}
-   		}
-		inputObj.init = function(){
-			$("#createNews").css("display","none");
-			$("#createNews #tags").select2({tags:tagsList});
-			$("#createNews > textarea").elastic();
-			mentionsInit.get("#createNews > #mentionsText > textarea");
-			$("#createNews .scopeShare").click(function() {
-				mylog.log(this);
-				replaceText=$(this).find("h4").html();
-				$("#createNews #btn-toogle-dropdown-scope").html(replaceText+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
-				scopeChange=$(this).data("value");
-				$("#createNews > input[name='scope']").val(scopeChange);
-				
-			});
-			$("#createNews .targetIsAuthor").click(function() {
-				mylog.log(this);
-				srcImg=$(this).find("img").attr("src");
-				name=$(this).data("name");
-				$("#createNews #btn-toogle-dropdown-targetIsAuthor").html('<img height=20 width=20 src="'+srcImg+'"/> '+name+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
-				authorTargetChange=$(this).data("value");
-				$("#createNews #authorIsTarget").val(authorTargetChange);
-			});
-		};
-		return inputObj;  
-	},
-	location : {
-		label : tradDynForm["localization"],
-       inputType : "location"
-    },
-    locationObj : {
-    	/* *********************************
-					LOCATION
-		********************************** */
-		//TODO move to elementForm
-		elementLocation : null,
-		centerLocation : null,
-		elementLocations : [],
-		addresses : [],
-		elementPostalCode : null,
-		elementPostalCodes : [],
-		countLocation : 0,
-		countPostalCode : 0,
-		initVar :function(){
-			dyFInputs.locationObj.elementLocation = null;
-		    dyFInputs.locationObj.elementLocations = [];
-		    dyFInputs.locationObj.centerLocation = null;
-		    dyFInputs.locationObj.addresses = [];
-		    dyFInputs.locationObj.countLocation = 0 ;
-		},
-		init : function () {
-			mylog.log("init loc");
-			$(".deleteLocDynForm").click(function(){
-				mylog.log("deleteLocDynForm", $(this).data("index"));
-				var index = $(this).data("index");
-				var indexLoc = $(this).data("indexLoc");
-				if(index == -1 && dyFInputs.locationObj.elementLocations.length > 1){
-					toastr.error("Vous ne pouvez pas supprimer l'adresse principal si vous avez des adresses secondaires");
-				}else{
-					bootbox.confirm({
-						message: trad["suredeletelocality"]+"<span class='text-red'></span>",
-						buttons: {
-							confirm: {
-								label: trad["yes"],
-								className: 'btn-success'
-							},
-							cancel: {
-								label: trad["no"],
-								className: 'btn-danger'
-							}
-						},
-						callback: function (result) {
-							if (!result) {
-								return;
-							} else {
-								mylog.log("Index Delete", $(this).data("index"));
-								var param = new Object;
-								param.name = (index == -1 ) ? "locality" : "addresses";
-								param.value = (index == -1 ) ? "" : { addressesIndex : index };
-								param.pk = uploadObj.id;
-
-								$.ajax({
-							        type: "POST",
-							        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+uploadObj.type,
-							        data: param,
-							       	dataType: "json",
-							    	success: function(data){
-								    	if(data.result){
-											toastr.success(data.msg);
-											
-											var formValues = dyFObj.elementData.map;
-											mylog.log("FormValues", formValues);
-
-											dyFInputs.locationObj.elementLocation = null;
-											dyFInputs.locationObj.elementLocations.splice(indexLoc,1);
-											if(index != -1 ){
-												dyFInputs.locationObj.initVar();
-												$(".locationlocation").html("");
-												   
-												if( dyFInputs.locationObj.addresses ){
-													dyFInputs.locationObj.addresses.splice(index,1);
-													var test = [];
-													$.each(dyFInputs.locationObj.elementLocations, function(i,locelt){
-														$.each(dyFInputs.locationObj.addresses, function(i,addLoc){
-
-															if(addLoc.postalCode == locelt.locelt && 
-																addLoc.streetAddress == locelt.streetAddress &&
-																addLoc.insee == locelt.insee &&
-																addLoc.addressCountry == locelt.addressCountry &&
-																addLoc.addressLocality == locelt.addressLocality){
-																test.push(locelt);
-															}
-														});
-													});
-													
-												}
-
-												if( formValues.address && formValues.geo && formValues.geoPosition ){
-													mylog.warn("init Adress location",formValues.address.addressLocality,formValues.address.postalCode);
-													dyFInputs.locationObj.copyMapForm2Dynform({address:formValues.address,geo:formValues.geo,geo:formValues.geoPosition});
-													dyFInputs.locationObj.addLocationToForm({address:formValues.address,geo:formValues.geo,geo:formValues.geoPosition}, -1);
-												}
-												if( dyFInputs.locationObj.addresses ){
-													$.each(dyFInputs.locationObj.addresses, function(i,addLoc){
-														mylog.warn("init extra addresses location ",locationObj.address.addressLocality,locationObj.address.postalCode);
-														dyFInputs.locationObj.copyMapForm2Dynform(locationObj);
-														dyFInputs.locationObj.addLocationToForm(locationObj, i);	
-													});
-												}
-												
-											}else{
-												$(".locationEl"+ indexLoc).remove();
-											}
-								    	}
-								    }
-								});
-							}
-						}
-					});
-				}
-			});
-		},
-		copyMapForm2Dynform : function (locObj) {
-			mylog.warn("---------------copyMapForm2Dynform----------------");
-			//if(!elementLocation)
-			//	elementLocation = [];
-			mylog.log("locationObj", locObj);
-			dyFInputs.locationObj.elementLocation = locObj;
-			mylog.log("elementLocation", dyFInputs.locationObj.elementLocation);
-			dyFInputs.locationObj.elementLocations.push(dyFInputs.locationObj.elementLocation);
-			mylog.log("dyFInputs.locationObj.elementLocations", dyFInputs.locationObj.elementLocations);
-			mylog.log("dyFInputs.locationObj.centerLocation", dyFInputs.locationObj.centerLocation);
-			if(!dyFInputs.locationObj.centerLocation /*|| dyFInputs.locationObj.elementLocation.center == true*/){
-				dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocation;
-				dyFInputs.locationObj.elementLocation.center = true;
-			}
-			mylog.dir(dyFInputs.locationObj.elementLocations);
-			//elementLocation.push(positionObj);
-		},
-		addLocationToForm : function (locObj, index){
-			mylog.warn("---------------addLocationToForm----------------");
-			mylog.dir(locObj);
-			var strHTML = "";
-			if( locObj.address.addressCountry)
-				strHTML += locObj.address.addressCountry;
-			if( locObj.address.postalCode)
-				strHTML += ", "+locObj.address.postalCode;
-			if( locObj.address.addressLocality)
-				strHTML += ", "+locObj.address.addressLocality;
-			if( locObj.address.streetAddress)
-				strHTML += ", "+locObj.address.streetAddress;
-			var btnSuccess = "";
-			var locCenter = "";
-			var boolCenter=false;
-			if( dyFInputs.locationObj.countLocation == 0){
-				btnSuccess = "btn-success";
-				//locCenter = "<span class='lblcentre'>(localité centrale)</span>";
-				locCenter = "<span class='lblcentre'> "+tradDynForm["mainLocality"]+"</span>"; 
-				boolCenter=true;
-			}
-
-			/*if(typeof index != "undefined"){
-				strHTML = "<a href='javascript:;' class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"'>"+
-								"<i class='text-red fa fa-times'></i></a>"+
-					  		"<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
-					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' data-index='"+index+"' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'>"+
-					  	"<i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
-			}
-			else{
-				strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+")' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
-					  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
-					  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
-			}*/
-			if(typeof index != "undefined"){
-				strHTML =  
-			        "<div class='col-md-12 col-sm-12 col-xs-12 text-left shadow2 padding-15 margin-top-15 margin-bottom-15'>" + 
-			          "<span class='pull-left locationEl"+dyFInputs.locationObj.countLocation+" locel text-red bold'>"+ 
-			            "<i class='fa fa-home fa-2x'></i> "+ 
-			            strHTML+ 
-			          "</span> "+ 
-			 
-			          "<a href='javascript:;' data-index='"+index+"' data-indexLoc='"+dyFInputs.locationObj.countLocation+"' "+ 
-			            "class='deleteLocDynForm locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
-			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
-			          "</a>"+ 
-			 
-			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' data-index='"+index+"'"+ 
-			            "class='margin-right-5 centers pull-right center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm "+btnSuccess+"'> "+ 
-			            "<i class='fa fa-map-marker'></i> "+locCenter+ 
-			          "</a>" + 
-			           
-			        "</div>"; 
-			} else {
-				strHTML =  
-			        "<div class='col-md-12 col-sm-12 col-xs-12 text-left shadow2 padding-15 margin-top-15 margin-bottom-15'>" + 
-			          "<span class='pull-left locationEl"+dyFInputs.locationObj.countLocation+" locel text-red bold'>"+ 
-			            "<i class='fa fa-home fa-2x'></i> "+ 
-			            strHTML+ 
-			          "</span> "+ 
-			 
-			          "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countLocation+", "+boolCenter+")' "+ 
-			            "class='removeLocalityBtn locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm btn-danger pull-right'> "+ 
-			            "<i class='fa fa-times'></i> "+tradDynForm.clear+ 
-			          "</a>"+ 
-			 
-			          "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' "+ 
-			            "class='setAsCenterLocalityBtn margin-right-5 centers pull-right center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-sm "+btnSuccess+"'> "+ 
-			            "<i class='fa fa-map-marker'></i> "+locCenter+ 
-			          "</a>" + 
-			           
-			        "</div>"; 
-			}
-      		$(".locationlocation").append(strHTML); 
-			
-			
-			// strHTML = "<a href='javascript:removeLocation("+dyFInputs.locationObj.countLocation+", "+true+")'' class=' locationEl"+dyFInputs.locationObj.countLocation+" btn'> <i class='text-red fa fa-times'></i></a>"+
-			// 		  "<span class='locationEl"+dyFInputs.locationObj.countLocation+" locel text-azure'>"+strHTML+"</span> "+
-			// 		  "<a href='javascript:dyFInputs.locationObj.setAsCenter("+dyFInputs.locationObj.countLocation+")' class='centers center"+dyFInputs.locationObj.countLocation+" locationEl"+dyFInputs.locationObj.countLocation+" btn btn-xs "+btnSuccess+"'> <i class='fa fa-map-marker'></i>"+locCenter+"</a> <br/>";
-
-			$(".postalcodepostalcode").prepend(strHTML);
-
-			mylog.log("strAddres", strHTML);
-			//$(".locationlocation").prepend(strHTML);
-			dyFInputs.locationObj.countLocation++;
-		},
-		copyPCForm2Dynform : function (postalCodeObj) { 
-			mylog.warn("---------------copyPCForm2Dynform----------------");
-			mylog.log("postalCodeObj", postalCodeObj);
-			dyFInputs.locationObj.elementPostalCode = postalCodeObj;
-			mylog.log("elementPostalCode", dyFInputs.locationObj.elementPostalCode);
-			dyFInputs.locationObj.elementPostalCodes.push(dyFInputs.locationObj.elementPostalCode);
-			mylog.log("elementPostalCodes", dyFInputs.locationObj.elementPostalCodes);
-			mylog.dir(dyFInputs.locationObj.elementPostalCodes);
-			//elementPostalCode.push(positionObj);
-		},
-		addPostalCodeToForm : function (postalCodeObj){
-			mylog.warn("---------------addPostalCodeToForm----------------");
-			mylog.dir(postalCodeObj);
-			var strHTML = "";
-			if( postalCodeObj.postalCode)
-				strHTML += postalCodeObj.postalCode;
-			if( postalCodeObj.name)
-				strHTML += " ,"+postalCodeObj.name;
-			if( postalCodeObj.latitude)
-				strHTML += " ,("+postalCodeObj.latitude;
-			if( postalCodeObj.longitude)
-				strHTML += " / "+postalCodeObj.longitude+")";
-			
-			strHTML = "<a href='javascript:dyFInputs.locationObj.removeLocation("+dyFInputs.locationObj.countPostalCode+")' class=' locationEl"+dyFInputs.locationObj.countPostalCode+" btn'> <i class='text-red fa fa-times'></i></a>"+
-					  "<span class='locationEl"+dyFInputs.locationObj.countPostalCode+" locel text-azure'>"+strHTML+"</span> <br/>";
-			$(".postalcodepostalcode").prepend(strHTML);
-			dyFInputs.locationObj.countPostalCode++;
-		},
-		removeLocation : function (ix,center){
-			mylog.log("dyFInputs.locationObj.removeLocation", ix, dyFInputs.locationObj.elementLocations);
-			dyFInputs.locationObj.elementLocation = null;
-			dyFInputs.locationObj.elementLocations.splice(ix,1);
-			$(".locationEl"+ix).parent().remove();
-			//delete dyFInputs.locationObj.elementLocations[ix];
-			dyFInputs.locationObj.countLocation--;
-			if(dyFInputs.locationObj.countLocation > 0){
-				for(var prop in dyFInputs.locationObj.elementLocations){
-					if(prop >= ix){
-						domNumber=parseInt(prop)+1;
-						domParent=$(".locationEl"+domNumber).parent();
-						var btnSuccess = "";
-						var locCenter = "";
-						var boolCenter=false;
-						if( typeof center != "undefined" && center && prop==0){
-							btnSuccess = "btn-success";
-							//locCenter = "<span class='lblcentre'>(localité centrale)</span>";
-							locCenter = "<span class='lblcentre'> "+tradDynForm["mainLocality"]+"</span>"; 
-							boolCenter=true;
-						}
-						domParent.find(".removeLocalityBtn").attr("href","javascript:dyFInputs.locationObj.removeLocation("+prop+","+boolCenter+")");
-						domParent.find(".setAsCenterLocalityBtn").attr("href","javascript:dyFInputs.locationObj.setAsCenter("+prop+")");
-						$(".locationEl"+domNumber).each(function(){
-							$(this).removeClass("locationEl"+domNumber).addClass("locationEl"+prop);
-						});
-						$(".center"+domNumber).removeClass("center"+domNumber).addClass("center"+prop)/*.append(locCenter)*/;
-					}
-				}
-				if(typeof center != "undefined" && center)
-					dyFInputs.locationObj.setAsCenter(0);
-			} else{
-				$(".locationBtn").html("<i class='fa fa-home'></i> "+tradDynForm["mainLocality"]);
-				//dyFInputs.locationObj.centerLocation = null;
-			}
-			
-			//$.each(function())
-			//TODO check if this center then apply on first
-			//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
-
-			/*if(ix != 0){
-				removeAddresses(ix-1, true);
-			}
-			else
-				removeAddress(true);*/
-
-		},
-		setAsCenter : function (ix){
-
-			$(".centers").removeClass('btn-success');
-			$(".lblcentre").remove();
-			$.each(dyFInputs.locationObj.elementLocations,function(i, v) {
-				console.log(v); 
-				if(typeof v.center != "undefined" && v.center)
-					delete v.center;
-			})
-			$(".centers").removeClass('btn-success');
-			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>addresse principale</span>");
-			$(".center"+ix).parent().find(".removeLocalityBtn").attr("href","javascript:dyFInputs.locationObj.removeLocation("+ix+",true)");
-			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
-			dyFInputs.locationObj.elementLocations[ix].center = true;
-		}
-    },
-    //produces 
-    subDynForm : function(form, multi){
-
-    },
-    inputUrl :function (label,placeholder,rules, custom) {  
-    	label = ( notEmpty(label) ? label : tradDynForm["mainurl"] );
-    	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
-    	rules = ( notEmpty(rules) ? rules : { url: true } );
-    	custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
-	    var inputObj = dyFInputs.inputText(label, placeholder, rules, custom);
-	    return inputObj;
-	},
-	inputUrlOptionnel :function (label, placeholder,rules, custom) {  
-    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
-    	inputObj.init = function(){
-            getMediaFromUrlContent("#url", ".resultGetUrl0",0);
-            $(".urltext").css("display","none");
-        };
-	    return inputObj;
-	},
-    urls : {
-    	label : tradDynForm["freeinfourl"],
-    	placeholder : tradDynForm["freeinfourl"]+" ...",
-        inputType : "array",
-        value : [],
-        init:function(){
-            getMediaFromUrlContent(".addmultifield0", ".resultGetUrl0",0);	
-        }
-    },
-    urlsOptionnel : {
-        inputType : "array",
-        placeholder : tradDynForm["urlandaddinfoandaction"],
-        value : [],
-        init:function(){
-            getMediaFromUrlContent(".addmultifield0", ".resultGetUrl0",0);
-        	$(".urlsarray").css("display","none");	
-        }
-    },
-    keyVal : {
-    	label : "Key Value Pairs",
-    	inputType : "properties",
-    },
-    bookmarkUrl: function(label, placeholder,rules, custom){
-    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
-    	inputObj.init = function(){
-    		$("#ajaxFormModal #url").bind("input keyup",function(e) {
-            	processUrl.refUrl($(this).val());
-            	/*if(result){
-            		console.log(result);
-            	}*/
-        	});
-            //$(".urltext").css("display","none");
-        };
-	    return inputObj;
-    },
-    checkboxSimple : function(checked, id, params){
-    
-    	var inputObj = {
-    		label: params["labelText"],
-    		params : params,
-	    	inputType : "checkboxSimple",
-	    	checked : checked, //$("#ajaxFormModal #"+id).val(),
-	    	init : function(){
-	    		//var checked = $("#ajaxFormModal #"+id).val();
-	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
-	    		var idTrue = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='true']";
-	    		var idFalse = "#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox[data-checkval='false']";
-	    		console.log("checkcheck2", checked, "#ajaxFormModal #"+id);
-	    		$("#ajaxFormModal #"+id).val(checked);
-
-	    		if(typeof params["labelInformation"] != "undefined")
-	        		$("#ajaxFormModal ."+id+"checkboxSimple label").append(
-	        				"<small class='col-md-12 col-xs-12 text-left no-padding' "+
-									"style='font-weight: 200;'>"+
-									params["labelInformation"]+
-							"</small>");
-
-	        	if(checked == "true"){
-	    			$(idTrue).addClass("bg-green-k").removeClass("letter-green");
-	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
-	    					"<span class='lbl-status-check margin-left-10'>"+
-	    						'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>'+
-	    					"</span>");
-	        	}
-
-	    		if(checked == "false"){ 
-	    			$(idFalse).addClass("bg-red").removeClass("letter-red");
-	    			$("#ajaxFormModal ."+id+"checkboxSimple label").append(
-	    					"<span class='lbl-status-check margin-left-10'>"+
-	    						'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>'+
-	    					"</span>");
-
-	    			setTimeout(function(){
-    			  		if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
-    			  	}, 1000);
-	    		}
-	    		
-
-	    		$("#ajaxFormModal ."+id+"checkboxSimple .btn-dyn-checkbox").click(function(){
-	    			var checkval = $(this).data('checkval');
-	    			$("#ajaxFormModal #"+id).val(checkval);
-	    			console.log("EVENT CLICK ON CHECKSIMPLE", checkval);
-	    			
-	    			if(checkval) {
-	    				$(idTrue).addClass("bg-green-k").removeClass("letter-green");
-	    			  	$(idFalse).removeClass("bg-red").addClass("letter-red");
-	    			  	$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
-	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
-	    			  	
-	    			  	if(typeof params["inputId"] != "undefined") $(params["inputId"]).show(400);
-	    			}
-	    			else{
-	    			  	$(idFalse).addClass("bg-red").removeClass("letter-red");
-	    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
-	    				$("#ajaxFormModal ."+id+"checkboxSimple .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
-
-	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
-	    			}
-	    		});
-
-	    	}
-	    };
-
-	    return inputObj;
-	},
-	
-	checkbox : function(checked, id, params){
-    
-    	var inputObj = {
-    		label: params["labelText"],
-    		inputType : "checkbox",
-	    	checked : ( notEmpty(checked) ? checked : "" ),
-	    	init : function(){
-	        	
-	        	$("#ajaxFormModal #"+id).val(checked);
-	        	$("#ajaxFormModal ."+id+"checkbox label").append("<span class='lbl-status-check margin-left-10'></span>");
-	        	if(typeof params["labelInformation"] != "undefined")
-	        		$("#ajaxFormModal ."+id+"checkbox").append("<small class='col-md-12 col-xs-12 text-left no-padding' style='margin-top:-10px;'>"+params["labelInformation"]+"</small>");
-
-	        	setTimeout(function(){
-	        		$(".bootstrap-switch-label").off().click(function(){
-	        			$(".bootstrap-switch-off").click();
-	        		});
-	        		
-		        	if (checked) {
-	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
-	    				$(params["inputId"]).show(400);
-	    			} else {
-	    				
-	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
-	    				$(params["inputId"]).hide(400);
-	    			}
-    			}, 1000);
-	        },
-	    	"switch" : {
-	    		"onText" : params["onText"],
-	    		"offText" : params["offText"],
-	    		"labelText":params["labelInInput"],
-	    		"onChange" : function(){
-	    			var checkbox = $("#ajaxFormModal #"+id).is(':checked');
-	    			$("#ajaxFormModal #"+id).val($("#ajaxFormModal #"+id).is(':checked'));
-	    			console.log("on change checkbox",$("#ajaxFormModal #"+id).val());
-	        		//$("#ajaxFormModal #"+id+"checkbox").append("<span class='lbl-status-check'></span>");
-	    			if (checkbox) {
-	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
-	    				$(params["inputId"]).show(400);
-	    				/*if(id=="amendementActivated"){
-	    					var am = $("#ajaxFormModal #voteActivated").val();
-	    					console.log("am", am);
-	    					if(am == "true")
-	    						$("#ajaxFormModal .voteActivatedcheckbox .bootstrap-switch-handle-on").click();
-	    				}
-	    				if(id=="voteActivated"){
-	    					var am = $("#ajaxFormModal #amendementActivated").val();
-	    					console.log("vote", am);
-	    					if(am == "true")
-	    						$("#ajaxFormModal .amendementActivatedcheckbox .bootstrap-switch-handle-on").click();
-	    				}*/
-	    			} else {
-	    				
-	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
-	    				$(params["inputId"]).hide(400);
-	    			}
-	    		}
-		    }
-    	};
-	    return inputObj;
-	},
-	allDay : function(checked){
-
-    	var inputObj = {
-    		inputType : "checkbox",
-	    	checked : ( notEmpty(checked) ? checked : "" ),
-	    	init : function(){
-	        	$("#ajaxFormModal #allDay").off().on("switchChange.bootstrapSwitch",function (e, data) {
-	        		mylog.log("allDay dateLimit",$("#ajaxFormModal #allDay").val());
-	        	})
-	        },
-	    	"switch" : {
-	    		"onText" : tradDynForm["yes"],
-	    		"offText" : tradDynForm["no"],
-	    		"labelText":tradDynForm["allday"],
-	    		"onChange" : function(){
-	    			var allDay = $("#ajaxFormModal #allDay").is(':checked');
-	    			var startDate = "";
-	    			var endDate = "";
-	    			$("#ajaxFormModal #allDay").val($("#ajaxFormModal #allDay").is(':checked'));
-	    			
-	    			if (allDay) {
-	    				$(".dateTimeInput").addClass("dateInput");
-	    				$(".dateTimeInput").removeClass("dateTimeInput");
-	    				$('.dateInput').datetimepicker('destroy');
-	    				$(".dateInput").datetimepicker({ 
-					        autoclose: true,
-					        lang: "fr",
-					        format: "d/m/Y",
-					        timepicker:false
-					    });
-					    startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
-					    endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
-	    			} else {
-	    				$(".dateInput").addClass("dateTimeInput");
-	    				$(".dateInput").removeClass("dateInput");
-	    				$('.dateTimeInput').datetimepicker('destroy');
-	    				$(".dateTimeInput").datetimepicker({ 
-		       				weekStart: 1,
-							step: 15,
-							lang: 'fr',
-							format: 'd/m/Y H:i'
-					    });
-					    
-	    				startDate = moment($('#ajaxFormModal #startDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
-						endDate = moment($('#ajaxFormModal #endDate').val(), "DD/MM/YYYY").format("DD/MM/YYYY HH:mm");
-	    			}
-				    if (startDate != "Invalid date") $('#ajaxFormModal #startDate').val(startDate);
-					if (endDate != "Invalid date") $('#ajaxFormModal #endDate').val(endDate);
-	    		}
-		    }
-    	};
-    	return inputObj;
-    },
-    startDateInput : function(typeDate){
-    	mylog.log('startDateInput', typeDate);
-    	var inputObj = {
-	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
-	        placeholder: tradDynForm.startDate,
-	        label : tradDynForm.startDate,
-	        rules : { 
-	        	required : true,
-	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm.thestartDate]
-	    	}
-	    }
-    	return inputObj;
-    },
-    endDateInput : function(typeDate){
-    	var inputObj = {
-	        inputType : ( notEmpty(typeDate) ? typeDate : "datetime" ),
-	        placeholder: tradDynForm.endDate,
-	        label : tradDynForm.endDate,
-	        rules : { 
-	        	required : true,
-	        	greaterThan: ["#ajaxFormModal #startDate",tradDynForm.thestartDate],
-	        	duringDates: ["#startDateParent","#endDateParent",tradDynForm.theendDate]
-		    }
-	    }
-    	return inputObj;
-    },
-    birthDate : {
-        inputType : "date",
-        label : tradDynForm.birthdate,
-        placeholder: tradDynForm.birthdate
-    },
-    dateEnd :{
-    	inputType : "date",
-    	label : tradDynForm.endDate,
-    	placeholder : "Fin de la période de vote",
-    	rules : { 
-    		required : true,
-    		greaterThanNow : ["DD/MM/YYYY"]
-    	}
-    },
-    voteDateEnd :{
-    	inputType : "datetime",
-    	label : tradDynForm.dateEndVoteSession,
-    	placeholder : tradDynForm.dateEndVoteSession,
-    	rules : { 
-    		required : true,
-    		greaterThanNow : ["DD/MM/YYYY H:m"]
-    	}
-    },
-    amendementDateEnd :{
-    	inputType : "datetime",
-    	label : tradDynForm.dateEndAmendementSessionStartVote,
-    	placeholder : tradDynForm.dateEndAmendementSession,
-    	rules : { 
-    		required : true,
-    		greaterThanNow : ["DD/MM/YYYY H:m"]
-    	}
-    },
-    inviteSearch : {
-    	inputType : "searchInvite",
-       	init : function(){
-        	$("#ajaxFormModal #inviteSearch ").keyup(function(e){
-			    var search = $('#inviteSearch').val();
-			    if(search.length>2){
-			    	clearTimeout(timeout);
-					timeout = setTimeout('autoCompleteInviteSearch("'+encodeURI(search)+'")', 500); 
-				}else{
-				 	$("#newInvite #dropdown_searchInvite").css({"display" : "none" });	
-				}	
-			});
-        }
-    },
-    invitedUserEmail : {
-    	placeholder : "Email",
-        inputType : "text",
-        rules : {
-            required : true
-        },
-        init:function(){
-        	$(".invitedUserEmailtext").css("display","none");	 
-        }
-    },
-    inputHidden :function(value, rules) { 
-		var inputObj = { inputType : "hidden"};
-		if( notNull(value) ) inputObj.value = value ;
-		if( notNull(rules) ) inputObj.rules = rules ;
-    	return inputObj;
-    },
-    get:function(type){
-    	//mylog.log("dyFInputs.get", type);
-    	if( type == "undefined" ){
-    		toastr.error("type can't be undefined");
-    		return null;
-    	}
-    	var obj = null;
-    	if( jsonHelper.notNull("typeObj."+type)){
-    		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			obj = typeObj[ typeObj[type].sameAs ];
-    		} else
-    			obj = typeObj[type];
-    		obj.name = (trad[type]) ? trad[type] : type;
-    	}
-    	if( obj === null ){
-    		obj = dyFInputs.deepGet(type);
-    		if( obj )
-    			obj = dyFInputs.get( obj.col )
-    	}
-    	return obj;
-    },
-    deepGet:function(type){
-    	//mylog.log("get", type);
-    	var obj = null;
-    	$.each( typeObj,function(k,o) { 
-    		if( o.subTypes && ( $.inArray( type,  o.subTypes )>=0 ) ){
-    			obj = o;
-    			return false;
-    		}
-    	});
-    	return obj;
-    }
-};
-
-var typeObj = {
-	themes:{ 
-		dynForm : {
-		    jsonSchema : {
-			    title : "Theme Switcher ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    properties : {
-			    	custom :{
-		            	inputType : "custom",
-		            	html : function() { 
-		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "ph dori", classes:"bg-dark", icon:"fa-bullseye", action : "javascript:window.location.href = moduleId+'?theme=ph-dori'"},
-			            		{ label : "notragora", classes:"bg-grey", icon:"fa-video-camera ", action : "javascript:window.location.href = moduleId+'?theme=notragora'"},
-			            		{ label : "C02", classes:"bg-red", icon:"fa-search", action : "javascript:window.location.href = moduleId+'?theme=CO2'"},
-			            		{ label : "network", classes:"bg-orange", icon:"fa-bars", action : "javascript:window.location.href = moduleId+'?theme=network'"},
-			            		
-		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-4 "} )+"</div>";
-		            	}
-		            }
-			    }
-			}
-		}	},
-	addElement:{ 
-		dynForm : {
-		    jsonSchema : {
-			    title : "Ajouter un élément ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    properties : {
-			    	custom :{
-		            	inputType : "custom",
-		            	html : function() { 
-		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:dyFObj.openForm('event')"},
-			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:dyFObj.openForm('organization')"},
-			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:dyFObj.openForm('project')"},
-			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:dyFObj.openForm('poi')"},
-			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:dyFObj.openForm('entry')"},
-			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:dyFObj.openForm('action')"},
-			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:dyFObj.openForm('classified')"},
-			            		{ label : "Documentation", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
-			            		{ label : "Signaler un bug", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
-		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-6 "} )+"</div>";
-		            	}
-		            }
-			    }
-			}
-		}	},
-	addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
-	addFile:{ titleClass : "bg-dark", color : "bg-dark" },
-	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	persons : { sameAs:"person" },
-	people : { sameAs:"person" },
-	citoyen : { sameAs:"person" },
-	citoyens : { sameAs:"person" },
-	contact : { col : "citoyens", ctrl : "contact", titleClass : "bg-yellow", bgClass : "bgPerson", color:"yellow", icon:"user" },
-	
-	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
-		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
-			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
-			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
-	place:{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
-	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
-	Maison : {sameAs:"place", color: "azure",icon: "home"},
-	ressource:{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
-
-	siteurl:{ col:"siteurl",ctrl:"siteurl"},
-	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
-	organizations : {sameAs:"organization"},
-	LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
-	NGO : {sameAs:"organization", color:"green", icon:"users"},
-	Association : {sameAs:"organization", color:"green", icon: "group"},
-	GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
-	Group : {	col:"organizations",color: "turq",icon: "circle-o"},
-	event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
-	events : {sameAs:"event"},
-	project : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
-	projects : {sameAs:"project"},
-	city : {sameAs:"cities"},
-	cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
-	
-	entry : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
-		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-	vote : {col:"actionRooms",ctrl:"survey"},
-	survey : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
-	surveys : {sameAs:"survey"},
-	proposal : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-	proposals : { sameAs : "proposal" },
-	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
-	actions : { sameAs : "action" },
-	actionRooms : {sameAs:"room"},
-	rooms : {sameAs:"room"},
-	room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-	discuss : {col:"actionRooms",ctrl:"room"},
-
-	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
-		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
-				   subTypes : [
-				   //FR
-				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",
-				   //EN
-				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
-				   ]	},
-	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
-	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
-	default : {icon:"arrow-circle-right",color:"dark"},
-	//"video" : {icon:"video-camera",color:"dark"},
-	formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
-	news : { col : "news" }, 
-	config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
-				sections : {
-			        network : { label: "Network Config",key:"network",icon:"map-marker"}
-			    }},
-	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
-	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
-				sections : {
-			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
-			        organization : { label: trad.organization,key:"organization",icon:"group"},
-			        event : { label: trad.event,key:"event",icon:"calendar"},
-			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
-			    }},
-	apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
-				sections : {
-			        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
-			        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
-			        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
-			        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
-			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
-			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
-			    }},
-	filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
-};
 
 var documents = {
 	objFile:{
@@ -4499,9 +2807,11 @@ var keyboardNav = {
 		"67" : function(){$('#openModal').modal('hide');dyFObj.openForm('classified')},//c : classified
 		"69" : function(){$('#openModal').modal('hide');dyFObj.openForm('event')}, //e : event
 		"70" : function(){$('#openModal').modal('hide'); $(".searchIcon").trigger("click") },//f : find
-		"72" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help') },//h : help
+		"71" : function(){ co.graph() },//g graph
+		"72" : function(){ co.help() },//h : help
 		"73" : function(){$('#openModal').modal('hide');dyFObj.openForm('person')},//i : invite
 		"76" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/links')},//l : links and infos
+		"77" : function(){ co.mind() },//m graph
 		"79" : function(){$('#openModal').modal('hide');dyFObj.openForm('organization')},//o : orga
 		"80" : function(){$('#openModal').modal('hide');dyFObj.openForm('project')},//p : project
 		"82" : function(){$('#openModal').modal('hide');smallMenu.openAjax(baseUrl+'/'+moduleId+'/person/directory?tpl=json','Mon répertoire','fa-book','red')},//r : annuaire
@@ -4524,6 +2834,7 @@ var keyboardNav = {
 		}
 	}
 }
+
 
 //*********************************************************************************
 // Utility for events date
@@ -4556,7 +2867,6 @@ function displayStartAndEndDate(event) {
 
 		var startDate = startDateMoment.format("DD-MM-YYYY");
 		var endDate = endDateMoment.format("DD-MM-YYYY");
-
 		var hour1 = "Toute la journée";
 		var hour2 = "Toute la journée";
 		if(event["allDay"] == false || event["allDay"] == null) { 	
@@ -5023,3 +3333,272 @@ $(document).ready(function() {
 	if(notNull(userId) && userId!="") 
 		bindRightClicks();
 });
+
+var typeObj = {
+	themes:{ 
+		dynForm : {
+		    jsonSchema : {
+			    title : "Theme Switcher ?",
+			    icon : "question-cirecle-o",
+			    noSubmitBtns : true,
+			    properties : {
+			    	custom :{
+		            	inputType : "custom",
+		            	html : function() { 
+		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
+			            		{ label : "ph dori", classes:"bg-dark", icon:"fa-bullseye", action : "javascript:window.location.href = moduleId+'?theme=ph-dori'"},
+			            		{ label : "notragora", classes:"bg-grey", icon:"fa-video-camera ", action : "javascript:window.location.href = moduleId+'?theme=notragora'"},
+			            		{ label : "C02", classes:"bg-red", icon:"fa-search", action : "javascript:window.location.href = moduleId+'?theme=CO2'"},
+			            		{ label : "network", classes:"bg-orange", icon:"fa-bars", action : "javascript:window.location.href = moduleId+'?theme=network'"},
+			            		
+		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-4 "} )+"</div>";
+		            	}
+		            }
+			    }
+			}
+		}	},
+	addElement:{ 
+		dynForm : {
+		    jsonSchema : {
+			    title : "Ajouter un élément ?",
+			    icon : "question-cirecle-o",
+			    noSubmitBtns : true,
+			    properties : {
+			    	custom :{
+		            	inputType : "custom",
+		            	html : function() { 
+		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
+			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:dyFObj.openForm('event')"},
+			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:dyFObj.openForm('organization')"},
+			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:dyFObj.openForm('project')"},
+			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:dyFObj.openForm('poi')"},
+			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:dyFObj.openForm('entry')"},
+			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:dyFObj.openForm('action')"},
+			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:dyFObj.openForm('classified')"},
+			            		{ label : "Documentation", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
+			            		{ label : "Signaler un bug", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
+		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-6 "} )+"</div>";
+		            	}
+		            }
+			    }
+			}
+		}	},
+	addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
+	addFile:{ titleClass : "bg-dark", color : "bg-dark" },
+	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
+	persons : { sameAs:"person" },
+	people : { sameAs:"person" },
+	citoyen : { sameAs:"person" },
+	citoyens : { sameAs:"person" },
+	contact : { col : "citoyens", ctrl : "contact", titleClass : "bg-yellow", bgClass : "bgPerson", color:"yellow", icon:"user" },
+	
+	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
+		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
+	place:{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
+	Maison : {sameAs:"place", color: "azure",icon: "home"},
+	ressource:{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
+
+	siteurl:{ col:"siteurl",ctrl:"siteurl"},
+	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
+	organizations : {sameAs:"organization"},
+	LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
+	NGO : {sameAs:"organization", color:"green", icon:"users"},
+	Association : {sameAs:"organization", color:"green", icon: "group"},
+	GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
+	Group : {	col:"organizations",color: "turq",icon: "circle-o"},
+	event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
+	events : {sameAs:"event"},
+	project : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
+	projects : {sameAs:"project"},
+	city : {sameAs:"cities"},
+	cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
+	
+	entry : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
+		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
+	vote : {col:"actionRooms",ctrl:"survey"},
+	survey : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
+	surveys : {sameAs:"survey"},
+	proposal : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	proposals : { sameAs : "proposal" },
+	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
+	actions : { sameAs : "action" },
+	actionRooms : {sameAs:"room"},
+	rooms : {sameAs:"room"},
+	room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	discuss : {col:"actionRooms",ctrl:"room"},
+
+	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
+		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
+	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
+				   subTypes : [
+				   //FR
+				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",
+				   //EN
+				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
+				   ]	},
+	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
+	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
+	default : {icon:"arrow-circle-right",color:"dark"},
+	//"video" : {icon:"video-camera",color:"dark"},
+	formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
+	news : { col : "news" }, 
+	config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
+				sections : {
+			        network : { label: "Network Config",key:"network",icon:"map-marker"}
+			    }},
+	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
+	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
+				sections : {
+			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
+			        organization : { label: trad.organization,key:"organization",icon:"group"},
+			        event : { label: trad.event,key:"event",icon:"calendar"},
+			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
+			    }},
+	apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
+				sections : {
+			        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
+			        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
+			        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
+			        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
+			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
+			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
+			    }},
+	filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
+};
+
+
+var co = {
+	ctrl : {
+		lbh : function (url) { 
+			if(userId)
+				urlCtrl.loadByHash(url);
+			else co.nect();
+		},
+		open : function (url,type) { 
+			title = null;
+			callback = null;
+
+			if(type == "md"){
+				title = "Markdown";
+				callback = function() {
+					getAjax('', url, function(data){ 
+							descHtml = dataHelper.markdownToHtml(data) ; 
+							$("#openModal div.modal-content div.container").html(descHtml);
+						}
+					,"html");
+				}
+			} 
+			
+			else if(type == "youtube") {
+				title = "Youtube";
+				callback = function() { $("#openModal div.modal-content div.container").html('<iframe width="560" height="315" src="'+url+'" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>');}
+			}
+
+			if(title){
+				smallMenu.open(title,null,null,callback);
+			} else
+				toastr.error("Type not found!!");
+		},
+	},
+	help : function () { 
+		url = urlCtrl.convertToPath("#default.view.page.links");
+	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
+	},
+	lang : function () { 
+		smallMenu.open("<h1>Explain COLang</h1>");
+	},
+	mands : function () { 
+		str = "";
+		$.each(co,function (k,v) { 
+			str += "<a class='btn' href='javascript:;' onclick='co."+k+"()'>co."+k+"</a><br/>";
+		})
+		smallMenu.open("<h1>All Commands</h1>"+str);
+	},
+	//co.rss : function () {  },
+	tools : function () { 
+		smallMenu.open("<h1>Connected Tools and Open Apps Ecosystem</h1>");
+	},
+	nect : function () { 
+		if(!userId)
+			$('#modalLogin').modal("show");
+		else 
+			toastr.success("allready Loggued in!!");
+	},
+	tribute : function () { 
+		window.open('https://www.helloasso.com/associations/open-atlas/collectes/communecter/don', '_blank');
+	},
+	graph : function () { 
+		lazyLoad( "https://d3js.org/d3.v4.min.js", null, function() { 
+			var what = "id/"+userId+"/type/citoyens";
+			if(contextData && contextData.id && contextData.type ) {
+				contextDataType = dyFInputs.get(contextData.type).ctrl;
+				what = "id/"+contextData.id+"/type/"+contextDataType
+			}
+			smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/graph/d3/"+what);
+		} );
+	},
+	mind : function () { 
+		if( contextData && contextData.type == "citoyens")
+			smallMenu.open("Mindmap",null,null,function() {
+				mm = null;
+				d3.json(baseUrl+'/api/person/get/id/'+contextData.id+"/format/tree", function(error, data) {
+				  if (error) throw error;
+				  
+				  $("#openModal div.modal-content div.container").html("<svg id='mindmap' style='width:100%;height:800px'></svg>");
+				  mylog.log( data );
+				  markmap('svg#mindmap', data, {
+				    preset: 'default', // or colorful
+				    linkShape: 'diagonal' // or bracket
+				  });
+				});
+			});
+		else co.nect();
+	},
+	md : function (str) { 
+		if( contextData && contextData.type == "citoyens")
+			co.ctrl.open(baseUrl+'/api/person/get/id/'+contextData.id+"/format/md","md");
+		else 
+			toastr.error("No context to build a markdown!!");
+	},
+	agenda : function () { urlCtrl.loadByHash("#agenda");},
+	search : function () { urlCtrl.loadByHash("#search");},
+	live : function () { urlCtrl.loadByHash("#live");	},
+	web : function () { urlCtrl.loadByHash("#web");	},
+	annonces : function () { urlCtrl.loadByHash("#annonces");	},
+	chat : function () { 
+		if(userId)
+			rcObj.loadChat("","citoyens", true, true) 
+		else co.nect();
+	},
+	add : function (str) { 
+		strT = str.split(".");
+		type = {
+			"org":"organization",
+			"o":"organization",
+			"pr" : "project",
+			"ev" : "event",
+			"e" : "event",
+			"p" : "person",
+			"poi" : "poi"
+		}
+		if( type[ strT[2] ] )
+			dyFObj.openForm(strT[2]);
+		//else todo
+		// free add form 
+		// set a type 
+	},
+	// *****************************************
+	// Connected person stuff
+	// ****************************************
+	o : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.organizations");},
+	e : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.evens");},
+	pr : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.projects");},
+	p : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.follows");},
+	poi : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.poi");},
+	info : function () { co.ctrl.lbh("#"+userConnected.username+".view.detail");},
+}	

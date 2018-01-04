@@ -429,10 +429,10 @@ function getViewUrl(id,data){
     				'</label>'+
     				'</div>';
 			}
+
+			link = buildLink(data);
 			html+='<div class="content-info col-md-10 col-sm-10 col-sx-10 padding-5">'+
-					'<a href="'+data.url+'" target="_blank">'+
-						'<span>'+data.name+' </span>'+
-					'</a>'+
+					link+
 				'</div>'+
 				'<div class="tools tools-right pull-right padding-5">';
 			if(authorizationToEdit){
@@ -452,6 +452,94 @@ function getViewUrl(id,data){
 	'</li>' ;
 	return html;
 }
+function buildLink(data) { 
+	link = '<a href="'+data.url+'" target="_blank"><span>'+data.name+' </span></a>';
+	if( navigator.onLine ){
+		if( data.url.indexOf(".md")>= 0  )
+			return '<a href="javascript:;" onclick="co.ctrl.open(\''+data.url+'\',\'md\')"><span>'+data.name+' </span></a>';
+		else if(getVidId(data.url) != null ){
+			data.url = YouTubeUrlNormalize(data.url);
+			return '<a href="javascript:;" onclick="co.ctrl.open(\''+data.url+'\',\'youtube\')"><span>'+data.name+' </span></a>';
+		}
+	}
+
+ }
+
+ var getVidId = function(url)
+{
+    var vidId;
+    if(url.indexOf("youtube.com/watch?v=") !== -1)//https://m.youtube.com/watch?v=e3S9KINoH2M
+        vidId = url.substr(url.indexOf("youtube.com/watch?v=") + 20);
+    else if(url.indexOf("youtube.com/watch/?v=") !== -1)//https://m.youtube.com/watch/?v=e3S9KINoH2M
+        vidId = url.substr(url.indexOf("youtube.com/watch/?v=") + 21);
+    else if(url.indexOf("youtu.be") !== -1)
+        vidId = url.substr(url.indexOf("youtu.be") + 9);
+    else if(url.indexOf("www.youtube.com/embed/") !== -1)
+        vidId = url.substr(url.indexOf("www.youtube.com/embed/") + 22);
+    else if(url.indexOf("?v=") !== -1)// http://m.youtube.com/?v=tbBTNCfe1Bc
+        vidId = url.substr(url.indexOf("?v=")+3, 11);
+    else
+    {
+        console.warn("YouTubeUrlNormalize getVidId not a youTube Video: "+url);
+        vidId = null;
+    }
+
+    if(vidId.indexOf("&") !== -1)
+        vidId = vidId.substr(0, vidId.indexOf("&") );
+	
+	console.warn("getVidId youTube Video: "+vidId);
+    return vidId;
+};
+
+var YouTubeUrlNormalize = function(url)
+{
+    var rtn = url;
+    console.warn("url: "+url);
+    if(url) {
+        var vidId = getVidId(url);
+        rtn = (vidId) ? "https://www.youtube.com/embed/"+vidId : url;
+        console.warn("2 url: "+url);
+    }
+    return rtn;
+};
+
+YouTubeUrlNormalize.getThumbnail = function(url, num)
+{
+    var rtn, vidId = getVidId(url);
+    if(vidId)
+    {
+        if(!isNaN(num) && num <= 4 && num >= 0)
+            rtn = "http://img.youtube.com/vi/"+vidId+"/"+num+".jpg";
+        else
+            rtn = "http://img.youtube.com/vi/"+getVidId(url)+"/default.jpg";
+    }
+    else
+        return null;
+    return rtn;
+};
+
+YouTubeUrlNormalize.getFullImage = function(url)
+{
+    var vidId = getVidId(url);
+    if(vidId)
+        return "http://img.youtube.com/vi/"+vidId+"/0.jpg";
+    else
+        return null;
+};
+
+
+if ( typeof exports !== "undefined" ) {
+    module.exports = YouTubeUrlNormalize;
+}
+else if ( typeof define === "function" ) {
+    define( function () {
+        return YouTubeUrlNormalize;
+    } );
+}
+else {
+    window.YouTubeUrlNormalize = YouTubeUrlNormalize;
+}
+
 function initMenuLibrary(){
 	htmlBtn = ' <a href="javascript:;" class="openFolder filter-folder-gallery" data-name="" data-key="bookmarks">'+
 						'<div class="center">' +

@@ -79,7 +79,7 @@ Upload Process in dynforms
 - uploads to corresponding folder
 	```
 	Document::uploadDocument($file, $res["uploadDir"],$input,$rename);
-	add COLLECTION generateProfilImages::$allowedElements
+	WARNING!!  add COLLECTION generateProfilImages::$allowedElements
 	```
 	
 - saves to DB document collection 

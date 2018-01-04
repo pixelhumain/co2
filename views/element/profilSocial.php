@@ -29,6 +29,11 @@
 		'/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
         '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
         '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
+        "/plugins/d3/d3.js",
+        "/plugins/d3/d3-flextree.js",
+        "/plugins/d3/view.mindmap.js",
+        "/plugins/d3/view.mindmap.css",
+        
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
@@ -425,15 +430,43 @@
 									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
 								</a>
 							</li>
+
+							<li class="text-left">
+				               	<a href='javascript:;' onclick='loadMD()' >
+									<i class='fa fa-file-text-o'></i> <?php echo Yii::t("common","Markdown Version"); ?>
+								</a>
+				            </li>
+							
+							<li class="text-left">
+				               	<a href='javascript:;' onclick='loadMindMap()' >
+									<i class='fa fa-sitemap'></i> <?php echo Yii::t("common","Mindmap View"); ?>
+								</a>
+				            </li>
+
+				            
 							
 							<li class="text-left">
 				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
 									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 								</a>
 				            </li>
+				            <?php }
 
-				            <?php } ?>
-			            <?php } ?>
+				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {  
+		                
+		               			$urlNetwork = Element::getUrlMyNetwork((string)$element["_id"], $type); ?>
+
+		               			<li class="text-left">
+					               	<a href='<?php echo $urlNetwork; ?>' target='_blanck'>
+										<i class='fa fa-map'></i> <?php echo Yii::t("common","My network"); ?>
+									</a>
+					            </li>
+			            <?php } } ?>
+			            <li class="text-left">
+				               	<a href='javascript:;' onclick='co.graph()' >
+									<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
+								</a>
+				            </li>
 			  		</ul>
 		  		</li>
 		  	</ul>
@@ -713,7 +746,7 @@
 	var proposalId = "<?php echo @$_GET['proposal']; ?>";
 	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
 	var actionId = "<?php echo @$_GET['action']; ?>";
-
+	var isLiveNews = "";
 
 	jQuery(document).ready(function() {
 		bindButtonMenu();
@@ -782,6 +815,8 @@
 				rcObj.loadChat("","citoyens", true, true);
 			else if(sub=="contacts")
 				loadContacts();
+			else if(sub=="md")
+				loadMD();
 			else if(sub=="settings")
 				loadSettings();
 			else if(sub=="coop"){

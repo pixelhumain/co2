@@ -48,33 +48,30 @@ dynForm = {
             "type" : dyFInputs.inputHidden(),
 	        "name" : dyFInputs.name(),
 
+/************************* Skin *****************************/
 	        skinInfo : {
                 inputType : "custom",
                 html:"<p class='item-comment bg-green-comment'>SKIN Section<hr></p>",
             },
-            "skin[title]" : dyFInputs.name(),
-	        	"skin[logo]" : dyFInputs.image(),
-		    "skin[paramsLogo][origin]" : dyFInputs.radio( "Logo Origin ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
-											 			"false" : { icon:"circle-o", lbl:trad.no} } ),
-											 			/*dyFInputs.checkboxSimple("true", "skinparamsLogoorigin", 
-            										{ "onText" : "Oui",
-            										  "offText": "Non",
-            										  "onLabel" : "on",
-            										  "offLabel": "off",
-            										  "inputId" : ".skinparamsLogoorigin",
-            										  "labelText": "skin params Logo origin ?",
-            										  "labelInInput": "Activer les amendements",
-            										  "labelInformation": "<i class='fa fa-info-circle'></i> Les votes sont désactivés pendant la période d'amendement"
+            "skin[title]" : dyFInputs.inputText("Titre du network", "Titre du network", { required : true }),
+	        "skin[logo]" : dyFInputs.image("Logo du network"),
+		    // "skin[paramsLogo][origin]" : dyFInputs.radio( "Logo Origin2 ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
+						// 					 			"false" : { icon:"circle-o", lbl:trad.no} } ),
 
-            }),*/
+		    "skin[displayCommunexion]" : dyFInputs.radio(	"Ajout la connexion à Communecter", 
+		    												{ "true" : { icon:"check-circle-o", lbl:trad.yes },
+											 				"false" : { icon:"circle-o", lbl:trad.no} },
+											 				{ required : true } ),
+
+/************************* Filter *****************************/
 
             filterInfo : {
                 inputType : "custom",
                 html:"<p class='item-comment bg-green-comment'>FILTER Section "+
                 	"</p>",
             },
-            "filters[types]" : dyFInputs.radio( "Types ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
-											 			"false" : { icon:"circle-o", lbl:trad.no} } ),
+            // "filters[types]" : dyFInputs.radio( "Types ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
+											 // 			"false" : { icon:"circle-o", lbl:trad.no} } ),
             filterTagsInfo : {
                 inputType : "custom",
                 html:"<a href='javascript:;' class='btn btn-dark' onclick='dyFObj.openForm(\"filter\",null,null,true)'><i class='fa fa-plus'></i> Ajouter un Filtre</a>"+

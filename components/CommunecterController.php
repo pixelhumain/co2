@@ -5,7 +5,7 @@
  */
 class CommunecterController extends Controller
 {
-  public $version = "v0.2.2.2";
+  public $version = "v0.2.2.22";
   public $versionDate = "29/07/2016 19:12";
   public $title = "Communectez";
   public $subTitle = "se connecter à sa commune";
@@ -124,6 +124,10 @@ class CommunecterController extends Controller
     ),
     "tool" => array(
       "get"    => array("href" => "/ph/co2/tool/get")
+    ),
+    "cron" => array(
+      "docron"    => array("href" => "/ph/co2/cron/docron"),
+      "checkdeletepending"    => array("href" => "/ph/co2/cron/checkdeletepending")
     ),
     "rocketchat" => array(
       "index"    => array("href" => "/ph/co2/rocketchat/index"),
@@ -452,6 +456,8 @@ class CommunecterController extends Controller
     "graph"=> array(
       "getdata" => array("href" => "/ph/co2/graph/getdata"),
       "viewer" => array("href" => "/ph/co2/graph/viewer"),
+      "d3" => array("href" => "/ph/co2/graph/d3"),
+      "search" => array("href" => "/ph/co2/graph/search"),
     ),
     "log"=> array(
       "monitoring" => array("href" => "/ph/co2/log/monitoring"),
@@ -491,6 +497,7 @@ class CommunecterController extends Controller
       'getthumbpath'        => array("href" => "/ph/co2/element/getThumbPath"),
       'getcommunexion'      => array("href" => "/ph/co2/element/getcommunexion"),
       'getdatabyurl'        => array("href" => "/ph/co2/element/getdatabyurl"),
+      'network'        => array("href" => "/ph/co2/element/network"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),

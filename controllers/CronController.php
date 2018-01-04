@@ -17,8 +17,8 @@ class CronController extends CommunecterController {
 	public function actions()
 	{
 	    return array(
-	        'doCron'    			=> 'citizenToolKit.controllers.action.DoCronAction',
-	        'checkDeletePending'    => 'citizenToolKit.controllers.action.CheckDeletePendingAction',
+	        'docron'    			=> 'citizenToolKit.controllers.cron.DoCronAction',
+	        'checkdeletepending'    => 'citizenToolKit.controllers.cron.CheckDeletePendingAction',
 	    );
 	}
 }

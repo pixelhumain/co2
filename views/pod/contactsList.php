@@ -143,7 +143,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme,Yii::app()->reque
 		}
 		
 		console.dir(dataUpdate);
-		dyFObj.openForm ('contactPoint','contact', dataUpdate);
+		dyFObj.openForm ('contactPoint','sub', dataUpdate);
 	}
 
 	function removeContact(ind) {

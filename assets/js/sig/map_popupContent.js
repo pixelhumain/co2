@@ -56,19 +56,8 @@
 
 			
 			onclick = 'urlCtrl.loadByHash("'+url+'");';
-
-			if (type.substr(0,11) == "poi.interop") {
-				url = data.url;
-				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			}else if (typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
-				url = "https://www.communecter.org/"+url;
-				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			}else if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined"){
-				popupContent += "<a href='"+data.source+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			} else{						
-				popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='item_map_list popup-marker lbh' id='popup"+id+"'>";
-			}
-			popupContent += "<div class='main-panel'>"
+			
+			popupContent += "<div class='item_map_list popup-marker' id='popup"+id+"'> <div class='main-panel'>"
 							+   "<div class='left-col'>"
 		    				+ 	   "<div class='thumbnail-profil'><img src='" + imgProfilPath + "' height=50 width=50 class='popup-info-profil-thumb'></div>"						
 		    				+ 	   "<div class='ico-type-account'>"+icons+"</div>"					
@@ -111,8 +100,18 @@
 				popupContent += displayStartAndEndDate(data);
 			}
 
-			popupContent += '<div class="btn btn-sm btn-more col-md-12"><i class="fa fa-hand-pointer-o"></i> en savoir +</div>';
-			popupContent += '</a>';
+			if (type.substr(0,11) == "poi.interop") {
+				url = data.url;
+				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
+			}else if (typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
+				url = "https://www.communecter.org/"+url;
+				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
+			}else{						
+				popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='item_map_list popup-marker lbh' id='popup"+id+"'>";
+			}
+
+			popupContent += '<div class="btn btn-sm btn-more col-md-12"><i class="fa fa-hand-pointer-o"></i>'+trad.knowmore+'</div>';
+			popupContent += '</a></div>';
 
 			return popupContent;
 		};
@@ -445,7 +444,7 @@
 			var popupContent = "";
 			//Website URL
 			if (typeof data["url"] != "undefined" && data["url"] != null)
-				popupContent += "<div class='popup-info-profil'><i class='fa fa fa-desktop fa_url'></i>" + data["url"] + "</div>";
+				popupContent += "<div class='popup-info-profil'><i class='fa fa fa-desktop fa_url'></i><a href='"+data["url"]+"' target='_blank'>"+ data["url"] + "</a></div>";
 
 			//email
 			if (typeof data["email"] != "undefined" && data["email"] != null)

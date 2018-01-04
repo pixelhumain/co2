@@ -1,0 +1,35 @@
+Monnaie locale virtuelle de Nouvelle-Calédonie : Oleti
+60 oleti = 1h
+
+Monnaie virtuelle commune : co-coin (cc? creative-common) : internationale, donc pas locale.
+
+Une monnaie pour échanger des biens et des services sans utiliser les monnaies "officielles"
+
+Comment on créé / gagne de l'argent avec cette monnaie ?
+
+1 - par la vente de biens (ex : comme les petites annonces)
+2 - par la vente de services (ex : )
+3 - en publiant du contenu intéressant sur CO / kgougle
+	> ajout d'un bouton "+1" pour donner 1 co-coin à l'auteur d'une publication
+	(en plus des boutons "j'aime / j'aime pas")
+
+Comment on détruit la monnaie pour éviter l'inflation infinie ?
+
+> Je propose de fixer une limite pour établir le montant maximum de co-coin par porte monnaie (max/wallet)
+> Par exemple : 60 co-coin/h × 8h × 30 jours = 14400 +- 15000
+> Le montant maximum par wallet serait de 15000 co-coin, pour limiter la somme max à l'équivalent de 30 jours de travail à 8h / jour
+>>> à débattre ! (on pourrait faire + que 1 mois : 2 mois ? 3 ? 4 ? 6 ?)
+
+Si un Wallet dépasse les 15000 cc, je vois 2 options :
+- La somme est versée dans une caisse commune, puis l'ensemble de la caisse est redistribuée équitablement à tous les wallet chaque mois.
+	Une façon de redistribuer la monnaie et éviter qu'un petit nombre de wallet accumulent la monnaie, et en privent les autres
+	Il ne pourrait pas y avoir de millionnaires en CC, donc inutile de l'accumuler, la monnaie circulerait beaucoup + qu'aujourd'hui.
+
+
+- La somme est détruite, la monnaie disparait. 
+	Ça incite aussi à faire circuler la monnaie, puisque sinon elle est perdue.
+	Ça permet d'éviter l'inflation
+
+
+API Walet :
+

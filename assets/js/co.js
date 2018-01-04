@@ -3539,7 +3539,7 @@ var co = {
 				contextDataType = dyFInputs.get(contextData.type).ctrl;
 				what = "id/"+contextData.id+"/type/"+contextDataType
 			}
-			smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/graph/d3/"+what);
+			smallMenu.openAjaxHTML( baseUrl+'/graph/co/d3/'+what);
 		} );
 	},
 	mind : function () { 

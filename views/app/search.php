@@ -1,5 +1,9 @@
 <?php 
-
+    $cssAnsScriptFilesModule = array(
+    '/plugins/jquery-simplePagination/jquery.simplePagination.js',
+    '/plugins/jquery-simplePagination/simplePagination.css'
+    );
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
     $cssAnsScriptFilesModule = array(
     '/assets/css/default/responsive-calendar.css',
     '/assets/css/default/search.css',
@@ -77,18 +81,29 @@
     }
 
     #dropdown_search{
-        margin-top:20px;
+        margin-top:0px;
     }
 
     .container{
         padding-bottom:0px !important;
+    }
+    .simple-pagination li a, .simple-pagination li span {
+        border: none;
+        box-shadow: none !important;
+        background: none !important;
+        color: #2C3E50 !important;
+        font-size: 16px !important;
+        font-weight: 500;
+    }
+    .simple-pagination li.active span{
+        color: #d9534f !important;
+        font-size: 24px !important; 
     }
 </style>
 
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" 
      id="content-social" style="min-height:700px;">
-
     <?php if(@$type=="events"){ ?>
     <div class="col-md-12 no-padding calendar"></div>
     <div class="responsive-calendar-init hidden"> 
@@ -113,7 +128,7 @@
     <?php } ?>
 
     <?php if(@$type!="cities" && Yii::app()->params["CO2DomainName"] != "terla"){ ?>
-        <div class="col-md-2 col-sm-2 col-xs-12 no-padding">
+        <!--<div class="col-md-2 col-sm-2 col-xs-12 no-padding">
             <?php if(@$type=="all"){ ?>
             <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips"
                     data-target="#dash-create-modal" data-toggle="modal"
@@ -129,24 +144,24 @@
             </button>
             <?php } ?>
 
-        </div>
+        </div>-->
 
         <?php //var_dump(Yii::app()->request->cookies['communexionActivated']);
               //var_dump(CO2::getCommunexionCookies()); 
         ?>
         <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
-        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <!--<div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
             <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
-        </div>
+        </div>-->
         <?php } ?>
     <?php } ?>
 
 
 	<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="page"></div>
 
-    <?php if(@$type=="all" && !empty(Yii::app()->session["userId"]) && Yii::app()->params["CO2DomainName"] != "terla" ){ ?>
-    <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
-        <!-- <hr style="margin-bottom:-20px;"> -->
+    <?php if(@$app && $app !="search" && !empty(Yii::app()->session["userId"]) && Yii::app()->params["CO2DomainName"] != "terla" ){ ?>
+    <!--<div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
+        /*** <hr style="margin-bottom:-20px;"> ***/
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
             data-target="#dash-create-modal" data-toggle="modal"
             data-toggle="tooltip" data-placement="top" 
@@ -163,9 +178,9 @@
                 <span class="text-red"><?php echo Yii::t("common","Government Organization") ?></span>
             </small>
         </h5><br>
-    </div>
+    </div>-->
     <?php } ?>
-
+    <div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20"></div>
 </div>
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
@@ -181,7 +196,7 @@ var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
-
+var pageCount=true;
 
 
 <?php if(@$type=="events"){ ?>
@@ -205,7 +220,8 @@ jQuery(document).ready(function() {
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
-	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
+    var appUrl = (typeof search.app != "undefined") ? "&app="+search.app : "";
+	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl+appUrl,function(){ 
 
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
@@ -252,7 +268,7 @@ jQuery(document).ready(function() {
 
         loadingData = false; 
         initTypeSearch(type);
-        startSearch(0, indexStepInit, searchCallback);
+        startSearch(null, null, searchCallback);
             initSearchInterface();
     },"html");
 

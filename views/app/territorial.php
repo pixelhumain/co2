@@ -203,12 +203,6 @@ var icons = {
 	poi : "fa-map-marker",
 	news : "fa-newspaper-o"
 };
-var search={
-	value:null,
-	page:"",
-	count:true,
-	type:"<?php echo Organization::COLLECTION ?>"
-};
 var searchPage=0;
 var pageCount=true;
 var searchCount={};
@@ -216,7 +210,7 @@ jQuery(document).ready(function() {
 	//setTitle("Espace administrateur : Répertoire","cog");
 	initTypeSearch(search.type);
    // startSearch(0, indexStepInit, searchCallback);
-    autoCompleteSearch("",null, null, null, null);   
+  autoCompleteSearch("",null, null, null, null);   
 	initKInterface();
 	initSearchInterface();
 	//initViewTable(results);

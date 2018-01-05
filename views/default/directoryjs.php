@@ -131,6 +131,7 @@
 </style>
  
 <div class="container-result-search">
+      <div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20 text-center"></div>
       <?php if(@$_GET['type']!="") { ?>
         <?php $typeSelected = $_GET['type']; ?>
         <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
@@ -210,23 +211,19 @@
         <?php } ?>
 
 
-        <?php if($typeSelected == "all"){ ?>   
+        <?php if($typeSelected == "all" || @$_GET["app"] ){ ?>   
           
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
-            <button class="btn text-white bg-dark btn-open-filliaire">
+            <!--<button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
-            </button><hr class="hidden-xs">
-            <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
+            </button><hr class="hidden-xs">-->
+           <!-- <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
-            </button><hr class="hidden-xs">
-            <button class="btn text-yellow btn-directory-type" data-type="persons">
-                <i class="fa fa-user"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","People") ?></span>
-            </button><hr class="hidden-xs">
+            </button><hr class="hidden-xs">-->
             <button class="btn text-green  btn-directory-type" data-type="NGO">
                 <i class="fa fa-group"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common", "NGOs") ?></span>
@@ -243,18 +240,29 @@
                 <i class="fa fa-lightbulb-o"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Projects") ?></span>
             </button><hr class="hidden-xs">
+            <button class="btn text-yellow btn-directory-type" data-type="persons">
+                <i class="fa fa-user"></i> 
+                <span class="hidden-xs"><?php echo Yii::t("common","People") ?></span>
+            </button><hr class="hidden-xs">
             <!-- <button class="btn text-red btn-directory-type" data-type="cities">
                 <i class="fa fa-university"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Cities") ?></span>
             </button><br class="hidden-xs"> -->
-            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
-                <i class="fa fa-university"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Public structures") ?></span>
-            </button><hr class="hidden-xs">
+
+            <button class="btn text-green-poi btn-directory-type" data-type="places">
+                <i class="fa fa-map-marker"></i> 
+                <span class="hidden-xs"><?php echo Yii::t("common","Placess") ?></span>
+            </button>
             <button class="btn text-green-poi btn-directory-type" data-type="poi">
                 <i class="fa fa-map-marker"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Point of interest") ?></span>
             </button>
+
+            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
+                <i class="fa fa-university"></i> 
+                <span class="hidden-xs"><?php echo Yii::t("common","Public structures") ?></span>
+            </button><hr class="hidden-xs">
+            
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>
         <?php } ?>
@@ -290,10 +298,10 @@
         <?php } else if( $typeSelected == "events" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
-            <button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
+            <!--<button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
-            </button><hr class="hidden-xs">
+            </button><hr class="hidden-xs">-->
             
             <?php $categories = Event::$types; 
                   foreach ($categories as $key => $cat) {
@@ -487,9 +495,10 @@
         
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
         <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
-        <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
+        <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
         <?php } ?>
       <?php } ?>
+      <div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20 text-center"></div>
   </div>
 
 

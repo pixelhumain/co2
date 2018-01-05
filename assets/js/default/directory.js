@@ -27,10 +27,10 @@ function startSearch(indexMin, indexMax, callBack){
     indexStep = indexStepInit;
 
     mylog.log("startSearch", indexMin, indexMax, indexStep, searchType);
-
-	  var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
+    var name=search.value;
+	  //var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
     
-    if(name == "") name = ($('#second-search-bar').length>0) ? $('#second-search-bar').val() : "";
+    //if(name == "") name = ($('#second-search-bar').length>0) ? $('#second-search-bar').val() : "";
     //if(name == "" && searchType.indexOf("cities") > -1) return;  
 
     if(typeof indexMin == "undefined") indexMin = 0;
@@ -238,7 +238,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               }
               str += "</small>";
               str += "</h4>";
-              str += "<hr style='float:left; width:100%;'/>";
+              str += "<hr style='float:left; width:100%;margin-top:0px;'/>";
               str += "</div>";
               
              // if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1  && totalData == 0){

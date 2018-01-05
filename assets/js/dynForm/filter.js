@@ -6,8 +6,8 @@ dynForm = {
 		save : function () { 
 			mylog.log("formData success", formData);
 			//alert("filter save "+dyFObj.activeModal);
-			if( typeof typeObj.network.filters == "undefined" )
-				typeObj.network.filters = [];
+			if( typeof typeObj.network.filter == "undefined" )
+				typeObj.network.filter = [];
 			var formData = $("#openModal #ajaxFormModal").serializeFormJSON();
 			if(formData.key){
 				delete formData.key;
@@ -16,10 +16,11 @@ dynForm = {
 			}
 			// formData.tags = formData.tags.split(",");
 			// formData.tags = formData.tags.split(",");
-			typeObj.network.filters.push( formData );
-			//mylog.log(typeObj.network.filters);
+			typeObj.network.filter.push( formData );
+			mylog.log("typeObj.network.filter", typeObj.network.filter);
 			$(".filterList").html("");
-			$.each(typeObj.network.filters,function(k,v) { 
+			$.each(typeObj.network.filter,function(k,v) { 
+
 				$(".filterList").append(v.name+" <a href='javascript:;' onclick='typeObj.network.dynForm.removeFilter("+k+")'><i class='fa fa-times text-red'></i> </a><br/>");
 			});
 

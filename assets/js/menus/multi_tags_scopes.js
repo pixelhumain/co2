@@ -2,9 +2,9 @@
  function showTagsScopesMin(htmlId){
         htmlId=".scope-min-header";
         var numberOfScope = 0;
-        if(typeof myScopes.multiscopes != "undefined"){
+        if(typeof myScopes.multiscopes != "undefined" && notNull(myScopes.multiscopes)){
             $.each(myScopes.multiscopes, function(key, value){
-                myScopes.multiscopes++;
+                numberOfScope++;
             })  ;
         }
         scopeHtml="";

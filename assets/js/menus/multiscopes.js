@@ -309,6 +309,7 @@ function getLocalityForSearch(noScope){
 function getMultiScopeForSearch(){ 
 	var res = {};
 	mylog.log("getMultiScopeForSearch", myScopes.multiscopes);
+	if(notNull(myScopes.multiscopes)){
 	$.each(myScopes.multiscopes, function(key, value){
 		mylog.log("getMultiScopeForSearch value.active", value.active);
 		if(value.active == true){
@@ -316,7 +317,7 @@ function getMultiScopeForSearch(){
 			mylog.log("getMultiScopeForSearch search2", res);
 		}
 	});
-
+}
 	mylog.log("getMultiScopeForSearch search", res);
 	return res; 
 

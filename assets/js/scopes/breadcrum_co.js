@@ -112,35 +112,41 @@ function activateGlobalCommunexion(active, firstLoad, testCo){
             domBreadcrum="#open-breacrum-container";
             iconHeader="search";
         }
-        $(domBreadcrum).html(getBreadcrumCommunexion(valuesOfBreadcrum));
-        if(actionOnSetGlobalScope=="save")
-            $("#scopeListContainerForm").html(getBreadcrumCommunexion(valuesOfBreadcrum));
+        if(!firstLoad){
+            $(domBreadcrum).html(getBreadcrumCommunexion(valuesOfBreadcrum));
+            if(actionOnSetGlobalScope=="save")
+                $("#scopeListContainerForm").html(getBreadcrumCommunexion(valuesOfBreadcrum));
 
-        if(actionOnSetGlobalScope=="filter"){
-            if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
-                startNewsSearch(true);
-            else
-                startSearch(0, indexStepInit,searchCallback);
+            if(actionOnSetGlobalScope=="filter"){
+                if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
+                    startNewsSearch(true);
+                else
+                    startSearch(0, indexStepInit,searchCallback);
+            }
         }
-        headerHtml='<i class="fa fa-'+iconHeader+'"></i> ' + valuesOfBreadcrum.currentName + "<small class='text-dark'>.CO</small>";
-        bindCommunexionScopeEvents();
+        headerHtml="";
+        if(Object.keys(valuesOfBreadcrum).length >0)
+            headerHtml='<i class="fa fa-'+iconHeader+'"></i> ' + valuesOfBreadcrum.currentName + "<small class='text-dark'>.CO</small>";
+        
     }else{
-       // headerHtml='';
-        headerHtml='<i class="fa fa-search"></i> Multi-Scope<small class="text-dark">.CO</small>';
+        headerHtml='';
+        if(notNull(myScopes.multiscope))
+            headerHtml='<i class="fa fa-search"></i> Multi-Scope<small class="text-dark">.CO</small>';
        /* headerHtml='<a href="#" class="menu-btn-back-category" data-target="#modalMainMenu" data-toggle="modal">'+
                 '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo-head-search.png" height="60" class="inline">'+
                 '</a>';*/
         saveCookieMultiscope();
         showTagsScopesMin();
-        bindCommunexionScopeEvents();
-
-        if(actionOnSetGlobalScope=="filter"){
-            if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
-                startNewsSearch(true);
-            else
-                startSearch(0, indexStepInit,searchCallback);
+        if(!firstLoad){
+            if(actionOnSetGlobalScope=="filter"){
+                if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
+                    startNewsSearch(true);
+                else
+                    startSearch(0, indexStepInit,searchCallback);
+            }
         }
     }
+    bindCommunexionScopeEvents();
     $("#main-scope-name").html(headerHtml);
     //bindSearchCity();
     $('.tooltips').tooltip();

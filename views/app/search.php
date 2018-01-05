@@ -299,7 +299,7 @@ function showResultInCalendar(mapElements){
         var thumb_url = notEmpty(thisEvent["profilThumbImageUrl"]) ? baseUrl+thisEvent["profilThumbImageUrl"] : "";
         
         if(typeof events[startDate] == "undefined") events[startDate] = new Array();
-        events[startDate].push({  "id" : thisEvent["_id"]["$id"],
+        events[startDate].push({  "id" : (typeof thisEvent["_id"] != "undefined") ? thisEvent["_id"]["$id"] : thisEvent["id"]  ,
                                   "thumb_url" : thumb_url, 
                                   "startDate": startDate,
                                   "endDate": endDate,

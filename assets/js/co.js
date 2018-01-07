@@ -3327,13 +3327,6 @@ function test(params, itemType){
     params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
 }
 
-$(document).ready(function() { 
-	setTimeout( function () { checkPoll() }, 10000);
-	document.onkeyup = keyboardNav.checkKeycode;
-	if(notNull(userId) && userId!="") 
-		bindRightClicks();
-});
-
 var typeObj = {
 	themes:{ 
 		dynForm : {
@@ -3537,9 +3530,9 @@ var co = {
 			var what = "id/"+userId+"/type/citoyens";
 			if(contextData && contextData.id && contextData.type ) {
 				contextDataType = dyFInputs.get(contextData.type).ctrl;
-				what = "id/"+contextData.id+"/type/"+contextDataType
+				what = "id/"+contextData.id+"/type/"+contextDataType;
 			}
-			smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/graph/d3/"+what);
+			smallMenu.openAjaxHTML( baseUrl+'/graph/co/d3/'+what);
 		} );
 	},
 	mind : function () { 
@@ -3602,3 +3595,10 @@ var co = {
 	poi : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.poi");},
 	info : function () { co.ctrl.lbh("#"+userConnected.username+".view.detail");},
 }	
+
+$(document).ready(function() { 
+	setTimeout( function () { checkPoll() }, 10000);
+	document.onkeyup = keyboardNav.checkKeycode;
+	if(notNull(userId) && userId!="") 
+		bindRightClicks();
+});

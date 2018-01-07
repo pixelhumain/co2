@@ -180,7 +180,6 @@
         </h5><br>
     </div>-->
     <?php } ?>
-    <div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20"></div>
 </div>
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
@@ -216,7 +215,7 @@ jQuery(document).ready(function() {
 
     setTitle("", "", titlePage);
 
-    initKInterface({"affixTop":320});
+    initKInterface({"affixTop":100});
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";

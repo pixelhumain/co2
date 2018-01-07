@@ -191,7 +191,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
             } 
             else 
             {
-              console.log("fuckkkkiiiiiing",data);
+              //console.log("fuckkkkiiiiiing",data);
               var countData = 0;
             	$.each(data, function(i, v) { 
                 if(v.length!=0){ 
@@ -210,7 +210,9 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               if(totalData > 1)
                 resultsStr=trad.results;
               str += '<div class="col-md-12 text-left" id="">';
-              str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark pull-left'>"+
+              if(typeof pageCount != "undefined" && pageCount)
+                str += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+              str += "<h4 style='margin-bottom:10px; margin-left:15px;font-size:14px;' class='text-dark pull-left'>"+
                         "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
               str += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
@@ -247,11 +249,8 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               if(typeof data.count !="undefined")
                 refreshCountBadge(data.count);
               //console.log(data.results);
-              if(typeof pageCount != "undefined" && pageCount)
-                initPageTable(searchCount[search.type]);
              // alert();
               str += directory.showResultsDirectoryHtml(data);
-              
               if(str == "") { 
 	              $.unblockUI();
                 showMap(false);
@@ -296,7 +295,9 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
                 }else{*/
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").html(str);
-
+                    if(typeof pageCount != "undefined" && pageCount)
+                      initPageTable(searchCount[search.type]);
+              
                     /*if(typeof myMultiTags != "undefined"){
                     $.each(myMultiTags, function(key, value){ //mylog.log("binding bold "+key);
                       $("[data-tag-value='"+key+"'].btn-tag").addClass("bold");

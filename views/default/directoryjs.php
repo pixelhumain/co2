@@ -131,7 +131,6 @@
 </style>
  
 <div class="container-result-search">
-      <div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20 text-center"></div>
       <?php if(@$_GET['type']!="") { ?>
         <?php $typeSelected = $_GET['type']; ?>
         <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
@@ -216,10 +215,10 @@
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
-            <!--<button class="btn text-white bg-dark btn-open-filliaire">
+            <button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
-            </button><hr class="hidden-xs">-->
+            </button><hr class="hidden-xs">
            <!-- <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
@@ -498,7 +497,9 @@
         <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
         <?php } ?>
       <?php } ?>
-      <div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20 text-center"></div>
+      <?php if(@$_GET["page"] && in_array(array("search","agenda","annonces","ressources"), $_GET["page"])){ ?> 
+        <div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20 text-center"></div>
+      <?php } ?>
   </div>
 
 

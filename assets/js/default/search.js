@@ -22,7 +22,7 @@ function initSearchInterface(){
             else
                 autoCompleteSearch(search.value, null, null, null, null);
             pageCount=false;
-            KScrollTo("#dropdown_search");
+            //KScrollTo("#dropdown_search");
          }
     });
     $("#main-search-bar").change(function(){
@@ -42,7 +42,7 @@ function initSearchInterface(){
             else
                 autoCompleteSearch(search.value, null, null, null, null);
             $(".btn-directory-type").removeClass("active");
-            KScrollTo("#content-social");
+            //KScrollTo("#content-social");
          }
     });
 

@@ -48,7 +48,7 @@
 			"subdomain" : "territorial", 
 			"subdomainName" : "Territorial",
 			"hash" : "#app.territorial",
-			"icon" : "search", 
+			"icon" : "territorial", 
 			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
 			"placeholderMainSearch" : "search a page ...",
 			"lblBtnCreate" : "Create a page",

@@ -158,9 +158,9 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
 <?php $this->renderPartial($layoutPath.'header', 
                     array(  "layoutPath"=>$layoutPath , 
-                            "page" => "search") );
+                            "page" => "territorial") );
 ?>                          
-<div class="panel-heading border-light text-center col-md-12 col-sm-12 col-xs-12 margin-top-10">
+<!--<div class="panel-heading border-light text-center col-md-12 col-sm-12 col-xs-12 margin-top-10">
         <a href="javascript:;" onclick="applyStateFilter('<?php echo Organization::COLLECTION ?>')" class="filter<?php echo Organization::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Acteurs <span class="badge badge-warning countOrganizations" id="countorganizations"></span></a>
         <a href="javascript:;" onclick="applyStateFilter('<?php echo Project::COLLECTION ?>')" class="filter<?php echo Project::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Initiatives <span class="badge badge-warning countProjects" id="countprojects"></span></a> 
         <a href="javascript:;" onclick="applyStateFilter('<?php echo Person::COLLECTION ?>')" class="filter<?php echo Person::COLLECTION ?> btn btn-xs btn-default active btncountsearch"> Communecteurs <span class="badge badge-warning countPeople" id="countcitoyens"></span></a>
@@ -169,8 +169,8 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
         <a href="javascript:;" onclick="applyStateFilter('<?php echo Poi::COLLECTION ?>')" class="filter<?php echo Poi::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Points d'intêréts <span class="badge badge-warning countPoi" id="countpoi"></span></a>
         <a href="javascript:;" onclick="applyStateFilter('<?php echo Classified::COLLECTION ?>')" class="filter<?php echo Classified::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Annonces <span class="badge badge-warning countClassified" id="countclassified"></span></a>
         <a href="javascript:;" onclick="applyStateFilter('<?php echo News::COLLECTION ?>')" class="filter<?php echo News::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Posts <span class="badge badge-warning countNews" id="countnews"></span></a>
-        <!--<a href="javascript:;" onclick="clearAllFilters('')" class="btn btn-xs btn-default"> All</a></h4>-->
- </div>
+        <!--<a href="javascript:;" onclick="clearAllFilters('')" class="btn btn-xs btn-default"> All</a></h4>
+</div>-->
 <div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
 	<!--<div class="panel-tools padding-20">
 		<?php if( Yii::app()->session["userId"] ) { ?>
@@ -181,9 +181,9 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 		<a href="javascript:;" onclick="dyFObj.openForm('person')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Invite Someone "><i class="fa fa-plus"></i> <i class="fa fa-user"></i></a>
 		<?php } ?>
 	</div>-->
-	<div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20 text-center"></div>
+	<!--<div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20 text-center"></div>-->
 	<div class="panel-body" id="dropdown_search"></div>
-	<div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20"></div>
+	<!--<div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20"></div>-->
 </div>
 <script type="text/javascript">
 var openingFilter = "<?php echo ( isset($_GET['type']) ) ? $_GET['type'] : '' ?>";
@@ -208,7 +208,7 @@ var pageCount=true;
 var searchCount={};
 jQuery(document).ready(function() {
 	//setTitle("Espace administrateur : Répertoire","cog");
-	initTypeSearch(search.type);
+	initTypeSearch("all");
    // startSearch(0, indexStepInit, searchCallback);
   autoCompleteSearch("",null, null, null, null);   
 	initKInterface();

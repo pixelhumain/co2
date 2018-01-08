@@ -85,8 +85,10 @@ function addSearchType(type){
 function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
-    if(typeInit == "all") {
-        searchType = ["persons", "organizations", "projects", "poi", "cities"];
+    if(search.app == "territorial") {
+        searchType = ["organizations", "projects", "poi","ressources", "places", "news"];
+        if(search.value != "")
+          searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
 
         indexStepInit = 30;
@@ -132,6 +134,8 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
       data.indexMin=indexMin;
       data.indexMax=indexMax;
     }
+    if(typeof search != "undefined" && typeof search.app != "undefined")
+        data.app=search.app;
     if(typeof pageCount != "undefined")
       data.count=pageCount;
     //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
@@ -399,9 +403,36 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
   }
   function refreshCountBadge(count){
     searchCount=count;
+    console.log("aquuuui",count);
     $.each(count, function(e,v){
       $("#count"+e).text(v);
     });
+    if(search.value!=""){
+      countSocial=count.organizations+count.projects+count.place+count.citoyens+count.poi;
+      if(typeof countSocial != 0)
+        $(".count-badge-social").text(countSocial).show(700);
+      else
+        $(".count-badge-social").hide(700);
+      if(typeof count.events != "undefined" && count.events != 0)
+        $(".count-badge-agenda").text(count.events).show(700);
+      else
+        $(".count-badge-agenda").hide(700);
+      if(typeof count.news != "undefined" && count.news != 0)
+        $(".count-badge-live").text(count.news).show(700);
+      else
+        $(".count-badge-live").hide(700);
+      if(typeof count.ressource != "undefined" && count.ressource != 0)
+        $(".count-badge-ressources").text(count.ressource).show(700);
+      else
+        $(".count-badge-ressources").hide(700);
+      if(typeof count.classifieds != "undefined" && count.classifieds != 0)
+        $(".count-badge-classifieds").text(count.classifieds).show(700);
+      else
+        $(".count-badge-ressources").hide(700);
+      
+    }else{
+      $(".count-badge-menu").hide(700);
+    }
   }
   function calculateAgendaWindow(nbMonth){
 

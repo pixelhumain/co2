@@ -210,7 +210,7 @@
         <?php } ?>
 
 
-        <?php if($typeSelected == "all" || @$_GET["app"] ){ ?>   
+        <?php if($typeSelected == "all" || (@$_GET["app"] && $_GET["app"]=="search")){ ?>   
           
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 
@@ -226,22 +226,35 @@
             <button class="btn text-green  btn-directory-type" data-type="NGO">
                 <i class="fa fa-group"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common", "NGOs") ?></span>
+                <span class="badge count-badge-filter bg-green" id="countNGO"></span>
             </button><br class="hidden-xs">
             <button class="btn text-azure  btn-directory-type" data-type="LocalBusiness">
                 <i class="fa fa-industry"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Compagnies") ?></span>
+                <span class="badge count-badge-filter bg-azure" id="countLocalBusiness"></span>
             </button><br class="hidden-xs">
             <button class="btn text-turq btn-directory-type" data-type="Group">
                 <i class="fa fa-circle-o"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Groups") ?></span>
+                <span class="badge count-badge-filter bg-azure" id="countGroup"></span>
             </button><br class="hidden-xs">
+
+            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
+                <i class="fa fa-university"></i> 
+                <span class="hidden-xs"><?php echo Yii::t("common","Public structures") ?></span>
+                <span class="badge count-badge-filter bg-red" id="countGovernmentOrganization"></span>
+            </button>
+            <hr class="hidden-xs">
             <button class="btn text-purple btn-directory-type" data-type="projects">
                 <i class="fa fa-lightbulb-o"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Projects") ?></span>
-            </button><hr class="hidden-xs">
+                <span class="badge count-badge-filter bg-purple" id="countprojects"></span>
+            </button>
+            <hr class="hidden-xs">
             <button class="btn text-yellow btn-directory-type" data-type="persons">
                 <i class="fa fa-user"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","People") ?></span>
+                <span class="badge count-badge-filter bg-yellow" id="countcitoyens"></span>
             </button><hr class="hidden-xs">
             <!-- <button class="btn text-red btn-directory-type" data-type="cities">
                 <i class="fa fa-university"></i> 
@@ -250,17 +263,15 @@
 
             <button class="btn text-green-poi btn-directory-type" data-type="places">
                 <i class="fa fa-map-marker"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Placess") ?></span>
-            </button>
+                <span class="hidden-xs"><?php echo Yii::t("common","Places") ?></span>
+                <span class="badge count-badge-filter" id="countplace"></span>
+            </button><br class="hidden-xs">
             <button class="btn text-green-poi btn-directory-type" data-type="poi">
                 <i class="fa fa-map-marker"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Point of interest") ?></span>
+                <span class="badge count-badge-filter bg-green-poi" id="countpoi"></span>
             </button>
 
-            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
-                <i class="fa fa-university"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Public structures") ?></span>
-            </button><hr class="hidden-xs">
             
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>

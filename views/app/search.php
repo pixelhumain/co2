@@ -235,7 +235,7 @@ jQuery(document).ready(function() {
             setHeaderDirectory(typeD);
             loadingData = false;
             startSearch(0, indexStepInit, searchCallback);
-            KScrollTo("#content-social");
+            //KScrollTo("#content-social");
 
             $(".btn-directory-type").removeClass("active");
             $(this).addClass("active");

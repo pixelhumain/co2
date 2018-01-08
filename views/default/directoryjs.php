@@ -491,7 +491,7 @@
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
-        
+        <div class="col-md-<?php echo $col ?> text-left" id="headerSearchContainer"></div>
         <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
         <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
         <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->

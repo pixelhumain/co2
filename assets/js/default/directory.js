@@ -201,7 +201,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               
               totalData += countData;
             
-              str = "";
+              
               var city, postalCode = "";
 
               //parcours la liste des résultats de la recherche
@@ -209,40 +209,40 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               resultsStr=trad.result;
               if(totalData > 1)
                 resultsStr=trad.results;
-              str += '<div class="col-md-12 text-left" id="">';
+              headerStr = '';
               if(typeof pageCount != "undefined" && pageCount)
-                str += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-              str += "<h4 style='margin-bottom:10px; margin-left:15px;font-size:14px;' class='text-dark pull-left'>"+
+                headerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+              headerStr += "<h4 style='margin: 0px 0px 0px 6px;font-size:14px;' class='text-dark pull-left'>"+
                         "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
-              str += "<small class='resultTypes'>";
+              headerStr += "<small class='resultTypes'>";
               if(typeof headerParams != "undefined"){
                 var countNbTag=0;
                 $.each( searchType, function(key, val){ countNbTag++;
                   mylog.log(">>> each autocomplete search",val);
                   var params = headerParams[val];
-                  str += "<span class='text-"+params.color+"'>"+
+                  headerStr += "<span class='text-"+params.color+"'>"+
                             "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
                           "</span> ";
                 });//console.log("myMultiTags", myMultiTags);
                 
                 if(countNbTag > 0)
-                  str += "<br><br>";
+                  headerStr += "<br><br>";
                 
                 if( Object.keys(myMultiTags).length > 0 )
-                  str += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
+                  headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
                 
                 $.each(myMultiTags, function(key, val){
                   var params = headerParams[val];
-                  str += "<span class='text-dark hidden-xs'>"+
+                  headerStr += "<span class='text-dark hidden-xs'>"+
                             "#"+key+
                           "</span> ";
                 });
               }
-              str += "</small>";
-              str += "</h4>";
-              str += "<hr style='float:left; width:100%;margin-top:0px;'/>";
-              str += "</div>";
-              
+              headerStr += "</small>";
+              headerStr += "</h4>";
+              headerStr += "<hr style='float:left; width:100%;margin-top:0px;'/>";
+              $("#headerSearchContainer").html(headerStr);
+              str = "";
              // if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1  && totalData == 0){
               //		str += '<span class="col-md-12 col-sm-12 col-xs-12 letter-blue padding-10"><i class="fa fa-info-circle"></i>'+ trad.youwillfindonlycities+'!</span>';
               //}

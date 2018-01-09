@@ -234,7 +234,7 @@ foreach($news as $key => $media){
       }
       if("undefined" != typeof v.media){
         if(typeof(v.media.type)=="undefined" || v.media.type=="url_content")
-          media=getMediaCommonHtml(v.media,"show",e);
+          media=processUrl.getMediaCommonHtml(v.media,"show",e);
         else if (v.media.type=="gallery_images")
           media=getMediaImages(v.media,e,v.author.id,v.target.name);
         else if (v.media.type=="gallery_files")

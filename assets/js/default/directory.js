@@ -198,7 +198,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               //console.log("fuckkkkiiiiiing",data);
               var countData = 0;
             	$.each(data, function(i, v) { 
-                if(v.length!=0){ 
+                if(v.length!=0 && i != "count"){ 
                   countData++; 
                 } 
               });
@@ -259,7 +259,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
 	              $.unblockUI();
                 showMap(false);
                   $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
-                  if(indexMin == 0){
+                  //if(indexMin == 0){
                     //ajout du footer   
                     var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
                     if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
@@ -268,7 +268,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
                     str += "</div>";
                     $("#dropdown_search").html(str);
                     $("#searchBarText").focus();
-                  }
+                  //}
                      
               }
               else
@@ -2121,214 +2121,210 @@ var directory = {
 
         directory.colPos = "left";
 
-        if(typeof data == "object" && data!=null)
-        $.each(data, function(i, params) {
-          if(i!="count"){
-          if(directory.dirLog) mylog.log("params", params, typeof params);
+        if(typeof data == "object" && data!=null){
+          $.each(data, function(i, params) {
+            if(i!="count"){
+              if(directory.dirLog) mylog.log("params", params, typeof params);
 
-          mylog.log("params", params);
-          mylog.log("params interoperability", location.hash.indexOf("#interoperability"));
+              mylog.log("params", params);
+              mylog.log("params interoperability", location.hash.indexOf("#interoperability"));
 
-          if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
-            params.id = params['_id'];
-          } else if (typeof(params.id) == "undefined" && location.hash.indexOf("#interoperability") >= 0) {
-            params.id = Math.random();
-            params.type = "poi";
-          }
-
-          mylog.log("--->>> params", params["name"] , params.name, params.id, params.type );
-          mylog.log("--->>> params.id", params.id, params["_id"], notNull(params["_id"]), notNull(params.id));
-
-          if(notNull(params["_id"]) || notNull(params.id)){
-
-            itemType=(contentType) ? contentType : params.type;
-            mylog.log("params itemType", itemType);
-            if( itemType ){ 
-                if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
-                //mylog.dir(params);
-                if(directory.dirLog) mylog.log("itemType",itemType,"name",params.name,"dyFInputs.get( itemType )",dyFInputs.get( itemType ));
-                
-                var typeIco = i;
-                params.size = size;
-                params.id = getObjectId(params);
-                mylog.log(params.id);
-                params.name = notEmpty(params.name) ? params.name : "";
-                params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
-                                    (notEmpty(params.message)) ? params.message : 
-                                    (notEmpty(params.description)) ? params.description : 
-                                    "";
-
-                //mapElements.push(params);
-                //alert("TYPE ----------- "+contentType+":"+params.name);
-                if(typeof edit != "undefined" && edit != false)
-                  params.edit = edit;
-                
-                if ( params.type && $.inArray(params.type, typeObj.classified.subTypes )>=0  ) {
-                  itemType = "classified";
-                } else if(typeof( typeObj[itemType] ) == "undefined") {
-                  itemType="poi";
-                }
-
-                if( dyFInputs.get( itemType ) == null)
-                  itemType="poi";
-
-                typeIco = itemType;
-                if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
-
-                if(typeof params.typeOrga != "undefined")
-                  typeIco = params.typeOrga;
-
-                var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
-                params.ico =  "fa-"+obj.icon;
-                params.color = obj.color;
-                if(params.parentType){
-                    if(directory.dirLog) mylog.log("params.parentType",params.parentType);
-                    var parentObj = (dyFInputs.get(params.parentType)) ? dyFInputs.get(params.parentType) : typeObj["default"] ;
-                    params.parentIcon = "fa-"+parentObj.icon;
-                    params.parentColor = parentObj.color;
-                }
-                if(params.type == "classified" && typeof params.category != "undefined"){
-                  params.ico = typeof classified.filters[params.category] != "undefined" ?
-                               "fa-" + classified.filters[params.category]["icon"] : "";
-                }
-
-                params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
-
-                // var urlImg = "/upload/communecter/color.jpg";
-                // params.profilImageUrl = urlImg;
-                params.useMinSize = typeof size != "undefined" && size == "min";
-                params.imgProfil = ""; 
-                if(!params.useMinSize)
-                    params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
-
-                if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
-                    params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
-
-                /*if(dyFInputs.get(itemType) && 
-                    dyFInputs.get(itemType).col == "poi" && 
-                    typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
-                params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
-                */
-                params.insee = params.insee ? params.insee : "";
-                params.postalCode = "", params.city="",params.cityName="";
-                if (params.address != null) {
-                    params.city = params.address.addressLocality;
-                    params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
-                    params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
-                }
-                params.fullLocality = params.postalCode + " " + params.cityName;
-
-                if (false && typeof params.addresses != "undefined" && params.addresses != null) {
-                $.each(params.addresses, function(key, val){
-                  //console.log("second address", val);
-                    var postalCode = val.address.postalCode ? val.address.postalCode : "";
-                    var cityName = val.address.addressLocality ? val.address.addressLocality : "";
-                    
-                    params.fullLocality += "<br>"+ postalCode + " " + cityName;
-                  });
-                }
-                params.type = dyFInputs.get(itemType).col;
-                params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
-                              '#page.type.'+params.parentType+'.id.' + params.parentId : "";
-
-                if( params.type == "poi" && params.source  && params.source.key.substring(0,7) == "convert") {
-                  alert();
-                  var interop_type = getTypeInteropData(params.source.key);
-                  params.type = "poi.interop."+interop_type;
-                }
-                params.hash = '#page.type.'+params.type+'.id.' + params.id;
-
-                if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined")
-                  params.hash = params.source;
-
-                if(params.type=="circuits")
-                  params.hash = '#circuit.index.id.' + params.id;
-                params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
-
-                // params.tags = "";
-                params.elTagsList = "";
-                var thisTags = "";
-                if(typeof params.tags != "undefined" && params.tags != null){
-                  $.each(params.tags, function(key, value){
-                    if(typeof value != "undefined" && value != "" && value != "undefined"){
-                      var tagTrad = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
-                      thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"' data-tag-label='"+tagTrad+"'>#" + tagTrad + "</span> ";
-                      // mylog.log("sluggify", value, slugify(value, true));
-                      params.elTagsList += slugify(value, true)+" ";
-                    }
-                  });
-                  params.tagsLbl = thisTags;
-                }else{
-                  params.tagsLbl = "";
-                }
-                params.elRolesList = "";
-                var thisRoles = "";
-                params.rolesLbl = "";
-                if(typeof params.rolesLink != "undefined" && params.rolesLink != null){
-                  thisRoles += "<small class='letter-blue'><b>"+trad.roleroles+" :</b> ";
-                  thisRoles += params.rolesLink.join(", ");
-                  $.each(params.rolesLink, function(key, value){
-                    if(typeof value != "undefined" && value != "" && value != "undefined")
-                      params.elRolesList += slugify(value)+" ";
-                  });
-                  thisRoles += "</small>";
-                  params.rolesLbl = thisRoles;
-                }
-
-                params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
-                
-                if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
-                
-                if(domainName=="terla"){
-                  if(params.type=="circuits")
-                    str += directory.circuitPanelHtml(params);
-                  else
-                    str += directory.storePanelHtml(params);
-                  //template principal
-                }else{
-                mylog.log("template principal",params,params.type, itemType);
-
-                if(params.type == "cities")
-                  str += directory.cityPanelHtml(params);  
-                
-                else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place","ressource"] )>=0) 
-                  str += directory.elementPanelHtml(params);  
-                
-                else if(params.type == "events")
-                  str += directory.eventPanelHtml(params);  
-                
-                //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
-                //    str += directory.roomsPanelHtml(params,itemType);  
-                
-                else if(params.type == "classified"){
-                  if(contextData != null)
-                    str += directory.elementPanelHtml(params);  
-                  else
-                    str += directory.classifiedPanelHtml(params);
-                }
-                else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
-                  str += directory.coopPanelHtml(params);  
-                else
-                  str += directory.defaultPanelHtml(params);
+              if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
+                params.id = params['_id'];
+              } else if (typeof(params.id) == "undefined" && location.hash.indexOf("#interoperability") >= 0) {
+                params.id = Math.random();
+                params.type = "poi";
               }
-              /*  else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
-                  str += directory.coopPanelHtml(params);  
-                else if(params.type.substring(0,11) == "poi.interop")
-                  str += directory.interopPanelHtml(params);
-                else
-                  str += directory.defaultPanelHtml(params);*/
-                
-            }
 
-          }else{
-            mylog.log("pas d'id");
-            if(contentType == "urls")
-                str += directory.urlPanelHtml(params, i);
-            if(contentType == "contacts")
-                str += directory.contactPanelHtml(params, i);
-          }
-        }
-        }); //end each
+              mylog.log("--->>> params", params["name"] , params.name, params.id, params.type );
+              mylog.log("--->>> params.id", params.id, params["_id"], notNull(params["_id"]), notNull(params.id));
+
+              if(notNull(params["_id"]) || notNull(params.id)){
+                itemType=(contentType) ? contentType : params.type;
+                mylog.log("params itemType", itemType);
+                if( itemType ){ 
+                    if(directory.dirLog) mylog.warn("TYPE -----------"+contentType);
+                    //mylog.dir(params);
+                    if(directory.dirLog) mylog.log("itemType",itemType,"name",params.name,"dyFInputs.get( itemType )",dyFInputs.get( itemType ));
+                    
+                    var typeIco = i;
+                    params.size = size;
+                    params.id = getObjectId(params);
+                    mylog.log(params.id);
+                    params.name = notEmpty(params.name) ? params.name : "";
+                    params.description = notEmpty(params.shortDescription) ? params.shortDescription : 
+                                        (notEmpty(params.message)) ? params.message : 
+                                        (notEmpty(params.description)) ? params.description : 
+                                        "";
+
+                    //mapElements.push(params);
+                    //alert("TYPE ----------- "+contentType+":"+params.name);
+                    if(typeof edit != "undefined" && edit != false)
+                      params.edit = edit;
+                    
+                    if ( params.type && $.inArray(params.type, typeObj.classified.subTypes )>=0  ) {
+                      itemType = "classified";
+                    } else if(typeof( typeObj[itemType] ) == "undefined") {
+                      itemType="poi";
+                    }
+
+                    if( dyFInputs.get( itemType ) == null)
+                      itemType="poi";
+
+                    typeIco = itemType;
+                    if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+
+                    if(typeof params.typeOrga != "undefined")
+                      typeIco = params.typeOrga;
+
+                    var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+                    params.ico =  "fa-"+obj.icon;
+                    params.color = obj.color;
+                    if(params.parentType){
+                        if(directory.dirLog) mylog.log("params.parentType",params.parentType);
+                        var parentObj = (dyFInputs.get(params.parentType)) ? dyFInputs.get(params.parentType) : typeObj["default"] ;
+                        params.parentIcon = "fa-"+parentObj.icon;
+                        params.parentColor = parentObj.color;
+                    }
+                    if(params.type == "classified" && typeof params.category != "undefined"){
+                      params.ico = typeof classified.filters[params.category] != "undefined" ?
+                                   "fa-" + classified.filters[params.category]["icon"] : "";
+                    }
+
+                    params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
+
+                    // var urlImg = "/upload/communecter/color.jpg";
+                    // params.profilImageUrl = urlImg;
+                    params.useMinSize = typeof size != "undefined" && size == "min";
+                    params.imgProfil = ""; 
+                    if(!params.useMinSize)
+                        params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
+
+                    if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+                        params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+
+                    /*if(dyFInputs.get(itemType) && 
+                        dyFInputs.get(itemType).col == "poi" && 
+                        typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
+                    params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
+                    */
+                    params.insee = params.insee ? params.insee : "";
+                    params.postalCode = "", params.city="",params.cityName="";
+                    if (params.address != null) {
+                        params.city = params.address.addressLocality;
+                        params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
+                        params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
+                    }
+                    params.fullLocality = params.postalCode + " " + params.cityName;
+
+                    if (false && typeof params.addresses != "undefined" && params.addresses != null) {
+                    $.each(params.addresses, function(key, val){
+                      //console.log("second address", val);
+                        var postalCode = val.address.postalCode ? val.address.postalCode : "";
+                        var cityName = val.address.addressLocality ? val.address.addressLocality : "";
+                        
+                        params.fullLocality += "<br>"+ postalCode + " " + cityName;
+                      });
+                    }
+                    params.type = dyFInputs.get(itemType).col;
+                    params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
+                                  '#page.type.'+params.parentType+'.id.' + params.parentId : "";
+
+                    if( params.type == "poi" && params.source  && params.source.key.substring(0,7) == "convert") {
+                      var interop_type = getTypeInteropData(params.source.key);
+                      params.type = "poi.interop."+interop_type;
+                    }
+                    params.hash = '#page.type.'+params.type+'.id.' + params.id;
+
+                    if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined")
+                      params.hash = params.source;
+
+                    if(params.type=="circuits")
+                      params.hash = '#circuit.index.id.' + params.id;
+                    params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
+
+                    // params.tags = "";
+                    params.elTagsList = "";
+                    var thisTags = "";
+                    if(typeof params.tags != "undefined" && params.tags != null){
+                      $.each(params.tags, function(key, value){
+                        if(typeof value != "undefined" && value != "" && value != "undefined"){
+                          var tagTrad = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
+                          thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"' data-tag-label='"+tagTrad+"'>#" + tagTrad + "</span> ";
+                          // mylog.log("sluggify", value, slugify(value, true));
+                          params.elTagsList += slugify(value, true)+" ";
+                        }
+                      });
+                      params.tagsLbl = thisTags;
+                    }else{
+                      params.tagsLbl = "";
+                    }
+                    params.elRolesList = "";
+                    var thisRoles = "";
+                    params.rolesLbl = "";
+                    if(typeof params.rolesLink != "undefined" && params.rolesLink != null){
+                      thisRoles += "<small class='letter-blue'><b>"+trad.roleroles+" :</b> ";
+                      thisRoles += params.rolesLink.join(", ");
+                      $.each(params.rolesLink, function(key, value){
+                        if(typeof value != "undefined" && value != "" && value != "undefined")
+                          params.elRolesList += slugify(value)+" ";
+                      });
+                      thisRoles += "</small>";
+                      params.rolesLbl = thisRoles;
+                    }
+
+                    params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
+                    
+                    if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
+                    
+                    if(domainName=="terla"){
+                      if(params.type=="circuits")
+                        str += directory.circuitPanelHtml(params);
+                      else
+                        str += directory.storePanelHtml(params);
+                      //template principal
+                    }else{
+                      mylog.log("template principal",params,params.type, itemType);
+                      if(params.type == "cities")
+                        str += directory.cityPanelHtml(params);  
+                    
+                      else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place","ressource"] )>=0) 
+                        str += directory.elementPanelHtml(params);  
+                    
+                      else if(params.type == "events")
+                        str += directory.eventPanelHtml(params);  
+                    
+                      //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
+                      //    str += directory.roomsPanelHtml(params,itemType);  
+                    
+                      else if(params.type == "classified"){
+                        if(contextData != null)
+                          str += directory.elementPanelHtml(params);  
+                        else
+                          str += directory.classifiedPanelHtml(params);
+                      }
+                      else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+                        str += directory.coopPanelHtml(params);  
+                      else
+                        str += directory.defaultPanelHtml(params);
+                    }
+                /*  else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+                    str += directory.coopPanelHtml(params);  
+                  else if(params.type.substring(0,11) == "poi.interop")
+                    str += directory.interopPanelHtml(params);
+                  else
+                    str += directory.defaultPanelHtml(params);*/
+                  }
+              }else{
+                mylog.log("pas d'id");
+                if(contentType == "urls")
+                    str += directory.urlPanelHtml(params, i);
+                if(contentType == "contacts")
+                    str += directory.contactPanelHtml(params, i);
+              }
+            }
+          });
+        } //end each
         mylog.log("END -----------showResultsDirectoryHtml ("+str.length+" html caracters generated)")
         return str;
     },

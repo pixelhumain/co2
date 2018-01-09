@@ -86,7 +86,7 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(search.app == "territorial") {
-        searchType = ["organizations", "projects", "poi","ressources", "places", "news"];
+        searchType = ["organizations", "projects", "poi","ressources", "places"];
         if(search.value != "")
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");

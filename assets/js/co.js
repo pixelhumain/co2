@@ -2967,6 +2967,7 @@ var typeObj = {
 			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
 			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
 	place:{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	places : { sameAs:"place" },
 	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
 	Maison : {sameAs:"place", color: "azure",icon: "home"},
 	ressource:{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
@@ -3691,7 +3692,7 @@ $(document).ready(function() {
 		bindRightClicks();
 });
 
-var typeObj = {
+/*var typeObj = {
 	themes:{ 
 		dynForm : {
 		    jsonSchema : {
@@ -3831,7 +3832,7 @@ var typeObj = {
 			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
 			    }},
 	filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
-};
+};*/
 
 
 var co = {

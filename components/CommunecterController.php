@@ -499,6 +499,7 @@ class CommunecterController extends Controller
       'getcommunexion'      => array("href" => "/ph/co2/element/getcommunexion"),
       'getdatabyurl'        => array("href" => "/ph/co2/element/getdatabyurl"),
       'network'        => array("href" => "/ph/co2/element/network"),
+      'getnetworks'        => array("href" => "/ph/co2/element/getnetworks"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),

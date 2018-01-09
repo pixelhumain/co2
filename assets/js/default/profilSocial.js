@@ -183,6 +183,13 @@ function bindButtonMenu(){
 		loadContacts();
 	});
 
+	$("#btn-start-networks").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.networks";
+		//history.pushState(null, "New Title", hashUrlPage+".view.contacts");
+		loadNetworks();
+	});
+
 	$("#btn-hide-desc").click(function(){
 		if($("#desc-event").hasClass("hidden")){
 			$("#desc-event").removeClass("hidden");
@@ -364,7 +371,7 @@ function bindButtonOpenForm(){
     });
 }
 
-function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirectory");
+function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirectory", dataName, dataIcon, edit);
 	showLoader('#central-container');
 
 	var dataIcon = $(".load-data-directory[data-type-dir="+dataName+"]").data("icon");
@@ -618,6 +625,17 @@ function loadActionRoom(){
 	var params = { };
 	ajaxPost('#fast-rooms', baseUrl+'/'+moduleId+'/rooms/index/type/'+contextData.type+
 									'/id/'+contextData.id, params, function(){},"html");
+}
+
+
+function loadNetworks(){
+	showLoader('#central-container');
+	getAjax('', baseUrl+'/'+moduleId+'/element/getnetworks/type/'+contextData.type+
+				'/id/'+contextData.id,
+				function(data){ 
+					displayInTheContainer(data, "network", "external-link", "network");
+				}
+	,"html");
 }
 
 function loadContacts(){

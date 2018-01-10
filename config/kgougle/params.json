@@ -7,6 +7,10 @@
       "deviseDefault" : "CFP",
       "nbAdminModeration" : 3,
       "nbReportCoModeration" : 3,
+      "lockedOnCountry" : { 
+            "countryCode" : "NC",
+            "name": "Nouvelle-Calédonie"
+      },
       "pages" : 
       {
       	"#app.index":
@@ -15,7 +19,7 @@
             "#welcome": {
                   "inMenu" : false, 
                   "useHeader" : false, 
-                  "open" : true, 
+                  "open" : false, 
                   "subdomain" : "welcome", 
                   "subdomainName" : "Accueil",
                   "hash" : "#app.welcome",
@@ -31,7 +35,7 @@
                   "useHeader" : true, 
                   "open" : true, 
                   "subdomain" : "web", 
-                  "subdomainName" : "web",
+                  "subdomainName" : "Web",
                   "hash" : "#app.web",
                   "icon" : "search", 
                   "mainTitle" : "Le moteur de recherche des cagous",
@@ -42,7 +46,7 @@
                   "useHeader" : true,
                   "open" : true, 
                   "subdomain" : "referencement", 
-                  "subdomainName" : "referencement",
+                  "subdomainName" : "Réferencement",
                   "hash" : "#app.referencement",
                   "icon" : "search", 
                   "mainTitle" : "Référencer une page",
@@ -60,14 +64,14 @@
                   "placeholderMainSearch" : "rechercher dans l'actu ..."},
 
             "#freedom": {
-                  "inMenu" : false, 
+                  "inMenu" : true, 
                   "useHeader" : true, 
                   "open" : true, 
                   "subdomain" : "freedom", 
                   "subdomainName" : "Freedom",
                   "hash":"#app.live",
                   "icon" : "stack-exchange", 
-                  "mainTitle" : "Fil de discussion <span class='letter-red'>citoyen</span>",
+                  "mainTitle" : "Fil de discussion commun",
                   "placeholderMainSearch" : "Rechercher dans le fil de discussion ..."
             },
                  
@@ -76,10 +80,10 @@
                   "useHeader" : true, 
                   "open" : true,
                   "subdomain" : "social", 
-                  "subdomainName" : "social",
+                  "subdomainName" : "Social",
                   "hash" : "#app.search",
                   "icon" : "user-circle-o", 
-                  "mainTitle" : "Réseau social citoyen",
+                  "mainTitle" : "Réseau social",
                   "placeholderMainSearch" : "rechercher une page ...",
                   "lblBtnCreate" : "Créer une page",
                   "colorBtnCreate" : "green"},
@@ -90,7 +94,7 @@
                   "useHeader" : true, 
                   "open" : false,
                   "subdomain" : "annonces", 
-                  "subdomainName" : "annonces",
+                  "subdomainName" : "Annonces",
                   "hash" : "#app.annonces",
                   "icon" : "bullhorn", 
                   "mainTitle" : "Toutes vos annonces en direct",
@@ -103,10 +107,10 @@
                   "useHeader" : true, 
                   "open" : true,
                   "subdomain" : "agenda", 
-                  "subdomainName" : "agenda",
+                  "subdomainName" : "Agenda",
                   "hash" : "#app.agenda",
                   "icon" : "calendar", 
-                  "mainTitle" : "L'agenda collaboratif des Calédoniens",
+                  "mainTitle" : "Agenda collaboratif",
                   "placeholderMainSearch" : "rechercher un événement  ...",
                   "lblBtnCreate" : "Créer un événement",
                   "colorBtnCreate" : "orange"},

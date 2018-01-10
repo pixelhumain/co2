@@ -1065,6 +1065,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
         		urlCtrl.afterLoad();
         		urlCtrl.afterLoad = null;
         	}
+
         	/*if(debug){
         		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
         			if(prevDbAccessCount == 0){
@@ -1083,7 +1084,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
          },"html");
 		} else 
 			console.error( 'showAjaxPanel', dest, "doesn't exist" );
-	}, 400);
+	}, 100);
 }
 /*prevDbAccessCount = 0; 
 function clearDbAccess() { 

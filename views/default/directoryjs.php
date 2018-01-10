@@ -218,7 +218,7 @@
           <?php if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?>  
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
-            <button class="btn text-white bg-dark btn-open-filliaire">
+            <button class="btn text-white bg-dark btn-open-filliaire hidden-xs">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
             </button><hr class="hidden-xs">

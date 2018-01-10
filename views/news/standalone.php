@@ -30,7 +30,7 @@
 <div class="row bg-white">
 
   <div class="col-xs-12 margin-top-70">
-    <h3 class="text-center"><i class="fa fa-newspaper-o"></i> Message</h3><hr>
+    <!-- <h3 class="text-center"><i class="fa fa-newspaper-o"></i> Message</h3><hr> -->
   </div>
 
 <div class="container">

@@ -31,26 +31,26 @@
 
 
 		"#web":
-      	  	{"inMenu" : true, 
-                  "useHeader" : true, 
-                  "open" : true, 
-                  "subdomain" : "web", 
-                  "subdomainName" : "web",
-                  "hash" : "#app.web",
-                  "icon" : "globe", 
-                  "mainTitle" : "Moteur de recherche",
-                  "placeholderMainSearch" : "Que recherchez-vous ?"},
+      	  	{ "inMenu" : true, 
+              "useHeader" : true, 
+              "open" : true, 
+              "subdomain" : "web", 
+              "subdomainName" : "Web",
+              "hash" : "#app.web",
+              "icon" : "globe", 
+              "mainTitle" : "Moteur de recherche",
+              "placeholderMainSearch" : "Que recherchez-vous ?"},
 
       	"#referencement":
-      	  	{"inMenu" : false, 
-                  "useHeader" : true,
-                  "open" : true, 
-                  "subdomain" : "referencement", 
-                  "subdomainName" : "referencement",
-                  "hash" : "#app.referencement",
-                  "icon" : "search", 
-                  "mainTitle" : "Référencer une page",
-                  "placeholderMainSearch" : ""},
+      	  	{	"inMenu" : false, 
+              "useHeader" : true,
+              "open" : true, 
+              "subdomain" : "referencement", 
+              "subdomainName" : "Referencement",
+              "hash" : "#app.referencement",
+              "icon" : "search", 
+              "mainTitle" : "Référencer une page",
+              "placeholderMainSearch" : ""},
 
 
 		"#annonces": {

@@ -7,6 +7,7 @@
 		$sigParams[$element] = isset($sigParams[$element]) ? $sigParams[$element] : false;
 	}
 	
+    $params = CO2::getThemeParams();
 ?>
 <div class="sigModule<?php echo $sigParams['sigKey']; ?>">
 	<div class="mapCanvas" id="mapCanvas<?php echo $sigParams['sigKey']; ?>">
@@ -122,16 +123,22 @@
 							}*/
 						?>
 						<?php
-							echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
-							// $asort = OpenData::$phCountries;
-       						// asort($asort);
-        					$asort = array(array("countryCode"=>"NC",
-        										 "name"=>"Nouvelle-Calédonie")); 
-        					//Zone::getListCountry();
-        
-							foreach ( $asort as $key => $value) {
-								echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";
-								error_log($value["countryCode"]." - ".$value["name"]);
+							if(isset($params["lockedOnCountry"])){
+								echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
+								$asort = array($params["lockedOnCountry"]); 
+	        
+								foreach ( $asort as $key => $value) {
+									echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";
+									error_log($value["countryCode"]." - ".$value["name"]);
+								}
+							}else{
+								echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
+								// $asort = OpenData::$phCountries;
+	       						// asort($asort);
+	        					$asort = Zone::getListCountry();
+								foreach ( $asort as $key => $value) {
+									echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";
+								}
 							}
 						?>
 					</select>

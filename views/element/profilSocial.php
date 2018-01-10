@@ -819,9 +819,11 @@
 				loadMD();
 			else if(sub=="settings")
 				loadSettings();
-			else if(sub=="coop"){
+			else if(sub=="coop")
 				loadCoop(roomId, proposalId, resolutionId, actionId);
-			}
+			else if(sub=="networks")
+				loadNetworks();
+			
 		} else
 			loadNewsStream(true);
 	}

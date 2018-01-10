@@ -218,7 +218,7 @@ function showMapNetwork(show){
 			top: -1000,
 			opacity:0,
 		}, 'slow' );
-		setTitle(networkJson.name , "", networkJson.name+ " : "+networkJson.skin.title, networkJson.name,networkJson.skin.shortDescription);
+		setTitle(networkJson.skin.title , "", networkJson.skin.title, networkJson.skin.title, networkJson.skin.shortDescription);
 		setTimeout(function(){ 
 			$(".my-main-container").hide();
 		}, 1000);
@@ -237,7 +237,7 @@ function showMapNetwork(show){
 			top: 50,
 			opacity:1
 		}, 'slow' );
-		setTitle(networkJson.name , "", networkJson.name+ " : "+networkJson.skin.title, networkJson.name,networkJson.skin.shortDescription);
+		setTitle(networkJson.skin.title , "", networkJson.skin.title, networkJson.skin.title, networkJson.skin.shortDescription);
 		setTimeout(function(){ 
 			$(".my-main-container").show();
 			if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )

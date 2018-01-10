@@ -33,6 +33,8 @@ dynForm = {
 	    	//alert("formatData");
 	    	if( $(dyFObj.activeModal+" #ajaxFormModal request[searchTag]").val() != "" && formData["request[searchTag]"] )
 				formData["request[searchTag]"] = formData["request[searchTag]"].split(",");
+			if( $(dyFObj.activeModal+" #ajaxFormModal request[sourceKey]").val() != "" && formData["request[sourceKey]"] )
+				formData["request[sourceKey]"] = formData["request[sourceKey]"].split(",");
 	    	if( $(dyFObj.activeModal+" #ajaxFormModal add").val() != "" && formData.add )
 				formData.add = formData.add.split(",");
 			if( $(dyFObj.activeModal+" #ajaxFormModal request[searchType]").val() != "" && formData["request[searchType]"] )
@@ -48,8 +50,8 @@ dynForm = {
             },
        
             "type" : dyFInputs.inputHidden(),
-	        "name" : dyFInputs.name(),
-	        "skin[shortDescription]" : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
+	        //"name" : dyFInputs.name(),
+	      
 
 /************************* Skin *****************************/
 	        skinInfo : {
@@ -57,11 +59,24 @@ dynForm = {
                 html:"<p class='item-comment bg-green-comment'>SKIN Section<hr></p>",
             },
             "skin[title]" : dyFInputs.inputText("Titre du network", "Titre du network", { required : true }),
-	        "skin[logo]" : dyFInputs.image("Logo du network"),
-		    "skin[displayCommunexion]" : dyFInputs.radio(	"Ajout la connexion à Communecter", 
+            "skin[shortDescription]" : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
+	        "skin[logo]" : dyFInputs.image("Logo"),
+		    "skin[displayCommunexion]" : dyFInputs.radio(	"Permettre aux utilisateurs de s'identifier", 
 		    												{ "true" : { icon:"check-circle-o", lbl:trad.yes },
 											 				"false" : { icon:"circle-o", lbl:trad.no} },
 											 				{ required : true } ),
+
+		    add : dyFInputs.tags( ["organization","project","event"] ),
+
+/************************* Result *****************************/
+            requestInfo : {
+                inputType : "custom",
+                html:"<p class='item-comment bg-green-comment'>REQUEST Section</p>",
+            },
+            "request[searchType]" : dyFInputs.tags( ["organizations","projects","events"], "Element retourné", "element retourné" ),
+            "request[searchTag]" : dyFInputs.tags(),
+            "request[sourceKey]" : dyFInputs.tags([], null, "Key using for import") ,
+
 
 /************************* Filter *****************************/
 
@@ -77,25 +92,13 @@ dynForm = {
                 html:"<a href='javascript:;' class='btn btn-dark' onclick='dyFObj.openForm(\"filter\",null,null,true)'><i class='fa fa-plus'></i> Ajouter un Filtre</a>"+
                 	"<div class='filterList'></div>",
             },
-            
-            addInfo : {
-                inputType : "custom",
-                html:"<p class='item-comment bg-green-comment'>ADD Section</p>",
-            },
-            add : dyFInputs.tags( ["organization","project","event"] ),
 
             resultInfo : {
                 inputType : "custom",
                 html:"<p class='item-comment bg-green-comment'>RESULT Section</p>",
             },
-            "result[displayImage]" : dyFInputs.radio( "Display Images ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
-											 			"false" : { icon:"circle-o", lbl:trad.no} } ),
-            requestInfo : {
-                inputType : "custom",
-                html:"<p class='item-comment bg-green-comment'>REQUEST Section</p>",
-            },
-            "request[searchTag]" : dyFInputs.tags(),
-            "request[searchType]" : dyFInputs.tags( ["organizations","projects","events"], "element retourné", "element retourné" ),
+            //"result[displayImage]" : dyFInputs.radio( "Display Images ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
+											 			//"false" : { icon:"circle-o", lbl:trad.no} } ),
 	    },
 	    tooltips : {
 	    	filterTagsInfo : "CLALALALAL LFGSGSDF\n GFDSG FDSGSD",

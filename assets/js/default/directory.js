@@ -1685,15 +1685,14 @@ var directory = {
     // ********************************
     networkPanelHtml : function(params, key){
       //if(directory.dirLog) 
-      mylog.log("-----------urlPanelHtml", params, key);
+      mylog.log("-----------networkPanelHtml", params, key);
       params.title = escapeHtml(params.title);
-      if(directory.dirLog) mylog.log("-----------contactPanelHtml", params);
         str = "";  
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
         	str += "<div class='searchEntity contactPanelHtml'>";
           		str += "<div class='panel-heading border-light col-xs-12'>";
           			str += '<a href="'+baseUrl+"/network/default/index?src="+baseUrl+"/"+moduleId+"/network/get/id/"+params.id+'" target="_blank" class="text-dark">'
-         			str += '<h4 class="panel-title text-dark pull-left">'+ params.name+'</h4></a>';
+         			str += '<h4 class="panel-title text-dark pull-left">'+ params.skin.title+'</h4></a>';
          		str += "</div>";
          		str += "<span class='col-xs-12'>"+params.shortDescription+"</span>";
 
@@ -2155,7 +2154,7 @@ var directory = {
                   str += directory.coopPanelHtml(params);  
                 else if(params.type.substring(0,11) == "poi.interop")
                   str += directory.interopPanelHtml(params);
-                else if(params.type.substring(0,11) == "network")
+                else if(params.type == "network")
                   str += directory.networkPanelHtml(params);
                 else
                   str += directory.defaultPanelHtml(params);

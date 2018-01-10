@@ -1363,10 +1363,7 @@ var smallMenu = {
 				"</div>";
 		return content;
 	},
-	//openSmallMenuAjaxBuild("",baseUrl+"/"+moduleId+"/favorites/list/tpl/directory2","FAvoris")
-	//opens any html without post processing
-	openAjaxHTML : function  (url,title,type,nextPrev) { 
-		smallMenu.open("",type );
+	ajaxHTML : function (url,title,type,nextPrev) { 
 		var dest = (type == "blockUI") ? ".blockContent" : "#openModal .modal-content .container" ;
 		getAjax( dest , url , function () { 
 			
@@ -1393,6 +1390,12 @@ var smallMenu = {
 			}
 			bindLBHLinks();
 		 },"html" );
+	},
+	//openSmallMenuAjaxBuild("",baseUrl+"/"+moduleId+"/favorites/list/tpl/directory2","FAvoris")
+	//opens any html without post processing
+	openAjaxHTML : function  (url,title,type,nextPrev) { 
+		smallMenu.open("",type );
+		smallMenu.ajaxHTML(url,title,type,nextPrev);
 	},
 	//content Loader can go into a block
 	//smallMenu.open("Recherche","blockUI")
@@ -3524,16 +3527,15 @@ var co = {
 		url = urlCtrl.convertToPath("#default.view.page.links");
 	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);	},
 	lang : function () { 
-		smallMenu.open("<h1>Explain COLang</h1>");	},
-	mands : function () { 
 		str = "";
 		$.each(co,function (k,v) { 
 			str += "<a class='btn' href='javascript:;' onclick='co."+k+"()'>co."+k+"</a><br/>";
 		})
-		smallMenu.open("<h1>All Commands</h1>"+str);	},
+		smallMenu.open("<h1>Talk to CO</h1>"+str);	},
 	//co.rss : function () {  },
 	tools : function () { 
-		smallMenu.open("<h1>Connected Tools and Open Apps Ecosystem</h1>");	},
+		smallMenu.ajaxHTML( baseUrl+'/cotools');
+	},
 	nect : function () { 
 		if(!userId)
 			$('#modalLogin').modal("show");
@@ -3550,6 +3552,7 @@ var co = {
 			}
 			smallMenu.openAjaxHTML( baseUrl+'/graph/co/d3/'+what);
 		} );},
+	gmenu : function () {  },
 	mind : function () { 
 		if( contextData && contextData.type == "citoyens")
 			smallMenu.open("Mindmap",null,null,function() {
@@ -3603,7 +3606,7 @@ var co = {
 			co.ctrl.open(baseUrl+'/api/'+dyFInputs.get(contextData.type).ctrl+'/get/id/'+contextData.id,"json");
 		else 
 			toastr.error("No context available!!");	},
-	ntre : function () { smallMenu.open("<h1>Toutes les propositions de lois et décisions sociétal pour lesquels on est contre</h1>"); } ,
+	
 	// *****************************************
 	// Connected person stuff
 	// ****************************************
@@ -3613,6 +3616,19 @@ var co = {
 	p : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.follows");},
 	poi : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.poi");},
 	info : function () { co.ctrl.lbh("#"+userConnected.username+".view.detail");},
+	// *****************************************
+	// TODO
+	// ****************************************
+	/*
+	ntre : function () { smallMenu.open("<h1>Toutes les propositions de lois et décisions sociétal pour lesquels on est contre</h1>"); } ,
+	rd : function () { smallMenu.open("<h1> Visualisation de notre R&D</h1>"); } ,
+	roadmap : function () { smallMenu.open("<h1> Visualisation de notre Roadmap</h1>"); } ,
+	timeline : function () { smallMenu.open("<h1> Visualisation de notre Timeline</h1>"); } ,
+	team : function () { smallMenu.open("<h1>Visualisation de notre Team</h1>"); } ,
+	dda : function () { smallMenu.open("<h1> DashBoard Discuss, Decide, Act </h1>"); } ,
+	social : function () { smallMenu.open("<h1> connecting to other social plateforms </h1>"); } ,
+	city : function () { smallMenu.open("<h1> DashBoard City </h1>"); } ,
+	*/
 }	
 
 $(document).ready(function() { 

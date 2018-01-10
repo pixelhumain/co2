@@ -1,9 +1,9 @@
 dynForm = {
 	removeFilter : function (ix) { 
 		//alert(ix);
-		typeObj.network.filters.splice( ix, 1 );
+		typeObj.network.filter.splice( ix, 1 );
 		$(".filterList").html("");
-		$.each(typeObj.network.filters,function( k,v ) { 
+		$.each(typeObj.network.filter,function( k,v ) { 
           $(".filterList").append(v.name+" <a href='javascript:;' onclick='typeObj.network.dynForm.removeFilter("+k+")'><i class='fa fa-times text-red'></i> </a><br/>");
         })
 	},
@@ -35,8 +35,10 @@ dynForm = {
 				formData["request[searchTag]"] = formData["request[searchTag]"].split(",");
 	    	if( $(dyFObj.activeModal+" #ajaxFormModal add").val() != "" && formData.add )
 				formData.add = formData.add.split(",");
-			if( typeObj.network.filters )
-				formData.filters = typeObj.network.filters;
+			if( $(dyFObj.activeModal+" #ajaxFormModal request[searchType]").val() != "" && formData["request[searchType]"] )
+				formData["request[searchType]"].add = formData["request[searchType]"].split(",");
+			if( typeObj.network.filter)
+				formData.filter = typeObj.network.filter;
 			return formData;
 	    },
 	    properties : {
@@ -47,6 +49,7 @@ dynForm = {
        
             "type" : dyFInputs.inputHidden(),
 	        "name" : dyFInputs.name(),
+	        "skin[shortDescription]" : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
 
 /************************* Skin *****************************/
 	        skinInfo : {
@@ -55,9 +58,6 @@ dynForm = {
             },
             "skin[title]" : dyFInputs.inputText("Titre du network", "Titre du network", { required : true }),
 	        "skin[logo]" : dyFInputs.image("Logo du network"),
-		    // "skin[paramsLogo][origin]" : dyFInputs.radio( "Logo Origin2 ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
-						// 					 			"false" : { icon:"circle-o", lbl:trad.no} } ),
-
 		    "skin[displayCommunexion]" : dyFInputs.radio(	"Ajout la connexion à Communecter", 
 		    												{ "true" : { icon:"check-circle-o", lbl:trad.yes },
 											 				"false" : { icon:"circle-o", lbl:trad.no} },
@@ -95,6 +95,7 @@ dynForm = {
                 html:"<p class='item-comment bg-green-comment'>REQUEST Section</p>",
             },
             "request[searchTag]" : dyFInputs.tags(),
+            "request[searchType]" : dyFInputs.tags( ["organizations","projects","events"], "element retourné", "element retourné" ),
 	    },
 	    tooltips : {
 	    	filterTagsInfo : "CLALALALAL LFGSGSDF\n GFDSG FDSGSD",

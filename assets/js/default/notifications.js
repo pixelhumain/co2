@@ -1,7 +1,7 @@
 var notifications = null;
 var maxNotifTimstamp = 0;
 
-function bindNotifEvents(element){
+function bindNotifEvents(element){ console.log("bindNotifEvents");
 	$(".notifList"+element+" a.notif").off().on("mousedown",function (e) 
 	{
 		markAsRead( $(this).data("id") );
@@ -167,7 +167,8 @@ function refreshNotifications(elementId,elementType,element,event)
 
 }*/
 function buildNotifications(list, element, event)
-{	mylog.log(list);
+{	mylog.log("buildNotifications");
+	mylog.log(list);
 	//element="";
 //	if(isPodView)
 //		element="Element";
@@ -260,10 +261,20 @@ function notifCount(upNotifUnseen, element)
 	if(upNotifUnseen)
 		countNotifUnseen=0;
 	mylog.log(" !!!! notifCount", countNotif, "element :",element);
+	mylog.log(" !!!! notifCount upNotifUnseen", upNotifUnseen, "countNotif ", countNotif, "countNotifSeen ", countNotifSeen);
+	
+
+	mylog.log(" !! ", ".notifList"+element+" li.enable");
+
 	$(".notifCount").html( countNotif );
+	mylog.log(".notifCount).html(", countNotif);
+
 	if(countNotif == 0)
 		$(".notifList"+element).html("<li class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-ban'></i> "+trad["noMoreNotifs"]+"</li>");
 	//if(element==""){
+
+
+		mylog.log("if( countNotifUnseen", countNotifUnseen, " > 0");
 		if( countNotifUnseen > 0)
 		{
 		    $(".notifications-count"+element).html(countNotifUnseen);
@@ -274,7 +285,7 @@ function notifCount(upNotifUnseen, element)
 			$(".markAllAsRead").show();
 		} else {
 			//$('.notifications-count').addClass('hide');
-			//$(".notifications-count").html("0");
+			$(".notifications-count"+element).html("");
 			$('.notifications-count'+element).addClass('hide');
 			$('.notifications-count'+element).removeClass('badge-success');
 			$('.notifications-count'+element).addClass('badge-tranparent');

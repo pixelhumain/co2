@@ -15,7 +15,8 @@
     '/assets/css/web.css'
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl); 
-
+    
+    $paramsApp = CO2::getThemeParams();
 ?>
 
 <style>
@@ -119,20 +120,22 @@
 
 <div id="mainCategories" class="shadow padding-bottom-50"></div>
 
+<?php var_dump($params); ?>
 
 <?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>"web")); ?>
 
 <script type="text/javascript" >
 
 var currentCategory = "";
+var titlePage = "<?php echo @$paramsApp["pages"]["#web"]["subdomainName"];// Yii::t("common", @$params["pages"]["#web"]["subdomainName"]); ?>";
 
 jQuery(document).ready(function() {
     initKInterface();
     initWebInterface();
     buildListCategories();
-
+    
     location.hash = "#web";
-    setTitle("", "", "Kgougle");
+    setTitle(titlePage, "", titlePage);
 });
 
 

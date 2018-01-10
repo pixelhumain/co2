@@ -203,7 +203,8 @@ class CommunecterController extends Controller
       "mainmap"               => array("href" => "/ph/co2/default/mainmap", "public" => true)
     ),
     "network" => array(
-      "simplydirectory"    => array("href" => "/ph/co2/network/simplydirectory")
+      "simplydirectory"    => array("href" => "/ph/co2/network/simplydirectory"),
+      "get"    => array("href" => "/ph/co2/network/get")
     ),
     "rooms"=> array(
       "index"    => array("href" => "/ph/co2/rooms/index"),
@@ -502,6 +503,7 @@ class CommunecterController extends Controller
       'getcommunexion'      => array("href" => "/ph/co2/element/getcommunexion"),
       'getdatabyurl'        => array("href" => "/ph/co2/element/getdatabyurl"),
       'network'        => array("href" => "/ph/co2/element/network"),
+      'getnetworks'        => array("href" => "/ph/co2/element/getnetworks"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),
@@ -606,8 +608,10 @@ class CommunecterController extends Controller
     } 
     //Api access through REST 
     //no need to prepare interface data
-    else if (!Yii::app()->session[ "userId" ] &&  isset($_SERVER['PHP_AUTH_USER']) && Authorisation::isValidUser($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
-      $prepareData = false;
+    else if (!Yii::app()->session[ "userId" ] &&  isset($_SERVER['PHP_AUTH_USER']) && 
+             Authorisation::isValidUser($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
+
+            $prepareData = false;
     }
     //}
     else if( (!isset( $page["public"] ) ) && (!isset( $page["json"] ))
@@ -618,6 +622,14 @@ class CommunecterController extends Controller
         //if( Yii::app()->request->isAjaxRequest)
           //echo "<script type='text/javascript'> checkIsLoggued('".Yii::app()->session['userId']."'); </script>";
          
+    }
+    
+    if(isset( Yii::app()->request->cookies['remember'] ) && Yii::app()->request->cookies['remember']->value == "true" &&
+           isset( Yii::app()->request->cookies['lyame'] ) && 
+           isset( Yii::app()->request->cookies['drowsp'] ) && @Yii::app()->request->cookies['drowsp']->value != "null"){
+            $pwdDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['drowsp']->value);
+            $emailDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['lyame']->value);
+            $res = Person::login($emailDecrypt, $pwdDecrypt, false);
     }
     
     if( isset( $_GET["backUrl"] ) )
@@ -684,5 +696,32 @@ class CommunecterController extends Controller
       }
     }
   }
+
+  protected function pwdDecrypt($jsonString){  //return $jsonString;
+    $passphrase = 'JbQmfH"h^W7q86JU1V(<64aEv';
+      $jsondata = json_decode($jsonString, true);
+      try {
+          $salt = hex2bin($jsondata["s"]);
+          $iv  = hex2bin($jsondata["iv"]);
+      } catch(Exception $e) { return null; }
+      $ct = base64_decode($jsondata["ct"]);
+      $concatedPassphrase = $passphrase.$salt;
+      $md5 = array();
+      $md5[0] = md5($concatedPassphrase, true);
+      $result = $md5[0];
+      for ($i = 1; $i < 3; $i++) {
+          $md5[$i] = md5($md5[$i - 1].$concatedPassphrase, true);
+          $result .= $md5[$i];
+      }
+      $key = substr($result, 0, 32);
+
+      //var_dump($iv); exit;
+
+      $data = openssl_decrypt($ct, 'aes-256-cbc', $key, true, $iv);
+      return json_decode($data, true);
+  }
+
+  
+
 }
 

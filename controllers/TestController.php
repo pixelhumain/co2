@@ -1486,4 +1486,50 @@ La vie en santé;Santé;;
 		Rest::json($res);
 		Yii::app()->end();
 	}
+
+
+	public function actionTestNetwork(){
+
+		$json = '{
+		    "name" : "TEST 4",
+		    "skin" : {
+		        "title" : "TEST 4",
+		        "displayCommunexion" : "true"
+		    },
+		    "add" : [ 
+		        "organization"
+		    ],
+		    "result" : {
+		        "displayImage" : "true"
+		    },
+		    "request" : {
+		        "searchTag" : [ 
+		            "Agriculture"
+		        ]
+		    },
+		    "filter" : [ 
+		        {
+		            "name" : "Name",
+		            "keyVal0" : "test1",
+		            "tagskeyVal0" : "Agriculture",
+		            "keyVal1" : "test2",
+		            "tagskeyVal1" : "Air"
+		        }, 
+		        {
+		            "name" : "NAme2",
+		            "keyVal0" : "test3",
+		            "tagskeyVal0" : "Biodiversité,Consommation",
+		            "keyVal1" : "test4",
+		            "tagskeyVal1" : "Bruit,Urbanisme"
+		        }
+		    ]
+		}';
+		
+
+		$params = json_decode($json,true);
+		
+		$params = Network::prepData ($params); 
+		Rest::json($params);
+		Yii::app()->end();
+	}
 }

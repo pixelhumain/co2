@@ -139,7 +139,9 @@ var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
 					};
 
 var page = "<?php echo $page; ?>";
-var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
+
+<?php if(Yii::app()->params["CO2DomainName"] == "kgougle") $page = "freedom"; ?>
+var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
 
 var scrollEnd = false;
 <?php if(@$type && !empty($type)){ ?>
@@ -158,13 +160,6 @@ jQuery(document).ready(function() {
 
 	$(".subsub").hide();
 
-	//setTitle("", "", titlePage);
-
-	/*var liveType = "<?php echo (@$type && !empty($type)) ? $type : ''; ?>";
-	if(typeof liveTypeName[liveType] != "undefined") 
-		 liveType = " > "+liveTypeName[liveType];
-	else liveType = ", la boite à outils citoyenne connectée " + liveType;
-*/
 	//initFilterLive();
 	//showTagsScopesMin("#list_tags_scopes");
 	$("#btn-slidup-scopetags").click(function(){
@@ -184,11 +179,8 @@ jQuery(document).ready(function() {
 	//init loading in scroll
    
     initKInterface();//{"affixTop":10});
-    //initFreedomInterface();
     
     Sig.restartMap(Sig.map);
-
-
 
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
@@ -228,8 +220,7 @@ jQuery(document).ready(function() {
         startNewsSearch(true);
     });
 
-
-    setTitle(titlePage, "stack-exchange", "freedom ");
+    setTitle(titlePage, "stack-exchange", titlePage);
     //KScrollTo(".main-btn-scopes");
 });
 

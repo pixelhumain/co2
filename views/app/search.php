@@ -171,7 +171,7 @@ var currentKFormType = "";
 
 jQuery(document).ready(function() {
 
-    setTitle("", "", titlePage);
+    setTitle(titlePage, "", titlePage);
 
     initKInterface({"affixTop":320});
     

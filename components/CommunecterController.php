@@ -624,9 +624,13 @@ class CommunecterController extends Controller
          
     }
     
-    if(isset( Yii::app()->request->cookies['remember'] ) && Yii::app()->request->cookies['remember']->value == "true" &&
-           isset( Yii::app()->request->cookies['lyame'] ) && 
-           isset( Yii::app()->request->cookies['drowsp'] ) && @Yii::app()->request->cookies['drowsp']->value != "null"){
+    //login auto from cookie if user not connected and checked remember
+    if(!isset(Yii::app()->session["userId"]) && 
+        isset( Yii::app()->request->cookies['remember'] ) && 
+        Yii::app()->request->cookies['remember']->value == "true" &&
+        isset( Yii::app()->request->cookies['lyame'] ) && 
+        isset( Yii::app()->request->cookies['drowsp'] ) && 
+        @Yii::app()->request->cookies['drowsp']->value != "null"){
             $pwdDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['drowsp']->value);
             $emailDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['lyame']->value);
             $res = Person::login($emailDecrypt, $pwdDecrypt, false);

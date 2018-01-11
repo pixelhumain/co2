@@ -32,6 +32,15 @@
 	$week = @$_POST["week"];
 	$visits = CO2Stat::getStatsByHash(@$week); 
 	$days = array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
+
+	$nextWeek = $visits["numweek"] + 1;
+	$backWeek = $visits["numweek"] - 1;
+	$backYear = $visits["year"];
+	$nextYear = $visits["year"];
+	if($nextWeek < 10) $nextWeek="0".$nextWeek;
+	if($backWeek < 10) $backWeek="0".$backWeek;
+	if($backWeek == 0) { $backWeek=52; $backYear--;}
+	if($nextWeek > 52) { $nextWeek="01"; $nextYear++;}
 ?>
 <style>
 	.stat-week .col-md-1{
@@ -44,20 +53,22 @@
 	<h4 class="text-left text-azure">
 		<i class="fa fa-angle-down"></i> Nombre de visites - Semaine <?php echo $visits["week"]; ?></span>
 		<br><br>
-		<button class="btn btn-default pull-left margin-right-5" id="back-week" data-week="<?php echo $visits["numweek"]-1; echo $visits["year"]; ?>">
-			<i class="fa fa-chevron-left"></i> Sem <?php echo $visits["numweek"]-1; ?>
+		<button class="btn btn-default pull-left margin-right-5" id="back-week" data-week="<?php echo $backWeek.$backYear; ?>">
+			<i class="fa fa-chevron-left"></i> Sem <?php echo $backWeek; ?>
 		</button>
-		<?php if($visits["numweek"]< Date("W")){ ?>
-		<button class="btn btn-default pull-left" id="next-week" data-week="<?php echo $visits["numweek"]+1; echo $visits["year"]; ?>">
-			Sem <?php echo $visits["numweek"]+1; ?> <i class="fa fa-chevron-right"></i> 
+		<?php if($nextWeek <= Date("W") || $nextYear < Date("Y")){ ?>
+		<button class="btn btn-default pull-left" id="next-week" data-week="<?php echo $nextWeek.$nextYear; ?>">
+			Sem <?php echo $nextWeek; ?> <i class="fa fa-chevron-right"></i> 
 		</button>
 		<?php } ?>
 	</h4>
+	<br>
+	<hr>
 
 	<?php foreach ($visits["hash"] as $domain => $stats) { $totalLoad = 0; ?>
 			<div class="col-md-12 text-center">
 				<?php foreach ($days as $key => $day) { $totalLoad += @$stats[$day]["nbLoad"] ? $stats[$day]["nbLoad"] : 0; } ?>
-				<h3 class="text-left">#<?php echo $domain; ?> <small class="letter-azure">(<?php echo $totalLoad; ?>)</small></h3>
+				<h5 class="text-left">#<?php echo $domain; ?> <small class="letter-azure">(<?php echo $totalLoad; ?>)</small></h5>
 				<?php foreach ($days as $key => $day) { ?>
 					<?php 	
 						$bg = "white";
@@ -68,8 +79,11 @@
 						if(@$stats[$day]["nbLoad"] > 300) { $text = "red"; }
 					?>
 					<div class="col-md-1 bg-<?php echo $bg;?> letter-<?php echo $text;?> padding-10 radius-5 border-white-2">
-						<h3 class="no-margin"><?php echo @$stats[$day]["nbLoad"]; ?></h3>
-						<?php echo $day; ?> 
+						<h4 class="no-margin">
+							<?php echo @$stats[$day]["nbLoad"]; ?> 
+							<small><?php echo $day; ?></small>
+						</h4>
+						
 					</div>
 				<?php } ?>
 			</div>

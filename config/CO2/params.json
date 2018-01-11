@@ -30,6 +30,19 @@
 			"colorBtnCreate" : "green"
 		},
 
+		"#search": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true,
+                  "subdomain" : "search", 
+                  "subdomainName" : "Search",
+                  "hash" : "#app.search",
+                  "icon" : "search", 
+                  "mainTitle" : "Réseau social citoyen",
+                  "placeholderMainSearch" : "rechercher une page ...",
+                  "lblBtnCreate" : "Créer une page",
+                  "colorBtnCreate" : "green"},
+
 
 		"#web":
       	  	{ "inMenu" : true, 

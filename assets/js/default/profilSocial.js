@@ -766,7 +766,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 
 		var html = "";
 
-		var btnMap = '<button class="btn btn-default btn-sm btn-show-onmap inline" id="btn-show-links-onmap">'+
+		var btnMap = '<button class="btn btn-default btn-sm hidden-xs btn-show-onmap inline" id="btn-show-links-onmap">'+
 				            '<i class="fa fa-map-marker"></i>'+
 				        '</button>';
 

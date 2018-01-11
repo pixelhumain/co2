@@ -367,7 +367,9 @@
 		<?php }  
 		} ?>
 
-		<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
+		<?php $paramsApp = CO2::getThemeParams(); 
+				if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
 			<li><hr></li>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classified" data-icon="bullhorn">

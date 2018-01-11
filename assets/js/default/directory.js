@@ -929,18 +929,21 @@ var directory = {
         if(params.type == "citoyens") 
             params.hash += '.viewer.' + userId;
        // if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
+          str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
 
-        str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
+          str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
-        str += "<div class='entityRight no-padding'>"; 
+          str += "<div class='entityRight no-padding'>"; 
 
             if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.hash+"' class='add2fav "+linkAction+">" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
+              str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+">" + params.htmlIco + "</a>";
               str += "</div>";
-            }
 
+              
+            }
+              
             if(notEmpty(params.typePoi)){
               str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
             }
@@ -2051,12 +2054,21 @@ var directory = {
                 // var urlImg = "/upload/communecter/color.jpg";
                 // params.profilImageUrl = urlImg;
                 params.useMinSize = typeof size != "undefined" && size == "min";
+
                 params.imgProfil = ""; 
                 if(!params.useMinSize)
                     params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
 
                 if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
-                    params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+                    params.imgProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilThumbImageUrl+"'/>";
+
+
+                params.imgBanner = ""; 
+                if(!params.useMinSize)
+                    params.imgBanner = "<i class='fa fa-image fa-2x'></i>";
+
+                if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
+                    params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
 
                 /*if(dyFInputs.get(itemType) && 
                     dyFInputs.get(itemType).col == "poi" && 

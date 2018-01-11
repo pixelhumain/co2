@@ -709,6 +709,7 @@ function bindAboutPodElement() {
 		var hasRc=hasRc;*/
 		var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
+				timer : false,
 				dynForm : {
 					jsonSchema : {
 						title : tradDynForm.updateslug,// trad["Update network"],
@@ -726,7 +727,7 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							dyFObj.closeForm();
-							toastr.success("Votre slug a bien été enregistré");
+							toastr.success("Votre identifiant URL a bien été enregistré");
 							strHash="";
     						if(location.hash.indexOf(".view")>0){
     							hashPage=location.hash.split(".view");

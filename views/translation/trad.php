@@ -600,6 +600,8 @@ var tradDynForm = {
 	"extensionacceptable": "<?php echo Yii::t("form", "Available extension(s)") ?>",
 	"collectionname": "<?php echo Yii::t("form", "Name of the collection") ?>",
 	"isPublic": "<?php echo Yii::t("form", "is Public and will show Every where") ?>",
+	"This URL is already used" : "<?php echo Yii::t("form", "This URL is already used") ?>",
+	"This URL is not used" : "<?php echo Yii::t("form", "This URL is not used") ?>"
 };
 
 var tradCategory = {

@@ -4,7 +4,7 @@
 		'/js/dataHelpers.js',
 		'/js/default/editInPlace.js',
 	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 
 ?>
 <style type="text/css">

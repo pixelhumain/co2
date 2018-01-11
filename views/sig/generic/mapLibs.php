@@ -56,6 +56,7 @@
 		}
 	}
 
-	HtmlHelper::registerCssAndScriptsFiles($cssAndScriptFiles, $this->module->assetsUrl);
+	$moduleAssets = ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->getModule( Yii::app()->params["module"]["parent"] )->getAssetsUrl()  : $this->module->assetsUrl;
+	HtmlHelper::registerCssAndScriptsFiles($cssAndScriptFiles, $moduleAssets);
 ?>
 

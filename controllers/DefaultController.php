@@ -151,6 +151,7 @@ class DefaultController extends CommunecterController {
       $page = $dir."/".$page;
 	
     }
+    
     if(Yii::app()->request->isAjaxRequest || $layout=="empty"){
       $this->layout = "//layouts/empty";
       echo $this->renderPartial($page, null,true);

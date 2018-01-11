@@ -556,7 +556,10 @@ class CommunecterController extends Controller
       "create"        => array('href' => "ph/co2/pdf/create")
     ),
     "sso" => array(
-      "test"        => array("href" => "ph/sso/co/test"),
+      "test"        => array("href" => "ph/sso/co/test", "module" => "sso"),
+    ),
+    "ressources" => array(
+      "test"        => array("href" => "ph/ressources/co/test", "module" => "ressources"),
     ),
   );
 
@@ -573,8 +576,13 @@ class CommunecterController extends Controller
     }
     else if(@Yii::app()->session["theme"])
       Yii::app()->theme = Yii::app()->session["theme"];
-    /*else
-      Yii::app()->theme = "ph-dori";*/
+    
+    //surcharge des controller mutualisé par un controller de module
+    // if we are in a submodule that has a parent 
+    // and we don't want overwriting >> then execute the parent modules method 
+    if( @Yii::app()->params["module"]["parent"] && !@Yii::app()->params["module"]["overwrite"][Yii::app()->controller->id][ Yii::app()->controller->action->id ] ){
+      $this->redirect(Yii::app()->createUrl( "/".Yii::app()->params["module"]["parent"]."/".Yii::app()->controller->id."/".Yii::app()->controller->action->id ));
+    }
 
     //managed public and private sections through a url manager
     if( Yii::app()->controller->id == "admin" && !Yii::app()->session[ "userIsAdmin" ] )

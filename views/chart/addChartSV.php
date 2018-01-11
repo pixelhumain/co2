@@ -12,7 +12,7 @@ $cssAnsScriptFilesModule = array(
 	//Data helper
 	'/js/dataHelpers.js',
 );
-HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 ?>
 <style>
 .borderHover{

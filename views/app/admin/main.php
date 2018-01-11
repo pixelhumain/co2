@@ -1,8 +1,11 @@
 <?php 
 	$cssAnsScriptFiles = array(
 		'/assets/css/circle.css',
-	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl);
+	); HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl);
+
+	$cssAnsScriptFilesTheme = array(
+		"/plugins/Chart-2.6.0/Chart.min.js",
+	); HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 ?>
 
 <h1 class="letter-"><i class="fa fa-grav letter-red"></i> Bonjour <span class="letter-red">Super Admin</span></h1>
@@ -10,22 +13,22 @@
 <?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){ ?>
 	<h5 class="letter-">Quelle partie du site souhaitez-vous administrer ?</h5>
 
-	<div class="col-md-3">
-		<button class="btn btn-default btn-lg font-blackoutM letter-red col-md-12 padding-10 btn-superadmin" data-action="web">
+	<div class="col-md-6 col-xs-6">
+		<button class="btn btn-default btn-lg font-blackoutM letter-red col-xs-12 padding-5 btn-superadmin" data-action="web">
 			<i class="fa fa-search letter-red"></i><br>WEB
 		</button>
 	</div>
 	
-	<div class="col-md-3">
-		<button class="btn btn-default btn-lg font-blackoutM letter-red col-md-12 padding-10 btn-superadmin" data-action="live">
+	<div class="col-md-6 col-xs-6">
+		<button class="btn btn-default btn-lg font-blackoutM letter-red col-xs-12 padding-5 btn-superadmin" data-action="live">
 			<i class="fa fa-newspaper-o letter-red"></i><br>LIVE
 		</button>
 	</div>
-	<div class="col-md-3">
-		<button class="btn btn-default btn-lg font-blackoutM letter-red col-md-12 padding-10 btn-superadmin" data-action="power">
+	<!-- <div class="col-md-6 col-xs-6">
+		<button class="btn btn-default btn-lg font-blackoutM letter-red col-xs-12 padding-5 btn-superadmin" data-action="power">
 			<i class="fa fa-comments letter-red"></i><br>POWER
 		</button>
-	</div>
+	</div> -->
 <?php } ?>
 
 <?php 
@@ -48,7 +51,7 @@
 		margin:1%!important;
 	}
 </style>
-<div class="col-md-12 stat-week padding-bottom-50">
+<div class="col-md-12 stat-week padding-bottom-50 padding-top-50">
 	<hr>
 	<h4 class="text-left text-azure">
 		<i class="fa fa-angle-down"></i> Nombre de visites - Semaine <?php echo $visits["week"]; ?></span>
@@ -66,9 +69,10 @@
 	<hr>
 
 	<?php foreach ($visits["hash"] as $domain => $stats) { $totalLoad = 0; ?>
-			<div class="col-md-12 text-center">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center margin-bottom-50">
 				<?php foreach ($days as $key => $day) { $totalLoad += @$stats[$day]["nbLoad"] ? $stats[$day]["nbLoad"] : 0; } ?>
-				<h5 class="text-left">#<?php echo $domain; ?> <small class="letter-azure">(<?php echo $totalLoad; ?>)</small></h5>
+				<h5 class="text-left letter-azure">#<?php echo $domain; ?> <small class="">(<?php echo $totalLoad; ?>)</small></h5>
+				<canvas id="smartChart-<?php echo $domain;?>"/>
 				<?php foreach ($days as $key => $day) { ?>
 					<?php 	
 						$bg = "white";
@@ -78,10 +82,10 @@
 						if(@$stats[$day]["nbLoad"] > 100) { $text = "orange"; }
 						if(@$stats[$day]["nbLoad"] > 300) { $text = "red"; }
 					?>
-					<div class="col-md-1 bg-<?php echo $bg;?> letter-<?php echo $text;?> padding-10 radius-5 border-white-2">
+					<div class="col-md-1 col-sm-1 col-xs-1 bg-<?php echo $bg;?> letter-<?php echo $text;?> padding-10 radius-5 border-white-2">
 						<h4 class="no-margin">
 							<?php echo @$stats[$day]["nbLoad"]; ?> 
-							<small><?php echo $day; ?></small>
+							<!-- <small><?php echo $day; ?></small> -->
 						</h4>
 						
 					</div>
@@ -91,9 +95,15 @@
 </div>
 
 
-<script type="text/javascript">
+<script type="text/javascript" >
+
+var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
+var datas = <?php echo json_encode($visits["hash"]); ?>;
 
 	jQuery(document).ready(function() {
+
+		toogleNotif(false);
+
 		$(".btn-superadmin").click(function(){
 			var action = $(this).data("action");
 				getAjax('#central-container' ,baseUrl+'/'+moduleId+"/app/superadmin/action/"+action,function(){ 
@@ -105,6 +115,63 @@
 			var numweek = $(this).data("week");
 			loadAdminDashboard(numweek);
 		});
+
+		loadChart();
 	});
+
+
+
+	//GRAPH CHART
+	function loadChart(){
+	    var i = 0;
+	    console.log("original data :: ", datas); 
+	    $.each(datas, function(dataKey, val){ i++;
+	        var color = "";//typeof val["color"] != "undefined" ? val["color"] : "green";
+	        statChartInit("smartChart-"+dataKey, val, dataKey, "line");
+	    });
+	}
+
+
+	function statChartInit(idCanvas, datas, dataKey, chartType, color){ //alert("start loadchart");
+        var dataChart = new Array();
+        var labelsDates = new Array();
+        
+        console.log("smartTest datas chart", datas);
+        $.each(datas, function(key, val){
+            console.log("smartTest valchart", val, key);
+            dataChart.push(val.nbLoad);
+            labelsDates.push(key);
+        });
+
+        console.log("smartTest ready dataChart ?", dataChart);
+        var data = {
+            datasets: [{
+                label: dataKey,
+                data : dataChart,
+                backgroundColor: "#2BB0C61A",
+                borderColor: "#2BB0C6",
+                borderWidth: 1
+            }],
+            labels: labelsDates 
+        };
+
+        console.log("dataChart :: ", data, "chart : ", data);
+        var ctx = $("#"+idCanvas).get(0).getContext("2d");
+        var options;
+        myPieChart = new Chart(ctx,{
+            type: chartType,
+            data: data,
+            options: {
+                legend: {
+                    display: false
+                },
+                animation: {
+                    duration: 300
+                }
+            },
+            //options: options
+        });
+    }
+
 
 </script>

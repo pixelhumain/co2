@@ -17,10 +17,12 @@ function initSearchInterface(){
             searchPage=0;
             search.value = $(this).val();
             pageCount=true;
-            if(typeof search.value == "undefined")
-                startSearch(0, indexStepInit, searchCallback);
-            else
-                autoCompleteSearch(search.value, null, null, null, null);
+            initTerritorialSearch();
+            if(search.app=="territorial") initTypeSearch("all");
+            //if(typeof search.value == "undefined")
+            startSearch(0, indexStepInit, searchCallback);
+           // else
+             //   autoCompleteSearch(search.value, null, null, null, null);
             pageCount=false;
             //KScrollTo("#dropdown_search");
          }
@@ -37,10 +39,12 @@ function initSearchInterface(){
             searchPage=0;
             search.value = $(this).val();
             pageCount=true;
-            if(typeof search.value == "undefined")
-                startSearch(0, indexStepInit, searchCallback);
-            else
-                autoCompleteSearch(search.value, null, null, null, null);
+            initTerritorialSearch();
+            if(search.app=="territorial") initTypeSearch("all");
+            //if(typeof search.value == "undefined")
+            startSearch(0, indexStepInit, searchCallback);
+            //else
+             //   autoCompleteSearch(search.value, null, null, null, null);
             $(".btn-directory-type").removeClass("active");
             //KScrollTo("#content-social");
          }

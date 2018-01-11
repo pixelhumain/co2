@@ -321,6 +321,7 @@ var trad = {
 	"ago":"<?php echo Yii::t("common","ago") ?>",
 	"rightnow":"<?php echo Yii::t("common","Right now") ?>",
 	"actif":"<?php echo Yii::t("common","online") ?>",
+	"posted":"<?php echo Yii::t("common","posted") ?>",
 	"addScopeFilters":"<?php echo Yii::t("common","Add scope filters") ?>",
 	"searchingon":"<?php echo Yii::t("common","searching on") ?>",
 	"selectscopesearch":"<?php echo Yii::t("common","Select scopes of research") ?>",

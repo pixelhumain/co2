@@ -15,6 +15,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->the
 $cssAnsScriptFilesModule = array(
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
+    '/js/news/index.js',
 );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
@@ -171,7 +172,7 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
         <a href="javascript:;" onclick="applyStateFilter('<?php echo News::COLLECTION ?>')" class="filter<?php echo News::COLLECTION ?> btn btn-xs btn-default btncountsearch"> Posts <span class="badge badge-warning countNews" id="countnews"></span></a>
         <!--<a href="javascript:;" onclick="clearAllFilters('')" class="btn btn-xs btn-default"> All</a></h4>
 </div>-->
-<div class="panel panel-white col-lg-offset-1 col-lg-10 col-xs-12 no-padding">
+<div class="panel panel-white col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
 	<!--<div class="panel-tools padding-20">
 		<?php if( Yii::app()->session["userId"] ) { ?>
 		<a href="javascript:;" onclick="dyFObj.openForm('organization')" class="btn btn-xs btn-light-blue tooltips" data-placement="top" data-original-title="Add an Organization"><i class="fa fa-plus"></i> <i class="fa fa-group"></i> </a>
@@ -203,23 +204,73 @@ var icons = {
 	poi : "fa-map-marker",
 	news : "fa-newspaper-o"
 };
-var searchPage=0;
-var pageCount=true;
+//var searchPage=0;
+//var pageCount=true;
+var allRanges={
+  organizations : { indexMin : 0, indexMax : 30, waiting : 30 },
+  projects : { indexMin : 0, indexMax : 30, waiting : 30 },
+  events : { indexMin : 0, indexMax : 30, waiting : 30 },
+  citoyens : { indexMin : 0, indexMax : 30, waiting : 30 },
+  classified : { indexMin : 0, indexMax : 30, waiting : 30 },
+  poi : { indexMin : 0, indexMax : 30, waiting : 30 },
+  news : { indexMin : 0, indexMax : 30, waiting : 30 },
+  place : { indexMin : 0, indexMax : 30, waiting : 30 },
+  ressource : { indexMin : 0, indexMax : 30, waiting : 30 },
+};
+var injectData = {};
+var allResults={};
 var searchCount={};
 jQuery(document).ready(function() {
 	//setTitle("Espace administrateur : Répertoire","cog");
 	initTypeSearch("all");
+  initInjectData();
    // startSearch(0, indexStepInit, searchCallback);
-  autoCompleteSearch("",null, null, null, null);   
+  startSearch(0, 30, null);   
 	initKInterface();
 	initSearchInterface();
 	//initViewTable(results);
 	if(openingFilter != "")
 		$('.filter'+openingFilter).trigger("click");
-	
+	$(window).bind("scroll",function(){  
+      mylog.log("test scroll", scrollEnd, loadingData);
+      if(!loadingData && !scrollEnd && !isMapEnd){
+        var heightWindow = $("html").height() - $("body").height();
+        if( $(this).scrollTop() >= heightWindow - 800){
+          startSearch(10, 30, null);
+      }
+    }
+  });
+  loadingData = false; 
+        
    // initPageTable(results.count.citoyens);
 
 });	
+function initInjectData(){
+  injectData={organizations : 0,
+    projects : 0,
+    events : 0,
+    citoyens : 0,
+    classified : 0,
+    poi : 0,
+    news : 0,
+    place : 0,
+    ressource : 0
+  };
+}
+function initTerritorialSearch(){
+  allRanges={
+    organizations : { indexMin : 0, indexMax : 30, waiting : 30 },
+    projects : { indexMin : 0, indexMax : 30, waiting : 30 },
+    events : { indexMin : 0, indexMax : 30, waiting : 30 },
+    citoyens : { indexMin : 0, indexMax : 30, waiting : 30 },
+    classified : { indexMin : 0, indexMax : 30, waiting : 30 },
+    poi : { indexMin : 0, indexMax : 30, waiting : 30 },
+    news : { indexMin : 0, indexMax : 30, waiting : 30 },
+    place : { indexMin : 0, indexMax : 30, waiting : 30 },
+    ressource : { indexMin : 0, indexMax : 30, waiting : 30 },
+  };
+  allResults={};
+}
 function applyStateFilter(str)
 {
 	//mylog.log("applyStateFilter",str);
@@ -233,7 +284,45 @@ function applyStateFilter(str)
 	 autoCompleteSearch(search.value, null, null, null, null);
 	//directoryTable.DataTable().column( 0 ).search( str , true , false ).draw();
 }
-
+function prepareAllSearch(data){
+  var sorting=[];
+  searchType=[];
+  initInjectData();
+  $.each(data, function(e,v){
+    if(typeof searchType[v.type] == "undefined" )
+      searchType.push(v.type);
+    allResults[e]=v;
+  });
+  $.each(allResults, function(e,v ){
+    sorting.push(v.sorting);
+  });
+  //allResults.push(data);
+  sorting.sort().reverse();
+  //console.log("sorting",sorting);
+  //orderResults={};
+  $i=0;
+  var resToShow={};
+  sorting=sorting.splice(0,30);
+  $.each(sorting, function(e, v){
+    $.each(allResults, function(key, value){
+      if(v==value.sorting){
+        resToShow[key]=value;
+        injectData[value.type]++;
+        delete allResults[key];
+        $i++;
+      }
+    });
+  });
+  $.each(injectData, function (type, v){
+    if(v==0){
+      delete searchType[type];
+    }else{
+      allRanges[type].indexMin=allRanges[type].indexMax;
+      allRanges[type].indexMax=allRanges[type].indexMin+v;
+    }
+  });
+  return resToShow;
+}
 /*function initPageTable(number){
 	numberPage=(number/100);
 	$('.pageTable').pagination({

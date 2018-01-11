@@ -3022,7 +3022,8 @@ var typeObj = {
 	default : {icon:"arrow-circle-right",color:"dark"},
 	//"video" : {icon:"video-camera",color:"dark"},
 	formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
-	news : { col : "news" }, 
+	news : { col : "news", ctrl:"news", titleClass : "bg-dark", color:"dark",	icon:"newspaper-o"},
+	//news : { col : "news" }, 
 	config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
 				sections : {
 			        network : { label: "Network Config",key:"network",icon:"map-marker"}

@@ -1364,10 +1364,7 @@ var smallMenu = {
 				"</div>";
 		return content;
 	},
-	//openSmallMenuAjaxBuild("",baseUrl+"/"+moduleId+"/favorites/list/tpl/directory2","FAvoris")
-	//opens any html without post processing
-	openAjaxHTML : function  (url,title,type,nextPrev) { 
-		smallMenu.open("",type );
+	ajaxHTML : function (url,title,type,nextPrev) { 
 		var dest = (type == "blockUI") ? ".blockContent" : "#openModal .modal-content .container" ;
 		getAjax( dest , url , function () { 
 			
@@ -1394,6 +1391,12 @@ var smallMenu = {
 			}
 			bindLBHLinks();
 		 },"html" );
+	},
+	//openSmallMenuAjaxBuild("",baseUrl+"/"+moduleId+"/favorites/list/tpl/directory2","FAvoris")
+	//opens any html without post processing
+	openAjaxHTML : function  (url,title,type,nextPrev) { 
+		smallMenu.open("",type );
+		smallMenu.ajaxHTML(url,title,type,nextPrev);
 	},
 	//content Loader can go into a block
 	//smallMenu.open("Recherche","blockUI")
@@ -1434,9 +1437,9 @@ var smallMenu = {
 				if(!$("#openModal").hasClass('in'))
 					$("#openModal").modal("show");
 				if(content)
-					$("#openModal div.modal-content div.container").html(content);
+					smallMenu.content(content);
 				else 
-					$("#openModal div.modal-content div.container").html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
+					smallMenu.content("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 			}
 
 			$(".blockPage").addClass(smallMenu.destination.slice(1));
@@ -1451,6 +1454,13 @@ var smallMenu = {
 			if (typeof callback == "function") 
 				callback();
 		}
+	},
+	content : function(content) { 
+		el = $("#openModal div.modal-content div.container");
+		if(content == null)
+			return el;
+		else
+			el.html(content);
 	}
 }
 
@@ -3471,8 +3481,7 @@ var co = {
 		lbh : function (url) { 
 			if(userId)
 				urlCtrl.loadByHash(url);
-			else co.nect();
-		},
+			else co.nect();},
 		open : function (url,type) { 
 			title = null;
 			callback = null;
@@ -3482,7 +3491,7 @@ var co = {
 				callback = function() {
 					getAjax('', url, function(data){ 
 							descHtml = dataHelper.markdownToHtml(data) ; 
-							$("#openModal div.modal-content div.container").html(descHtml);
+							smallMenu.content(descHtml);
 						}
 					,"html");
 				}
@@ -3490,42 +3499,51 @@ var co = {
 			
 			else if(type == "youtube") {
 				title = "Youtube";
-				callback = function() { $("#openModal div.modal-content div.container").html('<iframe width="560" height="315" src="'+url+'" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>');}
+				callback = function() { smallMenu.content('<iframe width="560" height="315" src="'+url+'" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>');}
+			}
+
+			else if(type == "json") {
+				title = "Json";
+				callback = function() {
+					$("#openModal div.modal-content").css("text-align","left");
+					lazyLoad( baseUrl+"/plugins/jsonview/jquery.jsonview.js", 
+							  baseUrl+"/plugins/jsonview/jquery.jsonview.css", function() { 
+						getAjax('', url, function(data){ 
+							urlT = url.split('/');
+							title = url+"<br/>"+urlT[8];
+							smallMenu.content().JSONView(data); 
+						}
+					,"html");
+					} );
+
+				}
 			}
 
 			if(title){
 				smallMenu.open(title,null,null,callback);
 			} else
-				toastr.error("Type not found!!");
-		},
+				toastr.error("Type not found!!");},
 	},
 	help : function () { 
 		url = urlCtrl.convertToPath("#default.view.page.links");
-	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
-	},
+	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);	},
 	lang : function () { 
-		smallMenu.open("<h1>Explain COLang</h1>");
-	},
-	mands : function () { 
 		str = "";
 		$.each(co,function (k,v) { 
 			str += "<a class='btn' href='javascript:;' onclick='co."+k+"()'>co."+k+"</a><br/>";
 		})
-		smallMenu.open("<h1>All Commands</h1>"+str);
-	},
+		smallMenu.open("<h1>Talk to CO</h1>"+str);	},
 	//co.rss : function () {  },
 	tools : function () { 
-		smallMenu.open("<h1>Connected Tools and Open Apps Ecosystem</h1>");
+		smallMenu.ajaxHTML( baseUrl+'/cotools');
 	},
 	nect : function () { 
 		if(!userId)
 			$('#modalLogin').modal("show");
 		else 
-			toastr.success("allready Loggued in!!");
-	},
+			toastr.success("allready Loggued in!!");	},
 	tribute : function () { 
-		window.open('https://www.helloasso.com/associations/open-atlas/collectes/communecter/don', '_blank');
-	},
+		window.open('https://www.helloasso.com/associations/open-atlas/collectes/communecter/don', '_blank');	},
 	graph : function () { 
 		lazyLoad( "https://d3js.org/d3.v4.min.js", null, function() { 
 			var what = "id/"+userId+"/type/citoyens";
@@ -3534,8 +3552,8 @@ var co = {
 				what = "id/"+contextData.id+"/type/"+contextDataType;
 			}
 			smallMenu.openAjaxHTML( baseUrl+'/graph/co/d3/'+what);
-		} );
-	},
+		} );},
+	gmenu : function () {  },
 	mind : function () { 
 		if( contextData && contextData.type == "citoyens")
 			smallMenu.open("Mindmap",null,null,function() {
@@ -3543,7 +3561,7 @@ var co = {
 				d3.json(baseUrl+'/api/person/get/id/'+contextData.id+"/format/tree", function(error, data) {
 				  if (error) throw error;
 				  
-				  $("#openModal div.modal-content div.container").html("<svg id='mindmap' style='width:100%;height:800px'></svg>");
+				  smallMenu.content("<svg id='mindmap' style='width:100%;height:800px'></svg>");
 				  mylog.log( data );
 				  markmap('svg#mindmap', data, {
 				    preset: 'default', // or colorful
@@ -3551,14 +3569,12 @@ var co = {
 				  });
 				});
 			});
-		else co.nect();
-	},
+		else co.nect();	},
 	md : function (str) { 
-		if( contextData && contextData.type == "citoyens")
-			co.ctrl.open(baseUrl+'/api/person/get/id/'+contextData.id+"/format/md","md");
+		if( contextData)
+			co.ctrl.open(baseUrl+'/api/'+dyFInputs.get(contextData.type).ctrl+'/get/id/'+contextData.id+"/format/md","md");
 		else 
-			toastr.error("No context to build a markdown!!");
-	},
+			toastr.error("No context to build a markdown!!");	},
 	agenda : function () { urlCtrl.loadByHash("#agenda");},
 	search : function () { urlCtrl.loadByHash("#search");},
 	live : function () { urlCtrl.loadByHash("#live");	},
@@ -3567,8 +3583,7 @@ var co = {
 	chat : function () { 
 		if(userId)
 			rcObj.loadChat("","citoyens", true, true) 
-		else co.nect();
-	},
+		else co.nect();	},
 	add : function (str) { 
 		strT = str.split(".");
 		type = {
@@ -3585,7 +3600,14 @@ var co = {
 		//else todo
 		// free add form 
 		// set a type 
-	},
+
+			},
+	json : function (str) { 
+		if( contextData )
+			co.ctrl.open(baseUrl+'/api/'+dyFInputs.get(contextData.type).ctrl+'/get/id/'+contextData.id,"json");
+		else 
+			toastr.error("No context available!!");	},
+	
 	// *****************************************
 	// Connected person stuff
 	// ****************************************
@@ -3595,6 +3617,19 @@ var co = {
 	p : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.follows");},
 	poi : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.poi");},
 	info : function () { co.ctrl.lbh("#"+userConnected.username+".view.detail");},
+	// *****************************************
+	// TODO
+	// ****************************************
+	/*
+	ntre : function () { smallMenu.open("<h1>Toutes les propositions de lois et décisions sociétal pour lesquels on est contre</h1>"); } ,
+	rd : function () { smallMenu.open("<h1> Visualisation de notre R&D</h1>"); } ,
+	roadmap : function () { smallMenu.open("<h1> Visualisation de notre Roadmap</h1>"); } ,
+	timeline : function () { smallMenu.open("<h1> Visualisation de notre Timeline</h1>"); } ,
+	team : function () { smallMenu.open("<h1>Visualisation de notre Team</h1>"); } ,
+	dda : function () { smallMenu.open("<h1> DashBoard Discuss, Decide, Act </h1>"); } ,
+	social : function () { smallMenu.open("<h1> connecting to other social plateforms </h1>"); } ,
+	city : function () { smallMenu.open("<h1> DashBoard City </h1>"); } ,
+	*/
 }	
 
 $(document).ready(function() { 

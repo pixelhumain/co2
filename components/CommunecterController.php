@@ -461,6 +461,9 @@ class CommunecterController extends Controller
       "search" => array("href" => "/ph/graph/search"),
       "doc" => array("href" => "/ph/graph/default/doc"),
     ),
+    "cotools"=> array(
+      "get" => array("href" => "/ph/cotools/default/get"),
+    ),
     "log"=> array(
       "monitoring" => array("href" => "/ph/co2/log/monitoring"),
       "dbaccess"  => array("href" => "/ph/co2/log/dbaccess"),
@@ -551,6 +554,9 @@ class CommunecterController extends Controller
     ),
     "pdf" => array(
       "create"        => array('href' => "ph/co2/pdf/create")
+    ),
+    "sso" => array(
+      "test"        => array("href" => "ph/sso/co/test"),
     ),
   );
 

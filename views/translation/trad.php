@@ -413,6 +413,11 @@ var trad = {
 };
 
 var tradDynForm = {
+	"Add a postal code" : "<?php echo Yii::t("common","Add a postal code") ?>",
+	"Postal code" : "<?php echo Yii::t("common","Postal code") ?>",
+	"Add a zone" : "<?php echo Yii::t("common","Add a zone") ?>",
+	"Zone" : "<?php echo Yii::t("common","Zone") ?>",
+	"Add a city" : "<?php echo Yii::t("common","Add a city") ?>",
 	"appList":"<?php echo Yii::t("form","List of Applications") ?>",
 	"screenList":"<?php echo Yii::t("form","Screen shot View to Application") ?>",
 	"me":"<?php echo Yii::t("form","Me") ?>",

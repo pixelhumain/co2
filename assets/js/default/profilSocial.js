@@ -390,7 +390,7 @@ function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirecto
 }
 
 function getLabelTitleDir(dataName, dataIcon, countData, n){
-	//mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n, trad);
+	mylog.log("getLabelTitleDir", dataName, dataIcon, countData, n, trad);
 	var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 	
 	var s = (n>1) ? "s" : "";
@@ -426,6 +426,12 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	else if(dataName == "actions"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
 
 	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
+	else if(dataName == "networks"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName;
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'network\', \'sub\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
+	    }
+	 }
 
 	else if(dataName == "urls"){ 
 		var str = " a " + countData;
@@ -633,7 +639,7 @@ function loadNetworks(){
 	getAjax('', baseUrl+'/'+moduleId+'/element/getnetworks/type/'+contextData.type+
 				'/id/'+contextData.id,
 				function(data){ 
-					displayInTheContainer(data, "network", "external-link", "network");
+					displayInTheContainer(data, "networks", "external-link", "networks");
 				}
 	,"html");
 }
@@ -761,6 +767,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			});
 		}
 	});
+
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 

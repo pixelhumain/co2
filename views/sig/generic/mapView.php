@@ -126,15 +126,12 @@
 							if(isset($params["lockedOnCountry"])){
 								echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
 								$asort = array($params["lockedOnCountry"]); 
-	        
 								foreach ( $asort as $key => $value) {
 									echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";
 									error_log($value["countryCode"]." - ".$value["name"]);
 								}
 							}else{
 								echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
-								// $asort = OpenData::$phCountries;
-	       						// asort($asort);
 	        					$asort = Zone::getListCountry();
 								foreach ( $asort as $key => $value) {
 									echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";

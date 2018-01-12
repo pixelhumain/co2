@@ -101,6 +101,7 @@ function slugUnique(searchValue){
 	//$("#listSameSlug").html("<i class='fa fa-spin fa-circle-o-notch'></i> Vérification d'existence");
 	//$("#similarLink").show();
 	//$("#btn-submit-form").html('<i class="fa  fa-spinner fa-spin"></i>').prop("disabled",true);
+
 	$.ajax({
       type: "POST",
           url: baseUrl+"/" + moduleId + "/slug/check",
@@ -113,23 +114,39 @@ function slugUnique(searchValue){
           success: function(data){
  			//var msg = "Ce pseudo est déjà utilisé";
  			//$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
+ 			var msgSlug = "";
 			if (!data.result) {
 				//response=false;
-				if(!$("#ajaxFormModal #slug").parent().hasClass("has-error"))
+				if(!$("#ajaxFormModal #slug").parent().hasClass("has-error")){
 					$("#ajaxFormModal #slug").parent().removeClass('has-success').addClass('has-error');//.find("span").text("cucu");
+					$("#ajaxFormModal .slugtext .help-blockk").removeClass('letter-green').addClass('letter-red');
+				}
 				//.addClass("has-error").parent().find("span").text("cretin");
-				msgSlug="This slug is already used.";
+				msgSlug = "<small>www." + data.domaineName + "#"+ searchValue + "</small>" +
+						  "<br><i class='fa fa-times'></i> " + tradDynForm["This URL is already used"];
+
+				$("#ajaxFormModal #btn-submit-form").attr('disabled','disabled');
 				//bindLBHLinks();
 			} else {
 				//response=true;
-				if(!$("#ajaxFormModal #slug").parent().hasClass("has-success"))
+				if(!$("#ajaxFormModal #slug").parent().hasClass("has-success")){
 					$("#ajaxFormModal #slug").parent().removeClass('has-error').addClass('has-success');
+					$("#ajaxFormModal .slugtext .help-blockk").removeClass('letter-red').addClass('letter-green');
+				}
 				//.addClass("has-success").parent().find("span").text("good peydé");
-				msgSlug="This slug is not used.";
+				console.log("yepa domaine " + data.domaineName);
+				msgSlug = "<small>www." + data.domaineName + "#"+ searchValue + "</small>" +
+						  "<br><i class='fa fa-check-circle'></i> " + tradDynForm["This URL is not used"];
+
+				$("#ajaxFormModal #btn-submit-form").removeAttr('disabled');
 				//$("#slug").html("<span class='txt-green'><i class='fa fa-thumbs-up text-green'></i> Aucun pseudo avec ce nom.</span>");
 
 			}
-			$("#ajaxFormModal #slug").next().text(msgSlug);
+
+			$("#ajaxFormModal .slugtext .help-blockk").html(msgSlug);
+			//$("#ajaxFormModal .slugtext .help-block").html(msgSlug).show();
+			$("#ajaxFormModal #slug").data("checking", false);
+            console.log("checking slug", false, "msg", msgSlug);
           }
  	});
  	//return response;
@@ -375,6 +392,12 @@ var dataHelper = {
 		return converter.makeHtml(text);
 	},
 
+	stringToBool : function (str) {
+		var bool = false;
+		if(str == "true" || str == true || str == "1" || str == 1)
+			bool = true;
+		return bool;
+	},
 
 	activateMarkdown : function (elem) { 
 		mylog.log("activateMarkdown", elem);

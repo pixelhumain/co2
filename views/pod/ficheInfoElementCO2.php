@@ -41,7 +41,7 @@
 		'/js/news/index.js',
 		'/js/default/editInPlace.js',
 	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 	$thumbAuthor =  @$element['profilThumbImageUrl'] ? 

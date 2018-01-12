@@ -461,6 +461,9 @@ class CommunecterController extends Controller
       "search" => array("href" => "/ph/graph/search"),
       "doc" => array("href" => "/ph/graph/default/doc"),
     ),
+    "cotools"=> array(
+      "get" => array("href" => "/ph/cotools/default/get"),
+    ),
     "log"=> array(
       "monitoring" => array("href" => "/ph/co2/log/monitoring"),
       "dbaccess"  => array("href" => "/ph/co2/log/dbaccess"),
@@ -552,6 +555,12 @@ class CommunecterController extends Controller
     "pdf" => array(
       "create"        => array('href' => "ph/co2/pdf/create")
     ),
+    "sso" => array(
+      "test"        => array("href" => "ph/sso/co/test", "module" => "sso"),
+    ),
+    "ressources" => array(
+      "test"        => array("href" => "ph/ressources/co/test", "module" => "ressources"),
+    ),
   );
 
   function initPage(){
@@ -567,8 +576,13 @@ class CommunecterController extends Controller
     }
     else if(@Yii::app()->session["theme"])
       Yii::app()->theme = Yii::app()->session["theme"];
-    /*else
-      Yii::app()->theme = "ph-dori";*/
+    
+    //surcharge des controller mutualisé par un controller de module
+    // if we are in a submodule that has a parent 
+    // and we don't want overwriting >> then execute the parent modules method 
+    if( @Yii::app()->params["module"]["parent"] && !@Yii::app()->params["module"]["overwrite"][Yii::app()->controller->id][ Yii::app()->controller->action->id ] ){
+      $this->redirect(Yii::app()->createUrl( "/".Yii::app()->params["module"]["parent"]."/".Yii::app()->controller->id."/".Yii::app()->controller->action->id ));
+    }
 
     //managed public and private sections through a url manager
     if( Yii::app()->controller->id == "admin" && !Yii::app()->session[ "userIsAdmin" ] )
@@ -618,9 +632,13 @@ class CommunecterController extends Controller
          
     }
     
-    if(isset( Yii::app()->request->cookies['remember'] ) && Yii::app()->request->cookies['remember']->value == "true" &&
-           isset( Yii::app()->request->cookies['lyame'] ) && 
-           isset( Yii::app()->request->cookies['drowsp'] ) && @Yii::app()->request->cookies['drowsp']->value != "null"){
+    //login auto from cookie if user not connected and checked remember
+    if(!isset(Yii::app()->session["userId"]) && 
+        isset( Yii::app()->request->cookies['remember'] ) && 
+        Yii::app()->request->cookies['remember']->value == "true" &&
+        isset( Yii::app()->request->cookies['lyame'] ) && 
+        isset( Yii::app()->request->cookies['drowsp'] ) && 
+        @Yii::app()->request->cookies['drowsp']->value != "null"){
             $pwdDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['drowsp']->value);
             $emailDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['lyame']->value);
             $res = Person::login($emailDecrypt, $pwdDecrypt, false);

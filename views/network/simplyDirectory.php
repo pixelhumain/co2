@@ -352,7 +352,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 
 	var data = {
 		"name" : name,
-		"locality" : "xxxx",
+		"scope" : (notNull(networkJson.scope) ? networkJson.scope : null),
 		"searchType" : nwVar.searchType,
 		"searchTag" : searchTagGlobal,
 		"filtreTag" : searchTagsSimply,

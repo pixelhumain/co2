@@ -428,7 +428,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
 	else if(dataName == "networks"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName;
 		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
-			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'network\')">';
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'network\', \'sub\')">';
 	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
 	    }
 	 }
@@ -773,7 +773,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 
 		var html = "";
 
-		var btnMap = '<button class="btn btn-default btn-sm btn-show-onmap inline" id="btn-show-links-onmap">'+
+		var btnMap = '<button class="btn btn-default btn-sm hidden-xs btn-show-onmap inline" id="btn-show-links-onmap">'+
 				            '<i class="fa fa-map-marker"></i>'+
 				        '</button>';
 

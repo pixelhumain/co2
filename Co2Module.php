@@ -69,6 +69,11 @@ class Co2Module extends CWebModule {
 	    return $this->_assetsUrl;
 	}
 
+	public function getParentAssetsUrl()
+	{
+		return ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->getModule( Yii::app()->params["module"]["parent"] )->getAssetsUrl()  : self::getAssetsUrl();
+	}
+
 	/**
 	 * Retourne le theme d'affichage de communecter.
 	 * Si option "theme" dans paramsConfig.php : 

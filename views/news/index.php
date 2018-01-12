@@ -36,7 +36,7 @@ $cssAnsScriptFilesModule = array(
 	'/js/dataHelpers.js'
 	//'/js/news/autosize.js',
 );
-HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 ?>	
 	<!-- start: PAGE CONTENT -->
 

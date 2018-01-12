@@ -1,5 +1,6 @@
 { 
       "title" : "Kgougle",
+      "domaineName" : "kgougle.nc",
       "metaImg" : "/assets/img/KGOUGLE-logo-min.png",
       "metaTitle" : "Le moteur de recherche des cagous",
       "metaDesc" : "Réseau social associatif, gratuit, open-source, éthique, citoyen",

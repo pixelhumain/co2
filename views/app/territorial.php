@@ -291,11 +291,15 @@ function prepareAllSearch(data){
   searchType=[];
   initInjectData();
   $.each(data, function(e,v){
-    if(typeof searchType[v.type] == "undefined" )
-      searchType.push(v.type);
+    //if (searchType.indexOf(v.type) == -1)
+      //searchType.push(v.type);
+    //if(typeof searchType[v.type] == "undefined" )
+      //searchType.push(v.type);
     allResults[e]=v;
   });
   $.each(allResults, function(e,v ){
+    if (searchType.indexOf(v.type) == -1)
+      searchType.push(v.type);
     sorting.push(v.sorting);
   });
   //allResults.push(data);
@@ -316,9 +320,10 @@ function prepareAllSearch(data){
     });
   });
   $.each(injectData, function (type, v){
-    if(v==0){
-      delete searchType[type];
-    }else{
+    console.log(v);
+    if(v==0)
+      removeSearchType(type);
+    else{
       allRanges[type].indexMin=allRanges[type].indexMax;
       allRanges[type].indexMax=allRanges[type].indexMin+v;
     }

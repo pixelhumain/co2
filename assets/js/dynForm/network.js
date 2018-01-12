@@ -51,6 +51,7 @@ dynForm = {
 	    formatData : function(formData){
 	    	//$params["skin"]["displayCommunexion"]
 	    	//---------------Skin
+	    	
 	    	if( formData.displayCommunexion )
 	    		formData["skin[displayCommunexion]"] = dataHelper.stringToBool(formData.displayCommunexion);
 

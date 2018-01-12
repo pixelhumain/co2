@@ -27,11 +27,24 @@
 #col-btn-type-directory .btn-directory-type,
 #sub-menu-left .btn-select-type-anc{
   margin-bottom:5px;
+  width:100%;
+  text-align: right;
   /*font-weight: 700;*/
   text-transform: uppercase;
   background-color: transparent;
 }
-
+.btn-directory-type{
+  border-radius: 0px;
+  border: 0px;
+}
+.btn-directory-type:hover, .btn-directory-type.active{
+  border-left: 5px solid;
+}
+.btn-directory-type .label-filter{
+  line-height: 9px;
+  max-width: 65%;
+  font-size: 12px;
+}
 
 @media (max-width: 768px) {
   #col-btn-type-directory{
@@ -209,66 +222,70 @@
         </div>
         <?php } ?>
 
-
         <?php if($typeSelected == "all" || (@$_GET["app"] && $_GET["app"]=="search")){ ?>   
           
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 
-          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
-            <button class="btn text-white bg-dark btn-open-filliaire">
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right no-padding" id="col-btn-type-directory">
+            <!--<button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
-            </button><hr class="hidden-xs">
+            </button><hr class="hidden-xs">-->
            <!-- <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
             </button><hr class="hidden-xs">-->
-            <button class="btn text-green  btn-directory-type" data-type="NGO">
+            <button class="btn text-dark border-dark btn-directory-type active padding-5" data-type="organizations">
+                <i class="fa fa-chevron-down"></i> 
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common", "organizations") ?></span>
+                <span class="badge count-badge-filter bg-dark" id="countorganizations"></span>
+            </button><hr class="hidden-xs margin-bottom-5" style="margin-top:0px;">
+            <button class="btn text-green border-green btn-directory-type padding-5" data-type="NGO">
                 <i class="fa fa-group"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common", "NGOs") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common", "NGOs") ?></span>
                 <span class="badge count-badge-filter bg-green" id="countNGO"></span>
             </button><br class="hidden-xs">
-            <button class="btn text-azure  btn-directory-type" data-type="LocalBusiness">
+            <button class="btn text-azure border-azure btn-directory-type padding-5" data-type="LocalBusiness">
                 <i class="fa fa-industry"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Compagnies") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Compagnies") ?></span>
                 <span class="badge count-badge-filter bg-azure" id="countLocalBusiness"></span>
             </button><br class="hidden-xs">
-            <button class="btn text-turq btn-directory-type" data-type="Group">
+            <button class="btn text-turq border-turq btn-directory-type padding-5" data-type="Group">
                 <i class="fa fa-circle-o"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Groups") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Groups") ?></span>
                 <span class="badge count-badge-filter bg-azure" id="countGroup"></span>
             </button><br class="hidden-xs">
 
-            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
+            <button class="btn text-red border-red btn-directory-type padding-5" data-type="GovernmentOrganization">
                 <i class="fa fa-university"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Public structures") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Public structures") ?></span>
                 <span class="badge count-badge-filter bg-red" id="countGovernmentOrganization"></span>
             </button>
-            <hr class="hidden-xs">
-            <button class="btn text-purple btn-directory-type" data-type="projects">
+            <hr class="hidden-xs margin-top-5 margin-bottom-5">
+            <button class="btn text-purple border-purple btn-directory-type padding-5" data-type="projects">
                 <i class="fa fa-lightbulb-o"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Projects") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Projects") ?></span>
                 <span class="badge count-badge-filter bg-purple" id="countprojects"></span>
             </button>
-            <hr class="hidden-xs">
-            <button class="btn text-yellow btn-directory-type" data-type="persons">
+            <hr class="hidden-xs margin-top-10 margin-bottom-5">
+            <button class="btn text-yellow border-yellow-k btn-directory-type padding-5" data-type="persons">
                 <i class="fa fa-user"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","People") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","People") ?></span>
                 <span class="badge count-badge-filter bg-yellow" id="countcitoyens"></span>
-            </button><hr class="hidden-xs">
+            </button><hr class="hidden-xs margin-top-5 margin-bottom-5">
             <!-- <button class="btn text-red btn-directory-type" data-type="cities">
                 <i class="fa fa-university"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Cities") ?></span>
             </button><br class="hidden-xs"> -->
 
-            <button class="btn text-green-poi btn-directory-type" data-type="places">
-                <i class="fa fa-map-marker"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Places") ?></span>
-                <span class="badge count-badge-filter" id="countplace"></span>
+            <button class="btn text-purple border-purple btn-directory-type padding-5" data-type="places">
+                <i class="fa fa-home"></i> 
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Places") ?></span>
+                <span class="badge count-badge-filter bg-purple" id="countplace"></span>
             </button><br class="hidden-xs">
-            <button class="btn text-green-poi btn-directory-type" data-type="poi">
+            <button class="btn text-green-poi border-green-poi btn-directory-type padding-5" data-type="poi">
                 <i class="fa fa-map-marker"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Point of interest") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Point of interest") ?></span>
                 <span class="badge count-badge-filter bg-green-poi" id="countpoi"></span>
             </button>
 
@@ -502,8 +519,8 @@
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
-        <div class="col-md-<?php echo $col ?> text-left" id="headerSearchContainer"></div>
-        <div class="col-sm-<?php echo $col ?>" id="dropdown_search"></div>
+        <div class=" col-md-<?php echo $col ?> col-sm-<?php echo $col ?> col-xs-12 text-left headerSearchContainer"></div>
+        <div class="col-md-<?php echo $col ?> col-sm-<?php echo $col ?>" id="dropdown_search"></div>
         <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
         <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
         <?php } ?>

@@ -44,7 +44,7 @@ function startSearch(indexMin, indexMax, callBack){
       mapElements = new Array(); 
     }
     else{ if(scrollEnd) return; }
-    
+    alert(name.length);
     if(name.length>=3 || name.length == 0)
     {
       var locality = "";
@@ -168,7 +168,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
     
     if(indexMin > 0)
       $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
-    else
+    else if(indexMin==0 || typeof pageEvent != "undefined")
       $("#dropdown_search").html("<div class='col-md-12 col-sm-12 text-center search-loader text-dark'>"+
                                     "<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ..."+
                                   "</div>");
@@ -221,39 +221,41 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               resultsStr=trad.result;
               if(totalData > 1)
                 resultsStr=trad.results;
-              headerStr = '';
-              if(typeof pageCount != "undefined" && pageCount)
-                headerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-              headerStr += "<h4 style='margin: 0px 0px 0px 6px;font-size:14px;' class='text-dark pull-left'>"+
-                        "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
-              headerStr += "<small class='resultTypes'>";
-              if(typeof headerParams != "undefined"){
-                var countNbTag=0;
-                $.each( searchType, function(key, val){ countNbTag++;
-                 // mylog.log(">>> each autocomplete search",val);
-                  var params = headerParams[val];
-                  headerStr += "<span class='text-"+params.color+"'>"+
-                            "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
-                          "</span> ";
-                });//console.log("myMultiTags", myMultiTags);
-                
-                if(countNbTag > 0)
-                  headerStr += "<br><br>";
-                
-                if( Object.keys(myMultiTags).length > 0 )
-                  headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
-                
-                $.each(myMultiTags, function(key, val){
-                  var params = headerParams[val];
-                  headerStr += "<span class='text-dark hidden-xs'>"+
-                            "#"+key+
-                          "</span> ";
-                });
+                if((indexMin == 0 || search.app=="search") && (typeof pageEvent == "undefined" || !pageEvent) ){
+                    headerStr = '';
+                    if(typeof pageCount != "undefined" && pageCount)
+                      headerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+                    headerStr += "<h4 style='margin: 0px 0px 0px 6px;font-size:14px;' class='text-dark pull-left'>"+
+                              "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
+                    headerStr += "<small class='resultTypes'>";
+                    if(typeof headerParams != "undefined"){
+                      var countNbTag=0;
+                      $.each( searchType, function(key, val){ countNbTag++;
+                       // mylog.log(">>> each autocomplete search",val);
+                        var params = headerParams[val];
+                        headerStr += "<span class='text-"+params.color+"'>"+
+                                  "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
+                                "</span> ";
+                      });//console.log("myMultiTags", myMultiTags);
+                      
+                      if(countNbTag > 0)
+                        headerStr += "<br><br>";
+                      
+                      if( Object.keys(myMultiTags).length > 0 )
+                        headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
+                      
+                      $.each(myMultiTags, function(key, val){
+                        var params = headerParams[val];
+                        headerStr += "<span class='text-dark hidden-xs'>"+
+                                  "#"+key+
+                                "</span> ";
+                      });
+                    }
+                    headerStr += "</small>";
+                    headerStr += "</h4>";
+                   // headerStr += "<hr style='float:left; width:100%;margin-top:0px;'/>";
+                    $(".headerSearchContainer").html(headerStr);
               }
-              headerStr += "</small>";
-              headerStr += "</h4>";
-              headerStr += "<hr style='float:left; width:100%;margin-top:0px;'/>";
-              $("#headerSearchContainer").html(headerStr);
               str = "";
              // if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1  && totalData == 0){
               //		str += '<span class="col-md-12 col-sm-12 col-xs-12 letter-blue padding-10"><i class="fa fa-info-circle"></i>'+ trad.youwillfindonlycities+'!</span>';
@@ -289,7 +291,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
                 str += "</div>";
                 */
                 //si on n'est pas sur une première recherche (chargement de la suite des résultat)
-                if(indexMin > 0){
+                if(indexMin > 0 && (typeof pageEvent == "undefined" || !pageEvent)){
                     //on supprime l'ancien bouton "afficher plus de résultat"
                    // $("#btnShowMoreResult").remove();
                     //on supprimer le footer (avec nb résultats)
@@ -309,7 +311,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
                     $("#dropdown_search").html(str);
                     if(typeof pageCount != "undefined" && pageCount)
                       initPageTable(searchCount[search.type]);
-              
+                    pageEvent=false;
                     /*if(typeof myMultiTags != "undefined"){
                     $.each(myMultiTags, function(key, value){ //mylog.log("binding bold "+key);
                       $("[data-tag-value='"+key+"'].btn-tag").addClass("bold");
@@ -404,8 +406,10 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               //alert(page);
             pageCount=false;
             searchPage=(page-1);
-            autoCompleteSearch(search.value, null, null, null, null);
-             // startSearch();
+            search.page=searchPage;
+            pageEvent=true;
+            //autoCompleteSearch(search.value, null, null, null, null);
+            startSearch(null);
           }
       });
   }
@@ -1393,7 +1397,7 @@ var directory = {
     newsPanelHtml : function(params){
       if(directory.dirLog) mylog.log("----------- newsPanelHtml",params);
       str = "";  
-      str += "<div class='col-lg-3 col-md-4 pull-left col-sm-4 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 pull-left searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
       
      // directory.colPos = directory.colPos == "left" ? "right" : "left";
@@ -1488,11 +1492,11 @@ var directory = {
               s=(params.media.files.length >1 ) ? "s" : "";
               authorActionLbh=trad["file"+s]+" "+trad.sharedby;//getMediaImages(v.media,e,v.author.id,v.target.name);
             }else if (typeof params.media != "undefined" && params.media.type=="url_content" && params.text==""){
-              authorActionLbh=trad.Linksharedby;
+              authorActionLbh=trad.linksharedby;
             }else{
               authorActionLbh=trad.writenby;
             }
-            str += "<div class='entityType'><i class='fa fa-address-card'></i> " + params.authorActionLbh + "<a href='#page.type."+authorType+".id."+authorId+"' class='lbh'>"+nameAuthor+"</a></div>";
+            str += "<div class='entityType'><i class='fa fa-pencil'></i> " + authorActionLbh + " <a href='#page.type."+authorType+".id."+authorId+"' class='lbh'>"+nameAuthor+"</a></div>";
          
             str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
           str += "</div>";

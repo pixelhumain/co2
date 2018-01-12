@@ -234,8 +234,11 @@ jQuery(document).ready(function() {
             mylog.log("search.php",searchType);
             setHeaderDirectory(typeD);
             loadingData = false;
+            pageCount=true;
+            pageEvent=false;
+            search.type=searchType;
             startSearch(0, indexStepInit, searchCallback);
-            //KScrollTo("#content-social");
+           // KScrollTo("#content-social");
 
             $(".btn-directory-type").removeClass("active");
             $(this).addClass("active");
@@ -253,7 +256,7 @@ jQuery(document).ready(function() {
         bindLeftMenuFilters();
 
         //console.log("init Scroll");
-        $(window).bind("scroll",function(){  
+        /*$(window).bind("scroll",function(){  
             mylog.log("test scroll", scrollEnd);
             if(!loadingData && !scrollEnd && !isMapEnd){
                   var heightWindow = $("html").height() - $("body").height();
@@ -261,7 +264,7 @@ jQuery(document).ready(function() {
                     startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
                   }
             }
-        });
+        });*/
 
 
 

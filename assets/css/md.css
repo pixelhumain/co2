@@ -1,0 +1,21 @@
+h1, h2, h3 {
+	padding:10px; 
+	border:3px solid #ccc; 
+	margin: 10px;
+}
+h1 {
+	background-color: #eee; 
+	text-align: center;
+}
+h2 {
+	background-color: #ddd; 
+}
+h3 {
+	background-color: #ccc; 
+}
+h4 {
+	background-color: #bbb; 
+}
+#doc {
+	margin: 30px;
+}

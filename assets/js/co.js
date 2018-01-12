@@ -807,7 +807,7 @@ var urlCtrl = {
 							alert(baseUrl+'/'+moduleId+path);
 							smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+path);
 						} else
-							showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
+							showAjaxPanel( baseUrl+'/'+ moduleId + '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
 						
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
@@ -915,26 +915,14 @@ var urlCtrl = {
 	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
-	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
+	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
 	    }
 
-	    /*else if( hash.indexOf("#news.index.type") >= 0 ){
-	        hashT = hash.split(".");
-	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" )+'?isFirst=1', 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
-
-	    } */
 	    else if( hash.indexOf("#city.directory") >= 0 ){
 	        hashT = hash.split(".");
-	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
+	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
 	    } 
-		/*else if( hash.indexOf("#need.addneedsv") >= 0 ){
-		        hashT = hash.split(".");
-		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
-		} 
-		else if( hash.indexOf("#need.addneedsv") >= 0 ){
-		        hashT = hash.split(".");
-		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
-		} */
+
 		else if(hash.length>2){
 			hash = hash.replace( "#","" );
 			hashT=hash.split(".");
@@ -953,14 +941,17 @@ var urlCtrl = {
 			  				hashT.shift();
 			  				viewPage="/"+hashT.join("/");
 			  			}
-			  			showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
 			  		}else
-			  			showAjaxPanel( '/app/index', 'Home','home' );
+			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 	 			},
 			});
 		}
-	    else 
-	        showAjaxPanel( '/app/index', 'Home','home' );
+	    else if ( moduleId != activeModuleId) {
+	    	showAjaxPanel( baseUrl+'/'+ activeModuleId + '/', 'Home','home' );
+	    } 
+	    else
+	        showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 	    mylog.log("testnetwork hash", hash);
 	    location.hash = hash;
 	    /*if(typeof back == "function"){
@@ -973,7 +964,8 @@ var urlCtrl = {
 /* ****************
 Generic non-ajax panel loading process 
 **************/
-function showPanel(box,callback){ 
+function showPanel(box,callback)
+{ 
 	$(".my-main-container").scrollTop(0);
 
   	$(".box").hide(200);
@@ -1018,13 +1010,8 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	//alert("showAjaxPanel"+dest);
 	showNotif(false);
 			
-	//setTimeout(function(){
-		//$(".main-container > header").html("");
-		//$(".pageContent").html("");
 	$(".hover-info,.hover-info2").hide();
-		//processingBlockUi();
 	showMap(false);
-	//}, 200);
 
 	$(".box").hide(200);
 	//showPanel('box-ajax');
@@ -1036,52 +1023,50 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	setTimeout(function(){
 		if( $(dest).length )
 		{
-		setTimeout(function(){ $('.progressTop').val(40)}, 1000);
-		setTimeout(function(){ $('.progressTop').val(60)}, 3000);
-		getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
-			
-			if( dest != themeObj.mainContainer )
-				$(".subModuleTitle").html("");
+			setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+			setTimeout(function(){ $('.progressTop').val(60)}, 3000);
+			getAjax(dest, url, function(data){ 
+				
+				if( dest != themeObj.mainContainer )
+					$(".subModuleTitle").html("");
 
-			//initNotifications(); 
-			
-			$(".modal-backdrop").hide();
-			bindExplainLinks();
-			bindTags();
-			bindLBHLinks();
-			$(".progressTop").val(90);
-			setTimeout(function(){ $(".progressTop").val(100)}, 10);
-			$(".progressTop").fadeOut(200);
-			$.unblockUI();
+				$(".modal-backdrop").hide();
+				bindExplainLinks();
+				bindTags();
+				bindLBHLinks();
+				$(".progressTop").val(90);
+				setTimeout(function(){ $(".progressTop").val(100)}, 10);
+				$(".progressTop").fadeOut(200);
+				$.unblockUI();
 
-			if(mapEnd)
-				showMap(true);
+				if(mapEnd)
+					showMap(true);
 
-    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
-        		uploadObj.set(contextData.type,contextData.id);
-        	}
-        	
-        	if( typeof urlCtrl.afterLoad == "function") {
-        		urlCtrl.afterLoad();
-        		urlCtrl.afterLoad = null;
-        	}
+	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
+	        		uploadObj.set(contextData.type,contextData.id);
+	        	}
+	        	
+	        	if( typeof urlCtrl.afterLoad == "function") {
+	        		urlCtrl.afterLoad();
+	        		urlCtrl.afterLoad = null;
+	        	}
 
-        	/*if(debug){
-        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
-        			if(prevDbAccessCount == 0){
-        				dbAccessCount = parseInt(data);
-        				prevDbAccessCount = dbAccessCount;
-        			} else {
-        				dbAccessCount = parseInt(data)-prevDbAccessCount;
-        				prevDbAccessCount = parseInt(data);
-        			}
-        			//console.error('dbaccess:'+prevDbAccessCount);
-        			
-        			//$(".dbAccessBtn").remove();
-        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
-        		},null);
-        	}*/
-         },"html");
+	        	/*if(debug){
+	        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
+	        			if(prevDbAccessCount == 0){
+	        				dbAccessCount = parseInt(data);
+	        				prevDbAccessCount = dbAccessCount;
+	        			} else {
+	        				dbAccessCount = parseInt(data)-prevDbAccessCount;
+	        				prevDbAccessCount = parseInt(data);
+	        			}
+	        			//console.error('dbaccess:'+prevDbAccessCount);
+	        			
+	        			//$(".dbAccessBtn").remove();
+	        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
+	        		},null);
+	        	}*/
+	        },"html");
 		} else 
 			console.error( 'showAjaxPanel', dest, "doesn't exist" );
 	}, 100);

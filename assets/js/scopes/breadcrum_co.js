@@ -30,6 +30,7 @@ function bindCommunexionScopeEvents(){
               //  notSearch = false;
             //}
         }
+        if(search.app=="territorial") initTerritorialSearch();
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
                          $(this).data("scope-values"),  notSearch, testCo) ;
@@ -65,6 +66,7 @@ function bindCommunexionScopeEvents(){
                         startSearchInterop(0,30);
                     }
                     else{
+                        if(search.app=="territorial") initTerritorialSearch();
                         startSearch(0, indexStepInit); 
                     }
                 }

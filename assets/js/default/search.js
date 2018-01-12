@@ -17,8 +17,7 @@ function initSearchInterface(){
             searchPage=0;
             search.value = $(this).val();
             pageCount=true;
-            initTerritorialSearch();
-            if(search.app=="territorial") initTypeSearch("all");
+            if(search.app=="territorial") initTerritorialSearch();
             //if(typeof search.value == "undefined")
             startSearch(0, indexStepInit, searchCallback);
            // else
@@ -39,8 +38,7 @@ function initSearchInterface(){
             searchPage=0;
             search.value = $(this).val();
             pageCount=true;
-            initTerritorialSearch();
-            if(search.app=="territorial") initTypeSearch("all");
+            if(search.app=="territorial") initTerritorialSearch();
             //if(typeof search.value == "undefined")
             startSearch(0, indexStepInit, searchCallback);
             //else

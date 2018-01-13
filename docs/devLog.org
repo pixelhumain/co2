@@ -13,6 +13,29 @@
 ----------------------------------------------------
 
 ---------------------------------------
+---------- VERSION C0.30 --------------
+---------------------------------------
+[ ] New architecture of search engine
+  [X] Fisrt search - name or #tag
+  [X] Second - geographical
+  [X] Thirsd - themes
+    [ ] Design for 2nd & 3rd filter
+  [X] App all search
+  [X] App search with page and counter
+    [ ] Design of all entity
+    [ ] Function of social connect
+  [ ] Market app  
+  [ ] Rebesco app
+  [X] Live app
+    [X] Search by tag and name
+[ ] RebesCo
+[X] Mergin all branches - Terla / Territorial / Lieux 2.0 / Dev / Master
+[ ] Preferences
+
+
+
+
+---------------------------------------
 ----- BASH DE REPRISE DES DONNEES -----
 ---------------------------------------
 

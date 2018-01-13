@@ -151,7 +151,7 @@
 		    "open" : true, 
 		    "subdomain" : "ressource", 
 		    "subdomainName" : "Ressources",
-		    "hash" : "#app.search.type.ressource",
+		    "hash" : "#app.help",
 		    "icon" : "cubes", 
 		    "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
 		    "placeholderMainSearch" : "Rechercher un ressource ...",

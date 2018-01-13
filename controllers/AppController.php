@@ -186,6 +186,11 @@ class AppController extends CommunecterController {
         $params = array();
         echo $this->renderPartial("live", $params, true);
     }
+    public function actionHelp(){
+        CO2Stat::incNbLoad("co2-help"); 
+        $params = array("type"=>"ressource");
+        echo $this->renderPartial("search", $params, true);
+    }
 
 	public function actionAgenda(){
 		CO2Stat::incNbLoad("co2-agenda");	

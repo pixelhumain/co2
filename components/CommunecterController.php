@@ -537,6 +537,7 @@ class CommunecterController extends Controller
       "annonces"          => array('href' => "/ph/co2/app/annonces",          "public" => true),
       "live"              => array('href' => "/ph/co2/app/live",              "public" => true),
       "agenda"            => array('href' => "/ph/co2/app/agenda",            "public" => true),
+      "help"            => array('href' => "/ph/co2/app/help",            "public" => true),
       "mediacrawler"      => array('href' => "/ph/co2/app/mediacrawler",      "public" => false),
       "page"              => array('href' => "/ph/co2/app/page",              "public" => true),
       "search"            => array('href' => "/ph/co2/app/search",            "public" => true),

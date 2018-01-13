@@ -44,7 +44,7 @@ function startSearch(indexMin, indexMax, callBack){
       mapElements = new Array(); 
     }
     else{ if(scrollEnd) return; }
-    alert(name.length);
+//    alert(name.length);
     if(name.length>=3 || name.length == 0)
     {
       var locality = "";

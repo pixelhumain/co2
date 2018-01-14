@@ -697,11 +697,13 @@ var urlCtrl = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
-		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o','useHeader' : true},
-		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o','useHeader' : true},
-
+		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o',useHeader : true},
+		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o',useHeader : true},
 
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
+		// MODULES
+		"ressources" : {title:'RESSOURCES', icon : 'puzzle-piece',useHeader : true, mod:"ressources"},
+		"rsc" : {"alias":"#ressources"},
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
@@ -806,8 +808,14 @@ var urlCtrl = {
 							path = path.substring(5);
 							alert(baseUrl+'/'+moduleId+path);
 							smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+path);
-						} else
-							showAjaxPanel( baseUrl+'/'+ moduleId + '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
+						} else {
+
+							mod = moduleId+ '/';
+							if(moduleId != activeModuleId || endPoint.mod)
+								mod = '';
+
+							showAjaxPanel( baseUrl+'/'+ mod +path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
+						}
 						
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
@@ -952,7 +960,7 @@ var urlCtrl = {
 	    } 
 	    else
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
-	    mylog.log("testnetwork hash", hash);
+	    mylog.log("END loadByHash hash:", hash);
 	    location.hash = hash;
 	    /*if(typeof back == "function"){
 	    	alert("back");

@@ -559,9 +559,11 @@ class CommunecterController extends Controller
       "test"        => array("href" => "ph/sso/co/test", "module" => "sso"),
     ),
     "ressources" => array(
-      "test"        => array("href" => "ph/ressources/co/test", "module" => "ressources"),
+      "co"        => array("href" => "ph/ressources/co", "module" => "ressources"),
     ),
   );
+
+
 
   function initPage(){
     
@@ -577,11 +579,8 @@ class CommunecterController extends Controller
     else if(@Yii::app()->session["theme"])
       Yii::app()->theme = Yii::app()->session["theme"];
     
-    //surcharge des controller mutualisé par un controller de module
-    // if we are in a submodule that has a parent 
-    // and we don't want overwriting >> then execute the parent modules method 
-    /*if( @Yii::app()->params["module"]["parent"] && !@Yii::app()->params["module"]["overwrite"][Yii::app()->controller->id][ Yii::app()->controller->action->id ] ){
-      $this->redirect(Yii::app()->createUrl( "/".Yii::app()->params["module"]["parent"]."/".Yii::app()->controller->id."/".Yii::app()->controller->action->id ));
+    /*if( in_array(Yii::app()->controller->id,$this->$modules) ){
+      $this->redirect(Yii::app()->createUrl( "/".Yii::app()->controller->id."/".Yii::app()->controller->action->id ));
     }*/
 
     //managed public and private sections through a url manager

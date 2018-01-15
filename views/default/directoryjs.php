@@ -567,7 +567,7 @@ var headerParams = {
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad.classifieds },
   "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
   "ressource"         : { color: "purple",   icon: "cubes",   name: "Ressource" },
-
+  "news"         : { color: "dark",   icon: "newspaper-o",   name: "news" },
   "products"    : { color: "orange",   icon: "shopping-basket",   name: trad.products },
   "services"    : { color: "orange",   icon: "sun-o",   name: trad.services },
   "circuits"    : { color: "orange",   icon: "ravelry",   name: trad.circuits },

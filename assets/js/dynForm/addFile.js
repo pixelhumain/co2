@@ -33,7 +33,7 @@ dynForm = {
 	        file : dyFInputs.file(),
 	        //newsCreation : dyFInputs.checkbox(false,"newsCreation",{labelText: tradDynForm.sharefilesasnews, onText:tradDynForm.yes, offText:tradDynForm.no,labelInInput:tradDynForm.shareit, inputId: "#createNews"}),
 	        newsCreation : dyFInputs.checkboxSimple("false", "newsCreation", {
-			        							labelText: tradDynForm.shareimagesasnews + " ?", 
+			        							labelText: tradDynForm.sharefilesasnews + " ?", 
 			        							onText:tradDynForm.yes, 
 			        							offText:tradDynForm.no, 
 			        							onLabel : tradDynForm.yes,

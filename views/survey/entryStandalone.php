@@ -4,7 +4,7 @@
 	  //'/survey/js/highcharts.js',
 	  '/js/dataHelpers.js'
 	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl() );
 
 	
 

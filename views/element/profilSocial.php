@@ -455,9 +455,18 @@
 									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 								</a>
 				            </li>
+				            <?php }
 
-				            <?php } ?>
-			            <?php } ?>
+				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {  
+		                
+		               			$urlNetwork = Element::getUrlMyNetwork((string)$element["_id"], $type); ?>
+
+		               			<li class="text-left">
+					               	<a href='<?php echo $urlNetwork; ?>' target='_blanck'>
+										<i class='fa fa-map'></i> <?php echo Yii::t("common","My network"); ?>
+									</a>
+					            </li>
+			            <?php } } ?>
 			            <li class="text-left">
 				               	<a href='javascript:;' onclick='co.graph()' >
 									<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
@@ -829,9 +838,11 @@
 				loadMD();
 			else if(sub=="settings")
 				loadSettings();
-			else if(sub=="coop"){
+			else if(sub=="coop")
 				loadCoop(roomId, proposalId, resolutionId, actionId);
-			}
+			else if(sub=="networks")
+				loadNetworks();
+			
 		} else
 			loadNewsStream(true);
 	}

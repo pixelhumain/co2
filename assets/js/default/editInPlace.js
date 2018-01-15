@@ -13,7 +13,7 @@ function bindAboutPodElement() {
 		mylog.log("-----------------changeHiddenFields----------------------");
 		//
 		listFields = [	"username", "birthDate", "email", "avancement", "url", "fixe",
-						"mobile","fax", "facebook", "twitter", "gpplus", "github", "skype", "telegram"];
+						"mobile","fax", "facebook", "twitter", "gpplus", "github", "skype", "instagram","telegram","diaspora","mastodon"];
 		
 		$.each(listFields, function(i,value) {
 			mylog.log("listFields", value, typeof contextData[value]);
@@ -577,7 +577,7 @@ function bindAboutPodElement() {
 							mylog.log("beforeSave");
 					    	//removeFieldUpdateDynForm(contextData.type);
 
-					    	var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus", "instagram"];
+					    	var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus", "instagram", "diaspora", "mastodon"];
 							$.each(SNetwork, function(key, val){ 
 								mylog.log("val", val);
 								mylog.log("val2", $("#ajaxFormModal #"+val).val(), $("#ajaxFormModal #"+val).length);
@@ -586,7 +586,9 @@ function bindAboutPodElement() {
 									( 	$("#ajaxFormModal #"+val).length &&
 										$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] ) ) {
 									$("#ajaxFormModal #"+val).remove();
-								}
+								} else if (	(	!notNull(contextData["socialNetwork"]) || 
+												!notNull(contextData["socialNetwork"][val]) ) && $("#ajaxFormModal #"+val).length )
+									$("#ajaxFormModal #"+val).remove();
 							});
 					    },
 						afterSave : function(data){
@@ -602,6 +604,16 @@ function bindAboutPodElement() {
 										changeNetwork('#divTelegram', '#telegramAbout', 'https://web.telegram.org/#/im?p=@'+contextData.socialNetwork.telegram, 'https://web.telegram.org/#/im?p=@'+contextData.socialNetwork.telegram);
 									else
 										changeNetwork('#divTelegram', '#telegramAbout', contextData.socialNetwork.telegram, contextData.socialNetwork.telegram);
+								}
+
+								if(typeof data.resultGoods.values.diaspora != "undefined"){
+									contextData.socialNetwork.diaspora = data.resultGoods.values.diaspora.trim();
+									changeNetwork('#divDiaspora', '#diasporaAbout', contextData.socialNetwork.diaspora, contextData.socialNetwork.diaspora);
+								}
+
+								if(typeof data.resultGoods.values.mastodon != "undefined"){
+									contextData.socialNetwork.mastodon = data.resultGoods.values.mastodon.trim();
+									changeNetwork('#divMastodon', '#mastodonAbout', contextData.socialNetwork.mastodon, contextData.socialNetwork.mastodon);
 								}
 
 								if(typeof data.resultGoods.values.facebook != "undefined"){
@@ -648,6 +660,8 @@ function bindAboutPodElement() {
 							twitter : dyFInputs.inputUrl(tradDynForm["linkTwitter"]),
 							facebook :  dyFInputs.inputUrl(tradDynForm["linkFacebook"]),
 							instagram :  dyFInputs.inputUrl(tradDynForm["linkInstagram"]),
+					        diaspora :  dyFInputs.inputUrl(tradDynForm["linkDiaspora"]),
+					        mastodon :  dyFInputs.inputUrl(tradDynForm["linkMastodon"]),
 						}
 					}
 				}
@@ -663,21 +677,27 @@ function bindAboutPodElement() {
 				typeElement : contextData.type,
 			};
 
-			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.twitter))
-				dataUpdate.twitter = contextData.socialNetwork.twitter;
-			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.gpplus))
-				dataUpdate.gpplus = contextData.socialNetwork.gpplus;
-			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.github))
-				dataUpdate.github = contextData.socialNetwork.github;
-			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.skype))
-				dataUpdate.skype = contextData.socialNetwork.skype;
-			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.telegram))
-				dataUpdate.telegram = contextData.socialNetwork.telegram;
-			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.facebook))
-				dataUpdate.facebook = contextData.socialNetwork.facebook;
-			if(notEmpty(contextData.socialNetwork) && notEmpty(contextData.socialNetwork.instagram))
-				dataUpdate.instagram = contextData.socialNetwork.instagram;
-
+			if(notEmpty(contextData.socialNetwork) )
+			{
+				if( notEmpty(contextData.socialNetwork.twitter) )
+					dataUpdate.twitter = contextData.socialNetwork.twitter;
+				if( notEmpty(contextData.socialNetwork.gpplus) )
+					dataUpdate.gpplus = contextData.socialNetwork.gpplus;
+				if( notEmpty(contextData.socialNetwork.github) )
+					dataUpdate.github = contextData.socialNetwork.github;
+				if( notEmpty(contextData.socialNetwork.skype) )
+					dataUpdate.skype = contextData.socialNetwork.skype;
+				if( notEmpty(contextData.socialNetwork.telegram) )
+					dataUpdate.telegram = contextData.socialNetwork.telegram;
+				if( notEmpty(contextData.socialNetwork.facebook) )
+					dataUpdate.facebook = contextData.socialNetwork.facebook;
+				if(notEmpty(contextData.socialNetwork.instagram))
+					dataUpdate.instagram = contextData.socialNetwork.instagram;
+				if( notEmpty(contextData.socialNetwork.diaspora) )
+					dataUpdate.diaspora = contextData.socialNetwork.diaspora;
+				if( notEmpty(contextData.socialNetwork.mastodon) )
+					dataUpdate.mastodon = contextData.socialNetwork.mastodon;
+			}
 			dyFObj.openForm(form, "sub", dataUpdate);
 
 			
@@ -689,6 +709,7 @@ function bindAboutPodElement() {
 		var hasRc=hasRc;*/
 		var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
+				timer : false,
 				dynForm : {
 					jsonSchema : {
 						title : tradDynForm.updateslug,// trad["Update network"],
@@ -706,7 +727,7 @@ function bindAboutPodElement() {
 					    },
 						afterSave : function(data){
 							dyFObj.closeForm();
-							toastr.success("Votre slug a bien été enregistré");
+							toastr.success("Votre identifiant URL a bien été enregistré");
 							strHash="";
     						if(location.hash.indexOf(".view")>0){
     							hashPage=location.hash.split(".view");
@@ -741,7 +762,7 @@ function bindAboutPodElement() {
 			dyFObj.openForm(form, "sub", dataUpdate);		
 	}
 	function changeNetwork(id, idUrl, url, str){
-		mylog.log("changeNetwork", id, idUrl, url, str, str.length);
+		mylog.log("changeNetwork", id, idUrl, url, str.length);
 		//$(id).attr('href', url);
 
 		if(str.length == 0)
@@ -960,13 +981,14 @@ function bindAboutPodElement() {
 	function removeFieldUpdateDynForm(collection){
 		mylog.log("------------------------ removeFieldUpdateDynForm", collection);
 		var fieldsElement = [ 	"name", "slug", "tags", "email", "url", "fixe", "mobile", "fax", 
-								"telegram", "github", "skype", "twitter", "facebook", "gpplus"];
+								"telegram", "github", "skype", "twitter", "facebook", "gpplus",
+								"diaspora","mastodon"];
 		var fieldsPerson = ["username",  "birthDate"];
 		var fieldsProject = [ "avancement", "startDate", "endDate", "parentId" ];
 		var fieldsOrga = [ "type", "parentId" ];
 		var fieldsEvent = [ "type", "startDate", "endDate", "parentId", , "organizerId"];
 
-		var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus"];
+		var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus","diaspora","mastodon"];
 
 		if(collection == typeObj.person.col)
 			fieldsElement = fieldsElement.concat(fieldsPerson);

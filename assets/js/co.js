@@ -697,10 +697,12 @@ var urlCtrl = {
 		"#define." : {title:'TAG MAP ', icon : 'map-marker', action:function( hash ){ showDefinition("explain"+hash.split('.')[1])	} },
 		"#data.index" : {title:'OPEN DATA FOR ALL', icon : 'fa-folder-open-o'},
 		"#opendata" : {"alias":"#data.index"},
-		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o','useHeader' : true},
-		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o','useHeader' : true},
-		"#graph" : { title:'Graph', icon : 'connectdevelop' },
+		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o',useHeader : true},
+		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o',useHeader : true},
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
+		// MODULES
+		"ressources" : {title:'RESSOURCES', icon : 'puzzle-piece',useHeader : true, mod:"ressources"},
+		"rsc" : {"alias":"#ressources"},
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
@@ -805,8 +807,14 @@ var urlCtrl = {
 							path = path.substring(5);
 							alert(baseUrl+'/'+moduleId+path);
 							smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+path);
-						} else
-							showAjaxPanel( '/'+path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
+						} else {
+
+							mod = moduleId+ '/';
+							if(moduleId != activeModuleId || endPoint.mod)
+								mod = '';
+
+							showAjaxPanel( baseUrl+'/'+ mod +path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
+						}
 						
 						if(endPoint.menu)
 							$("."+endPoint.menu).removeClass("hide");
@@ -914,26 +922,14 @@ var urlCtrl = {
 	       		showPanel(panelName,null,title);
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
-	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
+	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
 	    }
 
-	    /*else if( hash.indexOf("#news.index.type") >= 0 ){
-	        hashT = hash.split(".");
-	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" )+'?isFirst=1', 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
-
-	    } */
 	    else if( hash.indexOf("#city.directory") >= 0 ){
 	        hashT = hash.split(".");
-	        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
+	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
 	    } 
-		/*else if( hash.indexOf("#need.addneedsv") >= 0 ){
-		        hashT = hash.split(".");
-		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
-		} 
-		else if( hash.indexOf("#need.addneedsv") >= 0 ){
-		        hashT = hash.split(".");
-		        showAjaxPanel( '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ADD NEED '+typesLabels[hashT[3]],'cubes' );
-		} */
+
 		else if(hash.length>2){
 			hash = hash.replace( "#","" );
 			hashT=hash.split(".");
@@ -952,15 +948,18 @@ var urlCtrl = {
 			  				hashT.shift();
 			  				viewPage="/"+hashT.join("/");
 			  			}
-			  			showAjaxPanel('/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
 			  		}else
-			  			showAjaxPanel( '/app/index', 'Home','home' );
+			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 	 			},
 			});
 		}
-	    else 
-	        showAjaxPanel( '/app/index', 'Home','home' );
-	    mylog.log("testnetwork hash", hash);
+	    else if ( moduleId != activeModuleId) {
+	    	showAjaxPanel( baseUrl+'/'+ activeModuleId + '/', 'Home','home' );
+	    } 
+	    else
+	        showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
+	    mylog.log("END loadByHash hash:", hash);
 	    location.hash = hash;
 	    /*if(typeof back == "function"){
 	    	alert("back");
@@ -972,7 +971,8 @@ var urlCtrl = {
 /* ****************
 Generic non-ajax panel loading process 
 **************/
-function showPanel(box,callback){ 
+function showPanel(box,callback)
+{ 
 	$(".my-main-container").scrollTop(0);
 
   	$(".box").hide(200);
@@ -1017,13 +1017,8 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	//alert("showAjaxPanel"+dest);
 	showNotif(false);
 			
-	//setTimeout(function(){
-		//$(".main-container > header").html("");
-		//$(".pageContent").html("");
 	$(".hover-info,.hover-info2").hide();
-		//processingBlockUi();
 	showMap(false);
-	//}, 200);
 
 	$(".box").hide(200);
 	//showPanel('box-ajax');
@@ -1035,54 +1030,53 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	setTimeout(function(){
 		if( $(dest).length )
 		{
-		setTimeout(function(){ $('.progressTop').val(40)}, 1000);
-		setTimeout(function(){ $('.progressTop').val(60)}, 3000);
-		getAjax(dest, baseUrl+'/'+moduleId+url, function(data){ 
-			
-			if( dest != themeObj.mainContainer )
-				$(".subModuleTitle").html("");
+			setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+			setTimeout(function(){ $('.progressTop').val(60)}, 3000);
+			getAjax(dest, url, function(data){ 
+				
+				if( dest != themeObj.mainContainer )
+					$(".subModuleTitle").html("");
 
-			//initNotifications(); 
-			
-			$(".modal-backdrop").hide();
-			bindExplainLinks();
-			bindTags();
-			bindLBHLinks();
-			$(".progressTop").val(90);
-			setTimeout(function(){ $(".progressTop").val(100)}, 10);
-			$(".progressTop").fadeOut(200);
-			$.unblockUI();
+				$(".modal-backdrop").hide();
+				bindExplainLinks();
+				bindTags();
+				bindLBHLinks();
+				$(".progressTop").val(90);
+				setTimeout(function(){ $(".progressTop").val(100)}, 10);
+				$(".progressTop").fadeOut(200);
+				$.unblockUI();
 
-			if(mapEnd)
-				showMap(true);
+				if(mapEnd)
+					showMap(true);
 
-    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
-        		uploadObj.set(contextData.type,contextData.id);
-        	}
-        	
-        	if( typeof urlCtrl.afterLoad == "function") {
-        		urlCtrl.afterLoad();
-        		urlCtrl.afterLoad = null;
-        	}
-        	/*if(debug){
-        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
-        			if(prevDbAccessCount == 0){
-        				dbAccessCount = parseInt(data);
-        				prevDbAccessCount = dbAccessCount;
-        			} else {
-        				dbAccessCount = parseInt(data)-prevDbAccessCount;
-        				prevDbAccessCount = parseInt(data);
-        			}
-        			//console.error('dbaccess:'+prevDbAccessCount);
-        			
-        			//$(".dbAccessBtn").remove();
-        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
-        		},null);
-        	}*/
-         },"html");
+	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
+	        		uploadObj.set(contextData.type,contextData.id);
+	        	}
+	        	
+	        	if( typeof urlCtrl.afterLoad == "function") {
+	        		urlCtrl.afterLoad();
+	        		urlCtrl.afterLoad = null;
+	        	}
+
+	        	/*if(debug){
+	        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
+	        			if(prevDbAccessCount == 0){
+	        				dbAccessCount = parseInt(data);
+	        				prevDbAccessCount = dbAccessCount;
+	        			} else {
+	        				dbAccessCount = parseInt(data)-prevDbAccessCount;
+	        				prevDbAccessCount = parseInt(data);
+	        			}
+	        			//console.error('dbaccess:'+prevDbAccessCount);
+	        			
+	        			//$(".dbAccessBtn").remove();
+	        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
+	        		},null);
+	        	}*/
+	        },"html");
 		} else 
 			console.error( 'showAjaxPanel', dest, "doesn't exist" );
-	}, 400);
+	}, 100);
 }
 /*prevDbAccessCount = 0; 
 function clearDbAccess() { 
@@ -1362,10 +1356,7 @@ var smallMenu = {
 				"</div>";
 		return content;
 	},
-	//openSmallMenuAjaxBuild("",baseUrl+"/"+moduleId+"/favorites/list/tpl/directory2","FAvoris")
-	//opens any html without post processing
-	openAjaxHTML : function  (url,title,type,nextPrev) { 
-		smallMenu.open("",type );
+	ajaxHTML : function (url,title,type,nextPrev) { 
 		var dest = (type == "blockUI") ? ".blockContent" : "#openModal .modal-content .container" ;
 		getAjax( dest , url , function () { 
 			
@@ -1392,6 +1383,12 @@ var smallMenu = {
 			}
 			bindLBHLinks();
 		 },"html" );
+	},
+	//openSmallMenuAjaxBuild("",baseUrl+"/"+moduleId+"/favorites/list/tpl/directory2","FAvoris")
+	//opens any html without post processing
+	openAjaxHTML : function  (url,title,type,nextPrev) { 
+		smallMenu.open("",type );
+		smallMenu.ajaxHTML(url,title,type,nextPrev);
 	},
 	//content Loader can go into a block
 	//smallMenu.open("Recherche","blockUI")
@@ -1432,9 +1429,9 @@ var smallMenu = {
 				if(!$("#openModal").hasClass('in'))
 					$("#openModal").modal("show");
 				if(content)
-					$("#openModal div.modal-content div.container").html(content);
+					smallMenu.content(content);
 				else 
-					$("#openModal div.modal-content div.container").html("<i class='fa fa-spin fa-refresh fa-4x'></i>");
+					smallMenu.content("<i class='fa fa-spin fa-refresh fa-4x'></i>");
 			}
 
 			$(".blockPage").addClass(smallMenu.destination.slice(1));
@@ -1449,6 +1446,13 @@ var smallMenu = {
 			if (typeof callback == "function") 
 				callback();
 		}
+	},
+	content : function(content) { 
+		el = $("#openModal div.modal-content div.container");
+		if(content == null)
+			return el;
+		else
+			el.html(content);
 	}
 }
 
@@ -3815,6 +3819,7 @@ $(document).ready(function() {
 			        network : { label: "Network Config",key:"network",icon:"map-marker"}
 			    }},
 	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	networks : {sameAs:"network"},
 	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
 	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
 				sections : {
@@ -3837,50 +3842,91 @@ $(document).ready(function() {
 
 
 var co = {
+	ctrl : {
+		lbh : function (url) { 
+			if(userId)
+				urlCtrl.loadByHash(url);
+			else co.nect();},
+		open : function (url,type) { 
+			title = null;
+			callback = null;
+
+			if(type == "md"){
+				title = "Markdown";
+				callback = function() {
+					getAjax('', url, function(data){ 
+							descHtml = dataHelper.markdownToHtml(data) ; 
+							smallMenu.content(descHtml);
+						}
+					,"html");
+				}
+			} 
+			
+			else if(type == "youtube") {
+				title = "Youtube";
+				callback = function() { smallMenu.content('<iframe width="560" height="315" src="'+url+'" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>');}
+			}
+
+			else if(type == "json") {
+				title = "Json";
+				callback = function() {
+					$("#openModal div.modal-content").css("text-align","left");
+					lazyLoad( baseUrl+"/plugins/jsonview/jquery.jsonview.js", 
+							  baseUrl+"/plugins/jsonview/jquery.jsonview.css", function() { 
+						getAjax('', url, function(data){ 
+							urlT = url.split('/');
+							title = url+"<br/>"+urlT[8];
+							smallMenu.content().JSONView(data); 
+						}
+					,"html");
+					} );
+
+				}
+			}
+
+			if(title){
+				smallMenu.open(title,null,null,callback);
+			} else
+				toastr.error("Type not found!!");},
+	},
 	help : function () { 
 		url = urlCtrl.convertToPath("#default.view.page.links");
-	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
-	},
+	    smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);	},
 	lang : function () { 
-		smallMenu.open("<h1>Explain COLang</h1>");
-	},
-	mands : function () { 
 		str = "";
 		$.each(co,function (k,v) { 
 			str += "<a class='btn' href='javascript:;' onclick='co."+k+"()'>co."+k+"</a><br/>";
 		})
-		smallMenu.open("<h1>All Commands</h1>"+str);
-	},
+		smallMenu.open("<h1>Talk to CO</h1>"+str);	},
+	//co.rss : function () {  },
 	tools : function () { 
-		smallMenu.open("<h1>Internal Tools and projects</h1>");
+		smallMenu.ajaxHTML( baseUrl+'/cotools');
 	},
 	nect : function () { 
 		if(!userId)
 			$('#modalLogin').modal("show");
 		else 
-			toastr.success("allready Loggued in!!");
-	},
+			toastr.success("allready Loggued in!!");	},
 	tribute : function () { 
-		window.open('https://www.helloasso.com/associations/open-atlas/collectes/communecter/don', '_blank');
-	},
+		window.open('https://www.helloasso.com/associations/open-atlas/collectes/communecter/don', '_blank');	},
 	graph : function () { 
 		lazyLoad( "https://d3js.org/d3.v4.min.js", null, function() { 
 			var what = "id/"+userId+"/type/citoyens";
 			if(contextData && contextData.id && contextData.type ) {
 				contextDataType = dyFInputs.get(contextData.type).ctrl;
-				what = "id/"+contextData.id+"/type/"+contextDataType
+				what = "id/"+contextData.id+"/type/"+contextDataType;
 			}
-			smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/graph/d3/"+what);
-		} );
-	},
+			smallMenu.openAjaxHTML( baseUrl+'/graph/co/d3/'+what);
+		} );},
+	gmenu : function () {  },
 	mind : function () { 
-		if(userId)
+		if( contextData && contextData.type == "citoyens")
 			smallMenu.open("Mindmap",null,null,function() {
 				mm = null;
 				d3.json(baseUrl+'/api/person/get/id/'+contextData.id+"/format/tree", function(error, data) {
 				  if (error) throw error;
 				  
-				  $("#openModal div.modal-content div.container").html("<svg id='mindmap' style='width:100%;height:800px'></svg>");
+				  smallMenu.content("<svg id='mindmap' style='width:100%;height:800px'></svg>");
 				  mylog.log( data );
 				  markmap('svg#mindmap', data, {
 				    preset: 'default', // or colorful
@@ -3888,31 +3934,21 @@ var co = {
 				  });
 				});
 			});
-		else co.nect();
-	},
-	agenda : function () { 
-		urlCtrl.loadByHash("#agenda");
-	},
-	search : function () { 
-		urlCtrl.loadByHash("#search");
-	},
-	live : function () { 
-		urlCtrl.loadByHash("#live");
-	},
-	web : function () { 
-		urlCtrl.loadByHash("#web");
-	},
-	annonces : function () { 
-		urlCtrl.loadByHash("#annonces");
-	},
+		else co.nect();	},
+	md : function (str) { 
+		if( contextData)
+			co.ctrl.open(baseUrl+'/api/'+dyFInputs.get(contextData.type).ctrl+'/get/id/'+contextData.id+"/format/md","md");
+		else 
+			toastr.error("No context to build a markdown!!");	},
+	agenda : function () { urlCtrl.loadByHash("#agenda");},
+	search : function () { urlCtrl.loadByHash("#search");},
+	live : function () { urlCtrl.loadByHash("#live");	},
+	web : function () { urlCtrl.loadByHash("#web");	},
+	annonces : function () { urlCtrl.loadByHash("#annonces");	},
 	chat : function () { 
 		if(userId)
 			rcObj.loadChat("","citoyens", true, true) 
-		else co.nect();
-	},
-	notif : function () { 
-		
-	},
+		else co.nect();	},
 	add : function (str) { 
 		strT = str.split(".");
 		type = {
@@ -3929,35 +3965,41 @@ var co = {
 		//else todo
 		// free add form 
 		// set a type 
-	},
-	o : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.organizations");
-		else co.nect();
-	},
-	e : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.evens");
-		else co.nect();
-	},
-	pr : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.projects");
-		else co.nect();
-	},
-	p : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.follows");
-		else co.nect();
-	},
-	poi : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.directory.dir.poi");
-		else co.nect();
-	},
-	info : function () { 
-		if(userId)
-			urlCtrl.loadByHash("#"+userConnected.username+".view.detail");
-		else co.nect();
-	},
+
+			},
+	json : function (str) { 
+		if( contextData )
+			co.ctrl.open(baseUrl+'/api/'+dyFInputs.get(contextData.type).ctrl+'/get/id/'+contextData.id,"json");
+		else 
+			toastr.error("No context available!!");	},
+	
+	// *****************************************
+	// Connected person stuff
+	// ****************************************
+	o : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.organizations");},
+	e : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.evens");},
+	pr : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.projects");},
+	p : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.follows");},
+	poi : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.poi");},
+	info : function () { co.ctrl.lbh("#"+userConnected.username+".view.detail");},
+	// *****************************************
+	// TODO
+	// ****************************************
+	/*
+	ntre : function () { smallMenu.open("<h1>Toutes les propositions de lois et décisions sociétal pour lesquels on est contre</h1>"); } ,
+	rd : function () { smallMenu.open("<h1> Visualisation de notre R&D</h1>"); } ,
+	roadmap : function () { smallMenu.open("<h1> Visualisation de notre Roadmap</h1>"); } ,
+	timeline : function () { smallMenu.open("<h1> Visualisation de notre Timeline</h1>"); } ,
+	team : function () { smallMenu.open("<h1>Visualisation de notre Team</h1>"); } ,
+	dda : function () { smallMenu.open("<h1> DashBoard Discuss, Decide, Act </h1>"); } ,
+	social : function () { smallMenu.open("<h1> connecting to other social plateforms </h1>"); } ,
+	city : function () { smallMenu.open("<h1> DashBoard City </h1>"); } ,
+	*/
 }	
+
+$(document).ready(function() { 
+	setTimeout( function () { checkPoll() }, 10000);
+	document.onkeyup = keyboardNav.checkKeycode;
+	if(notNull(userId) && userId!="") 
+		bindRightClicks();
+});

@@ -204,7 +204,8 @@ class CommunecterController extends Controller
       "mainmap"               => array("href" => "/ph/co2/default/mainmap", "public" => true)
     ),
     "network" => array(
-      "simplydirectory"    => array("href" => "/ph/co2/network/simplydirectory")
+      "simplydirectory"    => array("href" => "/ph/co2/network/simplydirectory"),
+      "get"    => array("href" => "/ph/co2/network/get")
     ),
     "rooms"=> array(
       "index"    => array("href" => "/ph/co2/rooms/index"),
@@ -479,10 +480,14 @@ class CommunecterController extends Controller
       "index" => array("href" => "/ph/co2/gamification/index"),
     ),
     "graph"=> array(
-      "getdata" => array("href" => "/ph/co2/graph/getdata"),
-      "viewer" => array("href" => "/ph/co2/graph/viewer"),
-      "search" => array("href" => "/ph/co2/graph/search"),
-      "d3" => array("href" => "/ph/co2/graph/d3"),
+      "getdata" => array("href" => "/ph/graph/getdata"),
+      "viewer" => array("href" => "/ph/graph/viewer"),
+      "d3" => array("href" => "/ph/graph/d3"),
+      "search" => array("href" => "/ph/graph/search"),
+      "doc" => array("href" => "/ph/graph/default/doc"),
+    ),
+    "cotools"=> array(
+      "get" => array("href" => "/ph/cotools/default/get"),
     ),
     "log"=> array(
       "monitoring" => array("href" => "/ph/co2/log/monitoring"),
@@ -523,6 +528,8 @@ class CommunecterController extends Controller
       'getthumbpath'        => array("href" => "/ph/co2/element/getThumbPath"),
       'getcommunexion'      => array("href" => "/ph/co2/element/getcommunexion"),
       'getdatabyurl'        => array("href" => "/ph/co2/element/getdatabyurl"),
+      'network'        => array("href" => "/ph/co2/element/network"),
+      'getnetworks'        => array("href" => "/ph/co2/element/getnetworks"),
       "invoice"                => array("href" => "/ph/co2/element/invoice"),
     ),
     "app" => array(
@@ -580,7 +587,15 @@ class CommunecterController extends Controller
     "pdf" => array(
       "create"        => array('href' => "ph/co2/pdf/create")
     ),
+    "sso" => array(
+      "test"        => array("href" => "ph/sso/co/test", "module" => "sso"),
+    ),
+    "ressources" => array(
+      "co"        => array("href" => "ph/ressources/co", "module" => "ressources"),
+    ),
   );
+
+
 
   function initPage(){
     
@@ -595,8 +610,10 @@ class CommunecterController extends Controller
     }
     else if(@Yii::app()->session["theme"])
       Yii::app()->theme = Yii::app()->session["theme"];
-    /*else
-      Yii::app()->theme = "ph-dori";*/
+    
+    /*if( in_array(Yii::app()->controller->id,$this->$modules) ){
+      $this->redirect(Yii::app()->createUrl( "/".Yii::app()->controller->id."/".Yii::app()->controller->action->id ));
+    }*/
 
     //managed public and private sections through a url manager
     if( Yii::app()->controller->id == "admin" && !Yii::app()->session[ "userIsAdmin" ] )
@@ -629,8 +646,10 @@ class CommunecterController extends Controller
     } 
     //Api access through REST 
     //no need to prepare interface data
-    else if (!Yii::app()->session[ "userId" ] &&  isset($_SERVER['PHP_AUTH_USER']) && Authorisation::isValidUser($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
-      $prepareData = false;
+    else if (!Yii::app()->session[ "userId" ] &&  isset($_SERVER['PHP_AUTH_USER']) && 
+             Authorisation::isValidUser($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'])) {
+
+            $prepareData = false;
     }
     //}
     else if( (!isset( $page["public"] ) ) && (!isset( $page["json"] ))
@@ -641,6 +660,18 @@ class CommunecterController extends Controller
         //if( Yii::app()->request->isAjaxRequest)
           //echo "<script type='text/javascript'> checkIsLoggued('".Yii::app()->session['userId']."'); </script>";
          
+    }
+    
+    //login auto from cookie if user not connected and checked remember
+    if(!isset(Yii::app()->session["userId"]) && 
+        isset( Yii::app()->request->cookies['remember'] ) && 
+        Yii::app()->request->cookies['remember']->value == "true" &&
+        isset( Yii::app()->request->cookies['lyame'] ) && 
+        isset( Yii::app()->request->cookies['drowsp'] ) && 
+        @Yii::app()->request->cookies['drowsp']->value != "null"){
+            $pwdDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['drowsp']->value);
+            $emailDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['lyame']->value);
+            $res = Person::login($emailDecrypt, $pwdDecrypt, false);
     }
     
     if( isset( $_GET["backUrl"] ) )
@@ -707,5 +738,32 @@ class CommunecterController extends Controller
       }
     }
   }
+
+  protected function pwdDecrypt($jsonString){  //return $jsonString;
+    $passphrase = 'JbQmfH"h^W7q86JU1V(<64aEv';
+      $jsondata = json_decode($jsonString, true);
+      try {
+          $salt = hex2bin($jsondata["s"]);
+          $iv  = hex2bin($jsondata["iv"]);
+      } catch(Exception $e) { return null; }
+      $ct = base64_decode($jsondata["ct"]);
+      $concatedPassphrase = $passphrase.$salt;
+      $md5 = array();
+      $md5[0] = md5($concatedPassphrase, true);
+      $result = $md5[0];
+      for ($i = 1; $i < 3; $i++) {
+          $md5[$i] = md5($md5[$i - 1].$concatedPassphrase, true);
+          $result .= $md5[$i];
+      }
+      $key = substr($result, 0, 32);
+
+      //var_dump($iv); exit;
+
+      $data = openssl_decrypt($ct, 'aes-256-cbc', $key, true, $iv);
+      return json_decode($data, true);
+  }
+
+  
+
 }
 

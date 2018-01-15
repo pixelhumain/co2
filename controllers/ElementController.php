@@ -37,9 +37,10 @@ class ElementController extends CommunecterController {
           'getdatadetail'         => 'citizenToolKit.controllers.element.GetDataDetailAction',
           'stopdelete'            => 'citizenToolKit.controllers.element.StopDeleteAction',
           'getthumbpath'          => 'citizenToolKit.controllers.element.GetThumbPathAction',
-          'list'                  => 'citizenToolKit.controllers.element.ListAction',
           'getcommunexion'        => 'citizenToolKit.controllers.element.GetCommunexionAction',
           'getdatabyurl'          => 'citizenToolKit.controllers.element.GetDataByUrlAction',
+          'network'               => 'citizenToolKit.controllers.element.NetworkAction',
+          'getnetworks'           => 'citizenToolKit.controllers.element.GetNetworksAction',
           'invoice'                  => 'citizenToolKit.controllers.element.InvoiceAction',
       );
   }

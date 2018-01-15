@@ -6,7 +6,7 @@
 		'/js/news/index.js',
 		'/js/default/editInPlace.js',
 	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 	$thumbAuthor =  @$element['profilThumbImageUrl'] ? 
@@ -379,11 +379,23 @@
 		<?php }  
 		} ?>
 
-		<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true))){ ?>
+		<?php $paramsApp = CO2::getThemeParams(); 
+				if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
 			<li><hr></li>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classified" data-icon="bullhorn">
 					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
+				</a>
+			</li>
+		<?php } ?>
+
+		<?php if( $type==Person::COLLECTION ){ ?>
+			<li><hr></li>
+			<li class="">
+				<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
+					id="btn-start-networks" class="ssmla">
+					<i class="fa fa-envelope"></i> <?php echo Yii::t("common","Network"); ?>
 				</a>
 			</li>
 		<?php } ?>

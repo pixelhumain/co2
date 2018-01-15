@@ -811,7 +811,7 @@ function showFormBlock(bool){
                             '</a>'+ 
                             'Zone(s) de publication <i class="fa fa-angle-right"></i>'+ 
                         '</h5>'+
-                        '<div class="scope-min-header list_tags_scopes hidden-xs text-left ellipsis">'+
+                        '<div class="scope-min-header list_tags_scopes text-left ellipsis">'+
             				$(".scope-min-header").html()+
             			'</div>';
 			if(myScopes.communexion.state){

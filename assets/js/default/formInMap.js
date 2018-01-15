@@ -440,8 +440,6 @@ var formInMap = {
 		formInMap.NE_level2Name = (notEmpty(data.data("level2name")) ? data.data("level2name") : null);
 		formInMap.NE_level1 = (notEmpty(data.data("level1")) ? data.data("level1") : null) ;
 		formInMap.NE_level1Name = (notEmpty(data.data("level1name")) ? data.data("level1name") : null) ;
-
-		console.log("NE_localityId", data.data("locid"));
 		formInMap.NE_localityId = data.data("locid");
 
 		if(complete == true){

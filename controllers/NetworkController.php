@@ -16,6 +16,12 @@ class NetworkController extends CommunecterController {
     	return parent::beforeAction($action);
     }
 
+    public function actions(){
+	    return array(
+	        'get'     => 'citizenToolKit.controllers.network.GetAction',
+	    );
+	}
+
 	public function actionSimplyDirectory(){
 		//$params = self::getParams(@$_GET['params']);
 		$this->layout = "//layouts/mainSearch";

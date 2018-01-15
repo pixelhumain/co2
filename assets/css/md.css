@@ -1,0 +1,25 @@
+#doc h1,#doc  h2,#doc  h3 {
+	padding:10px; 
+	border:3px solid #ccc; 
+}
+#doc h1 {
+	background-color: rgb(69, 96, 116); 
+	color : white;
+	text-align: center;
+}
+#doc h2 {
+	background-color: #EA405C; 
+	color : white;
+	margin-left: 20px;
+}
+#doc h3 {
+	background-color: #ccc; 
+	margin-left: 40px;
+}
+#doc h4 {
+	background-color: #bbb; 
+	margin-left: 60px;
+}
+#doc {
+	margin: 30px;
+}

@@ -39,6 +39,11 @@
 ----- BASH DE REPRISE DES DONNEES -----
 ---------------------------------------
 
+* Version C0.23
+
+*** Ajoute public a tout les events
+co2/datamigration/PublicEvent
+
 * Version C0.22
 
 ** @Rapha

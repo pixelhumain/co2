@@ -442,6 +442,11 @@ var trad = {
 };
 
 var tradDynForm = {
+	"Add a postal code" : "<?php echo Yii::t("common","Add a postal code") ?>",
+	"Postal code" : "<?php echo Yii::t("common","Postal code") ?>",
+	"Add a zone" : "<?php echo Yii::t("common","Add a zone") ?>",
+	"Zone" : "<?php echo Yii::t("common","Zone") ?>",
+	"Add a city" : "<?php echo Yii::t("common","Add a city") ?>",
 	"appList":"<?php echo Yii::t("form","List of Applications") ?>",
 	"screenList":"<?php echo Yii::t("form","Screen shot View to Application") ?>",
 	"me":"<?php echo Yii::t("form","Me") ?>",
@@ -556,6 +561,8 @@ var tradDynForm = {
 	"linkFacebook":"<?php echo Yii::t("form","Link to Facebook") ?>",
 	"linkTwitter":"<?php echo Yii::t("form","Link to Twitter") ?>",
 	"linkInstagram":"<?php echo Yii::t("form","Link to Instagram") ?>",
+	"linkDiaspora":"<?php echo Yii::t("form","Link to Diaspora") ?>",
+	"linkMastodon":"<?php echo Yii::t("form","Link to Mastodon") ?>",
 	"mobile":"<?php echo Yii::t("form","Mobile") ?>",
 	"fax":"<?php echo Yii::t("form","Fax") ?>",
 	"fix":"<?php echo Yii::t("form","Fix") ?>",
@@ -629,6 +636,9 @@ var tradDynForm = {
 	"invalidextension": "<?php echo Yii::t("form", "invalid format") ?>",
 	"extensionacceptable": "<?php echo Yii::t("form", "Available extension(s)") ?>",
 	"collectionname": "<?php echo Yii::t("form", "Name of the collection") ?>",
+	"isPublic": "<?php echo Yii::t("form", "is Public and will show Every where") ?>",
+	"This URL is already used" : "<?php echo Yii::t("form", "This URL is already used") ?>",
+	"This URL is not used" : "<?php echo Yii::t("form", "This URL is not used") ?>"
 };
 
 var tradCategory = {

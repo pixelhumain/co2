@@ -350,6 +350,10 @@ Liste des notifications déjà lues => #370 #453
         [ ] location online
 >>>> [ ] removing dynform classes from co.js and lazy load them
 >>>> [ ] when on a page , after login return to same page instead of personnal detail
+>>>> [ ] application launcher + activater like linux 
+[X] remake error in CO
+[X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
+[X] integration du system de paiement Mango
 [ ] integration du system de paiement Mango
   [X] create User 
   [X] create User Wallet 
@@ -357,6 +361,8 @@ Liste des notifications déjà lues => #370 #453
   [X] create seller wallet 
   [X] Payin Cash
     [X] creates a CardRegistration 
+  [X] setle transaction 
+  [X] build payment interface
   [ ] setle transaction 
   [ ] build payment interface
 >>>> [ ] check webpacking      

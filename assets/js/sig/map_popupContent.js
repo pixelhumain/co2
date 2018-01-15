@@ -55,20 +55,9 @@
 
 
 			
-			onclick = 'urlCtrl.loadByHash("'+url+'");';
-
-			if (type.substr(0,11) == "poi.interop") {
-				url = data.url;
-				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			}else if (typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
-				url = "https://www.communecter.org/"+url;
-				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			}else if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined"){
-				popupContent += "<a href='"+data.source+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			} else{						
-				popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='item_map_list popup-marker lbh' id='popup"+id+"'>";
-			}
-			popupContent += "<div class='main-panel'>"
+			
+			
+			popupContent += "<div class='item_map_list popup-marker' id='popup"+id+"'> <div class='main-panel'>"
 							+   "<div class='left-col'>"
 		    				+ 	   "<div class='thumbnail-profil'><img src='" + imgProfilPath + "' height=50 width=50 class='popup-info-profil-thumb'></div>"						
 		    				+ 	   "<div class='ico-type-account'>"+icons+"</div>"					
@@ -117,7 +106,10 @@
 			}else if (typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
 				url = "https://www.communecter.org/"+url;
 				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			}else{						
+			}else if (notNull(networkJson) && notNull(networkJson.dataSrc) && notNull(data.source)){
+				popupContent += "<a href='"+data.source+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
+			}else{
+				onclick = 'urlCtrl.loadByHash("'+url+'");';					
 				popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='item_map_list popup-marker lbh' id='popup"+id+"'>";
 			}
 
@@ -451,7 +443,7 @@
 		};
 
 		Sig.getPopupContactsInformation = function(data){
-			//mylog.log("getPopupContactsInformation data", data);
+			mylog.log("getPopupContactsInformation data", data);
 			var popupContent = "";
 			//Website URL
 			if (typeof data["url"] != "undefined" && data["url"] != null)

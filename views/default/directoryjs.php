@@ -281,7 +281,7 @@
             <button class="btn text-purple border-purple btn-directory-type padding-5" data-type="place">
                 <i class="fa fa-home"></i> 
                 <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Places") ?></span>
-                <span class="badge count-badge-filter bg-purple" id="countplace"></span>
+                <span class="badge count-badge-filter bg-purple" id="countplaces"></span>
             </button><br class="hidden-xs">
             <button class="btn text-green-poi border-green-poi btn-directory-type padding-5" data-type="poi">
                 <i class="fa fa-map-marker"></i> 
@@ -515,7 +515,7 @@
           } 
         ?>
         <?php $col = ( !in_array($typeSelected, 
-                       array("classified","products","services","circuits","events","vote","all","place") )) ? 10 : 8; ?>
+                       array("classified","products","services","circuits","events","vote","all","places") )) ? 10 : 8; ?>
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
@@ -563,10 +563,10 @@ var headerParams = {
   "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
   "osm"    : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
   "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" },
-  "place"         : { color: "green",   icon: "map-marker",   name: trad.places },
+  "places"         : { color: "green",   icon: "map-marker",   name: trad.places },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad.classifieds },
   "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
-  "ressource"         : { color: "purple",   icon: "cubes",   name: "Ressource" },
+  "ressources"         : { color: "purple",   icon: "cubes",   name: "Ressource" },
   "news"         : { color: "dark",   icon: "newspaper-o",   name: "news" },
   "products"    : { color: "orange",   icon: "shopping-basket",   name: trad.products },
   "services"    : { color: "orange",   icon: "sun-o",   name: trad.services },
@@ -624,7 +624,7 @@ function setHeaderDirectory(type){
 }
 
 var searchType = [ "persons" ];
-var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities","place","ressource" ];
+var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities","places","ressources" ];
 
 var personCOLLECTION = "<?php echo Person::COLLECTION ?>";
 var userId = '<?php echo isset( Yii::app()->session["userId"] ) ? Yii::app() -> session["userId"] : null; ?>';
@@ -643,7 +643,7 @@ jQuery(document).ready(function() {
 
 
   searchType = (typeSelected == null) ? [ "persons" ] : [ typeSelected ];
-  allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","place","ressource" ];
+  //allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","places","ressources" ];
 	topMenuActivated = true;
 	hideScrollTop = true; 
   loadingData = false;

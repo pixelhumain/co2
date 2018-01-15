@@ -267,8 +267,8 @@ function initTerritorialSearch(){
     classified : { indexMin : 0, indexMax : 30, waiting : 30 },
     poi : { indexMin : 0, indexMax : 30, waiting : 30 },
     news : { indexMin : 0, indexMax : 30, waiting : 30 },
-    place : { indexMin : 0, indexMax : 30, waiting : 30 },
-    ressource : { indexMin : 0, indexMax : 30, waiting : 30 },
+    places : { indexMin : 0, indexMax : 30, waiting : 30 },
+    ressources : { indexMin : 0, indexMax : 30, waiting : 30 },
   };
   allResults={};
   //check search.value Or locality filtering to add persons in the research

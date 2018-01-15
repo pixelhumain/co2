@@ -661,6 +661,8 @@ var tradCategory = {
 	"Server": "<?php echo Yii::t("category", "Server") ?>",
 	"Database": "<?php echo Yii::t("category", "Database") ?>",
 	"Banq": "<?php echo Yii::t("category", "Banq") ?>",
+
+	"thirdplaces" 		: "<?php echo Yii::t("category", "Third places") ?>",
 	
 	"place" 		: "<?php echo Yii::t("category", "Place") ?>",
 	"Urban" 		: "<?php echo Yii::t("category", "Urban") ?>",

@@ -380,7 +380,7 @@ function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirecto
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
-					var type = ($.inArray(dataName, ["poi","ressource","vote","actions","discuss"]) >=0) ? dataName : null;
+					var type = ($.inArray(dataName, ["poi","ressources","vote","actions","discuss"]) >=0) ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
@@ -418,7 +418,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	else if(dataName == "collections"){ html += elementName+" "+trad.hasgot+" "+countData+" <b>"+trad["collection"+s]+"</b>"; }
 	else if(dataName == "poi"){ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
 	else if(dataName == "classified"){ html += countData+" <b>"+trad[classified+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
-	else if(dataName == "ressource"){ html += countData+" <b>ressource"+s+"</b> créé"+s+" par " + elementName; }
+	else if(dataName == "ressources"){ html += countData+" <b>ressource"+s+"</b> créé"+s+" par " + elementName; }
 
 	else if(dataName == "needs"){ html += countData+" <b>"+trad[need+s]+"</b> "+trad.of+" " + elementName; }
 

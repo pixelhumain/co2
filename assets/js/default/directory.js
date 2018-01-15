@@ -86,7 +86,7 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(search.app == "territorial") {
-        searchType = ["organizations", "projects", "poi","ressource", "place", "news", "events", "classified"];
+        searchType = ["organizations", "projects", "poi","ressources", "places", "news", "events", "classified"];
         if(search.value != "")
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
@@ -447,8 +447,8 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
         $(".count-badge-live").text(count.news).show(700);
       else
         $(".count-badge-live").hide(700);
-      if(typeof count.ressource != "undefined" && count.ressource != 0)
-        $(".count-badge-ressources").text(count.ressource).show(700);
+      if(typeof count.ressources != "undefined" && count.ressources != 0)
+        $(".count-badge-ressources").text(count.ressources).show(700);
       else
         $(".count-badge-ressources").hide(700);
       if(typeof count.classifieds != "undefined" && count.classifieds != 0)
@@ -1012,7 +1012,7 @@ var directory = {
     		str += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
     		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
     		
-        var addFollowBtn = ( $.inArray(params.type, ["poi","ressource"])>=0 )  ? false : true;
+        var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
         if(typeof params.edit  != "undefined")
               str += this.getAdminToolBar(params);
             
@@ -2528,7 +2528,7 @@ var directory = {
                       if(params.type == "cities")
                         str += directory.cityPanelHtml(params);  
                     
-                      else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","place","ressource"] )>=0) 
+                      else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","places","ressources"] )>=0) 
                         str += directory.elementPanelHtml(params);  
                     
                       else if(params.type == "events"){

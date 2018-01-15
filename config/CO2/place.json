@@ -39,7 +39,7 @@
         
     },
     "filters":{
-         "TiersLieux" : 
+         "thirdplaces" : 
             {   "icon" : "home",
                 "subcat" : 
                 [   "Fablab",
@@ -52,7 +52,7 @@
                 ]
             }, 
 
-        "Maison" :  {  
+        "home" :  {  
              "icon" : "home",
             "subcat" : 
             [    "Electroménager",

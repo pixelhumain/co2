@@ -44,7 +44,7 @@ dynForm = {
 	    },
 	    beforeBuild : function(){
 	    	dyFObj.setMongoId('place',function(){
-	    		uploadObj.gotoUrl = '#page.type.place.id.'+uploadObj.id;
+	    		uploadObj.gotoUrl = '#page.type.places.id.'+uploadObj.id;
 	    	});
 	    },
 		afterSave : function(){
@@ -82,7 +82,7 @@ dynForm = {
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : place.sections,
-                trad : trad,
+                trad : tradCategory,
                 init : function(){
                 	$(".sectionBtn").off().on("click",function()
 	            	{
@@ -103,6 +103,7 @@ dynForm = {
 	            inputType : "tagList",
                 placeholder : "Choisir une catégorie",
                 list : place.filters,
+                trad : tradCategory,
                 init : function(){
 	            	$(".typeBtn").off().on("click",function()
 	            	{

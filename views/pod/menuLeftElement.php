@@ -360,7 +360,7 @@
 					if(!@$front || (@$front && $front["poi"])){ 
 		?>
 			<li>
-				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="ressource" data-icon="cubes">
+				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="ressources" data-icon="cubes">
 					<i class="fa fa-cubes"></i> <?php echo Yii::t("common","Ressources"); ?>
 				</a>
 			</li>			

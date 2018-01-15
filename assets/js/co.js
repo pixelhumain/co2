@@ -2970,12 +2970,12 @@ var typeObj = {
 		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
 			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
 			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
-	place:{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
+	place:{  col:"places",ctrl:"place",color:"green",icon:"map-marker"},
 	places : { sameAs:"place" },
 	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
 	Maison : {sameAs:"place", color: "azure",icon: "home"},
-	ressource:{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
-
+	ressource:{  col:"ressources",ctrl:"ressource",color:"purple",icon:"cube" },
+	ressources : { sameAs:"ressource" },
 	siteurl:{ col:"siteurl",ctrl:"siteurl"},
 	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	organizations : {sameAs:"organization"},
@@ -3696,149 +3696,6 @@ $(document).ready(function() {
 	if(notNull(userId) && userId!="") 
 		bindRightClicks();
 });
-
-/*var typeObj = {
-	themes:{ 
-		dynForm : {
-		    jsonSchema : {
-			    title : "Theme Switcher ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    properties : {
-			    	custom :{
-		            	inputType : "custom",
-		            	html : function() { 
-		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "ph dori", classes:"bg-dark", icon:"fa-bullseye", action : "javascript:window.location.href = moduleId+'?theme=ph-dori'"},
-			            		{ label : "notragora", classes:"bg-grey", icon:"fa-video-camera ", action : "javascript:window.location.href = moduleId+'?theme=notragora'"},
-			            		{ label : "C02", classes:"bg-red", icon:"fa-search", action : "javascript:window.location.href = moduleId+'?theme=CO2'"},
-			            		{ label : "network", classes:"bg-orange", icon:"fa-bars", action : "javascript:window.location.href = moduleId+'?theme=network'"},
-			            		
-		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-4 "} )+"</div>";
-		            	}
-		            }
-			    }
-			}
-		}	},
-	addElement:{ 
-		dynForm : {
-		    jsonSchema : {
-			    title : "Ajouter un élément ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    properties : {
-			    	custom :{
-		            	inputType : "custom",
-		            	html : function() { 
-		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:dyFObj.openForm('event')"},
-			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:dyFObj.openForm('organization')"},
-			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:dyFObj.openForm('project')"},
-			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:dyFObj.openForm('poi')"},
-			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:dyFObj.openForm('entry')"},
-			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:dyFObj.openForm('action')"},
-			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:dyFObj.openForm('classified')"},
-			            		{ label : "Documentation", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
-			            		{ label : "Signaler un bug", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
-		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-6 "} )+"</div>";
-		            	}
-		            }
-			    }
-			}
-		}	},
-	addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
-	addFile:{ titleClass : "bg-dark", color : "bg-dark" },
-	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	persons : { sameAs:"person" },
-	people : { sameAs:"person" },
-	citoyen : { sameAs:"person" },
-	citoyens : { sameAs:"person" },
-	contact : { col : "citoyens", ctrl : "contact", titleClass : "bg-yellow", bgClass : "bgPerson", color:"yellow", icon:"user" },
-	
-	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
-		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
-			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
-			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
-	place:{  col:"place",ctrl:"place",color:"green",icon:"map-marker"},
-	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
-	Maison : {sameAs:"place", color: "azure",icon: "home"},
-	ressource:{  col:"ressource",ctrl:"ressource",color:"purple",icon:"cube" },
-
-	siteurl:{ col:"siteurl",ctrl:"siteurl"},
-	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
-	organizations : {sameAs:"organization"},
-	LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
-	NGO : {sameAs:"organization", color:"green", icon:"users"},
-	Association : {sameAs:"organization", color:"green", icon: "group"},
-	GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
-	Group : {	col:"organizations",color: "turq",icon: "circle-o"},
-	event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange",color:"orange",bgClass : "bgEvent"},
-	events : {sameAs:"event"},
-	project : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
-	projects : {sameAs:"project"},
-	city : {sameAs:"cities"},
-	cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
-	
-	entry : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
-		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-	vote : {col:"actionRooms",ctrl:"survey"},
-	survey : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
-	surveys : {sameAs:"survey"},
-	proposal : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-	proposals : { sameAs : "proposal" },
-	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
-	actions : { sameAs : "action" },
-	actionRooms : {sameAs:"room"},
-	rooms : {sameAs:"room"},
-	room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-	discuss : {col:"actionRooms",ctrl:"room"},
-	product:{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",  icon:"shopping-basket"}, 
-  	products : {sameAs:"product"}, 
-	service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",  icon:"sun-o"}, 
-	services : {sameAs:"service"}, 
-	circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",  icon:"ravelry"}, 
-	circuits : {sameAs:"circuit"}, 
-	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
-		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
-				   subTypes : [
-				   //FR
-				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",
-				   //EN
-				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
-				   ]	},
-	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
-	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
-	default : {icon:"arrow-circle-right",color:"dark"},
-	//"video" : {icon:"video-camera",color:"dark"},
-	formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
-	news : { col : "news" }, 
-	config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
-				sections : {
-			        network : { label: "Network Config",key:"network",icon:"map-marker"}
-			    }},
-	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-	networks : {sameAs:"network"},
-	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
-	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
-				sections : {
-			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
-			        organization : { label: trad.organization,key:"organization",icon:"group"},
-			        event : { label: trad.event,key:"event",icon:"calendar"},
-			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
-			    }},
-	apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
-				sections : {
-			        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
-			        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
-			        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
-			        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
-			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
-			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
-			    }},
-	filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
-};*/
 
 
 var co = {

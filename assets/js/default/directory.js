@@ -1692,35 +1692,39 @@ var directory = {
       params.title = escapeHtml(params.title);
         str = "";
         str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
-        	str += "<div class='searchEntity contactPanelHtml'>";
+        	str += "<div class='searchEntity networkPanelHtml'>";
           		str += "<div class='panel-heading border-light col-xs-12'>";
           			str += '<a href="'+baseUrl+"/network/default/index?src="+baseUrl+"/"+moduleId+"/network/get/id/"+params.id+'" target="_blank" class="text-dark">'
          			str += '<h4 class="panel-title text-dark pull-left">'+ params.skin.title+'</h4></a>';
+              str += "<span class='col-xs-12'>"+(notNull(params.skin.shortDescription) ? params.skin.shortDescription : "" ) +"</span>";
          		str += "</div>";
-         		str += "<span class='col-xs-12'>"+params.shortDescription+"</span>";
 
-              //http://127.0.0.1/ph/co2/network/get/id/5a4f46c26ff992f5218b456a
-              //str += '<br/><span class="" style="font-size: 11px !important;">'+urlTypes[params.type]+'</span>';
-          
-        // if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ) {
-        // str += '<ul class="nav navbar-nav margin-5 col-md-12">';
+        if( typeof edit != "undefined" && edit == true ) {
+        str += '<ul class="nav navbar-nav margin-5 col-md-12">';
 
-        //     str += '<li class="text-red pull-right">';
-        //       str += '<a href="javascript:;"  onclick="removeUrl(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
-        //       'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
-        //         str += '<i class="fa fa-trash"></i>';
-        //       str += '</a>';
-        //     str += '</li>';
+            str += '<li class="text-red pull-right">';
+              str += '<a href="javascript:;"  onclick="removeNetwork(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+              'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+                str += '<i class="fa fa-trash"></i>'+trad["delete"];
+              str += '</a>';
+            str += '</li>';
 
-        //     str += '<li class="text-red pull-right">';
-        //       str += '<a href="javascript:;" onclick="updateUrl(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
-        //       'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
-        //         str += '<i class="fa fa-pencil"></i>';
-        //       str += '</a>';
-        //     str += '</li>';
+            str += '<li class="text-red pull-right">';
+              str += '<a href="javascript:;" onclick="updateNetwork(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
+              'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+                str += '<i class="fa fa-pencil"></i>'+trad["update"];
+              str += '</a>';
+            str += '</li>';
+
+            str += '<li class="text-red pull-right">';
+              str += '<a href="javascript:;" onclick="" ' +
+              'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["share"]+'" >';
+                str += '<i class="fa fa-pencil"></i>'+trad["share"];
+              str += '</a>';
+            str += '</li>';
             
-        //   str += '</ul>';
-        // }
+          str += '</ul>';
+        }
         str += "</div>";  
       str += "</div>";
       return str;

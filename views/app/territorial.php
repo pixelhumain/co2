@@ -206,7 +206,7 @@ var icons = {
 };
 //var searchPage=0;
 //var pageCount=true;
-var allRanges={
+/*var allRanges={
   organizations : { indexMin : 0, indexMax : 30, waiting : 30 },
   projects : { indexMin : 0, indexMax : 30, waiting : 30 },
   events : { indexMin : 0, indexMax : 30, waiting : 30 },
@@ -216,7 +216,7 @@ var allRanges={
   news : { indexMin : 0, indexMax : 30, waiting : 30 },
   place : { indexMin : 0, indexMax : 30, waiting : 30 },
   ressource : { indexMin : 0, indexMax : 30, waiting : 30 },
-};
+};*/
 var injectData = {};
 var allResults={};
 var searchCount={};
@@ -224,6 +224,7 @@ jQuery(document).ready(function() {
 	//setTitle("Espace administrateur : Répertoire","cog");
 	initTypeSearch("all");
   initInjectData();
+  initTerritorialSearch();
    // startSearch(0, indexStepInit, searchCallback);
   startSearch(0, 30, null);   
 	initKInterface();
@@ -258,7 +259,7 @@ function initInjectData(){
   };
 }
 function initTerritorialSearch(){
-  allRanges={
+  search.ranges={
     organizations : { indexMin : 0, indexMax : 30, waiting : 30 },
     projects : { indexMin : 0, indexMax : 30, waiting : 30 },
     events : { indexMin : 0, indexMax : 30, waiting : 30 },
@@ -324,8 +325,8 @@ function prepareAllSearch(data){
     if(v==0)
       removeSearchType(type);
     else{
-      allRanges[type].indexMin=allRanges[type].indexMax;
-      allRanges[type].indexMax=allRanges[type].indexMin+v;
+      search.ranges[type].indexMin=search.ranges[type].indexMax;
+      search.ranges[type].indexMax=search.ranges[type].indexMin+v;
     }
   });
   return resToShow;

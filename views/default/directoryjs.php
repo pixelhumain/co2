@@ -635,9 +635,7 @@ var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
 jQuery(document).ready(function() {
 
-	
 	currentTypeSearchSend = "search";
-
 
   $("#btn-slidup-scopetags").click(function(){
     slidupScopetagsMin();

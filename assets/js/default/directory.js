@@ -134,14 +134,14 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
       data.indexMin=indexMin;
       data.indexMax=indexMax;
     }
-    if(typeof search != "undefined" && typeof search.app != "undefined")
+    if(typeof search.app != "undefined")
         data.app=search.app;
     if(typeof pageCount != "undefined")
       data.count=pageCount;
-    if(typeof allRanges != "undefined")
-      data.ranges=allRanges;
+    if(typeof search.ranges != "undefined")
+      data.ranges=search.ranges;
     //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
-    if(searchType[0] == "events"){
+    if(search.app=="agenda" && name==""){
       if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
         mylog.log("integrate AGENDA_WINDOW");
         data.startDate = STARTDATE;
@@ -313,6 +313,14 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
                 }else{
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").html(str);
+                    //alert();
+                    if(search.app=="agenda"){
+                      //alert();
+                      if(search.value != "")
+                        $("#content-social .calendar").hide(700);
+                      else if(!$(".content-social .calendar").is(":visible"))
+                        $("#content-social .calendar").show(700);
+                    }
                     if(typeof pageCount != "undefined" && pageCount){
                       typeElement=(search.type=="persons") ? "citoyens" : search.type;
                       initPageTable(searchCount[typeElement]);
@@ -377,7 +385,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               scrollEnd = false;
             }*/
 
-            if( typeof page != "undefined" && page == "agenda" && typeof showResultInCalendar != "undefined")
+            if(search.app == "agenda" && typeof showResultInCalendar != "undefined" && search.value=="")
               showResultInCalendar(data);
 
 

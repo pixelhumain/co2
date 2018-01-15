@@ -214,10 +214,9 @@ var currentKFormType = "";
 jQuery(document).ready(function() {
 
     setTitle(titlePage, "", titlePage);
-
-    initKInterface({"affixTop":100});
     if(typeof search.ranges != "undefined")
         delete search.ranges;
+    initKInterface({"affixTop":100});
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
     var appUrl = (typeof search.app != "undefined") ? "&app="+search.app : "";

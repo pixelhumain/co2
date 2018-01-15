@@ -265,6 +265,10 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
               //console.log(data.results);
              // alert();
               str += directory.showResultsDirectoryHtml(data);
+              if((indexMin == 0 || search.app=="search") && (typeof pageEvent == "undefined" || !pageEvent) ){
+                  if(typeof pageCount != "undefined" && pageCount)
+                    str += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+              }
               if(str == "") { 
 	              $.unblockUI();
                 showMap(false);
@@ -309,8 +313,10 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
                 }else{
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").html(str);
-                    if(typeof pageCount != "undefined" && pageCount)
-                      initPageTable(searchCount[search.type]);
+                    if(typeof pageCount != "undefined" && pageCount){
+                      typeElement=(search.type=="persons") ? "citoyens" : search.type;
+                      initPageTable(searchCount[typeElement]);
+                    }
                     pageEvent=false;
                     /*if(typeof myMultiTags != "undefined"){
                     $.each(myMultiTags, function(key, value){ //mylog.log("binding bold "+key);

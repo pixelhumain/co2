@@ -278,7 +278,7 @@
                 <span class="hidden-xs"><?php echo Yii::t("common","Cities") ?></span>
             </button><br class="hidden-xs"> -->
 
-            <button class="btn text-purple border-purple btn-directory-type padding-5" data-type="places">
+            <button class="btn text-purple border-purple btn-directory-type padding-5" data-type="place">
                 <i class="fa fa-home"></i> 
                 <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Places") ?></span>
                 <span class="badge count-badge-filter bg-purple" id="countplace"></span>

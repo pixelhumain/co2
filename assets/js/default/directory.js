@@ -1022,32 +1022,34 @@ var directory = {
           str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
         
         var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
-        if(params.type == "citoyens") 
-            params.hash += '.viewer.' + userId;
-       // if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
+         if(typeof params.size == "undefined" || params.size == "max")
+            str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgProfil + "</a>";
+          //str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
 
           str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
-          str += "<div class='entityRight no-padding'>"; 
-
-            if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
+          str += "<div class='entityRight col-md-12 no-padding'>"; 
+            if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){ 
+              str += "<div class='entityCenter no-padding'>"; 
+              str +=    "<a href='"+params.hash+"' class=''>" + params.htmlIco + "</a></div>"; 
+            }
+            /*if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
               str +=    "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
               str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+">" + params.htmlIco + "</a>";
               str += "</div>";
 
               
-            }
+            }*/
               
             if(notEmpty(params.typePoi)){
               str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
             }
 
-            var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark  "+extraClasses+">"+
+             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
                       iconFaReply + params.name + 
-                   "</a>";  
+                   "</a>";   
                     
             if(notEmpty(params.typePoi)){
               str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "</span>";  
@@ -1081,7 +1083,7 @@ var directory = {
             }          
             var thisLocality = "";
             if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality  "+extraClasses+">"+
+                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality  "+linkAction+">"+
                                   "<i class='fa fa-home'></i> " + params.fullLocality + 
                                 "</a>";
             else thisLocality = "<br>";
@@ -2384,13 +2386,23 @@ var directory = {
                     // var urlImg = "/upload/communecter/color.jpg";
                     // params.profilImageUrl = urlImg;
                     params.useMinSize = typeof size != "undefined" && size == "min";
-                    params.imgProfil = ""; 
-                    if(!params.useMinSize)
-                        params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
 
-                    if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
-                        params.imgProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
-                    if(params.type=="news"){
+                params.imgProfil = ""; 
+                if(!params.useMinSize)
+                    params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
+
+                if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+                    params.imgProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+                    //params.imgProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilThumbImageUrl+"'/>";
+
+
+               // params.imgBanner = ""; 
+                //if(!params.useMinSize)
+                  //  params.imgBanner = "<i class='fa fa-image fa-2x'></i>";
+
+                if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
+                    params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
+                if(params.type=="news"){
                       if(typeof params.media != "undefined"){
                         if (params.media.type=="gallery_images")
                           params.imgProfil=getMediaImages(params.media, null, null, null,'directory');
@@ -2406,33 +2418,29 @@ var directory = {
                         typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
                     params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
                     */
-                    params.insee = params.insee ? params.insee : "";
+                    /*params.insee = params.insee ? params.insee : "";
                     params.postalCode = "", params.city="",params.cityName="";
                     if (params.address != null) {
                         params.city = params.address.addressLocality;
                         params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
                         params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
                     }
-                    params.fullLocality = params.postalCode + " " + params.cityName;
-
+                    params.fullLocality = params.postalCode + " " + params.cityName;*/
+                    if (false && typeof params.addresses != "undefined" && params.addresses != null) {
+                      $.each(params.addresses, function(key, val){
+                  //console.log("second address", val);
+                      var postalCode = val.address.postalCode ? val.address.postalCode : "";
+                      var cityName = val.address.addressLocality ? val.address.addressLocality : "";
+                    
+                      params.fullLocality += "<br>"+ postalCode + " " + cityName;
+                    });
+                  }
+                params.type = dyFInputs.get(itemType).col;
+                params.urlParent = (notEmpty(params.parentType) && notEmpty(params.parentId)) ? 
+                              '#page.type.'+params.parentType+'.id.' + params.parentId : "";
                 // var urlImg = "/upload/communecter/color.jpg";
                 // params.profilImageUrl = urlImg;
-                params.useMinSize = typeof size != "undefined" && size == "min";
-
-                params.imgProfil = ""; 
-                if(!params.useMinSize)
-                    params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
-
-                if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
-                    params.imgProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilThumbImageUrl+"'/>";
-
-
-                params.imgBanner = ""; 
-                if(!params.useMinSize)
-                    params.imgBanner = "<i class='fa fa-image fa-2x'></i>";
-
-                if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
-                    params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
+                
 
                 /*if(dyFInputs.get(itemType) && 
                     dyFInputs.get(itemType).col == "poi" && 
@@ -2448,16 +2456,50 @@ var directory = {
                 }
                 params.fullLocality = params.postalCode + " " + params.cityName;
 
-                    if(params.type=="circuits")
-                      params.hash = '#circuit.index.id.' + params.id;
+                params.hash = '#page.type.'+params.type+'.id.' + params.id;
+
+                if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined")
+                  params.hash = params.source;
+
+                params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
+                if(params.type=="circuits")
+                    params.hash = '#circuit.index.id.' + params.id;
                     params.onclick = 'urlCtrl.loadByHash("' + params.url + '");';
 
                 if( params.type == "poi" && params.source  && ( notNull(params.source.key) && params.source.key.substring(0,7) == "convert")) {
                   var interop_type = getTypeInteropData(params.source.key);
                   params.type = "poi.interop."+interop_type;
                 }
-
-                    params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
+                // params.tags = "";
+                params.elTagsList = "";
+                var thisTags = "";
+                if(typeof params.tags != "undefined" && params.tags != null){
+                  $.each(params.tags, function(key, value){
+                    if(typeof value != "undefined" && value != "" && value != "undefined"){
+                      var tagTrad = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
+                      thisTags += "<span class='badge bg-transparent text-red btn-tag tag' data-tag-value='"+slugify(value, true)+"' data-tag-label='"+tagTrad+"'>#" + tagTrad + "</span> ";
+                      // mylog.log("sluggify", value, slugify(value, true));
+                      params.elTagsList += slugify(value, true)+" ";
+                    }
+                  });
+                  params.tagsLbl = thisTags;
+                }else{
+                  params.tagsLbl = "";
+                }
+                params.elRolesList = "";
+                var thisRoles = "";
+                params.rolesLbl = "";
+                if(typeof params.rolesLink != "undefined" && params.rolesLink != null){
+                  thisRoles += "<small class='letter-blue'><b>"+trad.roleroles+" :</b> ";
+                  thisRoles += params.rolesLink.join(", ");
+                  $.each(params.rolesLink, function(key, value){
+                    if(typeof value != "undefined" && value != "" && value != "undefined")
+                      params.elRolesList += slugify(value)+" ";
+                  });
+                  thisRoles += "</small>";
+                  params.rolesLbl = thisRoles;
+                }
+                params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
                     
                     if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
                     
@@ -2495,6 +2537,10 @@ var directory = {
                       }
                       else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
                         str += directory.coopPanelHtml(params);  
+                      else if(params.type.substring(0,11) == "poi.interop")
+                        str += directory.interopPanelHtml(params);
+                      else if(params.type == "network")
+                        str += directory.networkPanelHtml(params);
                       else
                         str += directory.defaultPanelHtml(params);
                     }
@@ -2522,7 +2568,7 @@ var directory = {
                 if(contentType == "contacts")
                     str += directory.contactPanelHtml(params, i);
               }
-                  str += directory.networkPanelHtml(params);
+               
             }
           });
         } //end each

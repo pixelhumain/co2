@@ -999,127 +999,110 @@ var directory = {
     // ********************************
     //  ELEMENT DIRECTORY PANEL
     // ********************************
-	  elementPanelHtml : function(params){
-    		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
-    		
-        mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
-    		str = "";
-    		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
-    		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
-        var classType=params.type;
-        if(params.type=="events")
-          classType="";
-    		str += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
-    		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
-    		
-        var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
+	elementPanelHtml : function(params){
+		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
+
+		mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
+		str = "";
+		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
+		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
+		var classType=params.type;
+		if(params.type=="events") classType="";
+		//str += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+		str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
+
+
+		var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
         if(typeof params.edit  != "undefined")
-              str += this.getAdminToolBar(params);
-            
-    		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
-    			isFollowed=false;
+		str += this.getAdminToolBar(params);
 
-    			if(typeof params.isFollowed != "undefined" )
-    				isFollowed=true;
-          mylog.log("isFollowed", params.isFollowed, isFollowed);
-    			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
-    			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-    			' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-    			" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-    			"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-    			"</a>";
-    		}
-        timeAction=trad.actif;
-        if(params.type=="events")
-          timeAction=trad.created;
-        if(params.updated != null )
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
-        
-        var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
-         if(typeof params.size == "undefined" || params.size == "max")
-            str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgProfil + "</a>";
-          //str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
+		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
+			isFollowed=false;
 
-          str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
+			if(typeof params.isFollowed != "undefined" )
+				isFollowed=true;
+			mylog.log("isFollowed", params.isFollowed, isFollowed);
+			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
+			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+					' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+					" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+					"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+					"</a>";
+		}
 
-          str += "<div class='entityRight col-md-12 no-padding'>"; 
-            if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){ 
-              str += "<div class='entityCenter no-padding'>"; 
-              str +=    "<a href='"+params.hash+"' class=''>" + params.htmlIco + "</a></div>"; 
-            }
-            /*if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
-              str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
-              str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+">" + params.htmlIco + "</a>";
-              str += "</div>";
+		timeAction= (params.type=="events") ? trad.created : trad.actif;
+		if(params.updated != null )
+			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
 
-              
-            }*/
-              
-            if(notEmpty(params.typePoi)){
-              str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
-            }
+		var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
+		if(params.type == "citoyens") 
+			params.hash += '.viewer.' + userId;
+		// if(typeof params.size == "undefined" || params.size == "max")
+		str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
+        str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
-             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
-                      iconFaReply + params.name + 
-                   "</a>";   
-                    
-            if(notEmpty(params.typePoi)){
-              str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "</span>";  
-            }
-            if(notEmpty(params.typeEvent)){
-              str += "<span class='typeEventDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typeEvent] + "</span>";  
-            }
-        
-            if(typeof(params.statusLink)!="undefined"){
-              if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
-                str+="<span class='text-red'>"+trad.administrator+"</span>";
-              if(typeof(params.statusLink.isAdminInviting)!="undefined"){
-                str+="<span class='text-red'>"+trad.invitingToAdmin+"</span>";
-              }
-              if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
-                str+="<span class='text-red'>"+trad.waitingValidation+"</span>";
-            }
+		str += "<div class='entityRight no-padding'>";
 
-            if(params.rolesLbl != "")
-            str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
-            
-            if( params.section ){
-              str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
-                if(typeof params.subtype != "undefined") str += " > " + params.subtype;
-              str += "</div>";
-            }
-            if(params.type=="events"){
-              var dateFormated = "<br/><i class='fa fa-clock'></i> "+directory.getDateFormated(params, true);
-              var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;
-              str += dateFormated+countSubEvents;
-            }          
-            var thisLocality = "";
-            if(params.fullLocality != "" && params.fullLocality != " ")
-                 thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality  "+linkAction+">"+
-                                  "<i class='fa fa-home'></i> " + params.fullLocality + 
-                                "</a>";
-            else thisLocality = "<br>";
-            
-            str += thisLocality;
-            
-            str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
-            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
-            /*
-              if(params.startDate != null)
-              str += "<div class='entityDate dateFrom bg-"+params.color+" transparent badge'>" + params.startDate + "</div>";
-              if(params.endDate != null)
-              str += "<div  class='entityDate dateTo  bg-"+params.color+" transparent badge'>" + params.endDate + "</div>";
-              */
-              
-          str += "</div>";
-        str += "</div>";
-      str += "</div>";
+		if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
+			str += "<div class='entityCenter no-padding'>";
+			str +=    "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
+			str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+">" + params.htmlIco + "</a>";
+			str += "</div>";
+		}
 
-      str += "</div>";
-      return str;
-    },
+		if(notEmpty(params.typePoi)){
+			str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
+		}
+
+		var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+		str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
+					iconFaReply + params.name + 
+				"</a>";  
+		if(notEmpty(params.typeEvent))
+			str += "<span class='typeEventDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typeEvent] + "</span>";  
+		
+		if(typeof(params.statusLink)!="undefined"){
+			if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+				str+="<span class='text-red'>"+trad.administrator+"</span>";
+			if(typeof(params.statusLink.isAdminInviting)!="undefined"){
+				str+="<span class='text-red'>"+trad.invitingToAdmin+"</span>";
+			}
+			if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
+				str+="<span class='text-red'>"+trad.waitingValidation+"</span>";
+		}
+
+		if(params.rolesLbl != "")
+			str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
+
+		if( params.section ){
+			str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
+			if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+				str += "</div>";
+		} 
+
+	if(params.type=="events"){
+		var dateFormated = "<br/><i class='fa fa-clock'></i> "+directory.getDateFormated(params, true);
+		var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;
+		str += dateFormated+countSubEvents;
+	} 
+
+	var thisLocality = "";
+	if(params.fullLocality != "" && params.fullLocality != " ")
+		thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality add2fav"+linkAction+">"+
+							"<i class='fa fa-home'></i> " + params.fullLocality + "</a>";
+	else thisLocality = "<br>";
+
+	str += thisLocality;
+
+	str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
+	str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+	str += "</div>";
+	str += "</div>";
+	str += "</div>";
+	str += "</div>";
+	return str;
+	},
 
     interopPanelHtml : function(params){
       mylog.log("----------- interopPanelHtml",params, params.type,params.name, params.url);
@@ -2401,8 +2384,6 @@ var directory = {
 
                     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
 
-                    // var urlImg = "/upload/communecter/color.jpg";
-                    // params.profilImageUrl = urlImg;
                     params.useMinSize = typeof size != "undefined" && size == "min";
 
                 params.imgProfil = ""; 
@@ -2410,16 +2391,16 @@ var directory = {
                     params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
 
                 if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
-                    params.imgProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
-                    //params.imgProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilThumbImageUrl+"'/>";
+                    params.imgProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilThumbImageUrl+"'/>";
 
 
-               // params.imgBanner = ""; 
-                //if(!params.useMinSize)
-                  //  params.imgBanner = "<i class='fa fa-image fa-2x'></i>";
+				params.imgBanner = ""; 
+				if(!params.useMinSize)
+					params.imgBanner = "<i class='fa fa-image fa-2x'></i>";
 
                 if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
                     params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
+
                 if(params.type=="news"){
                       if(typeof params.media != "undefined"){
                         if (params.media.type=="gallery_images")

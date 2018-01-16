@@ -701,7 +701,7 @@ var urlCtrl = {
 		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o',useHeader : true},
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 		// MODULES
-		"ressources" : {title:'RESSOURCES', icon : 'puzzle-piece',useHeader : true, mod:"ressources"},
+		//"ressources" : {title:'RESSOURCES', icon : 'puzzle-piece',useHeader : true, mod:"ressources"},
 		"rsc" : {"alias":"#ressources"},
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],

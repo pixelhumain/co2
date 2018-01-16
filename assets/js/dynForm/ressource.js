@@ -80,7 +80,7 @@ dynForm = {
                 inputType : "custom",
                 html:"",
             },
-            sectionBtn :{
+            typeBtn :{
                 label : "De quel type de ressource s'agit-il ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
@@ -101,11 +101,11 @@ dynForm = {
 	            	});
 	            }
             },
-            section : dyFInputs.inputHidden(),
-/*	        typeBtn :{
-                label : "Type de ressource ? ",
+            type : dyFInputs.inputHidden(),
+	        subtypeBtn :{
+                label : "Type of ressource ? ",
 	            inputType : "tagList",
-                placeholder : "Choisir une catégorie",
+                placeholder : "Choose a category",
                 list : ressource.filters,
                 init : function(){
 	            	$(".typeBtn").off().on("click",function()
@@ -146,12 +146,12 @@ dynForm = {
 	            	});
 	            }
             },
-            type : dyFInputs.inputHidden(),
-            subtypeSection : {
+            subtype : dyFInputs.inputHidden(),
+            /*subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
-            },
-            subtype : dyFInputs.inputHidden(),*/
+            },*/
+            //subtype : dyFInputs.inputHidden(),
             name : dyFInputs.name("ressource"),
 	        image : dyFInputs.image(),
             description : dyFInputs.textarea("Description", "..."),

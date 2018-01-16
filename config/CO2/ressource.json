@@ -2,16 +2,16 @@
     "sections" : {
         
         "need": {
-            "label":"Need",           
+            "label":"Call for ressource",           
             "key" : "need",  
-            "icon" : "hand-o-up"
+            "icon" : "bulhorn"
         },
         "offer": {
-            "label":"Offer",           
+            "label":"Purpose a ressource",           
             "key" : "offer",  
-            "icon" : "hand-o-down"
+            "icon" : "cubes"
         },
-        "service": {
+        /*"service": {
             "label":"Service",           
             "key" : "service",  
             "icon" : "exchange"
@@ -100,10 +100,169 @@
             "label":"Activity Stream",      
             "key" : "activity",     
             "icon" : "rss"
-        }
+        }*/
     },
     "filters" : {
-       
+       "service" : {
+            "key": "service",
+            "label": "Service",
+            "subFilters" : {
+                "charity" : {
+                    "key": "charity",
+                    "label": "Time",
+                    "icon" :""
+                },
+                "education" : {
+                    "key": "education",
+                    "label": "Education help",
+                    "icon" :""
+                },
+                "househelp" : {
+                    "key": "househelp",
+                    "label": "Education help",
+                    "icon" :""
+                },
+                "washing" : {
+                    "key": "whashing",
+                    "label": "Washing",
+                    "icon" :""
+                },
+                "gardening" : {
+                    "key": "gardening",
+                    "label": "Gardening",
+                    "icon" :""
+                },
+                "farming" : {
+                    "key": "gardening",
+                    "label": "Gardening",
+                    "icon" :""
+                },
+                "generalmaintenance" : {
+                    "key": "generalmaintenance",
+                    "label": "assistance",
+                    "icon" :""
+                },
+                "animalcare" : {
+                    "key": "animalcare",
+                    "label": "Education help",
+                    "icon" :""
+                },
+                "ederlycare": {
+                    "key": "humancare",
+                    "label": "Education help",
+                    "icon" :""
+                },
+                "disabledcare": {
+                    "key": "humancare",
+                    "label": "Education help",
+                    "icon" :""
+                },
+                "Hosting help": {
+
+                },
+            }
+        },
+        "competence" : {
+            "key": "competence",
+            "label": "Competence",
+            "subFilters" : {
+                "Artistic" : {
+                    "key": "time",
+                    "label": "Time",
+                    "icon" :""
+                },
+                "Laws" : {
+                    "key": "Laws",
+                    "label": "Laws",
+                    "icon" :""
+                },
+                "IT devlopment" : {
+                    "key": "IT devlopment",
+                    "label": "IT devlopment",
+                    "icon" :""
+                },
+                "HandCraft" : {
+                    "key": "education",
+                    "label": "Education help",
+                    "icon" :""
+                },
+                "Animal care" : {
+                    "key": "whashing",
+                    "label": "Washing",
+                    "icon" :""
+                },
+                "gardening" : {
+                    "key": "gardening",
+                    "label": "Gardening",
+                    "icon" :""
+                },
+                "assitance" : {
+                    "key": "assistance",
+                    "label": "assistance",
+                    "icon" :""
+                },
+                "education" : {
+                    "key": "education",
+                    "label": "Education help",
+                    "icon" :""
+                },
+                "agriculture" : {
+
+                },
+                "restauration" : {
+
+                },
+                "Building" : {
+
+                }
+            }
+        },
+        "material" : {
+            "key": "material",
+            "label": "Material",
+            "subFilters" : {
+                "electronic" : {
+                    "key": "electronic",
+                    "label": "Electronic",
+                    "icon" :""
+                },
+                "schoolfurniture" : {
+                    "key": "schoolfurniture",
+                    "label": "School furniture",
+                    "icon" :""
+                },
+                "meubles" : {
+                    "key": "meubles",
+                    "label": "Meubles",
+                    "icon" :""
+                },
+                "primaryressources" : {
+                    "key": "primaryressources",
+                    "label": "Primary ressources",
+                    "icon" :""
+                },
+                "buildingtools" : {
+                    "key": "buildingtools",
+                    "label": "Building tools",
+                    "icon" :""
+                },
+                "gardeningtools" : {
+                    "key": "gardeningtools",
+                    "label": "Gardening tools",
+                    "icon" :""
+                },
+                "medicalstuff" : {
+                    "key": "medicalstuff",
+                    "label": "Medical stuff",
+                    "icon" :""
+                },
+                "food" : {
+                    "key": "food",
+                    "label": "Food",
+                    "icon" :""
+                }
+            }
+        } 
     }
     
 }

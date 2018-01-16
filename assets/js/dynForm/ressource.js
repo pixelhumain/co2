@@ -80,7 +80,7 @@ dynForm = {
                 inputType : "custom",
                 html:"",
             },
-            typeBtn :{
+            sectionBtn :{
                 label : "De quel type de ressource s'agit-il ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
@@ -92,17 +92,32 @@ dynForm = {
 	            		$(".typeBtntagList").show();
 	            		$(".sectionBtn").removeClass("active btn-dark-blue text-white");
 	            		$( "."+$(this).data('key')+"Btn" ).toggleClass("active btn-dark-blue text-white");
-	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('tag') : "" );
+	            		$("#ajaxFormModal #section").val( ( $(this).hasClass('active') ) ? $(this).data('key') : "" );
 						//$(".sectionBtn:not(.active)").hide();
-						
+						var sectionKey = $(this).data('key');
+						//alert(sectionKey);
+						var what = { title : tradDynForm["inwhichcategoryforclassified"]+" ?", 
+				                         icon : ressource.sections[sectionKey].icon }
+						if( jsonHelper.notNull( "ressource.sections."+sectionKey+".filters" ) ){
+				            //alert('build btns menu'+classified.sections[sectionKey].filters);
+				            ressource.currentLeftFilters = ressource.sections[sectionKey].filters;
+				            var filters = ressource[ressource.currentLeftFilters]; 
+				            directory.sectionFilter( filters, ".typeBtntagList",what,'btn');
+				            dyFObj.elementObj.dynForm.jsonSchema.actions.initTypeBtn();
+				        }
+				        else if( ressource.currentLeftFilters != null ) {
+				            //alert('rebuild common list'); 
+				            directory.sectionFilter( ressource.filters, ".typeBtntagList",what,'btn');
+				            dyFObj.elementObj.dynForm.jsonSchema.actions.initTypeBtn()
+				            ressource.currentLeftFilters = null;
+				        }
 						$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+$(this).data('tag')+"</h4>");
-						$(".nametext, .descriptiontextarea, .pricetext, .contactInfotext, .locationlocation, .imageuploader, .formshowerscustom, .tagstags").show();
 						$(".sectionBtntagList").hide();
 	            	});
 	            }
             },
-            type : dyFInputs.inputHidden(),
-	        subtypeBtn :{
+            section : dyFInputs.inputHidden(),
+	        typeBtn :{
                 label : "Type of ressource ? ",
 	            inputType : "tagList",
                 placeholder : "Choose a category",
@@ -121,9 +136,9 @@ dynForm = {
 	            		//$(".typeBtn:not(.active)").hide();
 	            		$("#ajaxFormModal #subtype").val("");
 	            		fieldHTML = "";
-	            		$.each(ressource.filters[ $(this).data('key') ]["subcat"], function(k,v) { 
+	            		$.each(ressource.filters[ $(this).data('key') ]["subFilters"], function(k,v) { 
 	            			fieldHTML += '<div class="col-md-6 padding-5">'+
-        									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v+'" href="javascript:;">'+v+'</a>' +
+        									'<a class="btn tagListEl subtypeBtn '+k+'Btn " data-tag="'+v.label+'" href="javascript:;">'+v.label+'</a>' +
 	            						"</div>";
 	            		});
 	            		$(".subtypeSection").html('<hr class="col-md-12 no-padding">'+
@@ -146,12 +161,12 @@ dynForm = {
 	            	});
 	            }
             },
-            subtype : dyFInputs.inputHidden(),
-            /*subtypeSection : {
+            type : dyFInputs.inputHidden(),
+            subtypeSection : {
                 inputType : "custom",
                 html:"<div class='subtypeSection'></div>"
-            },*/
-            //subtype : dyFInputs.inputHidden(),
+            },
+            subtype : dyFInputs.inputHidden(),
             name : dyFInputs.name("ressource"),
 	        image : dyFInputs.image(),
             description : dyFInputs.textarea("Description", "..."),

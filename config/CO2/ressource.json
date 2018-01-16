@@ -1,106 +1,15 @@
 {
     "sections" : {
-        
         "need": {
             "label":"Call for ressource",           
             "key" : "need",  
-            "icon" : "bulhorn"
+            "icon" : "bullhorn"
         },
         "offer": {
             "label":"Purpose a ressource",           
             "key" : "offer",  
             "icon" : "cubes"
-        },
-        /*"service": {
-            "label":"Service",           
-            "key" : "service",  
-            "icon" : "exchange"
-        },
-        "competence": {
-            "label":"Competence",      
-            "key" : "competence",     
-            "icon" : "users",
-            "subcat" : 
-                [   
-                    "Electric Engineer",
-                    "Electrician", 
-                    "Journalist",
-                    "Community Manager"
-                ]
-        },
-        "humanRessource": {
-            "label":"Human Ressource",           
-            "key" : "humanRessource",  
-            "icon" : "user"
-        },
-        "tool": {
-            "label":"Tool",           
-            "key" : "tool",  
-            "icon" : "cutlery",
-            "subcat" : 
-                [   
-                    "Open",
-                    "Private"
-                ]
-        },
-        "documentation": {
-            "label":"Documentation",      
-            "key" : "documentation",     
-            "icon" : "book"
-        },
-        "machine": {
-            "label":"Machine",      
-            "key" : "machine",     
-            "icon" : "print",
-            "subcat" : 
-                [   "Computers",
-                    "CNC",
-                    "3D Printer",
-                    "Laser cutter",
-                    "Serigraphy",
-                    "Transport"
-                ]
-        },
-        "transport": {
-            "label":"Transport",      
-            "key" : "transport",     
-            "icon" : "car"
-        },
-        "offices": {
-            "label":"Offices",      
-            "key" : "offices",     
-            "icon" : "cube"
-        },
-        "internet": {
-            "label":"Internet",      
-            "key" : "internet",     
-            "icon" : "usb"
-        },
-        "openWifi": {
-            "label":"Open Wifi",      
-            "key" : "openWifi",     
-            "icon" : "wifi"
-        },
-        "drive": {
-            "label":"Open Drive",      
-            "key" : "drive",     
-            "icon" : "folder-open"
-        },
-        "visio": {
-            "label":"Conferencing",      
-            "key" : "visio",     
-            "icon" : "video-camera"
-        },
-        "wiki": {
-            "label":"Wiki",      
-            "key" : "wiki",     
-            "icon" : "wikipedia-w"
-        },
-        "activity": {
-            "label":"Activity Stream",      
-            "key" : "activity",     
-            "icon" : "rss"
-        }*/
+        }
     },
     "filters" : {
        "service" : {
@@ -110,110 +19,103 @@
                 "charity" : {
                     "key": "charity",
                     "label": "Time",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "education" : {
                     "key": "education",
                     "label": "Education help",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "househelp" : {
                     "key": "househelp",
                     "label": "Education help",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "washing" : {
                     "key": "whashing",
                     "label": "Washing",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "gardening" : {
                     "key": "gardening",
                     "label": "Gardening",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "farming" : {
                     "key": "gardening",
                     "label": "Gardening",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "generalmaintenance" : {
                     "key": "generalmaintenance",
                     "label": "assistance",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "animalcare" : {
                     "key": "animalcare",
                     "label": "Education help",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "ederlycare": {
                     "key": "humancare",
                     "label": "Education help",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "disabledcare": {
                     "key": "humancare",
                     "label": "Education help",
-                    "icon" :""
+                    "icon" :"cook"
                 },
-                "Hosting help": {
-
-                },
+                "hostinghelp": {
+                    "key": "hostinghelp",
+                    "label": "Hosting help",
+                    "icon" :"cook"
+                }
             }
         },
         "competence" : {
             "key": "competence",
             "label": "Competence",
             "subFilters" : {
-                "Artistic" : {
-                    "key": "time",
-                    "label": "Time",
-                    "icon" :""
+                "artistic" : {
+                    "key": "artistic",
+                    "label": "Artistic",
+                    "icon" :"cook"
                 },
-                "Laws" : {
-                    "key": "Laws",
+                "laws" : {
+                    "key": "laws",
                     "label": "Laws",
-                    "icon" :""
+                    "icon" :"cook"
                 },
-                "IT devlopment" : {
-                    "key": "IT devlopment",
+                "itdevlopment" : {
+                    "key": "itdevlopment",
                     "label": "IT devlopment",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "HandCraft" : {
-                    "key": "education",
-                    "label": "Education help",
-                    "icon" :""
+                    "key": "handCraft",
+                    "label": "Handcraft",
+                    "icon" :"cook"
                 },
-                "Animal care" : {
+                "animalcare" : {
                     "key": "whashing",
                     "label": "Washing",
-                    "icon" :""
-                },
-                "gardening" : {
-                    "key": "gardening",
-                    "label": "Gardening",
-                    "icon" :""
-                },
-                "assitance" : {
-                    "key": "assistance",
-                    "label": "assistance",
-                    "icon" :""
-                },
-                "education" : {
-                    "key": "education",
-                    "label": "Education help",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "agriculture" : {
-
+                    "key": "agriculture",
+                    "label": "Education help",
+                    "icon" :"cook"
                 },
                 "restauration" : {
-
+                    "key": "restauration",
+                    "label": "Restauration",
+                    "icon" :"cook"
                 },
-                "Building" : {
-
+                "building" : {
+                    "key": "education",
+                    "label": "Education help",
+                    "icon" :"cook"
                 }
             }
         },
@@ -224,45 +126,44 @@
                 "electronic" : {
                     "key": "electronic",
                     "label": "Electronic",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "schoolfurniture" : {
                     "key": "schoolfurniture",
                     "label": "School furniture",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "meubles" : {
                     "key": "meubles",
                     "label": "Meubles",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "primaryressources" : {
                     "key": "primaryressources",
                     "label": "Primary ressources",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "buildingtools" : {
                     "key": "buildingtools",
                     "label": "Building tools",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "gardeningtools" : {
                     "key": "gardeningtools",
                     "label": "Gardening tools",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "medicalstuff" : {
                     "key": "medicalstuff",
                     "label": "Medical stuff",
-                    "icon" :""
+                    "icon" :"cook"
                 },
                 "food" : {
                     "key": "food",
                     "label": "Food",
-                    "icon" :""
+                    "icon" :"cook"
                 }
             }
         } 
     }
-    
 }

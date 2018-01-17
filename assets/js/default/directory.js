@@ -434,7 +434,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
       $("#count"+e).text(v);
     });
     if(search.value!=""){
-      countSocial=count.organizations+count.projects+count.place+count.citoyens+count.poi;
+      countSocial=count.organizations+count.projects+count.places+count.citoyens+count.poi;
       if(typeof countSocial != 0)
         $(".count-badge-social").text(countSocial).show(700);
       else

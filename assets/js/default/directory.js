@@ -231,8 +231,8 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
                     if(typeof headerParams != "undefined"){
                       var countNbTag=0;
                       $.each( searchType, function(key, val){ countNbTag++;
-                       // mylog.log(">>> each autocomplete search",val);
-                        var params = headerParams[val];
+                        typeHeader = (val=="citoyens") ? "persons" : val;
+                        var params = headerParams[typeHeader];
                         headerStr += "<span class='text-"+params.color+"'>"+
                                   "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
                                 "</span> ";
@@ -434,7 +434,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
       $("#count"+e).text(v);
     });
     if(search.value!=""){
-      countSocial=count.organizations+count.projects+count.place+count.citoyens+count.poi;
+      countSocial=count.organizations+count.projects+count.places+count.citoyens+count.poi;
       if(typeof countSocial != 0)
         $(".count-badge-social").text(countSocial).show(700);
       else

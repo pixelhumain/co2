@@ -636,10 +636,12 @@ function loadActionRoom(){
 
 
 function loadNetworks(){
+	mylog.log("HERE loadNetworks");
 	showLoader('#central-container');
 	getAjax('', baseUrl+'/'+moduleId+'/element/getnetworks/type/'+contextData.type+
 				'/id/'+contextData.id,
 				function(data){ 
+					mylog.log("HERE", data);
 					displayInTheContainer(data, "networks", "external-link", "networks");
 				}
 	,"html");

@@ -112,7 +112,7 @@ dynForm = {
                 inputType : "custom",
                 html:"<p class='item-comment bg-green-comment'>SKIN Section<hr></p>",
             },
-            "skin[title]" : dyFInputs.inputText("Titre du network", "Titre du network", { required : true }),
+            "skin[title]" : dyFInputs.inputText(tradDynForm["Title of your map"], tradDynForm["Title of your map"], { required : true }),
             "skin[shortDescription]" : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
 	        "skin[logo]" : dyFInputs.image("Logo"),
 		    // "skin[displayCommunexion]" : dyFInputs.radio(	"Permettre aux utilisateurs de s'identifier", 
@@ -121,7 +121,7 @@ dynForm = {
 						// 					 				{ required : true } ),
 
 		    "displayCommunexion" : dyFInputs.checkboxSimple("true", "displayCommunexion", {
-			        							labelText: "Permettre aux utilisateurs de s'identifier", 
+			        							labelText: tradDynForm["Allow users to identify themselves"], 
 			        							onText:tradDynForm.yes, 
 			        							offText:tradDynForm.no, 
 			        							onLabel : tradDynForm.yes,
@@ -129,7 +129,7 @@ dynForm = {
             									inputId: "#displayCommunexion"
 			        					}),
 
-		    add : dyFInputs.tags( ["organization","project","event"], "Type d'élement pour l'ajout", "Type d'élement pour l'ajout" ),
+		    add : dyFInputs.tags( ["organization","project","event"], tradDynForm["Allow to add elements"], tradDynForm["Allow to add elements"] ),
 
 /************************* Result *****************************/
             requestInfo : {

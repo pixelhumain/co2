@@ -2306,7 +2306,7 @@ var directory = {
     },
     showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
         //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
-        //mylog.log("showResultsDirectoryHtml data", data,"size",  size, "contentType", contentType)
+        mylog.log("showResultsDirectoryHtml data", data,"size",  size, "contentType", contentType)
         //mylog.log(" dirLog",directory.dirLog);
         var str = "";
 
@@ -2317,7 +2317,7 @@ var directory = {
             if(i!="count"){
               //if(directory.dirLog) mylog.log("params", params, typeof params);
 
-              //mylog.log("params", params);
+              mylog.log("params", params);
               //mylog.log("params interoperability", location.hash.indexOf("#interoperability"));
 
               if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
@@ -2326,7 +2326,7 @@ var directory = {
                 params.id = Math.random();
                 params.type = "poi";
               }
-              console.log(params.sorting);
+              mylog.log(params.sorting);
               //mylog.log("--->>> params", params["name"] , params.name, params.id, params.type );
               //mylog.log("--->>> params.id", params.id, params["_id"], notNull(params["_id"]), notNull(params.id));
 
@@ -2659,7 +2659,7 @@ var directory = {
     //builds a small sized list
     buildList : function(list) {
       $(".favSectionBtnNew,.favSection").remove();
-      console.warn("START >>>>>> buildList",smallMenu.destination + " #listDirectory");
+      mylog.warn("START >>>>>> buildList",smallMenu.destination + " #listDirectory");
       
       $.each( list, function(key,slist)
       {

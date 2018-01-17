@@ -442,6 +442,9 @@ var trad = {
 };
 
 var tradDynForm = {
+	"Title of your map" : "<?php echo Yii::t("form","Title of your map") ?>",
+	"Allow users to identify themselves" : "<?php echo Yii::t("form","Allow users to identify themselves") ?>",
+	"Allow to add elements" : "<?php echo Yii::t("form","Allow to add elements") ?>","
 	"Add a postal code" : "<?php echo Yii::t("common","Add a postal code") ?>",
 	"Postal code" : "<?php echo Yii::t("common","Postal code") ?>",
 	"Add a zone" : "<?php echo Yii::t("common","Add a zone") ?>",

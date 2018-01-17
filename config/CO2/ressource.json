@@ -1,109 +1,169 @@
 {
     "sections" : {
-        
         "need": {
-            "label":"Need",           
+            "label":"Call for ressource",           
             "key" : "need",  
-            "icon" : "hand-o-up"
+            "icon" : "bullhorn"
         },
         "offer": {
-            "label":"Offer",           
+            "label":"Purpose a ressource",           
             "key" : "offer",  
-            "icon" : "hand-o-down"
-        },
-        "service": {
-            "label":"Service",           
-            "key" : "service",  
-            "icon" : "exchange"
-        },
-        "competence": {
-            "label":"Competence",      
-            "key" : "competence",     
-            "icon" : "users",
-            "subcat" : 
-                [   
-                    "Electric Engineer",
-                    "Electrician", 
-                    "Journalist",
-                    "Community Manager"
-                ]
-        },
-        "humanRessource": {
-            "label":"Human Ressource",           
-            "key" : "humanRessource",  
-            "icon" : "user"
-        },
-        "tool": {
-            "label":"Tool",           
-            "key" : "tool",  
-            "icon" : "cutlery",
-            "subcat" : 
-                [   
-                    "Open",
-                    "Private"
-                ]
-        },
-        "documentation": {
-            "label":"Documentation",      
-            "key" : "documentation",     
-            "icon" : "book"
-        },
-        "machine": {
-            "label":"Machine",      
-            "key" : "machine",     
-            "icon" : "print",
-            "subcat" : 
-                [   "Computers",
-                    "CNC",
-                    "3D Printer",
-                    "Laser cutter",
-                    "Serigraphy",
-                    "Transport"
-                ]
-        },
-        "transport": {
-            "label":"Transport",      
-            "key" : "transport",     
-            "icon" : "car"
-        },
-        "offices": {
-            "label":"Offices",      
-            "key" : "offices",     
-            "icon" : "cube"
-        },
-        "internet": {
-            "label":"Internet",      
-            "key" : "internet",     
-            "icon" : "usb"
-        },
-        "openWifi": {
-            "label":"Open Wifi",      
-            "key" : "openWifi",     
-            "icon" : "wifi"
-        },
-        "drive": {
-            "label":"Open Drive",      
-            "key" : "drive",     
-            "icon" : "folder-open"
-        },
-        "visio": {
-            "label":"Conferencing",      
-            "key" : "visio",     
-            "icon" : "video-camera"
-        },
-        "wiki": {
-            "label":"Wiki",      
-            "key" : "wiki",     
-            "icon" : "wikipedia-w"
-        },
-        "activity": {
-            "label":"Activity Stream",      
-            "key" : "activity",     
-            "icon" : "rss"
+            "icon" : "cubes"
         }
     },
     "filters" : {
-       
+       "service" : {
+            "key": "service",
+            "label": "Service",
+            "subFilters" : {
+                "charity" : {
+                    "key": "charity",
+                    "label": "Time",
+                    "icon" :"cook"
+                },
+                "education" : {
+                    "key": "education",
+                    "label": "Education help",
+                    "icon" :"cook"
+                },
+                "househelp" : {
+                    "key": "househelp",
+                    "label": "Education help",
+                    "icon" :"cook"
+                },
+                "washing" : {
+                    "key": "whashing",
+                    "label": "Washing",
+                    "icon" :"cook"
+                },
+                "gardening" : {
+                    "key": "gardening",
+                    "label": "Gardening",
+                    "icon" :"cook"
+                },
+                "farming" : {
+                    "key": "gardening",
+                    "label": "Gardening",
+                    "icon" :"cook"
+                },
+                "generalmaintenance" : {
+                    "key": "generalmaintenance",
+                    "label": "assistance",
+                    "icon" :"cook"
+                },
+                "animalcare" : {
+                    "key": "animalcare",
+                    "label": "Education help",
+                    "icon" :"cook"
+                },
+                "ederlycare": {
+                    "key": "humancare",
+                    "label": "Education help",
+                    "icon" :"cook"
+                },
+                "disabledcare": {
+                    "key": "humancare",
+                    "label": "Education help",
+                    "icon" :"cook"
+                },
+                "hostinghelp": {
+                    "key": "hostinghelp",
+                    "label": "Hosting help",
+                    "icon" :"cook"
+                }
+            }
+        },
+        "competence" : {
+            "key": "competence",
+            "label": "Competence",
+            "subFilters" : {
+                "artistic" : {
+                    "key": "artistic",
+                    "label": "Artistic",
+                    "icon" :"cook"
+                },
+                "laws" : {
+                    "key": "laws",
+                    "label": "Laws",
+                    "icon" :"cook"
+                },
+                "itdevlopment" : {
+                    "key": "itdevlopment",
+                    "label": "IT devlopment",
+                    "icon" :"cook"
+                },
+                "HandCraft" : {
+                    "key": "handCraft",
+                    "label": "Handcraft",
+                    "icon" :"cook"
+                },
+                "animalcare" : {
+                    "key": "whashing",
+                    "label": "Washing",
+                    "icon" :"cook"
+                },
+                "agriculture" : {
+                    "key": "agriculture",
+                    "label": "Education help",
+                    "icon" :"cook"
+                },
+                "restauration" : {
+                    "key": "restauration",
+                    "label": "Restauration",
+                    "icon" :"cook"
+                },
+                "building" : {
+                    "key": "education",
+                    "label": "Education help",
+                    "icon" :"cook"
+                }
+            }
+        },
+        "material" : {
+            "key": "material",
+            "label": "Material",
+            "subFilters" : {
+                "electronic" : {
+                    "key": "electronic",
+                    "label": "Electronic",
+                    "icon" :"cook"
+                },
+                "schoolfurniture" : {
+                    "key": "schoolfurniture",
+                    "label": "School furniture",
+                    "icon" :"cook"
+                },
+                "meubles" : {
+                    "key": "meubles",
+                    "label": "Meubles",
+                    "icon" :"cook"
+                },
+                "primaryressources" : {
+                    "key": "primaryressources",
+                    "label": "Primary ressources",
+                    "icon" :"cook"
+                },
+                "buildingtools" : {
+                    "key": "buildingtools",
+                    "label": "Building tools",
+                    "icon" :"cook"
+                },
+                "gardeningtools" : {
+                    "key": "gardeningtools",
+                    "label": "Gardening tools",
+                    "icon" :"cook"
+                },
+                "medicalstuff" : {
+                    "key": "medicalstuff",
+                    "label": "Medical stuff",
+                    "icon" :"cook"
+                },
+                "food" : {
+                    "key": "food",
+                    "label": "Food",
+                    "icon" :"cook"
+                }
+            }
+        } 
     }
-    
 }

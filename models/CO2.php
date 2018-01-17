@@ -23,6 +23,16 @@ class CO2 {
     	return $list;
     }
 
+    public static function getModuleContextList($mod, $contextName){
+        $domainName = @$domainName ? $domainName : Yii::app()->params["CO2DomainName"];
+        
+        $layoutPath ="../../modules/".$mod."/assets/js/".$contextName.".json";
+        $str = file_get_contents($layoutPath);
+
+        $list = json_decode($str, true);
+        return $list;
+    }
+
     public static function getCitiesNewCaledonia(){
     	$query = array("country"=>"NC", "name"=>array('$in'=>array("Noumea", "Dumbea", "Paita", "Mont-Dore")));
     	$citiesGN = PHDB::find(City::COLLECTION, $query);

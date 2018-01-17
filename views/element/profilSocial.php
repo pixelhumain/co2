@@ -590,7 +590,7 @@
 	            <small>Ajouter un Lieux <br>Partager ces ressources<br> ces compétence et ces besions</small>
 	        </button>
 
-	        <button data-form-type="ressource"  data-dismiss="modal"
+	        <button data-form-type="ressources"  data-dismiss="modal"
                 class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
 	            <h6><i class="fa fa-cube fa-2x bg-azure"></i><br> Ressource</h6>
 	            <small>Ajouter une ressource <br>des outils, documents<br> des compétence et des besions</small>

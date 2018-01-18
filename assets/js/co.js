@@ -700,9 +700,6 @@ var urlCtrl = {
 		"#interoperability.copedia" : {title:'COPEDIA', icon : 'fa-folder-open-o',useHeader : true},
 		"#interoperability.co-osm" : {title:'COSM', icon : 'fa-folder-open-o',useHeader : true},
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
-		// MODULES
-		//"ressources" : {title:'RESSOURCES', icon : 'puzzle-piece',useHeader : true, mod:"ressources"},
-		"rsc" : {"alias":"#ressources"},
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
 	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
@@ -3843,6 +3840,10 @@ var co = {
 	// *****************************************
 	// TODO
 	// ****************************************
+	rsc : {
+		form : function() { dyFObj.openForm("ressource") },
+		i : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.ressources");},
+	}
 	/*
 	ntre : function () { smallMenu.open("<h1>Toutes les propositions de lois et décisions sociétal pour lesquels on est contre</h1>"); } ,
 	rd : function () { smallMenu.open("<h1> Visualisation de notre R&D</h1>"); } ,

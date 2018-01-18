@@ -977,6 +977,44 @@ function bindAboutPodElement() {
 		});
 	}
 
+	function removeNetwork(id) {
+		bootbox.confirm({
+			message: trad["suretodeletecontact"]+"<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: trad["yes"],
+					className: 'btn-success'
+				},
+				cancel: {
+					label: trad["no"],
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				alert("Voir avec TIBTIB");
+				// if (!result) {
+				// 	return;
+				// } else {
+				// 	param = new Object;
+			 //    	param.id = id;
+			 //    	param.userId = userId;
+				// 	$.ajax({
+				//         type: "POST",
+				//         url: baseUrl+"/"+moduleId+"/network/remove",
+				//         data: param,
+				//        	dataType: "json",
+				//     	success: function(data){
+				//     		mylog.log("data", data);
+				// 	    	if(data.result){
+				// 				toastr.success(data.msg);
+				// 				urlCtrl.loadByHash(location.hash);
+				// 	    	}
+				// 	    }
+				// 	});
+				// }
+			}
+		});
+	}
 
 	function removeFieldUpdateDynForm(collection){
 		mylog.log("------------------------ removeFieldUpdateDynForm", collection);

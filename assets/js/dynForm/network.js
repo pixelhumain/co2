@@ -55,17 +55,15 @@ dynForm = {
 	    	if( formData.displayCommunexion )
 	    		formData["skin[displayCommunexion]"] = dataHelper.stringToBool(formData.displayCommunexion);
 
-	    	if( $(dyFObj.activeModal+" #ajaxFormModal add").val() != "" && formData.add ){
-				formData.add = formData.add.split(",");
-				var newAdd = {} ;
-				$.each(formData.add,function (k, v) { 
-    				newAdd[v] = true;
-    			});
-    			formData.add = newAdd;
-	    	}
+	    	
 	    	//---------------request
 			if( $(dyFObj.activeModal+" #ajaxFormModal request[searchType]").val() != "" && formData["request[searchType]"] )
 				formData["request[searchType]"] = formData["request[searchType]"].split(",");
+
+			if( formData.add && dataHelper.stringToBool(formData.displayCommunexion) ){
+				formData.add = formData["request[searchType]"];
+	    	}
+
 	    	if( $(dyFObj.activeModal+" #ajaxFormModal request[searchTag]").val() != "" && formData["request[searchTag]"] )
 				formData["request[searchTag]"] = formData["request[searchTag]"].split(",");
 			if( $(dyFObj.activeModal+" #ajaxFormModal request[sourceKey]").val() != "" && formData["request[sourceKey]"] )
@@ -110,15 +108,11 @@ dynForm = {
 /************************* Skin *****************************/
 	        skinInfo : {
                 inputType : "custom",
-                html:"<p class='item-comment bg-green-comment'>SKIN Section<hr></p>",
+                html:"<p class='item-comment bg-green-comment'>"+tradDynForm["Skin"]+"</p>",
             },
             "skin[title]" : dyFInputs.inputText(tradDynForm["Title of your map"], tradDynForm["Title of your map"], { required : true }),
             "skin[shortDescription]" : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
 	        "skin[logo]" : dyFInputs.image("Logo"),
-		    // "skin[displayCommunexion]" : dyFInputs.radio(	"Permettre aux utilisateurs de s'identifier", 
-		    // 												{ "true" : { icon:"check-circle-o", lbl:trad.yes },
-						// 					 				"false" : { icon:"circle-o", lbl:trad.no} },
-						// 					 				{ required : true } ),
 
 		    "displayCommunexion" : dyFInputs.checkboxSimple("true", "displayCommunexion", {
 			        							labelText: tradDynForm["Allow users to identify themselves"], 
@@ -129,25 +123,32 @@ dynForm = {
             									inputId: "#displayCommunexion"
 			        					}),
 
-		    add : dyFInputs.tags( ["organization","project","event"], tradDynForm["Allow to add elements"], tradDynForm["Allow to add elements"] ),
+		    add : dyFInputs.checkboxSimple("true", "add", {
+			        							labelText: tradDynForm["Allow to add elements"], 
+			        							onText:tradDynForm.yes, 
+			        							offText:tradDynForm.no, 
+			        							onLabel : tradDynForm.yes,
+            									offLabel: tradDynForm.no,
+            									inputId: "#add"
+			        					}),
+
+		    //add : dyFInputs.tags( ["organization","project","event"], tradDynForm["Allow to add elements"], tradDynForm["Allow to add elements"] ),
 
 /************************* Result *****************************/
             requestInfo : {
                 inputType : "custom",
-                html:"<p class='item-comment bg-green-comment'>REQUEST Section</p>",
+                html:"<p class='item-comment bg-green-comment'>"+tradDynForm["Request Section"]+"</p>",
             },
             "request[scope]" : dyFInputs.scope,
-            "request[searchType]" : dyFInputs.tags( ["organizations","projects","events"], "Type élement qui seront affichés", "Type élement qui seront affichés" ),
-            "request[searchTag]" : dyFInputs.tags(tagsList, "Afficher les éléments qui auront les tags suivant :", "Afficher les éléments qui auront les tags suivant :" ),
-            "request[sourceKey]" : dyFInputs.tags([], null, "Key using for import") ,
-            
-            
+            "request[searchType]" : dyFInputs.tags( ["organizations","projects","events"], tradDynForm["Elements types will be displayed"], tradDynForm["Elements types will be displayed"] ),
+            "request[searchTag]" : dyFInputs.tags(tagsList, tradDynForm["Show items that will have the following tags"], tradDynForm["Show items that will have the following tags"] ),
+            "request[sourceKey]" : dyFInputs.tags([], null, tradDynForm["Key used for data import"]) ,
 
 /************************* Filter *****************************/
 
             filterInfo : {
                 inputType : "custom",
-                html:"<p class='item-comment bg-green-comment'>FILTER Section </p>",
+                html:"<p class='item-comment bg-green-comment'>"+tradDynForm["Filter Section"]+"</p>",
             },
             // "filters[types]" : dyFInputs.radio( "Types ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
 											 // 			"false" : { icon:"circle-o", lbl:trad.no} } ),
@@ -157,10 +158,10 @@ dynForm = {
                 	"<div class='filterList'></div>",
             },
 
-            resultInfo : {
-                inputType : "custom",
-                html:"<p class='item-comment bg-green-comment'>RESULT Section</p>",
-            },
+            // resultInfo : {
+            //     inputType : "custom",
+            //     html:"<p class='item-comment bg-green-comment'>RESULT Section</p>",
+            // },
             //"result[displayImage]" : dyFInputs.radio( "Display Images ?", { "true" : { icon:"check-circle-o", lbl:trad.yes },
 											 			//"false" : { icon:"circle-o", lbl:trad.no} } ),
 	    },

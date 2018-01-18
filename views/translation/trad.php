@@ -442,9 +442,15 @@ var trad = {
 };
 
 var tradDynForm = {
+	"Elements types will be displayed": "<?php echo Yii::t("form","Elements types will be displayed") ?>",
+	"Show items that will have the following tags": "<?php echo Yii::t("form","Show items that will have the following tags") ?>",
+	"Key used for data import" : "<?php echo Yii::t("form","Key used for data import") ?>",
+	"Skin" : "<?php echo Yii::t("form","Skin") ?>",
+	"Request Section" : "<?php echo Yii::t("form","Request Section") ?>",
+	"Filter Section" : "<?php echo Yii::t("form","Filter Section") ?>",
 	"Title of your map" : "<?php echo Yii::t("form","Title of your map") ?>",
 	"Allow users to identify themselves" : "<?php echo Yii::t("form","Allow users to identify themselves") ?>",
-	"Allow to add elements" : "<?php echo Yii::t("form","Allow to add elements") ?>","
+	"Allow to add elements" : "<?php echo Yii::t("form","Allow to add elements") ?>",
 	"Add a postal code" : "<?php echo Yii::t("common","Add a postal code") ?>",
 	"Postal code" : "<?php echo Yii::t("common","Postal code") ?>",
 	"Add a zone" : "<?php echo Yii::t("common","Add a zone") ?>",

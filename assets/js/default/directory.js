@@ -407,15 +407,15 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
   }
   function initPageTable(number){
-    numberPage=(number/100);
+    numberPage=(number/30);
     $('.pageTable').pagination({
           items: numberPage,
           itemOnPage: 15,
           currentPage: 1,
           hrefTextPrefix:"?page=",
           cssStyle: 'light-theme',
-          //prevText: '<span aria-hidden="true">&laquo;</span>',
-          //nextText: '<span aria-hidden="true">&raquo;</span>',
+          prevText: '<i class="fa fa-chevron-left"></i> ' + trad["previous"],
+          nextText: trad["next"] + ' <i class="fa fa-chevron-right"></i>',
           onInit: function () {
               // fire first page loading
           },
@@ -1013,7 +1013,7 @@ var directory = {
 		var classType=params.type;
 		if(params.type=="events") classType="";
 		//str += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
-		str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
 		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 
 

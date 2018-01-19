@@ -440,6 +440,10 @@ var trad = {
 	
 	"folder fee included and delivery tax not included" : 
 		"<?php echo Yii::t("common", "folder fee included and delivery tax not included") ?>",
+
+
+	'previous' : "<?php echo Yii::t("common","previous") ?>", 
+	'next' : "<?php echo Yii::t("common","next") ?>", 
 };
 
 var tradDynForm = {

@@ -421,6 +421,7 @@ var trad = {
 	"initofmap" : "<?php echo Yii::t("common", "Initialization of map") ?>",
 	"knowmore" : "<?php echo Yii::t("common", "Know more") ?>",
 
+	"This request is too short !" : "<?php echo Yii::t("common", "This request is too short !") ?>",
 	"Checkout" : "<?php echo Yii::t("common", "Checkout") ?>",
 	"Continue" : "<?php echo Yii::t("common", "Continue") ?>",
 	"Validate" : "<?php echo Yii::t("common", "Validate") ?>",

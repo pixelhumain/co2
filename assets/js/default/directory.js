@@ -10,6 +10,10 @@ var timeout = null;
 var searchType = '';
 var searchSType = '';
 //alert("d.js");
+
+var loadingData = false;
+var mapElements = new Array(); 
+
 var searchPage = 0;
 var translate = {"organizations":"Organisations",
                  "projects":"Projets",
@@ -20,6 +24,7 @@ var translate = {"organizations":"Organisations",
 function startSearch(indexMin, indexMax, callBack){
     console.log("startSearch directory.js", typeof callBack, callBack, loadingData);
     if(loadingData) return;
+    console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
     loadingData = true;
     showIsLoading(true);
     
@@ -44,8 +49,8 @@ function startSearch(indexMin, indexMax, callBack){
       mapElements = new Array(); 
     }
     else{ if(scrollEnd) return; }
-//    alert(name.length);
-    if(name.length>=3 || name.length == 0)
+    
+    if(name.length>=2 || name.length == 0)
     {
       var locality = "";
       //if( communexionActivated ){
@@ -66,7 +71,9 @@ function startSearch(indexMin, indexMax, callBack){
       //} 
       console.log("locality",locality);
       autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
-    }  
+    } else{
+      toastr.info(trad["This request is too short !"]);
+    }
 }
 
 
@@ -112,11 +119,8 @@ function removeSearchType(type){
   }
 }
 
-var loadingData = false;
-var mapElements = new Array(); 
 
-
-function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
+function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
   //if(typeof myScopes != "undefined" )
     var searchLocality = getLocalityForSearch();

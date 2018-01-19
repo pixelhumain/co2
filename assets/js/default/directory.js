@@ -11,6 +11,9 @@ var searchType = '';
 var searchSType = '';
 //alert("d.js");
 
+var loadingData = false;
+var mapElements = new Array(); 
+
 var translate = {"organizations":"Organisations",
                  "projects":"Projets",
                  "events":"Événements",
@@ -20,6 +23,7 @@ var translate = {"organizations":"Organisations",
 function startSearch(indexMin, indexMax, callBack){
     console.log("startSearch directory.js", typeof callBack, callBack, loadingData);
     if(loadingData) return;
+    console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
     loadingData = true;
     showIsLoading(true);
     
@@ -44,7 +48,7 @@ function startSearch(indexMin, indexMax, callBack){
     }
     else{ if(scrollEnd) return; }
     
-    if(name.length>=3 || name.length == 0)
+    if(name.length>=2 || name.length == 0)
     {
       var locality = "";
       if( communexionActivated ){
@@ -65,7 +69,9 @@ function startSearch(indexMin, indexMax, callBack){
       } 
       console.log("locality",locality);
       autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
-    }  
+    } else{
+      toastr.info(trad["This request is too short !"]);
+    }
 }
 
 
@@ -108,9 +114,6 @@ function removeSearchType(type){
     //$(".search_"+type).addClass("fa-circle-o");
   }
 }
-
-var loadingData = false;
-var mapElements = new Array(); 
 
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){

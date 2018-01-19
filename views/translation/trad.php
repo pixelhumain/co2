@@ -410,6 +410,7 @@ var trad = {
 	"initofmap" : "<?php echo Yii::t("common", "Initialization of map") ?>",
 	"knowmore" : "<?php echo Yii::t("common", "Know more") ?>",
 
+	"This request is too short !" : "<?php echo Yii::t("common", "This request is too short !") ?>",
 };
 
 var tradDynForm = {

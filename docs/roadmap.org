@@ -210,14 +210,116 @@ Liste des notifications déjà lues => #370 #453
 
 * GFX 
   ** @Edith 
-    [ ] Aide Design Site 
+    [ ] Aide Design Site Open Atlas 
+      [ ] uniformisation du menu 
+      [ ] Accueil a droite (1er lien 
+      [ ] regle 3 typo maxi 
+      [ ] @Edith : 5 couleurs
+      [ ] soit en BD de Guillaume , soit en photo montage 
+        [ ] brainstorming idée phtoos 
     [ ] Aide Design de la Gazette 
+      [ ] a revoir a 
     [ ] Aide Plaquette 
-    [ ] Participation Design Local
+    [ ] Participation Design Local 
+      [ ] convertion des affiches Smarterre en double face 
+        [ ] face 1 : présentation d'une thématique 
+        [ ] face 2 : activité , orga, projet, events, actu 
   ** @Steph 
     [ ] Design deco du CoBus
 
 
+* idea
+  [ ] menu > drop answers > show nb of members + nb of links
+  [ ] new menu List or shortcut: last visited links
+  [ ] add contributor or member, add a tag list option , could be used as roles or team filters
+ ** feature 
+  [ ] 4 question scrum : on organisation : 
+  [ ] offrir a tous : le ppt, slideshow intégré 
+  [ ] sur detail element montrer la filère , valoriser les tags
+  [ ] lifepath : ultra personnel tag
+    - can use POI's type lifepath > private | public
+    - can be used for following any item
+  [ ] Shop : Listing produit
+    [ ] listing en mode bullet points
+    [ ] POI type produit , prix 
+      [ ] subtype : sandwich plat 
+  ** interoperabilty + data mining : 
+    [ ] use FB social graph to mine events and organisation 
+  ** COMOBI
+    [ ] global phone app : btn add to communecter 
+      - activable anywhere on anything 
+        - FB link 
+        - url site 
+        - event (FB, Google) 
+  ** ERgonomie 
+    [ ] menuLeft dynamic avec l'activité 
+      - faire remonté les point menu qui ont des nouveauté
+  ** news 
+    @pitonStLeu, pouvoir référencer une commune
+  [ ] baniere ou image : remerciement, cité un auteur pour la réutilisation 
+  c'est le minimum dans le copytalisme 
+  ** Event communication 
+    [ ] comunicate an email like event@co.org anyone can add it to a mailing list 
+    the event would be added by someone 
+    [ ] in time this mail box could even become a task box that anyone could act upon
+  ** Open Science 
+    [ ] photo-identification collaborative : 
+      - créer group 
+      - POI + photo + hashtag en commun , ex : #baleineReunion
+      - Btn sameAs : open Search Box + find Element + choose name 
+      - Outside src : en regardant les photos, video de qlqun (FB, flickR...) 
+        > POI : #baleineREunion + url 
+  ** dynsurvey proposal 
+    - dynForm & dynSurvey Builder
+    - room > create survey as proposal 
+    - instead of voting, people will answer a answer
+    - each question can be of certain type 
+      - texte 
+      - values
+        - fixed
+        - percentage
+  ** Page dédié sondage avec le module de proposition 
+    faire une page genre comme les change.org et autre 
+    on fait un appel , venez nombreux donner votre avis, proposer vos idées, ou jsute etre présent à l'appel
+    sur la question du : ....blah blah 
+  ** Qui est là, Action en cours, Todo, Todo Perso  : dans un e communauté 
+    une vision à un temps t, de toutes les ressources d'une CO 
+      - en mode web 
+      - mobi
+  ** menu configurable comme sur telephone , on click avatar
+    avec des widget , esay access links ...
+    possibilité de plusieurs panels
+  ** idea build dynform based on final json analysis (retro build)
+    - entry param is a structure similare 
+  ** Keyboard nav
+    Ctrl + ? > opens floop > type > reduce selection
+  ** Link Badge, POD , widget CO 
+    permettra de symboliser le liens en des entité
+    pour WP ou a tout site
+    on a pas besoin d'etre membre de l'orga 
+    c'est comme porter un pins de nos amis , peut etre lié au staring / favoris
+  ** application launcher like linux 
+  ** lecteur de site embed dans CO en gardant la barre de menu 
+  ** export an Element as MD and import a structured MD file (to be defined)
+  ** PPT pres suivi du qui es tu :: 
+      - rempli qlq detail 
+      - et en avant
+  ** COPI as a type of POI 
+    - name 
+    - where 
+    - url for interoperating 
+  ** POI as an RSS feed 
+    could show in journal live feed 
+    or as an rss reader integrating an open source RSS reader 
+  ** Stagiaire : 
+    [ ] imaginer un serious game sociétal , interactif  
+      - réintégrer la gamification 
+    [ ] blockchain 
+  ** DDA 
+    Proposition Orienté / Duel 
+      exemple de vote: PPT terminé validé ou a retoucher 
+      pouvoir changer les libélé pour contre 
+  ** add location into POI list by default 
 * ************************************************************    
 * Version C0.22  : en cours
 * ************************************************************  
@@ -228,6 +330,13 @@ Liste des notifications déjà lues => #370 #453
       fonctionnalité des lieux (module places) 
 
   ** @Tib
+>>>> [ ] bug :: preview POI 
+        [ ] search fork the world > opens a preview POI > should have the parent link
+        [ ] connecté une proposition avec un POI 
+>>>> [ ] bug :: presistent login issue ,  SSO ?
+>>>> [ ] thematique SPORT 
+>>>> [ ] fail :: diaspora on users social networks
+>>>> [ ] when ona page , after login return to same page instead of personnal detail
 :totest: [ ] logo de l'element dans le mail d'invite 
           - co2/test/displayMail/id/59dc95b3dd0452f9308d4af7
 >>>> [ ] add parent class to POI types
@@ -245,6 +354,7 @@ Liste des notifications déjà lues => #370 #453
 [X] remake error in CO
 [X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
 [X] integration du system de paiement Mango
+[ ] integration du system de paiement Mango
   [X] create User 
   [X] create User Wallet 
   [X] create Seller 
@@ -253,9 +363,16 @@ Liste des notifications déjà lues => #370 #453
     [X] creates a CardRegistration 
   [X] setle transaction 
   [X] build payment interface
+  [ ] setle transaction 
+  [ ] build payment interface
+>>>> [ ] check webpacking      
+>>>> [ ] application launcher + activater like linux 
+[X] remake error in CO
+[X] loading configs from DB applications.key = "devParams || prodParams" > Application::loadDBAppConfig();  
 >>>> [ ] faciliter la création de page static 
       [ ] avec du contenu MD
       [ ] un slideshow MD
+     [X] json config builder 
       [ ] read an externel .md text source 
 >>>> [ ] presistent login issue ,  SSO ?
 [X] ajouter Thématique Sport
@@ -276,6 +393,23 @@ Liste des notifications déjà lues => #370 #453
 
 
 
+    [X] json config builder 
+      - is just dynForm selector
+      - save allready gets the collection as a param in formatData
+        - any new saved Element must have a model and it's databinding at least 
+      [X] select type of config ex : "network"
+        - onclick : openForm of the given type 
+        - this way editing will also work
+      [X] subDynform : open a subDF from any DF
+        - similar to location process 
+        - on click opens a new modal with a dynform inside
+>>>>[ ] removing dynform classes from co.js and lazy load them
+>>>>[ ] check webpacking      
+>>>>[ ] suppression d'un element user type COEDitor
+      [ ] bug effacement de latitude fruitiere [[https://www.communecter.org/#page.type.organizations.id.5718adb240bb4eeb271d6553.view.directory.dir.followers]]
+>>>>[ ] add parent class to POI types
+      [ ] poi le saviez vous , a utiliser dans les chargements
+      [ ] life ,lifepath, consumsion,ressources,  architecture,  urban
 >>>>[ ] http://127.0.0.1/ph/co2/rocketChat/type/xxx/id/xxxx > open chat
     [ ] search fork the world > opens a preview POI > should have the parent link
     [ ] verifier les qrcode 
@@ -316,17 +450,14 @@ Liste des notifications déjà lues => #370 #453
 * Version CO.22.terlà  : en cours
 * ************************************************************  
 
-
-
-
-
-
-
-
-
-
-
-
+* Tib 
+[X] #checkout page 
+[X] test with card 
+  [X] generate all user wallets for all sellers
+  [X] PayIn payement 
+[ ]  seller Payout 
+  [ ] create bank account
+  [ ]   
 
 
 * ************************************************************    
@@ -520,8 +651,18 @@ Liste des notifications déjà lues => #370 #453
     [ ] opendata sources + interop
       [ ] connecter des scripts api 
         [ ] scope geo
+          [ ] chaque collectivité qui a de l'opendata sur data.gouv aura sa vue dans CO 
+          [ ] a voir comment plugguer les data a des graphiques ou des D3js
+            [ ] voir avec prompto peut etre 
         [ ] thematique ou tag 
         [ ] perso
+    [ ] utiliser module url et faire interopérer 
+      [ ] ex : j'ajoute une url data.gouv , visualisation , ajouter le type "opendata"
+      [ ] j'ajoute une url youtube visualisation
+      [ ] j'ajoute une umap ou un geojson 
+      [ ] j'ajoute un Rocket Chat, on peut y acceder 
+    [ ] chantier tags : appliqué a PROD 
+      [ ] mettre en collection et géré les traduction 
   ** @Daniel
     [ ] SSO
   ** @Marc 

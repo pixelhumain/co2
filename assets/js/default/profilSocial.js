@@ -380,7 +380,7 @@ function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirecto
 	getAjax('', baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+contextData.type+
 				'/id/'+contextData.id+'/dataName/'+dataName+'?tpl=json',
 				function(data){ 
-					var type = ($.inArray(dataName, ["poi","ressource","vote","actions","discuss"]) >=0) ? dataName : null;
+					var type = ($.inArray(dataName, ["poi","ressources","vote","actions","discuss"]) >=0) ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
@@ -390,7 +390,7 @@ function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirecto
 }
 
 function getLabelTitleDir(dataName, dataIcon, countData, n){
-	//mylog.log("bgetLabelTitleDir", dataName, dataIcon, countData, n, trad);
+	mylog.log("getLabelTitleDir", dataName, dataIcon, countData, n, trad);
 	var elementName = "<span class='Montserrat' id='name-lbl-title'>"+$("#nameHeader .name-header").html()+"</span>";
 	
 	var s = (n>1) ? "s" : "";
@@ -418,6 +418,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	else if(dataName == "collections"){ html += elementName+" "+trad.hasgot+" "+countData+" <b>"+trad["collection"+s]+"</b>"; }
 	else if(dataName == "poi"){ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
 	else if(dataName == "classified"){ html += countData+" <b>"+trad[classified+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "ressources"){ html += countData+" <b>ressource"+s+"</b> créé"+s+" par " + elementName; }
 
 	else if(dataName == "needs"){ html += countData+" <b>"+trad[need+s]+"</b> "+trad.of+" " + elementName; }
 
@@ -426,6 +427,12 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	else if(dataName == "actions"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
 
 	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
+	else if(dataName == "networks"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName;
+		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
+			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'network\', \'sub\')">';
+	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
+	    }
+	 }
 
 	else if(dataName == "urls"){ 
 		var str = " a " + countData;
@@ -500,8 +507,8 @@ function loadNewsStream(isLiveBool){
 	            $(window).bind("scroll",function(){ 
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();
-				          if( $(this).scrollTop() >= heightWindow - 400){
-				            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
+				          if( $(this).scrollTop() >= heightWindow - 1000){
+				            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep, isLiveBool);
 				          }
 				    }
 				});
@@ -633,7 +640,7 @@ function loadNetworks(){
 	getAjax('', baseUrl+'/'+moduleId+'/element/getnetworks/type/'+contextData.type+
 				'/id/'+contextData.id,
 				function(data){ 
-					displayInTheContainer(data, "network", "external-link", "network");
+					displayInTheContainer(data, "networks", "external-link", "networks");
 				}
 	,"html");
 }
@@ -761,6 +768,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			});
 		}
 	});
+
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 
@@ -821,8 +829,8 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			calendar.init("#profil-content-calendar");
 			calendar.showCalendar("#profil-content-calendar", data);
      		$(window).on('resize', function(){
-  				$('#calendar').fullCalendar('destroy');
-  				calendar.showCalendar("#profil-content-calendar", data);
+  				$("#profil-content-calendar").fullCalendar('destroy');
+  				calendar.showCalendar("#profil-content-calendar", data, "month");
   			});
 	     	/*$(".fc-button").on("click", function(e){
 	      		calendar.setCategoryColor();
@@ -847,7 +855,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			});
 		}
 
-					mylog.log("dataToMap", dataToMap);
+		mylog.log("dataToMap", dataToMap);
 		$("#btn-show-links-onmap").off().click(function(){
 			Sig.showMapElements(Sig.map, dataToMap, "", thisTitle);
 			showMap(true);
@@ -1083,11 +1091,12 @@ function removeAddress(form){
 
 									$(".communecter-btn").removeClass("hidden");
 								}
-								communexion.currentLevel = null;
-								communexion.currentName = null;
-								communexion.currentValue = null;
-								communexion.values = null;
-								communexion.state = false;
+								myScopes.communexion.currentLevel = null;
+								myScopes.communexion.currentName = null;
+								myScopes.communexion.currentValue = null;
+								myScopes.communexion.values = null;
+								myScopes.communexion.state = false;
+								localStorage.setItem("myScopes",JSON.stringify(myScopes));
 								toastr.success(data.msg);
 								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");
 					    	}

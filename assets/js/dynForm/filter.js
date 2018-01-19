@@ -31,9 +31,9 @@ dynForm = {
 		properties : {
 			info : {
 				inputType : "custom",
-				html:"<p class='text-red'>Les Filtres controle le menu de gauche et les tags que vous voulez présenter aux utilisateurs<hr></p>",
+				html:"<p class='text-red'>Les filtres controlent le menu de gauche et les tags que vous voulez présenter aux utilisateurs (voir documentation) <hr></p>",
 			},
-			name : dyFInputs.inputText("Nom du filtre", "Nom du filtre", { required : true }),
+			name : dyFInputs.inputText("Catégorie de filtres", "Exemple : ", { required : true }),
 			keyVal : dyFInputs.keyVal,
 		}
 	}

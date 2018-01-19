@@ -1,6 +1,6 @@
 function scopeActive(scopeValue){
     mylog.log("scopeActive", scopeValue);
-    if(myMultiScopes[scopeValue].active){
+    if(myScopes.multiscopes[scopeValue].active){
         $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
         $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").addClass("fa-check-circle");
         $("[data-scope-value='"+scopeValue+"'].item-scope-input").removeClass("disabled");
@@ -37,30 +37,27 @@ function itenGlobalScopeChecker(elt){
 
 
 function bindCommunexionScopeEvents(){
+    bindSearchCity();
     $(".btn-decommunecter").off().on('click',function(){
         activateGlobalCommunexion(false); 
     });
 
     $(".item-globalscope-checker").click(function(){  
         $(".item-globalscope-checker").addClass("inactive");
-        mylog.log(".item-globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"));
-        mylog.log(".item-globalscope-checker search",  $(this).data("scope-search"));
-        itenGlobalScopeChecker($(this));
-        // $(this).removeClass("inactive");
-        // var notSearch = $(this).data("scope-notsearch");
-        // var testCo = false;
-        // if($(this).hasClass("communecterSearch")){
-        //     testCo = true;
-        //     communexion.cities = trad.allcitieswiththispostalcode
-        //     $("#main-search-bar").val("");
-        //     if(location.hash.indexOf("#search")){
-        //         notSearch = false;
-        //     }
-        //     toastr.success(trad.thecommunexionhaschanged);
-        // }
-        // mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
-        // setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
-        //                  $(this).data("scope-values"),  notSearch, testCo) ;
+        $(this).removeClass("inactive");
+        var notSearch = $(this).data("scope-notsearch");
+        var testCo = false;
+        if($(this).hasClass("communecterSearch")){
+            testCo = true;
+            myScopes.open.cities = trad.allcitieswiththispostalcode
+            $("#main-search-bar").val("");
+            if(location.hash.indexOf("#search")){
+                notSearch = false;
+            }
+        }
+        mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
+        setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
+                         $(this).data("scope-values"),  notSearch, testCo) ;
     });
     
     $(".item-scope-input").off().on("click", function(){ 
@@ -111,9 +108,9 @@ function bindCommunexionScopeEvents(){
         checkScopeMax();
     });
 
-    $(".start-new-communexion").click(function(){
-        mylog.log("start-new-communexion", typeof communexion.currentName);
-        if (typeof communexion.currentName !== 'undefined'){
+    $(".start-new-communexion").off().on("click",function(){
+        mylog.log("start-new-communexion", typeof myScopes.communexion.currentName);
+        if (typeof myScopes.communexion.currentName !== 'undefined'){
             activateGlobalCommunexion(true, true);
             if(actionOnSetGlobalScope=="save")
                 $(".item-globalscope-checker").attr('disabled', true);
@@ -123,17 +120,24 @@ function bindCommunexionScopeEvents(){
     });
 }
 
-function activateGlobalCommunexion(active, firstLoad){  
+function activateGlobalCommunexion(active, firstLoad, testCo){  
 	mylog.log("activateGlobalCommunexion", active, firstLoad);
     mylog.log("activateGlobalCommunexion actionOnSetGlobalScope", actionOnSetGlobalScope);
     $.cookie('communexionActivated', active, { expires: 365, path: "/" });
-    communexion.state=active;
     if(active){
-        headerHtml='<i class="fa fa-university"></i> ' + communexion.currentName + "<small class='text-dark'>.CO</small>";
+        headerHtml='<i class="fa fa-university"></i> ' + myScopes.communexion.currentName + "<small class='text-dark'>.CO</small>";
         //if(firstLoad)
-            $("#container-scope-filter").html(getBreadcrumCommunexion());
+        if(notNull(testCo) && testCo==false){
+            myScopes.communexion.state=active;
+            valuesOfBreadcrum=myScopes.communexion;
+            domBreadcrum="#breacrum-container";
+        }else{
+            valuesOfBreadcrum=myScopes.open;
+            domBreadcrum="#open-breacrum-container";
+        }
+        $(domBreadcrum).html(getBreadcrumCommunexion(valuesOfBreadcrum));
         if(actionOnSetGlobalScope=="save")
-            $("#scopeListContainerForm").html(getBreadcrumCommunexion());
+            $("#scopeListContainerForm").html(getBreadcrumCommunexion(valuesOfBreadcrum));
 
         if(actionOnSetGlobalScope=="filter"){
             if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
@@ -160,7 +164,7 @@ function activateGlobalCommunexion(active, firstLoad){
     $("#main-scope-name").html(headerHtml);
     $('.tooltips').tooltip();
 }
-function getBreadcrumCommunexion(){
+function getBreadcrumCommunexion(communexion){
     var tips="";
 
     if(typeof communexion.cities == "string") {
@@ -174,6 +178,10 @@ function getBreadcrumCommunexion(){
 
     htmlCommunexion='<div class="breadcrum-communexion col-md-12">';
     if(actionOnSetGlobalScope=="filter"){
+        scopeHtml+='<div id="input-sec-search" class="hidden-xs col-sm-4 col-md-4 col-lg-6">'+
+               '<input type="text" class="form-control input-global-search" id="searchOnCity" placeholder="Go to city ?">'+
+                '<div class="dropdown-result-global-search hidden-xs col-sm-6 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div></div>'+
+                '</div>';
         htmlCommunexion+='<button class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
             '<i class="fa fa-times"></i>'+
         '</button>';

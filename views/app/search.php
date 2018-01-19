@@ -1,5 +1,9 @@
 <?php 
-
+    $cssAnsScriptFilesModule = array(
+    '/plugins/jquery-simplePagination/jquery.simplePagination.js',
+    '/plugins/jquery-simplePagination/simplePagination.css'
+    );
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
     $cssAnsScriptFilesModule = array(
     '/assets/css/default/responsive-calendar.css',
     '/assets/css/default/search.css',
@@ -9,6 +13,7 @@
     $cssAnsScriptFilesModule = array(
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
+    '/js/default/directory.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -26,6 +31,7 @@
     if(@$type=="classified"){ $page = "annonces";   $maxImg = 1; }
     if(@$type=="vote")      { $page = "power";      $maxImg = 1; }
     if(@$type=="place")     { $page = "place";      $maxImg = 1; }
+    if(@$type=="ressource") { $page = "ressource"; }
 
     if(@$type=="cities")    { $lblCreate = ""; }
 
@@ -47,21 +53,57 @@
 ?>
 
 <style>
-    <?php if($params["title"] != "Kgougle") { ?>
-    header {
+    header .headerImg{
+        background-image: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/reunion/reunion5.jpg");
+        background-size: 100% auto;
+        height: 300px;
+        margin-top: 45px;
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        /*opacity: 0.3;
+        background-color: black;*/
+    }
+    <?php if($params["title"] != "Kgougle") {} ?>
+   /* header {
       background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/<?php echo $page; ?>/pexels-<?php echo $randImg; ?>.jpeg") center center;
       /*opacity: 0.3;
       background-color: black;*/
+    /*}*/
+    
+    #main-scope-name a{
+        height: 130px;
+        background-color: rgba(255, 255, 255, 0.9);
+        width: 130px;
+        display: inline-block;
+        padding-top: 30px;
+        border-radius: 50%;
+        padding-right: 4px;
     }
-    
-    
-    <?php } ?>
+
+    #dropdown_search{
+        margin-top:0px;
+    }
+
+    .container{
+        padding-bottom:0px !important;
+    }
+    .simple-pagination li a, .simple-pagination li span {
+        border: none;
+        box-shadow: none !important;
+        background: none !important;
+        color: #2C3E50 !important;
+        font-size: 16px !important;
+        font-weight: 500;
+    }
+    .simple-pagination li.active span{
+        color: #d9534f !important;
+        font-size: 24px !important; 
+    }
 </style>
 
 
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" 
      id="content-social" style="min-height:700px;">
-
     <?php if(@$type=="events"){ ?>
     <div class="col-md-12 no-padding calendar"></div>
     <div class="responsive-calendar-init hidden"> 
@@ -85,8 +127,8 @@
     </div>
     <?php } ?>
 
-    <?php if(@$type!="cities"){ ?>
-        <div class="col-md-2 col-sm-2 col-xs-12 no-padding">
+    <?php if(@$type!="cities" && Yii::app()->params["CO2DomainName"] != "terla"){ ?>
+        <!--<div class="col-md-2 col-sm-2 col-xs-12 no-padding">
             <?php if(@$type=="all"){ ?>
             <button class="btn btn-default letter-<?php echo @$params["pages"]["#".$page]["colorBtnCreate"]; ?> hidden-xs btn-menu-left-add pull-right margin-top-25 main-btn-create tooltips"
                     data-target="#dash-create-modal" data-toggle="modal"
@@ -102,23 +144,24 @@
             </button>
             <?php } ?>
 
-        </div>
+        </div>-->
 
         <?php //var_dump(Yii::app()->request->cookies['communexionActivated']);
               //var_dump(CO2::getCommunexionCookies()); 
         ?>
-
-        <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
+        <!--<div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
             <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
-        </div>
+        </div>-->
+        <?php } ?>
     <?php } ?>
 
 
 	<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="page"></div>
 
-    <?php if(@$type=="all" && !empty(Yii::app()->session["userId"]) ){ ?>
-    <div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
-        <!-- <hr style="margin-bottom:-20px;"> -->
+    <?php if(@$app && $app !="search" && !empty(Yii::app()->session["userId"]) && Yii::app()->params["CO2DomainName"] != "terla" ){ ?>
+    <!--<div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">
+        /*** <hr style="margin-bottom:-20px;"> ***/
         <button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" 
             data-target="#dash-create-modal" data-toggle="modal"
             data-toggle="tooltip" data-placement="top" 
@@ -135,13 +178,12 @@
                 <span class="text-red"><?php echo Yii::t("common","Government Organization") ?></span>
             </small>
         </h5><br>
-    </div>
+    </div>-->
     <?php } ?>
-
 </div>
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
-<?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array()); ?>
+<?php $this->renderPartial($layoutPath.'footer', array()); ?>
 
 <?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
 
@@ -153,7 +195,7 @@ var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
-
+var pageCount=true;
 
 
 <?php if(@$type=="events"){ ?>
@@ -172,12 +214,13 @@ var currentKFormType = "";
 jQuery(document).ready(function() {
 
     setTitle(titlePage, "", titlePage);
-
-    initKInterface({"affixTop":320});
-    
+    if(typeof search.ranges != "undefined")
+        delete search.ranges;
+    initKInterface({"affixTop":100});
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
-	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
+    var appUrl = (typeof search.app != "undefined") ? "&app="+search.app : "";
+	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl+appUrl,function(){ 
 
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
@@ -191,8 +234,11 @@ jQuery(document).ready(function() {
             mylog.log("search.php",searchType);
             setHeaderDirectory(typeD);
             loadingData = false;
+            pageCount=true;
+            pageEvent=false;
+            search.type=searchType;
             startSearch(0, indexStepInit, searchCallback);
-            KScrollTo("#content-social");
+           // KScrollTo("#content-social");
 
             $(".btn-directory-type").removeClass("active");
             $(this).addClass("active");
@@ -210,7 +256,7 @@ jQuery(document).ready(function() {
         bindLeftMenuFilters();
 
         //console.log("init Scroll");
-        $(window).bind("scroll",function(){  
+        /*$(window).bind("scroll",function(){  
             mylog.log("test scroll", scrollEnd);
             if(!loadingData && !scrollEnd && !isMapEnd){
                   var heightWindow = $("html").height() - $("body").height();
@@ -218,19 +264,17 @@ jQuery(document).ready(function() {
                     startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
                   }
             }
-        });
+        });*/
 
 
 
         loadingData = false; 
         initTypeSearch(type);
-        startSearch(0, indexStepInit, searchCallback);
+        startSearch(null, null, searchCallback);
             initSearchInterface();
     },"html");
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js
-
-
 
     calculateAgendaWindow(0);
 
@@ -273,7 +317,7 @@ function showResultInCalendar(mapElements){
         var thumb_url = notEmpty(thisEvent["profilThumbImageUrl"]) ? baseUrl+thisEvent["profilThumbImageUrl"] : "";
         
         if(typeof events[startDate] == "undefined") events[startDate] = new Array();
-        events[startDate].push({  "id" : thisEvent["_id"]["$id"],
+        events[startDate].push({  "id" : (typeof thisEvent["_id"] != "undefined") ? thisEvent["_id"]["$id"] : thisEvent["id"]  ,
                                   "thumb_url" : thumb_url, 
                                   "startDate": startDate,
                                   "endDate": endDate,

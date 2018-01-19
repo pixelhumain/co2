@@ -2,27 +2,31 @@
  function showTagsScopesMin(htmlId){
         htmlId=".scope-min-header";
         var numberOfScope = 0;
-        if(typeof myMultiScopes != "undefined"){
-            $.each(myMultiScopes, function(key, value){
+        if(typeof myScopes.multiscopes != "undefined" && notNull(myScopes.multiscopes)){
+            $.each(myScopes.multiscopes, function(key, value){
                 numberOfScope++;
             })  ;
         }
         scopeHtml="";
 
         //if(typeof userConnected != "undefined" && userConnected != null ){
-             if( typeof communexion != "undefined" && notEmpty(communexion.values) ) {
-                scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-                            'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
-                            'data-scope-value="'+communexion.currentValue+'" '+
-                            'data-scope-name="'+communexion.currentName+'" '+
-                            'data-scope-level="'+communexion.currentLevel+'" '+
-                            'data-scope-type="'+communexion.communexionType+'" '+
+           // scopeHtml+='<div id="input-sec-search" class="hidden-xs col-sm-4 col-md-4 col-lg-6">'+
+             //  '<input type="text" class="form-control input-global-search" id="searchOnCity" placeholder="Go to city ?">'+
+               // '<div class="dropdown-result-global-search hidden-xs col-sm-6 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div></div>'+
+                //'</div>';
+             if( typeof myScopes.communexion != "undefined" && notEmpty(myScopes.communexion.values) ) {
+                scopeHtml+='<button class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
+                            'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+myScopes.communexion.currentName+'" '+
+                            'data-scope-value="'+myScopes.communexion.currentValue+'" '+
+                            'data-scope-name="'+myScopes.communexion.currentName+'" '+
+                            'data-scope-level="'+myScopes.communexion.currentLevel+'" '+
+                            'data-scope-type="'+myScopes.communexion.communexionType+'" '+
                             'id="btn-my-co">'+
                             '<i class="fa fa-university"></i>'+
                         '</button>';
             }else{
                 if(userId!=""){
-                    scopeHtml='<button class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
+                    scopeHtml+='<button class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
                             'data-toggle="tooltip" data-placement="top" title="'+trad["communectyou"]+'" '+
                             'id="btn-my-co">'+
                             '<i class="fa fa-university"></i>'+
@@ -31,7 +35,7 @@
             }
         //}
        
-        scopeHtml+='<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
+        scopeHtml+='<h5 class="pull-left letter-red multi-scopes-target">'+
                         '<button class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
                             'data-target="#modalScopes" data-toggle="modal" '+
                             'data-toggle="tooltip" data-placement="top" '+ 
@@ -63,7 +67,7 @@
 		            "</div>";
         }
         
-        $("#container-scope-filter").html(scopeHtml);
+        $("#multiscope-container").html(scopeHtml);
         //}
         /************** SCOPES **************/
         var iconSelectScope = "<i class='fa fa-circle-o'></i>";
@@ -75,7 +79,7 @@
         
         html = "<div class='list-select-scopes'>";
         if(numberOfScope > 0){
-            $.each(myMultiScopes, function(key, value){
+            $.each(myScopes.multiscopes, function(key, value){
                 numberOfScope++;
                 var disabled = value.active == false ? "disabled" : "";
                 if(typeof value.name == "undefined") value.name = key;
@@ -89,11 +93,11 @@
         $(htmlId).html(html);
         if(actionOnSetGlobalScope=="save"){
             scopeHtml='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-                            'data-toggle="tooltip" data-placement="top" title="title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
-                            'data-scope-value="'+communexion.currentValue+'" '+
-                            'data-scope-name="'+communexion.currentName+'" '+
-                            'data-scope-level="'+communexion.currentLevel+'" '+
-                            'data-scope-type="'+communexion.communexionType+'" '+
+                            'data-toggle="tooltip" data-placement="top" title="title="'+trad["communectwith"]+' '+myScopes.communexion.currentName+'" '+
+                            'data-scope-value="'+myScopes.communexion.currentValue+'" '+
+                            'data-scope-name="'+myScopes.communexion.currentName+'" '+
+                            'data-scope-level="'+myScopes.communexion.currentLevel+'" '+
+                            'data-scope-type="'+myScopes.communexion.communexionType+'" '+
                             'id="btn-my-co">'+
                             '<i class="fa fa-university"></i>'+
                         '</a>'+
@@ -122,12 +126,22 @@
         
         // if(scopeSelected){ $(".btnShowAllScope").hide(); $(".btnHideAllScope").show(); } 
         // else             { $(".btnShowAllScope").show(); $(".btnHideAllScope").hide(); }
-
+        bindSearchCity();
         checkScopeMax();
         rebuildSearchScopeInput();
 
     }
-
+function bindSearchCity(){
+    $("#searchOnCity").off().on("keyup", function(e){
+        if(e.keyCode == 13){
+            //initTypeSearch("cities");
+            searchTypeGS = ["cities"];
+            startGlobalSearch(0, 30, "#searchOnCity");
+            //startSearch($(this).val(), null, null);
+            //$(".btn-directory-type").removeClass("active");
+         }
+    });
+}
 var currentTypeSearchSend = "search";
 function multiTagScopeLbl(type){
 	if(!notEmpty(type)) type = currentTypeSearchSend;
@@ -145,8 +159,8 @@ function multiTagScopeLbl(type){
 
 function showEmptyMsg(){
 	var c=0; 
-	if(typeof myMultiScopes != "undefined")
-		$.each(myMultiScopes, function(key, value){ c++; });
+	if(typeof myScopes.multiscopes != "undefined")
+		$.each(myScopes.multiscopes, function(key, value){ c++; });
 	mylog.log("showEmptyMsg", c);
 	if(c==0) 
         $("#modalScopes .visible-empty").show(); 

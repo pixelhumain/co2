@@ -29,12 +29,14 @@ var scrollEndGS = false;
 var totalDataGS = 0;
 var mapElementsGS = new Array(); 
 
-function startGlobalSearch(indexMin, indexMax){
+function startGlobalSearch(indexMin, indexMax, input){
     mylog.log("startGlobalSearch", indexMin, indexMax, indexStepGS, loadingDataGS);
 
     setTimeout(function(){ loadingDataGS = false; }, 10000);
-    
-    var search = $('#second-search-bar').val();
+    if(notNull(input))
+      var search = $(input).val();
+    else
+      var search = $('#second-search-bar').val();
     //if(search == "") search = $('#input-global-search-xs').val();
     if(loadingDataGS || search.length<3) return;
     
@@ -194,7 +196,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                                   o.address != null &&
                                   typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
                   
-                  var fullLocality = postalCode + " " + cityName;
+                  var fullLocality = postalCode + " " + cityName+" ("+o.country+")";
                   if(fullLocality == " Addresse non renseignée" || fullLocality == "" || fullLocality == " ") 
                       fullLocality = "<i class='fa fa-ban'></i>";
                   mylog.log("fullLocality", fullLocality);
@@ -241,26 +243,55 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
 
                   }else{
                         var citykey = o.country + "_" + o.insee + "-" + o.cp;
-                        str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding searchEntity start-new-communexion' ";
-                        str +=  "data-scope-value='" + o.id  + "' " + 
+
+                var valuesScopes = {
+                  city : o._id.$id,
+                  cityName : o.name,
+                  cp : o.cp,
+                  level1 : o.level1,
+                  level1Name : o.level1Name
+                }
+
+                if( notEmpty( o.level4 ) ){
+                  valuesScopes.level4 = o.level4 ;
+                  valuesScopes.level4Name = o.level4Name ;
+                }
+                if( notEmpty( o.level3 ) ){
+                  valuesScopes.level3 = o.level3 ;
+                  valuesScopes.level3Name = o.level3Name ;
+                }
+                if( notEmpty( o.level2 ) ){
+                  valuesScopes.level2 = o.level2 ;
+                  valuesScopes.level2Name = o.level2Name ;
+                }
+
+                /*str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
+                                "data-scope-value='" + o._id.$id  + "' " + 
                                 "data-scope-name='" + o.name + "' " +
                                 "data-scope-level='city' " +
                                 "data-scope-type='city' " +
-                                "data-scope-values='"+JSON.stringify(o)+"' " +
-                                "data-scope-search='"+false+"' " +
-                                ">";
-                        str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
+                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+                                "data-scope-notsearch='"+true+"' " +
+                                ">"+
+                                    "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
+                                "</button>";*/
+                        str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
+                        str +=    "data-scope-value='" + o._id.$id  + "' " + 
+                                "data-scope-name='" + o.name + "' " +
+                                "data-scope-level='cp' " +
+                                "data-scope-type='cp' " +
+                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+                                "data-scope-notsearch='"+true+"' " ;
+                        str += ">";
+                       /* str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
                         str +=   htmlIco;
-                        str += "</div>";
-                        str += "<div class='col-md-10 col-sm-10 col-xs-10 entityRight'>";
+                        str += "</div>";*/
+                        str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
+
                         str += "<div class='entityName text-dark'>" + name + "</div>";
                           
                           str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
                                     "<i class='fa fa-home'></i> " + fullLocality;
-
-                          if(nbFollower >= 1)
-                          str +=    " <span class='pull-right'><i class='fa fa-chain margin-left-10'></i> " + nbFollower + " follower</span>";
-                         
                           str += '</div>';
                           
                         str += "</div>";
@@ -284,7 +315,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               $(".dropdown-result-global-search").scrollTop(0);
               //on affiche la dropdown
               showDropDownGS(true);
-            
+              bindCommunexionScopeEvents();
               $(".start-new-communexion").click(function(){
                   $("#main-search-bar, #second-search-bar, #input-search-map").val("");
                   // setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",

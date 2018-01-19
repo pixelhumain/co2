@@ -562,7 +562,7 @@ function getRomeActivityCodeFromThematic(thematic) {
 
 function getScopeValue() {
 
-    $.each(myMultiScopes, function(index, value) {
+    $.each(myScopes.multiscopes, function(index, value) {
         if (value.active == true) {
             if (index.indexOf("_") > 0) {
                 scope_value = index;
@@ -578,9 +578,9 @@ function getScopeValue() {
 function getCityId() { 
     var city_id = "";
     if ($.cookie().communexionActivated == true) {
-        city_id = communexion.currentValue;
+        city_id = myScopes.communexion.currentValue;
     } else { 
-        $.each(myMultiScopes, function(index, value) { 
+        $.each(myScopes.multiscopes, function(index, value) { 
             if (value.active == true) {
                 if (value.type == "city") {
                     city_id = index;
@@ -602,7 +602,7 @@ function getTypeZone() {
     if ($.cookie().communexionActivated == true) {
         type_zone = "city";
     } else { 
-        $.each(myMultiScopes, function(index, value) { 
+        $.each(myScopes.multiscopes, function(index, value) { 
             if (value.active == true) {
                 if (value.type == "city") {
                     type_zone = "city";

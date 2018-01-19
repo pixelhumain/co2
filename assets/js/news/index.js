@@ -355,7 +355,7 @@ function modifyNews(idNews,typeNews){
 				   	"<div id='resultsUpdate' class='bg-white results col-sm-12 col-xs-12'>";
 				   	if(typeof updateNews[idNews]["media"] != "undefined"){
 				   		if(updateNews[idNews]["media"]["type"]=="url_content")
-				   			message += getMediaCommonHtml(updateNews[idNews]["media"],"save");
+				   			message += processUrl.getMediaCommonHtml(updateNews[idNews]["media"],"save");
 				   		else if(updateNews[idNews]["media"]["type"]=="gallery_files"){
 				   			message += getMediaFiles(updateNews[idNews]["media"],idNews, "update")+
 				   			"<input type='hidden' class='type' value='gallery_files'>";
@@ -782,13 +782,13 @@ function showFormBlock(bool){
 		if(isLiveGlobal()){
 			scopeHtml ="";
 
-			if( typeof communexion != "undefined" && notEmpty(communexion.values)){
+			if( typeof myScopes.communexion != "undefined" && notEmpty(myScopes.communexion.values)){
 				scopeHtml +='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-	            				'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+communexion.currentName+'" '+
-	                        	 'data-scope-value="'+communexion.currentValue+'" '+
-                            	'data-scope-name="'+communexion.currentName+'" '+
-                            	'data-scope-level="'+communexion.currentLevel+'" '+
-                            	'data-scope-type="'+communexion.communexionType+'" '+
+	            				'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+myScopes.communexion.currentName+'" '+
+	                        	 'data-scope-value="'+myScopes.communexion.currentValue+'" '+
+                            	'data-scope-name="'+myScopes.communexion.currentName+'" '+
+                            	'data-scope-level="'+myScopes.communexion.currentLevel+'" '+
+                            	'data-scope-type="'+myScopes.communexion.communexionType+'" '+
 	            				'id="btn-my-co">'+
 	            				'<i class="fa fa-university"></i>'+
 	            			'</a>';
@@ -814,7 +814,7 @@ function showFormBlock(bool){
                         '<div class="scope-min-header list_tags_scopes text-left ellipsis">'+
             				$(".scope-min-header").html()+
             			'</div>';
-			if(communexion.state){
+			if(myScopes.communexion.state){
 				scopeHtml='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitter la communexion">'+
                 			'<i class="fa fa-sign-in"></i>'+
             				'</a>'+
@@ -823,7 +823,7 @@ function showFormBlock(bool){
 			actionOnSetGlobalScope="save";
 			$("#scopeListContainerForm").append(scopeHtml);
 			$(".item-globalscope-checker:last-child").trigger("click").removeClass("inactive");
-			if(communexion.state)
+			if(myScopes.communexion.state)
             	$(".item-globalscope-checker").attr('disabled', true);
 			$("#container-scope-filter").hide();
 			bindCommunexionScopeEvents();
@@ -1373,10 +1373,10 @@ function showMyImage(fileInput) {
 	}
 }
 
-function getMediaImages(o,newsId,authorId,targetName,edit){
+function getMediaImages(o,newsId,authorId,targetName, actionType){
 	countImages=o.images.length;
 	html="";
-	if(typeof edit != "undefined" && edit=="update"){
+	if(typeof actionType != "undefined" && actionType=="update"){
 		for(var i in o.images){
 			html+="<div class='updateImageNews'><img src='"+baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name+"' style='width:75px; height:75px;'/>"+
 		       	"<a href='javascript:;' class='btn-red text-white deleteDoc'><i class='fa fa-times text-dark'></i></a>"+
@@ -1384,68 +1384,68 @@ function getMediaImages(o,newsId,authorId,targetName,edit){
 		}
 		return html;
 	}
-	/*if(canManageNews==1 || authorId==idSession){
-		for(var i in o.images){
-			html+="<input type='hidden' class='deleteImageIdName"+newsId+"' value='"+o.images[i]._id.$id+"|"+o.images[i].name+"'/>";
-		}
-	}*/
-	if(countImages==1){
+	else if(typeof actionType != "undefined" && actionType=="directory"){
 		path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[0].folder+"/"+o.images[0].name;
-		html+="<div class='col-md-12 no-padding margin-top-10'><a class='thumb-info' href='"+path+"' data-title='album de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='max-height:200px;'></a></div>";
-	}
-	else if(countImages==2){
-		for(var i in o.images){
-			path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name;
-			html+="<div class='col-md-6 padding-5'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='max-height:200px;'></a></div>";
+		html+="<img src='"+path+"' class='img-responsive'>";
+	}else{
+		if(countImages==1){
+			path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[0].folder+"/"+o.images[0].name;
+			html+="<div class='col-md-12 no-padding margin-top-10'><a class='thumb-info' href='"+path+"' data-title='album de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='max-height:200px;'></a></div>";
 		}
-	}
-	else if(countImages==3){
-		col0="6";
-		height0="400";
-		absoluteImg="position:absolute;";
-		if (typeof liveScopeType != "undefined" && liveScopeType == "global"){
-			col0="12";
-			height0="260";
-			absoluteImg="";
-		}
-		for(var i in o.images){
-			path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name;
-			if(i==0){
-			html+="<div class='col-md-"+col0+" padding-5' style='position:relative;height:"+height0+"px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;'></a></div>";
-			}else{
-			html+="<div class='col-md-6 padding-5' style='position:relative; height:200px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;'></a></div>";	
+		else if(countImages==2){
+			for(var i in o.images){
+				path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name;
+				html+="<div class='col-md-6 padding-5'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='max-height:200px;'></a></div>";
 			}
 		}
-	}
-	else if(countImages==4){
-		absoluteImg="position:absolute;";
-		if (typeof liveScopeType != "undefined" && liveScopeType == "global")
-			absoluteImg="";
-		for(var i in o.images){
-			path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name;
-			html+="<div class='col-md-6 padding-5' style='position:relative;height:250px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;height:auto;'></a></div>";
-		}
-	}
-	else if(countImages>=5){
-		absoluteImg="position:absolute;";
-		if (typeof liveScopeType != "undefined" && liveScopeType == "global")
-			absoluteImg="";
-		for(var i in o.images){
-			path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name;
-			if(i==0)
-				html+="<div class='col-md-12 no-padding'><div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;'></a></div>";
-			else if(i==1){
-				html+="<div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"height:100%;width:100%;'></a></div></div>";
+		else if(countImages==3){
+			col0="6";
+			height0="400";
+			absoluteImg="position:absolute;";
+			if (typeof liveScopeType != "undefined" && liveScopeType == "global"){
+				col0="12";
+				height0="260";
+				absoluteImg="";
 			}
-			else if(i<5){
-				html+="<div class='col-md-4 padding-5' style='position:relative;height:160px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"height:100%;width:100%;'>";
-				if(i==4 && countImages > 5){
-					diff=countImages-5;
-					html+="<div style='position: absolute;top:5px;left:5px;right:5px;bottom:5px;background-color: rgba(0,0,0,0.4);color: white;text-align: center;line-height: 150px;font-size: 50px;'><span>+ "+diff+"</span></div>";
+			for(var i in o.images){
+				path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name;
+				if(i==0){
+				html+="<div class='col-md-"+col0+" padding-5' style='position:relative;height:"+height0+"px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;'></a></div>";
+				}else{
+				html+="<div class='col-md-6 padding-5' style='position:relative; height:200px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;'></a></div>";	
 				}
-				html+="</a></div>";
-			} else{
-				html+="<a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'></a>";	
+			}
+		}
+		else if(countImages==4){
+			absoluteImg="position:absolute;";
+			if (typeof liveScopeType != "undefined" && liveScopeType == "global")
+				absoluteImg="";
+			for(var i in o.images){
+				path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name;
+				html+="<div class='col-md-6 padding-5' style='position:relative;height:250px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;height:auto;'></a></div>";
+			}
+		}
+		else if(countImages>=5){
+			absoluteImg="position:absolute;";
+			if (typeof liveScopeType != "undefined" && liveScopeType == "global")
+				absoluteImg="";
+			for(var i in o.images){
+				path=baseUrl+"/"+uploadUrl+"communecter/"+o.images[i].folder+"/"+o.images[i].name;
+				if(i==0)
+					html+="<div class='col-md-12 no-padding'><div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"min-height:100%;min-width:100%;'></a></div>";
+				else if(i==1){
+					html+="<div class='col-md-6 padding-5' style='position:relative;height:260px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"height:100%;width:100%;'></a></div></div>";
+				}
+				else if(i<5){
+					html+="<div class='col-md-4 padding-5' style='position:relative;height:160px;overflow:hidden;'><a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'><img src='"+path+"' class='img-responsive' style='"+absoluteImg+"height:100%;width:100%;'>";
+					if(i==4 && countImages > 5){
+						diff=countImages-5;
+						html+="<div style='position: absolute;top:5px;left:5px;right:5px;bottom:5px;background-color: rgba(0,0,0,0.4);color: white;text-align: center;line-height: 150px;font-size: 50px;'><span>+ "+diff+"</span></div>";
+					}
+					html+="</a></div>";
+				} else{
+					html+="<a class='thumb-info' href='"+path+"' data-title='abum de "+targetName+"'  data-lightbox='all"+newsId+"'></a>";	
+				}
 			}
 		}
 	}

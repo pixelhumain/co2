@@ -38,6 +38,7 @@ class Co2Module extends CWebModule {
 		// import the module-level models and components
 		$this->setImport(array(
 			'citizenToolKit.models.*',
+			'ressources.models.*',
 			$this->id.'.models.*',
 			$this->id.'.components.*',
 			$this->id.'.messages.*',
@@ -67,6 +68,11 @@ class Co2Module extends CWebModule {
 	        $this->_assetsUrl = Yii::app()->getAssetManager()->publish(
 	            Yii::getPathOfAlias($this->id.'.assets') );
 	    return $this->_assetsUrl;
+	}
+
+	public function getParentAssetsUrl()
+	{
+		return ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->getModule( Yii::app()->params["module"]["parent"] )->getAssetsUrl()  : self::getAssetsUrl();
 	}
 
 	/**

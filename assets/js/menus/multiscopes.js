@@ -1,18 +1,18 @@
 
 function scopeExists(scopeValue){
-	return typeof myMultiScopes[scopeValue] != "undefined";
+	return typeof myScopes.multiscopes[scopeValue] != "undefined";
 }
 
 function saveMultiScope(){ 
 	mylog.log("saveMultiScope() try - userId = ", userId); 
-	mylog.dir(myMultiScopes);
+	mylog.dir(myScopes.multiscopes);
 	hideSearchResults();
 	if(userId != null && userId != ""){
-		if(!notEmpty(myMultiScopes)) myMultiScopes = {};
+		if(!notEmpty(myScopes.multiscopes)) myScopes.multiscopes = {};
 		$.ajax({
 			type: "POST",
 			url: baseUrl+"/"+moduleId+"/person/updatemultiscope",
-			data: {"multiscopes" : myMultiScopes},
+			data: {"multiscopes" : myScopes.multiscopes},
 			dataType: "json",
 			success: function(data){
 				mylog.log("updatemultiscope success");	    		
@@ -29,8 +29,9 @@ function saveMultiScope(){
 	saveCookieMultiscope();
 }
 function saveCookieMultiscope(){ 
-	mylog.log("saveCookieMultiscope", typeof myMultiScopes, myMultiScopes);
-	$.cookie('multiscopes', JSON.stringify(myMultiScopes), { expires: 365, path: '/' });
+	//mylog.log("saveCookieMultiscope", typeof myMultiScopes, myMultiScopes);
+	//$.cookie('multiscopes', JSON.stringify(myMultiScopes), { expires: 365, path: '/' });
+	localStorage.setItem("myScopes.multiscopes",JSON.stringify(myScopes));
 }
 
 function autocompleteMultiScope(){
@@ -87,8 +88,11 @@ function autocompleteMultiScope(){
 			});
 
 			$(".addScope").click(function(){
-				addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
+				dyFInputs.scopeObj.addScope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"))
+				//addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
 			});
+
+
 			
 		},
 		error: function(error){
@@ -100,7 +104,7 @@ function autocompleteMultiScope(){
 /**********************************************/
 function loadMultiScopes(){
 	mylog.log("loadMultiScopes");
-	$.each(myMultiScopes, function(key, value){
+	$.each(myScopes.multiscopes, function(key, value){
 		showScopeInMultiscope(key);
 	});
 	//bindCommunexionScopeEvents();
@@ -114,7 +118,7 @@ function showCountScope(){
 	var types = new Array("city", "cp", "level1", "level2", "level3", "level4");
 	//mylog.log("showCountScope");
 	//mylog.dir(myMultiScopes);
-	$.each(myMultiScopes, function(key, value){
+	$.each(myScopes.multiscopes, function(key, value){
 		if(value.active==true) count++;
 		//mylog.log(types.indexOf(value.type), value.type);
 
@@ -145,12 +149,12 @@ function selectAllScopes(select){
 		select = false;
 	}
 
-	$.each(myMultiScopes, function(key, value){
+	$.each(myScopes.multiscopes, function(key, value){
 		value.active = select ;
-		myMultiScopes[key] = value ;
+		myScopes.multiscopes[key] = value ;
 	});
 
-	$.each(myMultiScopes, function(key, value){
+	$.each(myScopes.multiscopes, function(key, value){
 		scopeActive(key);
 	});
 
@@ -161,11 +165,11 @@ function showScopeInMultiscope(scopeValue){
 	mylog.log("showScopeInMultiscope()", scopeValue);
 	var html = "";
 	if(scopeExists(scopeValue)){
-		var scope = myMultiScopes[scopeValue];
+		var scope = myScopes.multiscopes[scopeValue];
 		mylog.log("scope", scope);
 		if(typeof scope.name == "undefined") scope.name = scopeValue;
-		var faActive = (myMultiScopes[scopeValue].active == true) ? "check-circle" : "circle-o";
-		var classDisable = (myMultiScopes[scopeValue].active == false) ? "disabled" : "";
+		var faActive = (myScopes.multiscopes[scopeValue].active == true) ? "check-circle" : "circle-o";
+		var classDisable = (myScopes.multiscopes[scopeValue].active == false) ? "disabled" : "";
 		html = 
 		'<span class="item-scope-input bg-red item-scope-'+scope.type+' '+classDisable+'" data-scope-value="'+scopeValue+'">' +
 				'<a href="javascript:" class="item-scope-checker tooltips"' +
@@ -207,7 +211,7 @@ function addScopeToMultiscope(scopeValue, scopeName, scopeLevel, scopeCountry){
 	if(!scopeExists(scopeValue)){ 
 		mylog.log("adding", scopeValue);
 		var scopeType = currentScopeType;
-		myMultiScopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
+		myScopes.multiscopes[scopeValue] = { name: scopeName, active: true, type: scopeType };
 		if(notEmpty(scopeLevel)){
 			if(scopeLevel == "1")
 				scopeType = "level1";
@@ -217,14 +221,14 @@ function addScopeToMultiscope(scopeValue, scopeName, scopeLevel, scopeCountry){
 				scopeType = "level3";
 			else if(scopeLevel == "4")
 				scopeType = "level4";
-			myMultiScopes[scopeValue].type = scopeType ;
-			myMultiScopes[scopeValue].level = scopeLevel ;
+			myScopes.multiscopes[scopeValue].type = scopeType ;
+			myScopes.multiscopes[scopeValue].level = scopeLevel ;
 
 
 		}
 
 		if(notNull(scopeCountry))
-			myMultiScopes[scopeValue].countryCode = scopeCountry ;
+			myScopes.multiscopes[scopeValue].countryCode = scopeCountry ;
 		//myMultiScopes[scopeValue].type = scopeType ;
 		mylog.log("myMultiScopes")
 		//alert();
@@ -242,7 +246,7 @@ function addScopeToMultiscope(scopeValue, scopeName, scopeLevel, scopeCountry){
 
 function deleteScopeInMultiscope(scopeValue){ mylog.log("deleteScopeInMultiscope(scopeValue)", scopeValue);
 	if(scopeExists(scopeValue)){
-		delete myMultiScopes[scopeValue];
+		delete myScopes.multiscopes[scopeValue];
 		$("[data-scope-value=\""+scopeValue+"\"]").remove();
 		saveMultiScope();
 	}
@@ -252,10 +256,10 @@ function deleteScopeInMultiscope(scopeValue){ mylog.log("deleteScopeInMultiscope
 function toogleScopeMultiscope(scopeValue){ 
 	mylog.log("toogleScopeMultiscope(scopeValue)", scopeValue);
 	if(scopeExists(scopeValue)){
-		myMultiScopes[scopeValue].active = !myMultiScopes[scopeValue].active;
+		myScopes.multiscopes[scopeValue].active = !myScopes.multiscopes[scopeValue].active;
 		
 		if(typeof selected == "undefined") saveMultiScope();
-		else myMultiScopes[scopeValue].active = selected;
+		else myScopes.multiscopes[scopeValue].active = selected;
 		
 		/*if(myMultiScopes[scopeValue].active){
 			$("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
@@ -274,24 +278,25 @@ function toogleScopeMultiscope(scopeValue){
 	}
 }
 
-function getMultiScopeList(){ return myMultiScopes; }
+function getMultiScopeList(){ return myScopes.multiscopes; }
 
 
 function getLocalityForSearch(noScope){
 
-	if(typeof communexion.state == "undefined") communexion.state = false;
+	if(typeof myScopes.communexion.state == "undefined") myScopes.communexion.state = false;
 
-	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), communexion.state, communexion.communexionType);
-	if(communexion.state == true ){
+	mylog.log("getLocalityForSearch", $.cookie('communexionActivated'), myScopes.communexion.state, myScopes.communexion.communexionType);
+	if(myScopes.communexion.state == true ){
 		var searchLocality = {};
-		if(communexion.communexionType == "cp"){
-			searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
-															name : communexion.currentName,
-															cp : communexion.values.cp,
+		if(myScopes.communexion.communexionType == "cp"){
+			searchLocality[myScopes.communexion.currentValue] = {	type : myScopes.communexion.currentLevel, 
+															name : myScopes.communexion.currentName,
+															cp : myScopes.communexion.values.cp,
 															active : true };
-		} else {
-			searchLocality[communexion.currentValue] = {	type : communexion.currentLevel, 
-															name : communexion.currentName,
+		}
+		else{
+			searchLocality[myScopes.communexion.currentValue] = {	type : myScopes.communexion.currentLevel, 
+															name : myScopes.communexion.currentName,
 															active : true };
 		}
 
@@ -306,15 +311,16 @@ function getLocalityForSearch(noScope){
 
 function getMultiScopeForSearch(){ 
 	var res = {};
-	mylog.log("getMultiScopeForSearch", myMultiScopes);
-	$.each(myMultiScopes, function(key, value){
+	mylog.log("getMultiScopeForSearch", myScopes.multiscopes);
+	if(notNull(myScopes.multiscopes)){
+	$.each(myScopes.multiscopes, function(key, value){
 		mylog.log("getMultiScopeForSearch value.active", value.active);
 		if(value.active == true){
 			res[key] = value;
 			mylog.log("getMultiScopeForSearch search2", res);
 		}
 	});
-
+}
 	mylog.log("getMultiScopeForSearch search", res);
 	return res; 
 
@@ -423,10 +429,14 @@ function openDropdownMultiscope(){
 	setTimeout(function(){ $("#dropdown-content-multi-scope").addClass('open'); }, 300);
 }
 
-function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, search, testCo){
-	mylog.log("setGlobalScope", scopeValue, scopeName, scopeType, scopeLevel, values, search, testCo);
+function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, search, testCo){  
+
+	mylog.log("setGlobalScope !", scopeValue, scopeName, scopeType, scopeLevel, notSearch);
+	mylog.log("notSearch", notSearch, notNull(notSearch))
 
 	if(scopeValue == "") return;
+	
+	mylog.log("myMultiScopes", myScopes.multiscopes, indexStepInit);
 	$("#main-scope-name").html('<i class="fa fa-university"></i> ' + scopeName + "<small class='text-dark'>.CO</small>");
 
 	communexion.currentLevel = scopeLevel;
@@ -444,8 +454,15 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, se
 	}
 	mylog.log("communexion before save", communexion);
 
-	if( notNull(testCo) && testCo == false)
-		$.cookie('communexion', communexion, { expires: 365, path: "/" });
+	if( notNull(testCo)){
+		if(testCo == false){
+			myScopes.communexion=communexion;
+			localStorage.setItem("myScopes",JSON.stringify(myScopes));
+			//$.cookie('communexion', communexion, { expires: 365, path: "/" });
+		}
+		else
+			myScopes.open=communexion;
+	}
 
 	if($("#communexionNameHome").length){
 		$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+scopeName+'</span></span>');
@@ -470,8 +487,9 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, se
 		} , "html" );
 	}
 
-	if(notNull(search) && search == true)
- 		activateGlobalCommunexion(true);
+
+	if(!notNull(notSearch) || notSearch == true)
+ 		activateGlobalCommunexion(true, null, testCo);
 
 	// if(!notNull(notSearch) || notSearch == true)
  // 		activateGlobalCommunexion(true);

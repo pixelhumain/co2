@@ -392,6 +392,12 @@ var dataHelper = {
 		return converter.makeHtml(text);
 	},
 
+	stringToBool : function (str) {
+		var bool = false;
+		if(str == "true" || str == true || str == "1" || str == 1)
+			bool = true;
+		return bool;
+	},
 
 	activateMarkdown : function (elem) { 
 		mylog.log("activateMarkdown", elem);

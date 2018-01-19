@@ -32,7 +32,7 @@ class AppController extends CommunecterController {
         $CO2DomainName = isset( Yii::app()->params["CO2DomainName"]) ? 
                                 Yii::app()->params["CO2DomainName"] : "CO2";
 
-        Yii::app()->theme = "CO2";
+        //Yii::app()->theme = "CO2";
         Yii::app()->session["theme"] = "CO2";
         $params = CO2::getThemeParams();
         
@@ -130,19 +130,26 @@ class AppController extends CommunecterController {
 	}
 
 
-    public function actionSearch($type=null){
+    /*public function actionSearch($type=null){
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => @$type );
         echo $this->renderPartial("search", $params, true);
+    }*/
+    public function actionSearch($type=null){
+        CO2Stat::incNbLoad("co2-search");   
+        $params = array("type" => Organization::COLLECTION, "app"=>"search" );
+        echo $this->renderPartial("search", $params, true);
     }
-    
+    public function actionTerritorial($type=null){
+        CO2Stat::incNbLoad("co2-search");   
+        $params = array("type" => @$type );
+        echo $this->renderPartial("territorial", $params, true);
+    }
     public function actionSocial($type=null){
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => @$type );
         echo $this->renderPartial("search", $params, true);
     }
-
-
 
     public function actionAnnonces(){
         CO2Stat::incNbLoad("co2-annonces"); 
@@ -150,7 +157,23 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("search", $params, true);
     }
 
+    public function actionActivities(){
+        CO2Stat::incNbLoad("terla-activities"); 
+        $params = array("type" => "services");
+        echo $this->renderPartial("search", $params, true);
+    }
 
+    public function actionStore(){
+        CO2Stat::incNbLoad("terla-store"); 
+        $params = array("type" => "products");
+        echo $this->renderPartial("search", $params, true);
+    }
+
+    public function actionCircuits(){
+        CO2Stat::incNbLoad("terla-store"); 
+        $params = array("type" => "circuits");
+        echo $this->renderPartial("search", $params, true);
+    }
 
     /*public function actionFreedom(){
         CO2Stat::incNbLoad("co2-annonces"); 
@@ -158,11 +181,15 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("search", $params, true);
     }*/
 
-
     public function actionLive(){
         CO2Stat::incNbLoad("co2-live"); 
         $params = array();
         echo $this->renderPartial("live", $params, true);
+    }
+    public function actionHelp(){
+        CO2Stat::incNbLoad("co2-help"); 
+        $params = array("type"=>"ressources");
+        echo $this->renderPartial("search", $params, true);
     }
 
 	public function actionAgenda(){
@@ -177,10 +204,16 @@ class AppController extends CommunecterController {
     	echo $this->renderPartial("search", $params, true);
 	}
 
-    public function actionAdmin(){
+    public function actionAdmin($view=null, $dir=null){
         CO2Stat::incNbLoad("co2-admin");   
-        $params = array();
-        echo $this->renderPartial("admin", $params, true);
+        $params = array(
+            "view" => @$view,
+            "dir" => @$dir,
+        );
+        $redirect="";
+        if(Yii::app()->params["CO2DomainName"] == "terla")
+            $redirect="terla/";
+        echo $this->renderPartial("../admin/".$redirect."index", $params, true);
     }
 
     public function actionChat(){
@@ -204,7 +237,9 @@ class AppController extends CommunecterController {
         //var_dump($type); exit;
             
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
-            $type == Project::COLLECTION || $type == Organization::COLLECTION )    
+            $type == Project::COLLECTION || $type == Organization::COLLECTION || 
+            $type == Poi::COLLECTION || $type == Place::COLLECTION || $type == Ressource::COLLECTION || 
+            $type == Classified::COLLECTION)    
             $element = Element::getByTypeAndId($type, $id);
 
         else if($type == News::COLLECTION){
@@ -213,6 +248,12 @@ class AppController extends CommunecterController {
 
         else if($type == Classified::COLLECTION){
             $element = Classified::getById($id);
+        }
+        else if($type == Product::COLLECTION){
+            $element = Product::getById($id);
+        }
+        else if($type == Service::COLLECTION){
+            $element = Service::getById($id);
         }
         else if($type == Poi::COLLECTION){
             $element = Poi::getById($id);

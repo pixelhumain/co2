@@ -161,6 +161,7 @@ var trad = {
 	"image" : "<?php echo Yii::t("common","image") ?>",
 	"images" : "<?php echo Yii::t("common","images") ?>",
 	"bookmarks" : "<?php echo Yii::t("common","Bookmarks") ?>",
+	"file" : "<?php echo Yii::t("common","File") ?>",
 	"files" : "<?php echo Yii::t("common","Files") ?>",
 	"explainbookmark" : "<?php echo Yii::t("document","Collection of bookmarks<br>To classified favorite urls<br>And share it to the community") ?>",
 	"explainfile" : "<?php echo Yii::t("document","Collection of files<br>To download and share documents<br>With the community") ?>",
@@ -172,6 +173,11 @@ var trad = {
 	"Mode" : "Mode",
 
 	"all" : "Tous", 
+	
+	"products" : "<?php echo Yii::t("common","products") ?>", 
+	"services" : "<?php echo Yii::t("common","services") ?>", 
+	"circuits" : "<?php echo Yii::t("common","circuits") ?>", 
+	
 
 	"Project maturity" : "<?php echo Yii::t("project","Project maturity",null,Yii::app()->controller->module->id)?>",
 	"idea" : "<?php echo Yii::t("project","idea")?>",
@@ -316,6 +322,10 @@ var trad = {
 	"ago":"<?php echo Yii::t("common","ago") ?>",
 	"rightnow":"<?php echo Yii::t("common","Right now") ?>",
 	"actif":"<?php echo Yii::t("common","online") ?>",
+	"posted":"<?php echo Yii::t("common","posted") ?>",
+	"writenby": "<?php echo Yii::t("common","Writen by") ?>",
+	"sharedby" : "<?php echo Yii::t("common","shared by") ?>",
+	"linksharedby": "<?php echo Yii::t("common","Link shared by") ?>",
 	"addScopeFilters":"<?php echo Yii::t("common","Add scope filters") ?>",
 	"searchingon":"<?php echo Yii::t("common","searching on") ?>",
 	"selectscopesearch":"<?php echo Yii::t("common","Select scopes of research") ?>",
@@ -404,6 +414,7 @@ var trad = {
 	"youwillfindonlycities" : "<?php echo Yii::t("docs","You will find only cities <b>which match data</b>.<br/> If you <b>don't find</b> a city, feel free <b>to create an organization, a project, an event, on this geographical zone...</b><br/><br/><b>Then you will find this result here</b>") ?>",
 	"testAOtherCommunexion" : "<?php echo Yii::t("home", "Test a other communexion") ?>",
 	"allcitieswiththispostalcode" : "<?php echo Yii::t("common", "All cities with this postal code") ?>",
+	"allDay" : "<?php echo Yii::t("common", "All day") ?>",
 	"thecommunexionhaschanged" : "<?php echo Yii::t("common", "The communexion has changed") ?>",
 	"allthecity" : "<?php echo Yii::t("common", "All the city") ?>",
 	"welcomeon" : "<?php echo Yii::t("home", "Welcome on") ?>",
@@ -411,9 +422,32 @@ var trad = {
 	"knowmore" : "<?php echo Yii::t("common", "Know more") ?>",
 
 	"This request is too short !" : "<?php echo Yii::t("common", "This request is too short !") ?>",
+	"Checkout" : "<?php echo Yii::t("common", "Checkout") ?>",
+	"Continue" : "<?php echo Yii::t("common", "Continue") ?>",
+	"Validate" : "<?php echo Yii::t("common", "Validate") ?>",
+	"Total of your order" : "<?php echo Yii::t("common", "Total of your order") ?>",
+
+	"Leave your comment" : "<?php echo Yii::t("common", "Leave your comment") ?>",
+	"Your comment" : "<?php echo Yii::t("common", "Your comment") ?>",
+
+	"sleeping" : 		 "<?php echo Yii::t("common", "Sleeping") ?>",
+	"restaurant" : 		 "<?php echo Yii::t("common", "Restaurant") ?>",
+	"funnytime" : 	 "<?php echo Yii::t("common", "Funny activity") ?>",
+	"transport" : 		 "<?php echo Yii::t("common", "Transport") ?>",
+	"siteToSee" :  "<?php echo Yii::t("common", "Uncredible site") ?>",
+	"artisants" : 		 "<?php echo Yii::t("common", "Artisants") ?>",
+	"guideAccom" : "<?php echo Yii::t("common", "Guide and helper") ?>",
+	
+	"folder fee included and delivery tax not included" : 
+		"<?php echo Yii::t("common", "folder fee included and delivery tax not included") ?>",
 };
 
 var tradDynForm = {
+	"Add a postal code" : "<?php echo Yii::t("common","Add a postal code") ?>",
+	"Postal code" : "<?php echo Yii::t("common","Postal code") ?>",
+	"Add a zone" : "<?php echo Yii::t("common","Add a zone") ?>",
+	"Zone" : "<?php echo Yii::t("common","Zone") ?>",
+	"Add a city" : "<?php echo Yii::t("common","Add a city") ?>",
 	"appList":"<?php echo Yii::t("form","List of Applications") ?>",
 	"screenList":"<?php echo Yii::t("form","Screen shot View to Application") ?>",
 	"me":"<?php echo Yii::t("form","Me") ?>",
@@ -446,6 +480,8 @@ var tradDynForm = {
 	"textproposal":"<?php echo Yii::t("form","Your proposal") ?>",
 	"eventTypes":"<?php echo Yii::t("form","Event type") ?>",
 	"organizationType":"<?php echo Yii::t("form","Organization type") ?>",
+	"servicesTypes":"<?php echo Yii::t("form","Service type") ?>",
+	"quantity":"<?php echo Yii::t("form","Quantity available") ?>",
 	"nameofyour":"<?php echo Yii::t("form","Name of your") ?>",
 	"titleofyour":"<?php echo Yii::t("form","Title of your") ?>",
 	"tags":"<?php echo Yii::t("form","Tags") ?>",
@@ -469,6 +505,7 @@ var tradDynForm = {
 	"yes":"<?php echo Yii::t("common","Yes") ?>",
 	"no":"<?php echo Yii::t("common","No") ?>",
 	"allday":"<?php echo Yii::t("form","All the day") ?>",
+	"allweek":"<?php echo Yii::t("form","All the week") ?>",
 	"startDate":"<?php echo Yii::t("form","Start date") ?>",
 	"endDate":"<?php echo Yii::t("form","End date") ?>",
 	"theendDate":"<?php echo Yii::t("form","the start date") ?>",
@@ -625,6 +662,8 @@ var tradCategory = {
 	"Server": "<?php echo Yii::t("category", "Server") ?>",
 	"Database": "<?php echo Yii::t("category", "Database") ?>",
 	"Banq": "<?php echo Yii::t("category", "Banq") ?>",
+
+	"thirdplaces" 		: "<?php echo Yii::t("category", "Third places") ?>",
 	
 	"place" 		: "<?php echo Yii::t("category", "Place") ?>",
 	"Urban" 		: "<?php echo Yii::t("category", "Urban") ?>",

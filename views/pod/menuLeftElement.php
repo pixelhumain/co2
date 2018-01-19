@@ -6,7 +6,7 @@
 		'/js/news/index.js',
 		'/js/default/editInPlace.js',
 	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 	$thumbAuthor =  @$element['profilThumbImageUrl'] ? 
@@ -239,7 +239,7 @@
 		</a>
 	</li>	
 
-	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){ 
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Place::COLLECTION){ 
 		if(@$element["properties"] && @$element["properties"]["chart"]) 
 			$countChart=count($element["properties"]["chart"]); 
 		if(@$countChart || $edit || $openEdition){ ?>
@@ -250,7 +250,7 @@
 			</li>
 	<?php } } ?>
 
-	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION){ ?>
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Place::COLLECTION){ ?>
 	<li class="">
 		<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 			id="btn-start-contacts" class="ssmla">
@@ -338,14 +338,14 @@
 					<i class="fa fa-calendar"></i> <?php echo $label; ?>
 				</a>
 			</li>
-			<?php if ($type==Person::COLLECTION){ ?>
+			<?php if ($type==Person::COLLECTION || $type==Place::COLLECTION ){ ?>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="organizations" data-icon="group">
 					<i class="fa fa-group"></i>  <?php echo Yii::t("common","Organizations"); ?>
 				</a>
 			</li>
 			<?php }  ?>
-			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION || $type==Organization::COLLECTION){ ?>
+			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Place::COLLECTION){ ?>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="projects" data-icon="lightbulb-o">
 					<i class="fa fa-lightbulb-o"></i>  <?php echo Yii::t("common","Projects"); ?>
@@ -356,7 +356,19 @@
 		<?php }  ?>
 			
 		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
-				  $type==Event::COLLECTION || $type==Person::COLLECTION){  
+				  $type==Event::COLLECTION || $type==Person::COLLECTION || $type==Place::COLLECTION ){  
+					if(!@$front || (@$front && $front["poi"])){ 
+		?>
+			<li>
+				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="ressources" data-icon="cubes">
+					<i class="fa fa-cubes"></i> <?php echo Yii::t("common","Ressources"); ?>
+				</a>
+			</li>			
+		<?php }  
+		} ?>
+
+		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
+				  $type==Event::COLLECTION || $type==Person::COLLECTION || $type==Place::COLLECTION ){  
 					if(!@$front || (@$front && $front["poi"])){ 
 		?>
 			<li>

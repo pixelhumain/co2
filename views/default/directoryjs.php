@@ -27,11 +27,24 @@
 #col-btn-type-directory .btn-directory-type,
 #sub-menu-left .btn-select-type-anc{
   margin-bottom:5px;
+  width:100%;
+  text-align: right;
   /*font-weight: 700;*/
   text-transform: uppercase;
   background-color: transparent;
 }
-
+.btn-directory-type{
+  border-radius: 0px;
+  border: 0px;
+}
+.btn-directory-type:hover, .btn-directory-type.active{
+  border-left: 5px solid;
+}
+.btn-directory-type .label-filter{
+  line-height: 9px;
+  max-width: 65%;
+  font-size: 12px;
+}
 
 @media (max-width: 768px) {
   #col-btn-type-directory{
@@ -131,11 +144,11 @@
 </style>
  
 <div class="container-result-search">
-
       <?php if(@$_GET['type']!="") { ?>
         <?php $typeSelected = $_GET['type']; ?>
         <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
         <?php $spec = Element::getElementSpecsByType($typeSelected); ?>
+        <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
         <h4 class="text-left pull-left subtitle-search" style="margin-left:10px; margin-top:15px; width:100%;">
           <span class="subtitle-search text-<?php echo $spec["text-color"]; ?> homestead">
             <?php 
@@ -148,15 +161,13 @@
             
           </span>
         </h4>
-     
+        <?php } ?>
 
-     <?php if($typeSelected == "cities"){ ?>   
+      <?php if($typeSelected == "cities"){ ?>   
       <p class="text-center bold"> Recherchez une commune à laquelle vous communecter.<br>
           Une fois communecté, toutes vos recherches seront automatiquement filtrées en fonction de la commune choisie.
       </p>
     <?php } ?>
-
-
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
         <!-- <h5>Recherche thématique<br><i class='fa fa-chevron-down'></i></h5> -->
         <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
@@ -185,8 +196,7 @@
             </button>
           <?php } ?>
           <!-- <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> -->
-        </div>
-        
+        </div>    
         
         <?php if($typeSelected == "place"){ ?>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
@@ -212,52 +222,74 @@
         </div>
         <?php } ?>
 
-
-        <?php if($typeSelected == "all"){ ?>   
+        <?php if($typeSelected == "all" || (@$_GET["app"] && $_GET["app"]=="search")){ ?>   
           
-          <?php if(Yii::app()->params["CO2DomainName"] != "BCH"){ ?>  
+          <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 
-          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
-            <button class="btn text-white bg-dark btn-open-filliaire hidden-xs">
+          <div class="col-sm-2 col-md-2 col-xs-12 text-right no-padding" id="col-btn-type-directory">
+            <!--<button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
-            </button><hr class="hidden-xs">
-            <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
+            </button><hr class="hidden-xs">-->
+           <!-- <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
-            </button><hr class="hidden-xs">
-            <button class="btn text-yellow btn-directory-type" data-type="persons">
-                <i class="fa fa-user"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","People") ?></span>
-            </button><hr class="hidden-xs">
-            <button class="btn text-green  btn-directory-type" data-type="NGO">
+            </button><hr class="hidden-xs">-->
+            <button class="btn text-dark border-dark btn-directory-type active padding-5" data-type="organizations">
+                <i class="fa fa-chevron-down"></i> 
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common", "organizations") ?></span>
+                <span class="badge count-badge-filter bg-dark" id="countorganizations"></span>
+            </button><hr class="hidden-xs margin-bottom-5" style="margin-top:0px;">
+            <button class="btn text-green border-green btn-directory-type padding-5" data-type="NGO">
                 <i class="fa fa-group"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common", "NGOs") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common", "NGOs") ?></span>
+                <span class="badge count-badge-filter bg-green" id="countNGO"></span>
             </button><br class="hidden-xs">
-            <button class="btn text-azure  btn-directory-type" data-type="LocalBusiness">
+            <button class="btn text-azure border-azure btn-directory-type padding-5" data-type="LocalBusiness">
                 <i class="fa fa-industry"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Compagnies") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Compagnies") ?></span>
+                <span class="badge count-badge-filter bg-azure" id="countLocalBusiness"></span>
             </button><br class="hidden-xs">
-            <button class="btn text-turq btn-directory-type" data-type="Group">
+            <button class="btn text-turq border-turq btn-directory-type padding-5" data-type="Group">
                 <i class="fa fa-circle-o"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Groups") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Groups") ?></span>
+                <span class="badge count-badge-filter bg-azure" id="countGroup"></span>
             </button><br class="hidden-xs">
-            <button class="btn text-purple btn-directory-type" data-type="projects">
+
+            <button class="btn text-red border-red btn-directory-type padding-5" data-type="GovernmentOrganization">
+                <i class="fa fa-university"></i> 
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Public structures") ?></span>
+                <span class="badge count-badge-filter bg-red" id="countGovernmentOrganization"></span>
+            </button>
+            <hr class="hidden-xs margin-top-5 margin-bottom-5">
+            <button class="btn text-purple border-purple btn-directory-type padding-5" data-type="projects">
                 <i class="fa fa-lightbulb-o"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Projects") ?></span>
-            </button><hr class="hidden-xs">
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Projects") ?></span>
+                <span class="badge count-badge-filter bg-purple" id="countprojects"></span>
+            </button>
+            <hr class="hidden-xs margin-top-10 margin-bottom-5">
+            <button class="btn text-yellow border-yellow-k btn-directory-type padding-5" data-type="persons">
+                <i class="fa fa-user"></i> 
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","People") ?></span>
+                <span class="badge count-badge-filter bg-yellow" id="countcitoyens"></span>
+            </button><hr class="hidden-xs margin-top-5 margin-bottom-5">
             <!-- <button class="btn text-red btn-directory-type" data-type="cities">
                 <i class="fa fa-university"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Cities") ?></span>
             </button><br class="hidden-xs"> -->
-            <button class="btn text-red btn-directory-type" data-type="GovernmentOrganization">
-                <i class="fa fa-university"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Public structures") ?></span>
-            </button><hr class="hidden-xs">
-            <button class="btn text-green-poi btn-directory-type" data-type="poi">
+
+            <button class="btn text-purple border-purple btn-directory-type padding-5" data-type="place">
+                <i class="fa fa-home"></i> 
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Places") ?></span>
+                <span class="badge count-badge-filter bg-purple" id="countplaces"></span>
+            </button><br class="hidden-xs">
+            <button class="btn text-green-poi border-green-poi btn-directory-type padding-5" data-type="poi">
                 <i class="fa fa-map-marker"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Point of interest") ?></span>
+                <span class="hidden-xs elipsis label-filter"><?php echo Yii::t("common","Point of interest") ?></span>
+                <span class="badge count-badge-filter bg-green-poi" id="countpoi"></span>
             </button>
+
+            
             <hr class="hidden-sm hidden-md hidden-lg">
           </div>
         <?php } ?>
@@ -293,10 +325,10 @@
         <?php } else if( $typeSelected == "events" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
-            <button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
+            <!--<button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
-            </button><hr class="hidden-xs">
+            </button><hr class="hidden-xs">-->
             
             <?php $categories = Event::$types; 
                   foreach ($categories as $key => $cat) {
@@ -310,12 +342,8 @@
               <?php } ?>
           </div>
 
-        <?php }else if($typeSelected == "classified"){ ?>
-
-        <?php 
-          $params = CO2::getThemeParams();
-          $devises = @$params["devises"];
-        ?>
+        <?php }else if($typeSelected == "classified"){ 
+          if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
@@ -390,9 +418,10 @@
                 <i class="fa fa-money"></i> <?php echo Yii::t("common","Money") ?>
               </label>
               <select class="form-control" name="devise" id="devise" style="">
-                <?php foreach($devises as $key => $devise){ ?>
+                <?php if(@$devises){ 
+                  foreach($devises as $key => $devise){ ?>
                   <option class="bold" value="<?php echo $key; ?>"><?php echo $devise; ?></option>
-                <?php } ?>
+                <?php } } ?>
               </select>
             </div>
 
@@ -407,7 +436,49 @@
           </div>
           <!-- </div> -->
 
-        <?php } 
+        <?php } else{ 
+          $service = CO2::getContextList("service");
+          ?> 
+          <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub no-padding shadow2" id="sub-menu-left">
+              <h4 class="bg-orange text-white no-margin padding-10">FILTRE</h4>      
+              <div class="col-md-12 no-padding padding-top-10 padding-bottom-10 label-category" id="title-sub-menu-category">
+                <h4 class="col-md-10">Toute destination</h4> <span class="col-md-2 bg-orange"><i class="fa fa-angle-right"></i><span>
+              </div>
+              <hr>
+              <?php 
+                  foreach ($service["categories"] as $key => $cat) {
+              ?>
+                  <div class="col-md-12 text-dark margin-bottom-5">
+                      <input type="checkbox" class="btn-select-category-1" data-keycat="<?php echo $key; ?>"> <?php echo Yii::t("category",$cat); ?> 
+                    </div><br>
+              <?php } ?>
+              <div class="col-md-12 no-padding padding-top-10 padding-bottom-10 label-category" id="title-sub-menu-category">
+                <h4 class="col-md-10">Vous voyagez</h4> <span class="col-md-2 bg-orange"><i class="fa fa-angle-right"></i><span>
+              </div>
+              <input type="text" id="filterNumber" value="" placeholder="Number of travellers">
+              <label>Date of travel</label>
+              <span>From</span>
+              <input type="date" name=""><br/>
+              <span>To</span>
+              <input type="date" name="">
+              <label>Price for search</label>
+              <input type="price" name="">
+              
+              <label>Adapted time</label>
+             <div class="col-md-12 text-dark margin-bottom-5">
+                <input type="checkbox" class="btn-select-category-1" data-keycat="senior"> <?php echo Yii::t("category","Senior"); ?> 
+              </div>
+              <div class="col-md-12 text-dark margin-bottom-5">
+                <input type="checkbox" class="btn-select-category-1" data-keycat="pmr"> <?php echo Yii::t("category","PMR"); ?> 
+              </div>
+              <div class="col-md-12 text-dark margin-bottom-5">
+                <input type="checkbox" class="btn-select-category-1" data-keycat="famillychild"> <?php echo Yii::t("category","Familly with children"); ?> 
+              </div>
+              <div class="col-md-12 text-dark margin-bottom-5">
+                <input type="checkbox" class="btn-select-category-1" data-keycat="healthfood"> <?php echo Yii::t("category","Food care"); ?>
+              </div>
+            </div>
+        <?php } }
         else if($typeSelected == "place"){ ?>
 
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
@@ -436,12 +507,26 @@
 
         <?php } ?>
 
-        <?php $col = ( !in_array($typeSelected, array("classified","events","vote","all","place") )) ? 10 : 8; ?>
-        <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ $col = 10; } ?>
+        <?php  
+          if($typeSelected != "classified" && Yii::app()->params["CO2DomainName"] == "terla"){ 
+            $this->renderPartial("../default/panels/filterMenu", 
+                  array("typeSelected"=>$typeSelected,
+                        ));
+          } 
+        ?>
+        <?php $col = ( !in_array($typeSelected, 
+                       array("classified","products","services","circuits","events","vote","all","places") )) ? 10 : 8; ?>
         
-        <div class="col-sm-<?php echo $col ?> col-md-<?php echo $col ?> col-xs-12" id="dropdown_search"></div>
+        <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
-        <div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>
+        <div class=" col-md-<?php echo $col ?> col-sm-<?php echo $col ?> col-xs-12 text-left headerSearchContainer"></div>
+        <div class="col-md-<?php echo $col ?> col-sm-<?php echo $col ?>" id="dropdown_search"></div>
+        <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
+        <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
+        <?php } ?>
+      <?php } ?>
+      <?php if(@$_GET["page"] && in_array(array("search","agenda","annonces","ressources"), $_GET["page"])){ ?> 
+        <div class="pageTable col-md-12 col-sm-12 col-xs-12 padding-20 text-center"></div>
       <?php } ?>
   </div>
 
@@ -478,10 +563,14 @@ var headerParams = {
   "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
   "osm"    : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
   "ods"    : { color: "lightblue2",   icon: "bullhorn",   name: "OpenDatasoft" },
-  "place"         : { color: "green",   icon: "map-marker",   name: trad.places },
+  "places"         : { color: "green",   icon: "map-marker",   name: trad.places },
   "classified"    : { color: "lightblue2",   icon: "bullhorn",   name: trad.classifieds },
   "GovernmentOrganization" : { color: "red",   icon: "university",        name: "services publics" },
-
+  "ressources"         : { color: "purple",   icon: "cubes",   name: "Ressource" },
+  "news"         : { color: "dark",   icon: "newspaper-o",   name: "news" },
+  "products"    : { color: "orange",   icon: "shopping-basket",   name: trad.products },
+  "services"    : { color: "orange",   icon: "sun-o",   name: trad.services },
+  "circuits"    : { color: "orange",   icon: "ravelry",   name: trad.circuits },
 }
 
 if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined" )
@@ -535,7 +624,7 @@ function setHeaderDirectory(type){
 }
 
 var searchType = [ "persons" ];
-var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities","place" ];
+var allSearchType = [ "persons", "organizations", "projects", "events", "vote", "cities","places","ressources" ];
 
 var personCOLLECTION = "<?php echo Person::COLLECTION ?>";
 var userId = '<?php echo isset( Yii::app()->session["userId"] ) ? Yii::app() -> session["userId"] : null; ?>';
@@ -546,9 +635,7 @@ var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
 jQuery(document).ready(function() {
 
-	
 	currentTypeSearchSend = "search";
-
 
   $("#btn-slidup-scopetags").click(function(){
     slidupScopetagsMin();
@@ -556,7 +643,7 @@ jQuery(document).ready(function() {
 
 
   searchType = (typeSelected == null) ? [ "persons" ] : [ typeSelected ];
-  allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","place" ];
+  //allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","places","ressources" ];
 	topMenuActivated = true;
 	hideScrollTop = true; 
   loadingData = false;
@@ -581,8 +668,8 @@ jQuery(document).ready(function() {
   // }
 
 
-  <?php if(Yii::app()->params["CO2DomainName"] == "BCH"){ ?>
-      $("#sub-menu-filliaire").removeClass("hidden");
+  <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ ?>
+      $("#sub-menu-filliaire").addClass("hidden");
   <?php } ?>
 
   $(".btn-open-filliaire").click(function(){

@@ -1,6 +1,6 @@
 function initSearchInterface(){
     
-    $("#main-search-bar").keyup(function(e){
+  /*  $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
@@ -9,12 +9,46 @@ function initSearchInterface(){
             $(".btn-directory-type").removeClass("active");
             KScrollTo("#content-social");
         }
+    });*/
+    $("#main-search-bar").keyup(function(e){
+        $("#second-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        if(e.keyCode == 13){
+            searchPage=0;
+            search.value = $(this).val();
+            pageCount=true;
+            if(search.app=="territorial") initTerritorialSearch();
+            //if(typeof search.value == "undefined")
+            startSearch(0, indexStepInit, searchCallback);
+           // else
+             //   autoCompleteSearch(search.value, null, null, null, null);
+            pageCount=false;
+            //KScrollTo("#dropdown_search");
+         }
     });
     $("#main-search-bar").change(function(){
         $("#second-search-bar").val($(this).val());
     });
 
     $("#second-search-bar").keyup(function(e){
+        //$("#main-search-bar").val($(this).val());
+        //$("#input-search-map").val($(this).val());
+        if(e.keyCode == 13){
+            //initTypeSearch(typeInit);
+            searchPage=0;
+            search.value = $(this).val();
+            pageCount=true;
+            if(search.app=="territorial") initTerritorialSearch();
+            //if(typeof search.value == "undefined")
+            startSearch(0, indexStepInit, searchCallback);
+            //else
+             //   autoCompleteSearch(search.value, null, null, null, null);
+            $(".btn-directory-type").removeClass("active");
+            //KScrollTo("#content-social");
+         }
+    });
+
+   /* $("#second-search-bar").keyup(function(e){
         $("#main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
@@ -23,7 +57,7 @@ function initSearchInterface(){
             $(".btn-directory-type").removeClass("active");
             KScrollTo("#content-social");
          }
-    });
+    });*/
 
     $("#input-search-map").off().keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());
@@ -36,13 +70,13 @@ function initSearchInterface(){
          }
     });
 
-    $("#menu-map-btn-start-search, #main-search-bar-addon").off().click(function(){
+    $("#menu-map-btn-start-search, #menu-btn-start-search, #main-search-bar-addon").off().click(function(){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
         console.log("typeInit", typeInit);
         if(typeInit == "all") initTypeSearch("allSig");
         else initTypeSearch(typeInit);
-        startSearch(0, indexStepInit, searchCallback);
+        startSearchTerla(0, indexStepInit, searchCallback);
         $(".btn-directory-type").removeClass("active");
     });
 
@@ -68,7 +102,60 @@ function initSearchInterface(){
         if(type=="vote") type="entry";
         dyFObj.openForm(type);
     });
+
+    //console.log("runin initSearchInterface end");
+    
 }
+
+function startSearchTerla(indexMin, indexMax, callBack){
+    var name = $("#second-search-bar").val() != "" ? $("#second-search-bar").val() : $("#new-search-bar").val();
+    memorySearch = name;
+    var data = {
+      "name" : name, 
+      "tpl" : "searchTerla",
+      "locality" : "",//locality, 
+      "searchType" : searchType, 
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
+      "indexMin" : indexMin, 
+      "indexMax" : indexMax
+    };
+
+    //alert();
+    $.blockUI({ message : themeObj.blockUi.processingMsg});
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
+        data: data,
+        //dataType: "json",
+        error: function (data){
+             mylog.log(">>> error autocomplete search"); 
+             //mylog.dir(data);   
+             $(".main-container").html(data.responseText);  
+             $("#searchVal").html(name);  
+             //signal que le chargement est terminé
+            loadingData = false;     
+            $.unblockUI();
+        },
+        success: function(data){ 
+            mylog.log(">>> success startSearchTerla", data); //mylog.dir(data);
+            $(".main-container").html(data);
+            $.unblockUI();
+           /* if(!data){ 
+              toastr.error(data.content); 
+            } 
+            else 
+            {   
+            }*/
+           
+            //affiche les éléments sur la carte
+            //Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
+                        
+            //if(typeof callBack == "function")
+            //  callBack();
+        }
+    });
+}
+
 
 /* -------------------------
 CLASSIFIED
@@ -159,9 +246,10 @@ function bindLeftMenuFilters () {
         }
     });
 
-    $(".btn-select-category-1").off().on("click", function(){
+    $(".btn-select-category-1").off().on("click", function(){ //alert("onclick");
         searchType = [ typeInit ];
         var searchTxt = "";
+        var section = $('#searchTags').val();
         var classType = $(this).data("keycat");
         console.log("bindLeftMenuFilters sectionKey", sectionKey);
         
@@ -183,6 +271,30 @@ function bindLeftMenuFilters () {
         }
         $('#searchTags').val(searchTxt);
         startSearch(0, indexStepInit, searchCallback);  
+    });
+
+    $(".btn-select-category-services").off().on("click", function(){ //alert("onclick");
+        var tags = "";
+        var keycat = $(this).data("keycat");
+        if( $(this).hasClass( "active" ) ){
+            $(".btn-select-category-services[data-keycat='"+keycat+"']").removeClass( "active" );
+            $(".btn-select-category-services[data-keycat='"+keycat+"']").prop( "checked", false );
+        }else{
+            $(".btn-select-category-services[data-keycat='"+keycat+"']").addClass("active");
+            $(".btn-select-category-services[data-keycat='"+keycat+"']").prop( "checked", true );
+        }
+        
+        //.filterMenuMap
+
+        $.each($("#page .btn-select-category-services"), function (key, value){
+            console.log("checked ?", $(this).val());
+            if($(this).hasClass( "active" )){
+                if(tags!="") tags+=",";
+                tags+=$(this).data("keycat");
+            }
+        });
+        $('#searchTags').val(tags);
+        startSearch(0, indexStepInit, searchCallback); 
     });
 
     $(".keycat").off().on("click", function(){

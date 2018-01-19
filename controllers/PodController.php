@@ -20,6 +20,8 @@ class PodController extends CommunecterController {
 	        'activitylist'     	=> 'citizenToolKit.controllers.pod.ActivityListAction'
 	    );
 	}
-
+	public function actionCircuit(){
+    	echo $this->renderPartial("circuit", array(), true);
+ 	}
 }
 ?>

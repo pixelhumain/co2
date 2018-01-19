@@ -31,17 +31,31 @@
 		},
 
 		"#search": {
-                  "inMenu" : true, 
-                  "useHeader" : true, 
-                  "open" : true,
-                  "subdomain" : "search", 
-                  "subdomainName" : "Search",
-                  "hash" : "#app.search",
-                  "icon" : "search", 
-                  "mainTitle" : "Réseau social citoyen",
-                  "placeholderMainSearch" : "rechercher une page ...",
-                  "lblBtnCreate" : "Créer une page",
-                  "colorBtnCreate" : "green"},
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "search", 
+			"subdomainName" : "Search",
+			"hash" : "#app.search",
+			"icon" : "search", 
+			"mainTitle" : "<span class='text-red'>Social</span> connection",
+			"placeholderMainSearch" : "search a page ...",
+			"lblBtnCreate" : "Create a page",
+			"colorBtnCreate" : "green"
+		},
+		"#territorial": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "territorial", 
+			"subdomainName" : "Territorial",
+			"hash" : "#app.territorial",
+			"icon" : "territorial", 
+			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
+			"placeholderMainSearch" : "search a page ...",
+			"lblBtnCreate" : "Create a page",
+			"colorBtnCreate" : "green"
+		},
 
 
 		"#web":
@@ -107,6 +121,19 @@
 			"placeholderMainSearch" : "search in live ..."
 		},
 
+		"#place":
+		    {"inMenu" : true, 
+		    "useHeader" : true, 
+		    "open" : true, 
+		    "subdomain" : "place", 
+		    "subdomainName" : "Lieux",
+		    "hash" : "#app.search.type.place",
+		    "icon" : "map-marker", 
+		    "mainTitle" : "Moteur de Lieux <span class='text-red'>territoriales</span>",
+		    "placeholderMainSearch" : "Rechercher un lieu ...",
+		    "lblBtnCreate" : "Ajouter un lieu",
+		    "colorBtnCreate" : "green"
+		},
 		"#chat": {
 			"inMenu" : false, 
 			"open" : true, 
@@ -119,6 +146,20 @@
 			"mainTitle" : "<span class='text-red'>CHAT with your communities</span>",
 			"removeAfterLoad" : true, 
 			"emptyContextData" : false
+		},
+
+		"#ressource":
+		    {"inMenu" : true, 
+		    "useHeader" : true, 
+		    "open" : true, 
+		    "subdomain" : "ressource", 
+		    "subdomainName" : "Ressources",
+		    "hash" : "#app.help",
+		    "icon" : "cubes", 
+		    "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
+		    "placeholderMainSearch" : "Rechercher un ressource ...",
+		    "lblBtnCreate" : "Ajouter une ressource",
+		    "colorBtnCreate" : "purple"
 		},
 
 		"#page": {
@@ -214,7 +255,7 @@
 			"open" : false, 
 			"subdomain" : "admin", 
 			"subdomainName" : "admin",
-			"hash":"#admin",
+			"hash":"#app.admin",
 			"icon" : "university", 
 			"mainTitle" : "Partie Admin",
 			"placeholderMainSearch" : "Admin ..."

@@ -296,7 +296,7 @@
 		</div>
 
 		<div class="filterMenuMap">
-			<?php $this->renderPartial("../default/panels/filterMenu", 
+			<?php $this->renderPartial("co2.views.default.panels.filterMenu", 
 	                  			array("typeSelected"=>"services")); 
 	        ?>
         </div>

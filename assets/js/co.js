@@ -3012,13 +3012,7 @@ var typeObj = {
 	services : {sameAs:"service"},
 	circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",	icon:"ravelry"},
 	circuits : {sameAs:"circuit"},
-	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
-				   subTypes : [
-				   //FR
-				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",
-				   //EN
-				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
-				   ]	},
+	
 	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
 	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},

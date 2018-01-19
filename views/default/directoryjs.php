@@ -352,7 +352,7 @@
             </h4>
             <hr>
             <?php 
-                $classified = CO2::getContextList("classified");
+                $classified = CO2::getModuleContextList("classifieds","categories");
                 foreach ($classified['filters'] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>

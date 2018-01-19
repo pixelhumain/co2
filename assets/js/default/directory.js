@@ -10,6 +10,10 @@ var timeout = null;
 var searchType = '';
 var searchSType = '';
 //alert("d.js");
+
+var loadingData = false;
+var mapElements = new Array(); 
+
 var searchPage = 0;
 var translate = {"organizations":"Organisations",
                  "projects":"Projets",
@@ -20,6 +24,7 @@ var translate = {"organizations":"Organisations",
 function startSearch(indexMin, indexMax, callBack){
     console.log("startSearch directory.js", typeof callBack, callBack, loadingData);
     if(loadingData) return;
+    console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
     loadingData = true;
     showIsLoading(true);
     
@@ -44,8 +49,8 @@ function startSearch(indexMin, indexMax, callBack){
       mapElements = new Array(); 
     }
     else{ if(scrollEnd) return; }
-//    alert(name.length);
-    if(name.length>=3 || name.length == 0)
+    
+    if(name.length>=2 || name.length == 0)
     {
       var locality = "";
       //if( communexionActivated ){
@@ -66,7 +71,9 @@ function startSearch(indexMin, indexMax, callBack){
       //} 
       console.log("locality",locality);
       autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
-    }  
+    } else{
+      toastr.info(trad["This request is too short !"]);
+    }
 }
 
 
@@ -112,11 +119,8 @@ function removeSearchType(type){
   }
 }
 
-var loadingData = false;
-var mapElements = new Array(); 
 
-
-function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
+function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
   //if(typeof myScopes != "undefined" )
     var searchLocality = getLocalityForSearch();
@@ -403,15 +407,15 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
 
   }
   function initPageTable(number){
-    numberPage=(number/100);
+    numberPage=(number/30);
     $('.pageTable').pagination({
           items: numberPage,
           itemOnPage: 15,
           currentPage: 1,
           hrefTextPrefix:"?page=",
           cssStyle: 'light-theme',
-          //prevText: '<span aria-hidden="true">&laquo;</span>',
-          //nextText: '<span aria-hidden="true">&raquo;</span>',
+          prevText: '<i class="fa fa-chevron-left"></i> ' + trad["previous"],
+          nextText: trad["next"] + ' <i class="fa fa-chevron-right"></i>',
           onInit: function () {
               // fire first page loading
           },
@@ -1009,7 +1013,7 @@ var directory = {
 		var classType=params.type;
 		if(params.type=="events") classType="";
 		//str += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
-		str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
 		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 
 

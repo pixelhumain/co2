@@ -1,0 +1,11 @@
+{
+	"categories" : {
+        "sleeping":"Sleeping",
+        "restaurant":"Restaurant",
+        "funnytime":"Funny activity",
+        "transport":"Transport",
+        "siteToSee":"Uncredible site",
+        "artisants":"Artisants",
+        "guideAccom":"Guide and helper"
+      }
+} 

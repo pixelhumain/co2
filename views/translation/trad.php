@@ -442,12 +442,16 @@ var trad = {
 };
 
 var tradDynForm = {
+	"Name of filter" : "<?php echo Yii::t("form","Name of filter") ?>",
+	"Tags link a filter" : "<?php echo Yii::t("form","Tags link a filter") ?>",
+	"Filters category" : "<?php echo Yii::t("form","Filters category") ?>",
 	"Elements types will be displayed": "<?php echo Yii::t("form","Elements types will be displayed") ?>",
 	"Show items that will have the following tags": "<?php echo Yii::t("form","Show items that will have the following tags") ?>",
 	"Key used for data import" : "<?php echo Yii::t("form","Key used for data import") ?>",
 	"Skin" : "<?php echo Yii::t("form","Skin") ?>",
 	"Request Section" : "<?php echo Yii::t("form","Request Section") ?>",
 	"Filter Section" : "<?php echo Yii::t("form","Filter Section") ?>",
+	"Filters" : "<?php echo Yii::t("form","Filters") ?>",
 	"Title of your map" : "<?php echo Yii::t("form","Title of your map") ?>",
 	"Allow users to identify themselves" : "<?php echo Yii::t("form","Allow users to identify themselves") ?>",
 	"Allow to add elements" : "<?php echo Yii::t("form","Allow to add elements") ?>",

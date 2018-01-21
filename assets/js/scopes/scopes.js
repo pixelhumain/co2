@@ -192,7 +192,6 @@ function addToMultiscope(scopeValue){
 		newMultiScope=myScopes.open[scopeValue];
 	myScopes.multiscopes[scopeValue] = newMultiScope;
 	saveMultiScopeHere();
-	//bindCommunexionScopeEvents();
 }
 
 

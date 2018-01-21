@@ -450,7 +450,6 @@ function setGlobalScope(scopeValue, scopeName, scopeType, scopeLevel, values, no
 	communexion.currentName = scopeName;
 	communexion.currentValue = scopeValue;
 	communexion.communexionType = scopeType;
-	communexion.communexionType = scopeType;
 	
 	mylog.log("communexion before save", communexion);
 

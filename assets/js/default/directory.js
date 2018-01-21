@@ -119,7 +119,8 @@ var mapElements = new Array();
 function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
   //if(typeof myScopes != "undefined" )
-    var searchLocality = getLocalityForSearch();
+    //var searchLocality = getLocalityForSearch();
+    var searchLocality = getSearchLocalityObject();
   //else
 
     
@@ -337,7 +338,7 @@ function autoCompleteSearch(name,locality, indexMin, indexMax, callBack){
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
                 //active les link lbh
                 bindLBHLinks();
-                bindCommunexionScopeEvents();
+                //bindCommunexionScopeEvents();
 
                 // $(".start-new-communexion").click(function(){
                 //     mylog.log("start-new-communexion directory.js");

@@ -805,10 +805,13 @@ var urlCtrl = {
 							alert(baseUrl+'/'+moduleId+path);
 							smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+path);
 						} else {
-
+							//console.log(">>>>>>>>>>>>>>>>>>> endPoint:",endPoint);
 							mod = moduleId+ '/';
-							if(moduleId != activeModuleId || endPoint.mod)
+							if(moduleId != activeModuleId || endPoint.module){
 								mod = '';
+								//go get the path , module is given in the hash
+								//console.log(">>>>>>>>>>>>>>>>>>> module path",path);
+							}
 
 							showAjaxPanel( baseUrl+'/'+ mod +path+urlExtra+extraParams, endPoint.title,endPoint.icon, res,endPoint );
 						}
@@ -2971,8 +2974,7 @@ var typeObj = {
 	places : { sameAs:"place" },
 	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
 	Maison : {sameAs:"place", color: "azure",icon: "home"},
-	ressource:{  col:"ressources",ctrl:"ressource",color:"azure",icon:"cube", titleClass : "bg-azure", bgClass : "bgPerson"},
-	ressources : { sameAs:"ressource" },
+	
 	siteurl:{ col:"siteurl",ctrl:"siteurl"},
 	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
 	organizations : {sameAs:"organization"},
@@ -3010,13 +3012,7 @@ var typeObj = {
 	services : {sameAs:"service"},
 	circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",	icon:"ravelry"},
 	circuits : {sameAs:"circuit"},
-	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
-				   subTypes : [
-				   //FR
-				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",
-				   //EN
-				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
-				   ]	},
+	
 	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
 	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
@@ -3839,10 +3835,7 @@ var co = {
 	// *****************************************
 	// TODO
 	// ****************************************
-	rsc : {
-		form : function() { dyFObj.openForm("ressource") },
-		i : function () { co.ctrl.lbh("#"+userConnected.username+".view.directory.dir.ressources");},
-	}
+	
 	/*
 	ntre : function () { smallMenu.open("<h1>Toutes les propositions de lois et décisions sociétal pour lesquels on est contre</h1>"); } ,
 	rd : function () { smallMenu.open("<h1> Visualisation de notre R&D</h1>"); } ,

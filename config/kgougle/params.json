@@ -137,6 +137,20 @@
                   "icon" : "", 
                   "mainTitle" : "Le réseau social Calédonien",
                   "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."},
+            
+            "#ressource":
+                {"inMenu" : true, 
+                "useHeader" : true, 
+                "open" : true, 
+                "subdomain" : "ressource", 
+                "subdomainName" : "Ressources",
+                "hash" : "#app.help",
+                "icon" : "cubes", 
+                "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
+                "placeholderMainSearch" : "Rechercher un ressource ...",
+                "lblBtnCreate" : "Ajouter une ressource",
+                "colorBtnCreate" : "purple"
+            },
 
       	"#info":
       	  	{"inMenu" : false, 

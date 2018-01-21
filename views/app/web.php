@@ -113,8 +113,8 @@
 <section class="no-padding hidden" id="sectionSearchResults">
     <div class="row padding-10">
         <div class="col-md-1 hidden-sm col-lg-1 text-right" id="sub-menu-left"></div>
-        <div class="col-md-7 col-sm-8 col-lg-7" id="searchResults"></div>
-        <div class="col-md-4 col-sm-4 col-lg-3 text-left padding-25" id="sub-menu-right"></div>
+        <div class="col-md-4 col-sm-4 col-lg-3 text-left padding-25 pull-right" id="sub-menu-right"></div>
+        <div class="col-md-7 col-sm-8 col-lg-7 pull-left" id="searchResults"></div>
     </div>
 </section>
 
@@ -125,7 +125,7 @@
 <script type="text/javascript" >
 
 var currentCategory = "";
-var titlePage = "<?php echo @$paramsApp["pages"]["#web"]["subdomainName"];// Yii::t("common", @$params["pages"]["#web"]["subdomainName"]); ?>";
+var titlePage = "<?php echo Yii::app()->params["CO2DomainName"]=="kgougle" ? "Kgougle" : @$paramsApp["pages"]["#web"]["subdomainName"]; ?>";
 
 jQuery(document).ready(function() {
     initKInterface();

@@ -15,7 +15,7 @@
     '/js/default/search.js',
     '/js/default/directory.js',
     );
-    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
@@ -31,7 +31,7 @@
     if(@$type=="classified"){ $page = "annonces";   $maxImg = 1; }
     if(@$type=="vote")      { $page = "power";      $maxImg = 1; }
     if(@$type=="place")     { $page = "place";      $maxImg = 1; }
-    if(@$type=="ressource")     { $page = "ressource"; }
+    if(@$type=="ressource") { $page = "ressource"; }
 
     if(@$type=="cities")    { $lblCreate = ""; }
 
@@ -87,17 +87,29 @@
     .container{
         padding-bottom:0px !important;
     }
+    .simple-pagination{
+        margin-bottom: 25px;
+        padding: 10px 0px;
+        border-bottom: 2px solid #e9e9e9;
+        font-family: "montserrat";
+    }
+
     .simple-pagination li a, .simple-pagination li span {
         border: none;
         box-shadow: none !important;
         background: none !important;
-        color: #2C3E50 !important;
-        font-size: 16px !important;
+        color: #707478 !important;
+        font-size: 13px !important;
         font-weight: 500;
     }
     .simple-pagination li.active span{
         color: #d9534f !important;
         font-size: 24px !important; 
+    }
+
+    .simple-pagination li a.next,
+    .simple-pagination li a.prev{
+        color:#223f5c !important;
     }
 </style>
 

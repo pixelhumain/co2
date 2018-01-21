@@ -52,6 +52,32 @@
                   "icon" : "search", 
                   "mainTitle" : "Référencer une page",
                   "placeholderMainSearch" : ""},
+                 
+            "#social": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true,
+                  "subdomain" : "social", 
+                  "subdomainName" : "Social",
+                  "hash" : "#app.search",
+                  "icon" : "user-circle-o", 
+                  "mainTitle" : "Réseau social",
+                  "placeholderMainSearch" : "rechercher une page ...",
+                  "lblBtnCreate" : "Créer une page",
+                  "colorBtnCreate" : "green"},
+
+            "#agenda":
+                  {"inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true,
+                  "subdomain" : "agenda", 
+                  "subdomainName" : "Events",
+                  "hash" : "#app.agenda",
+                  "icon" : "calendar", 
+                  "mainTitle" : "Agenda collaboratif",
+                  "placeholderMainSearch" : "rechercher un événement  ...",
+                  "lblBtnCreate" : "Créer un événement",
+                  "colorBtnCreate" : "orange"},
 
       	"#actu":
       	  	{"inMenu" : true, 
@@ -75,20 +101,7 @@
                   "mainTitle" : "Fil de discussion commun",
                   "placeholderMainSearch" : "Rechercher dans le fil de discussion ..."
             },
-                 
-            "#social": {
-                  "inMenu" : true, 
-                  "useHeader" : true, 
-                  "open" : true,
-                  "subdomain" : "social", 
-                  "subdomainName" : "Social",
-                  "hash" : "#app.search",
-                  "icon" : "user-circle-o", 
-                  "mainTitle" : "Réseau social",
-                  "placeholderMainSearch" : "rechercher une page ...",
-                  "lblBtnCreate" : "Créer une page",
-                  "colorBtnCreate" : "green"},
-
+            
 
       	"#annonces":
       	  	{"inMenu" : true, 
@@ -103,18 +116,6 @@
                   "lblBtnCreate" : "Publier une annonce",
                   "colorBtnCreate" : "azure"},
 
-      	"#agenda":
-      	  	{"inMenu" : true, 
-                  "useHeader" : true, 
-                  "open" : true,
-                  "subdomain" : "agenda", 
-                  "subdomainName" : "Agenda",
-                  "hash" : "#app.agenda",
-                  "icon" : "calendar", 
-                  "mainTitle" : "Agenda collaboratif",
-                  "placeholderMainSearch" : "rechercher un événement  ...",
-                  "lblBtnCreate" : "Créer un événement",
-                  "colorBtnCreate" : "orange"},
 
             "#power":
       	  	{"inMenu" : true, 
@@ -139,7 +140,7 @@
                   "placeholderMainSearch" : "rechercher parmis les membres du réseau ..."},
             
             "#ressource":
-                {"inMenu" : true, 
+                {"inMenu" : false, 
                 "useHeader" : true, 
                 "open" : true, 
                 "subdomain" : "ressource", 

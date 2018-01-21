@@ -76,7 +76,7 @@ function initSearchInterface(){
         console.log("typeInit", typeInit);
         if(typeInit == "all") initTypeSearch("allSig");
         else initTypeSearch(typeInit);
-        startSearchTerla(0, indexStepInit, searchCallback);
+        startSearch(0, indexStepInit, searchCallback);
         $(".btn-directory-type").removeClass("active");
     });
 

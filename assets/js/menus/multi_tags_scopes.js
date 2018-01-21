@@ -40,7 +40,7 @@
                             'data-target="#modalScopes" data-toggle="modal" '+
                             'data-toggle="tooltip" data-placement="top" '+ 
                             'title="'+trad["selectscopesearch"]+'">'+
-                            '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
+                            '<img src="'+themeUrl+'/assets/img/cible3.png" height=20>'+
                         '</button>';
                         if(numberOfScope > 0){
                             scopeHtml+= trad["searchingon"]+' <i class="fa fa-angle-right"></i>';

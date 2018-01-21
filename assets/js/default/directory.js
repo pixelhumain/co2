@@ -225,7 +225,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               resultsStr=trad.result;
               if(totalData > 1)
                 resultsStr=trad.results;
-                if((indexMin == 0 || search.app=="search") && (typeof pageEvent == "undefined" || !pageEvent) ){
+                if((indexMin == 0 || search.app=="search" || search.app=="social") && (typeof pageEvent == "undefined" || !pageEvent) ){
                     headerStr = '';
                     if(typeof pageCount != "undefined" && pageCount)
                       headerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
@@ -2357,7 +2357,7 @@ var directory = {
                     if(typeof edit != "undefined" && edit != false)
                       params.edit = edit;
                     
-                    if ( params.type && $.inArray(params.type, typeObj.classified.subTypes )>=0  ) {
+                    if ( params.type && typeof typeObj.classified != "undefined" && $.inArray(params.type, typeObj.classified.subTypes )>=0  ) {
                       itemType = "classified";
                     } else if(typeof( typeObj[itemType] ) == "undefined") {
                       itemType="poi";
@@ -2514,6 +2514,13 @@ var directory = {
                       //template principal
                     }else{
                       mylog.log("template principal",params,params.type, itemType);
+
+
+                      //if(location.hash == "#territorial") 
+                      //  str += directory.lightPanelHtml(params);  
+
+                      //else 
+
                       if(params.type == "cities")
                         str += directory.cityPanelHtml(params);  
                     

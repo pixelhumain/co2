@@ -30,25 +30,13 @@
 			"colorBtnCreate" : "green"
 		},
 
-		"#search": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "search", 
-			"subdomainName" : "Search",
-			"hash" : "#app.search",
-			"icon" : "search", 
-			"mainTitle" : "<span class='text-red'>Social</span> connection",
-			"placeholderMainSearch" : "search a page ...",
-			"lblBtnCreate" : "Create a page",
-			"colorBtnCreate" : "green"
-		},
+
 		"#territorial": {
 			"inMenu" : true, 
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "territorial", 
-			"subdomainName" : "Territorial",
+			"subdomainName" : "All",
 			"hash" : "#app.territorial",
 			"icon" : "territorial", 
 			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
@@ -57,6 +45,19 @@
 			"colorBtnCreate" : "green"
 		},
 
+		"#search": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "search", 
+			"subdomainName" : "Page CO",
+			"hash" : "#app.search",
+			"icon" : "search", 
+			"mainTitle" : "Réseau social <span class='text-red'>citoyen</span>",
+			"placeholderMainSearch" : "search a page ...",
+			"lblBtnCreate" : "Create a page",
+			"colorBtnCreate" : "green"
+		},
 
 		"#web":
       	  	{ "inMenu" : true, 
@@ -100,7 +101,7 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "agenda", 
-			"subdomainName" : "Agenda",
+			"subdomainName" : "Events",
 			"hash":"#app.agenda",
 			"icon" : "calendar", 
 			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",

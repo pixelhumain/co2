@@ -2467,7 +2467,7 @@ var directory = {
                         params.parentIcon = "fa-"+parentObj.icon;
                         params.parentColor = parentObj.color;
                     }
-                    if(params.type == "classified" && typeof params.category != "undefined"){
+                    if(params.type == "classified" && typeof params.category != "undefined" && typeof classified != "undefined"){
                       params.ico = typeof classified.filters[params.category] != "undefined" ?
                                    "fa-" + classified.filters[params.category]["icon"] : "";
                     }

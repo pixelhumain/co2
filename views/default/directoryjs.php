@@ -237,7 +237,7 @@
         </div>
         <?php } ?>
 
-        <?php if($typeSelected == "all" || (@$_GET["app"] && $_GET["app"]=="search")){ ?>   
+        <?php if($typeSelected == "all" || (@$_GET["app"] && ($_GET["app"]=="search" || $_GET["app"]=="social"))){ ?>   
           
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 
@@ -542,8 +542,8 @@
           <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
           <?php } ?>
         <?php } ?>
-        <?php if(@$_GET["page"] && in_array(array("search","agenda","annonces","ressources"), $_GET["page"])){ ?> 
-          <div class="pageTable col-xs-12 padding-20 text-center"></div>
+        <?php if(@$_GET["page"] && in_array(array("search","social","agenda","annonces","ressources"), $_GET["page"])){ ?> 
+          <!-- <div class="pageTable col-xs-12 padding-20 text-center"></div> -->
         <?php } ?>
         </div>
   </div>
@@ -690,14 +690,14 @@ jQuery(document).ready(function() {
       $("#sub-menu-filliaire").addClass("hidden");
   <?php } ?>
 
-  $(".btn-open-filliaire").click(function(){
-      if($("#sub-menu-filliaire").hasClass("hidden"))
-        $("#sub-menu-filliaire").removeClass("hidden");
-      else{
-        $("#sub-menu-filliaire").addClass("hidden");
-        resetMyTags();
-      }
-  });
+  // $(".btn-open-filliaire").click(function(){
+  //     if($("#sub-menu-filliaire").hasClass("hidden"))
+  //       $("#sub-menu-filliaire").removeClass("hidden");
+  //     else{
+  //       $("#sub-menu-filliaire").addClass("hidden");
+  //       resetMyTags();
+  //     }
+  // });
 
   $(".btn-select-filliaire").click(function(){
       mylog.log(".btn-select-filliaire");

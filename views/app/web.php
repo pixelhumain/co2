@@ -45,6 +45,10 @@
         color: <?php echo $params["color1"]; ?>;
     }
     <?php } ?>
+
+    #filters-container{
+        display: none !important;
+    }
 </style>
 
 
@@ -57,6 +61,8 @@
 
 <button class="hidden btn letter-red btn-link font-montserrat dropdown-toggle" data-toggle="dropdown" id="btn-onepage-main-menu">
      <i class='fa fa-angle-right'></i> A propos
+
+
 </button>
 
 <section class="padding-top-10 text-center margin-bottom-10 hidden-xs" id="section-fav">
@@ -69,6 +75,7 @@
     <i class="fa fa-ellipsis-v btn-fast-access padding-10 letter-yellow hidden-xs hidden"></i>
     <?php } ?>   
 
+    <?php if(false){ ?>
     <a href="https://www.youtube.com" target="_blank" class="tooltips btn-fast-access" 
         data-placement="bottom" data-toggle="tooltip" title="Aller sur YouTube">
         <i class="fa fa-youtube-play padding-10 letter-red"></i>
@@ -82,7 +89,8 @@
         data-placement="bottom" data-toggle="tooltip" title="Aller sur Wikipedia">
         <i class="fa fa-wikipedia-w padding-10"></i>
     </a>
-       
+    <?php } ?>   
+   
     <?php if(!empty($myWebFavorites)){ ?>
        <i class="fa fa-ellipsis-v btn-fast-access padding-10 letter-yellow hidden-xs hidden"></i>
         <?php  
@@ -113,12 +121,12 @@
 <section class="no-padding hidden" id="sectionSearchResults">
     <div class="row padding-10">
         <div class="col-md-1 hidden-sm col-lg-1 text-right" id="sub-menu-left"></div>
-        <div class="col-md-4 col-sm-4 col-lg-3 text-left padding-25 pull-right" id="sub-menu-right"></div>
+        <div class="col-md-4 col-sm-4 col-lg-3 col-xs-12 text-left padding-25 pull-right" id="sub-menu-right"></div>
         <div class="col-md-7 col-sm-8 col-lg-7 pull-left" id="searchResults"></div>
     </div>
 </section>
 
-<div id="mainCategories" class="shadow padding-bottom-50"></div>
+<div id="mainCategories" class="padding-bottom-50"></div>
 
 <?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array("subdomain"=>"web")); ?>
 
@@ -128,7 +136,7 @@ var currentCategory = "";
 var titlePage = "<?php echo Yii::app()->params["CO2DomainName"]=="kgougle" ? "Kgougle" : @$paramsApp["pages"]["#web"]["subdomainName"]; ?>";
 
 jQuery(document).ready(function() {
-    initKInterface();
+    initKInterface({"affixTop":10});
     initWebInterface();
     buildListCategories();
     

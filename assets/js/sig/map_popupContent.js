@@ -106,7 +106,7 @@
 			}else if (typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
 				url = "https://www.communecter.org/"+url;
 				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
-			}else if (notNull(networkJson) && notNull(networkJson.dataSrc) && notNull(data.source)){
+			}else if (typeof networkJson != "undefined" && notNull(networkJson) && notNull(networkJson.dataSrc) && notNull(data.source)){
 				popupContent += "<a href='"+data.source+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
 			}else{
 				onclick = 'urlCtrl.loadByHash("'+url+'");';					

@@ -228,7 +228,9 @@ jQuery(document).ready(function() {
     setTitle(titlePage, "", titlePage);
     if(typeof search.ranges != "undefined")
         delete search.ranges;
+    
     initKInterface({"affixTop":100});
+
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
     var appUrl = (typeof search.app != "undefined") ? "&app="+search.app : "";
@@ -256,9 +258,9 @@ jQuery(document).ready(function() {
             $(this).addClass("active");
         });
 
-        $(".btn-open-filliaire").click(function(){
-            KScrollTo("#content-social");
-        });
+        // $(".btn-open-filliaire").click(function(){
+        //     KScrollTo("#content-social");
+        // });
          
          //anny double section filter directory
         <?php if(@$type == "classified" || @$type == "place"  ){ ?>

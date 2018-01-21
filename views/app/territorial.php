@@ -10,6 +10,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->get
 $cssAnsScriptFilesModule = array(
     '/assets/css/default/responsive-calendar.css',
     '/assets/css/default/search.css',
+    '/assets/css/web.css',
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
 $cssAnsScriptFilesModule = array(
@@ -130,6 +131,9 @@ $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
   /*display: none!important;*/
 }
 
+#dropdown_search{
+  /*padding-left:5% !important;*/
+}
 
 @media (max-width: 768px) {
   .btn-select-type-anc.col-xs-5{

@@ -151,11 +151,6 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("search", $params, true);
     }
 
-    public function actionAnnonces(){
-        CO2Stat::incNbLoad("co2-annonces"); 
-        $params = array("type" => "classified");
-        echo $this->renderPartial("search", $params, true);
-    }
 
     public function actionActivities(){
         CO2Stat::incNbLoad("terla-activities"); 
@@ -185,11 +180,6 @@ class AppController extends CommunecterController {
         CO2Stat::incNbLoad("co2-live"); 
         $params = array();
         echo $this->renderPartial("live", $params, true);
-    }
-    public function actionHelp(){
-        CO2Stat::incNbLoad("co2-help"); 
-        $params = array("type"=>"ressources");
-        echo $this->renderPartial("search", $params, true);
     }
 
 	public function actionAgenda(){

@@ -3012,13 +3012,7 @@ var typeObj = {
 	services : {sameAs:"service"},
 	circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",	icon:"ravelry"},
 	circuits : {sameAs:"circuit"},
-	classified:{ col:"classified",ctrl:"classified", titleClass : "bg-azure", color:"azure",	icon:"bullhorn",
-				   subTypes : [
-				   //FR
-				   "Technologie","Immobilier","Véhicules","Maison","Loisirs","Mode",
-				   //EN
-				   "Technology","Property","Vehicles","Home","Leisure","Fashion"
-				   ]	},
+	
 	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
 	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
 	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
@@ -3415,8 +3409,10 @@ var CoSigAllReadyLoad = false;
 function KScrollTo(target){ 
 	mylog.log("KScrollTo target", target);
 	if($(target).length>=1){
+		var heightTopBar = 0;
+		if($("#territorial-menu").length >= 1) heightTopBar = $("#territorial-menu").height() + 20;
 		$('html, body').stop().animate({
-	        scrollTop: $(target).offset().top - 60
+	        scrollTop: $(target).offset().top - 60 - heightTopBar
 	    }, 500, '');
 	}
 }

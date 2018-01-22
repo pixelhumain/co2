@@ -30,25 +30,13 @@
 			"colorBtnCreate" : "green"
 		},
 
-		"#search": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "search", 
-			"subdomainName" : "Search",
-			"hash" : "#app.search",
-			"icon" : "search", 
-			"mainTitle" : "<span class='text-red'>Social</span> connection",
-			"placeholderMainSearch" : "search a page ...",
-			"lblBtnCreate" : "Create a page",
-			"colorBtnCreate" : "green"
-		},
+
 		"#territorial": {
 			"inMenu" : true, 
 			"useHeader" : true, 
-			"open" : true, 
+			"open" : false, 
 			"subdomain" : "territorial", 
-			"subdomainName" : "Territorial",
+			"subdomainName" : "All",
 			"hash" : "#app.territorial",
 			"icon" : "territorial", 
 			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
@@ -57,11 +45,24 @@
 			"colorBtnCreate" : "green"
 		},
 
+		"#search": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "search", 
+			"subdomainName" : "Tous",
+			"hash" : "#app.search",
+			"icon" : "search", 
+			"mainTitle" : "Réseau social <span class='text-red'>citoyen</span>",
+			"placeholderMainSearch" : "search a page ...",
+			"lblBtnCreate" : "Create a page",
+			"colorBtnCreate" : "green"
+		},
 
 		"#web":
       	  	{ "inMenu" : true, 
               "useHeader" : true, 
-              "open" : true, 
+              "open" : false, 
               "subdomain" : "web", 
               "subdomainName" : "Web",
               "hash" : "#app.web",
@@ -81,6 +82,32 @@
               "placeholderMainSearch" : ""},
 
 
+		"#live": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "live", 
+			"subdomainName" : "En live",
+			"hash":"#app.live",
+			"icon" : "newspaper-o", 
+			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
+			"placeholderMainSearch" : "search in live ..."
+		},
+		      
+		"#agenda": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "agenda", 
+			"subdomainName" : "Events",
+			"hash":"#app.agenda",
+			"icon" : "calendar", 
+			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
+			"placeholderMainSearch" : "search an event ...",
+			"lblBtnCreate" : "Create an event",
+			"colorBtnCreate" : "orange"
+		},
+      
 		"#annonces": {
 			"inMenu" : true, 
 			"useHeader" : true, 
@@ -95,31 +122,6 @@
 			"colorBtnCreate" : "azure"
 		},
 
-		"#agenda": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "agenda", 
-			"subdomainName" : "Agenda",
-			"hash":"#app.agenda",
-			"icon" : "calendar", 
-			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
-			"placeholderMainSearch" : "search an event ...",
-			"lblBtnCreate" : "Create an event",
-			"colorBtnCreate" : "orange"
-		},
-
-		"#live": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "live", 
-			"subdomainName" : "Live",
-			"hash":"#app.live",
-			"icon" : "newspaper-o", 
-			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
-			"placeholderMainSearch" : "search in live ..."
-		},
 
 		"#place":
 		    {"inMenu" : true, 

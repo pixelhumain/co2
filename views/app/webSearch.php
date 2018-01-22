@@ -205,7 +205,7 @@
 	<hr class="margin-top-5">
 	<span>
 		<small><b>
-		Vous connaissez un site qui n'est pas référencé sur kgougle ?<br> 
+		Vous connaissez un site qui n'est pas référencé ?<br> 
 		Ajoutez le <span class="letter-green">gratuitement</span> dans la base de données, et faites-en profiter tout le monde !
 		</b></small>
 	</span><br><br>

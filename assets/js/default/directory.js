@@ -123,7 +123,8 @@ function removeSearchType(type){
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
   //if(typeof myScopes != "undefined" )
-    var searchLocality = getLocalityForSearch();
+    //var searchLocality = getLocalityForSearch();
+    var searchLocality = getSearchLocalityObject();
   //else
 
     
@@ -245,15 +246,17 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                       if(countNbTag > 0)
                         headerStr += "<br><br>";
                       
-                      if( Object.keys(myMultiTags).length > 0 )
-                        headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
-                      
-                      $.each(myMultiTags, function(key, val){
-                        var params = headerParams[val];
-                        headerStr += "<span class='text-dark hidden-xs'>"+
-                                  "#"+key+
-                                "</span> ";
-                      });
+                      if(typeof myMultiTags != "undefined"){
+                        if( Object.keys(myMultiTags).length > 0 )
+                          headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
+                        
+                        $.each(myMultiTags, function(key, val){
+                          var params = headerParams[val];
+                          headerStr += "<span class='text-dark hidden-xs'>"+
+                                    "#"+key+
+                                  "</span> ";
+                        });
+                      }
                     }
                     headerStr += "</small>";
                     headerStr += "</h4>";
@@ -341,7 +344,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
                 //active les link lbh
                 bindLBHLinks();
-                bindCommunexionScopeEvents();
+                //bindCommunexionScopeEvents();
 
                 // $(".start-new-communexion").click(function(){
                 //     mylog.log("start-new-communexion directory.js");

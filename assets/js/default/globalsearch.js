@@ -264,7 +264,12 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   valuesScopes.level2 = o.level2 ;
                   valuesScopes.level2Name = o.level2Name ;
                 }
-
+                typeSearchCity="city";
+                levelSearchCity="city";
+                if(typeof o.countCpByInsee != "undefined" && o.countCpByInsee > 0 ){
+                  typeSearchCity="cp";
+                  levelSearchCity="cp";
+                }
                 /*str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + o._id.$id  + "' " + 
                                 "data-scope-name='" + o.name + "' " +
@@ -278,8 +283,8 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                         str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
                         str +=    "data-scope-value='" + o._id.$id  + "' " + 
                                 "data-scope-name='" + o.name + "' " +
-                                "data-scope-level='cp' " +
-                                "data-scope-type='cp' " +
+                                "data-scope-level='"+levelSearchCity+"' " +
+                                "data-scope-type='"+typeSearchCity+"' " +
                                 "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
                                 "data-scope-notsearch='"+true+"' " ;
                         str += ">";

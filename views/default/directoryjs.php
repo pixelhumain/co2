@@ -760,7 +760,7 @@ jQuery(document).ready(function() {
       
       startSearch(0, indexStepInit, searchCallback);
       KScrollTo("#content-social");
-      bindCommunexionScopeEvents();
+      //bindCommunexionScopeEvents();
       //KScrollTo("#before-section-result");
   });
   

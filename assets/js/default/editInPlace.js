@@ -807,6 +807,7 @@ function bindAboutPodElement() {
 		mylog.log("params",params);
 		dyFObj.openForm( 'url','sub', params);
 	}
+
 	function updateRoles(childId, childType, childName, connectType, roles) {
 		var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/link/removerole/",
@@ -975,6 +976,26 @@ function bindAboutPodElement() {
 				}
 			}
 		});
+	}
+
+	function updateNetwork(id) {
+		mylog.log("updateNetwork", id);
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/"+moduleId+"/network/get/id/"+id,
+			data: {},
+			dataType: "json",
+			success: function(data){
+				mylog.log("data", data);
+				var update = {};
+				update["skin[title]"] = data.skin.title;
+				update["skin[shortDescription]"] = data.skin.title;
+				update["skin[logo]"] = data.skin.logo;
+				update["displayCommunexion"] = dataHelper.stringToBool(data.skin.displayCommunexion);
+				dyFObj.openForm( 'network','sub', update);
+			}
+		});
+		
 	}
 
 	function removeNetwork(id) {

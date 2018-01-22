@@ -54,7 +54,7 @@ dynForm = {
 	    	
 	    	if( formData.displayCommunexion )
 	    		formData["skin[displayCommunexion]"] = dataHelper.stringToBool(formData.displayCommunexion);
-
+	    	delete formData.displayCommunexion
 	    	
 	    	//---------------request
 			if( $(dyFObj.activeModal+" #ajaxFormModal request[searchType]").val() != "" && formData["request[searchType]"] )

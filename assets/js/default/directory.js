@@ -2037,14 +2037,14 @@ var directory = {
         str += '<ul class="nav navbar-nav margin-5 col-md-12">';
 
             str += '<li class="text-red pull-right">';
-              str += '<a href="javascript:;"  onclick="removeNetwork(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+              str += '<a href="javascript:;"  onclick="removeNetwork(\''+params.id+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
               'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
                 str += '<i class="fa fa-trash"></i>'+trad["delete"];
               str += '</a>';
             str += '</li>';
 
             str += '<li class="text-red pull-right">';
-              str += '<a href="javascript:;" onclick="updateNetwork(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
+              str += '<a href="javascript:;" onclick="updateNetwork(\''+params.id+'\');" ' +
               'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
                 str += '<i class="fa fa-pencil"></i>'+trad["update"];
               str += '</a>';

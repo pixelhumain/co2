@@ -465,6 +465,7 @@ var tradDynForm = {
 	"Add a zone" : "<?php echo Yii::t("common","Add a zone") ?>",
 	"Zone" : "<?php echo Yii::t("common","Zone") ?>",
 	"Add a city" : "<?php echo Yii::t("common","Add a city") ?>",
+	"Add map" : "<?php echo Yii::t("form","Add map") ?>",
 	"appList":"<?php echo Yii::t("form","List of Applications") ?>",
 	"screenList":"<?php echo Yii::t("form","Screen shot View to Application") ?>",
 	"me":"<?php echo Yii::t("form","Me") ?>",

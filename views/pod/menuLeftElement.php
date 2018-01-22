@@ -395,7 +395,7 @@
 			<li class="">
 				<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 					id="btn-start-networks" class="ssmla">
-					<i class="fa fa-envelope"></i> <?php echo Yii::t("common","Network"); ?>
+					<i class="fa fa-map-o"></i> <?php echo Yii::t("common","My maps"); ?>
 				</a>
 			</li>
 		<?php } ?>

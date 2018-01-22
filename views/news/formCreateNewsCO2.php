@@ -295,7 +295,7 @@
 
 <?php if(isset(Yii::app()->session['userId'])){ ?>
   <div id="formCreateNewsTemp" style="float: none;" class="center-block hidden">
-    <div class='no-padding form-create-news-container col-sm-6 col-sm-offset-3'>
+    <div class='no-padding form-create-news-container col-sm-9 col-sm-offset'>
 
       <div class='padding-10 partition-light no-margin text-left header-form-create-news' style="margin-bottom:-40px !important;">
         <i class='fa fa-angle-down'></i> <i class="fa fa-file-text-o"></i> <span id="info-write-msg"><?php echo $textForm; ?></span>

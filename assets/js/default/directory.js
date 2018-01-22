@@ -92,8 +92,8 @@ function addSearchType(type){
 function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
-    if(search.app == "territorial") {
-        searchType = ["organizations", "projects", "poi","ressources", "places", "news", "events", "classified"];
+    if(search.app == "territorial" || typeInit == "all") {
+        searchType = ["organizations", "projects", "events", "places", "poi", "news", "classified","ressources"];
         if(search.value != "")
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
@@ -105,7 +105,7 @@ function initTypeSearch(typeInit){
     }
     else{
         searchType = [ typeInit ];
-        indexStepInit = 100;
+        indexStepInit = 30;
     }
 }
 
@@ -1005,7 +1005,7 @@ var directory = {
     //  ELEMENT DIRECTORY PANEL
     // ********************************
   lightPanelHtml : function(params){
-    var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
+    var linkAction = "lbh"; // ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
     
     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x letter-"+params.color+"'></i>";
 
@@ -1021,12 +1021,16 @@ var directory = {
 
 
     if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")
-          params.fullLocality = " <small class='lbh letter-red margin-left-10'><i class='fa fa-map-marker'></i> "+params.fullLocality+"</small> ";
+          params.fullLocality = " <small class='lbh letter-red margin-left-10'>"+
+                                  "<i class='fa fa-map-marker'></i> "+params.fullLocality+
+                                "</small> ";
 
     if(typeof params.scope != "undefined"){
       if(typeof params.scope.localities != "undefined"){
         $.each(params.scope.localities, function(key, scope){
-          params.fullLocality += " <small class='lbh letter-red margin-left-10'><i class='fa fa-bullseye'></i> "+scope.name+"</small> ";
+          params.fullLocality += " <small class='lbh letter-red margin-left-10'>"+
+                                    "<i class='fa fa-bullseye'></i> "+scope.name+
+                                 "</small> ";
         });
       }
     }
@@ -1035,27 +1039,27 @@ var directory = {
     
     str = "";
     str += "<div class='col-xs-12 searchEntity entityLight no-padding'>";
-
-    /*str += "<div class='entityLeft hidden-xs col-sm-1 col-md-1 no-padding text-right'>";
-      if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined")
-          str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+">" + params.imgProfil + "</a>";
-        //else if(typeof params.text == "undefined")
-        //  str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+"><div class='imgEmpty'></div></a>";
-    str += "</div>";*/
     
-    str += "<div class='entityLeft col-xs-2 col-sm-1 col-md-1 text-right padding-10'>";
+    str += "<div class='entityLeft pull-left text-right padding-10 hidden-xs'>";
       if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined")
           str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+">" + params.imgProfil + "</a>";
     str += "</div>"
 
-    str += "<div class='entityCenter col-xs-10 col-sm-8 col-md-6 no-padding'>";
+    str += "<div class='entityCenter col-xs-11 col-sm-8 col-md-7 col-lg-6 no-padding'>";
     
       if(typeof params.hash != "undefined" && typeof params.htmlIco != "undefined")
-        str +=    "<a href='"+params.hash+"' class='margin-top-15 iconType "+linkAction+">" + params.htmlIco + "</a>";
+        str +=    "<a href='"+params.hash+"' class='margin-top-15 iconType "+linkAction+"'>" + params.htmlIco + "</a>";
       
       if(typeof params.name != "undefined" && params.name != ""){
         str += "<a href='"+params.hash+"' class='margin-top-10 lbh letter-blue title'>"+params.name+"</a>";
 
+
+      if(typeof params.price != "undefined" && typeof params.devise != "undefined")
+        str += " <span class='letter-light bold margin-left-10'>"+ 
+                  "<i class='fa fa-money'></i> " +
+                  params.price + " " + params.devise +
+              "</span>";
+      
         if(typeof params.fullLocality != "undefined" && params.fullLocality != "")
           str += params.fullLocality;
       }
@@ -1071,7 +1075,25 @@ var directory = {
 
 
       if(typeof params.hash != "undefined")
-        str += "<br><a href='"+params.hash+"' class='lbh letter-green url'>"+params.hash+"</a>";
+        str += "<br><a href='"+params.hash+"' class='lbh letter-green url elipsis'>"+params.hash+"</a>";
+
+      if(typeof params.url != "undefined" && params.url != null && params.url != "")
+        str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
+
+
+      if(typeof params.startDate != "undefined")
+        str += "<br><small class='letter-light'>"+params.startDate+"</small>";
+      
+      if(typeof params.startDate != "undefined" && typeof params.endDate != "undefined") 
+        str += " <small class='letter-light'><i class='fa fa-angle-double-right'></i></small> ";
+
+      if(typeof params.endDate != "undefined")
+        str += "<small class='letter-light'>"+params.endDate+"</small>";
+      
+      if(typeof params.updatedLbl != "undefined" && (params.type == "events" ||  params.type == "classified"))
+        str += "<br><small class='letter-light bold'><i class='fa fa-clock-o'></i> "+params.updatedLbl+"</small>";
+      
+
 
       if(typeof params.shortDescription != "undefined" && params.shortDescription != "" && params.shortDescription != null)
         str += "<br><span class='description'>"+params.shortDescription+"</span>";
@@ -2468,7 +2490,7 @@ var directory = {
                         params.parentIcon = "fa-"+parentObj.icon;
                         params.parentColor = parentObj.color;
                     }
-                    if(params.type == "classified" && typeof params.category != "undefined"){
+                    if(params.type == "classified" && typeof params.category != "undefined" && typeof classified != "undefined"){
                       params.ico = typeof classified.filters[params.category] != "undefined" ?
                                    "fa-" + classified.filters[params.category]["icon"] : "";
                     }
@@ -2547,6 +2569,9 @@ var directory = {
                 params.fullLocality = params.postalCode + " " + params.cityName;
 
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
+
+                if(typeof params.slug != "undefined" && params.slug != "" && params.slug != null)
+                  params.hash = "#" + params.slug;
 
                 if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined")
                   params.hash = params.source;

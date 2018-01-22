@@ -29,7 +29,9 @@ function bindCommunexionScopeEvents(){
             //if(location.hash.indexOf("#search")){
               //  notSearch = false;
             //}
+            myScopes.type="open-scope";
         }
+        myScopes.type="communexion";
         if(search.app=="territorial") initTerritorialSearch();
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         changeCommunexionScope($(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),

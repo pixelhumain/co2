@@ -246,15 +246,17 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                       if(countNbTag > 0)
                         headerStr += "<br><br>";
                       
-                      if( Object.keys(myMultiTags).length > 0 )
-                        headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
-                      
-                      $.each(myMultiTags, function(key, val){
-                        var params = headerParams[val];
-                        headerStr += "<span class='text-dark hidden-xs'>"+
-                                  "#"+key+
-                                "</span> ";
-                      });
+                      if(typeof myMultiTags != "undefined"){
+                        if( Object.keys(myMultiTags).length > 0 )
+                          headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
+                        
+                        $.each(myMultiTags, function(key, val){
+                          var params = headerParams[val];
+                          headerStr += "<span class='text-dark hidden-xs'>"+
+                                    "#"+key+
+                                  "</span> ";
+                        });
+                      }
                     }
                     headerStr += "</small>";
                     headerStr += "</h4>";

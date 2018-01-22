@@ -89,10 +89,10 @@ function autocompleteMultiScope(){
 
 			$(".addScope").click(function(){
 
-				//if($("#ajaxFormModal").val().length)
+				if($("#ajax-modal").hasClass("in"))
 					dyFInputs.scopeObj.addScope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
-				// else
-				// 	addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
+				else
+				 	addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
 			});
 			
 		},

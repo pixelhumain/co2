@@ -992,6 +992,17 @@ function bindAboutPodElement() {
 				update["skin[shortDescription]"] = data.skin.title;
 				update["skin[logo]"] = data.skin.logo;
 				update["displayCommunexion"] = dataHelper.stringToBool(data.skin.displayCommunexion);
+
+				//update["add"] = dataHelper.stringToBool(data.skin.add);
+
+				update["request[scope]"] = data.request.scope;
+				update["request[searchType]"] = data.request.searchType;
+				update["request[searchTag]"] = data.request.searchTag;
+				update["request[sourceKey]"] = data.request.sourceKey;
+
+				
+
+
 				dyFObj.openForm( 'network','sub', update);
 			}
 		});

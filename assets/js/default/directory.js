@@ -2614,7 +2614,7 @@ var directory = {
                     
                     if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
                     
-                    if(domainName=="terla"){
+                    if( typeof domainName != "undefined" && domainName=="terla"){
                       if(params.type=="circuits")
                         str += directory.circuitPanelHtml(params);
                       else

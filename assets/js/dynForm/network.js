@@ -62,6 +62,8 @@ dynForm = {
 
 			if( formData.add && dataHelper.stringToBool(formData.displayCommunexion) ){
 				formData.add = formData["request[searchType]"];
+	    	}else{
+	    		delete formData.add ;
 	    	}
 
 	    	if( $(dyFObj.activeModal+" #ajaxFormModal request[searchTag]").val() != "" && formData["request[searchTag]"] )
@@ -104,8 +106,11 @@ dynForm = {
             "type" : dyFInputs.inputHidden(),
 	        //"name" : dyFInputs.name(),
 	      
-
-/************************* Skin *****************************/
+	        visible : dyFInputs.inputSelect(	"Visibilité du network",
+	            								"Choisir la visibilité du network", 
+	            								{ public : "public", communuty : "communuty", priver : "priver" }, 
+	            								{ required : true } ),
+			/************************* Skin *****************************/
 	        skinInfo : {
                 inputType : "custom",
                 html:"<p class='item-comment bg-green-comment'>"+tradDynForm["Skin"]+"</p>",
@@ -134,7 +139,8 @@ dynForm = {
 
 		    //add : dyFInputs.tags( ["organization","project","event"], tradDynForm["Allow to add elements"], tradDynForm["Allow to add elements"] ),
 
-/************************* Result *****************************/
+			/************************* Result *****************************/
+
             requestInfo : {
                 inputType : "custom",
                 html:"<p class='item-comment bg-green-comment'>"+tradDynForm["Request Section"]+"</p>",
@@ -144,7 +150,7 @@ dynForm = {
             "request[searchTag]" : dyFInputs.tags(tagsList, tradDynForm["Show items that will have the following tags"], tradDynForm["Show items that will have the following tags"] ),
             "request[sourceKey]" : dyFInputs.tags([], null, tradDynForm["Key used for data import"]) ,
 
-/************************* Filter *****************************/
+			/************************* Filter *****************************/
 
             filterInfo : {
                 inputType : "custom",

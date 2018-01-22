@@ -1042,12 +1042,12 @@ var directory = {
         //  str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+"><div class='imgEmpty'></div></a>";
     str += "</div>";*/
     
-    str += "<div class='entityLeft col-xs-2 col-sm-1 col-md-1 text-right padding-10'>";
+    str += "<div class='entityLeft pull-left text-right padding-10'>";
       if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined")
           str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+">" + params.imgProfil + "</a>";
     str += "</div>"
 
-    str += "<div class='entityCenter col-xs-10 col-sm-8 col-md-6 no-padding'>";
+    str += "<div class='entityCenter col-xs-10 col-sm-8 col-md-7 col-lg-6 no-padding'>";
     
       if(typeof params.hash != "undefined" && typeof params.htmlIco != "undefined")
         str +=    "<a href='"+params.hash+"' class='margin-top-15 iconType "+linkAction+">" + params.htmlIco + "</a>";
@@ -1055,6 +1055,13 @@ var directory = {
       if(typeof params.name != "undefined" && params.name != ""){
         str += "<a href='"+params.hash+"' class='margin-top-10 lbh letter-blue title'>"+params.name+"</a>";
 
+
+      if(typeof params.price != "undefined" && typeof params.devise != "undefined")
+        str += " <span class='letter-light bold margin-left-10'>"+ 
+                  "<i class='fa fa-money'></i> " +
+                  params.price + " " + params.devise +
+              "</span>";
+      
         if(typeof params.fullLocality != "undefined" && params.fullLocality != "")
           str += params.fullLocality;
       }
@@ -1071,6 +1078,21 @@ var directory = {
 
       if(typeof params.hash != "undefined")
         str += "<br><a href='"+params.hash+"' class='lbh letter-green url'>"+params.hash+"</a>";
+
+
+      if(typeof params.startDate != "undefined")
+        str += "<br><small class='letter-light'>"+params.startDate+"</small>";
+      
+      if(typeof params.startDate != "undefined" && typeof params.endDate != "undefined") 
+        str += " <small class='letter-light'><i class='fa fa-angle-double-right'></i></small> ";
+
+      if(typeof params.endDate != "undefined")
+        str += "<small class='letter-light'>"+params.endDate+"</small>";
+      
+      if(typeof params.updatedLbl != "undefined" && (params.type == "events" ||  params.type == "classified"))
+        str += "<br><small class='letter-light bold'><i class='fa fa-clock-o'></i> "+params.updatedLbl+"</small>";
+      
+
 
       if(typeof params.shortDescription != "undefined" && params.shortDescription != "" && params.shortDescription != null)
         str += "<br><span class='description'>"+params.shortDescription+"</span>";

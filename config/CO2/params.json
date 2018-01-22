@@ -34,7 +34,7 @@
 		"#territorial": {
 			"inMenu" : true, 
 			"useHeader" : true, 
-			"open" : true, 
+			"open" : false, 
 			"subdomain" : "territorial", 
 			"subdomainName" : "All",
 			"hash" : "#app.territorial",
@@ -50,7 +50,7 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "search", 
-			"subdomainName" : "Page CO",
+			"subdomainName" : "Tous",
 			"hash" : "#app.search",
 			"icon" : "search", 
 			"mainTitle" : "Réseau social <span class='text-red'>citoyen</span>",
@@ -62,7 +62,7 @@
 		"#web":
       	  	{ "inMenu" : true, 
               "useHeader" : true, 
-              "open" : true, 
+              "open" : false, 
               "subdomain" : "web", 
               "subdomainName" : "Web",
               "hash" : "#app.web",
@@ -82,6 +82,32 @@
               "placeholderMainSearch" : ""},
 
 
+		"#live": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "live", 
+			"subdomainName" : "En live",
+			"hash":"#app.live",
+			"icon" : "newspaper-o", 
+			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
+			"placeholderMainSearch" : "search in live ..."
+		},
+		      
+		"#agenda": {
+			"inMenu" : true, 
+			"useHeader" : true, 
+			"open" : true, 
+			"subdomain" : "agenda", 
+			"subdomainName" : "Events",
+			"hash":"#app.agenda",
+			"icon" : "calendar", 
+			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
+			"placeholderMainSearch" : "search an event ...",
+			"lblBtnCreate" : "Create an event",
+			"colorBtnCreate" : "orange"
+		},
+      
 		"#annonces": {
 			"inMenu" : true, 
 			"useHeader" : true, 
@@ -96,31 +122,6 @@
 			"colorBtnCreate" : "azure"
 		},
 
-		"#agenda": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "agenda", 
-			"subdomainName" : "Events",
-			"hash":"#app.agenda",
-			"icon" : "calendar", 
-			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
-			"placeholderMainSearch" : "search an event ...",
-			"lblBtnCreate" : "Create an event",
-			"colorBtnCreate" : "orange"
-		},
-
-		"#live": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : true, 
-			"subdomain" : "live", 
-			"subdomainName" : "Live",
-			"hash":"#app.live",
-			"icon" : "newspaper-o", 
-			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
-			"placeholderMainSearch" : "search in live ..."
-		},
 
 		"#place":
 		    {"inMenu" : true, 

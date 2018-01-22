@@ -92,8 +92,8 @@ function addSearchType(type){
 function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
-    if(search.app == "territorial") {
-        searchType = ["organizations", "projects", "poi","ressources", "places", "news", "events", "classified"];
+    if(search.app == "territorial" || typeInit == "all") {
+        searchType = ["organizations", "projects", "events", "places", "poi", "news", "classified","ressources"];
         if(search.value != "")
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
@@ -105,7 +105,7 @@ function initTypeSearch(typeInit){
     }
     else{
         searchType = [ typeInit ];
-        indexStepInit = 100;
+        indexStepInit = 30;
     }
 }
 
@@ -123,7 +123,8 @@ function removeSearchType(type){
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
   //if(typeof myScopes != "undefined" )
-    var searchLocality = getLocalityForSearch();
+    //var searchLocality = getLocalityForSearch();
+    var searchLocality = getSearchLocalityObject();
   //else
 
     
@@ -245,15 +246,17 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                       if(countNbTag > 0)
                         headerStr += "<br><br>";
                       
-                      if( Object.keys(myMultiTags).length > 0 )
-                        headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
-                      
-                      $.each(myMultiTags, function(key, val){
-                        var params = headerParams[val];
-                        headerStr += "<span class='text-dark hidden-xs'>"+
-                                  "#"+key+
-                                "</span> ";
-                      });
+                      if(typeof myMultiTags != "undefined"){
+                        if( Object.keys(myMultiTags).length > 0 )
+                          headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
+                        
+                        $.each(myMultiTags, function(key, val){
+                          var params = headerParams[val];
+                          headerStr += "<span class='text-dark hidden-xs'>"+
+                                    "#"+key+
+                                  "</span> ";
+                        });
+                      }
                     }
                     headerStr += "</small>";
                     headerStr += "</h4>";
@@ -341,7 +344,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
                 //active les link lbh
                 bindLBHLinks();
-                bindCommunexionScopeEvents();
+                //bindCommunexionScopeEvents();
 
                 // $(".start-new-communexion").click(function(){
                 //     mylog.log("start-new-communexion directory.js");
@@ -1004,7 +1007,7 @@ var directory = {
     //  ELEMENT DIRECTORY PANEL
     // ********************************
   lightPanelHtml : function(params){
-    var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
+    var linkAction = "lbh"; // ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
     
     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x letter-"+params.color+"'></i>";
 
@@ -1020,12 +1023,16 @@ var directory = {
 
 
     if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")
-          params.fullLocality = " <small class='lbh letter-red margin-left-10'><i class='fa fa-map-marker'></i> "+params.fullLocality+"</small> ";
+          params.fullLocality = " <small class='lbh letter-red margin-left-10'>"+
+                                  "<i class='fa fa-map-marker'></i> "+params.fullLocality+
+                                "</small> ";
 
     if(typeof params.scope != "undefined"){
       if(typeof params.scope.localities != "undefined"){
         $.each(params.scope.localities, function(key, scope){
-          params.fullLocality += " <small class='lbh letter-red margin-left-10'><i class='fa fa-bullseye'></i> "+scope.name+"</small> ";
+          params.fullLocality += " <small class='lbh letter-red margin-left-10'>"+
+                                    "<i class='fa fa-bullseye'></i> "+scope.name+
+                                 "</small> ";
         });
       }
     }
@@ -1034,23 +1041,16 @@ var directory = {
     
     str = "";
     str += "<div class='col-xs-12 searchEntity entityLight no-padding'>";
-
-    /*str += "<div class='entityLeft hidden-xs col-sm-1 col-md-1 no-padding text-right'>";
-      if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined")
-          str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+">" + params.imgProfil + "</a>";
-        //else if(typeof params.text == "undefined")
-        //  str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+"><div class='imgEmpty'></div></a>";
-    str += "</div>";*/
     
-    str += "<div class='entityLeft pull-left text-right padding-10'>";
+    str += "<div class='entityLeft pull-left text-right padding-10 hidden-xs'>";
       if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined")
           str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+">" + params.imgProfil + "</a>";
     str += "</div>"
 
-    str += "<div class='entityCenter col-xs-10 col-sm-8 col-md-7 col-lg-6 no-padding'>";
+    str += "<div class='entityCenter col-xs-11 col-sm-8 col-md-7 col-lg-6 no-padding'>";
     
       if(typeof params.hash != "undefined" && typeof params.htmlIco != "undefined")
-        str +=    "<a href='"+params.hash+"' class='margin-top-15 iconType "+linkAction+">" + params.htmlIco + "</a>";
+        str +=    "<a href='"+params.hash+"' class='margin-top-15 iconType "+linkAction+"'>" + params.htmlIco + "</a>";
       
       if(typeof params.name != "undefined" && params.name != ""){
         str += "<a href='"+params.hash+"' class='margin-top-10 lbh letter-blue title'>"+params.name+"</a>";
@@ -1077,7 +1077,10 @@ var directory = {
 
 
       if(typeof params.hash != "undefined")
-        str += "<br><a href='"+params.hash+"' class='lbh letter-green url'>"+params.hash+"</a>";
+        str += "<br><a href='"+params.hash+"' class='lbh letter-green url elipsis'>"+params.hash+"</a>";
+
+      if(typeof params.url != "undefined" && params.url != null && params.url != "")
+        str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
 
 
       if(typeof params.startDate != "undefined")
@@ -2568,6 +2571,9 @@ var directory = {
                 params.fullLocality = params.postalCode + " " + params.cityName;
 
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
+
+                if(typeof params.slug != "undefined" && params.slug != "" && params.slug != null)
+                  params.hash = "#" + params.slug;
 
                 if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined")
                   params.hash = params.source;

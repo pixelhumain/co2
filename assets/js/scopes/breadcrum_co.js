@@ -29,11 +29,15 @@ function bindCommunexionScopeEvents(){
             //if(location.hash.indexOf("#search")){
               //  notSearch = false;
             //}
+            myScopes.type="open-scope";
         }
+        myScopes.type="communexion";
         if(search.app=="territorial") initTerritorialSearch();
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
-        setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
+        changeCommunexionScope($(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
                          $(this).data("scope-values"),  notSearch, testCo) ;
+        //setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
+                         //$(this).data("scope-values"),  notSearch, testCo) ;
     });
     
     $(".item-scope-input").off().on("click", function(){ 
@@ -115,7 +119,8 @@ function activateGlobalCommunexion(active, firstLoad, testCo){
             iconHeader="search";
         }
         if(!firstLoad){
-            $(domBreadcrum).html(getBreadcrumCommunexion(valuesOfBreadcrum));
+           // $(domBreadcrum).html(getBreadcrumCommunexion(valuesOfBreadcrum));
+            $(domBreadcrum).html(constructScopesHtml(false));
             if(actionOnSetGlobalScope=="save")
                 $("#scopeListContainerForm").html(getBreadcrumCommunexion(valuesOfBreadcrum));
 

@@ -54,7 +54,7 @@
 			"hash" : "#app.search",
 			"icon" : "search", 
 			"mainTitle" : "Réseau social <span class='text-red'>citoyen</span>",
-			"placeholderMainSearch" : "search a page ...",
+			"placeholderMainSearch" : "what are you looking for ?",
 			"lblBtnCreate" : "Create a page",
 			"colorBtnCreate" : "green"
 		},

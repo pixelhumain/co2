@@ -137,7 +137,7 @@ class AppController extends CommunecterController {
     }*/
     public function actionSearch($type=null){
         CO2Stat::incNbLoad("co2-search");   
-        $params = array("type" => Organization::COLLECTION, "app"=>"search" );
+        $params = array("type" => "all" /*Organization::COLLECTION*/, "app"=>"search" );
         echo $this->renderPartial("search", $params, true);
     }
     public function actionTerritorial($type=null){

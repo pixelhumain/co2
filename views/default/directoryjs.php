@@ -258,7 +258,14 @@
                 <span class="badge count-badge-filter bg-dark" id="countall"></span>
             </button><hr class="hidden-xs no-margin" style="margin-top:0px;">
             
-            <button class="btn text-dark border-dark btn-directory-type active padding-10" data-type="organizations">
+            <!-- <hr class="hidden-xs no-margin"> -->
+            <button class="btn text-yellow border-yellow-k btn-directory-type padding-10" data-type="persons">
+                <i class="fa fa-user"></i> 
+                <span class="elipsis label-filter"><?php echo Yii::t("common","People") ?></span>
+                <span class="badge count-badge-filter bg-yellow" id="countcitoyens"></span>
+            </button><hr class="hidden-xs no-margin">
+
+            <button class="btn text-dark border-dark btn-directory-type padding-10" data-type="organizations">
                 <i class="fa fa-chevron-down"></i> 
                 <span class="elipsis label-filter">
                   <?php echo Yii::t("common", "organizations") ?>
@@ -299,12 +306,6 @@
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Events") ?></span>
                 <span class="badge count-badge-filter bg-orange" id="countevents"></span>
             </button>
-            <hr class="hidden-xs no-margin">
-            <button class="btn text-yellow border-yellow-k btn-directory-type padding-10" data-type="persons">
-                <i class="fa fa-user"></i> 
-                <span class="elipsis label-filter"><?php echo Yii::t("common","People") ?></span>
-                <span class="badge count-badge-filter bg-yellow" id="countcitoyens"></span>
-            </button><hr class="hidden-xs no-margin">
             <!-- <button class="btn text-red btn-directory-type" data-type="cities">
                 <i class="fa fa-university"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Cities") ?></span>

@@ -77,9 +77,9 @@
 				<span class="right_tool_map_header_title"><?php echo Yii::t("common", "Results"); ?></span>
 					<span class="right_tool_map_header_info"> / </span>
 					
-					<button class="btn btn-link bg-orange btn-open-right-list">
+					<!-- <button class="btn btn-link bg-orange btn-open-right-list">
 						<i class="fa fa-angle-left"></i>
-					</button>
+					</button> -->
 						
 				</div>
 				

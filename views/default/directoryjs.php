@@ -221,7 +221,7 @@
             <span class="hidden-xs hidden-sm"> Tous </span>
           </button> -->
           <?php 
-              $place = CO2::getContextList("place");
+              $place = CO2::getModuleContextList("places","categories");
               $currentSection = 1;
               foreach ($place["sections"] as $key => $section) { ?>
                 <div class="col-md-2 col-sm-3 col-sm-6 no-padding">

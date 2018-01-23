@@ -1044,7 +1044,7 @@ var directory = {
     
     str += "<div class='entityLeft pull-left text-right padding-10 hidden-xs'>";
       if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined")
-          str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+">" + params.imgProfil + "</a>";
+          str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+"''>" + params.imgProfil + "</a>";
     str += "</div>"
 
     str += "<div class='entityCenter col-xs-11 col-sm-8 col-md-7 col-lg-6 no-padding'>";
@@ -2630,7 +2630,7 @@ var directory = {
                       mylog.log("template principal",params,params.type, itemType);
 
 
-                      if(location.hash == "#territorial" || location.hash == "#search") 
+                      if(location.hash == "#territorial" || location.hash == "#search" || location.hash == "#web") 
                        str += directory.lightPanelHtml(params);  
 
                       else 

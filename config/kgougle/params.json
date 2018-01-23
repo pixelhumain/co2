@@ -31,6 +31,20 @@
                   "colorBtnCreate" : "green"
             },
 
+            "#search": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true,
+                  "subdomain" : "search", 
+                  "subdomainName" : "Tous",
+                  "hash" : "#app.search",
+                  "icon" : "search", 
+                  "mainTitle" : "Le moteur de recherche des <i class='letter-red'>cagous</i>",
+                  "placeholderMainSearch" : "Que recherchez-vous ?",
+                  "lblBtnCreate" : "Créer une page",
+                  "colorBtnCreate" : "green"},
+
+            
       	"#web":
       	  	{"inMenu" : true, 
                   "useHeader" : true, 
@@ -53,19 +67,6 @@
                   "mainTitle" : "Référencer une page",
                   "placeholderMainSearch" : ""},
                  
-            "#social": {
-                  "inMenu" : true, 
-                  "useHeader" : true, 
-                  "open" : true,
-                  "subdomain" : "social", 
-                  "subdomainName" : "Social",
-                  "hash" : "#app.search",
-                  "icon" : "user-circle-o", 
-                  "mainTitle" : "Réseau social",
-                  "placeholderMainSearch" : "rechercher une page ...",
-                  "lblBtnCreate" : "Créer une page",
-                  "colorBtnCreate" : "green"},
-
             "#agenda":
                   {"inMenu" : true, 
                   "useHeader" : true, 
@@ -84,7 +85,7 @@
                   "useHeader" : true, 
                   "open" : true,
                   "subdomain" : "actu", 
-                  "subdomainName" : "Actu",
+                  "subdomainName" : "Actu-média",
                   "hash" : "#app.media",
                   "icon" : "newspaper-o", 
                   "mainTitle" : "Fil d'actu <span class='letter-red'>média</span>",

@@ -178,13 +178,18 @@ function getBreadcrumCommunexion(communexion){
 
     htmlCommunexion='<div class="breadcrum-communexion col-md-12">';
     if(actionOnSetGlobalScope=="filter"){
-        scopeHtml+='<div id="input-sec-search" class="hidden-xs col-sm-4 col-md-4 col-lg-6">'+
-               '<input type="text" class="form-control input-global-search" id="searchOnCity" placeholder="Go to city ?">'+
-                '<div class="dropdown-result-global-search hidden-xs col-sm-6 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div></div>'+
-                '</div>';
+        scopeHtml+= '<div id="input-sec-search" class="hidden-xs col-sm-4 col-md-4 col-lg-6">'+
+                       '<input type="text" class="form-control input-global-search" id="searchOnCity" placeholder="Go to city ?">'+
+                        '<div class="dropdown-result-global-search hidden-xs col-sm-6 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;">'+
+                            '<div class="text-center" id="footerDropdownGS">'+
+                                '<label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>';
+
         htmlCommunexion+='<button class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
-            '<i class="fa fa-times"></i>'+
-        '</button>';
+                            '<i class="fa fa-times"></i>'+
+                         '</button>';
     }else{
         htmlCommunexion+='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="Quitter la communexion">'+
             '<i class="fa fa-times"></i>'+

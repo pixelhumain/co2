@@ -2970,10 +2970,7 @@ var typeObj = {
 		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
 			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
 			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
-	place:{  col:"places",ctrl:"place",color:"green",icon:"map-marker"},
-	places : { sameAs:"place" },
-	TiersLieux : {sameAs:"place",color: "azure",icon: "home"},
-	Maison : {sameAs:"place", color: "azure",icon: "home"},
+	
 	
 	siteurl:{ col:"siteurl",ctrl:"siteurl"},
 	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},

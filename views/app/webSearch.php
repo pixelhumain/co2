@@ -56,12 +56,12 @@
 <h4 style="margin:0 0 20px 0;">
 	<div class="margin-top-5">
 		<i class="fa fa-angle-down"></i> 
-		<?php echo sizeof($siteurls) > 0 ? sizeof($siteurls) : ""; ?> 
-		<?php if(sizeof($siteurls) == 0) echo sizeof($elements) > 0 ? sizeof($elements) : "aucun"; ?> 
+		<?php echo sizeof($siteurls) > 0 ? sizeof($siteurls) + sizeof($elements) : ""; ?> 
+		<?php //if(sizeof($siteurls) == 0) echo sizeof($elements) > 0 ? sizeof($elements) : "aucun"; ?> 
 		résultat<?php echo sizeof($siteurls) > 1 ? "s" : ""; ?> 
-		<?php if(sizeof($siteurls) == 0){ ?> 
-			<small>sur kgougle</small>
-		<?php } ?>
+		<?php //if(sizeof($siteurls) == 0){ ?> 
+			<!-- <small>sur kgougle</small> -->
+		<?php //} ?>
 	</div>
 </h4>
 
@@ -242,14 +242,14 @@ jQuery(document).ready(function() {
     Sig.showMapElements(Sig.map, contextMap);
 
     $("#sub-menu-right").html("");
-	if(nbElement > 0 && nbUrl > 0){
+	/*if(nbElement > 0 && nbUrl > 0){
    		$("#sub-menu-right").html($("#directoryMin").html());
 	}
     else if(nbElement > 0 && nbUrl == 0){
     	$("#resUrl").html($("#directoryMin").html());
     }
     
-    $("#directoryMin").html("");
+    $("#directoryMin").html("");*/
 
     $(".siteurl_title").click(function(){
    		var url = $(this).attr("href");

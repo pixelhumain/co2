@@ -31,6 +31,21 @@
 		display: none;
 	}
 
+	#scope-container,
+	#filters-container{
+        display: none !important;
+    }
+
+
+
+
+@media (min-width: 1300px) {
+    .subModuleTitle{
+        width: 56% !important;
+        margin-left: 28% !important;
+    }
+}
+
 @media screen and (max-width: 767px) {
 	.btn-select-media-src img{
 		height:30px;

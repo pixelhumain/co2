@@ -142,14 +142,14 @@ function bindScopesInputEvent(){
 	$("#multisopes-btn").off().on("click", function(){
 		if($(this).hasClass("active")){
 			$(this).removeClass("active");
-			$(this).find("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+			$("#multisopes-btn i.fa-chevron-up").removeClass("fa-chevron-up").addClass("fa-chevron-down");
 			myScopes.type="open-scope";
 			$("#open-breacrum-container").html("");
 
 		}else{
 			$(this).addClass("active");
 			myScopes.type="multiscopes";
-			$(this).find("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+			$("#multisopes-btn i.fa-chevron-down").removeClass("fa-chevron-down").addClass("fa-chevron-up");
 			$("#open-breacrum-container").html(constructScopesHtml());
 		}
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));

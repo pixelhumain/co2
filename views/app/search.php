@@ -35,11 +35,11 @@
 
     if(@$type=="cities")    { $lblCreate = ""; }
 
-    if($params["title"] == "Kgougle") {
+    /*if($params["title"] == "Kgougle") {
         $page = "social";
         if(@$type=="classified"){ $page = "annonces"; }
         if(@$type=="events"){ $page = "agenda"; }
-    }
+    }*/
 
     //header + menu
     $this->renderPartial($layoutPath.'header', 

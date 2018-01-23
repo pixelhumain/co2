@@ -115,7 +115,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
               else if(totalDataGS > 1)  totalDataGSMSG = totalDataGS + " "+trad.results;   
 
               if(totalDataGS > 0){
-                str += '<div class="text-left" id="footerDropdownGS" style="">';
+                str += '<div class="text-left col-xs-12" id="footerDropdownGS" style="">';
                 str += "<label class='text-dark margin-top-5'><i class='fa fa-angle-down'></i> " + totalDataGSMSG + "</label>";
                 str += '<a href="#search" class="btn btn-default btn-sm pull-right lbh" id="btnShowMoreResultGS">'+
                           '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+trad.extendedsearch+

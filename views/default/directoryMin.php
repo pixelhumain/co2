@@ -7,6 +7,8 @@
 <?php } ?>
 
 <?php
+
+    if(false)
     foreach ($result as $key => $v) { 
         $specs = Element::getElementSpecsByType(@$v["type"]);
 
@@ -61,3 +63,16 @@
         <?php } ?> 
     </a>
 <?php } ?>
+
+
+
+<script type="text/javascript" >
+  
+var result = <?php echo json_encode($result) ; ?>;
+
+jQuery(document).ready(function() { 
+    var res = directory.showResultsDirectoryHtml(result);
+    $("#resUrl").append(res);
+});
+
+</script> 

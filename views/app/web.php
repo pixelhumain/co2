@@ -11,7 +11,7 @@
     '/assets/css/circle.css',
     '/assets/js/web.js',
     '/assets/css/profilSocial.css',
-    //'/assets/css/default/directory.css',
+    '/assets/css/default/directory.css',
     '/assets/css/web.css'
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl); 
@@ -48,6 +48,44 @@
 
     #filters-container{
         display: none !important;
+    }
+
+    /*.subModuleTitle{
+        width:50%;
+        margin-left:25%;
+    }
+    #main-input-group,
+    #filters-menu-new{
+        margin: 0px;
+        width:100%;
+    }
+*/
+    #filters-menu-new{
+        display: none;
+    }
+
+    #main-input-group{
+        width:76%;
+    }
+
+    #resUrl .entityCenter{
+        width:85% !important;
+    }
+    #resUrl .searchEntity{
+        margin-left:-48px !important;
+    }
+
+    @media (min-width: 1300px) {
+        .subModuleTitle{
+            width: 56%;
+            margin-left: 28%;
+        }
+    }
+
+    @media screen and (max-width: 767px) {   
+            #main-input-group{
+                width:100%;
+            }
     }
 </style>
 

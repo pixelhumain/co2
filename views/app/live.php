@@ -95,28 +95,64 @@
         margin-top: 15px;
     }
 
+    <?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){  ?>
+    #scope-container,
+    #filters-container{
+        display: none !important;
+    }
+
+    
+    #main-input-group{
+        width:76%;
+    }
+
+    #formCreateNewsTemp{
+        margin-left: 12%;
+        width: 100%;
+    }
+    <?php } ?>
+
+    .live-container{
+        padding-top:50px !important;
+    }
+
+
+@media (min-width: 1300px) {
+    .subModuleTitle{
+        width: 56% !important;
+        margin-left: 28% !important;
+    }
+}
+
    /* .subModuleTitle{
         display: none;
     }*/
 </style>
 <div class="row padding-10 bg-white live-container">
-<div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page no-padding" id="" style="padding-top:0px!important;">
-	<!--<div id="container-scope-filter" class="col-md-offset-1 col-md-11 col-lg-offset-1 col-lg-11 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
-		<?php
-	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
-	    ?>
-	</div>-->
+<?php 
+        $CO2DomainName = Yii::app()->params["CO2DomainName"];
+        if($CO2DomainName == "kgougle"){ 
+           $this->renderPartial($layoutPath.'headers/pod/'.$CO2DomainName.'/dayQuestion', array());
+        } 
+    ?>
 
-	<div class="col-lg-1 col-md-1 hidden-sm hidden-xs text-right hidden-xs" id="sub-menu-left"></div>
+    <div class="col-md-12 col-sm-12 col-xs-12 bg-white top-page" id="" style="padding-top:0px!important;">
+    	<!--<div id="container-scope-filter" class="col-md-offset-1 col-md-11 col-lg-offset-1 col-lg-11 col-sm-12 col-xs-12 col-md-offset" style="padding:20px 0px;">
+    		<?php
+    	        $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); 
+    	    ?>
+    	</div>-->
 
-	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 margin-top-10">
-		<div id="newsstream"></div>
-	</div>	
+    	<div class="col-lg-1 col-md-1 hidden-sm hidden-xs text-right hidden-xs" id="sub-menu-left"></div>
 
-	<!-- <div class="pull-right col-lg-3 col-md-3 col-sm-4 hidden-xs padding-20 margin-top-50" id="nowList">
-	
-	</div> -->
-</div>
+    	<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 margin-top-10">
+    		<div id="newsstream"></div>
+    	</div>	
+
+    	<!-- <div class="pull-right col-lg-3 col-md-3 col-sm-4 hidden-xs padding-20 margin-top-50" id="nowList">
+    	
+    	</div> -->
+    </div>
 </div>
 
 
@@ -178,7 +214,7 @@ jQuery(document).ready(function() {
 
 	//init loading in scroll
    
-    initKInterface();//{"affixTop":10});
+    initKInterface({"affixTop":200});//{"affixTop":10});
     
     Sig.restartMap(Sig.map);
 

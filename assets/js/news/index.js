@@ -239,15 +239,11 @@ function bindEventNews(){
 		$("#btn-toogle-dropdown-scope").html(replaceText+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
 		scopeChange=$(this).data("value");
 		$("input[name='scope']").val(scopeChange);
-		/*if(scopeChange == "public"){
-	  		showTagsScopesMin("#scopeListContainer");
-	  		$(".list_tags_scopes").removeClass("tagOnly");
-	  		liveScopeType = "global";
-	  	} else {
-		  	showTagsScopesMin("#scopeListContainer");
-  			$(".list_tags_scopes").addClass("tagOnly");
-  			liveScopeType = "community";
-	  	}*/
+		if(scopeChange == "public"){
+			getScopeNewsHtml();
+			$("#scopeListContainerForm").show(700);
+	  	}else
+	  		$("#scopeListContainerForm").show(700);
 	});
 	$(".targetIsAuthor").click(function() {
 		mylog.log(this);
@@ -255,15 +251,6 @@ function bindEventNews(){
 		$("#btn-toogle-dropdown-targetIsAuthor").html('<img height=20 width=20 src="'+srcImg+'"/> <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
 		authorTargetChange=$(this).data("value");
 		$("#authorIsTarget").val(authorTargetChange);
-		/*if(scopeChange == "public"){
-	  		showTagsScopesMin("#scopeListContainer");
-	  		$(".list_tags_scopes").removeClass("tagOnly");
-	  		liveScopeType = "global";
-	  	} else {
-		  	showTagsScopesMin("#scopeListContainer");
-  			$(".list_tags_scopes").addClass("tagOnly");
-  			liveScopeType = "community";
-	  	}*/
 	});
 
 	$(".date_separator").appear().on('appear', function(event, $all_appeared_elements) {
@@ -318,10 +305,10 @@ function bindEventNews(){
 		if($(this).val() != "")
 			showFormBlock(true);	
 	});*/
-	$(".form-create-news-container #get_url").focusout(function(){
+	//$(".form-create-news-container #get_url").focusout(function(){
 		//if($(this).val() == "")// && location.hash.indexOf("#default.live")!=0)
 			//showFormBlock(false);	
-	});
+	//});
 	
 	$(".videoSignal").click(function(){
 		videoLink = $(this).find(".videoLink").val();
@@ -765,6 +752,73 @@ function toggleFilters(what){
  		$('.optionFilter').hide();
  	$(what).slideToggle();
  }
+ function getScopeNewsHtml(){
+ 	scopeHtml ='<div id="scopes-news-form" class="no-padding">'+
+ 			'<div id="news-scope-search" class="col-md-12 col-sm-12 col-xs-12 no-padding">'+
+	 			'<label class="margin-left-5"><i class="fa fa-angle-down"></i> Add places where you want to publish</label><br>'+
+	 			'<div class="bg-white" style="height:25px;">'+
+	            '<div id="input-sec-search" class="hidden-xs col-xs-12 col-md-4 col-sm-4 col-lg-4">'+
+	                '<div class="input-group shadow-input-header">'+
+	                      '<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
+	                      '<input type="text" class="form-control input-global-search" id="searchOnCityNews" autocomplete="off" style="height: 25px;border-radius: 0px;" placeholder="search city ...">'+
+	                '</div>'+
+	                '<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
+	                '</div>'+
+	            '</div>'+
+            	'<a href="javascript:;" id="multiscopes-news-btn" class="margin-left-20"><i class="fa fa-star"></i> My favorites</a>'+
+            	'<a href="javascript:;" id="communexion-news-btn" class="margin-left-20"><i class="fa fa-home"></i> Lille</a>'+
+            	'</div>'+
+            '</div>'+
+            '<div id="news-scopes-container" class="scopes-container col-md-12 col-sm-12 col-xs-12">'+
+            '<hr class="submit">'+
+            '</div>'+
+            '<div class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
+            	'<label class="margin-left-5"><i class="fa fa-angle-down"></i> Selected zones</label><br>'+
+            '</div>'+
+            '<div id="content-added-scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
+        '</div>';
+	actionOnSetGlobalScope="save";
+	$("#scopeListContainerForm").append(scopeHtml);
+	bindSearchOnNews();
+	bindScopesNewsEvent();
+	$("#multiscopes-news-btn").trigger("click");
+	//countFavoriteScope();
+}
+function bindSearchOnNews(){
+    $("#searchOnCityNews").off().on("keyup", function(e){
+    	e.preventDefault();
+        if(e.keyCode == 13){
+            searchTypeGS = ["cities"];
+            startGlobalSearch(0, 30, "#scopes-news-form");
+         }
+    });
+}
+function bindScopesNewsEvent(news){
+	$(".manageMultiscopes").off().on("click", function(){
+		addScope=$(this).data("add");
+		scopeValue=$(this).data("scope-value");
+		if(addScope){
+			newScope=myScopes[myScopes.type][scopeValue];
+			newScope.active=true;
+			newsScopes[scopeValue] = newScope;
+			$(this).attr("data-add",false).attr("data-original-title","Remove");
+			$(this).find("i").removeClass("fa-plus-circle").addClass("fa-times-circle");
+			pushHtml=$(this).parent().get();
+			$(this).parent().remove();
+			$("#content-added-scopes-container").append(pushHtml);
+		}else{
+			delete newsScopes[scopeValue];
+			$(this).parent().remove();
+		}
+	});
+	$("#multiscopes-news-btn").off().on("click", function(){
+		$(this).addClass("active");
+		myScopes.type="multiscopes";
+		//$(this).find("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+		$("#scopes-news-form .scopes-container").html(constructScopesHtml(true));
+        bindScopesNewsEvent();
+	});
+}
 /*
 * Save news and url generate
 *
@@ -779,55 +833,9 @@ function showFormBlock(bool){
 		$(".form-create-news-container .tools_bar").show("fast");
 		$(".form-create-news-container .scopescope").show("fast");
 		/////multiTagScopeLbl("send");
-		if(isLiveGlobal()){
-			scopeHtml ="";
-
-			if( typeof myScopes.communexion != "undefined" && notEmpty(myScopes.communexion.values)){
-				scopeHtml +='<a class="pull-left btn btn-link bg-white text-red tooltips item-globalscope-checker start-new-communexion" '+
-	            				'data-toggle="tooltip" data-placement="top" title="'+trad["communectwith"]+' '+myScopes.communexion.currentName+'" '+
-	                        	 'data-scope-value="'+myScopes.communexion.currentValue+'" '+
-                            	'data-scope-name="'+myScopes.communexion.currentName+'" '+
-                            	'data-scope-level="'+myScopes.communexion.currentLevel+'" '+
-                            	'data-scope-type="'+myScopes.communexion.communexionType+'" '+
-	            				'id="btn-my-co">'+
-	            				'<i class="fa fa-university"></i>'+
-	            			'</a>';
-	        }else{
-	        	if(userId!=""){
-                    scopeHtml='<a href="javascript:;" class="pull-left btn btn-link bg-white text-red tooltips" onclick="communecterUser();" '+
-                            'data-toggle="tooltip" data-placement="top" title="Communectez-vous" '+
-                            'id="btn-my-co">'+
-                            '<i class="fa fa-university"></i>'+
-                        '</a>';
-                }
-	        }
-
-            scopeHtml +='<h5 class="pull-left letter-red" style="margin-bottom: -8px;margin-top: 14px;">'+
-                            '<a class="btn btn-default main-btn-scopes text-white tooltips margin-bottom-5 margin-left-10 margin-right-10" '+ 
-                                'data-target="#modalScopes" data-toggle="modal" '+
-                                'data-toggle="tooltip" data-placement="top" '+ 
-                                'title="Sélectionner des lieux de recherche">'+
-                                '<img src="'+themeUrl+'/assets/img/cible3.png" height=25>'+
-                            '</a>'+ 
-                            'Zone(s) de publication <i class="fa fa-angle-right"></i>'+ 
-                        '</h5>'+
-                        '<div class="scope-min-header list_tags_scopes text-left ellipsis">'+
-            				$(".scope-min-header").html()+
-            			'</div>';
-			if(myScopes.communexion.state){
-				scopeHtml='<a class="btn btn-link text-red btn-decommunecter tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitter la communexion">'+
-                			'<i class="fa fa-sign-in"></i>'+
-            				'</a>'+
-            				$(".getFormLive").html();
-			}
-			actionOnSetGlobalScope="save";
-			$("#scopeListContainerForm").append(scopeHtml);
-			$(".item-globalscope-checker:last-child").trigger("click").removeClass("inactive");
-			if(myScopes.communexion.state)
-            	$(".item-globalscope-checker").attr('disabled', true);
-			$("#container-scope-filter").hide();
-			bindCommunexionScopeEvents();
-		}
+		if(isLiveGlobal())
+			scopeHtml=getScopeNewsHtml();
+		
 		//$("#lbl-my-scopes").html("<i class='fa fa-angle-down'></i> Sélectionnez les lieux de destination");
 		//$("#lbl-my-tags").html("<i class='fa fa-angle-down'></i> Sélectionner des tags<span class='hidden-xs'> pour définir le contenu de votre message</span>");
 		//$("br.visible-in-form").show();
@@ -1041,10 +1049,6 @@ function getMediaHtml(data,action,idNews){
     return content;
 }
 function saveNews(){
-	//mentionsResult=mentionsInit.beforeSave('textarea.mention');
-	/*$('textarea.mention').mentionsInput('getMentions', function(data) {
-      mentionsInput=data;
-    });*/
 	var formNews = $('#form-news');
 	var errorHandler2 = $('.errorHandler', formNews);
 	var successHandler2 = $('.successHandler', formNews);
@@ -1056,7 +1060,7 @@ function saveNews(){
 		}
 	};
 	if(userId != null && userId != ""){
-		validation = {
+		/*validation = {
 			errorElement : "span", // contain the error msg in a span tag
 			errorClass : 'help-block',
 			errorPlacement : function(error, element) {// render error placement for each input type
@@ -1150,40 +1154,23 @@ function saveNews(){
 				if ($("#tags").val() != ""){
 					newNews.tags = $("#form-news #tags").val().split(",");	
 				}
-				
-				if($('#searchLocalityCITYKEY') && isLiveGlobal() && liveScopeType=="global" ){
-					newNews.localities = getLocalityForSearch();	
-			    }
-
-
-
-			    if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));
-				else newNews.tags = $('#searchTags').val().split(',');		
-
+			    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));
+				//else newNews.tags = $('#searchTags').val().split(',');		
 				newNews.parentId = $("#form-news #parentId").val(),
 				newNews.parentType = $("#form-news #parentType").val(),
 				newNews.scope = $("input[name='scope']").val(),
 				newNews.type = $("input[name='type']").val(),
-				newNews.text =$("#form-news #get_url").val();
-				// AFAIRE
-				// activateMarkdown("#id")
-				// markdownToHtml(description);
-				//plugins/showdown/showdown.min.js
-				//plugins/showdown/showdown.min.js // bootstrap-markdown
-				// example in editInPlace.js /assets/js/
-				//console.log(newNews.text);
-				//alert(newNews.text);
+				newNews.text = $("#form-news #get_url").val();
+				
+				if((isLiveGlobal() && liveScopeType=="global") || newNews.scope=="public")
+					newNews.localities = newsScopes;	
 				if($('#authorIsTarget').length && $('#authorIsTarget').val()==1)
 					newNews.targetIsAuthor = true;
 				mylog.log("contextParentType", contextParentType);
-				if($("input[name='cityInsee']").length && contextParentType == "city")
+				/*if($("input[name='cityInsee']").length && contextParentType == "city")
 					newNews.codeInsee = $("input[name='cityInsee']").val();
 				if($("input[name='cityPostalCode']").length && contextParentType == "city")
-					newNews.postalCode = $("input[name='cityPostalCode']").val();
-				/*if (mentionsResult.mentionsInput.length != 0){
-					newNews.mentions=mentionsResult.mentionsInput;
-					newNews.text=mentionsResult.text;
-				}*/
+					newNews.postalCode = $("input[name='cityPostalCode']").val();*/
 				newNews=mentionsInit.beforeSave(newNews, 'textarea.mention');
 				mylog.log(newNews);
 				$.ajax({
@@ -1234,10 +1221,10 @@ function saveNews(){
 				   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
 				   $("#btn-submit-form").prop('disabled', false);
 			    });
-			}
-		};
+	//		}
+	//	};
 	}
-	formNews.submit(function(e) { e.preventDefault }).validate(validation);
+	//formNews.submit(function(e) { e.preventDefault(); }).validate(validation);
 }
 
 function showAllNews(){

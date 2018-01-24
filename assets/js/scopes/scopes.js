@@ -1,35 +1,59 @@
-function constructScopesHtml(constructScope){
+function constructScopesHtml(news){
 	html="";
     $.each(myScopes[myScopes.type], function(key, value){
-    	var disabled = value.active == false ? "disabled" : "";
+    	var disabled = (value.active == false && !news) ? "disabled" : "";
     	var btnType = (myScopes.type=="multiscopes") ? "multiscope" : "communexion";
     	if(typeof value.name == "undefined") value.name = key;
-    	if(myScopes.type=="multiscopes")
-    		btnScopeAction="<span class='manageMultiscopes active text-dark tooltips margin-right-10 margin-left-5' data-add='false' data-scope-value='"+key+"' data-toggle='tooltip' data-placement='top' data-original-title='Remove from my favorites places'><i class='fa fa-times'></i></span>";
-    	else{
-    		if(typeof myScopes.multiscopes[key] != "undefined")
-    			btnScopeAction="<span class='manageMultiscopes active tooltips margin-right-10 margin-left-5' data-add='0' data-scope-value='"+key+"' data-toggle='tooltip' data-placement='top' data-original-title='Remove from my favorites places'><i class='fa fa-star'></i></span>";
-    		else
-    			btnScopeAction="<span class='manageMultiscopes text-red tooltips margin-right-10 margin-left-5' data-add='true' data-scope-value='"+key+"' data-toggle='tooltip' data-placement='top' data-original-title='add to my favorites places'><i class='fa fa-star-o'></i></span>";
+    	if(news){
+    		btnScopeAction="<span class='manageMultiscopes text-red tooltips margin-right-5 margin-left-10' "+
+    			"data-add='true' data-scope-value='"+key+"' "+
+    			"data-toggle='tooltip' data-placement='top' "+
+    			"data-original-title='Add zones to news'>"+
+    				"<i class='fa fa-plus-circle'></i>"+
+    			"</span>";
+    	}else{
+	    	if(myScopes.type=="multiscopes")
+	    		btnScopeAction="<span class='manageMultiscopes active text-dark tooltips margin-right-5 margin-left-10' "+
+	    			"data-add='false' data-scope-value='"+key+"' "+
+	    			"data-toggle='tooltip' data-placement='top' "+
+	    			"data-original-title='Remove from my favorites places'>"+
+	    				"<i class='fa fa-times'></i>"+
+	    			"</span>";
+	    	else{
+	    		if(typeof myScopes.multiscopes[key] != "undefined")
+	    			btnScopeAction="<span class='manageMultiscopes active tooltips margin-right-5 margin-left-10' "+
+	    				"data-add='0' data-scope-value='"+key+"' "+
+	    				"data-toggle='tooltip' data-placement='top' "+
+	    				"data-original-title='Remove from my favorites places'>"+
+	    					"<i class='fa fa-star'></i>"+
+	    				"</span>";
+	    		else
+	    			btnScopeAction="<span class='manageMultiscopes text-red tooltips margin-right-5 margin-left-10' "+
+	    				"data-add='true' data-scope-value='"+key+"' "+
+	    				"data-toggle='tooltip' data-placement='top' "+
+	    				"data-original-title='Add to my favorites places'>"+
+	    					"<i class='fa fa-star-o'></i>"+
+	    				"</span>";
+	    	}
     	}
-    	html +=     "<div class='scope-order "+disabled+"' data-level='"+value.level+"''>"+
+    	html += "<div class='scope-order "+disabled+"' data-level='"+value.level+"''>"+
+    				btnScopeAction+
     				"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
-                    "class='text-red item-scope-checker item-scope-input' "+
-                    'data-scope-value="'+key+'" '+
-					'data-scope-name="'+value.name+'" '+
-					'data-scope-type="'+value.type+'" '+
-					'data-scope-level="'+value.type+'" ' +
-					'data-btn-type="'+btnType+'" '+
-					'data-level="'+value.level+'">' + 
-                    "<i class='fa fa-check-circle'></i> " + value.name + 
-                "</span>"+
-                btnScopeAction+
+	                    "class='text-red item-scope-checker item-scope-input' "+
+	                    'data-scope-value="'+key+'" '+
+						'data-scope-name="'+value.name+'" '+
+						'data-scope-type="'+value.type+'" '+
+						'data-scope-level="'+value.type+'" ' +
+						'data-btn-type="'+btnType+'" '+
+						'data-level="'+value.level+'">' + 
+	                    value.name + 
+                	"</span>"+
                 "</div>";
 	});	
     return html;
 }
 
-function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo){
+function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
 	communexion= new Object;
 	communexion.currentLevel = scopeLevel;
 	communexion.currentName = scopeName;
@@ -43,12 +67,14 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 	else{
 		myScopes.open=communexionObj;
 	}
-    $("#open-breacrum-container").html(constructScopesHtml());
-    $("#open-breacrum-container .scope-order").sort(sortSpan) // sort elements
-                  .appendTo('#open-breacrum-container'); // append again to the list
+	var newsAction=(notNull(appendDom) && appendDom.indexOf("scopes-news-form") >= 0) ? true : false;
+    $(appendDom).html(constructScopesHtml(newsAction));
+    $(appendDom+" .scope-order").sort(sortSpan) // sort elements
+                  .appendTo(appendDom); // append again to the list
 // sort function callback
 	startSearch(0, indexStepInit);
-	bindScopesInputEvent();
+	if(newsAction) bindScopesNewsEvent();
+	else bindScopesInputEvent();
 }
 function getSearchLocalityObject(){ 
 	var res = {};
@@ -114,13 +140,13 @@ function bindSearchCity(){
         if(e.keyCode == 13){
             //initTypeSearch("cities");
             searchTypeGS = ["cities"];
-            startGlobalSearch(0, 30, "#searchOnCity");
+            startGlobalSearch(0, 30, "#filter-scopes-menu");
             //startSearch($(this).val(), null, null);
             //$(".btn-directory-type").removeClass("active");
          }
     });
 }
-function bindScopesInputEvent(){
+function bindScopesInputEvent(news){
 	$(".manageMultiscopes").off().on("click", function(){
 		addScope=$(this).data("add");
 		scopeValue=$(this).data("scope-value");
@@ -144,13 +170,13 @@ function bindScopesInputEvent(){
 			$(this).removeClass("active");
 			$("#multisopes-btn i.fa-chevron-up").removeClass("fa-chevron-up").addClass("fa-chevron-down");
 			myScopes.type="open-scope";
-			$("#open-breacrum-container").html("");
+			$(".scopes-container").html("");
 
 		}else{
 			$(this).addClass("active");
 			myScopes.type="multiscopes";
 			$("#multisopes-btn i.fa-chevron-down").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-			$("#open-breacrum-container").html(constructScopesHtml());
+			$(".scopes-container").html(constructScopesHtml());
 		}
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
 		if(search.app=="territorial") initTerritorialSearch();
@@ -203,7 +229,7 @@ function bindScopesInputEvent(){
                     $("#newsstream").html("<div class='col-md-12 text-center'>"+str+"</div>");
             }
         }, 800);*/
-        checkScopeMax();
+        //checkScopeMax();
     });
 }
 function countFavoriteScope(){
@@ -221,13 +247,13 @@ function scopeActiveScope(scopeValue){
     		else
     			myScopes.open[e].active=true;
     	});
-    	$("#open-breacrum-container .item-scope-input i.fa").addClass("fa-circle-o");
-        $("#open-breacrum-container .item-scope-input i.fa").removeClass("fa-check-circle");
-        $("#open-breacrum-container .scope-order").addClass("disabled");
+    	$(".scopes-container .item-scope-input i.fa").addClass("fa-circle-o");
+        $(".scopes-container .item-scope-input i.fa").removeClass("fa-check-circle");
+        $(".scopes-container .scope-order").addClass("disabled");
         //if(myScopes.open[scopeValue].active){
-	    $("#open-breacrum-container [data-scope-value='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
-	    $("#open-breacrum-container [data-scope-value='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
-	    $("#open-breacrum-container [data-scope-value='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
+	    $(".scopes-container [data-scope-value='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
+	    $(".scopes-container [data-scope-value='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
+	    $(".scopes-container [data-scope-value='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
 	    //}
     }else{
 	    if(!myScopes.multiscopes[scopeValue].active){

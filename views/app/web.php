@@ -60,7 +60,7 @@
         width:100%;
     }
 */
-    #filters-menu-new{
+    #filter-scopes-menu{
         display: none;
     }
 

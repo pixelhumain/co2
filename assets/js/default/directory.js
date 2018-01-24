@@ -2173,8 +2173,63 @@ var directory = {
         str += "</div>";  
       str += "</div>";
       return str;
-    
     },
+
+	network2PanelHtml : function(params){
+		mylog.log("----------- network2PanelHtml",params);
+		str = "";
+		params.hash = baseUrl+"/network/default/index?src="+baseUrl+"/"+moduleId+"/network/get/id/"+params.id ;
+		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer contain_"+params.type+"_"+params.id+"'>";
+			str += '<div class="searchEntity" id="entity'+params.id+'">';
+
+
+		if(typeof params.edit  != "undefined")
+			str += this.getAdminToolBar(params);
+
+		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
+			isFollowed=false;
+
+			if(typeof params.isFollowed != "undefined" )
+			  isFollowed=true;
+			mylog.log("isFollowed", params.isFollowed, isFollowed);
+
+			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+						' data-toggle="tooltip" data-placement="left" data-original-title="'+trad['Follow']+'"'+
+						" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.skin.title+"' data-isFollowed='"+isFollowed+"'>"+
+						"<i class='fa fa-chain'></i>"+
+					"</a>";
+		}
+
+		if(params.updated != null )
+			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad.actif+" </span>" + params.updated + "</div>";
+
+		// if(typeof params.size == "undefined" || params.size == "max")
+		str += "<a href='"+params.hash+"' class='container-img-banner add2fav >" + params.imgBanner + "</a>";
+		str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title=''>";
+
+		str += "<div class='entityRight no-padding'>";
+
+		//if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
+			str += "<div class='entityCenter no-padding'>";
+				str += "<a href='"+params.hash+"' class='container-img-profil add2fav >" + params.skin.logo + "</a>";
+				str += "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 > <i class='fa fa-map-o'></i> </a>";
+			str += "</div>";
+		//}
+
+		str += "<a  href='"+params.hash+"' class='entityName bold text-dark add2fav >"+
+					params.skin.title + 
+				"</a>";
+
+		str += "<br>";
+		str += "<div class='entityDescription'>" + (notNull(params.skin.shortDescription) ? params.skin.shortDescription : "" ) + "</div>";
+		//str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+		str += "</div>";
+		str += "</div>";
+		str += "</div>";
+		str += "</div>";
+		return str;
+	},
+
     // ********************************
     // PROPOSAL DIRECTORY PANEL
     // ********************************
@@ -2664,7 +2719,8 @@ var directory = {
                       else if(params.type.substring(0,11) == "poi.interop")
                         str += directory.interopPanelHtml(params);
                       else if(params.type == "network")
-                        str += directory.networkPanelHtml(params);
+                      	str += directory.network2PanelHtml(params);
+                        //str += directory.networkPanelHtml(params);
                       else
                         str += directory.defaultPanelHtml(params);
                     }

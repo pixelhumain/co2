@@ -1,4 +1,4 @@
-function scopeActive(scopeValue){
+/*function scopeActive(scopeValue){
     mylog.log("scopeActive", scopeValue);
     if(myScopes.multiscopes[scopeValue].active){
         $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-circle-o");
@@ -9,7 +9,7 @@ function scopeActive(scopeValue){
         $("[data-scope-value='"+scopeValue+"'] .item-scope-checker i.fa").removeClass("fa-check-circle");
         $("[data-scope-value='"+scopeValue+"'].item-scope-input").addClass("disabled");
     }
-}
+}*/
 
 function bindCommunexionScopeEvents(){
     $(".btn-decommunecter").off().on('click',function(){
@@ -29,13 +29,13 @@ function bindCommunexionScopeEvents(){
             //if(location.hash.indexOf("#search")){
               //  notSearch = false;
             //}
-            myScopes.type="open-scope";
+            myScopes.type="open";
         }
-        myScopes.type="communexion";
+        //myScopes.type="communexion";
         if(search.app=="territorial") initTerritorialSearch();
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         changeCommunexionScope($(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
-                         $(this).data("scope-values"),  notSearch, testCo) ;
+                         $(this).data("scope-values"),  notSearch, testCo, $(this).data("append-container")) ;
         //setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
                          //$(this).data("scope-values"),  notSearch, testCo) ;
     });

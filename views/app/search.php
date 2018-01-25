@@ -14,6 +14,7 @@
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
     '/js/default/directory.js',
+        '/js/news/index.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 

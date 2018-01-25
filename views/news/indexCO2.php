@@ -111,6 +111,7 @@ var updateNews= new Object;
 
 <script type="text/javascript" >
   var news = <?php echo json_encode($news); ?>;
+  var newsScopes={};
   var loadingData = false;
   //var scrollEnd = false;
   var currentIndexMin = 0;
@@ -160,11 +161,12 @@ jQuery(document).ready(function() {
 function initForm(){ console.log("initForm initForm");
   getMediaFromUrlContent(".get_url_input",".results",1);
   
-  setTimeout(function(){
-    $("#btn-submit-form").on("click",function(){
-      saveNews();
-    });
-  },500);
+ // setTimeout(function(){
+   // $("#btn-submit-form").on("click",function(e){
+     // e.preventDefault();
+     // saveNews();
+    //});
+  //},500);
 
   initTags();
   initFormImages();

@@ -211,6 +211,7 @@
         $restricted = Yii::t("common","Visible to all on my wall and published on my network");
         $private = Yii::t("common","Visible only to me");
         $textForm = Yii::t("common","Published a message in your wall for your network");
+        $public = true;
       } 
       if(Yii::app()->session["userId"] ==$contextParentId){
         $headerName= "Mon journal";
@@ -319,7 +320,7 @@
         <?php } ?>
       </div>
 
-      <form id='form-news' class="col-sm-12 no-padding">
+      <div id='form-news' class="col-sm-12 no-padding">
         
         <input type="hidden" id="parentId" name="parentId" value="<?php if($contextParentType != "city") echo $contextParentId; else echo Yii::app()->session["userId"]; ?>"/>
         <input type="hidden" id="parentType" name="parentType" value="<?php if($contextParentType != "city") echo $contextParentType; else echo Person::COLLECTION; ?>"/> 
@@ -339,17 +340,18 @@
             <div id="results" class="bg-white results col-sm-12 padding-10"></div>
           </div>
         </div>
-        <div class="form-group tagstags col-sm-12 no-padding">
+        <div class="form-group tagstags col-md-12 col-sm-12 col-xs-12 no-padding">
             <input id="tags" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">
         </div>
-        <div class="form-actions no-padding" style="display: block;">
+        <div id="scopeListContainerForm" class="form-group col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-10"></div>
+        <div class="form-actions col-md-12 col-sm-12 col-xs-12 no-padding" style="display: block;">
           
-          <div id="scopeListContainerForm" class="list_tags_scopes col-xs-12 no-padding margin-bottom-10"></div>
+          
 
           <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
             <hr class="submit">
             
-            <button id="btn-submit-form" type="submit" class="btn btn-success pull-right"><?php echo Yii::t("common","Submit") ?> <i class="fa fa-arrow-circle-right"></i></button>
+            <button id="btn-submit-form" onclick="saveNews();" class="btn btn-success pull-right"><?php echo Yii::t("common","Submit") ?> <i class="fa fa-arrow-circle-right"></i></button>
 
 
           <?php if((@$canManageNews && $canManageNews==true) 
@@ -443,17 +445,16 @@
 
           <?php if($type=="city"){ ?>
             <input type="hidden" name="scope" value="public"/>
-          <?php } ?>
-          <?php if((@$canManageNews && $canManageNews=="true") || (
+          <?php } else if((@$canManageNews && $canManageNews=="true") || (
               @Yii::app()->session["userId"] && 
-              $contextParentType==Person::COLLECTION && Yii::app()->session["userId"]==$contextParentId)){ ?>
-              <?php if(in_array($contextParentType,array(Event::COLLECTION,Person::COLLECTION,Project::COLLECTION,Organization::COLLECTION))){ ?>
-                <input type="hidden" name="scope" value="restricted"/>
-              <?php } else { ?>
-              <input type="hidden" name="scope" value="public"/>
-              <?php } ?>
+              $contextParentType==Person::COLLECTION && Yii::app()->session["userId"]==$contextParentId)){
+                if(in_array($contextParentType,array(Event::COLLECTION,Person::COLLECTION,Project::COLLECTION,Organization::COLLECTION))){ ?>
+                  <input type="hidden" name="scope" value="restricted"/>
+               <?php } else { ?>
+                  <input type="hidden" name="scope" value="public"/>
+              <?php } 
 
-          <?php }else{ if($contextParentType==Event::COLLECTION){?>
+            }else if($contextParentType==Event::COLLECTION){?>
             
             <input type="hidden" name="scope" value="restricted"/>
 
@@ -461,10 +462,10 @@
 
             <input type="hidden" name="scope" value="private"/>
 
-          <?php } } ?>
+          <?php } ?>
           </div>
         </div>
-      </form>
+      </div>
      </div>
   </div>
 <?php }else{ ?>

@@ -15,11 +15,11 @@ dynForm = {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
 				$("#ajaxFormModal .displayCommunexioncheckboxSimple .btn-dyn-checkbox").click(function(){
-		    		mylog.log("displayCommunexion", $("#ajaxFormModal #displayCommunexion").val())
+		    		mylog.log("displayCommunexion 2", $("#ajaxFormModal #displayCommunexion").val())
 		    		if($("#ajaxFormModal #displayCommunexion").val() == "true")
-		    			$("#ajaxFormModal .addtags").show();
+		    			$("#ajaxFormModal .addcheckboxSimple").show();
 		    		else
-		    			$("#ajaxFormModal .addtags").hide();
+		    			$("#ajaxFormModal .addcheckboxSimple").hide();
 		    	});
 	    	},
 	    },
@@ -105,11 +105,11 @@ dynForm = {
        
             "type" : dyFInputs.inputHidden(),
 	        //"name" : dyFInputs.name(),
-	      
 	        visible : dyFInputs.inputSelect(	"Visibilité du network",
 	            								"Choisir la visibilité du network", 
-	            								{ public : "public", communuty : "communuty", priver : "priver" }, 
+	            								{ public : tradDynForm.public, network : tradDynForm.network, private : tradDynForm.private }, 
 	            								{ required : true } ),
+
 			/************************* Skin *****************************/
 	        skinInfo : {
                 inputType : "custom",

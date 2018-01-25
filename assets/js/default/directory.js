@@ -2194,24 +2194,25 @@ var directory = {
 
 	network2PanelHtml : function(params){
 		mylog.log("----------- network2PanelHtml",params);
+		params.hash = baseUrl+"/network/default/index?src="+baseUrl+"/"+moduleId+"/network/get/id/"+params.id;
 		str = "";
-		params.hash = baseUrl+"/network/default/index?src="+baseUrl+"/"+moduleId+"/network/get/id/"+params.id ;
-		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer contain_"+params.type+"_"+params.id+"'>";
-			str += '<div class="searchEntity" id="entity'+params.id+'">';
+		var classType=params.type;
+		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 
 
+		var addFollowBtn = true;
 		if(typeof params.edit  != "undefined")
 			str += this.getAdminToolBar(params);
-
+		mylog.log("follow", userId, params.id, !inMyContacts(params.typeSig, params.id) );
 		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
 			isFollowed=false;
-
 			if(typeof params.isFollowed != "undefined" )
-			  isFollowed=true;
+				isFollowed=true;
 			mylog.log("isFollowed", params.isFollowed, isFollowed);
-
+			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
 			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-						' data-toggle="tooltip" data-placement="left" data-original-title="'+trad['Follow']+'"'+
+						' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
 						" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.skin.title+"' data-isFollowed='"+isFollowed+"'>"+
 						"<i class='fa fa-chain'></i>"+
 					"</a>";
@@ -2220,32 +2221,73 @@ var directory = {
 		if(params.updated != null )
 			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad.actif+" </span>" + params.updated + "</div>";
 
+		var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
+		// if(params.type == "citoyens") 
+		// params.hash += '.viewer.' + userId;
 		// if(typeof params.size == "undefined" || params.size == "max")
 		str += "<a href='"+params.hash+"' class='container-img-banner add2fav >" + params.imgBanner + "</a>";
-		str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title=''>";
+		str += "<div class='padding-10 informations'>";
 
 		str += "<div class='entityRight no-padding'>";
 
-		//if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
+		if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
 			str += "<div class='entityCenter no-padding'>";
-				str += "<a href='"+params.hash+"' class='container-img-profil add2fav >" + params.skin.logo + "</a>";
-				str += "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 > <i class='fa fa-map-o'></i> </a>";
+			str +=    "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
+			str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+">" + params.htmlIco + "</a>";
 			str += "</div>";
-		//}
+		}
 
-		str += "<a  href='"+params.hash+"' class='entityName bold text-dark add2fav >"+
-					params.skin.title + 
-				"</a>";
+		// if(notEmpty(params.typePoi)){
+		// 	str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
+		// }
 
-		str += "<br>";
-		str += "<div class='entityDescription'>" + (notNull(params.skin.shortDescription) ? params.skin.shortDescription : "" ) + "</div>";
-		//str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
-		str += "</div>";
-		str += "</div>";
-		str += "</div>";
-		str += "</div>";
-		return str;
-	},
+		str += "<a href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
+					"<i class='fa fa-map-o fa-rotate-180'></i>" + params.skin.title + 
+				"</a>";  
+    // if(notEmpty(params.typeEvent))
+    //   str += "<span class='typeEventDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typeEvent] + "</span>";  
+    
+    // if(typeof(params.statusLink)!="undefined"){
+    //   if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+    //     str+="<span class='text-red'>"+trad.administrator+"</span>";
+    //   if(typeof(params.statusLink.isAdminInviting)!="undefined"){
+    //     str+="<span class='text-red'>"+trad.invitingToAdmin+"</span>";
+    //   }
+    //   if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
+    //     str+="<span class='text-red'>"+trad.waitingValidation+"</span>";
+    // }
+
+    if(params.rolesLbl != "")
+      str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
+
+    if( params.section ){
+      str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
+      if(typeof params.subtype != "undefined") str += " > " + params.subtype;
+        str += "</div>";
+    } 
+
+  if(params.type=="events"){
+    var dateFormated = "<br/><i class='fa fa-clock'></i> "+directory.getDateFormated(params, true);
+    var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;
+    str += dateFormated+countSubEvents;
+  } 
+
+  var thisLocality = "";
+  if(params.fullLocality != "" && params.fullLocality != " ")
+    thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality add2fav"+linkAction+">"+
+              "<i class='fa fa-home'></i> " + params.fullLocality + "</a>";
+  else thisLocality = "<br>";
+
+  str += thisLocality;
+
+  str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
+  str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+  str += "</div>";
+  str += "</div>";
+  str += "</div>";
+  str += "</div>";
+  return str;
+  },
 
     // ********************************
     // PROPOSAL DIRECTORY PANEL
@@ -2736,8 +2778,8 @@ var directory = {
                       else if(params.type.substring(0,11) == "poi.interop")
                         str += directory.interopPanelHtml(params);
                       else if(params.type == "network")
-                      	//str += directory.network2PanelHtml(params);
-                        str += directory.networkPanelHtml(params);
+                      	str += directory.network2PanelHtml(params);
+                        //str += directory.networkPanelHtml(params);
                       else
                         str += directory.defaultPanelHtml(params);
                     }

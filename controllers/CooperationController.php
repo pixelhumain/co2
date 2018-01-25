@@ -20,6 +20,7 @@ class CooperationController extends CommunecterController {
 	        'getcoopdata'       	=> 'citizenToolKit.controllers.cooperation.GetCoopDataAction',
 	        'savevote'       		=> 'citizenToolKit.controllers.cooperation.SaveVoteAction',
 	        'deleteamendement'      => 'citizenToolKit.controllers.cooperation.DeleteAmendementAction',
+	        'getmydashboardcoop'      => 'citizenToolKit.controllers.cooperation.GetMyDashboardCoopAction',
 	    );
 	}
 

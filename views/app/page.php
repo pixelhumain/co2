@@ -129,7 +129,7 @@ var indexStepGS = 20;
 
 jQuery(document).ready(function() {
     
-	//initKInterface({"affixTop":0});
+	initKInterface({"affixTop":0});
 	$("#mainNav").addClass("affix");
 	initPageInterface();
     // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';

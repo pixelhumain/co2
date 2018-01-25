@@ -1,7 +1,7 @@
 <style>
-	body .load-coop-data .progress{
+	/*body .load-coop-data .progress{
 		display: none;
-	}
+	}*/
 	#menu-room .load-coop-data .progress{
 		display: block;
 	}
@@ -202,117 +202,11 @@
 					<?php if(@$proposalList){
 							foreach(array("tovote", "amendable", "closed", "disabled", "resolved") as $thisStatus){ 
 								foreach($proposalList as $key => $proposal){ ?>
-								<?php $totalVotant = Proposal::getTotalVoters($proposal); ?>
-								<?php $isAuthor = Yii::app()->session['userId'] == $proposal["creator"]; ?>
-									<?php if(@$proposal["status"] == $thisStatus){ ?>
-										<li class="submenucoop sub-proposals no-padding col-lg-4 col-md-6 col-sm-6 " 
-											data-name-search="<?php echo str_replace('"', '', @$proposal["title"]); ?>">
-										<a href="javascript:;" class="load-coop-data " data-type="proposal" 
-											data-status="<?php echo @$proposal["status"]; ?>" 
-										   	data-dataid="<?php echo (string)@$proposal["_id"]; ?>">
-									  		
-									  			<?php if((@$proposal["status"] == "amendable" || 
-										  				  @$proposal["status"] == "tovote") && 
-										  				  ($isAdmin || $isAuthor)){ ?>
-										  			<span class="elipsis draggable" 
-										  					data-dataid="<?php echo (string)@$proposal["_id"]; ?>"
-											  				data-type="proposals" >
-											  			<i class="fa fa-arrows-alt letter-light tooltips"  
-										   					data-original-title="<?php echo Yii::t("cooperation", "Drag / drop to an other space") ?>" 
-											  				data-placement="right"></i> 
-											  			<i class="fa fa-hashtag"></i> 
-											  			<?php if(@$proposal["title"]) 
-											  					   echo @$proposal["title"]; 
-											  				  else echo "<small><b>".
-											  				  		substr(@$proposal["description"], 0, 150).
-											  				  		   "</b></small>";
-											  			?>
-										  			</span>
-										  			
-									  		<?php }else{ ?> 
-										  		<small class="elipsis"><b>
-										  			<i class="fa fa-hashtag"></i> 
-										  			<?php echo substr(@$proposal["description"], 0, 150); ?></b>
-										  		</small>
-									  		<?php } ?>
-									  		
-										  	<?php if(@$post["status"]) { 
-										  		$parentRoom = Room::getById(@$proposal["idParentRoom"]); ?>
-										  	<br>
-										  	<small class="elipsis">
-									  			<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
-									  		</small>
-										  	<?php  } ?>
-
-										  	<br>
-										  	
-										  	<small class="letter-light lbl-status">
-										  		<i class="fa fa-<?php echo Cooperation::getIconCoop(@$proposal["status"]); ?>"></i> 
-										  		<b><?php echo Yii::t("cooperation", @$proposal["status"]); ?></b>
-										  	</small>
-											
-											<?php if(@$proposal["status"] == "tovote"){ ?>
-											  	<small class="letter-light margin-left-10 tooltips" 
-											  			data-original-title="<?php echo Yii::t("cooperation", "number of voters") ?>">
-											  		<i class="fa fa-group"></i> 
-											  		<?php echo $totalVotant; ?>
-											  	</small>
-											  	
-										  	<?php } ?>
-										  	<?php if(@$proposal["status"] == "amendable" || @$proposal["status"] == "tovote"){ ?>
-											  	<small class="letter-light margin-left-10">
-											  		<i class="fa fa-clock-o"></i> 
-											  		<?php 	if(@$proposal["amendementDateEnd"] && @$proposal["status"] == "amendable")
-												  				echo Yii::t("cooperation", "end") ." ".
-												  				//$proposal["amendementDateEnd"];
-												  				//date("Y-m-d H:i:s", $proposal["amendementDateEnd"]);
-												  				Translate::pastTime($proposal["amendementDateEnd"], "date"); 
-
-												  			else if(@$proposal["voteDateEnd"] && @$proposal["status"] == "tovote" )
-												  				echo Yii::t("cooperation", "end") ." ". 
-												  				Translate::pastTime($proposal["voteDateEnd"], "date"); 
-											  		?>
-											  	</small>
-										  	<?php } ?>
-
-									  	  	<div class="progress <?php if($proposal["status"] != "tovote") echo "hidden-min"; ?>">
-									  	  		<?php 
-									  	  			$voteRes = Proposal::getAllVoteRes($proposal);
-										  	  		foreach($voteRes as $key => $value){ 
-										  	  			if($totalVotant > 0 && $value["percent"] > 0){ 
-									  	  		?>
-														  <div class="progress-bar bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
-														  		style="width:<?php echo $value["percent"]; ?>%">
-														    <?php echo $value["percent"]; ?>%
-														  </div>
-											  			<?php } ?>
-												<?php } ?>
-
-											  <?php if($totalVotant == 0 && @$proposal["status"] == "tovote"){ ?>
-											  			<div class="progress-bar bg-turq" 
-											  				 role="progressbar" style="width:100%">
-													    	 <?php echo Yii::t("cooperation", "Be the first to vote"); ?>
-													  </div>
-											  <?php } ?>
-
-											  <?php if($totalVotant == 0 && @$proposal["status"] == "amendable"){ ?>
-											  			<div class="progress-bar bg-lightpurple text-dark" 
-											  				 role="progressbar" style="width:100%">
-													    	 <?php echo Yii::t("cooperation", "Processing amendements"); ?>
-													  </div>
-											  <?php } ?>
-
-											  <?php if($totalVotant == 0 && @$proposal["status"] == "closed"){ ?>
-											  			<div class="progress-bar bg-white text-dark" 
-											  				 role="progressbar" style="width:100%">
-													    	 <?php echo Yii::t("cooperation", "No vote"); ?>
-													  </div>
-											  <?php } ?>
-
-											</div> 
-									  	</a>
-									</li>
-									<?php } //end if ?>
+									<?php $this->renderPartial('../cooperation/proposalLi', 
+															   array("proposal"=>$proposal,
+															   		 "thisStatus" => $thisStatus,
+															   		 "isAdmin" => $isAdmin,
+															   		 "post" => @$post)); ?>
 								<?php } //end foreach ?>
 							<?php } //end foreach ?>
 					<?php }else{ ?>
@@ -339,23 +233,11 @@
 					
 					<?php  	if(@$resolutionList)
 							foreach($resolutionList as $key => $resolution){ ?>
-								<li class="submenucoop sub-resolutions no-padding col-lg-4 col-md-6 col-sm-6"
-									data-name-search="<?php echo str_replace('"', '', @$resolution["title"]); ?>">
-									<a href="javascript:;" class="load-coop-data" data-type="resolution" 
-									   data-status="<?php echo @$resolution["status"]; ?>" 
-									   data-dataid="<?php echo (string)@$resolution["_id"]; ?>">
-
-								  		<span class="elipsis">
-								  			<i class="fa fa-hashtag"></i> 
-								  			<?php if(@$resolution["title"]) 
-								  					   echo @$resolution["title"]; 
-								  				  else echo "<small><b>".
-								  				  		substr(@$resolution["description"], 0, 150).
-								  				  		   "</b></small>";
-								  			?>
-								  		</span>
-								  	</a>
-								</li>
+								<?php $this->renderPartial('../cooperation/resolutionLi', 
+															   array("resolution"=>$resolution,
+															   		 //"thisStatus" => $thisStatus,
+															   		 //"isAdmin" => $isAdmin,
+															   		 "post" => @$post)); ?>
 					<?php }else{ ?>
 							<li class="submenucoop sub-resolutions col-lg-12 col-md-12 col-sm-12">
 								<i class="fa fa-ban margin-left-15"></i> <?php echo Yii::t("cooperation", "No resolution") ?>
@@ -399,49 +281,12 @@
 					
 					<?php   if(@$actionList)
 							foreach($actionList as $key => $action){ ?>
-								<li class="submenucoop sub-actions no-padding col-lg-4 col-md-6 col-sm-6"
-									data-name-search="<?php echo str_replace('"', '', @$action["name"]); ?>">
-									<a href="javascript:;" 
-										class="load-coop-data" data-type="action"
-										data-status="<?php echo @$action["status"]; ?>" 
-								   		data-dataid="<?php echo (string)@$action["_id"]; ?>">
-								  		<?php if(@$action["status"] == "todo" && $auth){ ?>
-										  			<span class="elipsis draggable" 
-										  					data-dataid="<?php echo (string)@$action["_id"]; ?>"
-											  				data-type="actions" >
-											  			<i class="fa fa-arrows-alt letter-light tooltips"  
-										   					data-original-title="<?php echo Yii::t("cooperation", "Drag / drop to an other space") ?>" 
-											  				data-placement="right"></i> 
-											  			<i class="fa fa-hashtag"></i> 
-											  			<?php echo @$action["name"]; ?>
-										  			</span>
-										  		<?php }else{ ?>
-										  			<span class="elipsis">
-											  			<i class="fa fa-hashtag"></i> 
-											  			<?php echo @$action["name"]; ?>
-										  			</span>
-										  		<?php } ?>
-								  		<?php if(@$post["status"]) { $parentRoom = Room::getById($action["idParentRoom"]); ?>
-									  	<br>
-									  	<small class="elipsis">
-								  			<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
-								  		</small>
-									  	<?php  } ?>
-									  	<br>
-									  	<small class="letter-light lbl-status">
-									  		<i class="fa fa-pencil"></i> <b><?php echo Yii::t("cooperation", @$action["status"]); ?></b>
-									  	</small>
-									  	<small class="letter-light margin-left-10">
-									  		<i class="fa fa-clock-o"></i> 
-									  		<?php 
-									  			if(@$action["endDate"])
-									  				echo Yii::t("cooperation", "end") ." ". 
-									  				Translate::pastTime($action["endDate"], "date"); 
-
-									  		?>
-									  	</small>
-								  	</a>
-								</li>
+								<?php $this->renderPartial('../cooperation/actionLi', 
+															   array("action"=>$action,
+															   		 "thisStatus" => @$thisStatus,
+															   		 "isAdmin" => $isAdmin,
+															   		 "auth" => $auth,
+															   		 "post" => @$post)); ?>
 					<?php }else{ ?>
 							<li class="submenucoop sub-actions col-lg-12 col-md-12 col-sm-12">
 								<i class="fa fa-ban margin-left-15"></i> <?php echo Yii::t("cooperation", "No action") ?>

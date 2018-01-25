@@ -69,6 +69,10 @@ function resizeInterface()
   //mylog.log("heightDif", heightDif);
   $(".floopScroll").css({"minHeight" : height-heightDif});
   $(".floopScroll").css({"maxHeight" : height-heightDif});
+
+  height = $("#mapCanvasBg").height() - 200;
+  $("#scroll-dashboard-dda").css("maxHeight", height);
+
   //$(".my-main-container").css("min-height", $(".sigModuleBg").height()-menuTopHeight);
   //$(".my-main-container").css("max-height", $(".sigModuleBg").height()-menuTopHeight);
   //$(".my-main-container").css("height", $(".sigModuleBg").height()-menuTopHeight);
@@ -104,6 +108,8 @@ function showNotif(show){
 
 	
 	$("#dropdown-user").removeClass("open");
+    $("#dropdown-dda").removeClass("open");
+    
     showFloopDrawer(false);
 }
 

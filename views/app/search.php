@@ -71,15 +71,6 @@
       background-color: black;*/
     /*}*/
     
-    #main-scope-name a{
-        height: 130px;
-        background-color: rgba(255, 255, 255, 0.9);
-        width: 130px;
-        display: inline-block;
-        padding-top: 30px;
-        border-radius: 50%;
-        padding-right: 4px;
-    }
 
     #dropdown_search{
         margin-top:0px;

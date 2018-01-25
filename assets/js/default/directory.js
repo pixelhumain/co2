@@ -2205,18 +2205,18 @@ var directory = {
 		if(typeof params.edit  != "undefined")
 			str += this.getAdminToolBar(params);
 		mylog.log("follow", userId, params.id, !inMyContacts(params.typeSig, params.id) );
-		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
-			isFollowed=false;
-			if(typeof params.isFollowed != "undefined" )
-				isFollowed=true;
-			mylog.log("isFollowed", params.isFollowed, isFollowed);
-			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
-			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-						' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-						" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.skin.title+"' data-isFollowed='"+isFollowed+"'>"+
-						"<i class='fa fa-chain'></i>"+
-					"</a>";
-		}
+		// if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
+		// 	isFollowed=false;
+		// 	if(typeof params.isFollowed != "undefined" )
+		// 		isFollowed=true;
+		// 	mylog.log("isFollowed", params.isFollowed, isFollowed);
+		// 	tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
+		// 	str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+		// 				' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+		// 				" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.skin.title+"' data-isFollowed='"+isFollowed+"'>"+
+		// 				"<i class='fa fa-chain'></i>"+
+		// 			"</a>";
+		// }
 
 		if(params.updated != null )
 			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad.actif+" </span>" + params.updated + "</div>";
@@ -2237,55 +2237,41 @@ var directory = {
 			str += "</div>";
 		}
 
-		// if(notEmpty(params.typePoi)){
-		// 	str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
-		// }
+		str += "<a href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+ params.skin.title + "</a>";  
 
-		str += "<a href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
-					"<i class='fa fa-map-o fa-rotate-180'></i>" + params.skin.title + 
-				"</a>";  
-    // if(notEmpty(params.typeEvent))
-    //   str += "<span class='typeEventDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typeEvent] + "</span>";  
-    
-    // if(typeof(params.statusLink)!="undefined"){
-    //   if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
-    //     str+="<span class='text-red'>"+trad.administrator+"</span>";
-    //   if(typeof(params.statusLink.isAdminInviting)!="undefined"){
-    //     str+="<span class='text-red'>"+trad.invitingToAdmin+"</span>";
-    //   }
-    //   if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
-    //     str+="<span class='text-red'>"+trad.waitingValidation+"</span>";
-    // }
+		str += "<div class='entityDescription'>" + ( (params.skin.shortDescription == null ) ? "" : params.skin.shortDescription ) + "</div>";
+		//str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+		str += "<div class='tagsContainer text-red'>";
 
-    if(params.rolesLbl != "")
-      str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
 
-    if( params.section ){
-      str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
-      if(typeof params.subtype != "undefined") str += " > " + params.subtype;
-        str += "</div>";
-    } 
+		if( typeof edit != "undefined" && edit == true ) {
+			str += '<ul class="nav text-center">';
+				str += '<li class="text-red pull-right">';
+					str += '<a href="javascript:;"  onclick="removeNetwork(\''+params.id+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+					'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+						str += '<i class="fa fa-trash"></i>';
+					str += '</a>';
+				str += '</li>';
 
-  if(params.type=="events"){
-    var dateFormated = "<br/><i class='fa fa-clock'></i> "+directory.getDateFormated(params, true);
-    var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;
-    str += dateFormated+countSubEvents;
-  } 
+				str += '<li class="text-red pull-right">';
+					str += '<a href="javascript:;" onclick="updateNetwork(\''+params.id+'\');" ' + 'class="margin-left-5 bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+						str += '<i class="fa fa-pencil"></i>';
+					str += '</a>';
+				str += '</li>';
 
-  var thisLocality = "";
-  if(params.fullLocality != "" && params.fullLocality != " ")
-    thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality add2fav"+linkAction+">"+
-              "<i class='fa fa-home'></i> " + params.fullLocality + "</a>";
-  else thisLocality = "<br>";
+				// str += '<li class="text-red pull-right">';
+				// 	str += '<a href="javascript:;" onclick="" ' + 'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["share"]+'" >';
+				// 		str += '<i class="fa fa-pencil"></i>';
+				// 	str += '</a>';
+				// str += '</li>';
+		str += '</ul>';
+		}
+		str += "</div>";
 
-  str += thisLocality;
-
-  str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
-  str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
-  str += "</div>";
-  str += "</div>";
-  str += "</div>";
-  str += "</div>";
+		str += "</div>";
+		str += "</div>";
+		str += "</div>";
+		str += "</div>";
   return str;
   },
 

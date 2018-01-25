@@ -47,6 +47,7 @@ class NetworkModule extends CWebModule {
 			'citizenToolKit.models.*',
 			'ressources.models.*',
 			'classifieds.models.*',
+			'places.models.*',
 			$this->id.'.models.*',
 			$this->id.'.components.*',
 			$this->id.'.messages.*',

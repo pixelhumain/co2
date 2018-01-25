@@ -2136,8 +2136,27 @@ var directory = {
       mylog.log("-----------networkPanelHtml", params, key);
       params.title = escapeHtml(params.title);
         str = "";
-        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
-        	str += "<div class='searchEntity networkPanelHtml'>";
+        // str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
+        // 	str += "<div class='searchEntity networkPanelHtml'>";
+        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer contain_"+params.type+"_"+params.id+"'>";
+          str += '<div class="searchEntity" id="entity'+params.id+'">';
+
+
+            if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
+              isFollowed=false;
+
+              if(typeof params.isFollowed != "undefined" )
+                isFollowed=true;
+              mylog.log("isFollowed", params.isFollowed, isFollowed);
+
+              str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+                    ' data-toggle="tooltip" data-placement="left" data-original-title="'+trad['Follow']+'"'+
+                    " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.skin.title+"' data-isFollowed='"+isFollowed+"'>"+
+                    "<i class='fa fa-chain'></i>"+
+                  "</a>";
+            }
+
+
           		str += "<div class='panel-heading border-light col-xs-12'>";
           			str += '<a href="'+baseUrl+"/network/default/index?src="+baseUrl+"/"+moduleId+"/network/get/id/"+params.id+'" target="_blank" class="text-dark">'
          			str += '<h4 class="panel-title text-dark pull-left">'+ params.skin.title+'</h4></a>';
@@ -2719,8 +2738,8 @@ var directory = {
                       else if(params.type.substring(0,11) == "poi.interop")
                         str += directory.interopPanelHtml(params);
                       else if(params.type == "network")
-                      	str += directory.network2PanelHtml(params);
-                        //str += directory.networkPanelHtml(params);
+                      	//str += directory.network2PanelHtml(params);
+                        str += directory.networkPanelHtml(params);
                       else
                         str += directory.defaultPanelHtml(params);
                     }
@@ -2769,7 +2788,7 @@ var directory = {
           "</button> ";
           countBtn++;
       }
-      if(data.edit=="organizations" || data.edit=="projects"){
+      if(data.edit=="organizations" || data.edit=="projects" || data.edit=="networks"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='3'"+
             " style='bottom:"+(30*countBtn)+"px'>"+

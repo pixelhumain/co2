@@ -383,6 +383,7 @@ function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirecto
 					var type = ($.inArray(dataName, ["poi","ressources","vote","actions","discuss"]) >=0) ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
+					mylog.log("loadDataDirectory edit" , edit);
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
 					bindButtonOpenForm();
 				}
@@ -636,13 +637,13 @@ function loadActionRoom(){
 
 
 function loadNetworks(){
-	mylog.log("HERE loadNetworks");
+	mylog.log("loadNetworks");
 	showLoader('#central-container');
 	getAjax('', baseUrl+'/'+moduleId+'/element/getnetworks/type/'+contextData.type+
 				'/id/'+contextData.id,
-				function(data){ 
-					mylog.log("HERE", data);
-					displayInTheContainer(data, "networks", "external-link", "networks");
+				function(data){
+					mylog.log("loadNetworks success", data, edit);
+					displayInTheContainer(data, "networks", "external-link", "networks",edit);
 				}
 	,"html");
 }
@@ -784,7 +785,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 
 		html += "<div class='col-md-12 margin-bottom-15 labelTitleDir'>";
 		
-		console.log("eztrzeter", dataName);
+		mylog.log("eztrzeter", dataName);
 		if(dataName != "urls" && dataName != "contacts")
 			html += btnMap;
 
@@ -804,7 +805,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
-
+        	mylog.log("edit2", edit);
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){

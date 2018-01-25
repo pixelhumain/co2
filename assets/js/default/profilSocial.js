@@ -383,6 +383,7 @@ function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirecto
 					var type = ($.inArray(dataName, ["poi","ressources","vote","actions","discuss"]) >=0) ? dataName : null;
 					if(typeof edit != "undefined" && edit)
 						edit=dataName;
+					mylog.log("loadDataDirectory edit" , edit);
 					displayInTheContainer(data, dataName, dataIcon, type, edit);
 					bindButtonOpenForm();
 				}
@@ -427,10 +428,10 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	else if(dataName == "actions"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
 
 	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
-	else if(dataName == "networks"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName;
+	else if(dataName == "networks"){ html += countData+" <b>"+trad.map+s+"</b> "+trad.of+" " + elementName;
 		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
 			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'network\', \'sub\')">';
-	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
+	    	html +=	'<i class="fa fa-plus"></i> '+tradDynForm["Add map"]+'</a>' ;
 	    }
 	 }
 
@@ -636,11 +637,13 @@ function loadActionRoom(){
 
 
 function loadNetworks(){
+	mylog.log("loadNetworks");
 	showLoader('#central-container');
 	getAjax('', baseUrl+'/'+moduleId+'/element/getnetworks/type/'+contextData.type+
 				'/id/'+contextData.id,
-				function(data){ 
-					displayInTheContainer(data, "networks", "external-link", "networks");
+				function(data){
+					mylog.log("loadNetworks success", data, edit);
+					displayInTheContainer(data, "networks", "external-link", "networks",edit);
 				}
 	,"html");
 }
@@ -778,9 +781,11 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 				            '<i class="fa fa-map-marker"></i>'+
 				        '</button>';
 
+		if(dataName == "networks") btnMap = "";
+
 		html += "<div class='col-md-12 margin-bottom-15 labelTitleDir'>";
 		
-		console.log("eztrzeter", dataName);
+		mylog.log("eztrzeter", dataName);
 		if(dataName != "urls" && dataName != "contacts")
 			html += btnMap;
 
@@ -800,7 +805,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		if(dataName != "collections"){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
-
+        	mylog.log("edit2", edit);
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
 		}else{
 			$.each(data, function(col, val){

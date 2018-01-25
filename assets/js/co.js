@@ -3022,7 +3022,8 @@ var typeObj = {
 				sections : {
 			        network : { label: "Network Config",key:"network",icon:"map-marker"}
 			    }},
-	network : { col:"network",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+	network : { col:"network",color:"azure",icon:"map-o",titleClass : "bg-turq"},
+	networks : {sameAs:"network"},
 	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
 	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
 				sections : {

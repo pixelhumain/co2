@@ -2134,8 +2134,27 @@ var directory = {
       mylog.log("-----------networkPanelHtml", params, key);
       params.title = escapeHtml(params.title);
         str = "";
-        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
-        	str += "<div class='searchEntity networkPanelHtml'>";
+        // str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
+        // 	str += "<div class='searchEntity networkPanelHtml'>";
+        str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer contain_"+params.type+"_"+params.id+"'>";
+          str += '<div class="searchEntity" id="entity'+params.id+'">';
+
+
+            if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
+              isFollowed=false;
+
+              if(typeof params.isFollowed != "undefined" )
+                isFollowed=true;
+              mylog.log("isFollowed", params.isFollowed, isFollowed);
+
+              str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+                    ' data-toggle="tooltip" data-placement="left" data-original-title="'+trad['Follow']+'"'+
+                    " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.skin.title+"' data-isFollowed='"+isFollowed+"'>"+
+                    "<i class='fa fa-chain'></i>"+
+                  "</a>";
+            }
+
+
           		str += "<div class='panel-heading border-light col-xs-12'>";
           			str += '<a href="'+baseUrl+"/network/default/index?src="+baseUrl+"/"+moduleId+"/network/get/id/"+params.id+'" target="_blank" class="text-dark">'
          			str += '<h4 class="panel-title text-dark pull-left">'+ params.skin.title+'</h4></a>';
@@ -2146,14 +2165,14 @@ var directory = {
         str += '<ul class="nav navbar-nav margin-5 col-md-12">';
 
             str += '<li class="text-red pull-right">';
-              str += '<a href="javascript:;"  onclick="removeNetwork(\''+key+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+              str += '<a href="javascript:;"  onclick="removeNetwork(\''+params.id+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
               'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
                 str += '<i class="fa fa-trash"></i>'+trad["delete"];
               str += '</a>';
             str += '</li>';
 
             str += '<li class="text-red pull-right">';
-              str += '<a href="javascript:;" onclick="updateNetwork(\''+key+'\', \''+params.title+'\',  \''+params.url+'\', \''+params.type+'\');" ' +
+              str += '<a href="javascript:;" onclick="updateNetwork(\''+params.id+'\');" ' +
               'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
                 str += '<i class="fa fa-pencil"></i>'+trad["update"];
               str += '</a>';
@@ -2171,8 +2190,91 @@ var directory = {
         str += "</div>";  
       str += "</div>";
       return str;
-    
     },
+
+	network2PanelHtml : function(params){
+		mylog.log("----------- network2PanelHtml",params);
+		params.hash = baseUrl+"/network/default/index?src="+baseUrl+"/"+moduleId+"/network/get/id/"+params.id;
+		str = "";
+		var classType=params.type;
+		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
+
+
+		var addFollowBtn = true;
+		if(typeof params.edit  != "undefined")
+			str += this.getAdminToolBar(params);
+		mylog.log("follow", userId, params.id, !inMyContacts(params.typeSig, params.id) );
+		// if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
+		// 	isFollowed=false;
+		// 	if(typeof params.isFollowed != "undefined" )
+		// 		isFollowed=true;
+		// 	mylog.log("isFollowed", params.isFollowed, isFollowed);
+		// 	tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
+		// 	str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+		// 				' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+		// 				" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.skin.title+"' data-isFollowed='"+isFollowed+"'>"+
+		// 				"<i class='fa fa-chain'></i>"+
+		// 			"</a>";
+		// }
+
+		if(params.updated != null )
+			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad.actif+" </span>" + params.updated + "</div>";
+
+		var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
+		// if(params.type == "citoyens") 
+		// params.hash += '.viewer.' + userId;
+		// if(typeof params.size == "undefined" || params.size == "max")
+		str += "<a href='"+params.hash+"' class='container-img-banner add2fav >" + params.imgBanner + "</a>";
+		str += "<div class='padding-10 informations'>";
+
+		str += "<div class='entityRight no-padding'>";
+
+		if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
+			str += "<div class='entityCenter no-padding'>";
+			str +=    "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
+			str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+">" + params.htmlIco + "</a>";
+			str += "</div>";
+		}
+
+		str += "<a href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+ params.skin.title + "</a>";  
+
+		str += "<div class='entityDescription'>" + ( (params.skin.shortDescription == null ) ? "" : params.skin.shortDescription ) + "</div>";
+		//str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+		str += "<div class='tagsContainer text-red'>";
+
+
+		if( typeof edit != "undefined" && edit == true ) {
+			str += '<ul class="nav text-center">';
+				str += '<li class="text-red pull-right">';
+					str += '<a href="javascript:;"  onclick="removeNetwork(\''+params.id+'\');" class="margin-left-5 bg-white tooltips btn btn-link btn-sm" '+
+					'data-toggle="tooltip" data-placement="top" data-original-title="'+trad["delete"]+'" >';
+						str += '<i class="fa fa-trash"></i>';
+					str += '</a>';
+				str += '</li>';
+
+				str += '<li class="text-red pull-right">';
+					str += '<a href="javascript:;" onclick="updateNetwork(\''+params.id+'\');" ' + 'class="margin-left-5 bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["update"]+'" >';
+						str += '<i class="fa fa-pencil"></i>';
+					str += '</a>';
+				str += '</li>';
+
+				// str += '<li class="text-red pull-right">';
+				// 	str += '<a href="javascript:;" onclick="" ' + 'class="bg-white tooltips btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="'+trad["share"]+'" >';
+				// 		str += '<i class="fa fa-pencil"></i>';
+				// 	str += '</a>';
+				// str += '</li>';
+		str += '</ul>';
+		}
+		str += "</div>";
+
+		str += "</div>";
+		str += "</div>";
+		str += "</div>";
+		str += "</div>";
+  return str;
+  },
+
     // ********************************
     // PROPOSAL DIRECTORY PANEL
     // ********************************
@@ -2419,7 +2521,7 @@ var directory = {
     },
     showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
         //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
-        //mylog.log("showResultsDirectoryHtml data", data,"size",  size, "contentType", contentType)
+        mylog.log("showResultsDirectoryHtml data", data,"size",  size, "contentType", contentType)
         //mylog.log(" dirLog",directory.dirLog);
         var str = "";
 
@@ -2430,7 +2532,7 @@ var directory = {
             if(i!="count"){
               //if(directory.dirLog) mylog.log("params", params, typeof params);
 
-              //mylog.log("params", params);
+              mylog.log("params", params);
               //mylog.log("params interoperability", location.hash.indexOf("#interoperability"));
 
               if ((typeof(params.id) == "undefined") && (typeof(params["_id"]) !== "undefined")) {
@@ -2439,7 +2541,7 @@ var directory = {
                 params.id = Math.random();
                 params.type = "poi";
               }
-              console.log(params.sorting);
+              mylog.log(params.sorting);
               //mylog.log("--->>> params", params["name"] , params.name, params.id, params.type );
               //mylog.log("--->>> params.id", params.id, params["_id"], notNull(params["_id"]), notNull(params.id));
 
@@ -2618,7 +2720,7 @@ var directory = {
                     
                     if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
                     
-                    if(domainName=="terla"){
+                    if( typeof domainName != "undefined" && domainName=="terla"){
                       if(params.type=="circuits")
                         str += directory.circuitPanelHtml(params);
                       else
@@ -2662,7 +2764,8 @@ var directory = {
                       else if(params.type.substring(0,11) == "poi.interop")
                         str += directory.interopPanelHtml(params);
                       else if(params.type == "network")
-                        str += directory.networkPanelHtml(params);
+                      	str += directory.network2PanelHtml(params);
+                        //str += directory.networkPanelHtml(params);
                       else
                         str += directory.defaultPanelHtml(params);
                     }
@@ -2711,7 +2814,7 @@ var directory = {
           "</button> ";
           countBtn++;
       }
-      if(data.edit=="organizations" || data.edit=="projects"){
+      if(data.edit=="organizations" || data.edit=="projects" || data.edit=="networks"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='3'"+
             " style='bottom:"+(30*countBtn)+"px'>"+
@@ -2782,7 +2885,7 @@ var directory = {
     //builds a small sized list
     buildList : function(list) {
       $(".favSectionBtnNew,.favSection").remove();
-      console.warn("START >>>>>> buildList",smallMenu.destination + " #listDirectory");
+      mylog.warn("START >>>>>> buildList",smallMenu.destination + " #listDirectory");
       
       $.each( list, function(key,slist)
       {

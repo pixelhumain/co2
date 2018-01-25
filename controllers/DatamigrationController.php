@@ -3571,5 +3571,49 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo $nbelement." elements mis a jours";
 		
 	}
+
+
+	public function actionIrisUpdateInter(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementtotal = 0 ;
+		$where = array("level1" => array('$exists' => 0));
+		$fields = array("name","insee");
+		$iris = PHDB::find( "zones_iris", $where, $fields);
+		
+		foreach ($iris as $key => $value) {
+			// if(!empty($value["name"]))
+			 	echo $key." : ".$value["name"]."<br/>";
+
+			 	if(!empty($value["insee"])){
+			 		$city = PHDB::findOne( "cities", array("insee" => $value["insee"]) , array("_id","insee", "name", "level1", "level2", "level1Name", "level3Name", "level4Name", "level2Name", "level3", "level4"));
+
+			 		$set =array("localityId" => (String) $city["_id"], 
+			 					"level1" => $city["level1"], 
+			 					"level2" => $city["level2"], 
+			 					"level1Name" => $city["level1Name"], 
+			 					"level3Name" => $city["level3Name"], 
+			 					"level4Name" => $city["level4Name"], 
+			 					"level2Name" => $city["level2Name"], 
+			 					"level3" => $city["level3"], 
+			 					"level4" => $city["level4"]);
+				 	if(!empty("city")){
+				 		$res = PHDB::update("zones_iris", 
+						  	array("_id"=>new MongoId($key)),
+			                array('$set' => $set)
+			            );
+				 		$nbelement++;
+				 	}
+			 	}
+			 	
+
+			
+            $nbelementtotal++;
+            break;
+		}	
+
+		echo $nbelement." iris mis a jours / ".$nbelementtotal;
+		
+	}
 }
 

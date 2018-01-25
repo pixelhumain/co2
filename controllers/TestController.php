@@ -1491,7 +1491,7 @@ La vie en santé;Santé;;
 
 
 	public function actionListcountries(){
-		$res = Zone::getListCountry();
+		$res = Zone::getListCountry(true);
 		Rest::json($res);
 		Yii::app()->end();
 	}
@@ -1540,5 +1540,16 @@ La vie en santé;Santé;;
 		$params = Network::prepData ($params); 
 		Rest::json($params);
 		Yii::app()->end();
+	}
+
+
+	public function actionListcountries2(){
+		$res = Zone::getListCountry(true);
+
+		foreach ($res as $key => $value) {
+			echo $value["name"].", ";
+		}
+		// Rest::json($res);
+		// Yii::app()->end();
 	}
 }

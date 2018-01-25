@@ -205,10 +205,10 @@ function bindScopesInputEvent(news){
     $(".item-globalscope-checker").off().on('click', function(){  
         //$(".item-globalscope-checker").addClass("inactive");
         //$(this).removeClass("inactive");
-        //var notSearch = $(this).data("scope-notsearch");
+        var notSearch = $(this).data("scope-notsearch");
         //var testCo = false;
         //if($(this).hasClass("communecterSearch")){
-        testCo = true;
+        var testCo = true;
         $("#searchOnCity").val("");
         $(".dropdown-result-global-search").hide(700).html("");
         myScopes.type="open";
@@ -243,11 +243,11 @@ function setCommunexion(){
 function scopeActiveScope(scopeValue){
     mylog.log("scopeActive", scopeValue);
     if(myScopes.type!="multiscopes"){
-    	$.each(myScopes.open,function(e,v){
+    	$.each(myScopes[myScopes.type],function(e,v){
     		if(e!=scopeValue)
-    			myScopes.open[e].active=false;
+    			myScopes[myScopes.type][e].active=false;
     		else
-    			myScopes.open[e].active=true;
+    			myScopes[myScopes.type][e].active=true;
     	});
     	$(".scopes-container .item-scope-input i.fa").addClass("fa-circle-o");
         $(".scopes-container .item-scope-input i.fa").removeClass("fa-check-circle");

@@ -1096,11 +1096,7 @@ function removeAddress(form){
 
 									$(".communecter-btn").removeClass("hidden");
 								}
-								myScopes.communexion.currentLevel = null;
-								myScopes.communexion.currentName = null;
-								myScopes.communexion.currentValue = null;
-								myScopes.communexion.values = null;
-								myScopes.communexion.state = false;
+								myScopes.communexion={};
 								localStorage.setItem("myScopes",JSON.stringify(myScopes));
 								toastr.success(data.msg);
 								urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id+".view.detail");

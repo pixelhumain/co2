@@ -765,8 +765,8 @@ function toggleFilters(what){
 	                '<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
 	                '</div>'+
 	            '</div>'+
-            	'<a href="javascript:;" id="multiscopes-news-btn" class="margin-left-20" style="padding-bottom:7px;"><i class="fa fa-star"></i> My favorites</a>'+
-            	'<a href="javascript:;" id="communexion-news-btn" class="margin-left-20"><i class="fa fa-home"></i> <span class="communexion-btn-label"></span></a>'+
+            	'<a href="javascript:;" id="multiscopes-news-btn" class="scopes-btn-news margin-left-20" data-type="multiscopes"><i class="fa fa-star"></i> My favorites</a>'+
+            	'<a href="javascript:;" id="communexion-news-btn" class="scopes-btn-news  margin-left-20" data-type="communexion"><i class="fa fa-home"></i> <span class="communexion-btn-label"></span></a>'+
             	'</div>'+
             '</div>'+
             '<div id="news-scopes-container" class="scopes-container col-md-12 col-sm-12 col-xs-12">'+
@@ -777,7 +777,7 @@ function toggleFilters(what){
             '</div>'+
             '<div id="content-added-scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
         '</div>';
-	actionOnSetGlobalScope="save";
+	//actionOnSetGlobalScope="save";
 	$("#scopeListContainerForm").html(scopeHtml);
 	bindSearchOnNews();
 	bindScopesNewsEvent();
@@ -812,11 +812,15 @@ function bindScopesNewsEvent(news){
 			$(this).parent().remove();
 		}
 	});
-	$("#multiscopes-news-btn").off().on("click", function(){
+	$("#multiscopes-news-btn, #communexion-news-btn").off().on("click", function(){
+		$(".scopes-btn-news").removeClass("active");
 		$(this).addClass("active");
-		myScopes.type="multiscopes";
+		myScopes.type=$(this).data("type");
 		//$(this).find("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
 		$("#scopes-news-form .scopes-container").html(constructScopesHtml(true));
+		if(myScopes.type=="communexion")
+				$("#scopes-news-form .scopes-container .scope-order").sort(sortSpan) // sort elements
+                  .appendTo("#scopes-news-form .scopes-container");
         bindScopesNewsEvent();
 	});
 }
@@ -860,7 +864,7 @@ function showFormBlock(bool){
 		$(".form-create-news-container .scopescope").hide();
 		//if(isLiveGlobal())
 		//	multiTagScopeLbl("search");
-		actionOnSetGlobalScope="filter";
+		//actionOnSetGlobalScope="filter";
 		$("#scopeListContainerForm").html("");
 		$("#container-scope-filter").show();
 		$(".item-globalscope-checker").prop('disabled', false);

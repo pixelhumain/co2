@@ -324,7 +324,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
               
               //on affiche la dropdown
               showDropDownGS(true, domTarget);
-              bindCommunexionScopeEvents();
+              bindScopesInputEvent();
               /*$(".start-new-communexion").click(function(){
                   $("#main-search-bar, #second-search-bar, #input-search-map").val("");
                   // setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",

@@ -53,7 +53,17 @@ class CO2 {
     					"Iles"=>$citiesI);
     	return $cities;
     }
-
+    public static function getCommunexionUser(){
+        if(@Yii::app()->session["userId"]){
+            $personLoc=Element::getElementSimpleById(Yii::app()->session["userId"], Person::COLLECTION, null, array("address"));
+            if(!empty($personLoc["address"]))
+                return City::detailsLocality($personLoc["address"]);
+            else
+                return false;
+        }
+        else
+            return false;
+    }
 	public static function getCommunexionCookies(){
 		$communexion = array("state"=>false, "values"=>array());
 		if(CookieHelper::hasCookie("communexion") && CookieHelper::hasCookie("communexionType")) {

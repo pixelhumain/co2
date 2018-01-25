@@ -2630,7 +2630,7 @@ var directory = {
                       mylog.log("template principal",params,params.type, itemType);
 
 
-                      if(location.hash == "#territorial" || location.hash == "#search" || location.hash == "#web") 
+                      if(location.hash == "" || location.hash == "#search" || location.hash == "#web") 
                        str += directory.lightPanelHtml(params);  
 
                       else 

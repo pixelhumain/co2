@@ -3470,6 +3470,15 @@ function initKInterface(params){ console.log("initKInterface");
         showFloopDrawer(false);
         showNotif(false);
         $("#dropdown-user").addClass("open");
+        $("#dropdown-dda").removeClass("open");
+        //clearTimeout(timerCloseDropdownUser);
+    });
+    $(".btn-dashboard-dda").click(function(){
+        showFloopDrawer(false);
+        showNotif(false);
+        loadDashboardDDA();
+        $("#dropdown-user").removeClass("open");
+        $("#dropdown-dda").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
     
@@ -3562,6 +3571,25 @@ function initKInterface(params){ console.log("initKInterface");
 
     KScrollTo(".main-container");
 
+}
+
+function loadDashboardDDA(){
+	mylog.log("loadDashboardDDA");
+	$("#list-dashboard-dda").html("<span class='text-center col-xs-12 padding-25'><i class='fa fa-circle-o-notch fa-spin'></i></span>");
+	$.ajax({
+		type: "POST",
+		url: baseUrl+'/'+moduleId+"/cooperation/getmydashboardcoop/",
+		//dataType: "json",
+		success: function(view){
+			mylog.log("loadDashboardDDA ok");
+			$("#list-dashboard-dda").html(view);
+		},
+		error: function (error) {
+			mylog.log("loadDashboardDDA error", error);
+			
+		}
+			
+	});
 }
 
 function getContextDataLinks(){

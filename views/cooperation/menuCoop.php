@@ -109,7 +109,8 @@
 
 			<li class="submenucoop sub-actions">
 				<a href="javascript:" class="load-coop-data" data-type="action" data-status="<?php echo $status ?>">
-			  		<i class="fa fa-<?php echo Cooperation::getIconCoop($status); ?>"></i> <?php echo Yii::t("cooperation", $tradStatus) ?>
+			  		<i class="fa fa-<?php echo Cooperation::getIconCoop($status); ?>"></i> 
+			  		<?php echo Yii::t("cooperation", $tradStatus) ?>
 			  		<span class="badge pull-right bg-<?php echo Cooperation::getColorCoop($status); ?> margin-right-10">
 			  			<?php echo @$menuCoopData["allCount"]["actions"][$status]; ?>
 			  		</span>

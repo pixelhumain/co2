@@ -14,7 +14,7 @@
 
 	"pages" : {
 		
-		"#app.index": {"redirect":"welcome"},
+		"#app.index": {"redirect":"search"},
 
 		"#welcome": {
 			"inMenu" : false, 
@@ -53,7 +53,7 @@
 			"subdomainName" : "Tous",
 			"hash" : "#app.search",
 			"icon" : "search", 
-			"mainTitle" : "Réseau social <span class='text-red'>citoyen</span>",
+			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
 			"placeholderMainSearch" : "what are you looking for ?",
 			"lblBtnCreate" : "Create a page",
 			"colorBtnCreate" : "green"

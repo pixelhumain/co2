@@ -582,7 +582,8 @@ class CommunecterController extends Controller
     "cooperation" => array(
       "getcoopdata"        => array('href' => "ph/co2/cooperation/getcoopdata"),
       "savevote"           => array('href' => "ph/co2/cooperation/savevote"),
-      "deleteamendement"  => array('href' => "ph/co2/cooperation/deleteamendement")
+      "deleteamendement"  => array('href' => "ph/co2/cooperation/deleteamendement"),
+      "getmydashboardcoop"  => array('href' => "ph/co2/cooperation/getmydashboardcoop")
     ),
     "pdf" => array(
       "create"        => array('href' => "ph/co2/pdf/create")

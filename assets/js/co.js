@@ -3473,6 +3473,7 @@ function initKInterface(params){ console.log("initKInterface");
         $("#dropdown-dda").removeClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
+    
     $(".btn-dashboard-dda").click(function(){
         showFloopDrawer(false);
         showNotif(false);

@@ -198,6 +198,10 @@
 			$("#scroll-dashboard-dda").scrollTop(0);
 		});
 
+		$("#list-dashboard-dda").off().mouseleave(function(){
+			$("#dropdown-dda").removeClass("open");
+		});
+
 	});
 
 </script>

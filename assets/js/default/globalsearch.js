@@ -1,19 +1,22 @@
   
 
 /* GLOBAL SEARCH JS */
-function showDropDownGS(show){
+function showDropDownGS(show, dom){
   if(typeof show == "undefined") show = true;
-
+  if(!notNull(dom)) dom=".dropdown-result-global-search";
   if(show){
-    if($(".dropdown-result-global-search").css("display") == "none"){
-      $(".dropdown-result-global-search").css("maxHeight", "0px");
-      $(".dropdown-result-global-search").show();
-      $(".dropdown-result-global-search").animate({"maxHeight" : "70%"}, 300);
+    if($(dom).css("display") == "none"){
+      $(dom).css("maxHeight", "0px");
+      $(dom).show();
+      $(dom).animate({"maxHeight" : "70%"}, 300);
+      $(dom).mouseleave(function(){
+        $(this).hide(700);
+      });
     }
   }else{
     if(!loadingDataGS){
-      $(".dropdown-result-global-search").animate({"maxHeight" : "0%"}, 300);
-      $(".dropdown-result-global-search").hide(300);
+      $(dom).animate({"maxHeight" : "0%"}, 300);
+      $(dom).hide(300);
     }
   }
 }
@@ -34,7 +37,7 @@ function startGlobalSearch(indexMin, indexMax, input){
 
     setTimeout(function(){ loadingDataGS = false; }, 10000);
     if(notNull(input))
-      var search = $(input).val();
+      var search = $(input+" .input-global-search").val();
     else
       var search = $('#second-search-bar').val();
     //if(search == "") search = $('#input-global-search-xs').val();
@@ -55,23 +58,22 @@ function startGlobalSearch(indexMin, indexMax, input){
     }
     else{ mylog.log("scrollEndGS ? ", scrollEndGS); if(scrollEndGS) return; }
     
-    autoCompleteSearchGS(search, indexMin, indexMax);
+    autoCompleteSearchGS(search, indexMin, indexMax, input);
 }
 
 
-function autoCompleteSearchGS(search, indexMin, indexMax){
+function autoCompleteSearchGS(search, indexMin, indexMax, input){
     mylog.log("autoCompleteSearchGS",search);
 
     var data = {"name" : search, "locality" : "", "searchType" : searchTypeGS, "searchBy" : "ALL",
                 "indexMin" : indexMin, "indexMax" : indexMax  };
-
-    showDropDownGS(true);
-
+    var domTarget = (notNull(input)) ? input+" .dropdown-result-global-search" : ".dropdown-result-global-search";
+    showDropDownGS(true, domTarget);
     if(indexMin > 0)
     $("#btnShowMoreResultGS").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
-    else
-    $(".dropdown-result-global-search").html(
-      "<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</h5>");
+    else{
+      $(domTarget).html("<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</h5>");  
+    }
       
     showIsLoading(true);
 
@@ -270,6 +272,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                   typeSearchCity="cp";
                   levelSearchCity="cp";
                 }
+                var domContainer=(notNull(input)) ? input+" .scopes-container" : "";
                 /*str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + o._id.$id  + "' " + 
                                 "data-scope-name='" + o.name + "' " +
@@ -286,7 +289,8 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                                 "data-scope-level='"+levelSearchCity+"' " +
                                 "data-scope-type='"+typeSearchCity+"' " +
                                 "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-notsearch='"+true+"' " ;
+                                "data-scope-notsearch='"+true+"' "+
+                                "data-append-container='"+domContainer+"' ";
                         str += ">";
                        /* str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
                         str +=   htmlIco;
@@ -313,22 +317,22 @@ function autoCompleteSearchGS(search, indexMin, indexMax){
                         '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+trad.extendedsearch+
                       '</a>';
               str += '</div>';
-            
               //on ajoute le texte dans le html
-              $(".dropdown-result-global-search").html(str);
+              $(domTarget).html(str);
               //on scroll pour coller le haut de l'arbre au menuTop
-              $(".dropdown-result-global-search").scrollTop(0);
+              $(domTarget).scrollTop(0);
+              
               //on affiche la dropdown
-              showDropDownGS(true);
+              showDropDownGS(true, domTarget);
               bindCommunexionScopeEvents();
-              $(".start-new-communexion").click(function(){
+              /*$(".start-new-communexion").click(function(){
                   $("#main-search-bar, #second-search-bar, #input-search-map").val("");
                   // setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
                   //                  $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
                   //                   $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
                   itenGlobalScopeChecker($(this));
                   urlCtrl.loadByHash("#search")
-              });
+              });*/
 
               bindLBHLinks();
 

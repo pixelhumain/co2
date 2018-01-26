@@ -807,6 +807,7 @@ function bindAboutPodElement() {
 		mylog.log("params",params);
 		dyFObj.openForm( 'url','sub', params);
 	}
+
 	function updateRoles(childId, childType, childName, connectType, roles) {
 		var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/link/removerole/",
@@ -977,6 +978,75 @@ function bindAboutPodElement() {
 		});
 	}
 
+	function updateNetwork(id) {
+		mylog.log("updateNetwork", id);
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/"+moduleId+"/network/get/id/"+id,
+			data: {},
+			dataType: "json",
+			success: function(data){
+				mylog.log("data", data);
+				var update = {};
+				update["skin[title]"] = data.skin.title;
+				update["skin[shortDescription]"] = data.skin.title;
+				update["skin[logo]"] = data.skin.logo;
+				update["displayCommunexion"] = dataHelper.stringToBool(data.skin.displayCommunexion);
+
+				//update["add"] = dataHelper.stringToBool(data.skin.add);
+
+				update["request[scope]"] = data.request.scope;
+				update["request[searchType]"] = data.request.searchType;
+				update["request[searchTag]"] = data.request.searchTag;
+				update["request[sourceKey]"] = data.request.sourceKey;
+
+				
+
+
+				dyFObj.openForm( 'network','sub', update);
+			}
+		});
+		
+	}
+
+	function removeNetwork(id) {
+		bootbox.confirm({
+			message: trad["suretodeletecontact"]+"<span class='text-red'></span>",
+			buttons: {
+				confirm: {
+					label: trad["yes"],
+					className: 'btn-success'
+				},
+				cancel: {
+					label: trad["no"],
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				alert("Voir avec TIBTIB");
+				// if (!result) {
+				// 	return;
+				// } else {
+				// 	param = new Object;
+			 //    	param.id = id;
+			 //    	param.userId = userId;
+				// 	$.ajax({
+				//         type: "POST",
+				//         url: baseUrl+"/"+moduleId+"/network/remove",
+				//         data: param,
+				//        	dataType: "json",
+				//     	success: function(data){
+				//     		mylog.log("data", data);
+				// 	    	if(data.result){
+				// 				toastr.success(data.msg);
+				// 				urlCtrl.loadByHash(location.hash);
+				// 	    	}
+				// 	    }
+				// 	});
+				// }
+			}
+		});
+	}
 
 	function removeFieldUpdateDynForm(collection){
 		mylog.log("------------------------ removeFieldUpdateDynForm", collection);

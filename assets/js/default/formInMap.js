@@ -631,7 +631,8 @@ var formInMap = {
 								currentUser.postalCode = locality.address.postalCode;
 								currentUser.codeInsee = locality.address.codeInsee;
 								currentUser.keyLocality = locality.address.key;
-								setCookies();
+								//setCookies();
+								setCommunexion();
 								if(typeof Sig.myPosition != "undefined"){
 									Sig.myPosition.position.latitude = locality.geo.latitude;
 									Sig.myPosition.position.longitude = locality.geo.longitude;

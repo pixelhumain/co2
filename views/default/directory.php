@@ -105,20 +105,6 @@
 
 <script type="text/javascript">
 
-var headerParams = {
-  "persons"       : { color: "yellow",  icon: "user",         name: "citoyens" },
-  "organizations" : { color: "green",   icon: "group",        name: "organisations" },
-  "NGO"           : { color: "green",   icon: "group",        name: "associations" },
-  "LocalBusiness" : { color: "azure",   icon: "industry",     name: "entreprises" },
-  "Group"         : { color: "black",   icon: "circle-o",        name: "Groupes" },
-  "projects"      : { color: "purple",  icon: "lightbulb-o",  name: "projets" },
-  "events"        : { color: "orange",  icon: "calendar",     name: "événements" },
-  "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
-  "actions"       : { color: "lightblue2",    icon: "cogs",   name: "actions" },
-  "cities"        : { color: "red",     icon: "university",   name: "communes" },
-  "poi"       	  :	{ color: "black",   icon: "map-marker",   name: "points d'intérêts" },
-  "products"           : { color: "orange",   icon: "gift",   name: "product" },
-}
 function setHeaderDirectory(type){
  
   var params = new Array();

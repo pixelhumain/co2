@@ -3,7 +3,7 @@ function scopeExists(scopeValue){
 	return typeof myScopes.multiscopes[scopeValue] != "undefined";
 }
 
-function saveMultiScope(){ 
+/*function saveMultiScope(){ 
 	mylog.log("saveMultiScope() try - userId = ", userId); 
 	mylog.dir(myScopes.multiscopes);
 	hideSearchResults();
@@ -27,7 +27,7 @@ function saveMultiScope(){
 	//rebuildSearchScopeInput();
 	setTimeout(function(){ rebuildSearchScopeInput() }, 1000);
 	saveCookieMultiscope();
-}
+}*/
 function saveCookieMultiscope(){ 
 	mylog.log("saveCookieMultiscope", typeof myScopes.multiscopes, myScopes.multiscopes);
 	//$.cookie('multiscopes', JSON.stringify(myMultiScopes), { expires: 365, path: '/' });
@@ -88,7 +88,11 @@ function autocompleteMultiScope(){
 			});
 
 			$(".addScope").click(function(){
-				addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
+
+				if($("#ajax-modal").hasClass("in"))
+					dyFInputs.scopeObj.addScope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
+				else
+				 	addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
 			});
 			
 		},

@@ -101,71 +101,6 @@ function startNewsSearch(isFirst){
 }
 
 
-/*function loadStream(indexMin, indexMax){ console.log("LOAD STREAM FREEDOM");
-	loadingData = true;
-	currentIndexMin = indexMin;
-	currentIndexMax = indexMax;
-
-	//isLive = isLiveBool==true ? "/isLive/true" : "";
-	//var url = "news/index/type/citoyens/id/<?php echo @Yii::app()->session["userId"]; ?>"+isLive+"/date/"+dateLimit+"?isFirst=1&tpl=co2&renderPartial=true";
-		
-	var url = "news/index/type/city/isLive/true/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2";
-	$.ajax({ 
-        type: "POST",
-        url: baseUrl+"/"+moduleId+'/'+url,
-        data: { indexMin: indexMin, 
-        		indexMax:indexMax, 
-        		renderPartial:true 
-        	},
-        success:
-            function(data) {
-                if(data){ //alert(data);
-                	$("#news-list").append(data);
-                	//bindTags();
-					
-				}
-				loadingData = false;
-				$(".stream-processing").hide();
-            },
-        error:function(xhr, status, error){
-            loadingData = false;
-            $("#newsstream").html("erreur");
-        },
-        statusCode:{
-                404: function(){
-                	loadingData = false;
-                    $("#newsstream").html("not found");
-            }
-        }
-    });
-}
-
-function loadLiveNow () { 
-
-    var searchParams = {
-      "name":"",
-      "tpl":"/pod/nowList",
-      "latest" : true,
-      "searchType" : ["<?php echo Event::COLLECTION?>","<?php echo Project::COLLECTION?>",
-      				  "<?php echo Organization::COLLECTION?>","<?php echo ActionRoom::COLLECTION?>"], 
-      "searchTag" : $('#searchTags').val().split(','), //is an array
-      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
-      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
-      "indexMin" : 0, 
-      "indexMax" : 10 
-    };
-
-    
-    /*ajaxPost( "#nowList", baseUrl+"/"+moduleId+'/search/globalautocomplete' , searchParams, function() { 
-        bindLBHLinks();
-        if($('.el-nowList').length==0)
-        	$('.titleNowEvents').addClass("hidden");
-        else
-        	$('.titleNowEvents').removeClass("hidden");
-     } , "html" );
-}*/
 
 function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
@@ -177,8 +112,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		thisType = "city";
 		urlCtrl = "/news/index/type/city/isLive/true";
 	}
-
-	var searchLocality = getLocalityForSearch();
+	var searchLocality = getSearchLocalityObject();
 	mylog.log("searchLocality", searchLocality);
 	var dataSearch = {
       //"name" : name, 
@@ -186,32 +120,15 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
       "searchType" : searchType, 
       "textSearch" : $('#main-search-bar').val(),
       "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
-      //"indexMin" : indexMin, 
-      //"indexMax" : indexMax
     };
-	/*<?php if(@Yii::app()->session["userId"]){ ?>
-	else if(liveScopeType == "community"){
-		thisType = "citoyens";
-		urlCtrl = "/news/index/type/citoyens/id/<?php echo @Yii::app()->session["userId"]; ?>/isLive/true";
-	}
-	<?php } ?>*/
-       
-    //dataNewsSearch.type = thisType;
-    //var myParent = <?php echo json_encode(@$parent)?>;
-    //dataNewsSearch.parent = { }
-
   var loading = "<div class='loader bold letter-blue shadow2 text-center'>"+
 					"<i class='fa fa-spin fa-circle-o-notch'></i> "+
 					"<span>"+trad.currentlyloading+" ...</span>" + 
 				"</div>";
 
-	//loading = "";
-
 	if(isFirst){ //render HTML for 1st load
-		//if($("#newsstream .loader").length<0){
-			$("#newsstream").html(loading);
-			KScrollTo("#container-scope-filter");
-		//}
+		$("#newsstream").html(loading);
+		KScrollTo("#container-scope-filter");
 		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataSearch, function(news){
 			//showTagsScopesMin(".list_tags_scopes");
 			 $(window).bind("scroll",function(){ 

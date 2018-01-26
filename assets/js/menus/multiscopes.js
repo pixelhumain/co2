@@ -88,7 +88,7 @@ function autocompleteMultiScope(){
 			});
 
 			$(".addScope").click(function(){
-				dyFInputs.scopeObj.addScope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"))
+				dyFInputs.scopeObj.addScope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
 				//addScopeToMultiscope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
 			});
 

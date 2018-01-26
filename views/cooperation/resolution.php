@@ -79,7 +79,7 @@
 	<hr>
 		<h4 class="">
 			<i class="fa fa-bell"></i> 
-			<?php echo Yii::t("cooperation", "The <b>resolution</b> has been approved : "); ?>
+			<?php echo Yii::t("cooperation", "The <b>resolution</b> is done : "); ?>
 			<br class="visible-md">
 			<small><?php echo Yii::t("cooperation", "The proposal is"); ?> 
 			 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && 
@@ -135,7 +135,7 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">
 	
-	<div class="padding-25 bg-lightblue radius-5" id="container-text-resolution">
+	<div class="padding-25 bg-lightblue radius-5 col-xs12" id="container-text-resolution">
 		<?php if(@$resolution["title"]){ ?>
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?></h3>
 		<?php }else{ ?>
@@ -279,111 +279,7 @@
 	var useIdParentResolution = false;
 
 	jQuery(document).ready(function() { 
-		
-		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
-		
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/resolutions/id/"+idParentResolution,
-			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
-				$(".container-txtarea").hide();
-
-				$(".btn-select-arg-comment").click(function(){
-					var argval = $(this).data("argval");
-					$(".container-txtarea").show();
-
-					$(".textarea-new-comment").removeClass("bg-green-comment bg-red-comment");
-					var classe="";
-					var pholder="Votre commentaire";
-					if(argval == "up")   { classe="bg-green-comment"; pholder="Votre argument pour";   }
-					if(argval == "down") { classe="bg-red-comment";   pholder="Votre argument contre"; }
-					$(".textarea-new-comment").addClass(classe).attr("placeholder", pholder);
-					$("#argval").val(argval);
-				});
-		},"html");
-
-		$("#btn-close-resolution").click(function(){
-			uiCoop.minimizeMenuRoom(false);
-		});
-		$(".btn-extend-resolution").click(function(){
-			uiCoop.maximizeReader(true);
-			$(".btn-minimize-resolution").removeClass("hidden");
-			$(".btn-extend-resolution").addClass("hidden");
-		});
-		$(".btn-minimize-resolution").click(function(){
-			uiCoop.maximizeReader(false);
-			$(".btn-minimize-resolution").addClass("hidden");
-			$(".btn-extend-resolution").removeClass("hidden");
-		});
-		$(".btn-show-amendement").click(function(){
-			uiCoop.showAmendement(true);
-		});
-		$("#btn-hide-amendement").click(function(){
-			uiCoop.showAmendement(false);
-		});
-		$(".btn-create-amendement").click(function(){
-			uiCoop.showAmendement(true);
-			if($("#form-amendement").hasClass("hidden"))
-				$("#form-amendement").removeClass("hidden");
-			else 
-				$("#form-amendement").addClass("hidden");
-		});
-
-		$(".btn-send-vote").click(function(){
-			var voteValue = $(this).data('vote-value');
-			console.log("send vote", voteValue),
-			uiCoop.sendVote("resolution", idParentResolution, voteValue, idParentRoom);
-		});
-		$("#btn-activate-vote").click(function(){
-			uiCoop.activateVote(idParentResolution);
-		});
-
-		$("#btn-refresh-resolution").click(function(){
-			toastr.info(trad["processing"]);
-			var idresolution = $(this).data("id-resolution");
-			uiCoop.getCoopData(null, null, "resolution", null, idresolution, 
-				function(){
-					uiCoop.minimizeMenuRoom(true);
-					uiCoop.showAmendement(false);
-					toastr.success(trad["processing ok"]);
-				}, false);
-		});
-
-		$("#btn-refresh-amendement").click(function(){
-			toastr.info(trad["processing"]);
-			var idresolution = $(this).data("id-resolution");
-			uiCoop.getCoopData(null, null, "resolution", null, idresolution, 
-				function(){
-					uiCoop.minimizeMenuRoom(true);
-					uiCoop.showAmendement(true);
-					toastr.success(trad["processing ok"]);
-				}, false);
-		});
-
-		$(".btn-option-status-resolution").click(function(){
-			var idresolution = $(this).data("id-resolution");
-			var status = $(this).data("status");
-			uiCoop.changeStatus("resolutions", idresolution, status, parentTypeElement, parentIdElement);
-		});
-
-		$("#btn-show-voteres").click(function(){
-			if($(".podvote").hasClass("hidden")) $(".podvote").removeClass("hidden");
-			else $(".podvote").addClass("hidden");
-		});
-
-		$("#btn-create-action").click(function(){
-			useIdParentResolution = true;
-			dyFObj.openForm('action');
-		});
-		addCoopHash=".view.coop.room." + idParentRoom + ".resolution." + idParentResolution;
-		if(typeof hashUrlPage != "undefined")
-			location.hash = hashUrlPage +addCoopHash;
-		else if(notNull(contextData) && typeof contextData.slug != "undefined")
-			location.hash = "#" + contextData.slug + addCoopHash;
-		else
-			location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;
-		
-		if(msgController != ""){
-			toastr.error(msgController);
-		}
+		uiCoop.initUIResolution();
 	});
 
 </script>

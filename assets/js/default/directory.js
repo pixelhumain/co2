@@ -701,7 +701,32 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       coopType = coopType == "resolutions" ? "resolution" : coopType;
 
       console.log("onclick coopPanelHtml", coopType, coopId, idParentRoom, parentId, parentType);
-      
+
+      if(contextData.id == parentId && contextData.type == parentType){
+        toastr.info(trad["processing"]);
+        uiCoop.startUI();
+        $("#modalCoop").modal("show");
+        if(coopType == "rooms"){
+          uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
+        }else{
+          setTimeout(function(){
+              uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
+              function(){
+                toastr.info(trad["processing"]);
+                uiCoop.getCoopData(contextData.type, contextData.id, coopType, null, coopId);
+              }, false);
+            }, 1000);
+        }
+      }else{
+        if(coopType == "rooms"){
+          var hash = "#page.type." + parentType + ".id." + parentId + 
+                ".view.coop.room." + idParentRoom + "."+coopType+"." + coopId;
+          urlCtrl.loadByHash(hash);
+        }else{
+          uiCoop.getCoopDataPreview(coopType, coopId);
+        }
+      }
+/*
       if(contextData.id == parentId && contextData.type == parentType){
           toastr.info(trad["processing"]);
           uiCoop.startUI();
@@ -721,7 +746,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
         var hash = "#page.type." + parentType + ".id." + parentId + 
                 ".view.coop.room." + idParentRoom + "."+coopType+"." + coopId;
         urlCtrl.loadByHash(hash);
-      }
+      }*/
 
     });
 

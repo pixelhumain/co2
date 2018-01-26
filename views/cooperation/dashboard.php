@@ -184,7 +184,7 @@
 	
 	jQuery(document).ready(function() { 
 		
-		uiCoop.initBtnLoadData();
+		uiCoop.initBtnLoadDataPreview();
 
 		resizeInterface();
 

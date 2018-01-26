@@ -259,7 +259,7 @@
 		<hr>
 		<h4 class="">
 			<i class="fa fa-bell"></i> 
-			<?php echo Yii::t("cooperation", "The <b>resolution</b> has been taken : "); ?>
+			<?php echo Yii::t("cooperation", "The <b>resolution</b> is done : "); ?>
 			<br class="visible-md">
 			<small><?php echo Yii::t("cooperation", "The proposal is"); ?> 
 			 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && 
@@ -277,7 +277,7 @@
 				<?php echo date('d/m/Y H:i e', strtotime($proposal["voteDateEnd"])); ?>
 			</small>
 		<?php } ?><br>
-		<button class="btn btn-default load-coop-data"
+		<button class="btn btn-default load-coop-data margin-top-10"
 				data-type="resolution" data-dataid="<?php echo @$proposal["idResolution"]; ?>">
 				<i class="fa fa-chevron-right"></i> <?php echo Yii::t("cooperation", "Show the resolution"); ?>
 		</button>
@@ -287,7 +287,7 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">
 	
-	<div class="padding-25 bg-lightblue radius-5" id="container-text-proposal">
+	<div class="padding-25 bg-lightblue radius-5 col-xs12" id="container-text-proposal">
 
 			<?php if(@$proposal["title"]){ ?>
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?></h3>

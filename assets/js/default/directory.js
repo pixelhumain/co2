@@ -2221,28 +2221,22 @@ var directory = {
 		if(params.updated != null )
 			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad.actif+" </span>" + params.updated + "</div>";
 
-		var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
-		// if(params.type == "citoyens") 
-		// params.hash += '.viewer.' + userId;
-		// if(typeof params.size == "undefined" || params.size == "max")
-		str += "<a href='"+params.hash+"' class='container-img-banner add2fav >" + params.imgBanner + "</a>";
+		str += "<a href='"+params.hash+"' target='_blank' class='container-img-banner add2fav >" + params.imgBanner + "</a>";
 		str += "<div class='padding-10 informations'>";
 
 		str += "<div class='entityRight no-padding'>";
 
 		if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
 			str += "<div class='entityCenter no-padding'>";
-			str +=    "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
-			str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+">" + params.htmlIco + "</a>";
+			str +=    "<a href='"+params.hash+"' target='_blank' class='container-img-profil add2fav '>" + params.imgProfil + "</a>";
+			str +=    "<a href='"+params.hash+"' target='_blank' class='add2fav pull-right margin-top-15 '>" + params.htmlIco + "</a>";
 			str += "</div>";
 		}
 
-		str += "<a href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+ params.skin.title + "</a>";  
+		str += "<a href='"+params.hash+"' target='_blank' class='"+params.size+" entityName bold text-dark add2fav '>"+ params.skin.title + "</a>";  
 
 		str += "<div class='entityDescription'>" + ( (params.skin.shortDescription == null ) ? "" : params.skin.shortDescription ) + "</div>";
-		//str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
-		str += "<div class='tagsContainer text-red'>";
-
+		str += "<div class='tagsContainer'>";
 
 		if( typeof edit != "undefined" && edit == true ) {
 			str += '<ul class="nav text-center">';

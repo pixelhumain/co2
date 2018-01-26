@@ -236,6 +236,10 @@ jQuery(document).ready(function() {
             }
 
             initTypeSearch(typeD);
+            if(typeD=="all"){
+                searchEngine.initInjectData();
+                searchEngine.initTerritorialSearch();
+            }
             mylog.log("search.php",searchType);
             //setHeaderDirectory(typeD);
             loadingData = false;

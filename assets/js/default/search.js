@@ -392,6 +392,7 @@ var searchEngine = {
             places : { indexMin : 0, indexMax : 30, waiting : 30 },
             ressources : { indexMin : 0, indexMax : 30, waiting : 30 },
         };
+        initTypeSearch("all");
         searchEngine.allResults={};
         search.app="territorial";
         pageCount=false;

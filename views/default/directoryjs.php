@@ -699,7 +699,7 @@ jQuery(document).ready(function() {
 	
   $('.tooltips').tooltip();
 
-  setHeaderDirectory(typeSelected);  
+  //setHeaderDirectory(typeSelected);  
 
   //showTagsScopesMin("#scopeListContainer");
 

@@ -96,8 +96,6 @@ function initTypeSearch(typeInit){
         searchType = ["organizations", "projects", "events", "places", "poi", "news", "classified","ressources"];
         if(search.value != "")
           searchType.push("persons");
-        searchEngine.initInjectData();
-        searchEngine.initTerritorialSearch();
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
         indexStepInit = 30;
     }else if(typeInit == "allSig"){

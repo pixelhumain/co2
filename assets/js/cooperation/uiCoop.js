@@ -5,6 +5,8 @@ var uiCoop = {
 		//$("#menu-left-container").hide();
 		//$("#div-reopen-menu-left-container").removeClass("hidden");
 		$("#main-coop-container").html("");
+		$("#modal-preview-coop").html("");
+		$("#modal-preview-coop").hide(300);
 
 		$("#btn-close-coop").click(function(){
 			if(contextData.slug != "undefined")
@@ -60,6 +62,21 @@ var uiCoop = {
 			var dataId = $(this).data("dataid");
 			//console.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
 			uiCoop.getCoopData(contextData.type, contextData.id, type, status, dataId);
+		});
+	},
+	"initBtnLoadDataPreview" : function(){
+		//alert('initBtnLoadData');
+		$("#modal-preview-coop .load-coop-data, #list-dashboard-dda .load-coop-data").off().click(function(){
+			var type = $(this).data("type");
+			
+			if(type == "locked"){
+				toastr.info("Vous n'avez pas accès à cet espace");
+				return;
+			}
+
+			var dataId = $(this).data("dataid");
+			//console.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
+			uiCoop.getCoopDataPreview(type, dataId);
 		});
 	},
 
@@ -170,7 +187,7 @@ var uiCoop = {
 					"<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
 			}
 			else{
-				$("#coop-data-container").html(
+				$(uiCoop.getParentContainer() + "#coop-data-container").html(
 					"<h2 class='margin-top-50 text-center'><i class='fa fa-refresh fa-spin'></i></h2>");
 			}
 		}
@@ -187,7 +204,7 @@ var uiCoop = {
 					uiCoop.minimizeMenuRoom(false);
 				}
 				else{
-					$("#coop-data-container").html(data);
+					$(uiCoop.getParentContainer() + "#coop-data-container").html(data);
 					uiCoop.minimizeMenuRoom(true);
 				}
 
@@ -208,6 +225,47 @@ var uiCoop = {
 				$(".tooltips").tooltip();
 
 				if(typeof onSuccess == "function") onSuccess();
+			}
+		);
+	},
+
+	"getCoopDataPreview" : function(type, dataId, onSuccess, showLoading){
+		console.log("getCoopDatagetCoopDataPreview", type, status, dataId, onSuccess, showLoading);
+		var url = moduleId+'/cooperation/previewcoopdata';
+		var params = {
+			"type" : type,
+			"dataId" : dataId,
+			"json" : false
+		};
+		//console.log("showLoading ?", typeof showLoading, showLoading);
+		
+		//if(typeof showLoading == "undefined" || showLoading == true){
+			
+		//}
+
+		$("#modal-preview-coop").removeClass("hidden");
+		$("#modal-preview-coop").show(300);
+		$("#modal-preview-coop").html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-turq'></i>");
+
+		ajaxPost("", url, params,
+			function (data){
+
+				$("#modal-preview-coop").html(data);
+
+				$("#btn-refresh-"+type).off().click(function(){
+					toastr.info(trad["processing"]);
+					var idData = $(this).data("id-"+type);
+					uiCoop.getCoopDataPreview(type, idData);
+				});
+				//uiCoop.initBtnLoadData();
+
+				$(".tooltips").tooltip();
+				bindLBHLinks();
+
+				if(typeof onSuccess == "function") onSuccess();
+			},
+			function(data){
+				$("#modal-preview-coop").html("error");
 			}
 		);
 	},
@@ -263,7 +321,7 @@ var uiCoop = {
 						toastr.success(trad["Your vote has been save with success"]);
 						
 						uiCoop.minimizeMenuRoom(true);
-						$("#coop-data-container").html(proposalView);
+						$(uiCoop.getParentContainer() + "#coop-data-container").html(proposalView);
 						if(parentType == "amendement")
 							uiCoop.showAmendement(true);
 					}, false);
@@ -405,7 +463,7 @@ var uiCoop = {
 		    	success: function(data){
 		    		toastr.success(trad["processing delete ok"]);
 					toastr.success(trad["processing ok"]);
-					$("#coop-data-container").html(data);
+					$(uiCoop.getParentContainer() + "#coop-data-container").html(data);
 					uiCoop.minimizeMenuRoom(true);
 					uiCoop.showAmendement(true);
 		    	},
@@ -431,6 +489,12 @@ var uiCoop = {
 	                  toastr.error(data.msg);
 		    	}
 		});	
+	},
+
+	getParentContainer : function(){
+		var res = ($("#modal-preview-coop #coop-container").length == 0) ? "#modalCoop " : "#modal-preview-coop ";
+		console.log("getParentContainer", res);
+		return ($("#modal-preview-coop #coop-container").length == 0) ? "#modalCoop " : "#modal-preview-coop ";
 	},
 
 	initUIProposal : function(){
@@ -459,6 +523,10 @@ var uiCoop = {
 
 		$("#btn-close-proposal").click(function(){
 			uiCoop.minimizeMenuRoom(false);
+		});
+
+		$("#modal-preview-coop #btn-close-proposal").off().click(function(){
+			$("#modal-preview-coop").hide(300);
 		});
 
 		$(".btn-extend-proposal").click(function(){
@@ -547,15 +615,17 @@ var uiCoop = {
 		});
 
 		//$(".descriptionMarkdown").html(dataHelper.convertMardownToHtml($(".descriptionMarkdown").html()));
+		if($("#modal-preview-coop #coop-container").length == 0){
+			var addCoopHash=".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
+			if(typeof hashUrlPage != "undefined")
+				location.hash = hashUrlPage +addCoopHash;
+			else if(notNull(contextData) && typeof contextData.slug != "undefined")
+				location.hash = "#" + contextData.slug + addCoopHash;
+			else
+				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash; 
+		}
 
-		addCoopHash=".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
-		if(typeof hashUrlPage != "undefined")
-			location.hash = hashUrlPage +addCoopHash;
-		else if(notNull(contextData) && typeof contextData.slug != "undefined")
-			location.hash = "#" + contextData.slug + addCoopHash;
-		else
-			location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash; 
-							  
+		uiCoop.initBtnLoadDataPreview();
 
 		if(msgController != ""){
 			toastr.error(msgController);
@@ -575,6 +645,9 @@ var uiCoop = {
 
 		$("#btn-close-action").click(function(){
 			uiCoop.minimizeMenuRoom(false);
+		});
+		$("#modal-preview-coop #btn-close-action").off().click(function(){
+			$("#modal-preview-coop").hide(300);
 		});
 
 		$(".btn-extend-action").click(function(){
@@ -616,14 +689,126 @@ var uiCoop = {
 		$("#btn-validate-assign-me").off().click(function(){
 			uiCoop.assignMe(idAction);
 		});
-		addCoopHash=".view.coop.room." + idParentRoom + ".action." + idAction;
-		if(typeof hashUrlPage != "undefined")
-			location.hash = hashUrlPage +addCoopHash;
-		else if(notNull(contextData) && typeof contextData.slug != "undefined")
-			location.hash = "#" + contextData.slug + addCoopHash;
-		else
-			location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;  
-							  
+
+		if($("#modal-preview-coop #coop-container").length == 0){
+			var addCoopHash=".view.coop.room." + idParentRoom + ".action." + idAction;
+			if(typeof hashUrlPage != "undefined")
+				location.hash = hashUrlPage +addCoopHash;
+			else if(notNull(contextData) && typeof contextData.slug != "undefined")
+				location.hash = "#" + contextData.slug + addCoopHash;
+			else
+				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;  
+		}					  
+	},
+
+	initUIResolution : function(){
+		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
+		
+		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/resolutions/id/"+idParentResolution,
+			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
+				$(".container-txtarea").hide();
+
+				$(".btn-select-arg-comment").click(function(){
+					var argval = $(this).data("argval");
+					$(".container-txtarea").show();
+
+					$(".textarea-new-comment").removeClass("bg-green-comment bg-red-comment");
+					var classe="";
+					var pholder="Votre commentaire";
+					if(argval == "up")   { classe="bg-green-comment"; pholder="Votre argument pour";   }
+					if(argval == "down") { classe="bg-red-comment";   pholder="Votre argument contre"; }
+					$(".textarea-new-comment").addClass(classe).attr("placeholder", pholder);
+					$("#argval").val(argval);
+				});
+		},"html");
+
+		$("#btn-close-resolution").click(function(){
+			uiCoop.minimizeMenuRoom(false);
+		});
+		$("#modal-preview-coop #btn-close-resolution").off().click(function(){
+			$("#modal-preview-coop").hide(300);
+		});
+
+		$(".btn-extend-resolution").click(function(){
+			uiCoop.maximizeReader(true);
+			$(".btn-minimize-resolution").removeClass("hidden");
+			$(".btn-extend-resolution").addClass("hidden");
+		});
+		$(".btn-minimize-resolution").click(function(){
+			uiCoop.maximizeReader(false);
+			$(".btn-minimize-resolution").addClass("hidden");
+			$(".btn-extend-resolution").removeClass("hidden");
+		});
+		$(".btn-show-amendement").click(function(){
+			uiCoop.showAmendement(true);
+		});
+		$("#btn-hide-amendement").click(function(){
+			uiCoop.showAmendement(false);
+		});
+		$(".btn-create-amendement").click(function(){
+			uiCoop.showAmendement(true);
+			if($("#form-amendement").hasClass("hidden"))
+				$("#form-amendement").removeClass("hidden");
+			else 
+				$("#form-amendement").addClass("hidden");
+		});
+
+		$("#btn-activate-vote").click(function(){
+			uiCoop.activateVote(idParentResolution);
+		});
+
+		$("#btn-refresh-resolution").click(function(){
+			toastr.info(trad["processing"]);
+			var idresolution = $(this).data("id-resolution");
+			uiCoop.getCoopData(null, null, "resolution", null, idresolution, 
+				function(){
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(false);
+					toastr.success(trad["processing ok"]);
+				}, false);
+		});
+
+		$("#btn-refresh-amendement").click(function(){
+			toastr.info(trad["processing"]);
+			var idresolution = $(this).data("id-resolution");
+			uiCoop.getCoopData(null, null, "resolution", null, idresolution, 
+				function(){
+					uiCoop.minimizeMenuRoom(true);
+					uiCoop.showAmendement(true);
+					toastr.success(trad["processing ok"]);
+				}, false);
+		});
+
+		$(".btn-option-status-resolution").click(function(){
+			var idresolution = $(this).data("id-resolution");
+			var status = $(this).data("status");
+			uiCoop.changeStatus("resolutions", idresolution, status, parentTypeElement, parentIdElement);
+		});
+
+		$("#btn-show-voteres").click(function(){
+			if($(".podvote").hasClass("hidden")) $(".podvote").removeClass("hidden");
+			else $(".podvote").addClass("hidden");
+		});
+
+		$("#btn-create-action").click(function(){
+			useIdParentResolution = true;
+			dyFObj.openForm('action');
+		});
+
+		if($("#modal-preview-coop #coop-container").length == 0){
+			var addCoopHash=".view.coop.room." + idParentRoom + ".resolution." + idParentResolution;
+			if(typeof hashUrlPage != "undefined")
+				location.hash = hashUrlPage +addCoopHash;
+			else if(notNull(contextData) && typeof contextData.slug != "undefined")
+				location.hash = "#" + contextData.slug + addCoopHash;
+			else
+				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;
+		}
+
+
+		if(msgController != ""){
+			toastr.error(msgController);
+		}
 	}
 
 }

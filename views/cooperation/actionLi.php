@@ -32,8 +32,8 @@
 
 
 	  	<?php
-	  		$participate = @$action["links"] ? @$action["links"]["contributors"][Yii::app()->session['userId']] : false;
-	  		if(!$participate){
+	  		$participate = @$action["links"] ? isset($action["links"]["contributors"][Yii::app()->session['userId']]) : false;
+	  		if($participate){
 	  			$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
               	$profilThumbImageUrl = Element::getImgProfil($me, "profilThumbImageUrl", $this->module->assetsUrl);
 	  	?>

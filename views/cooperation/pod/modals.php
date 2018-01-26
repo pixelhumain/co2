@@ -34,17 +34,15 @@
         <div class="modal-title" id="modalText">
         	<img class="pull-left margin-right-15" src="<?php echo $thumbAuthor; ?>" height=52 width=52 style="">
 			<!-- <h4 class="pull-left margin-top-15"><i class="fa fa-connectdevelop"></i> Espace coopératif</h4> -->
-        	<div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left" style="margin-top:14px;"></div>
-			 <h4 class="pull-left margin-top-15">
+        	 <div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left" style="margin-top:14px;"></div>
+			     <h4 class="pull-left margin-top-15">
         	  <?php echo @$element["name"]; ?>
-        	</h4>
-
-        	
+        	</h4>        	
         </div>
       </div>
       
        <div class="modal-body col-lg-12 col-md-12 col-sm-12 padding-15">
-			<ul id="menuCoop" class="menuCoop col-lg-2 col-md-3 col-sm-3">
+			  <ul id="menuCoop" class="menuCoop col-lg-2 col-md-3 col-sm-3">
     		</ul>
     		<div id="main-coop-container" class="col-lg-10 col-md-9 col-sm-9"></div>
       </div>

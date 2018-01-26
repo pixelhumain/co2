@@ -174,7 +174,7 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 margin-top-25">
 	
-	<div class="padding-15 bg-lightblue radius-5" id="container-text-action" >	
+	<div class="padding-15 bg-lightblue radius-5 col-xs12" id="container-text-action" >	
 		<?php if(@$action["name"]){ ?>
 			<h3><i class="fa fa-hashtag"></i> <?php echo @$action["name"]; ?></h3>
 		<?php } ?>

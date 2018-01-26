@@ -92,12 +92,13 @@ function addSearchType(type){
 function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
-    if(search.app == "territorial" || typeInit == "all") {
+    if(typeInit == "all") {
         searchType = ["organizations", "projects", "events", "places", "poi", "news", "classified","ressources"];
         if(search.value != "")
           searchType.push("persons");
+        searchEngine.initInjectData();
+        searchEngine.initTerritorialSearch();
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
-
         indexStepInit = 30;
     }else if(typeInit == "allSig"){
       searchType = ["persons", "organizations", "projects", "poi", "cities"];
@@ -106,6 +107,9 @@ function initTypeSearch(typeInit){
     else{
         searchType = [ typeInit ];
         indexStepInit = 30;
+        search.app="search";
+        delete search.ranges;
+        $(window).off("scroll");
     }
 }
 
@@ -141,8 +145,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     }
     if(typeof search.app != "undefined")
         data.app=search.app;
-    if(typeof pageCount != "undefined")
-      data.count=pageCount;
+    if(typeof search.count != "undefined" && search.count)
+      data.count=search.count;
     if(typeof search.ranges != "undefined")
       data.ranges=search.ranges;
     //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
@@ -204,19 +208,19 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             {
               //console.log("fuckkkkiiiiiing",data);
               if(typeof data.count != "undefined"){
-                var countElement=data.count;
+                searchCount=data.count;
                 delete data.count;
               }
               if(search.app=="territorial")
-                data=prepareAllSearch(data);
-              var countData = 0;
-            	$.each(data, function(i, v) { 
-                if(v.length!=0 && i != "count"){ 
-                  countData++; 
-                } 
-              });
+                data=searchEngine.prepareAllSearch(data);
+             // var countData = 0;
+            	//$.each(data, function(i, v) { 
+              //  if(v.length!=0 && i != "count"){ 
+              //    countData++; 
+              //  } 
+              //});
               
-              totalData += countData;
+              //totalData += countData;
             
               
               var city, postalCode = "";
@@ -228,11 +232,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 resultsStr=trad.results;
                 if((indexMin == 0 || search.app=="search" || search.app=="social") && (typeof pageEvent == "undefined" || !pageEvent) ){
                     headerStr = '';
-                    if(typeof pageCount != "undefined" && pageCount)
+                    if(typeof pageCount != "undefined" && pageCount && search.app !="territorial")
                       headerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-                    headerStr += "<h4 style='margin: 0px 0px 0px 6px;font-size:14px;' class='text-dark pull-left'>"+
-                              "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
-                    headerStr += "<small class='resultTypes'>";
+                    //headerStr += "<h4 style='margin: 0px 0px 0px 6px;font-size:14px;' class='text-dark pull-left'>"+
+                      //        "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
+                   /* headerStr += "<small class='resultTypes'>";
                     if(typeof headerParams != "undefined"){
                       var countNbTag=0;
                       $.each( searchType, function(key, val){ countNbTag++;
@@ -255,9 +259,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                                   "#"+key+
                                 "</span> ";
                       });*/
-                    }
+                    /*}
                     headerStr += "</small>";
-                    headerStr += "</h4>";
+                    headerStr += "</h4>";*/
                    // headerStr += "<hr style='float:left; width:100%;margin-top:0px;'/>";
                     $(".headerSearchContainer").html(headerStr);
               }
@@ -265,13 +269,14 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
              // if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1  && totalData == 0){
               //		str += '<span class="col-md-12 col-sm-12 col-xs-12 letter-blue padding-10"><i class="fa fa-info-circle"></i>'+ trad.youwillfindonlycities+'!</span>';
               //}
-              if(typeof countElement !="undefined")
-                refreshCountBadge(countElement);
+              //if(typeof countElement !="undefined")
+              if(search.count)
+                refreshCountBadge();
               //console.log(data.results);
              // alert();
               str += directory.showResultsDirectoryHtml(data);
               if((indexMin == 0 || search.app=="search") && (typeof pageEvent == "undefined" || !pageEvent) ){
-                  if(typeof pageCount != "undefined" && pageCount)
+                  if(typeof pageCount != "undefined" && pageCount && search.app !="territorial")
                     str += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
               }
               if(str == "") { 
@@ -342,6 +347,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
                 //active les link lbh
                 bindLBHLinks();
+                search.count=false;
                 //bindCommunexionScopeEvents();
 
                 // $(".start-new-communexion").click(function(){
@@ -409,6 +415,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   }
   function initPageTable(number){
     numberPage=(number/30);
+    $('.pageTable').show();
     $('.pageTable').pagination({
           items: numberPage,
           itemOnPage: 15,
@@ -433,12 +440,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       });
   }
   function refreshCountBadge(count){
-    searchCount=count;
-    console.log("aquuuui",count);
-    $.each(count, function(e,v){
+    //console.log("aquuuui",count);
+    $.each(searchCount, function(e,v){
       $("#count"+e).text(v);
     });
-    if(search.value!=""){
+    /*if(search.value!=""){
       countSocial=count.organizations+count.projects+count.places+count.citoyens+count.poi;
       if(typeof countSocial != 0)
         $(".count-badge-social").text(countSocial).show(700);
@@ -463,7 +469,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       
     }else{
       $(".count-badge-menu").hide(700);
-    }
+    }*/
   }
   function calculateAgendaWindow(nbMonth){
 

@@ -699,7 +699,7 @@ jQuery(document).ready(function() {
 	
   $('.tooltips').tooltip();
 
-  setHeaderDirectory(typeSelected);  
+  //setHeaderDirectory(typeSelected);  
 
   //showTagsScopesMin("#scopeListContainer");
 
@@ -723,20 +723,23 @@ jQuery(document).ready(function() {
   //     }
   // });
 
-  $(".btn-select-filliaire").click(function(){
+  /*$(".btn-select-filliaire").click(function(){
       mylog.log(".btn-select-filliaire");
       var fKey = $(this).data("fkey");
-      myMultiTags = {};
+      //myMultiTags = {};
       $.each(filliaireCategories[fKey]["tags"], function(key, tag){
-        addTagToMultitag(tag);
+        search.value="#"+tag;
+         $("#main-search-bar, #second-search-bar").val(search.value);
+     //   addTagToMultitag(tag);
       });
+      search
       mylog.log("myMultiTags", myMultiTags);
       
       startSearch(0, indexStepInit, searchCallback);
       KScrollTo("#content-social");
       //bindCommunexionScopeEvents();
       //KScrollTo("#before-section-result");
-  });
+  });*/
   
   /*  $(".searchIcon").removeClass("fa-search").addClass("fa-file-text-o");
   $(".searchIcon").attr("title","Mode Recherche ciblé (ne concerne que cette page)");*/

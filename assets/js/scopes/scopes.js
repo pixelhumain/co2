@@ -62,6 +62,7 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
                   .appendTo(appendDom); // append again to the list
 	if(newsAction) bindScopesNewsEvent();
 	else{
+		search.count=true;
 		startSearch(0, indexStepInit);
 		bindScopesInputEvent();
 	}
@@ -182,7 +183,8 @@ function bindScopesInputEvent(news){
                   .appendTo("#filter-scopes-menu .scopes-container");
 		}
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
-		if(search.app=="territorial") initTerritorialSearch();
+		if(search.app=="territorial") searchEngine.initTerritorialSearch();
+		search.count=true;
         startSearch(0, indexStepInit);
         bindScopesInputEvent();
 	});
@@ -190,6 +192,7 @@ function bindScopesInputEvent(news){
         scopeValue=$(this).data("scope-value");
         typeSearch=$(this).data("btn-type");
         scopeActiveScope(scopeValue);
+        search.count=true;
         if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
             startNewsSearch(true)
         } 
@@ -198,7 +201,7 @@ function bindScopesInputEvent(news){
             startSearchInterop(0,30);
         }
         else{
-            if(search.app=="territorial") initTerritorialSearch();
+            if(search.app=="territorial") searchEngine.initTerritorialSearch();
             startSearch(0, indexStepInit); 
         }
     });
@@ -213,7 +216,7 @@ function bindScopesInputEvent(news){
         $(".dropdown-result-global-search").hide(700).html("");
         myScopes.type="open";
         //}
-        if(search.app=="territorial") initTerritorialSearch();
+        if(search.app=="territorial") searchEngine.initTerritorialSearch();
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         changeCommunexionScope($(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
                          $(this).data("scope-values"),  notSearch, testCo, $(this).data("append-container")) ;

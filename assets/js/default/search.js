@@ -17,7 +17,8 @@ function initSearchInterface(){
             searchPage=0;
             search.value = $(this).val();
             pageCount=true;
-            if(search.app=="territorial") initTerritorialSearch();
+            search.count=true;
+            if(search.app=="territorial") searchEngine.initTerritorialSearch();
             //if(typeof search.value == "undefined")
             startSearch(0, indexStepInit, searchCallback);
            // else
@@ -37,8 +38,9 @@ function initSearchInterface(){
             //initTypeSearch(typeInit);
             searchPage=0;
             search.value = $(this).val();
+            search.count=true;
             pageCount=true;
-            if(search.app=="territorial") initTerritorialSearch();
+            if(search.app=="territorial") searchEngine.initTerritorialSearch();
             //if(typeof search.value == "undefined")
             startSearch(0, indexStepInit, searchCallback);
             //else
@@ -331,3 +333,114 @@ function bindLeftMenuFilters () {
 /* -------------------------
 END CLASSIFIED
 ----------------------------- */
+
+/* ----------------------------
+        SEARCH ENGINE
+-------------------------------*/
+var searchEngine = {
+    injectData : {},
+    allResults : {},
+    searchCount: {},
+//jQuery(document).ready(function() {
+    //setTitle("Espace administrateur : Répertoire","cog");
+    //initTypeSearch("all");
+   // initInjectData();
+    //initTerritorialSearch();
+   // startSearch(0, indexStepInit, searchCallback);
+  //startSearch(0, 30, null);   
+    //initKInterface();
+    //initSearchInterface();
+    //initViewTable(results);
+    /*if(openingFilter != "")
+        $('.filter'+openingFilter).trigger("click");
+    $(window).bind("scroll",function(){  
+      mylog.log("test scroll", scrollEnd, loadingData);
+      if(!loadingData && !scrollEnd && !isMapEnd){
+        var heightWindow = $("html").height() - $("body").height();
+        if( $(this).scrollTop() >= heightWindow - 800){
+          startSearch(10, 30, null);
+      }
+    }
+  });
+  loadingData = false;*/ 
+        
+   // initPageTable(results.count.citoyens);
+
+//}); 
+    initInjectData: function(){
+        searchEngine.injectData={
+            organizations : 0,
+            projects : 0,
+            events : 0,
+            citoyens : 0,
+            classified : 0,
+            poi : 0,
+            news : 0,
+            place : 0,
+            ressource : 0
+        };
+    },
+    initTerritorialSearch: function (){
+        search.ranges={
+            organizations : { indexMin : 0, indexMax : 30, waiting : 30 },
+            projects : { indexMin : 0, indexMax : 30, waiting : 30 },
+            events : { indexMin : 0, indexMax : 30, waiting : 30 },
+            citoyens : { indexMin : 0, indexMax : 30, waiting : 30 },
+            classified : { indexMin : 0, indexMax : 30, waiting : 30 },
+            poi : { indexMin : 0, indexMax : 30, waiting : 30 },
+            news : { indexMin : 0, indexMax : 30, waiting : 30 },
+            places : { indexMin : 0, indexMax : 30, waiting : 30 },
+            ressources : { indexMin : 0, indexMax : 30, waiting : 30 },
+        };
+        initTypeSearch("all");
+        searchEngine.allResults={};
+        search.app="territorial";
+        pageCount=false;
+        $(window).bind("scroll",function(){  
+            mylog.log("test scroll", scrollEnd, loadingData);
+            if(!loadingData && !scrollEnd && !isMapEnd){
+                var heightWindow = $("html").height() - $("body").height();
+                if( $(this).scrollTop() >= heightWindow - 800)
+                    startSearch(10, 30, null);
+            }
+        });
+          //check search.value Or locality filtering to add persons in the research
+        //initTypeSearch("all");
+    },
+    prepareAllSearch: function(data){
+        sorting=[];
+        searchType=[];
+        $i=0;
+        resToShow={};
+        searchEngine.initInjectData();
+        $.each(data, function(e,v){
+            searchEngine.allResults[e]=v;
+        });
+        $.each(searchEngine.allResults, function(e,v ){
+            if (searchType.indexOf(v.type) == -1)
+                searchType.push(v.type);
+            sorting.push(v.sorting);
+        });
+        sorting.sort().reverse();
+        sorting=sorting.splice(0,30);
+        $.each(sorting, function(e, v){
+            $.each(searchEngine.allResults, function(key, value){
+              if(v==value.sorting){
+                resToShow[key]=value;
+                searchEngine.injectData[value.type]++;
+                delete searchEngine.allResults[key];
+                $i++;
+              }
+            });
+        });
+        $.each(searchEngine.injectData, function (type, v){
+            if(v==0)
+              removeSearchType(type);
+            else{
+              search.ranges[type].indexMin=search.ranges[type].indexMax;
+              search.ranges[type].indexMax=search.ranges[type].indexMin+v;
+            }
+          });
+        return resToShow;
+    }
+};

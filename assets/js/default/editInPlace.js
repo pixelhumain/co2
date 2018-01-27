@@ -988,21 +988,40 @@ function bindAboutPodElement() {
 			success: function(data){
 				mylog.log("data", data);
 				var update = {};
+				update.id = id;
+				update.visible = data.visible;
 				update["skin[title]"] = data.skin.title;
 				update["skin[shortDescription]"] = data.skin.title;
 				update["skin[logo]"] = data.skin.logo;
 				update["displayCommunexion"] = dataHelper.stringToBool(data.skin.displayCommunexion);
-
 				//update["add"] = dataHelper.stringToBool(data.skin.add);
-
 				update["request[scope]"] = data.request.scope;
 				update["request[searchType]"] = data.request.searchType;
 				update["request[searchTag]"] = data.request.searchTag;
 				update["request[sourceKey]"] = data.request.sourceKey;
 
-				
+				update.visible = data.visible;
 
-
+				var filters = [] ;
+				var i = 0 ;
+				$.each(data.filter.linksTag, function(cat, fil){
+					var f = {};
+					f.name = cat;
+					$.each(fil,function(ktag,vtag) {
+						i = 0 ;
+						if(ktag == "tags"){
+							mylog.log("updateNetwork vtag", typeof vtag, vtag);
+							$.each(vtag,function(k,v) {
+								f["keyVal"+i] = k ;
+								f["tagskeyVal"+i] = v.toString();
+								i++;
+							});
+							
+						}
+					});
+					filters.push( f );
+				});
+				update.filter = filters;
 				dyFObj.openForm( 'network','sub', update);
 			}
 		});

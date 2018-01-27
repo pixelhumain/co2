@@ -199,7 +199,8 @@ var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
-var pageCount=true;
+var pageCount=false;
+search.count=true;
 
 
 <?php if(@$type=="events"){ ?>
@@ -218,8 +219,6 @@ var currentKFormType = "";
 jQuery(document).ready(function() {
 
     setTitle(titlePage, "", titlePage);
-    if(typeof search.ranges != "undefined")
-        delete search.ranges;
   
     initKInterface({"affixTop":100});
     
@@ -237,10 +236,15 @@ jQuery(document).ready(function() {
             }
 
             initTypeSearch(typeD);
+            if(typeD=="all"){
+                searchEngine.initInjectData();
+                searchEngine.initTerritorialSearch();
+            }
             mylog.log("search.php",searchType);
-            setHeaderDirectory(typeD);
+            //setHeaderDirectory(typeD);
             loadingData = false;
             pageCount=true;
+            search.count=false;
             pageEvent=false;
             search.type=searchType;
             startSearch(0, indexStepInit, searchCallback);

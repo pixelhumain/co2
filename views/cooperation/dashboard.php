@@ -200,6 +200,7 @@
 
 		$("#list-dashboard-dda").off().mouseleave(function(){
 			$("#dropdown-dda").removeClass("open");
+			$("#list-dashboard-dda").off();
 		});
 
 	});

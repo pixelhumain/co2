@@ -18,7 +18,7 @@
 
 
 <?php if(@$access=="deny"){ ?>
-	<div class="col-lg-12 col-md-12 col-sm-12">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<h5 class="padding-left-10 letter-red">
 			<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
 		</h5>
@@ -87,7 +87,7 @@
 </div>
 
 
-<div class="col-lg-12 col-md-12 col-sm-12 pull-left margin-top-15">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left margin-top-15">
 <?php
 	//if no assignee , no startDate no end Date
     $statusLbl = Yii::t("rooms", @$post["status"]);
@@ -172,9 +172,9 @@
 </div>
 
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-25">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-25">
 	
-	<div class="padding-15 bg-lightblue radius-5 col-xs12" id="container-text-action" >	
+	<div class="padding-15 bg-lightblue radius-5 col-xs-12" id="container-text-action" >	
 		<?php if(@$action["name"]){ ?>
 			<h3><i class="fa fa-hashtag"></i> <?php echo @$action["name"]; ?></h3>
 		<?php } ?>
@@ -195,7 +195,7 @@
 	</div>
 </div>
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-25" >
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-25" >
 
 	<?php if(@$action["urls"]){ ?>
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
@@ -229,7 +229,7 @@
 
 
 	<?php if( @$action["links"]["contributors"] ) {	?>
-		<div class="col-lg-12 col-md-12 col-sm-12 no-padding margin-top-15">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding margin-top-15">
 		<?php foreach ($action["links"]["contributors"] as $id => $att) { // var_dump($att);
 				$contrib = Element::getByTypeAndId($att["type"], $id); ?>
 				<div class="col-lg-4 col-md-4 col-sm-6 link-assignee ">
@@ -257,14 +257,14 @@
 
 </div>
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-5">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-50 padding-bottom-5">
 	<h4 class="text-center">
 		<i class="fa fa-comments fa-2x margin-bottom-10"></i><br>Discussion<br>
 		<i class="fa fa-angle-down"></i>
 	</h4>
 </div>
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-10 margin-bottom-50" id="comments-container"><hr></div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-10 margin-bottom-50" id="comments-container"><hr></div>
 
 
 <script type="text/javascript">

@@ -27,6 +27,9 @@
 		overflow-y: scroll;
 		top:70px;
 	}
+	#modal-preview-coop #coop-data-container{
+		border:0px;
+	}
 	#modal-preview-coop .btn-extend-proposal,
 	#modal-preview-coop .btn-minimize-proposal,
 	#modal-preview-coop .btn-extend-action,
@@ -49,14 +52,14 @@
 	  <?php echo @$element["name"]; ?>
 	</h4>  
 	<a href="<?php echo $urlInCoSpace; ?>" 
-	  class="btn btn-default pull-right lbh margin-top-15 margin-right-25 letter-turq bold">
+	  class="btn btn-default pull-right hidden-xs lbh margin-top-15 margin-right-25 letter-turq bold">
 		<i class="fa fa-chevron-right"></i> <?php echo Yii::t("cooperation", "open in CO space"); ?>
 	</a>      	
 </div>
 
 <div id="coop-container" class="col-xs-12">
-	<div id="coop-data-container">
-		<div id="main-coop-container">
+	<div id="coop-data-container" class="col-xs-12 no-padding">
+		<div id="main-coop-container" class="col-xs-12 no-padding">
 			<?php echo $this->renderPartial($type, $data); ?>
 		</div>
 	</div>

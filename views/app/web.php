@@ -174,7 +174,7 @@ var currentCategory = "";
 var titlePage = "<?php echo Yii::app()->params["CO2DomainName"]=="kgougle" ? "Kgougle" : @$paramsApp["pages"]["#web"]["subdomainName"]; ?>";
 
 jQuery(document).ready(function() {
-    initKInterface({"affixTop":10});
+    initKInterface({"affixTop":250});
     initWebInterface();
     buildListCategories();
     

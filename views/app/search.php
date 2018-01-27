@@ -220,7 +220,7 @@ jQuery(document).ready(function() {
 
     setTitle(titlePage, "", titlePage);
   
-    initKInterface({"affixTop":100});
+    initKInterface({"affixTop":200});
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
@@ -276,12 +276,16 @@ jQuery(document).ready(function() {
             }
         });*/
 
-
+        if(type=="all"){
+            //searchEngine.initInjectData();
+            searchEngine.initTerritorialSearch();
+        }
 
         loadingData = false; 
         initTypeSearch(type);
         startSearch(null, null, searchCallback);
-            initSearchInterface();
+        initSearchInterface();
+
     },"html");
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js
@@ -293,6 +297,7 @@ jQuery(document).ready(function() {
             //KScrollTo("#content-social");  
         }, 1000);
     }
+
     $(".tooltips").tooltip();
 });
 

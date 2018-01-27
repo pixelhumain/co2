@@ -3406,8 +3406,8 @@ var CoSigAllReadyLoad = false;
 function KScrollTo(target){ 
 	mylog.log("KScrollTo target", target);
 	if($(target).length>=1){
-		var heightTopBar = 0;
-		if($("#territorial-menu").length >= 1) heightTopBar = $("#territorial-menu").height() + 20;
+		var heightTopBar = $("#mainNav").height();
+		if($("#territorial-menu").length >= 1) heightTopBar = $("#mainNav").height() + $("#territorial-menu").height() + 20;
 		$('html, body').stop().animate({
 	        scrollTop: $(target).offset().top - 60 - heightTopBar
 	    }, 500, '');

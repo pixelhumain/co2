@@ -105,6 +105,17 @@ function initSearchInterface(){
         dyFObj.openForm(type);
     });
 
+
+    $(".btn-menu-scopes").removeClass("active");
+    $(".btn-menu-scopes").find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
+    $("#multisopes-btn").addClass("active");
+    myScopes.type=$("#multisopes-btn").data("type");
+    $("#multisopes-btn").find("i.fa-angle-down").removeClass("fa-angle-down").addClass("fa-angle-up");
+    $(".scopes-container").html(constructScopesHtml());
+    if(myScopes.type=="communexion")
+        $("#filter-scopes-menu .scopes-container .scope-order").sort(sortSpan) // sort elements
+          .appendTo("#filter-scopes-menu .scopes-container");
+      
     //console.log("runin initSearchInterface end");
     
 }
@@ -380,7 +391,7 @@ var searchEngine = {
             ressource : 0
         };
     },
-    initTerritorialSearch: function (){
+    initTerritorialSearch: function (){ console.log("initTerritorialSearch");
         search.ranges={
             organizations : { indexMin : 0, indexMax : 30, waiting : 30 },
             projects : { indexMin : 0, indexMax : 30, waiting : 30 },
@@ -398,9 +409,9 @@ var searchEngine = {
         pageCount=false;
         $(window).bind("scroll",function(){  
             mylog.log("test scroll", scrollEnd, loadingData);
-            if(!loadingData && !scrollEnd && !isMapEnd){
-                var heightWindow = $("html").height() - $("body").height();
-                if( $(this).scrollTop() >= heightWindow - 800)
+            if(!loadingData && !scrollEnd && !isMapEnd && searchType.length>1){
+                var heightWindow = $("html").height();// - $("body").height();
+                if( $(this).scrollTop() >= heightWindow - 1200)
                     startSearch(10, 30, null);
             }
         });

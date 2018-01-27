@@ -24,9 +24,13 @@ var translate = {"organizations":"Organisations",
 function startSearch(indexMin, indexMax, callBack){
     console.log("startSearch directory.js", typeof callBack, callBack, loadingData);
     if(loadingData) return;
-    console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
+    
+    //console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
     loadingData = true;
     showIsLoading(true);
+
+    if(searchType.length==1)
+      KScrollTo(".container-result-search");
     
     //mylog.log("loadingData true");
     indexStep = indexStepInit;
@@ -107,7 +111,7 @@ function initTypeSearch(typeInit){
         indexStepInit = 30;
         search.app="search";
         delete search.ranges;
-        $(window).off("scroll");
+        //$(window).off("scroll");
     }
 }
 

@@ -137,7 +137,14 @@ function refreshNotifications(elementId,elementType,element,event)
     .done(function (data) { mylog.log("REFRESH NOTIF : "); mylog.dir(data);
         if (data) {       
         	buildNotifications(data.notif, element,event);
-        	$(".coopNotifs").html(data.coop);
+        	if(data.coop > 0){
+        		$(".btn-dashboard-dda").show();
+        		$(".coopNotifs").html(data.coop).show(100);
+        	}
+        	else{
+        		$(".btn-dashboard-dda").hide();
+        		$(".coopNotifs").html("");
+        	}
         } else {
             toastr.error("no notifications found ");
         }

@@ -126,7 +126,7 @@
 		"#place":
 		    {"inMenu" : true, 
 		    "useHeader" : true, 
-		    "open" : true, 
+		    "open" : false, 
 		    "subdomain" : "place", 
 		    "subdomainName" : "Lieux",
 		    "hash" : "#app.search.type.place",

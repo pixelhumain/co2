@@ -444,6 +444,11 @@ var trad = {
 
 	'previous' : "<?php echo Yii::t("common","previous") ?>", 
 	'next' : "<?php echo Yii::t("common","next") ?>", 
+	'waitendofloading' : "<?php echo Yii::t("form","Please, wait the end of the current loading") ?>",
+	"writesomethingplease":  "<?php echo Yii::t("form","Please, write something or add a content to your post") ?>",
+	"addplacesplease": "<?php echo Yii::t("form","Please, add a place to your post") ?>",
+	"addplacestyournews" : "<?php echo Yii::t("form","Add places where you want to publish") ?>",
+	"selectedzones" : "<?php echo Yii::t("form","Selected zones") ?>",
 };
 
 var tradDynForm = {

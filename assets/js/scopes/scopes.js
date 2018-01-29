@@ -166,7 +166,7 @@ function bindScopesInputEvent(news){
 		}
 		countFavoriteScope();
 	});
-	$("#multisopes-btn, #communexion-btn").off().on("click", function(){
+	$("#multiscopes-btn, #communexion-btn").off().on("click", function(){
 		if($(this).hasClass("active")){
 			$(this).removeClass("active");
 			$(this).find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
@@ -193,6 +193,8 @@ function bindScopesInputEvent(news){
         scopeValue=$(this).data("scope-value");
         typeSearch=$(this).data("btn-type");
         scopeActiveScope(scopeValue);
+        if(myScopes.type!="open")
+        	localStorage.setItem("myScopes",JSON.stringify(myScopes));
         search.count=true;
         if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
             startNewsSearch(true)
@@ -216,6 +218,7 @@ function bindScopesInputEvent(news){
         $("#searchOnCity").val("");
         $(".dropdown-result-global-search").hide(700).html("");
         myScopes.type="open";
+        localStorage.setItem("myScopes",JSON.stringify(myScopes));
         //}
         if(search.app=="territorial") searchEngine.initTerritorialSearch();
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));

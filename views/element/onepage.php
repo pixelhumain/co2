@@ -164,7 +164,7 @@
 		line-height: 22px !important;
 	}
 
-	.menu-linksBtn{
+	.btn-o.menu-linksBtn:hover{
 		background-color: rgba(173, 173, 173, 0.58) !important;
 		color: #363636 !important;
 	}

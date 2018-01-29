@@ -104,19 +104,6 @@ function initSearchInterface(){
         if(type=="vote") type="entry";
         dyFObj.openForm(type);
     });
-
-
-    $(".btn-menu-scopes").removeClass("active");
-    $(".btn-menu-scopes").find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
-    $("#multisopes-btn").addClass("active");
-    myScopes.type=$("#multisopes-btn").data("type");
-    $("#multisopes-btn").find("i.fa-angle-down").removeClass("fa-angle-down").addClass("fa-angle-up");
-    $(".scopes-container").html(constructScopesHtml());
-    if(myScopes.type=="communexion")
-        $("#filter-scopes-menu .scopes-container .scope-order").sort(sortSpan) // sort elements
-          .appendTo("#filter-scopes-menu .scopes-container");
-      
-    //console.log("runin initSearchInterface end");
     
 }
 

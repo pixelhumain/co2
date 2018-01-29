@@ -117,10 +117,10 @@
     }
 
 
-@media (min-width: 1300px) {
+@media (min-width: 991px) {
     .subModuleTitle{
-        width: 56% !important;
-        margin-left: 28% !important;
+        width: 100% !important;
+        margin-left: 11% !important;
     }
 }
 

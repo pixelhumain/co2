@@ -224,7 +224,7 @@ class AppController extends CommunecterController {
 
 	public function actionPage($type, $id, $view=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
-        //var_dump($type); exit;
+        //var_dump($view); exit;
             
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
             $type == Project::COLLECTION || $type == Organization::COLLECTION || 
@@ -268,7 +268,8 @@ class AppController extends CommunecterController {
                         "element" => $element);
 
         $params = Element::getInfoDetail($params, $element, $type, $id);
-    	echo $this->renderPartial("page", $params, true);
+        //var_dump(@$_POST); exit;
+        echo $this->renderPartial("page", $params, true);
 	}
 
     public function actionInteroperability(){

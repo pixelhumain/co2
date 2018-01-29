@@ -12,155 +12,39 @@
 	$thumbAuthor =  @$element['profilThumbImageUrl'] ? 
                       Yii::app()->createUrl('/'.@$element['profilThumbImageUrl']) 
                       : "";
-?>
-<style>
-	.img-thumb{
-		height: 50px;
-		width: 50px;
-	}
 
-	.podInside .panel-heading,
-	.podInside .panel-tools{
-		display:none;
-	}
-	.podInside .panel,
-	.podInside .table{
-		margin-bottom: 0px;
-		border: 0px;
-	}
-
-	.podInside.collections a{
-		font-size: 15px;
-		font-weight: 700;
-		padding:10px;
-		display: inline-block;
-	}
-
-	.podchart .panel-heading{
-		background-color: white !important;
-	}
-
-	.favElBtn{
-		/*color: #FC4D4D !important;*/
-		/*padding: 6px;
-		margin-bottom: 4px;*/
-	}
-
-	.editBtn{
-		float: right;
-	}
-
-
-	.btn-update-info, 
-	.btn-update-network, 
-	.btn-update-desc{
-
-	}
-
-	a.letter-grey{
-		color:#425B5F;
-	}
-
-
-
-	#subsubMenuLeft hr{
-	    margin-top: 7px;
-    	margin-bottom: 7px;	
-    	border-top: 2px solid #ededed;
-	}
-
-	#subsubMenuLeft a{
-		color:#5B5B5C;
-		font-size: 16px;
-		padding: 6px;
-		padding-left: 10px;
-		display: block;
-		text-align: left;
-		font-weight: bold;
-		border-left: 3px solid transparent;
-	}
-
-	#subsubMenuLeft a:hover{
-		color:#0095FF;
-		background-color: #edecec;
-		border-left: 3px solid #0095FF;
-	}
-	
-	#subsubMenuLeft a:active,
-	#subsubMenuLeft a.active{
-		background-color: #edecec;
-		border-left: 3px solid #0095FF;
-		color:#0095FF;
-	}
-	
-	#subsubMenuLeft i.fa{
-		width: 25px;
-		text-align: center;
-	}
-	.containInvitation .btn-accept{
-		border-radius:3px !important;
-		color: white;
-		background-color: #71CE4E;
-		padding: 5px 10px;
-		margin-top: 5px;
-	}
-	.containInvitation .btn-accept:hover{
-		color: #71CE4E !important;
-		background-color: white;
-		border: 1px solid #71CE4E;
-	}
-	.containInvitation .btn-accept i{
-		font-size:12px;
-	}
-	.containInvitation .btn-refuse{
-		border-radius:3px !important;
-		color: white;
-		background-color: #E33551;
-		padding: 5px 10px;
-	margin-top: 5px;
-	}
-	.containInvitation .btn-refuse:hover{
-		color: #E33551 !important;
-		background-color: white;
-		border: 1px solid #E33551;
-	}
-	.containInvitation .btn-refuse i{
-		font-size:12px;
-	}
-</style>
-<?php
-		if(@$invitedMe && !empty($invitedMe)){
-			$inviteRefuse="Refuse";
-			$inviteAccept="Accept";
-			$verb="Join";
-			$labelAdmin="";
-			$option=null;
-			$linkValid=Link::IS_INVITING;
-			if(@$invitedMe["isAdminInviting"]){
-				$verb="Administrate";
-				$option="isAdminInviting";
-				$labelAdmin=" to administrate";
-				$linkValid=Link::IS_ADMIN_INVITING;
-			}
-			$labelInvitation=Yii::t("common", "{who} invited you".$labelAdmin, array("{who}"=>"<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh'>".$invitedMe["invitorName"]."</a>"));
-			$tooltipAccept=$verb." this ".Element::getControlerByCollection($type);
-			if ($type == Event::COLLECTION){
-				$inviteRefuse="Not interested";
-				$inviteAccept="I go";
-			}
-			echo "<div class='no-padding containInvitation' style='border-bottom: 1px solid lightgray;margin-bottom:10px !important;'>".
-				"<div class='padding-5'>".
-					$labelInvitation.": <br/>".
-					'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.(string)$element["_id"].'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.$linkValid.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
-						'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
-					'</a>'.
-					'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Element::$connectTypes[$type].'\',null,\''.$option.'\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
-						'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
-					'</a>'.
-				"</div>".
-			"</div>";
+	if(@$invitedMe && !empty($invitedMe)){
+		$inviteRefuse="Refuse";
+		$inviteAccept="Accept";
+		$verb="Join";
+		$labelAdmin="";
+		$option=null;
+		$linkValid=Link::IS_INVITING;
+		if(@$invitedMe["isAdminInviting"]){
+			$verb="Administrate";
+			$option="isAdminInviting";
+			$labelAdmin=" to administrate";
+			$linkValid=Link::IS_ADMIN_INVITING;
 		}
-	?>
+		$labelInvitation=Yii::t("common", "{who} invited you".$labelAdmin, array("{who}"=>"<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh'>".$invitedMe["invitorName"]."</a>"));
+		$tooltipAccept=$verb." this ".Element::getControlerByCollection($type);
+		if ($type == Event::COLLECTION){
+			$inviteRefuse="Not interested";
+			$inviteAccept="I go";
+		}
+		echo "<div class='no-padding containInvitation' style='border-bottom: 1px solid lightgray;margin-bottom:10px !important;'>".
+			"<div class='padding-5'>".
+				$labelInvitation.": <br/>".
+				'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.(string)$element["_id"].'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.$linkValid.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
+					'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
+				'</a>'.
+				'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Element::$connectTypes[$type].'\',null,\''.$option.'\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
+					'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
+				'</a>'.
+			"</div>".
+		"</div>";
+	}
+?>
 
 <ul id="subsubMenuLeft">
 	
@@ -403,8 +287,8 @@
 
 	<?php } ?>
 
-	<?php if (false/*$type==Project::COLLECTION || $type==Organization::COLLECTION || 
-			  $type==Event::COLLECTION || $type==Person::COLLECTION*/){  
+	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
+			  $type==Event::COLLECTION || $type==Person::COLLECTION){  
 			$hash = @$element["slug"] ? 
 					"#".$element["slug"] :
 					"#page.type.".$type.".id.".$element["_id"];

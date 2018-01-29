@@ -920,6 +920,7 @@ var urlCtrl = {
 			}
 			else
 	       		showPanel(panelName,null,title);
+	       	
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
@@ -937,6 +938,7 @@ var urlCtrl = {
 				slug=hashT;
 			else
 				slug=hashT[0];
+
 			$.ajax({
 	  			type: "POST",
 	  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
@@ -948,6 +950,7 @@ var urlCtrl = {
 			  				hashT.shift();
 			  				viewPage="/"+hashT.join("/");
 			  			}
+			  			if(hashT[0]=="net") viewPage = "/view/net";
 			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
 			  		}else
 			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );

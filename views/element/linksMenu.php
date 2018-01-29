@@ -1,12 +1,12 @@
 <style>
 .menu-linksBtn{
 	text-shadow: 1px 1px 1px rgb(0,0,0);
-	padding: 5px 10px !important;
-	font-size: 14px !important;
-	text-transform: none !important;
-	border:none !important;
-	margin:0px !important;
-	border-radius: 0px !important;
+	padding: 5px 10px;
+	font-size: 14px;
+	text-transform: none;
+	border:none;
+	margin:0px;
+	border-radius: 0px;
 	float: left;
 }
 .menu-linksBtn i{

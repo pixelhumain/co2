@@ -14,10 +14,14 @@
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page") ); 
 ?>
-
+<style>
+    header {
+        display:none;
+    }
+</style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
-	<div class="padding-top-15" id="onepage">
+	<div class="" id="onepage">
 		<?php 
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
@@ -39,7 +43,9 @@
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if(Yii::app()->params["CO2DomainName"] == "terla")
                     $this->renderPartial('../element/terla/index', $params );
-                else
+                else if($view == "net") 
+                    $this->renderPartial("../element/onepage", $params);
+                else 
                     $this->renderPartial('../element/profilSocial', $params ); 
             }
 

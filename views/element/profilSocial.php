@@ -111,6 +111,11 @@
 #btn-show-activity-onmap{
     width:100%;
 }
+
+#onepage section#social-header{
+	margin-top: 68px;
+}
+
 </style>
 
 <?php 

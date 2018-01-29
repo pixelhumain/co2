@@ -70,7 +70,7 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 function getCommunexionLabel(){
 	if(typeof myScopes.communexion != "undefined" && Object.keys(myScopes.communexion).length>0){
 		var level=0;
-		var nameCommunexion=v.name;
+		var nameCommunexion="";
 		$.each(myScopes.communexion, function(e, v){
 			if(v.level > level){
 				level=v.level;

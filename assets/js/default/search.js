@@ -409,7 +409,7 @@ var searchEngine = {
         pageCount=false;
         $(window).bind("scroll",function(){  
             mylog.log("test scroll", scrollEnd, loadingData);
-            if(!loadingData && !scrollEnd && !isMapEnd && searchType.length>1){
+            if(!loadingData && !scrollEnd && !isMapEnd){
                 var heightWindow = $("html").height();// - $("body").height();
                 if( $(this).scrollTop() >= heightWindow - 1200)
                     startSearch(10, 30, null);

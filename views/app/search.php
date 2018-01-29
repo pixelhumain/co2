@@ -83,7 +83,7 @@
         margin-bottom: 25px;
         padding: 10px 0px;
         border-bottom: 2px solid #e9e9e9;
-        font-family: "montserrat";
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     .simple-pagination li a, .simple-pagination li span {

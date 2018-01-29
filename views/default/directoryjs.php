@@ -54,7 +54,7 @@
   line-height: 10px;
   max-width: 50%;
   font-size: 11px;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .container-result-search{

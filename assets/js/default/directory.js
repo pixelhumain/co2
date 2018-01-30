@@ -432,7 +432,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
           onPageClick: function (page, evt) {
               // some code
               //alert(page);
-            simpleScroll('#page');
+            simpleScroll();
             pageCount=false;
             searchPage=(page-1);
             search.page=searchPage;

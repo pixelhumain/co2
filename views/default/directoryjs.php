@@ -309,7 +309,7 @@
                 <span class="count-badge-filter" id="countprojects"></span>
             </button>
             <hr class="hidden-xs no-margin" data-type="projects">
-            <button class="btn border-brown btn-directory-type padding-10" data-type="place">
+            <button class="btn border-brown btn-directory-type padding-10" data-type="places">
                 <i class="fa fa-home"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Places") ?></span>
                 <span class="count-badge-filter" id="countplaces"></span>

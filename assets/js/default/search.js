@@ -36,7 +36,7 @@ function initSearchInterface(){
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
             //initTypeSearch(typeInit);
-            simpleScroll('#page');
+            simpleScroll();
             searchPage=0;
             search.value = $(this).val();
             search.count=true;

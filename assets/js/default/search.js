@@ -36,6 +36,7 @@ function initSearchInterface(){
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
             //initTypeSearch(typeInit);
+            simpleScroll('#page');
             searchPage=0;
             search.value = $(this).val();
             search.count=true;
@@ -104,19 +105,6 @@ function initSearchInterface(){
         if(type=="vote") type="entry";
         dyFObj.openForm(type);
     });
-
-
-    $(".btn-menu-scopes").removeClass("active");
-    $(".btn-menu-scopes").find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
-    $("#multisopes-btn").addClass("active");
-    myScopes.type=$("#multisopes-btn").data("type");
-    $("#multisopes-btn").find("i.fa-angle-down").removeClass("fa-angle-down").addClass("fa-angle-up");
-    $(".scopes-container").html(constructScopesHtml());
-    if(myScopes.type=="communexion")
-        $("#filter-scopes-menu .scopes-container .scope-order").sort(sortSpan) // sort elements
-          .appendTo("#filter-scopes-menu .scopes-container");
-      
-    //console.log("runin initSearchInterface end");
     
 }
 
@@ -411,7 +399,7 @@ var searchEngine = {
         pageCount=false;
         $(window).bind("scroll",function(){  
             mylog.log("test scroll", scrollEnd, loadingData);
-            if(!loadingData && !scrollEnd && !isMapEnd){
+            if(!loadingData && !scrollEnd && !isMapEnd && search.app=="territorial"){
                 var heightWindow = $("html").height();// - $("body").height();
                 if( $(this).scrollTop() >= heightWindow - 1200)
                     startSearch(10, 30, null);

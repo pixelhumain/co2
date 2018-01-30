@@ -8,10 +8,14 @@
       "deviseDefault" : "CFP",
       "nbAdminModeration" : 3,
       "nbReportCoModeration" : 3,
+
+      "onepageKey" : [ "k" ],
+
       "lockedOnCountry" : { 
             "countryCode" : "NC",
             "name": "Nouvelle-Calédonie"
       },
+
       "pages" : 
       {
       	"#app.index":

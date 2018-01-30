@@ -78,7 +78,8 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 }
 function getCommunexionLabel(){
 	if(typeof myScopes.communexion != "undefined" && Object.keys(myScopes.communexion).length>0){
-		level=0;
+		var level=0;
+		var nameCommunexion="";
 		$.each(myScopes.communexion, function(e, v){
 			if(v.level > level){
 				level=v.level;
@@ -92,7 +93,7 @@ function getCommunexionLabel(){
 };
 function getSearchLocalityObject(){ 
 	var res = {};
-	searchingOnLoc=myScopes[myScopes.type];
+	var searchingOnLoc=myScopes[myScopes.type];
 	if(notNull(searchingOnLoc)){
 		$.each(searchingOnLoc, function(key, value){
 			mylog.log("getMultiScopeForSearch value.active", value.active);
@@ -241,7 +242,8 @@ function bindScopesInputEvent(news){
 		}
 		countFavoriteScope();
 	});
-	$("#multisopes-btn, #communexion-btn").off().on("click", function(){
+	
+	$("#multiscopes-btn, #communexion-btn").off().on("click", function(){
 		mylog.log("#multisopes-btn, #communexion-btn");
 		if($(this).hasClass("active")){
 			$(this).removeClass("active");
@@ -269,6 +271,8 @@ function bindScopesInputEvent(news){
         scopeValue=$(this).data("scope-value");
         typeSearch=$(this).data("btn-type");
         scopeActiveScope(scopeValue);
+        if(myScopes.type!="open")
+        	localStorage.setItem("myScopes",JSON.stringify(myScopes));
         search.count=true;
         if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
             startNewsSearch(true)
@@ -293,6 +297,7 @@ function bindScopesInputEvent(news){
         $("#searchOnCity").val("");
         $(".dropdown-result-global-search").hide(700).html("");
         myScopes.type="open";
+        localStorage.setItem("myScopes",JSON.stringify(myScopes));
         //}
         if(search.app=="territorial") searchEngine.initTerritorialSearch();
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));

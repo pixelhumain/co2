@@ -83,7 +83,7 @@
         margin-bottom: 25px;
         padding: 10px 0px;
         border-bottom: 2px solid #e9e9e9;
-        font-family: "montserrat";
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     .simple-pagination li a, .simple-pagination li span {
@@ -220,7 +220,7 @@ jQuery(document).ready(function() {
 
     setTitle(titlePage, "", titlePage);
   
-    initKInterface({"affixTop":200});
+    initKInterface({"affixTop":100});
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
@@ -229,18 +229,27 @@ jQuery(document).ready(function() {
 
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
-
+            if($(this).hasClass("active")){
+                typeD="all";
+                $(".btn-directory-type").removeClass("active");
+            }else{
+                search.app="search";
+                $(".btn-directory-type").removeClass("active");
+                $(this).addClass("active");
+            }
             if(typeD == "events"){
                 var typeEvent = $(this).data("type-event");
                 searchSType = typeEvent;
+                 search.app="agenda";
             }
-
             initTypeSearch(typeD);
             if(typeD=="all"){
                 searchEngine.initInjectData();
                 searchEngine.initTerritorialSearch();
-            }
-            mylog.log("search.php",searchType);
+            }//else{
+               // initKInterface({"affixTop":200});
+            //}
+            //mylog.log("search.php",searchType);
             //setHeaderDirectory(typeD);
             loadingData = false;
             pageCount=true;
@@ -249,9 +258,6 @@ jQuery(document).ready(function() {
             search.type=searchType;
             startSearch(0, indexStepInit, searchCallback);
            // KScrollTo("#content-social");
-
-            $(".btn-directory-type").removeClass("active");
-            $(this).addClass("active");
         });
 
         // $(".btn-open-filliaire").click(function(){

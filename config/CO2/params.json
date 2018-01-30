@@ -115,7 +115,7 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "annonces", 
-			"subdomainName" : "Market",
+			"subdomainName" : "Market place",
 			"hash" : "#app.annonces",
 			"icon" : "bullhorn", 
 			"mainTitle" : "Classified ads",

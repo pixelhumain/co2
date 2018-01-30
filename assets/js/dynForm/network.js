@@ -34,7 +34,7 @@ dynForm = {
 	    },
 	    afterBuild : function(data){
 	    	mylog.log("afterBuild network", data, notNull(data),  data == {},  data === {});
-	    	if(notNull(data) && data !== {} ){
+	    	if(notNull(data) && data == {} ){
 	    		mylog.log("afterBuild filterList", $(".filterList").length);
 	    		$(".filterList").html("");
 				var str = "" ;
@@ -46,7 +46,6 @@ dynForm = {
 								"<br/>";
 
 					str+="<ul class='col-xs-offset-1'>";
-
 					var i = 0 ;
 					while(notNull(v["keyVal"+i]) && notNull(v["tagskeyVal"+i])){
 						str +="<li >"+v["keyVal"+i]+" : ";

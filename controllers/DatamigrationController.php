@@ -3649,32 +3649,31 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		ini_set('memory_limit', '-1');
 		$nbelement = 0 ;
 		$nbelementtotal = 0 ;
-		$where = array("multiscopes" => array('$exists' => 1));
-		$fields = array("multiscopes", "name");
+		$where = array("multiscopes" => array('$exists' => 1), "modifiedByBatch.updateMultiScope2" => array('$exists' => 0));
+		$fields = array("multiscopes", "name", "modifiedByBatch");
 		$person = PHDB::find(Person::COLLECTION, $where, $fields);
 		
 		foreach ($person as $key => $value) {
-			// if(!empty($value["name"]))
-			 	echo $key." : ".$value["name"]."<br/>";
+			echo $key." : ".$value["name"]."<br/>";
 
-			 	if(!empty($value["multiscopes"])){
-			 		$newML = array();
-			 		foreach ($value["multiscopes"] as $keyCP => $valueCP) {
-			 			$newS = $valueCP;
-			 			$newS["id"] = $keyCP;
-			 			$newML[] = $newS;
-			 		}
-			 		$set =array("multiscopes" => $newML);
-				 	var_dump($set);
-				 	echo "<br/>";
-			 		$res = PHDB::update(Person::COLLECTION, 
-					  	array("_id"=>new MongoId($key)),
-		                array('$set' => $set)
-		            );
-			 		$nbelement++;
-				 	
-			 	}
-            //break;
+		 	if(!empty($value["multiscopes"])){
+		 		$newML = array();
+		 		foreach ($value["multiscopes"] as $keyCP => $valueCP) {
+		 			$newS = $valueCP;
+		 			$newS["id"] = $keyCP;
+		 			$newML[$newS["id"].$newS["type"]] = $newS;
+		 		}
+		 		$value["modifiedByBatch"][] = array("updateMultiScope2" => new MongoDate(time()));
+		 		$set =array("multiscopes" => $newML,
+		 					"modifiedByBatch" => $value["modifiedByBatch"]);
+		 					 
+		 		$res = PHDB::update(Person::COLLECTION, 
+				  	array("_id"=>new MongoId($key)),
+	                array('$set' => $set)
+	            );
+
+		 		$nbelement++;
+		 	}
 		}
 		echo $nbelement." trnalate mis a jours / ";
 	}

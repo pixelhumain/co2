@@ -9,6 +9,7 @@ function constructScopesHtml(news){
 		if(news){
 			btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
 				"data-add='true' data-scope-value='"+value.id+"' "+
+				'data-scope-key="'+key+'" '+
 				"data-toggle='tooltip' data-placement='top' "+
 				"data-original-title='Add zones to news'>"+
 					"<i class='fa fa-plus-circle'></i>"+
@@ -17,15 +18,19 @@ function constructScopesHtml(news){
 			if(myScopes.type=="multiscopes")
 				btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
 					"data-add='false' data-scope-value='"+value.id+"' "+
+					'data-scope-key="'+key+'" '+
 					"data-toggle='tooltip' data-placement='top' "+
 					"data-original-title='Remove from my favorites places'>"+
 						"<i class='fa fa-times-circle'></i>"+
 					"</span>";
 			else{
-				mylog.log("constructScopesHtml", value.id, key, getScope(key));
-				if(	getScope(key, "multiscopes") != null )
+				//mylog.log("constructScopesHtml", value.id, key, getScope(key));
+				mylog.log("constructScopesHtml key", key);
+				if(typeof myScopes.multiscopes[key] != "undefined")
+				//if(	getScope(key, "multiscopes") != null )
 					btnScopeAction="<span class='manageMultiscopes active tooltips margin-right-5 margin-left-10' "+
 						"data-add='0' data-scope-value='"+value.id+"' "+
+						'data-scope-key="'+key+'" '+
 						"data-toggle='tooltip' data-placement='top' "+
 						"data-original-title='Remove from my favorites places'>"+
 							"<i class='fa fa-star'></i>"+
@@ -33,6 +38,7 @@ function constructScopesHtml(news){
 				else
 					btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
 						"data-add='true' data-scope-value='"+value.id+"' "+
+						'data-scope-key="'+key+'" '+
 						"data-toggle='tooltip' data-placement='top' "+
 						"data-original-title='Add to my favorites places'>"+
 							"<i class='fa fa-star-o'></i>"+
@@ -64,6 +70,7 @@ function constructScopesHtml(news){
 function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
 	mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);
 	communexionObj=scopeObject(values);
+	mylog.log("changeCommunexionScope communexionObj",communexionObj);
 	myScopes.open=communexionObj;
 	var newsAction=(notNull(appendDom) && appendDom.indexOf("scopes-news-form") >= 0) ? true : false;
 	$(appendDom).html(constructScopesHtml(newsAction));
@@ -113,19 +120,20 @@ function addToMultiscope(scopeValue){
 	mylog.log("addToMultiscope",scopeValue, myScopes);
 	if(scopeValue == "") return;
 	if(myScopes.type=="communexion")
-		// newMultiScope=myScopes.communexion[scopeValue];
-		newMultiScope=  getScope(scopeValue, "communexion");
+		newMultiScope=myScopes.communexion[scopeValue];
+		//newMultiScope=  getScope(scopeValue, "communexion");
 	else
-		newMultiScope=  getScope(scopeValue, "open");
-		//newMultiScope=myScopes.open[scopeValue];
+		//newMultiScope=  getScope(scopeValue, "open");
+		newMultiScope=myScopes.open[scopeValue];
 	newMultiScope.active=true;
-	//myScopes.multiscopes[scopeValue] = newMultiScope;
-	myScopes.multiscopes.push(newMultiScope);
+	myScopes.multiscopes[scopeValue] = newMultiScope;
+	//myScopes.multiscopes.push(newMultiScope);
 	saveMultiScope();
 }
 
 
 function removeFromMultiscope(scopeValue){
+	mylog.log("removeFromMultiscope", scopeValue);
 	if(scopeExists(scopeValue)){
 		delete myScopes.multiscopes[scopeValue];
 		saveMultiScope();
@@ -151,64 +159,62 @@ function saveMultiScope(){
 	localStorage.setItem("myScopes",JSON.stringify(myScopes));
 }
 
-function getIndMultiscope(scopeId, typeScope){
-	mylog.log("getIndMultiscope", scopeId);
-	var res = -1;
-	var scopes = null;
-	if(typeScope = "multiscopes")
-		scopes = myScopes.multiscopes;
-	else if(typeScope = "communexion")
-		scopes = myScopes.communexion;
-	else if(typeScope = "open")
-		scopes = myScopes.open;
-	if(scopes != null){
-		$.each(scopes,function(e,v){
-			mylog.log("getIndMultiscope ===", v, (v.id === scopeId), (v.id == scopeId));
-			if(v.id === scopeId)
-				res = e;
-		});
-	}
-	return res ;
-}
+// function getIndMultiscope(scopeId, typeScope){
+// 	mylog.log("getIndMultiscope", scopeId);
+// 	var res = -1;
+// 	var scopes = null;
+// 	if(typeScope = "multiscopes")
+// 		scopes = myScopes.multiscopes;
+// 	else if(typeScope = "communexion")
+// 		scopes = myScopes.communexion;
+// 	else if(typeScope = "open")
+// 		scopes = myScopes.open;
+// 	if(scopes != null){
+// 		$.each(scopes,function(e,v){
+// 			mylog.log("getIndMultiscope ===", v, (v.id === scopeId), (v.id == scopeId));
+// 			if(v.id === scopeId)
+// 				res = e;
+// 		});
+// 	}
+// 	return res ;
+// }
 
-function getScopeOld(scopeId, typeScope){ 
-	var ind = getIndMultiscope(scopeId);
-	var scope = null;
-	if(ind != -1){
-		if(typeScope = "multiscopes")
-			scope = myScopes.multiscopes[ind];
-		else if(typeScope = "communexion")
-			scope = myScopes.communexion[ind];
-		else if(typeScope = "open")
-			scope = myScopes.open[ind];
-	}
-	return scope;
-}
+// function getScopeOld(scopeId, typeScope){ 
+// 	var ind = getIndMultiscope(scopeId);
+// 	var scope = null;
+// 	if(ind != -1){
+// 		if(typeScope = "multiscopes")
+// 			scope = myScopes.multiscopes[ind];
+// 		else if(typeScope = "communexion")
+// 			scope = myScopes.communexion[ind];
+// 		else if(typeScope = "open")
+// 			scope = myScopes.open[ind];
+// 	}
+// 	return scope;
+// }
 
-function getScope(key, typeScope){ 
-	//var ind = getIndMultiscope(scopeId);
-	var scope = null;
-	if(typeScope = "multiscopes")
-		scope = myScopes.multiscopes[key];
-	else if(typeScope = "communexion")
-		scope = myScopes.communexion[key];
-	else if(typeScope = "open")
-		scope = myScopes.open[key];
+// function getScope(key, typeScope){ 
+// 	var scope = null;
+// 	if(typeScope = "multiscopes")
+// 		scope = myScopes.multiscopes[key];
+// 	else if(typeScope = "communexion")
+// 		scope = myScopes.communexion[key];
+// 	else if(typeScope = "open")
+// 		scope = myScopes.open[key];
 	
-	return scope;
-}
+// 	return scope;
+// }
 
-function setScope(key, field, val, typeScope){ 
-	// var ind = getIndMultiscope(scopeId);
-	// if(ind != -1){
-		if(typeScope = "multiscopes")
-			myScopes.multiscopes[key][field] = val;
-		else if(typeScope = "communexion")
-			myScopes.communexion[key][field] = val;
-		else if(typeScope = "open")
-			myScopes.open[key][field] = val;
-	//}
-}
+// function setScope(key, field, val, typeScope){ 
+
+// 		if(typeScope = "multiscopes")
+// 			myScopes.multiscopes[key][field] = val;
+// 		else if(typeScope = "communexion")
+// 			myScopes.communexion[key][field] = val;
+// 		else if(typeScope = "open")
+// 			myScopes.open[key][field] = val;
+
+// }
 
 
 function bindSearchCity(){
@@ -224,15 +230,17 @@ function bindSearchCity(){
 }
 function bindScopesInputEvent(news){
 	$(".manageMultiscopes").off().on("click", function(){
+		mylog.log("manageMultiscopes");
 		addScope=$(this).data("add");
 		scopeValue=$(this).data("scope-value");
 		key=$(this).data("scope-key");
+		mylog.log("manageMultiscopes", key);
 		if(addScope){
 			addToMultiscope(key);
 			$(this).removeClass("text-red").addClass("active").data("add",false).attr("data-original-title","Remove from favorites");
 			$(this).find("i").removeClass("fa-star-o").addClass("fa-star");
 		}else{
-			removeFromMultiscope(scopeValue);
+			removeFromMultiscope(key);
 			if(myScopes.type=="multiscopes")
 				$(this).parent().remove();
 			else{
@@ -242,7 +250,7 @@ function bindScopesInputEvent(news){
 		}
 		countFavoriteScope();
 	});
-	
+
 	$("#multiscopes-btn, #communexion-btn").off().on("click", function(){
 		mylog.log("#multisopes-btn, #communexion-btn");
 		if($(this).hasClass("active")){
@@ -270,7 +278,8 @@ function bindScopesInputEvent(news){
 	$(".item-scope-input").off().on("click", function(){ 
         scopeValue=$(this).data("scope-value");
         typeSearch=$(this).data("btn-type");
-        scopeActiveScope(scopeValue);
+        key=$(this).data("scope-key");
+        scopeActiveScope(key);
         if(myScopes.type!="open")
         	localStorage.setItem("myScopes",JSON.stringify(myScopes));
         search.count=true;
@@ -341,24 +350,24 @@ function scopeActiveScope(scopeValue){
         $(".scopes-container .item-scope-input i.fa").removeClass("fa-check-circle");
         $(".scopes-container .scope-order").addClass("disabled");
         //if(myScopes.open[scopeValue].active){
-	    $(".scopes-container [data-scope-value='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
-	    $(".scopes-container [data-scope-value='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
-	    $(".scopes-container [data-scope-value='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
+	    $(".scopes-container [data-scope-key='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
+	    $(".scopes-container [data-scope-key='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
+	    $(".scopes-container [data-scope-key='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
 	    //}
     }else{
-	    //if(!myScopes.multiscopes[scopeValue].active){
-	    if(	!getScope(scopeValue, "multiscopes").active){
-	    	setScope(scopeValue, "active", true, "multiscopes");
-	    	//myScopes.multiscopes[scopeValue].active = true;
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
+	    if(!myScopes.multiscopes[scopeValue].active){
+	    //if(	!getScope(scopeValue, "multiscopes").active){
+	    	//setScope(scopeValue, "active", true, "multiscopes");
+	    	myScopes.multiscopes[scopeValue].active = true;
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
 	    }else{
-	    	setScope(scopeValue, "active", false, "multiscopes");
-	    	//myScopes.multiscopes[scopeValue].active = false;
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-circle-o");
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-check-circle");
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input").parent().addClass("disabled");
+	    	//setScope(scopeValue, "active", false, "multiscopes");
+	    	myScopes.multiscopes[scopeValue].active = false;
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-circle-o");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-check-circle");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input").parent().addClass("disabled");
 	    }
 	}
 }
@@ -367,7 +376,7 @@ function sortSpan(a, b){
 }
 function scopeObject(values){
 	mylog.log("scopeObject", values);
-	communexionObj=[];
+	communexionObj={};
 	if(typeof values == "string")
 		values = jQuery.parseJSON(values);	
 	if(typeof values.level1 != "undefined"){
@@ -379,7 +388,8 @@ function scopeObject(values){
 			level:1,
 			countryCode:values.country
 		}
-		communexionObj.push(objToPush);
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 
 	}
 	if(typeof values.level2 != "undefined"){
@@ -391,7 +401,8 @@ function scopeObject(values){
 			level:2,
 			countryCode:values.country
 		}
-		communexionObj.push(objToPush);
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 	}
 	if(typeof values.level3 != "undefined"){
 		objToPush={
@@ -402,7 +413,8 @@ function scopeObject(values){
 			level:3,
 			countryCode:values.country
 		}
-		communexionObj.push(objToPush);
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 	}
 	if(typeof values.level4 != "undefined"){
 		objToPush={
@@ -413,7 +425,8 @@ function scopeObject(values){
 			level:4,
 			countryCode:values.country
 		}
-		communexionObj.push(objToPush);
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 	}
 
 	if(typeof values.cp != "undefined"){
@@ -424,7 +437,8 @@ function scopeObject(values){
 			//level:5,
 			countryCode:values.country
 		}
-		communexionObj.push(objToPush);
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 	}
 
 	objToPush={
@@ -437,7 +451,8 @@ function scopeObject(values){
 		allCP:values.allCP,
 		cp:values.cp,
 	}
-	communexionObj.push(objToPush);
+	communexionObj[objToPush.id+objToPush.type] = objToPush;
+	//communexionObj.push(objToPush);
 
 	if(notNull(values.allCP) && values.allCP == false){
 		objToPush={
@@ -450,8 +465,11 @@ function scopeObject(values){
 			allCP:values.allCP,
 			cp:values.cp,
 		}
-		communexionObj.push(objToPush);
+		communexionObj[objToPush.id+objToPush.type+objToPush.cp] = objToPush;
+		//communexionObj.push(objToPush);
 	}
+
+	mylog.log("scopeObject communexionObj", communexionObj);
 	
 	return communexionObj;
 }

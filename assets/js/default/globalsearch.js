@@ -222,7 +222,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                     target = "";
 
                   
-                if(type != "city"){ 
+                if(type != "city" && type != "zone" ){ 
                     str += "<a href='"+url+"' class='lbh col-md-12 col-sm-12 col-xs-12 no-padding searchEntity'>";
                       str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
                       str +=   htmlIco;

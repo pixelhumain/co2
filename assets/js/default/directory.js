@@ -97,7 +97,7 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchType = ["organizations", "projects", "events", "places", "poi", "news", "classified","ressources"];
+        searchType = ["organizations", "projects", "events", "places", "poi", "news", "classified","ressources"/*,"cities"*/];
         if(search.value != "")
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
@@ -2071,6 +2071,7 @@ var directory = {
                   city : params.id,
                   cityName : params.name,
                   cp : params.cp,
+                  country : country,
                   level1 : params.level1,
                   level1Name : params.level1Name
                 }

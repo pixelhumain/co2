@@ -250,8 +250,14 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                   city : o._id.$id,
                   cityName : o.name,
                   cp : o.cp,
+                  country : o.country,
+                  allCP : o.allCP,
                   level1 : o.level1,
                   level1Name : o.level1Name
+                }
+
+                if( notEmpty( o.nameCity ) ){
+                  valuesScopes.name = o.nameCity ;
                 }
 
                 if( notEmpty( o.level4 ) ){
@@ -268,10 +274,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                 }
                 typeSearchCity="city";
                 levelSearchCity="city";
-                if(typeof o.countCpByInsee != "undefined" && o.countCpByInsee > 0 ){
-                  typeSearchCity="cp";
-                  levelSearchCity="cp";
-                }
+                // if(typeof o.countCpByInsee != "undefined" && o.countCpByInsee > 0 ){
+                //   typeSearchCity="cp";
+                //   levelSearchCity="cp";
+                // }
                 var domContainer=(notNull(input)) ? input+" .scopes-container" : "";
                 /*str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + o._id.$id  + "' " + 

@@ -264,7 +264,7 @@
                   <?php echo Yii::t("common", "All") ?>
                 </span>
                 <span class="count-badge-filter" id="countall"></span>
-            </button><hr class="hidden-xs no-margin" style="margin-top:0px;">-->
+            </button><hr class="hidden-xs no-margin" style="margin-top:0px;">
             
             <!-- <hr class="hidden-xs no-margin"> -->
             <button class="btn border-yellow-k btn-directory-type padding-10" data-type="persons">
@@ -308,19 +308,19 @@
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Projects") ?></span>
                 <span class="count-badge-filter" id="countprojects"></span>
             </button>
-            <hr class="hidden-xs no-margin">
+            <hr class="hidden-xs no-margin" data-type="projects">
             <button class="btn border-brown btn-directory-type padding-10" data-type="place">
                 <i class="fa fa-home"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Places") ?></span>
                 <span class="count-badge-filter" id="countplaces"></span>
-            </button><br class="hidden-xs">
-            <hr class="hidden-xs no-margin">
+            </button>
+            <hr class="hidden-xs no-margin" data-type="place">
             <button class="btn border-green-poi btn-directory-type padding-10" data-type="poi">
                 <i class="fa fa-map-marker"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Point of interest") ?></span>
                 <span class="count-badge-filter" id="countpoi"></span>
             </button>
-            <hr class="hidden-xs no-margin">
+            <hr class="hidden-xs no-margin" data-type="place">
             <button class="btn border-orange btn-directory-type padding-10" data-type="events">
                 <i class="fa fa-calendar"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Events") ?></span>

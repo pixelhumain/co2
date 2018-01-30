@@ -434,7 +434,7 @@ var searchEngine = {
               }
             });
         });
-        $.each(searchEngine.injectData, function (type, v){
+        $.each(searchEngine.injectData, function (type, v){ console.log("search range", type);
             if(v==0)
               removeSearchType(type);
             else{

@@ -151,7 +151,7 @@
 					<i class="fa fa-<?php echo $icon; ?> pull-left margin-top-5"></i> 
 					<div class="name-header pull-left"><?php echo @$element["name"]; ?></div>
 				</span>
-				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["type"]){ 
+				<?php if(($type==Organization::COLLECTION || $type==Event::COLLECTION) && @$element["typeEvent"]){ 
 					if($type==Organization::COLLECTION)
 						$typesList=Organization::$types;
 					else
@@ -160,7 +160,7 @@
 					<span id="typeHeader" class="margin-left-10 pull-left">
 						<i class="fa fa-x fa-angle-right pull-left"></i>
 						<div class="type-header pull-left">
-					 		<?php echo Yii::t("category", $typesList[$element["type"]]) ?>
+					 		<?php echo Yii::t("category", $typesList[$element["typeEvent"]]) ?>
 					 	</div>
 					</span>
 				<?php } ?>

@@ -29,9 +29,6 @@ function startSearch(indexMin, indexMax, callBack){
     loadingData = true;
     showIsLoading(true);
 
-    if(searchType.length==1)
-      KScrollTo(".container-result-search");
-    
     //mylog.log("loadingData true");
     indexStep = indexStepInit;
 
@@ -107,10 +104,9 @@ function initTypeSearch(typeInit){
       indexStepInit = 50;
     }
     else{
-        searchType = [ typeInit ];
-        indexStepInit = 30;
-        search.app="search";
-        delete search.ranges;
+      searchType = [ typeInit ];
+      indexStepInit = 30;
+      delete search.ranges;
         //$(window).off("scroll");
     }
 }
@@ -234,8 +230,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 resultsStr=trad.results;
                 if((indexMin == 0 || search.app=="search" || search.app=="social") && (typeof pageEvent == "undefined" || !pageEvent) ){
                     headerStr = '';
-                    if(typeof pageCount != "undefined" && pageCount && search.app !="territorial")
-                      headerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+                    footerStr = '';
+                    if(typeof pageCount != "undefined" && pageCount && search.app !="territorial"){
+                      //headerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+                      footerStr = '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+                    }
                     //headerStr += "<h4 style='margin: 0px 0px 0px 6px;font-size:14px;' class='text-dark pull-left'>"+
                       //        "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
                    /* headerStr += "<small class='resultTypes'>";
@@ -266,6 +265,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                     headerStr += "</h4>";*/
                    // headerStr += "<hr style='float:left; width:100%;margin-top:0px;'/>";
                     $(".headerSearchContainer").html(headerStr);
+                    $(".footerSearchContainer").html(footerStr);
               }
               str = "";
              // if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1  && totalData == 0){
@@ -277,10 +277,10 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               //console.log(data.results);
              // alert();
               str += directory.showResultsDirectoryHtml(data);
-              if((indexMin == 0 || search.app=="search") && (typeof pageEvent == "undefined" || !pageEvent) ){
-                  if(typeof pageCount != "undefined" && pageCount && search.app !="territorial")
-                    str += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-              }
+              //if((indexMin == 0 || search.app=="search") && (typeof pageEvent == "undefined" || !pageEvent) ){
+                //  if(typeof pageCount != "undefined" && pageCount && search.app !="territorial")
+                  //  str += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+              //}
               if(str == "") { 
 	              $.unblockUI();
                 showMap(false);
@@ -330,7 +330,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                       //alert();
                       if(search.value != "")
                         $("#content-social .calendar").hide(700);
-                      else if(!$(".content-social .calendar").is(":visible"))
+                      else if(!$("#content-social .calendar").is(":visible"))
                         $("#content-social .calendar").show(700);
                     }
                     if(typeof pageCount != "undefined" && pageCount){
@@ -432,6 +432,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
           onPageClick: function (page, evt) {
               // some code
               //alert(page);
+            simpleScroll('#page');
             pageCount=false;
             searchPage=(page-1);
             search.page=searchPage;

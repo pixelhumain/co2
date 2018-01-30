@@ -36,6 +36,7 @@ function initSearchInterface(){
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
             //initTypeSearch(typeInit);
+            simpleScroll('#page');
             searchPage=0;
             search.value = $(this).val();
             search.count=true;
@@ -396,7 +397,7 @@ var searchEngine = {
         pageCount=false;
         $(window).bind("scroll",function(){  
             mylog.log("test scroll", scrollEnd, loadingData);
-            if(!loadingData && !scrollEnd && !isMapEnd){
+            if(!loadingData && !scrollEnd && !isMapEnd && search.app=="territorial"){
                 var heightWindow = $("html").height();// - $("body").height();
                 if( $(this).scrollTop() >= heightWindow - 1200)
                     startSearch(10, 30, null);

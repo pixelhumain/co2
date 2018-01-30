@@ -3416,7 +3416,10 @@ function KScrollTo(target){
 	    }, 500, '');
 	}
 }
-
+function simpleScroll(target){
+    var targetOffset = $(target).offset().top;
+    $('html,body').animate({scrollTop: 101}, 100, '');
+}
 var timerCloseDropdownUser = false;
 function initKInterface(params){ console.log("initKInterface");
 

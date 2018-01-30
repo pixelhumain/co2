@@ -3418,7 +3418,7 @@ function KScrollTo(target){
 	}
 }
 function simpleScroll(height, speed){
-    var scrollToPos = (notNull(height)) ? height : 100;
+    var scrollToPos = (notNull(height)) ? height : 71;
     var speedScroll = (notNull(speed)) ? speed : 100;
     $('html,body').animate({scrollTop: scrollToPos}, speedScroll, '');
 }

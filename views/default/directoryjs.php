@@ -242,24 +242,18 @@
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 
           <div class="col-sm-3 col-md-2 col-xs-12 text-right no-padding" id="col-btn-type-directory">
-            <!--<button class="btn text-white bg-dark btn-open-filliaire">
-                <i class="fa fa-th"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
-            </button><hr class="hidden-xs">-->
-           <!-- <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
-                <i class="fa fa-search"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
-            </button><hr class="hidden-xs">-->
+            
             <button class="btn text-dark border-dark btn-directory-type active padding-10" data-type="all">
                 <i class="fa fa-asterisk"></i> 
                 <span class="elipsis label-filter">
                   <?php echo Yii::t("common", "All") ?>
                 </span>
                 <span class="badge count-badge-filter bg-dark" id="countall"></span>
-            </button><hr class="hidden-xs no-margin" style="margin-top:0px;">
+            </button>
+
+            <hr class="hidden-xs no-margin" style="margin-top:0px;">
             
-            <!-- <hr class="hidden-xs no-margin"> -->
-            <button class="btn text-yellow border-yellow-k btn-directory-type padding-10" data-type="persons">
+             <button class="btn text-yellow border-yellow-k btn-directory-type padding-10" data-type="persons">
                 <i class="fa fa-user"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","People") ?></span>
                 <span class="badge count-badge-filter bg-yellow" id="countcitoyens"></span>
@@ -300,38 +294,32 @@
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Projects") ?></span>
                 <span class="badge count-badge-filter bg-purple" id="countprojects"></span>
             </button>
+
             <hr class="hidden-xs no-margin">
+
             <button class="btn text-orange border-orange btn-directory-type padding-10" data-type="events">
                 <i class="fa fa-calendar"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Events") ?></span>
                 <span class="badge count-badge-filter bg-orange" id="countevents"></span>
             </button>
-            <!-- <button class="btn text-red btn-directory-type" data-type="cities">
-                <i class="fa fa-university"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","Cities") ?></span>
-            </button><br class="hidden-xs"> -->
+            
+            <hr class="hidden-xs no-margin" data-type="events">
 
             <button class="btn text-purple border-purple btn-directory-type padding-5" data-type="place">
                 <i class="fa fa-home"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Places") ?></span>
                 <span class="badge count-badge-filter bg-purple" id="countplaces"></span>
-            </button><br class="hidden-xs">
-            <hr class="hidden-xs no-margin">
+            </button>
+
+            <hr class="hidden-xs no-margin" data-type="place">
+
             <button class="btn text-green-poi border-green-poi btn-directory-type padding-10" data-type="poi">
                 <i class="fa fa-map-marker"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Point of interest") ?></span>
                 <span class="badge count-badge-filter bg-green-poi" id="countpoi"></span>
             </button>
 
-           <!--  <hr class="hidden-xs no-margin">
-            
-            <button class="btn letter-blue border-blue btn-directory-type padding-5" data-type="url">
-                <i class="fa fa-screen"></i> 
-                <span class="elipsis label-filter"><?php echo Yii::t("common","Url") ?></span>
-                <span class="badge count-badge-filter bg-purple" id="counturl"></span>
-            </button><br class="hidden-xs"> -->
-
-            <hr class="hidden-xs no-margin">
+            <hr class="hidden-xs no-margin" data-type="poi">
             
             <button class="btn letter-blue border-blue btn-directory-type padding-10" data-type="news">
                 <i class="fa fa-newspaper-o"></i> 
@@ -356,7 +344,7 @@
                 <span class="badge count-badge-filter bg-purple" id="countressources"></span>
             </button><br class="hidden-xs">
 
-            <hr class="hidden-sm hidden-md hidden-lg">
+            <hr class="hidden-sm hidden-md hidden-lg" data-type="ressources">
           </div>
         <?php } ?>
         <?php } else if( $typeSelected == "vote" ){?>

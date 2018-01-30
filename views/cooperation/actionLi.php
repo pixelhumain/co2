@@ -1,4 +1,4 @@
-<li class="submenucoop focus sub-actions no-padding col-lg-4 col-md-6 col-sm-6"
+<li class="submenucoop focus sub-actions no-padding col-lg-4 col-md-6 col-sm-6 col-xs-12"
 	data-name-search="<?php echo str_replace('"', '', @$action["name"]); ?>">
 	<a href="javascript:;" 
 		class="load-coop-data" data-type="action"

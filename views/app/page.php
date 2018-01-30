@@ -23,6 +23,8 @@
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="" id="onepage">
 		<?php 
+            $params = CO2::getThemeParams();
+            $onepageKey = $params["onepageKey"];
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
                $type == Project::COLLECTION || $type == Organization::COLLECTION || 
@@ -43,7 +45,7 @@
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if(Yii::app()->params["CO2DomainName"] == "terla")
                     $this->renderPartial('../element/terla/index', $params );
-                else if($view == "net") 
+                else if(in_array($view, $onepageKey)) 
                     $this->renderPartial("../element/onepage", $params);
                 else 
                     $this->renderPartial('../element/profilSocial', $params ); 

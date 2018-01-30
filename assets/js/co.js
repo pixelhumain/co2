@@ -950,7 +950,8 @@ var urlCtrl = {
 			  				hashT.shift();
 			  				viewPage="/"+hashT.join("/");
 			  			}
-			  			if(hashT[0]=="net") viewPage = "/view/net";
+			  			console.log("HASH ?", hashT[0], CO2params["onepageKey"], ($.inArray(hashT[0], CO2params["onepageKey"])));
+			  			if($.inArray(hashT[0], CO2params["onepageKey"])>-1) viewPage = "/view/"+hashT[0];
 			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
 			  		}else
 			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );

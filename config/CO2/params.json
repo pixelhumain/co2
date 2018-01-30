@@ -11,6 +11,8 @@
     "deviseDefault" : "€",
     "nbAdminModeration" : 3,
     "nbReportCoModeration" : 3,
+    
+    "onepageKey" : [ "co", "net" ],
 
 	"pages" : {
 		

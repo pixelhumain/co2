@@ -1071,33 +1071,8 @@ var directory = {
       }
     }
 
-    var countFollower = 0; var countFollowerLbl = "";
-    if(typeof params.links != "undefined" && typeof params.links.followers != "undefined"){
-      $.each(params.links.followers, function (k, f){
-        countFollower++;
-      });
-      countFollowerLbl = countFollower==1 ? countFollower+" "+trad["follower"] : 
-                                            countFollower+" "+trad["followers"];
-    }
-
-    var countFollows = 0; var countFollowsLbl = "";
-    if(typeof params.links != "undefined" && typeof params.links.follows != "undefined"){
-      $.each(params.links.follows, function (k, f){
-        countFollows++;
-      });
-      countFollowsLbl = countFollower==1 ? countFollows+" "+trad["follow"] : 
-                                            countFollows+" "+trad["follows"];
-    }
-
-    var countMember = 0; var countMemberLbl = "";
-    if(typeof params.links != "undefined" && typeof params.links.memberOf != "undefined"){
-      $.each(params.links.memberOf, function (k, f){
-        countMember++;
-      });
-      countMemberLbl = countMember==1 ? countMember+" "+trad["member"] : 
-                                        countMember+" "+trad["members"];
-    }
-    console.log("lightPanel", params, "countFollower", countFollower);
+    
+    console.log("lightPanel", params);
     
     str = "";
     str += "<div class='col-xs-12 searchEntity entityLight no-padding'>";
@@ -1165,20 +1140,13 @@ var directory = {
       if(typeof params.tagsLbl != "undefined")
         str += "<div class='tagsContainer'>"+params.tagsLbl+"</div>";
 
-      if(countFollower > 0)
-        str +=  "<small class='lbh letter-light bg-white url elipsis bold countFollower margin-right-10'>"+
-                  "<i class='fa fa-link'></i> "+countFollowerLbl+
-                "</small> ";
-
-      if(countFollows > 0)
-        str +=  "<small class='lbh letter-light bg-white url elipsis bold countFollows margin-right-10'>"+
-                  "<i class='fa fa-link'></i> "+countFollowsLbl+
-                "</small>";
-
-      if(countMember > 0)
-        str +=  "<small class='lbh letter-light bg-white url elipsis bold countMembers margin-right-10'>"+
-                  "<i class='fa fa-link'></i> "+countMemberLbl+
-                "</small>";
+      if(typeof params.counts != "undefined"){
+        $.each(params.counts, function (key, count){
+          str +=  "<small class='lbh letter-light bg-white url elipsis bold countMembers margin-right-10'>"+
+                    "<i class='fa fa-link'></i> "+ count + " " + trad[key] +
+                  "</small>";
+        });
+      }
 
   
       str += "</div>";

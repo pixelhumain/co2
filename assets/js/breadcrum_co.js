@@ -165,6 +165,7 @@ function activateGlobalCommunexion(active, firstLoad, testCo){
     $('.tooltips').tooltip();
 }
 function getBreadcrumCommunexion(communexion){
+    mylog.log("getBreadcrumCommunexion", communexion);
     var tips="";
 
     if(typeof communexion.cities == "string") {

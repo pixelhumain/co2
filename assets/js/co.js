@@ -3417,9 +3417,10 @@ function KScrollTo(target){
 	    }, 500, '');
 	}
 }
-function simpleScroll(target){
-    var targetOffset = $(target).offset().top;
-    $('html,body').animate({scrollTop: 101}, 100, '');
+function simpleScroll(height, speed){
+    var scrollToPos = (notNull(height)) ? height : 71;
+    var speedScroll = (notNull(speed)) ? speed : 100;
+    $('html,body').animate({scrollTop: scrollToPos}, speedScroll, '');
 }
 var timerCloseDropdownUser = false;
 function initKInterface(params){ console.log("initKInterface");

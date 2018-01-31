@@ -158,7 +158,11 @@ function initPageInterface(){
     $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
         if(e.keyCode == 13){
-            startGlobalSearch(0, indexStepGS);
+            search.value=$(this).val();
+            myScopes.type="open";
+            myScopes.open={};
+            urlCtrl.loadByHash("#search");
+            //startGlobalSearch(0, indexStepGS);
          }
     });
     

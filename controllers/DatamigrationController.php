@@ -3605,15 +3605,77 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				 		$nbelement++;
 				 	}
 			 	}
-			 	
-
-			
             $nbelementtotal++;
             break;
-		}	
-
+		}
 		echo $nbelement." iris mis a jours / ".$nbelementtotal;
+	}
+
+	public function actionUpdateTranslatewithNAmeCP(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementtotal = 0 ;
+		$where = array("postalCodes" => array('$exists' => 1));
+		$fields = array("name","insee", "postalCodes", "translateId");
+		$cities = PHDB::find("cities", $where, $fields);
 		
+		foreach ($cities as $key => $value) {
+			// if(!empty($value["name"]))
+			 	//echo $value["translateId"]." : ".$value["name"]."<br/>";
+
+			 	if(!empty($value["postalCodes"])){
+			 		$cpTranslate = array();
+			 		foreach ($value["postalCodes"] as $keyCP => $valueCP) {
+			 			$cpTranslate[$keyCP]["origin"] = ucfirst(strtolower($valueCP["name"]));
+			 			$cpTranslate[$keyCP]["postalCode"] = $valueCP["postalCode"];
+			 		}
+			 		$set =array("postalCodes" => $cpTranslate);
+				 	//var_dump($set);
+				 	//echo "<br/>";
+			 		$res = PHDB::update(Zone::TRANSLATE, 
+					  	array("_id"=>new MongoId($value["translateId"])),
+		                array('$set' => $set)
+		            );
+			 		$nbelement++;
+				 	
+			 	}
+            //break;
+		}
+		echo $nbelement." trnalate mis a jours / ";
+	}
+
+
+	public function actionUpdateMultiScope(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementtotal = 0 ;
+		$where = array("multiscopes" => array('$exists' => 1), "modifiedByBatch.updateMultiScope2" => array('$exists' => 0));
+		$fields = array("multiscopes", "name", "modifiedByBatch");
+		$person = PHDB::find(Person::COLLECTION, $where, $fields);
+		
+		foreach ($person as $key => $value) {
+			echo $key." : ".$value["name"]."<br/>";
+
+		 	if(!empty($value["multiscopes"])){
+		 		$newML = array();
+		 		foreach ($value["multiscopes"] as $keyCP => $valueCP) {
+		 			$newS = $valueCP;
+		 			$newS["id"] = $keyCP;
+		 			$newML[$newS["id"].$newS["type"]] = $newS;
+		 		}
+		 		$value["modifiedByBatch"][] = array("updateMultiScope2" => new MongoDate(time()));
+		 		$set =array("multiscopes" => $newML,
+		 					"modifiedByBatch" => $value["modifiedByBatch"]);
+		 					 
+		 		$res = PHDB::update(Person::COLLECTION, 
+				  	array("_id"=>new MongoId($key)),
+	                array('$set' => $set)
+	            );
+
+		 		$nbelement++;
+		 	}
+		}
+		echo $nbelement." trnalate mis a jours / ";
 	}
 }
 

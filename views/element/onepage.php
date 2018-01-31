@@ -21,23 +21,36 @@
     if($typeItem == "") $typeItem = @$element["typeSig"] ? $element["type"] : "item";
     if($typeItem == "people") $typeItem = "citoyens";
     
-    $params = Element::getParamsOnepage($typeItem, $element["_id"]);
+    //$element = Element::getSimpleByTypeAndId($typeItem, $element["_id"]);
+
+    $allLinks = array();
+    foreach ($element["links"] as $key => $elementsLink) {
+	    foreach ($elementsLink as $id => $el) {
+	    	$allLinks[$key][] = Element::getByTypeAndId($el["type"], $id);
+	    }
+	}
 	
+	
+	//$info = Element::getInfoDetail(array(), $element, $typeItem, $element["_id"]);
+
 	$edit = @$params["edit"];
-    $events = @$params["events"];
+    $events = @$allLinks["events"];
     $linksBtn = @$params["linksBtn"];
-    $members = @$params["members"];
-    $memberOf = @$params["memberOf"];
-    $needs = @$params["needs"];
-    $projects = @$params["projects"];
- 	$tags = @$params["tags"];
+    $members = @$allLinks["members"];
+    $memberOf = @$allLinks["memberOf"];
+    $followers = @$allLinks["followers"];
+
+    //$needs = @$params["needs"];
+    $projects = @$allLinks["projects"];
+ 	$tags = @$element["tags"];
  	$countStrongLinks = @$params["countStrongLinks"];
 
  	$hash = @$element["slug"] ? "#".$element["slug"] :
-								"#page.type.".$type.".id.".$element["_id"];
+								"#page.type.".$type.".id.".$params["id"];
     $typeItemHead = $typeItem;
     if($typeItem == "organizations" && @$element["type"]) $typeItemHead = $element["type"];
 
+    //var_dump(@$allLinks["events"]);exit;
     //icon et couleur de l'element
     $icon = Element::getFaIcon($typeItemHead) ? Element::getFaIcon($typeItemHead) : "";
     $iconColor = Element::getColorIcon($typeItemHead) ? Element::getColorIcon($typeItemHead) : "";
@@ -169,6 +182,11 @@
 		color: #363636 !important;
 	}
 
+	.btn-show-community{
+		background-color: rgba(92, 92, 92, 0.5);
+		color: #fff;
+	}
+
 </style>
 <div  id="onepage">
 	<div class="dropdown">
@@ -261,10 +279,9 @@
 		                    </div>
 
 		                    <div class="col-md-3 col-sm-4 col-xs-12 text-left btn-tools pull-right no-padding">
-
+		                    	
 		                    	
 
-		                    	<!-- <button class="btn btn-default"><i class="fa fa-star"></i> <span class="hidden-xs">Favoris</span></button> -->
 		                    </div>
 
 		                    <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 btn-tools margin-top-10 margin-bottom-10">
@@ -304,8 +321,21 @@
 		                        <?php if(@$element["preferences"]["publicFields"] && 
 		                        		 in_array("email", @$element["preferences"]["publicFields"])){ ?>
 		                        	<span class="email"><?php echo @$element["email"]; ?></span>
-		                        	<hr class="bold-hr">
 		                        <?php } ?>
+
+		                        <?php if(@$element["counts"]){ ?>
+			                    	<br><br>
+			                    	<?php foreach(@$element["counts"] as $k => $v){ ?>
+			                    	<button class="btn btn-default btn-show-community" data-type-community="<?php echo $k; ?>">
+			                    		<i class="fa fa-link"></i> 
+			                    		<span class="hidden-xs"><?php echo $v." ".Yii::t("common", $k); ?></span>
+			                    	</button> 
+			                    	<?php } ?>
+		                    	<?php } ?>
+
+
+		                        <hr class="bold-hr">
+
 		                        <?php if(@$element["preferences"]["publicFields"] && 
 		                        		 in_array("phone", @$element["preferences"]["publicFields"])){ ?>
 		                        	<?php if(@$element["telephone"]["fixe"]){ ?>
@@ -354,8 +384,7 @@
     <!-- DESCRIPTION Section -->
 
     <?php   
-    		$desc = array( array("shortDescription"=>@$element["description"]),
-    					);
+    		$desc = array( array("shortDescription"=>@$element["description"]), );
 
     		if(@$desc && sizeOf(@$desc)>0)
     		$this->renderPartial('../pod/sectionElements', 
@@ -451,9 +480,9 @@
 
     <?php
     		$sectionTitle = "COMMUNAUTÉ";
-    	    if(@$typeItem == "organizations") $sectionTitle = "NOS MEMBRES";
-    	    if(@$typeItem == "projects") $sectionTitle = "ILS CONTRIBUENT AU PROJET";
-    	    if(@$typeItem == "events") $sectionTitle = "LES PARTICIPANTS";
+    	    if(@$typeItem == "organizations") $sectionTitle = "NOUS SOMMES MEMBRES";
+    	    if(@$typeItem == "projects") $sectionTitle = "NOUS SOMMES MEMBRES";
+    	    if(@$typeItem == "events") $sectionTitle = "NOUS SOMMES MEMBRES";
     	    
     	    if(@$members && sizeOf(@$memberOf)>0)
     		$this->renderPartial('../pod/sectionElements', 
@@ -474,6 +503,31 @@
     ?>
 
     
+    <!-- FOLLOWERS Section -->
+
+    <?php
+    		$sectionTitle = "FOLLOWERS";
+    	    if(@$typeItem == "citoyens") $sectionTitle = "MES ABONNÉS";
+    	    else 						 $sectionTitle = "NOS ABONNÉS";
+    	    
+    	    if(@$followers && sizeOf(@$followers)>0)
+    		$this->renderPartial('../pod/sectionElements', 
+    								array(  "items" => $followers,
+											"sectionKey" => "directory",
+											"sectionTitle" => $sectionTitle,
+											"sectionShadow" => true,
+											"msgNoItem" => "Aucun contact à afficher",
+											"imgShape" => "square",
+											"useDesc" => false,
+											"useBorderElement"=>$useBorderElement,
+											"countStrongLinks"=>$countStrongLinks,
+
+											"styleParams" => array(	"bgColor"=>"#FFF",
+															  		"textBright"=>"dark",
+															  		"fontScale"=>3),
+											));
+    ?>
+
 
 	<?php if (($type==Project::COLLECTION) && !empty($element["properties"]["chart"])){ ?>
 	<section id="projects-values" class="portfolio shadow">

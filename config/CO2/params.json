@@ -52,7 +52,7 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "search", 
-			"subdomainName" : "Tous",
+			"subdomainName" : "Search",
 			"hash" : "#app.search",
 			"icon" : "search", 
 			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",

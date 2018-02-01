@@ -83,7 +83,7 @@
         margin-bottom: 25px;
         padding: 10px 0px;
         border-bottom: 2px solid #e9e9e9;
-        font-family: "montserrat";
+        font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     .simple-pagination li a, .simple-pagination li span {
@@ -199,7 +199,8 @@ var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
-var pageCount=true;
+var pageCount=false;
+search.count=true;
 
 
 <?php if(@$type=="events"){ ?>
@@ -218,10 +219,8 @@ var currentKFormType = "";
 jQuery(document).ready(function() {
 
     setTitle(titlePage, "", titlePage);
-    if(typeof search.ranges != "undefined")
-        delete search.ranges;
   
-    initKInterface({"affixTop":100});
+    initKInterface({"affixTop":70});
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
@@ -230,24 +229,35 @@ jQuery(document).ready(function() {
 
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
-
+            if($(this).hasClass("active")){
+                typeD="all";
+                $(".btn-directory-type").removeClass("active");
+            }else{
+                search.app="search";
+                $(".btn-directory-type").removeClass("active");
+                $(this).addClass("active");
+            }
             if(typeD == "events"){
                 var typeEvent = $(this).data("type-event");
                 searchSType = typeEvent;
+                 search.app="agenda";
             }
-
             initTypeSearch(typeD);
-            mylog.log("search.php",searchType);
-            setHeaderDirectory(typeD);
+            if(typeD=="all"){
+                searchEngine.initInjectData();
+                searchEngine.initTerritorialSearch();
+            }//else{
+               // initKInterface({"affixTop":200});
+            //}
+            //mylog.log("search.php",searchType);
+            //setHeaderDirectory(typeD);
             loadingData = false;
             pageCount=true;
+            search.count=false;
             pageEvent=false;
             search.type=searchType;
             startSearch(0, indexStepInit, searchCallback);
            // KScrollTo("#content-social");
-
-            $(".btn-directory-type").removeClass("active");
-            $(this).addClass("active");
         });
 
         // $(".btn-open-filliaire").click(function(){
@@ -272,12 +282,16 @@ jQuery(document).ready(function() {
             }
         });*/
 
-
+        if(type=="all"){
+            //searchEngine.initInjectData();
+            searchEngine.initTerritorialSearch();
+        }
 
         loadingData = false; 
         initTypeSearch(type);
         startSearch(null, null, searchCallback);
-            initSearchInterface();
+        initSearchInterface();
+
     },"html");
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js
@@ -289,6 +303,7 @@ jQuery(document).ready(function() {
             //KScrollTo("#content-social");  
         }, 1000);
     }
+
     $(".tooltips").tooltip();
 });
 

@@ -14,11 +14,17 @@
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page") ); 
 ?>
-
+<style>
+    header {
+        display:none;
+    }
+</style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
-	<div class="padding-top-15" id="onepage">
+	<div class="" id="onepage">
 		<?php 
+            $params = CO2::getThemeParams();
+            $onepageKey = $params["onepageKey"];
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
                $type == Project::COLLECTION || $type == Organization::COLLECTION || 
@@ -39,7 +45,9 @@
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if(Yii::app()->params["CO2DomainName"] == "terla")
                     $this->renderPartial('../element/terla/index', $params );
-                else
+                else if(in_array($view, $onepageKey)) 
+                    $this->renderPartial("../element/onepage", $params);
+                else 
                     $this->renderPartial('../element/profilSocial', $params ); 
             }
 
@@ -150,7 +158,11 @@ function initPageInterface(){
     $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
         if(e.keyCode == 13){
-            startGlobalSearch(0, indexStepGS);
+            search.value=$(this).val();
+            myScopes.type="open";
+            myScopes.open={};
+            urlCtrl.loadByHash("#search");
+            //startGlobalSearch(0, indexStepGS);
          }
     });
     

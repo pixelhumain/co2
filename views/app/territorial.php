@@ -273,7 +273,9 @@ function initTerritorialSearch(){
     news : { indexMin : 0, indexMax : 30, waiting : 30 },
     places : { indexMin : 0, indexMax : 30, waiting : 30 },
     ressources : { indexMin : 0, indexMax : 30, waiting : 30 },
+    city : { indexMin : 0, indexMax : 30, waiting : 30 },
   };
+
   allResults={};
   //check search.value Or locality filtering to add persons in the research
   initTypeSearch("all");

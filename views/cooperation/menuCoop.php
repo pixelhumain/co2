@@ -21,9 +21,9 @@
 		$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
 	?>
 		<li class="padding-10 submenucoop sub-rooms">
-			<h3 class="padding-left-10 letter-turq">
+			<h4 class="padding-left-10 letter-turq">
 				<i class="fa fa-connectdevelop"></i> <?php echo Yii::t("cooperation", "CO-space"); ?>		  	
-			</h3>
+			</h4>
 			
 		</li>
 

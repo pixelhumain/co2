@@ -27,7 +27,7 @@
 ?>
 
 <?php if(@$access=="deny"){ ?>
-	<div class="col-lg-12 col-md-12 col-sm-12">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<h5 class="padding-left-10 letter-red">
 			<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation","You are not allowed to access this content"); ?>		  	
 		</h5>
@@ -255,11 +255,11 @@
 
 
 <?php if(@$proposal["status"] == "resolved"){ ?>
-	<div class="col-lg-12 col-md-12 col-sm-12 margin-bottom-15">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-15">
 		<hr>
 		<h4 class="">
 			<i class="fa fa-bell"></i> 
-			<?php echo Yii::t("cooperation", "The <b>resolution</b> has been taken : "); ?>
+			<?php echo Yii::t("cooperation", "The <b>resolution</b> is done : "); ?>
 			<br class="visible-md">
 			<small><?php echo Yii::t("cooperation", "The proposal is"); ?> 
 			 	<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && 
@@ -277,7 +277,7 @@
 				<?php echo date('d/m/Y H:i e', strtotime($proposal["voteDateEnd"])); ?>
 			</small>
 		<?php } ?><br>
-		<button class="btn btn-default load-coop-data"
+		<button class="btn btn-default load-coop-data margin-top-10"
 				data-type="resolution" data-dataid="<?php echo @$proposal["idResolution"]; ?>">
 				<i class="fa fa-chevron-right"></i> <?php echo Yii::t("cooperation", "Show the resolution"); ?>
 		</button>
@@ -285,9 +285,9 @@
 	</div>
 <?php } ?>
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-5">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-5">
 	
-	<div class="padding-25 bg-lightblue radius-5" id="container-text-proposal">
+	<div class="padding-25 bg-lightblue radius-5 col-xs-12" id="container-text-proposal">
 
 			<?php if(@$proposal["title"]){ ?>
 				<h3><i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?></h3>
@@ -313,7 +313,7 @@
 	</div>
 
 
-		<div class="col-lg-12 col-md-12 col-sm-12 margin-top-15 no-padding">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-15 no-padding">
 			<?php if(@$proposal["status"] == "amendable"){ ?>
 				<?php if($auth){ ?>
 					<button class="btn btn-link text-purple radius-5 btn-create-amendement">
@@ -355,7 +355,7 @@
 			<button class="btn btn-default pull-right btn-minimize-proposal hidden">
 				<i class="fa fa-long-arrow-right"></i>
 			</button>
-			<div class="col-lg-12 col-md-12 col-sm-12 no-padding">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
 				<?php 
 					$i=0;
 					if(@$proposal["amendements"]){
@@ -445,10 +445,10 @@
 				array("proposal"=>$proposal, "auth" => $auth, "hasVote" => $hasVote));
 ?>
 
-<div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><hr></div>
 
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-top-50 padding-bottom-15">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-50 padding-bottom-15">
 
 	<h4 class="text-center">
 		<i class="fa fa-balance-scale fa-2x margin-bottom-10"></i>
@@ -478,7 +478,7 @@
 
 
 
-<div class="col-lg-12 col-md-12 col-sm-12 margin-bottom-50" id="comments-container">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-50" id="comments-container">
 <hr>
 </div>
 

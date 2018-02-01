@@ -920,6 +920,7 @@ var urlCtrl = {
 			}
 			else
 	       		showPanel(panelName,null,title);
+	       	
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
@@ -937,6 +938,7 @@ var urlCtrl = {
 				slug=hashT;
 			else
 				slug=hashT[0];
+
 			$.ajax({
 	  			type: "POST",
 	  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
@@ -948,6 +950,8 @@ var urlCtrl = {
 			  				hashT.shift();
 			  				viewPage="/"+hashT.join("/");
 			  			}
+			  			console.log("HASH ?", hashT[0], CO2params["onepageKey"], ($.inArray(hashT[0], CO2params["onepageKey"])));
+			  			if($.inArray(hashT[0], CO2params["onepageKey"])>-1) viewPage = "/view/"+hashT[0];
 			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
 			  		}else
 			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
@@ -3407,14 +3411,18 @@ var CoSigAllReadyLoad = false;
 function KScrollTo(target){ 
 	mylog.log("KScrollTo target", target);
 	if($(target).length>=1){
-		var heightTopBar = 0;
-		if($("#territorial-menu").length >= 1) heightTopBar = $("#territorial-menu").height() + 20;
+		var heightTopBar = $("#mainNav").height();
+		if($("#territorial-menu").length >= 1) heightTopBar = $("#mainNav").height() + $("#territorial-menu").height() + 20;
 		$('html, body').stop().animate({
 	        scrollTop: $(target).offset().top - 60 - heightTopBar
 	    }, 500, '');
 	}
 }
-
+function simpleScroll(height, speed){
+    var scrollToPos = (notNull(height)) ? height : 71;
+    var speedScroll = (notNull(speed)) ? speed : 100;
+    $('html,body').animate({scrollTop: scrollToPos}, speedScroll, '');
+}
 var timerCloseDropdownUser = false;
 function initKInterface(params){ console.log("initKInterface");
 

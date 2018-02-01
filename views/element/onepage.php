@@ -21,20 +21,36 @@
     if($typeItem == "") $typeItem = @$element["typeSig"] ? $element["type"] : "item";
     if($typeItem == "people") $typeItem = "citoyens";
     
-    $params = Element::getParamsOnepage($typeItem, $element["_id"]);
+    //$element = Element::getSimpleByTypeAndId($typeItem, $element["_id"]);
+
+    $allLinks = array();
+    foreach ($element["links"] as $key => $elementsLink) {
+	    foreach ($elementsLink as $id => $el) {
+	    	$allLinks[$key][] = Element::getByTypeAndId($el["type"], $id);
+	    }
+	}
 	
-    $edit = @$params["edit"];
-    $events = @$params["events"];
+	
+	//$info = Element::getInfoDetail(array(), $element, $typeItem, $element["_id"]);
+
+	$edit = @$params["edit"];
+    $events = @$allLinks["events"];
     $linksBtn = @$params["linksBtn"];
-    $members = @$params["members"];
-    $needs = @$params["needs"];
-    $projects = @$params["projects"];
- 	$tags = @$params["tags"];
+    $members = @$allLinks["members"];
+    $memberOf = @$allLinks["memberOf"];
+    $followers = @$allLinks["followers"];
+
+    //$needs = @$params["needs"];
+    $projects = @$allLinks["projects"];
+ 	$tags = @$element["tags"];
  	$countStrongLinks = @$params["countStrongLinks"];
 
+ 	$hash = @$element["slug"] ? "#".$element["slug"] :
+								"#page.type.".$type.".id.".$params["id"];
     $typeItemHead = $typeItem;
     if($typeItem == "organizations" && @$element["type"]) $typeItemHead = $element["type"];
 
+    //var_dump(@$allLinks["events"]);exit;
     //icon et couleur de l'element
     $icon = Element::getFaIcon($typeItemHead) ? Element::getFaIcon($typeItemHead) : "";
     $iconColor = Element::getColorIcon($typeItemHead) ? Element::getColorIcon($typeItemHead) : "";
@@ -48,6 +64,7 @@
 		left:20px;
 		border-radius: 1px;
 		letter-spacing: 2px;
+		z-index: 50;
 	}
 
 	.dropdown .dropdown-onepage-main-menu{
@@ -59,8 +76,8 @@
 
 	.dropdown-onepage-main-menu{
 		position: fixed;
-		top:130px;
-		left:20px;
+		top: 90px;
+		left: 10px;
 		max-height:400px;
 		/*width:200px;*/
 		background-color:transparent;
@@ -83,6 +100,93 @@
 	.arrow_box:after, .arrow_box:before {
 		left: 19px;
 	}
+	header, .header{
+		margin-top: 48px;
+	}
+
+	#contentBanner{
+		margin-top:20px;
+	}
+	#contentBanner img{
+		border-bottom: 2px solid white;
+	}
+
+	#profil_imgPreview{
+		border:0px !important;
+	}
+
+
+	.fileupload-preview.thumbnail img.img-responsive, 
+	.fileupload-new.thumbnail img.img-responsive{
+		border:3px solid white;
+		width: auto;
+	}
+
+
+	.btn-o {
+	    border: 1px solid rgba(255, 255, 255, 0.5);
+	    border-radius: 2px;
+	    color: #ffffff !important;
+	    display: inline-block;
+	    /*font-family: open sans;*/
+	    font-size: 15px !important;
+	    font-weight: normal !important;
+	    margin: 0 0 10px;
+	    padding: 5px 11px;
+	    text-decoration: none !important;
+	    text-transform: uppercase;
+	    -webkit-transition: all 0.4s ease;
+	    -o-transition: all 0.4s ease;
+	    transition: all 0.4s ease;
+	}
+	.btn-o:hover {
+	  background-color: rgba(255, 255, 255, 0.4) !important;
+	    color: #fff !important;
+	  }
+	.btn-o:hover {
+	  background-color: rgba(255, 255, 255, 0.4) !important;
+	    color: #fff !important;
+	  }
+	.blockUsername .navbar-nav:hover .btn-o{
+	    background-color: rgba(255, 255, 255, 0.4) !important;
+	    color: #fff !important;
+	}
+
+	.fileupload, .fileupload-preview.thumbnail, 
+	.fileupload-new .thumbnail, 
+	.fileupload-new .thumbnail img, 
+	.fileupload-preview.thumbnail img{
+		width:auto;
+		max-width: 100%;
+	}
+	.blockUsername{
+		background-color: transparent!important;
+		position: relative !important;
+		display:inline-block;
+		margin-bottom:10px;
+	}
+	.menu-linksBtn{
+		border-radius: 20px !important;
+		margin-left: 5px !important;
+		margin-right: 5px !important;
+		padding: 10px 10px !important;
+		margin-bottom:0px;
+		background-color: rgba(0, 0, 0, 0.6);
+		text-transform: none !important;
+		border:none !important;
+		line-height: 22px !important;
+	}
+
+	.btn-o.menu-linksBtn:hover{
+		background-color: rgba(173, 173, 173, 0.58) !important;
+		color: #363636 !important;
+	}
+
+	.btn-show-community{
+		background-color: rgba(92, 92, 92, 0.5);
+		color: #fff;
+	}
+
 </style>
 <div  id="onepage">
 	<div class="dropdown">
@@ -104,6 +208,25 @@
 		</div>
 	</div>
 	<div id="onepage">
+		<div id="contentBanner" class="col-md-12 col-sm-12 col-xs-12 no-padding">
+			<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){	
+				$imgHtml='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" 
+							src="'.Yii::app()->createUrl('/'.$element["profilBannerUrl"]).'">';
+				if (@$element["profilRealBannerUrl"] && !empty($element["profilRealBannerUrl"])){ ?>
+					<style>
+						#content-header{
+							margin-top: -150px;
+						}
+					</style>
+					<a  href="<?php echo Yii::app()->createUrl('/'.$element["profilRealBannerUrl"]); ?>"
+						class="thumb-info"  
+						data-title="<?php echo Yii::t("common","Cover image of")." ".$element["name"]; ?>"
+						data-lightbox="all">
+						<?php echo $imgHtml; ?>
+					</a>
+				<?php } ?>
+			<?php } ?>
+		</div>
 	    <!-- Header -->
 	    <section class="header" id="header">
 	    	<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section margin-top-70" data-id="#header">
@@ -111,71 +234,79 @@
 		    </button>
 	        <div class="container">
 	            <div class="row">
-	                <div class="col-md-12">
-
-	                    <?php //var_dump($element["address"]); ?>
-
-	                    <div class="col-md-12 col-sm-12">
-		                    <div class="col-md-3 col-sm-4 hidden-xs text-right btn-tools">
-		                    	<?php if(@$edit == true){ ?>
-		                    	<button class="btn btn-default">Editer les informations <i class="fa fa-pencil"></i></button><br>
-		                    	<button class="btn btn-default"> Paramétrer la page <i class="fa fa-cog"></i></button>
-			                    <?php } ?>
-			                    <?php
-								       	$hash = @$element["slug"] ? "#".$element["slug"] :
-																	"#page.type.".$type.".id.".$element["_id"];
-			                    ?>
-			                    <button data-hash="<?php echo $hash; ?>" class="btn btn-default lbh"> 
-			                    	Retour <i class="fa fa-chevron-left"></i> 
-			                    </button>
-			                    
-		                    </div>
-		                    <div class="col-md-6 col-sm-4 col-xs-12 text-center" style="margin-top:-20px;">
-		                    	<?php if(@$element['profilMediumImageUrl'] && @$element['profilMediumImageUrl'] != "") { ?>
-		                        	<?php if(@$typeItem){ ?>
-			                    		<span class="col-md-12 col-sm-12 bold">
-			                    			<?php if (@$element["typeSig"]!="people" && @$element["typeSig"]!="organizations") {
-			                    					echo ucfirst(Yii::t("common", @$typeItem)); 
-			                    				  }
-			                    				  if (@$element["typeSig"]=="organizations") 
-			                    				  	echo Yii::t("common", $element["type"]);  
-			                    			?>
-			                    		</span><br>
-			                    	<?php } ?>
-
-		                        	<img class="img-responsive thumbnail 
-		                        				<?php if(@$useBorderElement==true){ ?>thumb-type-color-<?php echo $iconColor; ?><?php } ?>" 
-		                    		 src="<?php echo @$element['profilMediumImageUrl'] ? Yii::app()->createUrl('/'.@$element['profilMediumImageUrl']) : $imgDefault; ?>" 
-		                    		 alt="">
-
-			                    	<?php if(@$useBorderElement==true && $icon != "" && $iconColor != ""){ ?>
-				                    <div class="col-md-12 col-sm-12 no-padding text-center i-item">
-				                        <i class="fa fa-<?php echo $icon; ?> i-type-color-<?php echo $iconColor; ?>"></i>
-				                    </div>
-				                    <?php } ?>
-			                    <?php } ?>
-		                    </div>
-		                    <div class="col-md-3 col-sm-4 col-xs-12 text-left btn-tools pull-right">
+	                
+	                    <div class="col-md-12 col-sm-12 col-xs-12" id="content-header">
+		                    <div class="col-md-3 col-sm-4 col-xs-10 text-right btn-tools no-padding">
 		                    	
-		                    	<button class="btn btn-default"><i class="fa fa-link"></i> <span class="hidden-xs">Suivre cette page</span></button><br>
-		                    	<?php if($type == Organization::COLLECTION ){ ?>
-		                    	<button class="btn btn-default"><i class="fa fa-plus-circle"></i> <span class="hidden-xs">Devenir membre</span></button><br>
-		                    	<?php } ?>
 
-		                    	<?php if($type == Project::COLLECTION ){ ?>
-		                    	<button class="btn btn-default"><i class="fa fa-plus-circle"></i> <span class="hidden-xs">Devenir contributeur</span></button><br>
-		                    	<?php } ?>
-
-		                    	<?php if($type == Event::COLLECTION ){ ?>
-		                    	<button class="btn btn-default"><i class="fa fa-plus-circle"></i> <span class="hidden-xs">Je participe</span></button><br>
-		                    	<?php } ?>
-
-		                    	<button class="btn btn-default"><i class="fa fa-star"></i> <span class="hidden-xs">Favoris</span></button>
 		                    </div>
-		                    <div class="col-md-12 col-sm-12 intro-text">
+
+		                    <div class="col-md-6 col-sm-4 col-xs-12 text-center no-padding" style="margin-top:-20px;">
+		                    	
+
+								<?php if(@Yii::app()->session["userId"]){ ?>
+									<div class="blockUsername">
+						                	<?php $this->renderPartial('../element/linksMenu', 
+						            			array("linksBtn"=>$linksBtn,
+						            					"elementId"=>(string)$element["_id"],
+						            					"elementType"=>$type,
+						            					"elementName"=> $element["name"],
+						            					"openEdition" => $openEdition) 
+						            			); 
+						            		?>
+									</div>
+								<?php } ?>
+
+		                    	<?php 	if(@$element["profilMediumImageUrl"] && !empty($element["profilMediumImageUrl"]))
+											 $images=array(
+											 	"medium"=>$element["profilMediumImageUrl"],
+											 	"large"=>$element["profilImageUrl"]
+											 );
+										else $images="";	
+										
+										$this->renderPartial('../pod/fileupload', 
+														array("itemId" => (string) $element["_id"],
+															  "itemName" => $element["name"],
+															  "type" => $type,
+															  "resize" => false,
+															  "contentId" => Document::IMG_PROFIL,
+															  "show" => true,
+															  "editMode" => $edit,
+															  "image" => $images,
+															  "openEdition" => $openEdition) ); 
+								?>
+
+		                    </div>
+
+		                    <div class="col-md-3 col-sm-4 col-xs-12 text-left btn-tools pull-right no-padding">
+		                    	
+		                    	
+
+		                    </div>
+
+		                    <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 btn-tools margin-top-10 margin-bottom-10">
+
+			                    <?php if(@$edit == true){ ?>
+		                    		<a href="<?php echo $hash; ?>.view.detail"
+		                    				class="btn btn-default lbh">
+		                    				 <i class="fa fa-pencil hidden-xs"></i>
+		                    				 Editer les informations 
+		                    		</a>
+		                    		<!-- <button class="btn btn-default"> Paramétrer la page <i class="fa fa-cog"></i></button> -->
+			                    <?php } ?>
+
+
+			                    <a href="<?php echo $hash; ?>" class="btn btn-default lbh"> 
+			                    	<i class="fa fa-user-circle"></i> Page de profil
+			                    </a>
+
+		                    </div>
+
+		                    <div class="col-md-12 col-sm-12 col-xs-12 intro-text">
 		                    	<?php if(!@$element['profilMediumImageUrl'] || @$element['profilMediumImageUrl'] == "") { ?>
 		                        	<?php if(@$typeItem){ ?>
-			                    		<span class="col-md-12 col-sm-12 bold">
+			                    		<span class="col-md-12 col-sm-12 col-xs-12 bold letter-<?php echo Element::getColorIcon($element["type"]); ?>">
+			                    			<i class="fa fa-<?php echo Element::getFaIcon($element["type"]); ?>"></i>
 			                    			<?php if (@$element["typeSig"]!="people" && @$element["typeSig"]!="organizations") {
 			                    					echo ucfirst(Yii::t("common", @$typeItem)); 
 			                    				  }
@@ -187,29 +318,61 @@
 			                    <?php } ?>
 
 		                        <span class="name"><?php echo @$element["name"]; ?></span><br>
-		                        <span class="email"><?php echo @$element["email"]; ?></span>
+		                        <?php if(@$element["preferences"]["publicFields"] && 
+		                        		 in_array("email", @$element["preferences"]["publicFields"])){ ?>
+		                        	<span class="email"><?php echo @$element["email"]; ?></span>
+		                        <?php } ?>
+
+		                        <?php if(@$element["counts"]){ ?>
+			                    	<br><br>
+			                    	<?php foreach(@$element["counts"] as $k => $v){ ?>
+			                    	<button class="btn btn-default btn-show-community" data-type-community="<?php echo $k; ?>">
+			                    		<i class="fa fa-link"></i> 
+			                    		<span class="hidden-xs"><?php echo $v." ".Yii::t("common", $k); ?></span>
+			                    	</button> 
+			                    	<?php } ?>
+		                    	<?php } ?>
+
+
+		                        <hr class="bold-hr">
+
+		                        <?php if(@$element["preferences"]["publicFields"] && 
+		                        		 in_array("phone", @$element["preferences"]["publicFields"])){ ?>
+		                        	<?php if(@$element["telephone"]["fixe"]){ ?>
+		                        		<i class="fa fa-phone"></i>
+		                        		<span class="phone"><?php echo @$element["telephone"]["fixe"][0]; ?></span>
+		                        	<?php } ?>
+		                        	<?php if(@$element["telephone"]["mobile"]){ ?>
+		                        		<i class="fa fa-phone <?php echo @$element["telephone"]["fixe"] ? "margin-left-15" : ""; ?>"></i>
+		                        		<span class="phone"><?php echo @$element["telephone"]["mobile"][0]; ?></span>
+		                        	<?php } ?>
+		                        <?php } ?>
 		                        <hr class="bold-hr">
 		                        <span class="skills"><?php echo @$element["shortDescription"]; ?></span>
 		                    </div>
 		                    
 	                    </div>
 
-	                    <div class="col-md-12 col-sm-12">		                
+	                    <div class="col-md-12 col-sm-12 col-xs-12">		                
 		                    <div class="tags">
 		                    	<?php if(@$element["tags"])
 		                    			foreach ($element["tags"]  as $key => $tag) { ?>
 		                    		<span class="badge bg-red"><?php echo $tag; ?></span>
 		                    	<?php } ?>
 		                    </div>
-		                    <div class="commune text-red homestead margin-top-10">
-		                		<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
-		                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
-		                				if(@$element["address"]["postalCode"]) echo ", ";
-		                			  }
-		                			  if(@$element["address"] && @$element["address"]["postalCode"]) 
-		                			  	echo $element["address"]["postalCode"];
-		                		?>
-		                    </div>
+
+		                    <?php if(@$element["preferences"]["publicFields"] && 
+		                        	 in_array("locality", @$element["preferences"]["publicFields"])){ ?>
+			                    <div class="commune text-red homestead margin-top-10">
+			                		<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
+			                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
+			                				if(@$element["address"]["postalCode"]) echo ", ";
+			                			  }
+			                			  if(@$element["address"] && @$element["address"]["postalCode"]) 
+			                			  	echo $element["address"]["postalCode"];
+			                		?>
+			                    </div>
+		                    <?php } ?>
 		                </div>
 
 	                </div>
@@ -217,30 +380,11 @@
 	        </div>
 	    </section>
     </div>
-    <!-- About Section -->
-    <?php if(isset($element["description"])){ ?>
-    <!-- <section class="darkblue padding-bottom-50 shadow hidden" id="description">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Description</h2>
-                    <hr class="bold-hr">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 text-description">
-                    <p><?php echo $element["description"]; ?></p>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    <?php } ?>
-
-    <!-- COMMUNAUTE Section -->
+    
+    <!-- DESCRIPTION Section -->
 
     <?php   
-    		$desc = array( array("shortDescription"=>@$element["description"]),
-    					);
+    		$desc = array( array("shortDescription"=>@$element["description"]), );
 
     		if(@$desc && sizeOf(@$desc)>0)
     		$this->renderPartial('../pod/sectionElements', 
@@ -281,21 +425,26 @@
 
     <!-- PROJETS Section -->
 
-    <?php   if(@$projects && sizeOf(@$projects)>0)
-    		$this->renderPartial('../pod/sectionElements', 
-    								array(  "items" => $projects,
-											"sectionKey" => "projects",
-											"sectionTitle" => "NOS PROJETS",
-											"sectionShadow" => true,
-											"msgNoItem" => "Aucun projet à afficher",
-											"imgShape" => "square",
-											"useDesc" => false,
-											"useBorderElement"=>$useBorderElement,
+    <?php   if(@$projects && sizeOf(@$projects)>0){
 
-											"styleParams" => array(	"bgColor"=>"#FFF",
-															  		"textBright"=>"dark",
-															  		"fontScale"=>3),
-											));
+	    		$sectionTitle = "MES PROJETS";
+	    	    if(@$typeItem != "citoyens") $sectionTitle = "NOS PROJETS";
+	    	    
+	    		$this->renderPartial('../pod/sectionElements', 
+	    								array(  "items" => $projects,
+												"sectionKey" => "projects",
+												"sectionTitle" => "NOS PROJETS",
+												"sectionShadow" => true,
+												"msgNoItem" => "Aucun projet à afficher",
+												"imgShape" => "square",
+												"useDesc" => false,
+												"useBorderElement"=>$useBorderElement,
+
+												"styleParams" => array(	"bgColor"=>"#FFF",
+																  		"textBright"=>"dark",
+																  		"fontScale"=>3),
+												));
+    		}
 	?>
 
 	
@@ -306,7 +455,7 @@
     	    if(@$typeItem == "organizations") $sectionTitle = "NOS MEMBRES";
     	    if(@$typeItem == "projects") $sectionTitle = "ILS CONTRIBUENT AU PROJET";
     	    if(@$typeItem == "events") $sectionTitle = "LES PARTICIPANTS";
-
+    	    
     	    if(@$members && sizeOf(@$members)>0)
     		$this->renderPartial('../pod/sectionElements', 
     								array(  "items" => $members,
@@ -326,6 +475,59 @@
     ?>
 
     
+
+	<!-- COMMUNAUTE Section -->
+
+    <?php
+    		$sectionTitle = "COMMUNAUTÉ";
+    	    if(@$typeItem == "organizations") $sectionTitle = "NOUS SOMMES MEMBRES";
+    	    if(@$typeItem == "projects") $sectionTitle = "NOUS SOMMES MEMBRES";
+    	    if(@$typeItem == "events") $sectionTitle = "NOUS SOMMES MEMBRES";
+    	    
+    	    if(@$members && sizeOf(@$memberOf)>0)
+    		$this->renderPartial('../pod/sectionElements', 
+    								array(  "items" => $memberOf,
+											"sectionKey" => "directory",
+											"sectionTitle" => $sectionTitle,
+											"sectionShadow" => true,
+											"msgNoItem" => "Aucun contact à afficher",
+											"imgShape" => "square",
+											"useDesc" => false,
+											"useBorderElement"=>$useBorderElement,
+											"countStrongLinks"=>$countStrongLinks,
+
+											"styleParams" => array(	"bgColor"=>"#FFF",
+															  		"textBright"=>"dark",
+															  		"fontScale"=>3),
+											));
+    ?>
+
+    
+    <!-- FOLLOWERS Section -->
+
+    <?php
+    		$sectionTitle = "FOLLOWERS";
+    	    if(@$typeItem == "citoyens") $sectionTitle = "MES ABONNÉS";
+    	    else 						 $sectionTitle = "NOS ABONNÉS";
+    	    
+    	    if(@$followers && sizeOf(@$followers)>0)
+    		$this->renderPartial('../pod/sectionElements', 
+    								array(  "items" => $followers,
+											"sectionKey" => "directory",
+											"sectionTitle" => $sectionTitle,
+											"sectionShadow" => true,
+											"msgNoItem" => "Aucun contact à afficher",
+											"imgShape" => "square",
+											"useDesc" => false,
+											"useBorderElement"=>$useBorderElement,
+											"countStrongLinks"=>$countStrongLinks,
+
+											"styleParams" => array(	"bgColor"=>"#FFF",
+															  		"textBright"=>"dark",
+															  		"fontScale"=>3),
+											));
+    ?>
+
 
 	<?php if (($type==Project::COLLECTION) && !empty($element["properties"]["chart"])){ ?>
 	<section id="projects-values" class="portfolio shadow">
@@ -553,7 +755,8 @@
     var elementName = "<?php echo @$element["name"]; ?>";
     var mapData = <?php echo json_encode(@$mapData) ?>;
     var params = <?php echo json_encode(@$params) ?>;
-
+    var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
+	
     //console.dir("allparams", params);
     var currentIdSection = "";
 	jQuery(document).ready(function() {
@@ -570,6 +773,8 @@
 			KScrollTo(target);
 		});
 
+		console.log("body width", $("body").width());
+		if($("body").width()>767)
 		$("#btn-onepage-main-menu").trigger("click");
 
         $(".btn-full-desc").click(function(){
@@ -586,7 +791,7 @@
 		Sig.showMapElements(Sig.map, mapData);
 
 		//showElementPad('news');
-		var url = "news/index/type/citoyens/id/<?php echo (string)$element["_id"] ?>?isFirst=1&";
+		var url = "news/index/type/<?php echo (string)$element["type"] ?>/id/<?php echo (string)$element["_id"] ?>?isFirst=1&";
 		//console.log("URL", url);
 		ajaxPost('#timeline-page', baseUrl+'/'+moduleId+'/'+url+"renderPartial=true&tpl=co2&nbCol=2", 
 			null,

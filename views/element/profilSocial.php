@@ -111,6 +111,11 @@
 #btn-show-activity-onmap{
     width:100%;
 }
+
+#onepage section#social-header{
+	margin-top: 68px;
+}
+
 </style>
 
 <?php 
@@ -558,12 +563,6 @@
 	            <small><?php echo Yii::t("form","Create a classified ad<br>To share To give To sell To rent<br>Material Property Job") ?></small>
 	        </button>
 
-	        <button data-form-type="poi"  data-dismiss="modal"
-	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green-poi">
-	            <h6><i class="fa fa-map-marker fa-2x bg-green-poi"></i><br> <?php echo Yii::t("common", "Point of interest") ?></h6>
-	            <small><?php echo Yii::t("form","Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory") ?></small>
-	        </button>
-
 	        
 	        <!--<button data-form-type="url" data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-url">
@@ -572,11 +571,6 @@
 	        </button>-->
 
 
-	        <button data-form-type="project"  data-dismiss="modal"
-	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
-	            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> <?php echo Yii::t("common", "Project") ?></h6>
-	            <small><?php echo Yii::t("form", "Make visible a project<br>Find support<br>Build a community") ?></small>
-	        </button>
 
 			<button data-form-type="contactPoint"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
@@ -584,21 +578,15 @@
 	            <small><?php echo Yii::t("form", "Define roles of everyone<br>Communicate easily<br>Internal and external") ?></small>
 	        </button>
 
-	        <button data-form-type="place"  data-dismiss="modal"
-	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-place">
-	            <h6><i class="fa fa-home fa-2x bg-azure"></i><br> Lieux</h6>
-	            <small>Ajouter un Lieux <br>Partager ces ressources<br> ces compétence et ces besions</small>
-	        </button>
-
-	        <button data-form-type="ressources"  data-dismiss="modal"
-                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
-	            <h6><i class="fa fa-cube fa-2x bg-azure"></i><br> Ressource</h6>
-	            <small>Ajouter une ressource <br>des outils, documents<br> des compétence et des besions</small>
-	        </button>
-
 
 			<div class="section-create-page">
-	        
+	        	
+		        <button data-form-type="project"  data-dismiss="modal"
+		                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
+		            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> <?php echo Yii::t("common", "Project") ?></h6>
+		            <small><?php echo Yii::t("form", "Make visible a project<br>Find support<br>Build a community") ?></small>
+		        </button>
+
 	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GROUP; ?>"  data-dismiss="modal"
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 letter-turq">
 	                <h6><i class="fa fa-circle-o fa-2x bg-turq"></i><br> <?php echo Yii::t("common", "Group") ?></h6>
@@ -623,10 +611,28 @@
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
 	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> <?php echo Yii::t("common", "Government Organization") ?></h6>
 	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
-	            </button>
-
-	            
+	            </button>	            
 	        </div>
+
+	        <button data-form-type="place"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-place">
+	            <h6><i class="fa fa-home fa-2x bg-azure"></i><br> Lieu</h6>
+	            <small>Localiser des lieux importants<br>Partager ses ressources<br> ses compétence et ses besoins</small>
+	        </button>
+
+	        <button data-form-type="ressources"  data-dismiss="modal"
+	            class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
+	            <h6><i class="fa fa-cube fa-2x bg-azure"></i><br> Ressource</h6>
+	            <small>Partager des ressources<br>des outils, des documents<br> des compétences et des besoins</small>
+	        </button>
+
+	        <button data-form-type="poi"  data-dismiss="modal"
+	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green-poi">
+	            <h6><i class="fa fa-map-marker fa-2x bg-green-poi"></i><br> <?php echo Yii::t("common", "Point of interest") ?></h6>
+	            <small><?php echo Yii::t("form","Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory") ?></small>
+	        </button>
+
+
 	    </div>
     </div>
 

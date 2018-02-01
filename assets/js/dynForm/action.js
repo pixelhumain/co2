@@ -65,11 +65,14 @@ dynForm = {
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 
+                var type = typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type;
+                var id = typeof parentIdElement != "undefined" ? parentIdElement : contextData.id;
+
                 console.log("afterSave action data", data);
                 dyFObj.closeForm();
-                uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
+                uiCoop.getCoopData(type, id, "room", null, data.map.idParentRoom);
                 setTimeout(function(){
-                    uiCoop.getCoopData(contextData.type, contextData.id, "action", null, data.id);
+                    uiCoop.getCoopData(type, id, "action", null, data.id);
                 }, 1000); 
                 //urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
             }
@@ -135,8 +138,10 @@ dynForm = {
             email : dyFInputs.inputHidden( ( (userId!=null && userConnected != null) ? userConnected.email : "" ) ),
             idUserAuthor: dyFInputs.inputHidden(userId),
             //type : dyFInputs.inputHidden( "action" ),
-            parentId : dyFInputs.inputHidden(contextData.id),
-            parentType : dyFInputs.inputHidden(contextData.type),
+
+            //prend le parentIdElement quand on est sur la page d'une resolution
+            parentId : dyFInputs.inputHidden(typeof parentIdElement != "undefined" ? parentIdElement : contextData.id),
+            parentType : dyFInputs.inputHidden(typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type),
             // image : dyFInputs.image()
 	    }
 	}

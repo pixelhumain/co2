@@ -76,7 +76,7 @@
     		<div class="<?php echo $col; ?> portfolio-item text-<?php echo $align; ?>">
 
                 <?php if($typeItem != "item"){ ?>
-                <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+                <a href="<?php echo Element::getHash($item); ?>" class="portfolio-link" data-toggle="modal">
                 <?php }else{ ?>
                 <div class="">
                 <?php } ?>
@@ -85,11 +85,16 @@
                             <i class="fa fa-search-plus fa-3x"></i>
                         </div>
                     </div> -->
-                    <?php if(!isset($useImg) || @$useImg == true){ ?>
-                        <img src="<?php echo @$item['profilMediumImageUrl'] ? Yii::app()->createUrl('/'.@$item['profilMediumImageUrl']) : $imgDefault; ?>" 
+                    <?php if(!isset($useImg) || @$useImg == true){ 
+                        $img =  @$item['profilThumbImageUrl'] ? 
+                                Yii::app()->createUrl('/'.@$item['profilThumbImageUrl']) : 
+                                $imgDefault;
+                    ?>
+                        <img src="<?php echo $img; ?>" 
                         	 class="img-responsive thumbnail img-<?php echo $imgShape; ?> 
-                                    <?php if(@$useBorderElement==true){ ?>thumb-type-color-<?php echo $iconColor; ?><?php } ?> inline" 
-                                    alt=""><br>
+                                    <?php if(@$useBorderElement==true){ ?>
+                                            thumb-type-color-<?php echo $iconColor; ?><?php } ?> inline"
+                             width=60 height=60 alt=""><br>
                     <?php } ?>
 
                     <?php if(@$useBorderElement==true && $icon != "" && $iconColor != ""){ ?>

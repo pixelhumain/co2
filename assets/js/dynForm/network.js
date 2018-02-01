@@ -24,10 +24,41 @@ dynForm = {
 	    	},
 	    },
 	    //debug : true,
-	    beforeBuild : function(){
+	    beforeBuild : function(data){
 	    	dyFObj.setMongoId('network',function(){
 	    		uploadObj.gotoUrl = location.hash;
 	    	});
+
+	    	
+	    	
+	    },
+	    afterBuild : function(data){
+	    	mylog.log("afterBuild network", data, notNull(data),  data == {},  data === {});
+	    	if(notNull(data) && data == {} ){
+	    		mylog.log("afterBuild filterList", $(".filterList").length);
+	    		$(".filterList").html("");
+				var str = "" ;
+				$.each(data.filter,function(k,v) { 
+					str = "<div class='col-md-12 text-left'>"+
+								"<a href='javascript:;' onclick='typeObj.network.dynForm.removeFilter("+k+")'>"+
+									"<i class='fa fa-times text-red'></i> "+
+								"</a>"+v.name+
+								"<br/>";
+
+					str+="<ul class='col-xs-offset-1'>";
+					var i = 0 ;
+					while(notNull(v["keyVal"+i]) && notNull(v["tagskeyVal"+i])){
+						str +="<li >"+v["keyVal"+i]+" : ";
+						$.each(v["tagskeyVal"+i].split(","),function(ktag,vtag) { 
+							str += "<span class='text-red' >#"+vtag+"</span> ";
+						});
+						i++;
+					}
+					str += "</div>";  
+					mylog.log("str", str); 			
+					$(".filterList").append(str);
+				});
+	    	}
 	    },
 	    beforeSave : function(){
 	    	if ($("#ajaxFormModal [name='request[searchTag]']").val() == '' && $("#ajaxFormModal [name='request[sourceKey]']").val() == '') {

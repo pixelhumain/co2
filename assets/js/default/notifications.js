@@ -50,7 +50,7 @@ function updateNotification(action, element, id)
     	mylog.dir(data);
         if ( data && data.result ) {
         	if(action=="seen"){  
-        		$(".notifList"+element+" li.notifLi").addClass("seen")  
+        		$(".notifList"+element+" li.notifLi").addClass("seen");
         		notifCount();
         	}else{           
         		if(all)
@@ -134,9 +134,17 @@ function refreshNotifications(elementId,elementType,element,event)
         type: "GET",
         url: baseUrl+"/"+moduleId+"/notification/getnotifications/type/"+elementType+"/id/"+elementId+"?ts="+maxNotifTimstamp
     })
-    .done(function (data) { //mylog.log("REFRESH NOTIF : "); mylog.dir(data);
+    .done(function (data) { mylog.log("REFRESH NOTIF : "); mylog.dir(data);
         if (data) {       
-        	buildNotifications(data,element,event);
+        	buildNotifications(data.notif, element,event);
+        	if(data.coop > 0){
+        		$(".btn-dashboard-dda").show();
+        		$(".coopNotifs").html(data.coop).show(100);
+        	}
+        	else{
+        		$(".btn-dashboard-dda").hide();
+        		$(".coopNotifs").html("");
+        	}
         } else {
             toastr.error("no notifications found ");
         }

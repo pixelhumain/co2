@@ -11,6 +11,8 @@
     "deviseDefault" : "€",
     "nbAdminModeration" : 3,
     "nbReportCoModeration" : 3,
+    
+    "onepageKey" : [ "co", "net" ],
 
 	"pages" : {
 		
@@ -99,7 +101,7 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "agenda", 
-			"subdomainName" : "Events",
+			"subdomainName" : "Agenda",
 			"hash":"#app.agenda",
 			"icon" : "calendar", 
 			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
@@ -113,7 +115,7 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "annonces", 
-			"subdomainName" : "Classifieds",
+			"subdomainName" : "Market place",
 			"hash" : "#app.annonces",
 			"icon" : "bullhorn", 
 			"mainTitle" : "Classified ads",
@@ -126,7 +128,7 @@
 		"#place":
 		    {"inMenu" : true, 
 		    "useHeader" : true, 
-		    "open" : true, 
+		    "open" : false, 
 		    "subdomain" : "place", 
 		    "subdomainName" : "Lieux",
 		    "hash" : "#app.search.type.place",
@@ -155,7 +157,7 @@
 		    "useHeader" : true, 
 		    "open" : true, 
 		    "subdomain" : "ressource", 
-		    "subdomainName" : "Ressources",
+		    "subdomainName" : "Sharing",
 		    "hash" : "#app.help",
 		    "icon" : "cubes", 
 		    "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",

@@ -232,7 +232,9 @@ function buildTimeLine (news, indexMin, indexMax)
 function bindEventNews(){
 	var separator, anchor;
 	$("#get_url").elastic();
-	
+	$("#get_url").change(function(){
+		if($(this).val()!="") $(".form-create-news-container .form-actions .writesomethingplease").remove();
+	});
 	$(".scopeShare").click(function() {
 		mylog.log(this);
 		replaceText=$(this).find("h4").html();
@@ -755,7 +757,7 @@ function toggleFilters(what){
  function getScopeNewsHtml(){
  	scopeHtml ='<div id="scopes-news-form" class="no-padding">'+
  			'<div id="news-scope-search" class="col-md-12 col-sm-12 col-xs-12 no-padding">'+
-	 			'<label class="margin-left-5"><i class="fa fa-angle-down"></i> Add places where you want to publish</label><br>'+
+	 			'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.addplacestyournews+'</label><br>'+
 	 			'<div class="bg-white" style="height:26px;">'+
 	            '<div id="input-sec-search" class="hidden-xs col-xs-12 col-md-4 col-sm-4 col-lg-4">'+
 	                '<div class="input-group shadow-input-header">'+
@@ -773,7 +775,7 @@ function toggleFilters(what){
             '<hr class="submit">'+
             '</div>'+
             '<div class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
-            	'<label class="margin-left-5"><i class="fa fa-angle-down"></i> Selected zones</label><br>'+
+            	'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
             '</div>'+
             '<div id="content-added-scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
         '</div>';
@@ -807,6 +809,7 @@ function bindScopesNewsEvent(news){
 			pushHtml=$(this).parent().get();
 			$(this).parent().remove();
 			$("#content-added-scopes-container").append(pushHtml);
+			$(".form-create-news-container .form-actions .addplacesplease").remove();
 		}else{
 			delete newsScopes[scopeValue];
 			$(this).parent().remove();
@@ -1110,8 +1113,6 @@ function saveNews(){
 
 			},
 			submitHandler : function(form) {
-				$("#btn-submit-form").prop('disabled', true);
-				$("#btn-submit-form i").removeClass("fa-arrow-circle-right").addClass("fa-circle-o-notch fa-spin");
 				successHandler2.show();
 				errorHandler2.hide();
 				/*if(element){
@@ -1123,6 +1124,23 @@ function saveNews(){
 					$("#"+element+"Form").submit();
 					return false;
 				}*/
+		$("#btn-submit-form").prop('disabled', true);
+		$("#btn-submit-form i").removeClass("fa-arrow-circle-right").addClass("fa-circle-o-notch fa-spin");
+		$(".form-create-news-container .form-actions .help-block").remove();
+		error=[];
+		if($(".noGoSaveNews").length)
+			error.push("waitendofloading");
+		if($("#form-news #results").html() == "" && $("#form-news #get_url").val()== "")
+			error.push("writesomethingplease");
+		if($("input[name='scope']").val()=="public" && Object.keys(newsScopes).length==0)
+			error.push("addplacesplease");
+		if(error.length > 0){
+			$.each(error, function(e, v){
+				$("#btn-submit-form").before("<span class='help-block "+v+" italic'>* "+trad[v]+"</span>");
+			});
+			$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+			$("#btn-submit-form").prop('disabled', false);		
+		}else{
 				newNews = new Object;
 				if($("#form-news #results").html() != ""){
 					newNews.media=new Object;	
@@ -1191,6 +1209,7 @@ function saveNews(){
 		    			$("#form-news #get_url").val("");
 		    			mentionsInit.reset('textarea.mention');
  						//$('textarea.mention').mentionsInput('reset');
+ 						newsScopes={};
  						$("#form-news #results").html("").hide();
  						$("#form-news #tags").select2('val', "");
  						showFormBlock(false);
@@ -1228,6 +1247,7 @@ function saveNews(){
 			    });
 	//		}
 	//	};
+		}
 	}
 	//formNews.submit(function(e) { e.preventDefault(); }).validate(validation);
 }
@@ -1295,6 +1315,7 @@ function initFormImages(){
 						  	}
 						}
 						$("#addImage").off();
+						$(".form-create-news-container .form-actions .waitendofloading").remove();
 					});
 		  		}
 		  		else{
@@ -1319,7 +1340,7 @@ function addMoreSpace(){
 }
 function showMyImage(fileInput) {
 	if($(".noGoSaveNews").length){
-		toastr.info("Wait the end of image loading");
+		toastr.info(trad.waitendofloading);
 	}
 	else if (fileInput.files[0].size > 2097152){
 		toastr.info("Please reduce your image before to 2Mo");

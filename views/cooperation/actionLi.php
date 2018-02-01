@@ -1,4 +1,4 @@
-<li class="submenucoop focus sub-actions no-padding col-lg-4 col-md-6 col-sm-6"
+<li class="submenucoop focus sub-actions no-padding col-lg-4 col-md-6 col-sm-6 col-xs-12"
 	data-name-search="<?php echo str_replace('"', '', @$action["name"]); ?>">
 	<a href="javascript:;" 
 		class="load-coop-data" data-type="action"
@@ -32,8 +32,8 @@
 
 
 	  	<?php
-	  		$participate = @$action["links"] ? @$action["links"]["contributors"][Yii::app()->session['userId']] : false;
-	  		if(!$participate){
+	  		$participate = @$action["links"] ? isset($action["links"]["contributors"][Yii::app()->session['userId']]) : false;
+	  		if($participate){
 	  			$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
               	$profilThumbImageUrl = Element::getImgProfil($me, "profilThumbImageUrl", $this->module->assetsUrl);
 	  	?>

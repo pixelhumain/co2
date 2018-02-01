@@ -1,74 +1,92 @@
 function constructScopesHtml(news){
+	mylog.log("constructScopesHtml", news);
 	html="";
-    $.each(myScopes[myScopes.type], function(key, value){
-    	var disabled = (value.active == false && !news) ? "disabled" : "";
-    	var btnType = (myScopes.type=="multiscopes") ? "multiscope" : "communexion";
-    	if(typeof value.name == "undefined") value.name = key;
-    	if(news){
-    		btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
-    			"data-add='true' data-scope-value='"+key+"' "+
-    			"data-toggle='tooltip' data-placement='top' "+
-    			"data-original-title='Add zones to news'>"+
-    				"<i class='fa fa-plus-circle'></i>"+
-    			"</span>";
-    	}else{
-	    	if(myScopes.type=="multiscopes")
-	    		btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
-	    			"data-add='false' data-scope-value='"+key+"' "+
-	    			"data-toggle='tooltip' data-placement='top' "+
-	    			"data-original-title='Remove from my favorites places'>"+
-	    				"<i class='fa fa-times-circle'></i>"+
-	    			"</span>";
-	    	else{
-	    		if(typeof myScopes.multiscopes[key] != "undefined")
-	    			btnScopeAction="<span class='manageMultiscopes active tooltips margin-right-5 margin-left-10' "+
-	    				"data-add='0' data-scope-value='"+key+"' "+
-	    				"data-toggle='tooltip' data-placement='top' "+
-	    				"data-original-title='Remove from my favorites places'>"+
-	    					"<i class='fa fa-star'></i>"+
-	    				"</span>";
-	    		else
-	    			btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
-	    				"data-add='true' data-scope-value='"+key+"' "+
-	    				"data-toggle='tooltip' data-placement='top' "+
-	    				"data-original-title='Add to my favorites places'>"+
-	    					"<i class='fa fa-star-o'></i>"+
-	    				"</span>";
-	    	}
-    	}
+	$.each(myScopes[myScopes.type], function(key, value){
+		mylog.log("constructScopesHtml each", key, value);
+		var disabled = (value.active == false && !news) ? "disabled" : "";
+		var btnType = (myScopes.type=="multiscopes") ? "multiscope" : "communexion";
+		if(typeof value.name == "undefined") value.name = value.id;
+		if(news){
+			btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
+				"data-add='true' data-scope-value='"+value.id+"' "+
+				'data-scope-key="'+key+'" '+
+				"data-toggle='tooltip' data-placement='top' "+
+				"data-original-title='Add zones to news'>"+
+					"<i class='fa fa-plus-circle'></i>"+
+				"</span>";
+		}else{
+			if(myScopes.type=="multiscopes")
+				btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
+					"data-add='false' data-scope-value='"+value.id+"' "+
+					'data-scope-key="'+key+'" '+
+					"data-toggle='tooltip' data-placement='top' "+
+					"data-original-title='Remove from my favorites places'>"+
+						"<i class='fa fa-times-circle'></i>"+
+					"</span>";
+			else{
+				//mylog.log("constructScopesHtml", value.id, key, getScope(key));
+				mylog.log("constructScopesHtml key", key);
+				if(typeof myScopes.multiscopes[key] != "undefined")
+				//if(	getScope(key, "multiscopes") != null )
+					btnScopeAction="<span class='manageMultiscopes active tooltips margin-right-5 margin-left-10' "+
+						"data-add='0' data-scope-value='"+value.id+"' "+
+						'data-scope-key="'+key+'" '+
+						"data-toggle='tooltip' data-placement='top' "+
+						"data-original-title='Remove from my favorites places'>"+
+							"<i class='fa fa-star'></i>"+
+						"</span>";
+				else
+					btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
+						"data-add='true' data-scope-value='"+value.id+"' "+
+						'data-scope-key="'+key+'" '+
+						"data-toggle='tooltip' data-placement='top' "+
+						"data-original-title='Add to my favorites places'>"+
+							"<i class='fa fa-star-o'></i>"+
+						"</span>";
+			}
+		}
+
     	html += "<div class='scope-order "+disabled+" text-red' data-level='"+value.level+"''>"+
     				btnScopeAction+
     				"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
-	                    "class='item-scope-checker item-scope-input' "+
-	                    'data-scope-value="'+key+'" '+
-						'data-scope-name="'+value.name+'" '+
+						"class='item-scope-checker item-scope-input' "+
+						'data-scope-key="'+key+'" '+
+						'data-scope-value="'+value.id+'" '+
+						'data-scope-name="'+name+'" '+
 						'data-scope-type="'+value.type+'" '+
 						'data-scope-level="'+value.type+'" ' +
-						'data-btn-type="'+btnType+'" '+
-						'data-level="'+value.level+'">' + 
-	                    value.name + 
-                	"</span>"+
-                "</div>";
+						'data-scope-country="'+value.country+'" ' +
+						'data-btn-type="'+btnType+'" ';
+						if(notNull(value.level))
+							html += 'data-level="'+value.level+'"';
+						html += '>' + 
+						value.name + 
+					"</span>"+
+				"</div>";
 	});	
-    return html;
+	return html;
 }
 
 function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
+	mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);
 	communexionObj=scopeObject(values);
+	mylog.log("changeCommunexionScope communexionObj",communexionObj);
 	myScopes.open=communexionObj;
 	var newsAction=(notNull(appendDom) && appendDom.indexOf("scopes-news-form") >= 0) ? true : false;
-    $(appendDom).html(constructScopesHtml(newsAction));
-    $(appendDom+" .scope-order").sort(sortSpan) // sort elements
-                  .appendTo(appendDom); // append again to the list
+	$(appendDom).html(constructScopesHtml(newsAction));
+	$(appendDom+" .scope-order").sort(sortSpan) // sort elements
+				.appendTo(appendDom); // append again to the list
 	if(newsAction) bindScopesNewsEvent();
 	else{
+		search.count=true;
 		startSearch(0, indexStepInit);
 		bindScopesInputEvent();
 	}
 }
 function getCommunexionLabel(){
 	if(typeof myScopes.communexion != "undefined" && Object.keys(myScopes.communexion).length>0){
-		level=0;
+		var level=0;
+		var nameCommunexion="";
 		$.each(myScopes.communexion, function(e, v){
 			if(v.level > level){
 				level=v.level;
@@ -82,7 +100,7 @@ function getCommunexionLabel(){
 };
 function getSearchLocalityObject(){ 
 	var res = {};
-	searchingOnLoc=myScopes[myScopes.type];
+	var searchingOnLoc=myScopes[myScopes.type];
 	if(notNull(searchingOnLoc)){
 		$.each(searchingOnLoc, function(key, value){
 			mylog.log("getMultiScopeForSearch value.active", value.active);
@@ -99,23 +117,29 @@ function getSearchLocalityObject(){
 //scopeValue est la valeur utilisée pour la recherche
 //scopeName est la valeur affichée
 function addToMultiscope(scopeValue){
+	mylog.log("addToMultiscope",scopeValue, myScopes);
 	if(scopeValue == "") return;
 	if(myScopes.type=="communexion")
 		newMultiScope=myScopes.communexion[scopeValue];
+		//newMultiScope=  getScope(scopeValue, "communexion");
 	else
+		//newMultiScope=  getScope(scopeValue, "open");
 		newMultiScope=myScopes.open[scopeValue];
 	newMultiScope.active=true;
 	myScopes.multiscopes[scopeValue] = newMultiScope;
+	//myScopes.multiscopes.push(newMultiScope);
 	saveMultiScope();
 }
 
 
 function removeFromMultiscope(scopeValue){
+	mylog.log("removeFromMultiscope", scopeValue);
 	if(scopeExists(scopeValue)){
 		delete myScopes.multiscopes[scopeValue];
 		saveMultiScope();
 	}
 }
+
 function saveMultiScope(){ 
 	if(userId != null && userId != ""){
 		if(!notEmpty(myScopes.multiscopes)) myScopes.multiscopes = {};
@@ -125,7 +149,7 @@ function saveMultiScope(){
 			data: {"multiscopes" : myScopes.multiscopes},
 			dataType: "json",
 			success: function(data){
-				mylog.log("updatemultiscope success");	    		
+				mylog.log("updatemultiscope success");
 			},
 			error: function(error){
 				mylog.log("Une erreur est survenue pendant l'enregistrement des scopes");
@@ -134,27 +158,89 @@ function saveMultiScope(){
 	}
 	localStorage.setItem("myScopes",JSON.stringify(myScopes));
 }
+
+// function getIndMultiscope(scopeId, typeScope){
+// 	mylog.log("getIndMultiscope", scopeId);
+// 	var res = -1;
+// 	var scopes = null;
+// 	if(typeScope = "multiscopes")
+// 		scopes = myScopes.multiscopes;
+// 	else if(typeScope = "communexion")
+// 		scopes = myScopes.communexion;
+// 	else if(typeScope = "open")
+// 		scopes = myScopes.open;
+// 	if(scopes != null){
+// 		$.each(scopes,function(e,v){
+// 			mylog.log("getIndMultiscope ===", v, (v.id === scopeId), (v.id == scopeId));
+// 			if(v.id === scopeId)
+// 				res = e;
+// 		});
+// 	}
+// 	return res ;
+// }
+
+// function getScopeOld(scopeId, typeScope){ 
+// 	var ind = getIndMultiscope(scopeId);
+// 	var scope = null;
+// 	if(ind != -1){
+// 		if(typeScope = "multiscopes")
+// 			scope = myScopes.multiscopes[ind];
+// 		else if(typeScope = "communexion")
+// 			scope = myScopes.communexion[ind];
+// 		else if(typeScope = "open")
+// 			scope = myScopes.open[ind];
+// 	}
+// 	return scope;
+// }
+
+// function getScope(key, typeScope){ 
+// 	var scope = null;
+// 	if(typeScope = "multiscopes")
+// 		scope = myScopes.multiscopes[key];
+// 	else if(typeScope = "communexion")
+// 		scope = myScopes.communexion[key];
+// 	else if(typeScope = "open")
+// 		scope = myScopes.open[key];
+	
+// 	return scope;
+// }
+
+// function setScope(key, field, val, typeScope){ 
+
+// 		if(typeScope = "multiscopes")
+// 			myScopes.multiscopes[key][field] = val;
+// 		else if(typeScope = "communexion")
+// 			myScopes.communexion[key][field] = val;
+// 		else if(typeScope = "open")
+// 			myScopes.open[key][field] = val;
+
+// }
+
+
 function bindSearchCity(){
-    $("#searchOnCity").off().on("keyup", function(e){
-        if(e.keyCode == 13){
-            //initTypeSearch("cities");
-            searchTypeGS = ["cities"];
-            startGlobalSearch(0, 30, "#filter-scopes-menu");
-            //startSearch($(this).val(), null, null);
-            //$(".btn-directory-type").removeClass("active");
-         }
-    });
+	$("#searchOnCity").off().on("keyup", function(e){
+		if(e.keyCode == 13){
+			//initTypeSearch("cities");
+			searchTypeGS = ["cities"];
+			startGlobalSearch(0, 30, "#filter-scopes-menu");
+			//startSearch($(this).val(), null, null);
+			//$(".btn-directory-type").removeClass("active");
+		}
+	});
 }
 function bindScopesInputEvent(news){
 	$(".manageMultiscopes").off().on("click", function(){
+		mylog.log("manageMultiscopes");
 		addScope=$(this).data("add");
 		scopeValue=$(this).data("scope-value");
+		key=$(this).data("scope-key");
+		mylog.log("manageMultiscopes", key);
 		if(addScope){
-			addToMultiscope(scopeValue);
+			addToMultiscope(key);
 			$(this).removeClass("text-red").addClass("active").data("add",false).attr("data-original-title","Remove from favorites");
 			$(this).find("i").removeClass("fa-star-o").addClass("fa-star");
 		}else{
-			removeFromMultiscope(scopeValue);
+			removeFromMultiscope(key);
 			if(myScopes.type=="multiscopes")
 				$(this).parent().remove();
 			else{
@@ -164,7 +250,9 @@ function bindScopesInputEvent(news){
 		}
 		countFavoriteScope();
 	});
-	$("#multisopes-btn, #communexion-btn").off().on("click", function(){
+
+	$("#multiscopes-btn, #communexion-btn").off().on("click", function(){
+		mylog.log("#multisopes-btn, #communexion-btn");
 		if($(this).hasClass("active")){
 			$(this).removeClass("active");
 			$(this).find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
@@ -179,17 +267,22 @@ function bindScopesInputEvent(news){
 			$(".scopes-container").html(constructScopesHtml());
 			if(myScopes.type=="communexion")
 				$("#filter-scopes-menu .scopes-container .scope-order").sort(sortSpan) // sort elements
-                  .appendTo("#filter-scopes-menu .scopes-container");
+					.appendTo("#filter-scopes-menu .scopes-container");
 		}
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
-		if(search.app=="territorial") initTerritorialSearch();
-        startSearch(0, indexStepInit);
-        bindScopesInputEvent();
+		if(search.app=="territorial") searchEngine.initTerritorialSearch();
+		search.count=true;
+		startSearch(0, indexStepInit);
+		bindScopesInputEvent();
 	});
 	$(".item-scope-input").off().on("click", function(){ 
         scopeValue=$(this).data("scope-value");
         typeSearch=$(this).data("btn-type");
-        scopeActiveScope(scopeValue);
+        key=$(this).data("scope-key");
+        scopeActiveScope(key);
+        if(myScopes.type!="open")
+        	localStorage.setItem("myScopes",JSON.stringify(myScopes));
+        search.count=true;
         if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
             startNewsSearch(true)
         } 
@@ -198,11 +291,12 @@ function bindScopesInputEvent(news){
             startSearchInterop(0,30);
         }
         else{
-            if(search.app=="territorial") initTerritorialSearch();
+            if(search.app=="territorial") searchEngine.initTerritorialSearch();
             startSearch(0, indexStepInit); 
         }
     });
-    $(".item-globalscope-checker").off().on('click', function(){  
+    $(".item-globalscope-checker").off().on('click', function(){ 
+    	mylog.log(".item-globalscope-checker");
         //$(".item-globalscope-checker").addClass("inactive");
         //$(this).removeClass("inactive");
         var notSearch = $(this).data("scope-notsearch");
@@ -212,11 +306,12 @@ function bindScopesInputEvent(news){
         $("#searchOnCity").val("");
         $(".dropdown-result-global-search").hide(700).html("");
         myScopes.type="open";
+        localStorage.setItem("myScopes",JSON.stringify(myScopes));
         //}
-        if(search.app=="territorial") initTerritorialSearch();
+        if(search.app=="territorial") searchEngine.initTerritorialSearch();
         mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
         changeCommunexionScope($(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), $(this).data("scope-level"),
-                         $(this).data("scope-values"),  notSearch, testCo, $(this).data("append-container")) ;
+					     $(this).data("scope-values"),  notSearch, testCo, $(this).data("append-container")) ;
     });
 }
 function countFavoriteScope(){
@@ -225,12 +320,14 @@ function countFavoriteScope(){
 		count=Object.keys(myScopes.multiscopes).length;
 	$(".count-favorite").html(count);
 }
-function setCommunexion(){ 
+function setCommunexion(){
+	mylog.log("setCommunexion");
 	$.ajax({
 		type: "POST",
 		url: baseUrl+"/"+moduleId+"/element/getCommunexion/",
 		dataType: "json",
 		success: function(data){
+			mylog.log("setCommunexion success", data);
 			if(data){
 				myScopes.communexion = scopeObject(data);
 			}
@@ -253,21 +350,24 @@ function scopeActiveScope(scopeValue){
         $(".scopes-container .item-scope-input i.fa").removeClass("fa-check-circle");
         $(".scopes-container .scope-order").addClass("disabled");
         //if(myScopes.open[scopeValue].active){
-	    $(".scopes-container [data-scope-value='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
-	    $(".scopes-container [data-scope-value='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
-	    $(".scopes-container [data-scope-value='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
+	    $(".scopes-container [data-scope-key='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
+	    $(".scopes-container [data-scope-key='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
+	    $(".scopes-container [data-scope-key='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
 	    //}
     }else{
 	    if(!myScopes.multiscopes[scopeValue].active){
+	    //if(	!getScope(scopeValue, "multiscopes").active){
+	    	//setScope(scopeValue, "active", true, "multiscopes");
 	    	myScopes.multiscopes[scopeValue].active = true;
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-circle-o");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-check-circle");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
 	    }else{
+	    	//setScope(scopeValue, "active", false, "multiscopes");
 	    	myScopes.multiscopes[scopeValue].active = false;
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-circle-o");
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-check-circle");
-	        $("[data-scope-value='"+scopeValue+"'].item-scope-input").parent().addClass("disabled");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input i.fa").addClass("fa-circle-o");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input i.fa").removeClass("fa-check-circle");
+	        $("[data-scope-key='"+scopeValue+"'].item-scope-input").parent().addClass("disabled");
 	    }
 	}
 }
@@ -275,67 +375,101 @@ function sortSpan(a, b){
     return ($(b).data('level')) < ($(a).data('level')) ? 1 : -1;    
 }
 function scopeObject(values){
+	mylog.log("scopeObject", values);
 	communexionObj={};
 	if(typeof values == "string")
 		values = jQuery.parseJSON(values);	
 	if(typeof values.level1 != "undefined"){
 		objToPush={
+			id:values.level1,
 			name:values.level1Name,
 			type:"level1",
 			active:false,
 			level:1,
 			countryCode:values.country
 		}
-		communexionObj[values.level1]=objToPush;
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 
 	}
 	if(typeof values.level2 != "undefined"){
 		objToPush={
+			id:values.level1,
 			name:values.level2Name,
 			type:"level2",
 			active:false,
 			level:2,
 			countryCode:values.country
 		}
-		communexionObj[values.level2]=objToPush;
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 	}
 	if(typeof values.level3 != "undefined"){
 		objToPush={
+			id:values.level3,
 			name:values.level3Name,
 			type:"level3",
 			active:false,
 			level:3,
 			countryCode:values.country
 		}
-		communexionObj[values.level3]=objToPush;
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 	}
 	if(typeof values.level4 != "undefined"){
 		objToPush={
+			id:values.level4,
 			name:values.level4Name,
 			type:"level4",
 			active:false,
 			level:4,
 			countryCode:values.country
 		}
-		communexionObj[values.level4]=objToPush;
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 	}
+
 	if(typeof values.cp != "undefined"){
 		objToPush={
 			name:values.cp,
 			type:"cp",
 			active:false,
-			level:5,
+			//level:5,
 			countryCode:values.country
 		}
-		communexionObj[values.cp]=objToPush;
+		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		//communexionObj.push(objToPush);
 	}
+
 	objToPush={
-		name:values.cityName,
+		id:values.city,
+		name:((notNull(values.allCP) && values.allCP == false) ?  values.name : values.cityName ) ,
 		type:"city",
-		active:true,
-		level:6,
-		countryCode:values.country
+		active:((notNull(values.allCP) && values.allCP == false) ?  false : true ) ,
+		//level:6,
+		countryCode:values.country,
+		allCP:values.allCP,
+		cp:values.cp,
 	}
-	communexionObj[values.city]=objToPush;
+	communexionObj[objToPush.id+objToPush.type] = objToPush;
+	//communexionObj.push(objToPush);
+
+	if(notNull(values.allCP) && values.allCP == false){
+		objToPush={
+			id:values.city,
+			name:values.cityName,
+			type:"city",
+			active:true,
+			//level:6,
+			countryCode:values.country,
+			allCP:values.allCP,
+			cp:values.cp,
+		}
+		communexionObj[objToPush.id+objToPush.type+objToPush.cp] = objToPush;
+		//communexionObj.push(objToPush);
+	}
+
+	mylog.log("scopeObject communexionObj", communexionObj);
+	
 	return communexionObj;
 }

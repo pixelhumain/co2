@@ -163,14 +163,7 @@
     font-size:0.8em;
   }
 }
-.btn-directory-type.btn-all{
-    width: initial !important;
-    border: 1px solid #ccc;
-    float: left;
-    margin-left: 20%;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
+
 </style>
  
 <div class="container-result-search col-md-12 col-sm-12 col-xs-12" style="padding-left:5%">

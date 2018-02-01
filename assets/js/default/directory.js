@@ -202,85 +202,75 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             if(!data){ 
               toastr.error(data.content); 
             } 
-            else 
-            {
-              //console.log("fuckkkkiiiiiing",data);
+            else{
+              // Remove count element from results
               if(typeof data.count != "undefined"){
                 searchCount=data.count;
                 delete data.count;
               }
-              if(search.app=="territorial")
-                data=searchEngine.prepareAllSearch(data);
-             // var countData = 0;
-            	//$.each(data, function(i, v) { 
-              //  if(v.length!=0 && i != "count"){ 
-              //    countData++; 
-              //  } 
-              //});
-              
-              //totalData += countData;
-            
-              
-              var city, postalCode = "";
-
-              //parcours la liste des résultats de la recherche
-              //mylog.dir(data);
-              resultsStr=trad.result;
-              if(totalData > 1)
-                resultsStr=trad.results;
-                if((indexMin == 0 || search.app=="search" || search.app=="social") && (typeof pageEvent == "undefined" || !pageEvent) ){
+              //var city, postalCode = "";
+              //Prepare footer and header of directory 
+              if(typeof search.count != "undefined" && search.count || indexMin==0 ){
                     headerStr = '';
                     footerStr = '';
-                    if(typeof pageCount != "undefined" && pageCount && search.app !="territorial"){
-                      //headerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-                      footerStr = '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-                    }
-                    //headerStr += "<h4 style='margin: 0px 0px 0px 6px;font-size:14px;' class='text-dark pull-left'>"+
-                      //        "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
-                   /* headerStr += "<small class='resultTypes'>";
-                    if(typeof headerParams != "undefined"){
-                      var countNbTag=0;
-                      $.each( searchType, function(key, val){ countNbTag++;
-                        typeHeader = (val=="citoyens") ? "persons" : val;
-                        var params = headerParams[typeHeader];
-                        headerStr += "<span class='text-"+params.color+"'>"+
+                    spanType = '';
+                    $.each( searchType, function(key, val){
+                      typeHeader = (val=="citoyens") ? "persons" : val;
+                      var params = headerParams[typeHeader];
+                      spanType += "<span class='text-"+params.color+"'>"+
                                   "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
                                 "</span> ";
-                      });//console.log("myMultiTags", myMultiTags);
-                      
-                      if(countNbTag > 0)
-                        headerStr += "<br><br>";
-                      
-                      //if( Object.keys(myMultiTags).length > 0 )
-                        //headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
-                      
-                    /*  $.each(myMultiTags, function(key, val){
-                        var params = headerParams[val];
-                        headerStr += "<span class='text-dark hidden-xs'>"+
-                                  "#"+key+
-                                "</span> ";
-                      });*/
-                    /*}
-                    headerStr += "</small>";
-                    headerStr += "</h4>";*/
-                   // headerStr += "<hr style='float:left; width:100%;margin-top:0px;'/>";
+                    });
+                    countHeader=0;
+                    if(search.app=="territorial"){
+                      $.each(searchCount, function(e, v){
+                        countHeader+=v;
+                      });
+                    }else{
+                      typeCount = (searchType[0]=="persons") ? "citoyens" : searchType[0];
+                      countHeader=searchCount[typeCount];
+                    }
+                    resultsStr=trad.result;
+                    if(countHeader > 1)
+                      resultsStr=trad.results;
+              
+                    headerStr +='<h5>'+
+                          "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
+                          '<small>'+
+                            spanType+
+                          '</small>'+
+                      '</h5>';
+                    if(typeof pageCount != "undefined" && pageCount && search.app !="territorial"){
+                      footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+                    }
+                    if(search.app != "territorial" || data < 30){
+                      footerStr +='<div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">'+
+                        '<button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" '+
+                          'data-target="#dash-create-modal" data-toggle="modal" '+
+                          'data-toggle="tooltip" data-placement="top" '+ 
+                          'title=""> '+
+                            '<i class="fa fa-times"></i>'+
+                        '</button>'+
+                        '<h5 class="text-center letter-green margin-top-25">Create a page</h5>'+
+                        '<h5 class="text-center">'+
+                          '<small>'+
+                            spanType+
+                          '</small>'+
+                        '</h5>'+
+                      '</div>'; 
+                    }
                     $(".headerSearchContainer").html(headerStr);
                     $(".footerSearchContainer").html(footerStr);
               }
               str = "";
-             // if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1  && totalData == 0){
-              //		str += '<span class="col-md-12 col-sm-12 col-xs-12 letter-blue padding-10"><i class="fa fa-info-circle"></i>'+ trad.youwillfindonlycities+'!</span>';
-              //}
-              //if(typeof countElement !="undefined")
+              // Algorithm when searching in multi collections (scroll algo by updated)
+              if(search.app=="territorial")
+                data=searchEngine.prepareAllSearch(data);
+              //Add correct number to type filters
               if(search.count)
                 refreshCountBadge();
-              //console.log(data.results);
-             // alert();
+              //parcours la liste des résultats de la recherche
               str += directory.showResultsDirectoryHtml(data);
-              //if((indexMin == 0 || search.app=="search") && (typeof pageEvent == "undefined" || !pageEvent) ){
-                //  if(typeof pageCount != "undefined" && pageCount && search.app !="territorial")
-                  //  str += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-              //}
               if(str == "") { 
 	              $.unblockUI();
                 showMap(false);
@@ -350,29 +340,6 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 //active les link lbh
                 bindLBHLinks();
                 search.count=false;
-                //bindCommunexionScopeEvents();
-
-                // $(".start-new-communexion").click(function(){
-                //     mylog.log("start-new-communexion directory.js");
-                //     $("#main-search-bar, #second-search-bar, #input-search-map").val("");
-                //     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
-                //                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                //                       $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
-                    
-                //     //only on homepage
-                //     if($("#communexionNameHome").length){
-                //     	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
-                //     	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
-                //       $("#main-search-bar").val("");
-                //     	$(".info_co, .input_co").addClass("hidden");
-                //       $("#change_co").removeClass("hidden");
-						          // $("#dropdown_search").html("");
-                //     }else{
-                //       startSearch(0, indexStepInit, searchCallback);
-                //     }
-                // });
-
-
                 $.unblockUI();
                 $("#map-loading-data").html("");
                 
@@ -2109,7 +2076,6 @@ var directory = {
                 if( notEmpty( params.postalCodes ) ){
                   valuesScopes.postalCodes = params.postalCodes ;
                 }
-
                 str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + params.id  + "' " + 
                                 "data-scope-name='" + params.name + "' " +

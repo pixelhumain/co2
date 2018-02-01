@@ -955,7 +955,8 @@ var urlCtrl = {
 			});
 		}
 	    else if ( moduleId != activeModuleId) {
-	    	showAjaxPanel( baseUrl+'/'+ activeModuleId + '/', 'Home','home' );
+	    	//alert( ctrlId +"/"+ actionId );
+	    	showAjaxPanel( baseUrl+'/'+ activeModuleId + '/'+ctrlId +"/"+ actionId, 'Home','home' );
 	    } 
 	    else
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );

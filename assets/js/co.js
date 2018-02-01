@@ -3422,6 +3422,11 @@ function simpleScroll(height, speed){
     var speedScroll = (notNull(speed)) ? speed : 100;
     $('html,body').animate({scrollTop: scrollToPos}, speedScroll, '');
 }
+
+function showLoader(id){
+	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
+}
+
 var timerCloseDropdownUser = false;
 function initKInterface(params){ console.log("initKInterface");
 

@@ -163,7 +163,14 @@
     font-size:0.8em;
   }
 }
-
+.btn-directory-type.btn-all{
+    width: initial !important;
+    border: 1px solid #ccc;
+    float: left;
+    margin-left: 20%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
 </style>
  
 <div class="container-result-search col-md-12 col-sm-12 col-xs-12" style="padding-left:5%">
@@ -254,10 +261,10 @@
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
             </button><hr class="hidden-xs">-->
-           <!-- <button class="btn text-black bg-white btn-directory-type btn-all" data-type="all">
+            <button class="btn text-black bg-white btn-directory-type btn-all active" data-type="all">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
-            </button><hr class="hidden-xs">-->
+            </button>
             <!--<button class="btn border-dark btn-directory-type active padding-10" data-type="all">
                 <i class="fa fa-asterisk"></i> 
                 <span class="elipsis label-filter">
@@ -683,7 +690,8 @@ jQuery(document).ready(function() {
 
 	currentTypeSearchSend = "search";
   $("#col-btn-type-directory .btn-directory-type").each(function(){
-    $(this).addClass('text-'+headerParams[$(this).data("type")].color);
+    if($(this).data("type") != "all")
+      $(this).addClass('text-'+headerParams[$(this).data("type")].color);
   });
   /*$(".btn-directory-type").hover(function(){
     $.each(headerParams, function(e,v){

@@ -8,7 +8,7 @@
 	); HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 ?>
 
-<h1 class="letter-"><i class="fa fa-grav letter-red"></i> Bonjour <span class="letter-red">Super Admin</span></h1>
+<h1 class="title-super-admin"><i class="fa fa-grav letter-red"></i> Bonjour <span class="letter-red">Super Admin</span></h1>
 
 <?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){ ?>
 	<h5 class="letter-">Quelle partie du site souhaitez-vous administrer ?</h5>
@@ -51,9 +51,9 @@
 		margin:1%!important;
 	}
 </style>
-<div class="col-md-12 stat-week padding-bottom-50 padding-top-50">
+<div class="col-md-12 stat-week padding-bottom-50">
 	<hr>
-	<h4 class="text-left text-azure">
+	<h5 class="text-left text-azure">
 		<i class="fa fa-angle-down"></i> Nombre de visites - Semaine <?php echo $visits["week"]; ?></span>
 		<br><br>
 		<button class="btn btn-default pull-left margin-right-5" id="back-week" data-week="<?php echo $backWeek.$backYear; ?>">
@@ -64,14 +64,21 @@
 			Sem <?php echo $nextWeek; ?> <i class="fa fa-chevron-right"></i> 
 		</button>
 		<?php } ?>
-	</h4>
+	</h5>
 	<br>
 	<hr>
 
-	<?php foreach ($visits["hash"] as $domain => $stats) { $totalLoad = 0; ?>
-			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center margin-bottom-50">
+	<?php foreach ($visits["hash"] as $domain => $stats) { if($domain != "co2-power"){ ?>
+	<?php 	$totalLoad = 0; 
+			$domainLbl = str_replace("co2-", "", $domain);
+	?>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center margin-bottom-50">
 				<?php foreach ($days as $key => $day) { $totalLoad += @$stats[$day]["nbLoad"] ? $stats[$day]["nbLoad"] : 0; } ?>
-				<h5 class="text-left letter-azure">#<?php echo $domain; ?> <small class="">(<?php echo $totalLoad; ?>)</small></h5>
+				<h5 class="text-left letter-azure">
+					#<?php echo $domainLbl; ?> 
+					<small class="">(<?php echo $totalLoad; ?>)</small>
+				</h5>
+				
 				<canvas id="smartChart-<?php echo $domain;?>"/>
 				<?php foreach ($days as $key => $day) { ?>
 					<?php 	
@@ -91,7 +98,7 @@
 					</div>
 				<?php } ?>
 			</div>
-	<?php } ?>
+	<?php }} ?>
 </div>
 
 

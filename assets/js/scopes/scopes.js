@@ -393,9 +393,11 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj level1", communexionObj);
 		//communexionObj.push(objToPush);
 
 	}
+
 	if(typeof values.level2 != "undefined"){
 		objToPush={
 			id:values.level1,
@@ -406,8 +408,10 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj level2", communexionObj);
 		//communexionObj.push(objToPush);
 	}
+
 	if(typeof values.level3 != "undefined"){
 		objToPush={
 			id:values.level3,
@@ -418,8 +422,10 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj level3", communexionObj);
 		//communexionObj.push(objToPush);
 	}
+
 	if(typeof values.level4 != "undefined"){
 		objToPush={
 			id:values.level4,
@@ -430,6 +436,7 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj level4", communexionObj);
 		//communexionObj.push(objToPush);
 	}
 
@@ -442,19 +449,20 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj cp", communexionObj);
 		//communexionObj.push(objToPush);
 	}
-	mylog.log("scopeObject level", values.level, notNull(values.level) && typeof values.level)
+	mylog.log("scopeObject level", values.level, notNull(values.level) && typeof values.level);
 	if(notNull(values.level) && typeof values.level != "undefined"){
 			objToPush={
 				id:values.id,
 				name:values.name,
 				type:values.type,
 				active:true,
-				level:1,
+				level:values.numLevel,
 				countryCode:values.country
 			}
-			communexionObj[objToPush.id+objToPush.type] = objToPush;
+			
 			//communexionObj.push(objToPush);
 
 		
@@ -473,7 +481,7 @@ function scopeObject(values){
 
 	
 	communexionObj[objToPush.id+objToPush.type] = objToPush;
-	//communexionObj.push(objToPush);
+	mylog.log("communexionObj", communexionObj);
 
 	if(notNull(values.allCP) && values.allCP == false){
 		objToPush={

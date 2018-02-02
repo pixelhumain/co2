@@ -273,18 +273,23 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 						if(o.level.indexOf("1") >= 0){
 							typeSearchCity="level1";
 							levelSearchCity="1";
+							valuesScopes.numLevel = 1;
 						}else if(o.level.indexOf("2") >= 0){
 							typeSearchCity="level2";
 							levelSearchCity="2";
+							valuesScopes.numLevel = 2;
 						}else if(o.level.indexOf("3") >= 0){
 							typeSearchCity="level3";
 							levelSearchCity="3";
+							valuesScopes.numLevel = 3;
 						}else if(o.level.indexOf("4") >= 0){
 							typeSearchCity="level4";
 							levelSearchCity="4";
+							valuesScopes.numLevel = 4;
 						}
 						if(notNull(typeSearchCity))
-							valuesScopes.type = typeSearchCity;
+							valuesScopes.type = typeSearchCity;				
+
 						mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
 
 						if( notEmpty( o.level1 ) && valuesScopes.id != o.level1){
@@ -343,21 +348,25 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 					str += "</div>";*/
 
 					if(type == "city"){
-					str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
-
-					str += "<div class='entityName text-dark'>" + name + "</div>";
-
-					str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
-								"<i class='fa fa-home'></i> " + fullLocality;
-					str += '</div>';
-
-					str += "</div>";
-					}else{
 						str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
+
+						str += "<div class='entityName text-dark'>" + name + "</div>";
+
+						str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+									'<span class="col-xs-1">'+
+									"<i class='fa fa-home'></i></span>" + fullLocality;
+						str += '</div>';
+
+						str += "</div>";
+					}else{
+						str += "<div class='col-xs-12 entityRight'>";
 						str += "<div class='entityName text-dark'>" + name + "</div>";
 						str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+								'<span class="col-xs-1">'+
 									"<i class='fa fa-bullseye fa-stack-1x  bold text-red'></i>"+
-									"<i class='fa fa-stack-1x text-dark bold' style='left : 6px; top : 17.1px'>1</i>"+ o.countryCode;
+									"<i class='fa fa-stack-1x bold' style='left : 5px; bottom : -13px; font-size: 15px; color : #000000'>"+
+									levelSearchCity+"</i>"+ 
+								'</span>' + o.countryCode;
 						str += '</div>';
 
 						str += "</div>";

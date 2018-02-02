@@ -985,10 +985,6 @@ function loadLiveNow () {
 	//}
 }
 
-function showLoader(id){
-	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
-}
-
 function descHtmlToMarkdown() {
 	mylog.log("htmlToMarkdown");
 	if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == true) {

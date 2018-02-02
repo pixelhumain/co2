@@ -125,7 +125,6 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                 str += '</div>';
                 str += "<hr style='margin: 0px; float:left; width:100%;'/>"
               }
-
               //parcours la liste des résultats de la recherche
               $.each(data, function(i, o) {
                 console.log(o);
@@ -384,6 +383,19 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                         '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+trad.extendedsearch+
                       '</a>';
               str += '</div>';
+
+           	if(countData==0 && searchTypeGS == "cities"){
+                str="<div class='text-center col-md-12 col-sm-12 col-xs-12'>"+
+                      '<label class="text-dark italic"><i class="fa fa-ban"></i> No city found for "'+search+'"</label><br/>'+
+                      '<span class="info letter-blue"><i class="fa fa-info-circle"></i> Perhaps, this city has no data at this time</span><br/>'+
+                      '<button class="btn btn-blue bg-blue text-white main-btn-create" '+
+                        'data-target="#dash-create-modal" data-toggle="modal">'+
+                          '<i class="fa fa-plus-circle"></i> Create a page'+
+                      '</button>'+
+                    "</div>";
+              }
+
+
               //on ajoute le texte dans le html
               $(domTarget).html(str);
               //on scroll pour coller le haut de l'arbre au menuTop
@@ -406,6 +418,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
             //signal que le chargement est terminé
             mylog.log("loadingDataGS false");
             loadingDataGS = false;
+
           }
 
           //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché

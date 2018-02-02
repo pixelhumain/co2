@@ -121,292 +121,266 @@ function removeSearchType(type){
   }
 }
 
-
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
-	mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
-	var searchLocality = getSearchLocalityObject();
-	var data = {
-		"name" : name, 
-		"locality" : searchLocality,
-		"searchType" : searchType, 
-		"searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
-		"page":searchPage
-	};
+  mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
+  //if(typeof myScopes != "undefined" )
+    //var searchLocality = getLocalityForSearch();
+    var searchLocality = getSearchLocalityObject();
+  //else
 
-	if(notNull(indexMin) && notNull(indexMax)){
-		data.indexMin=indexMin;
-		data.indexMax=indexMax;
-	}
-	if(typeof search.app != "undefined")
-		data.app=search.app;
-	if(typeof search.count != "undefined" && search.count)
-		data.count=search.count;
-	if(typeof search.ranges != "undefined")
-		data.ranges=search.ranges;
-	
-	if(search.app=="agenda" && name==""){
-		if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
-			mylog.log("integrate AGENDA_WINDOW");
-			data.startDate = STARTDATE;
-			data.endDate = ENDDATE;
-			mylog.log("DATE **", "data", data) ;
-		}
-	}
+    
+    var data = {
+      "name" : name, 
+      "locality" : searchLocality,//locality, 
+      "searchType" : searchType, 
+      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
+      "page":searchPage
+    };
+    if(notNull(indexMin) && notNull(indexMax)){
+      data.indexMin=indexMin;
+      data.indexMax=indexMax;
+    }
+    if(typeof search.app != "undefined")
+        data.app=search.app;
+    if(typeof search.count != "undefined" && search.count)
+      data.count=search.count;
+    if(typeof search.ranges != "undefined")
+      data.ranges=search.ranges;
+    //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
+    if(search.app=="agenda" && name==""){
+      if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
+        mylog.log("integrate AGENDA_WINDOW");
+        data.startDate = STARTDATE;
+        data.endDate = ENDDATE;
+        mylog.log("DATE **", "data", data) ;
+      }
+    }
+    
+    if($("#priceMin").val()!="") data.priceMin = $("#priceMin").val();
+    if($("#priceMax").val()!="") data.priceMax = $("#priceMax").val();
+    if($("#devise").val()!="") data.devise = $("#devise").val();
 
-	if($("#priceMin").val()!="") data.priceMin = $("#priceMin").val();
-	if($("#priceMax").val()!="") data.priceMax = $("#priceMax").val();
-	if($("#devise").val()!="") data.devise = $("#devise").val();
+    if(searchSType != "")
+      data.searchSType = searchSType;
 
-	if(searchSType != "")
-		data.searchSType = searchSType;
+    searchSType = "";
 
-	searchSType = "";
+    loadingData = true;
+    
+    str = "<i class='fa fa-circle-o-notch fa-spin'></i>";
+    $(".btn-start-search").html(str);
+    $(".btn-start-search").addClass("bg-azure");
+    $(".btn-start-search").removeClass("bg-dark");
+    
+    if(indexMin > 0)
+      $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
+    else if(indexMin==0 || typeof pageEvent != "undefined")
+      $("#dropdown_search").html("<div class='col-md-12 col-sm-12 text-center search-loader text-dark'>"+
+                                    "<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ..."+
+                                  "</div>");
+    
+    if(isMapEnd)
+      $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading);
+         
+    mylog.dir(data);
+    //alert();
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
+        data: data,
+        dataType: "json",
+        error: function (data){
+             mylog.log(">>> error autocomplete search"); 
+             mylog.dir(data);   
+             $("#dropdown_search").html(data.responseText);  
+             //signal que le chargement est terminé
+            loadingData = false;     
+        },
+        success: function(data){ 
+            mylog.log(">>> success autocomplete search", data); //mylog.dir(data);
+            if(!data){ 
+              toastr.error(data.content); 
+            } 
+            else{
+              // Remove count element from results
+              if(typeof data.count != "undefined"){
+                searchCount=data.count;
+                delete data.count;
+              }
+              //var city, postalCode = "";
+              //Prepare footer and header of directory 
+              if(typeof search.count != "undefined" && search.count || indexMin==0 ){
+                    headerStr = '';
+                    footerStr = '';
+                    spanType = '';
+                    $.each( searchType, function(key, val){
+                      typeHeader = (val=="citoyens") ? "persons" : val;
+                      var params = headerParams[typeHeader];
+                      spanType += "<span class='text-"+params.color+"'>"+
+                                  "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
+                                "</span> ";
+                    });
+                    countHeader=0;
+                    if(search.app=="territorial"){
+                      $.each(searchCount, function(e, v){
+                        countHeader+=v;
+                      });
+                    }else{
+                      typeCount = (searchType[0]=="persons") ? "citoyens" : searchType[0];
+                      countHeader=searchCount[typeCount];
+                    }
+                    resultsStr=trad.result;
+                    if(countHeader > 1)
+                      resultsStr=trad.results;
+              
+                    headerStr +='<h5>'+
+                          "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
+                          '<small>'+
+                            spanType+
+                          '</small>'+
+                      '</h5>';
+                    if(typeof pageCount != "undefined" && pageCount && search.app !="territorial"){
+                      footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+                    }
+                    if(search.app != "territorial" || data < 30){
+                      footerStr +='<div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">'+
+                        '<button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" '+
+                          'data-target="#dash-create-modal" data-toggle="modal" '+
+                          'data-toggle="tooltip" data-placement="top" '+ 
+                          'title=""> '+
+                            '<i class="fa fa-times"></i>'+
+                        '</button>'+
+                        '<h5 class="text-center letter-green margin-top-25">Create a page</h5>'+
+                        '<h5 class="text-center">'+
+                          '<small>'+
+                            spanType+
+                          '</small>'+
+                        '</h5>'+
+                      '</div>'; 
+                    }
+                    $(".headerSearchContainer").html(headerStr);
+                    $(".footerSearchContainer").html(footerStr);
+              }
+              str = "";
+              // Algorithm when searching in multi collections (scroll algo by updated)
+              if(search.app=="territorial")
+                data=searchEngine.prepareAllSearch(data);
+              //Add correct number to type filters
+              if(search.count)
+                refreshCountBadge();
+              //parcours la liste des résultats de la recherche
+              str += directory.showResultsDirectoryHtml(data);
+              if(str == "") { 
+	              $.unblockUI();
+                showMap(false);
+                  $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
+                  if(indexMin == 0){
+                    //ajout du footer   
+                    var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
+                    if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
+                    str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
+                    str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
+                    str += "</div>";
+                    $("#dropdown_search").html(str);
+                    $("#searchBarText").focus();
+                  }
+                     
+              }
+              else
+              {       
+                //ajout du footer      	
+               /* str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
+                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " "+resultsStr+"</h3>";
+                //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
+                //str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
+                str += "</div>";
+                */
+                //si on n'est pas sur une première recherche (chargement de la suite des résultat)
+                if(indexMin > 0 && (typeof pageEvent == "undefined" || !pageEvent)){
+                    //on supprime l'ancien bouton "afficher plus de résultat"
+                   // $("#btnShowMoreResult").remove();
+                    //on supprimer le footer (avec nb résultats)
+                    //$("#footerDropdown").remove();
 
-	loadingData = true;
+                    //on calcul la valeur du nouveau scrollTop
+                    //var heightContainer = $(".main-container")[0].scrollHeight - 180;
+                    //on affiche le résultat à l'écran
+                    $("#dropdown_search").append(str);
+                    //on scroll pour afficher le premier résultat de la dernière recherche
+                    //$(".my-main-container").animate({"scrollTop" : heightContainer}, 1700);
+                    //$(".my-main-container").scrollTop(heightContainer);
 
-	str = "<i class='fa fa-circle-o-notch fa-spin'></i>";
-	$(".btn-start-search").html(str);
-	$(".btn-start-search").addClass("bg-azure");
-	$(".btn-start-search").removeClass("bg-dark");
+                //si on est sur une première recherche
+                }else{
+                    //on affiche le résultat à l'écran
+                    $("#dropdown_search").html(str);
+                    //alert();
+                    if(search.app=="agenda"){
+                      //alert();
+                      if(search.value != "")
+                        $("#content-social .calendar").hide(700);
+                      else if(!$("#content-social .calendar").is(":visible"))
+                        $("#content-social .calendar").show(700);
+                    }
+                    if(typeof pageCount != "undefined" && pageCount){
+                      typeElement=(search.type=="persons") ? "citoyens" : search.type;
+                      initPageTable(searchCount[typeElement]);
+                    }
+                    pageEvent=false;
+                    /*if(typeof myMultiTags != "undefined"){
+                    $.each(myMultiTags, function(key, value){ //mylog.log("binding bold "+key);
+                      $("[data-tag-value='"+key+"'].btn-tag").addClass("bold");
+                    });
+                    }*/
+                  }
+                }
+                //remet l'icon "loupe" du bouton search
+                $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
+                //active les link lbh
+                bindLBHLinks();
+                search.count=false;
+                $.unblockUI();
+                $("#map-loading-data").html("");
+                
+                //initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
+                initBtnLink();
 
-	if(indexMin > 0)
-		$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
-	else if(indexMin==0 || typeof pageEvent != "undefined")
-		$("#dropdown_search").html(	"<div class='col-md-12 col-sm-12 text-center search-loader text-dark'>"+
-										"<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ..."+
-									"</div>");
+    	      //  } //end else (str=="")
 
-	if(isMapEnd)
-		$("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading);
+              //signal que le chargement est terminé
+              loadingData = false;
 
-	mylog.dir(data);
-	//alert();
-	$.ajax({
-		type: "POST",
-		url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
-		data: data,
-		dataType: "json",
-		error: function (data){
-			mylog.log(">>> error autocomplete search"); 
-			mylog.dir(data);   
-			$("#dropdown_search").html(data.responseText);  
-			//signal que le chargement est terminé
-			loadingData = false;     
-		},
-		success: function(data){ 
-			mylog.log(">>> success autocomplete search", data); //mylog.dir(data);
-			if(!data){ 
-				toastr.error(data.content); 
-			} 
-			else 
-			{
-				//console.log("fuckkkkiiiiiing",data);
-				if(typeof data.count != "undefined"){
-					searchCount=data.count;
-					delete data.count;
-				}
-				if(search.app=="territorial")
-					data=searchEngine.prepareAllSearch(data);
-				// var countData = 0;
-				//$.each(data, function(i, v) { 
-				//  if(v.length!=0 && i != "count"){ 
-				//    countData++; 
-				//  } 
-				//});
+              //quand la recherche est terminé, on remet la couleur normal du bouton search
+    	        $(".btn-start-search").removeClass("bg-azure");
+              $("#btn-my-co").removeClass("hidden");
+        	  }
 
-				//totalData += countData;
+            //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
+            //mylog.log("SHOW MORE ?", countData, indexStep);
+            /*if(countData < indexStep){
+              $("#btnShowMoreResult").remove(); 
+              scrollEnd = true;
+            }else{
+              scrollEnd = false;
+            }*/
 
-
-				var city, postalCode = "";
-
-				//parcours la liste des résultats de la recherche
-				//mylog.dir(data);
-				resultsStr=trad.result;
-				if(totalData > 1)
-					resultsStr=trad.results;
-				if((indexMin == 0 || search.app=="search" || search.app=="social") && (typeof pageEvent == "undefined" || !pageEvent) ){
-					headerStr = '';
-					footerStr = '';
-					if(typeof pageCount != "undefined" && pageCount && search.app !="territorial"){
-						//headerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-						footerStr = '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-					}
-					//headerStr += "<h4 style='margin: 0px 0px 0px 6px;font-size:14px;' class='text-dark pull-left'>"+
-					//        "<i class='fa fa-angle-down'></i> " + totalData + " "+resultsStr+" ";
-					/* headerStr += "<small class='resultTypes'>";
-					if(typeof headerParams != "undefined"){
-					var countNbTag=0;
-					$.each( searchType, function(key, val){ countNbTag++;
-					typeHeader = (val=="citoyens") ? "persons" : val;
-					var params = headerParams[typeHeader];
-					headerStr += "<span class='text-"+params.color+"'>"+
-					          "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
-					        "</span> ";
-					});//console.log("myMultiTags", myMultiTags);
-
-					if(countNbTag > 0)
-					headerStr += "<br><br>";
-
-					//if( Object.keys(myMultiTags).length > 0 )
-					//headerStr += "<a href='javascript:;' class='margin-right-10 margin-left-10' onClick='resetMyTags()'><i class='fa fa-times-circle text-red '></i></a> ";
-
-					/*  $.each(myMultiTags, function(key, val){
-					var params = headerParams[val];
-					headerStr += "<span class='text-dark hidden-xs'>"+
-					          "#"+key+
-					        "</span> ";
-					});*/
-					/*}
-					headerStr += "</small>";
-					headerStr += "</h4>";*/
-					// headerStr += "<hr style='float:left; width:100%;margin-top:0px;'/>";
-					$(".headerSearchContainer").html(headerStr);
-					$(".footerSearchContainer").html(footerStr);
-				}
-				str = "";
-				// if( $.inArray( "cities", searchType ) != "-1" && searchType.length == 1  && totalData == 0){
-				//		str += '<span class="col-md-12 col-sm-12 col-xs-12 letter-blue padding-10"><i class="fa fa-info-circle"></i>'+ trad.youwillfindonlycities+'!</span>';
-				//}
-				//if(typeof countElement !="undefined")
-				if(search.count) refreshCountBadge();
-				//console.log(data.results);
-				// alert();
-				str += directory.showResultsDirectoryHtml(data);
-				//if((indexMin == 0 || search.app=="search") && (typeof pageEvent == "undefined" || !pageEvent) ){
-				//  if(typeof pageCount != "undefined" && pageCount && search.app !="territorial")
-				//  str += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-				//}
-				if(str == "") { 
-					$.unblockUI();
-					showMap(false);
-					$(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
-					if(indexMin == 0){
-						//ajout du footer   
-						var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
-						if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
-						str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
-						str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
-						str += "</div>";
-						$("#dropdown_search").html(str);
-						$("#searchBarText").focus();
-					}
-				}
-				else
-				{       
-					//ajout du footer      	
-					/* str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
-					str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " "+resultsStr+"</h3>";
-					//str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
-					//str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
-					str += "</div>";
-					*/
-					//si on n'est pas sur une première recherche (chargement de la suite des résultat)
-					if(indexMin > 0 && (typeof pageEvent == "undefined" || !pageEvent)){
-						//on supprime l'ancien bouton "afficher plus de résultat"
-						// $("#btnShowMoreResult").remove();
-						//on supprimer le footer (avec nb résultats)
-						//$("#footerDropdown").remove();
-
-						//on calcul la valeur du nouveau scrollTop
-						//var heightContainer = $(".main-container")[0].scrollHeight - 180;
-						//on affiche le résultat à l'écran
-						$("#dropdown_search").append(str);
-						//on scroll pour afficher le premier résultat de la dernière recherche
-						//$(".my-main-container").animate({"scrollTop" : heightContainer}, 1700);
-						//$(".my-main-container").scrollTop(heightContainer);
-
-						//si on est sur une première recherche
-					}else{
-						//on affiche le résultat à l'écran
-						$("#dropdown_search").html(str);
-						//alert();
-						if(search.app=="agenda"){
-							//alert();
-							if(search.value != "")
-								$("#content-social .calendar").hide(700);
-							else if(!$("#content-social .calendar").is(":visible"))
-								$("#content-social .calendar").show(700);
-						}
-						if(typeof pageCount != "undefined" && pageCount){
-							typeElement=(search.type=="persons") ? "citoyens" : search.type;
-							initPageTable(searchCount[typeElement]);
-						}
-						pageEvent=false;
-						/*if(typeof myMultiTags != "undefined"){
-						$.each(myMultiTags, function(key, value){ //mylog.log("binding bold "+key);
-						$("[data-tag-value='"+key+"'].btn-tag").addClass("bold");
-						});
-						}*/
-					}
-				}
-				//remet l'icon "loupe" du bouton search
-				$(".btn-start-search").html("<i class='fa fa-refresh'></i>");
-				//active les link lbh
-				bindLBHLinks();
-				search.count=false;
-				//bindCommunexionScopeEvents();
-
-				// $(".start-new-communexion").click(function(){
-				//     mylog.log("start-new-communexion directory.js");
-				//     $("#main-search-bar, #second-search-bar, #input-search-map").val("");
-				//     setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
-				//                      $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-				//                       $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
-
-				//     //only on homepage
-				//     if($("#communexionNameHome").length){
-				//     	$("#communexionNameHome").html('Vous êtes <span class="text-dark">communecté à <span class="text-red">'+$(this).data("name-communexion")+'</span></span>');
-				//     	$("#liveNowCoName").html("<span class='text-red'> à "+$(this).data("name-communexion")+"</span>");
-				//       $("#main-search-bar").val("");
-				//     	$(".info_co, .input_co").addClass("hidden");
-				//       $("#change_co").removeClass("hidden");
-					          // $("#dropdown_search").html("");
-				//     }else{
-				//       startSearch(0, indexStepInit, searchCallback);
-				//     }
-				// });
-
-
-				$.unblockUI();
-				$("#map-loading-data").html("");
-
-				//initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
-				initBtnLink();
-
-				//  } //end else (str=="")
-
-				//signal que le chargement est terminé
-				loadingData = false;
-
-				//quand la recherche est terminé, on remet la couleur normal du bouton search
-				$(".btn-start-search").removeClass("bg-azure");
-				$("#btn-my-co").removeClass("hidden");
-			}
-
-			//si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
-			//mylog.log("SHOW MORE ?", countData, indexStep);
-			/*if(countData < indexStep){
-			$("#btnShowMoreResult").remove(); 
-			scrollEnd = true;
-			}else{
-			scrollEnd = false;
-			}*/
-
-			if(search.app == "agenda" && typeof showResultInCalendar != "undefined" && search.value=="")
-				showResultInCalendar(data);
+            if(search.app == "agenda" && typeof showResultInCalendar != "undefined" && search.value=="")
+              showResultInCalendar(data);
 
 
-			if(mapElements.length==0) mapElements = data;
-			else $.extend(mapElements, data);
+            if(mapElements.length==0) mapElements = data;
+            else $.extend(mapElements, data);
+            
+            //affiche les éléments sur la carte
+            Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
+                        
+            if(typeof callBack == "function")
+              callBack();
+        }
+    });
 
-			//affiche les éléments sur la carte
-			Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
-			        
-			if(typeof callBack == "function")
-				callBack(data);
-		}
-	});
-}
+
+  }
 
 
 function initPageTable(number){
@@ -2103,7 +2077,6 @@ var directory = {
                 if( notEmpty( params.postalCodes ) ){
                   valuesScopes.postalCodes = params.postalCodes ;
                 }
-
                 str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
                                 "data-scope-value='" + params.id  + "' " + 
                                 "data-scope-name='" + params.name + "' " +

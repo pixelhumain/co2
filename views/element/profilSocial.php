@@ -113,7 +113,7 @@
 }
 
 #onepage section#social-header{
-	margin-top: 68px;
+	margin-top: 8px;
 }
 
 </style>

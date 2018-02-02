@@ -125,7 +125,6 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                 str += '</div>';
                 str += "<hr style='margin: 0px; float:left; width:100%;'/>"
               }
-
               //parcours la liste des résultats de la recherche
               $.each(data, function(i, o) {
                 console.log(o);
@@ -244,107 +243,90 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                     str += "</a>";
 
                   }else{
-                        var citykey = o.country + "_" + o.insee + "-" + o.cp;
+                    var citykey = o.country + "_" + o.insee + "-" + o.cp;
+                    var valuesScopes = {
+                      city : o._id.$id,
+                      cityName : o.name,
+                      cp : o.cp,
+                      country : o.country,
+                      allCP : o.allCP,
+                      level1 : o.level1,
+                      level1Name : o.level1Name
+                    }
 
-                var valuesScopes = {
-                  city : o._id.$id,
-                  cityName : o.name,
-                  cp : o.cp,
-                  country : o.country,
-                  allCP : o.allCP,
-                  level1 : o.level1,
-                  level1Name : o.level1Name
-                }
+                    if( notEmpty( o.nameCity ) ){
+                      valuesScopes.name = o.nameCity ;
+                    }
 
-                if( notEmpty( o.nameCity ) ){
-                  valuesScopes.name = o.nameCity ;
-                }
+                    if( notEmpty( o.level4 ) ){
+                      valuesScopes.level4 = o.level4 ;
+                      valuesScopes.level4Name = o.level4Name ;
+                    }
+                    if( notEmpty( o.level3 ) ){
+                      valuesScopes.level3 = o.level3 ;
+                      valuesScopes.level3Name = o.level3Name ;
+                    }
+                    if( notEmpty( o.level2 ) ){
+                      valuesScopes.level2 = o.level2 ;
+                      valuesScopes.level2Name = o.level2Name ;
+                    }
+                    typeSearchCity="city";
+                    levelSearchCity="city";
+                    var domContainer=(notNull(input)) ? input+" .scopes-container" : "";
+                    str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
+                    str +=    "data-scope-value='" + o._id.$id  + "' " + 
+                            "data-scope-name='" + o.name + "' " +
+                            "data-scope-level='"+levelSearchCity+"' " +
+                            "data-scope-type='"+typeSearchCity+"' " +
+                            "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+                            "data-scope-notsearch='"+true+"' "+
+                            "data-append-container='"+domContainer+"' ";
+                    str += ">";
+                      str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
 
-                if( notEmpty( o.level4 ) ){
-                  valuesScopes.level4 = o.level4 ;
-                  valuesScopes.level4Name = o.level4Name ;
-                }
-                if( notEmpty( o.level3 ) ){
-                  valuesScopes.level3 = o.level3 ;
-                  valuesScopes.level3Name = o.level3Name ;
-                }
-                if( notEmpty( o.level2 ) ){
-                  valuesScopes.level2 = o.level2 ;
-                  valuesScopes.level2Name = o.level2Name ;
-                }
-                typeSearchCity="city";
-                levelSearchCity="city";
-                // if(typeof o.countCpByInsee != "undefined" && o.countCpByInsee > 0 ){
-                //   typeSearchCity="cp";
-                //   levelSearchCity="cp";
-                // }
-                var domContainer=(notNull(input)) ? input+" .scopes-container" : "";
-                /*str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
-                                "data-scope-value='" + o._id.$id  + "' " + 
-                                "data-scope-name='" + o.name + "' " +
-                                "data-scope-level='city' " +
-                                "data-scope-type='city' " +
-                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-notsearch='"+true+"' " +
-                                ">"+
-                                    "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
-                                "</button>";*/
-                        str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
-                        str +=    "data-scope-value='" + o._id.$id  + "' " + 
-                                "data-scope-name='" + o.name + "' " +
-                                "data-scope-level='"+levelSearchCity+"' " +
-                                "data-scope-type='"+typeSearchCity+"' " +
-                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-notsearch='"+true+"' "+
-                                "data-append-container='"+domContainer+"' ";
-                        str += ">";
-                       /* str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
-                        str +=   htmlIco;
-                        str += "</div>";*/
-                        str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
-
-                        str += "<div class='entityName text-dark'>" + name + "</div>";
-                          
-                          str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
-                                    "<i class='fa fa-home'></i> " + fullLocality;
-                          str += '</div>';
-                          
-                        str += "</div>";
+                      str += "<div class='entityName text-dark'>" + name + "</div>";
+                        
+                        str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+                                  "<i class='fa fa-home'></i> " + fullLocality;
+                        str += '</div>';
+                        
+                      str += "</div>";
 
                       str += "</a>";
+                      }
+                                  
+                  }); //end each
+
+                  //ajout du footer   
+                  str += '<div class="text-center" id="footerDropdownGS">';
+                  str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
+                  str += '<a href="#search" class="btn btn-default btn-sm lbh" id="btnShowMoreResultGS">'+
+                            '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+trad.extendedsearch+
+                          '</a>';
+                  str += '</div>';
+                  if(countData==0 && searchTypeGS == "cities"){
+                    str="<div class='text-center col-md-12 col-sm-12 col-xs-12'>"+
+                          '<label class="text-dark italic"><i class="fa fa-ban"></i> No city found for "'+search+'"</label><br/>'+
+                          '<span class="info letter-blue"><i class="fa fa-info-circle"></i> Perhaps, this city has no data at this time</span><br/>'+
+                          '<button class="btn btn-blue bg-blue text-white main-btn-create" '+
+                            'data-target="#dash-create-modal" data-toggle="modal">'+
+                              '<i class="fa fa-plus-circle"></i> Create a page'+
+                          '</button>'+
+                        "</div>";
                   }
-                              
-              }); //end each
+                  //on ajoute le texte dans le html
+                  $(domTarget).html(str);
+                  //on scroll pour coller le haut de l'arbre au menuTop
+                  $(domTarget).scrollTop(0);
+                  
+                  //on affiche la dropdown
+                  showDropDownGS(true, domTarget);
+                  bindScopesInputEvent();
+                  bindLBHLinks();
 
-              //ajout du footer   
-              str += '<div class="text-center" id="footerDropdownGS">';
-              str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
-              str += '<a href="#search" class="btn btn-default btn-sm lbh" id="btnShowMoreResultGS">'+
-                        '<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+trad.extendedsearch+
-                      '</a>';
-              str += '</div>';
-              //on ajoute le texte dans le html
-              $(domTarget).html(str);
-              //on scroll pour coller le haut de l'arbre au menuTop
-              $(domTarget).scrollTop(0);
-              
-              //on affiche la dropdown
-              showDropDownGS(true, domTarget);
-              bindScopesInputEvent();
-              /*$(".start-new-communexion").click(function(){
-                  $("#main-search-bar, #second-search-bar, #input-search-map").val("");
-                  // setGlobalScope( $(this).data("scope-value"), $(this).data("scope-name"), $(this).data("scope-type"), "city",
-                  //                  $(this).data("insee-communexion"), $(this).data("name-communexion"), $(this).data("cp-communexion"),
-                  //                   $(this).data("region-communexion"), $(this).data("dep-communexion"), $(this).data("country-communexion") ) ;
-                  itenGlobalScopeChecker($(this));
-                  urlCtrl.loadByHash("#search")
-              });*/
-
-              bindLBHLinks();
-
-            //signal que le chargement est terminé
-            mylog.log("loadingDataGS false");
-            loadingDataGS = false;
+                //signal que le chargement est terminé
+                mylog.log("loadingDataGS false");
+                loadingDataGS = false;
           }
 
           //si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché

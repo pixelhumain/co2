@@ -22,7 +22,7 @@
 	        <div class="panel panel-white col-sm-12 col-md-4 center ">
 	        	<iframe src="https://player.vimeo.com/video/161594058?color=ff9933&byline=0&portrait=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         		<div class="panel-body" >
-			         et toi, t’es communecté ?
+			         Et toi, t’es communecté ?
 			    </div>
 			</div>
 	        <div class="panel panel-white col-sm-12 col-md-4 center ">

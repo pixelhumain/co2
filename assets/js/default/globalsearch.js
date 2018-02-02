@@ -243,7 +243,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                     str += "</a>";
 
 				}else{
-					var citykey = o.country + "_" + o.insee + "-" + o.cp;
+					
 					var valuesScopes = {};
 					if(type == "city"){
 						valuesScopes = {
@@ -349,11 +349,15 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 					if(type == "city"){
 						str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
 
-						str += "<div class='entityName text-dark'>" + name + "</div>";
+						str += "<div class='entityName text-dark'>" + name ;
+						mylog.log("hereeee ", notNull(o.cp), o.cp, o );
+								if(notNull(o.cp))
+									str += " - "+ o.cp;
+						str +="</div>";
 
 						str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
 									'<span class="col-xs-1">'+
-									"<i class='fa fa-home'></i></span>" + fullLocality;
+									"<i class='fa fa-home'></i></span>" + o.country;
 						str += '</div>';
 
 						str += "</div>";

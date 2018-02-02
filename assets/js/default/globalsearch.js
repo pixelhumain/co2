@@ -243,76 +243,128 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 
                     str += "</a>";
 
-                  }else{
-                        var citykey = o.country + "_" + o.insee + "-" + o.cp;
+				}else{
+					var citykey = o.country + "_" + o.insee + "-" + o.cp;
+					var valuesScopes = {};
+					if(type == "city"){
+						valuesScopes = {
+							city : o._id.$id,
+							cityName : o.name,
+							cp : o.cp,
+							country : o.country,
+							allCP : o.allCP,
+							level1 : o.level1,
+							level1Name : o.level1Name
+						}
+						typeSearchCity="city";
+						levelSearchCity="city";
+					}else{
 
-                var valuesScopes = {
-                  city : o._id.$id,
-                  cityName : o.name,
-                  cp : o.cp,
-                  country : o.country,
-                  allCP : o.allCP,
-                  level1 : o.level1,
-                  level1Name : o.level1Name
-                }
+						
+						valuesScopes = {
+							id : o._id.$id,
+							name : o.name,
+							country : o.countryCode,
+							level : o.level,
+							// level1 : o.level1,
+							// level1Name : o.level1Name
+						}
 
-                if( notEmpty( o.nameCity ) ){
-                  valuesScopes.name = o.nameCity ;
-                }
+						if(o.level.indexOf("1") >= 0){
+							typeSearchCity="level1";
+							levelSearchCity="1";
+						}else if(o.level.indexOf("2") >= 0){
+							typeSearchCity="level2";
+							levelSearchCity="2";
+						}else if(o.level.indexOf("3") >= 0){
+							typeSearchCity="level3";
+							levelSearchCity="3";
+						}else if(o.level.indexOf("4") >= 0){
+							typeSearchCity="level4";
+							levelSearchCity="4";
+						}
+						if(notNull(typeSearchCity))
+							valuesScopes.type = typeSearchCity;
+						mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
 
-                if( notEmpty( o.level4 ) ){
-                  valuesScopes.level4 = o.level4 ;
-                  valuesScopes.level4Name = o.level4Name ;
-                }
-                if( notEmpty( o.level3 ) ){
-                  valuesScopes.level3 = o.level3 ;
-                  valuesScopes.level3Name = o.level3Name ;
-                }
-                if( notEmpty( o.level2 ) ){
-                  valuesScopes.level2 = o.level2 ;
-                  valuesScopes.level2Name = o.level2Name ;
-                }
-                typeSearchCity="city";
-                levelSearchCity="city";
-                // if(typeof o.countCpByInsee != "undefined" && o.countCpByInsee > 0 ){
-                //   typeSearchCity="cp";
-                //   levelSearchCity="cp";
-                // }
-                var domContainer=(notNull(input)) ? input+" .scopes-container" : "";
-                /*str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
-                                "data-scope-value='" + o._id.$id  + "' " + 
-                                "data-scope-name='" + o.name + "' " +
-                                "data-scope-level='city' " +
-                                "data-scope-type='city' " +
-                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-notsearch='"+true+"' " +
-                                ">"+
-                                    "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
-                                "</button>";*/
-                        str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
-                        str +=    "data-scope-value='" + o._id.$id  + "' " + 
-                                "data-scope-name='" + o.name + "' " +
-                                "data-scope-level='"+levelSearchCity+"' " +
-                                "data-scope-type='"+typeSearchCity+"' " +
-                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-notsearch='"+true+"' "+
-                                "data-append-container='"+domContainer+"' ";
-                        str += ">";
-                       /* str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
-                        str +=   htmlIco;
-                        str += "</div>";*/
-                        str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
+						if( notEmpty( o.level1 ) && valuesScopes.id != o.level1){
+							mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
+							valuesScopes.level1 = o.level1 ;
+							valuesScopes.level1Name = o.level1Name ;
+						}
 
-                        str += "<div class='entityName text-dark'>" + name + "</div>";
-                          
-                          str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
-                                    "<i class='fa fa-home'></i> " + fullLocality;
-                          str += '</div>';
-                          
-                        str += "</div>";
+					}
+						
 
-                      str += "</a>";
-                  }
+					if( notEmpty( o.nameCity ) ){
+						valuesScopes.name = o.nameCity ;
+					}
+
+					if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
+						valuesScopes.level4 = o.level4 ;
+						valuesScopes.level4Name = o.level4Name ;
+					}
+					if( notEmpty( o.level3 ) && valuesScopes.id != o.level3 ){
+						valuesScopes.level3 = o.level3 ;
+						valuesScopes.level3Name = o.level3Name ;
+					}
+					if( notEmpty( o.level2 ) && valuesScopes.id != o.level2){
+						valuesScopes.level2 = o.level2 ;
+						valuesScopes.level2Name = o.level2Name ;
+					}
+					
+					// if(typeof o.countCpByInsee != "undefined" && o.countCpByInsee > 0 ){
+					//   typeSearchCity="cp";
+					//   levelSearchCity="cp";
+					// }
+					var domContainer=(notNull(input)) ? input+" .scopes-container" : "";
+					/*str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
+					"data-scope-value='" + o._id.$id  + "' " + 
+					"data-scope-name='" + o.name + "' " +
+					"data-scope-level='city' " +
+					"data-scope-type='city' " +
+					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+					"data-scope-notsearch='"+true+"' " +
+					">"+
+					"<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
+					"</button>";*/
+					mylog.log("valuesScopes", valuesScopes);
+					str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
+					str +=    "data-scope-value='" + o._id.$id  + "' " + 
+						"data-scope-name='" + o.name + "' " +
+						"data-scope-level='"+levelSearchCity+"' " +
+						"data-scope-type='"+typeSearchCity+"' " +
+						"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+						"data-scope-notsearch='"+true+"' "+
+						"data-append-container='"+domContainer+"' ";
+					str += ">";
+					/* str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
+					str +=   htmlIco;
+					str += "</div>";*/
+
+					if(type == "city"){
+					str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
+
+					str += "<div class='entityName text-dark'>" + name + "</div>";
+
+					str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+								"<i class='fa fa-home'></i> " + fullLocality;
+					str += '</div>';
+
+					str += "</div>";
+					}else{
+						str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
+						str += "<div class='entityName text-dark'>" + name + "</div>";
+						str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+									"<i class='fa fa-bullseye fa-stack-1x  bold text-red'></i>"+
+									"<i class='fa fa-stack-1x text-dark bold' style='left : 6px; top : 17.1px'>1</i>"+ o.countryCode;
+						str += '</div>';
+
+						str += "</div>";
+					}
+
+					str += "</a>";
+				}
                               
               }); //end each
 

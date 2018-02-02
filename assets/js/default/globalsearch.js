@@ -370,6 +370,8 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 									"<i class='fa fa-stack-1x bold' style='left : 5px; bottom : -13px; font-size: 15px; color : #000000'>"+
 									levelSearchCity+"</i>"+ 
 								'</span>' + o.countryCode;
+								'<span></span>'
+
 						str += '</div>';
 
 						str += "</div>";

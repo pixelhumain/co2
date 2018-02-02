@@ -278,6 +278,7 @@ function bindScopesInputEvent(news){
 		startSearch(0, indexStepInit);
 		bindScopesInputEvent();
 	});
+
 	$(".item-scope-input").off().on("click", function(){ 
         scopeValue=$(this).data("scope-value");
         typeSearch=$(this).data("btn-type");
@@ -341,8 +342,9 @@ function setCommunexion(){
 	});
 }
 function scopeActiveScope(scopeValue){
-    mylog.log("scopeActive", scopeValue);
+    mylog.log("scopeActive", scopeValue, myScopes.type);
     if(myScopes.type!="multiscopes"){
+    	mylog.log("here", myScopes.type);
     	$.each(myScopes[myScopes.type],function(e,v){
     		if(e!=scopeValue)
     			myScopes[myScopes.type][e].active=false;
@@ -358,6 +360,7 @@ function scopeActiveScope(scopeValue){
 	    $(".scopes-container [data-scope-key='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
 	    //}
     }else{
+    	mylog.log("la", myScopes.type);
 	    if(!myScopes.multiscopes[scopeValue].active){
 	    //if(	!getScope(scopeValue, "multiscopes").active){
 	    	//setScope(scopeValue, "active", true, "multiscopes");

@@ -1319,7 +1319,7 @@ var directory = {
         var  found = false;
         var l = $( '.searchEntityContainer .container-img-profil' ).length;
         $.each( $( '.searchEntityContainer .container-img-profil' ), function(i,val){
-            console.log("found ??",$(val).attr('href'), hash);
+            //console.log("found ??",$(val).attr('href'), hash);
             if( $(val).attr('href') == hash ){
                 found = i;
                 console.log("found",found);
@@ -1644,7 +1644,7 @@ var directory = {
       if(directory.dirLog) mylog.log("----------- classifiedPanelHtml",params,params.name);
 
       str = "";  
-      str += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-4 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
       
      // directory.colPos = directory.colPos == "left" ? "right" : "left";
@@ -1668,7 +1668,7 @@ var directory = {
         
         if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
-                    params.imgProfil + 
+                    params.imgMediumProfil + 
                   "</a>";
 
         str += "<div class='padding-10 informations'>";
@@ -1920,7 +1920,7 @@ var directory = {
         //if(params.imgProfil.indexOf("fa-2x")<0)
         var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ; 
         str += '<div class="col-xs-12 col-sm-4 col-md-4 no-padding">'+
-                  '<a href="'+params.hash+'" class="container-img-profil lbh add2fav">'+params.imgProfil+'</a>'+  
+                  '<a href="'+params.hash+'" class="container-img-profil lbh add2fav block">'+params.imgMediumProfil+'</a>'+  
                 '</div>';
         
         if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id)){
@@ -2610,10 +2610,15 @@ var directory = {
                     params.useMinSize = typeof size != "undefined" && size == "min";
 
                 params.imgProfil = ""; 
-                if(!params.useMinSize)
+                if(!params.useMinSize){
                     params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
-
+                    params.imgMediumProfil = "<i class='fa fa-image fa-2x'></i>";
+                }
+                
                 if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+                    params.imgMediumProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+                
+                if("undefined" != typeof params.profilThumbImageUrl && params.profilThumbImageUrl != "")
                     params.imgProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilThumbImageUrl+"'/>";
 
 
@@ -2735,7 +2740,7 @@ var directory = {
                         str += directory.storePanelHtml(params);
                       //template principal
                     }else{
-                      mylog.log("template principal",params,params.type, itemType);
+                      //mylog.log("template principal",params,params.type, itemType);
 
 
                       if(location.hash == "" || location.hash == "#search" || location.hash == "#web") 
@@ -3180,7 +3185,7 @@ var directory = {
     return -current_date.getTimezoneOffset() / 60;
  },
     getDateFormated: function(params, onlyStr){
-    console.log("getDateFormated", params.startDate);
+    //console.log("getDateFormated", params.startDate);
     var timezone = directory.get_time_zone_offset();
     
 

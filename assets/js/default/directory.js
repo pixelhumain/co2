@@ -22,7 +22,7 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
-    console.log("startSearch directory.js", typeof callBack, callBack, loadingData);
+    mylog.log("startSearch directory.js", typeof callBack, callBack, loadingData);
     if(loadingData) return;
     
     //console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
@@ -70,7 +70,7 @@ function startSearch(indexMin, indexMax, callBack){
 
         mylog.log("Locality : ", locality);
       //} 
-      console.log("locality",locality);
+      mylog.log("locality",locality);
       autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
     } else{
       toastr.info(trad["This request is too short !"]);
@@ -120,7 +120,6 @@ function removeSearchType(type){
     //$(".search_"+type).addClass("fa-circle-o");
   }
 }
-
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
@@ -382,7 +381,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
 
   }
-  function initPageTable(number){
+
+
+function initPageTable(number){
     numberPage=(number/30);
     $('.pageTable').show();
     $('.pageTable').pagination({

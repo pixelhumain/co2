@@ -44,6 +44,14 @@
 *** Ajoute public a tout les events
 co2/datamigration/PublicEvent
 
+*** tranforme les scopes au nouveau format
+co2/datamigration/UpdateMultiScope
+
+*** Ajout les nom des zones manquant
+co2/datamigration/UpdateZoneMissingNameLevel1
+co2/datamigration/UpdateZoneMissingNameLevel2
+co2/datamigration/UpdateZoneMissingNameLevel3
+
 * Version C0.22
 
 ** @Rapha

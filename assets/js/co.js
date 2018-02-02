@@ -2727,10 +2727,10 @@ var collection = {
 	},
 	applyColor : function (what,id,col) {
 		var collection = (typeof col == "undefined") ? "favorites" : col;
-		console.log("applyColor",what,id)
+		//console.log("applyColor",what,id)
 		if(userConnected && userConnected.collections && userConnected.collections[collection] && userConnected.collections[collection][what] && userConnected.collections[collection][what][id] ){
 			$(".star_"+what+"_"+id).children("i").removeClass("fa-star-o").addClass('fa-star text-red');
-			console.warn("applying Color",what,id)
+			//console.warn("applying Color",what,id)
 		}
 	},
 	add2fav : function (what,id,col){

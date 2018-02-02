@@ -88,10 +88,13 @@ function getCommunexionLabel(){
 		var level=0;
 		var nameCommunexion="";
 		$.each(myScopes.communexion, function(e, v){
-			if(v.level > level){
-				level=v.level;
+			// if(v.level > level){
+			// 	level=v.level;
+			// 	nameCommunexion=v.name;
+			// }
+
+			if(v.type == "city")
 				nameCommunexion=v.name;
-			}
 		});
 		$(".communexion-btn-label").html(nameCommunexion);
 	}else{
@@ -218,12 +221,15 @@ function saveMultiScope(){
 
 
 function bindSearchCity(){
+	mylog.log("bindSearchCity");
 	$("#searchOnCity").off().on("keyup", function(e){
 		if(e.keyCode == 13){
 			//initTypeSearch("cities");
 			searchTypeGS = ["cities"];
 			startGlobalSearch(0, 30, "#filter-scopes-menu");
-			//startSearch($(this).val(), null, null);
+			//startSearch(0, 30,  function(data){
+			// 	mylog.log("bindSearchCity", data);
+			// });
 			//$(".btn-directory-type").removeClass("active");
 		}
 	});
@@ -275,6 +281,7 @@ function bindScopesInputEvent(news){
 		startSearch(0, indexStepInit);
 		bindScopesInputEvent();
 	});
+
 	$(".item-scope-input").off().on("click", function(){ 
         scopeValue=$(this).data("scope-value");
         typeSearch=$(this).data("btn-type");
@@ -338,8 +345,9 @@ function setCommunexion(){
 	});
 }
 function scopeActiveScope(scopeValue){
-    mylog.log("scopeActive", scopeValue);
+    mylog.log("scopeActive", scopeValue, myScopes.type);
     if(myScopes.type!="multiscopes"){
+    	mylog.log("here", myScopes.type);
     	$.each(myScopes[myScopes.type],function(e,v){
     		if(e!=scopeValue)
     			myScopes[myScopes.type][e].active=false;
@@ -355,6 +363,7 @@ function scopeActiveScope(scopeValue){
 	    $(".scopes-container [data-scope-key='"+scopeValue+"'].item-scope-input").parent().removeClass("disabled");
 	    //}
     }else{
+    	mylog.log("la", myScopes.type);
 	    if(!myScopes.multiscopes[scopeValue].active){
 	    //if(	!getScope(scopeValue, "multiscopes").active){
 	    	//setScope(scopeValue, "active", true, "multiscopes");
@@ -378,7 +387,8 @@ function scopeObject(values){
 	mylog.log("scopeObject", values);
 	communexionObj={};
 	if(typeof values == "string")
-		values = jQuery.parseJSON(values);	
+		values = jQuery.parseJSON(values);
+
 	if(typeof values.level1 != "undefined"){
 		objToPush={
 			id:values.level1,
@@ -389,9 +399,11 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj level1", communexionObj);
 		//communexionObj.push(objToPush);
 
 	}
+
 	if(typeof values.level2 != "undefined"){
 		objToPush={
 			id:values.level1,
@@ -402,8 +414,10 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj level2", communexionObj);
 		//communexionObj.push(objToPush);
 	}
+
 	if(typeof values.level3 != "undefined"){
 		objToPush={
 			id:values.level3,
@@ -414,8 +428,10 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj level3", communexionObj);
 		//communexionObj.push(objToPush);
 	}
+
 	if(typeof values.level4 != "undefined"){
 		objToPush={
 			id:values.level4,
@@ -426,6 +442,7 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj level4", communexionObj);
 		//communexionObj.push(objToPush);
 	}
 
@@ -438,21 +455,39 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		mylog.log("communexionObj cp", communexionObj);
 		//communexionObj.push(objToPush);
 	}
+	mylog.log("scopeObject level", values.level, notNull(values.level) && typeof values.level);
+	if(notNull(values.level) && typeof values.level != "undefined"){
+			objToPush={
+				id:values.id,
+				name:values.name,
+				type:values.type,
+				active:true,
+				level:values.numLevel,
+				countryCode:values.country
+			}
+			
+			//communexionObj.push(objToPush);
 
-	objToPush={
-		id:values.city,
-		name:((notNull(values.allCP) && values.allCP == false) ?  values.name : values.cityName ) ,
-		type:"city",
-		active:((notNull(values.allCP) && values.allCP == false) ?  false : true ) ,
-		//level:6,
-		countryCode:values.country,
-		allCP:values.allCP,
-		cp:values.cp,
+		
+	}else{
+		objToPush={
+			id:values.city,
+			name:((notNull(values.allCP) && values.allCP == false) ?  values.name : values.cityName ) ,
+			type:"city",
+			active:((notNull(values.allCP) && values.allCP == false) ?  false : true ) ,
+			//level:6,
+			countryCode:values.country,
+			allCP:values.allCP,
+			cp:values.cp,
+		}
 	}
+
+	
 	communexionObj[objToPush.id+objToPush.type] = objToPush;
-	//communexionObj.push(objToPush);
+	mylog.log("communexionObj", communexionObj);
 
 	if(notNull(values.allCP) && values.allCP == false){
 		objToPush={

@@ -452,16 +452,16 @@
             <?php 
                 $currentSection = 1;
                 foreach ($classified["sections"] as $key => $section) { ?>
-                  <div class="col-md-2 col-sm-4 col-xs-6 no-padding">
+                  <!-- <div class="col-md-2 col-sm-4 col-xs-6 no-padding">
                     <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
                             data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
                             data-type="classified"
                             style="border-radius:0px; border-color: transparent; text-transform: uppercase;">
                       <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo Yii::t("category",$section["labelFront"]); ?>
                     </button>
-                  </div>
+                  </div> -->
             <?php } ?>  
-             <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result">
+             <!-- <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> -->
           </div>
 
           <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 padding-top-10" id="section-price">
@@ -677,6 +677,9 @@ var cityNameLocked = "<?php echo $cityName; ?>";
 var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" ?>;
 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
+
+var classified = <?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
+
 jQuery(document).ready(function() {
 
 	currentTypeSearchSend = "search";

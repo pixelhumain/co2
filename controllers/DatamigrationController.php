@@ -3677,5 +3677,108 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 		echo $nbelement." trnalate mis a jours / ";
 	}
+
+
+	public function actionUpdateZoneMissingNameLevel1(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementtotal = 0 ;
+		$where = array("level1" => array('$exists' => 1), "level1Name" => array('$exists' => 0));
+		$fields = array("level1", "name", "level");
+		$zones = PHDB::find(Zone::COLLECTION, $where, $fields);
+		$names = array();
+		foreach ($zones as $key => $value) {
+
+			if(!in_array("1", $value["level"])){
+				echo $key." : ".$value["name"]."<br/>";
+				if(empty($names[$value["level1"]])){
+					$nameLevel1 = Zone::getById($value["level1"], array("name"));
+					$names[(String)$nameLevel1["_id"]] = $nameLevel1["name"];
+					//echo "heres<br/>";
+				}
+				
+				$set = array("level1Name" => $names[$value["level1"]]);
+
+				// var_dump($set);
+				// echo "<br/>-------------<br/>";
+
+				$res = PHDB::update(Zone::COLLECTION, 
+				  	array("_id"=>new MongoId($key)),
+	                array('$set' => $set)
+	            );
+
+				$nbelement++;
+			}
+		}
+		echo $nbelement." trnalate mis a jours / ";
+	}
+
+	public function actionUpdateZoneMissingNameLevel2(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementtotal = 0 ;
+		$where = array("level2" => array('$exists' => 1), "level2Name" => array('$exists' => 0));
+		$fields = array("level2", "name", "level");
+		$zones = PHDB::find(Zone::COLLECTION, $where, $fields);
+		$names = array();
+		foreach ($zones as $key => $value) {
+
+			if(!in_array("1", $value["level"])){
+				echo $key." : ".$value["name"]."<br/>";
+				if(empty($names[$value["level2"]])){
+					$nameLevel2 = Zone::getById($value["level2"], array("name"));
+					$names[(String)$nameLevel2["_id"]] = $nameLevel2["name"];
+					// echo "heres<br/>";
+				}
+				
+				$set = array("level2Name" => $names[$value["level2"]]);
+
+				// var_dump($set);
+				// echo "<br/>-------------<br/>";
+
+				$res = PHDB::update(Zone::COLLECTION, 
+				  	array("_id"=>new MongoId($key)),
+	                array('$set' => $set)
+	            );
+
+				$nbelement++;
+			}
+		}
+		echo $nbelement." trnalate mis a jours / ";
+	}
+
+	public function actionUpdateZoneMissingNameLevel3(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementtotal = 0 ;
+		$where = array("level3" => array('$exists' => 1), "level3Name" => array('$exists' => 0));
+		$fields = array("level3", "name", "level");
+		$zones = PHDB::find(Zone::COLLECTION, $where, $fields);
+		$names = array();
+		foreach ($zones as $key => $value) {
+
+			if(!in_array("1", $value["level"])){
+				echo $key." : ".$value["name"]."<br/>";
+				if(empty($names[$value["level3"]])){
+					$nameLevel3 = Zone::getById($value["level3"], array("name"));
+					$names[(String)$nameLevel3["_id"]] = $nameLevel3["name"];
+					// echo "heres<br/>";
+				}
+				
+				$set = array("level3Name" => $names[$value["level3"]]);
+
+				// var_dump($set);
+				// echo "<br/>-------------<br/>";
+
+				$res = PHDB::update(Zone::COLLECTION, 
+				  	array("_id"=>new MongoId($key)),
+	                array('$set' => $set)
+	            );
+
+				$nbelement++;
+			}
+		}
+		echo $nbelement." trnalate mis a jours / ";
+	}
 }
 

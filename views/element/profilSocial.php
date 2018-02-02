@@ -400,16 +400,17 @@
 								</li>
 							<?php } ?>
 
-							<?php if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) { ?>
-				  			<li class="text-left">
-				               	<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
-				                    <i class="fa fa-trash"></i> 
-				                    <?php echo Yii::t("common", "Delete {what}", 
-				                    					array("{what}"=> 
-				                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
-				                    ?>
-				                </a>
-				            </li>
+							<?php if ( Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && 
+										!@$deletePending && !empty(Yii::app()->session["userId"])) { ?>
+						  			<li class="text-left">
+						               	<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
+						                    <i class="fa fa-trash"></i> 
+						                    <?php echo Yii::t("common", "Delete {what}", 
+						                    					array("{what}"=> 
+						                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
+						                    ?>
+						                </a>
+						            </li>
 				            <?php } ?>
 			            <?php } else { ?>
 			            	<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>

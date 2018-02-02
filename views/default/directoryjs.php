@@ -411,7 +411,7 @@
               <?php } ?>
           </div>
 
-        <?php }else if($typeSelected == "classified"){ 
+        <?php }else if($typeSelected == "classified" || $typeSelected == "ressource" ){ 
           if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
@@ -506,6 +506,7 @@
           <!-- </div> -->
 
         <?php } else{ 
+
           $service = CO2::getContextList("service");
           ?> 
           <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub no-padding shadow2" id="sub-menu-left">
@@ -595,9 +596,6 @@
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
           <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
           <?php } ?>
-        <?php } ?>
-        <?php if(@$_GET["page"] && in_array(array("search","social","agenda","annonces","ressources"), $_GET["page"])){ ?> 
-          <!-- <div class="pageTable col-xs-12 padding-20 text-center"></div> -->
         <?php } ?>
         </div>
   </div>

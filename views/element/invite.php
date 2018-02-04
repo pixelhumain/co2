@@ -36,14 +36,17 @@
 }
 
 </style>
-<div class="portfolio-modal modal fade" id="invite-modal-element" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="<?php if(!@$search){ ?> portfolio-modal modal fade <?php } ?>" id="invite-modal-element" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-content padding-top-15">
-        <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-                <div class="rl">
-                </div>
-            </div>
-        </div>
+        <?php if(!@$search){ ?>
+        	<div class="close-modal" data-dismiss="modal">
+	            <div class="lr">
+	                <div class="rl">
+	                </div>
+	            </div>
+	        </div>
+	    <?php } ?>
         <div class="container">
          	<div class="row">
                 <div class="col-lg-12">
@@ -210,10 +213,14 @@ Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Vi
 
 
 <script type="text/javascript">
-
+var searchApp=( ( '<?php echo (@$search == true); ?>' == "1") ? true : false );
 jQuery(document).ready(function() {
 	bindInviteModal();
     runinviteFormValidation();
+    if(searchApp && search.value!= ""){
+    	$("#invite-modal-element #inviteSearch").val(search.value);
+    	newInvitation();
+    }
 });
 
 function bindInviteModal(){

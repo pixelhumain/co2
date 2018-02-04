@@ -42,6 +42,7 @@ class ElementController extends CommunecterController {
           'network'               => 'citizenToolKit.controllers.element.NetworkAction',
           'getnetworks'           => 'citizenToolKit.controllers.element.GetNetworksAction',
           'invoice'                  => 'citizenToolKit.controllers.element.InvoiceAction',
+          'invite'                  => 'citizenToolKit.controllers.element.InviteAction',
       );
   }
 }

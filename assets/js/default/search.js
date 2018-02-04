@@ -397,6 +397,7 @@ var searchEngine = {
         searchEngine.allResults={};
         search.app="territorial";
         pageCount=false;
+        scrollEnd=false;
         $(window).bind("scroll",function(){  
             mylog.log("test scroll", scrollEnd, loadingData);
             if(!loadingData && !scrollEnd && !isMapEnd && search.app=="territorial"){

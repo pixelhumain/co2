@@ -80,9 +80,8 @@
         padding-bottom:0px !important;
     }
     .simple-pagination{
-        margin-bottom: 25px;
-        padding: 10px 0px;
-        border-bottom: 2px solid #e9e9e9;
+        padding: 5px 0px;
+        border-bottom: 1px solid #e9e9e9;
         font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -240,7 +239,7 @@ jQuery(document).ready(function() {
             if(typeD == "events"){
                 var typeEvent = $(this).data("type-event");
                 searchSType = typeEvent;
-                 search.app="agenda";
+                // search.app="agenda";
             }
             initTypeSearch(typeD);
             if(typeD=="all"){

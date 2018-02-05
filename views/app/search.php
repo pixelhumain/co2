@@ -223,7 +223,7 @@ jQuery(document).ready(function() {
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
-    if( type=="ressources" )search.app = "ressources";
+    //if( type=="ressources" )search.app = "ressources";
     var appUrl = (typeof search.app != "undefined") ? "&app="+search.app : "";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl+appUrl,function(){ 
 
@@ -233,7 +233,7 @@ jQuery(document).ready(function() {
                 typeD="all";
                 $(".btn-directory-type").removeClass("active");
             }else{
-                //search.app="search";
+                search.app="search";
                 $(".btn-directory-type").removeClass("active");
                 $(this).addClass("active");
             }

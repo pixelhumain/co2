@@ -248,7 +248,7 @@
         </div>
         <?php } ?>
 
-        <?php if($typeSelected == "all" || (@$_GET["app"] && ($_GET["app"]=="search" || $_GET["app"]=="social"))){ ?>   
+        <?php if($typeSelected == "all" ){ ?>   
           
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 

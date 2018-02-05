@@ -805,7 +805,7 @@ function bindScopesNewsEvent(news){
 		if(addScope){
 			newScope=myScopes[myScopes.type][key];
 			newScope.active=true;
-			newsScopes[scopeValue] = newScope;
+			newsScopes[key] = newScope;
 			$(this).attr("data-add",false).attr("data-original-title","Remove");
 			$(this).find("i").removeClass("fa-plus-circle").addClass("fa-times-circle");
 			pushHtml=$(this).parent().get();
@@ -813,6 +813,7 @@ function bindScopesNewsEvent(news){
 			$("#content-added-scopes-container").append(pushHtml);
 			$(".form-create-news-container .form-actions .addplacesplease").remove();
 		}else{
+			mylog.log("manageMultiscopes remove", key, newsScopes);
 			delete newsScopes[key];
 			$(this).parent().remove();
 		}

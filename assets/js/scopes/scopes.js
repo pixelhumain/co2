@@ -444,9 +444,10 @@ function scopeObject(values){
 		mylog.log("communexionObj level4", communexionObj);
 		//communexionObj.push(objToPush);
 	}
-
-	if(typeof values.cp != "undefined"){
+	mylog.log("scopeObject cp", typeof values.cp, typeof values.uniqueCp, values.uniqueCp);
+	if(typeof values.cp != "undefined" && typeof values.uniqueCp != "undefined" && values.uniqueCp == false){
 		objToPush={
+			id:values.cp+values.country,
 			name:values.cp,
 			type:"cp",
 			active:false,
@@ -457,7 +458,8 @@ function scopeObject(values){
 		mylog.log("communexionObj cp", communexionObj);
 		//communexionObj.push(objToPush);
 	}
-	mylog.log("scopeObject level", values.level, notNull(values.level) && typeof values.level);
+
+	
 	if(notNull(values.level) && typeof values.level != "undefined"){
 			objToPush={
 				id:values.id,
@@ -491,7 +493,7 @@ function scopeObject(values){
 	if(notNull(values.allCP) && values.allCP == false){
 		objToPush={
 			id:values.city,
-			name:values.cityName,
+			name:values.cityName + " ( " +values.cp + " ) ",
 			type:"city",
 			active:true,
 			//level:6,

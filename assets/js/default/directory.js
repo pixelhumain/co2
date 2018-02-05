@@ -1982,6 +1982,7 @@ var directory = {
 			cp : params.cp,
 			country : params.country,
 			allCP : params.allCP,
+			uniqueCp : params.uniqueCp,
 			level1 : params.level1,
 			level1Name : params.level1Name
 		}
@@ -1990,6 +1991,10 @@ var directory = {
 
 		if( notEmpty( params.nameCity ) ){
 			valuesScopes.name = params.nameCity ;
+		}
+
+		if( notEmpty( params.uniqueCp ) ){
+			valuesScopes.uniqueCp = params.uniqueCp;
 		}
 
 		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){

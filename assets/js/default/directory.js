@@ -209,58 +209,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               }
               //var city, postalCode = "";
               //Prepare footer and header of directory 
-              if(typeof search.count != "undefined" && search.count || indexMin==0 ){
-                    headerStr = '';
-                    footerStr = '';
-                    spanType = '';
-                    $.each( searchType, function(key, val){
-                      typeHeader = (val=="citoyens") ? "persons" : val;
-                      var params = headerParams[typeHeader];
-                      spanType += "<span class='text-"+params.color+"'>"+
-                                  "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
-                                "</span> ";
-                    });
-                    countHeader=0;
-                    if(search.app=="territorial"){
-                      $.each(searchCount, function(e, v){
-                        countHeader+=v;
-                      });
-                    }else{
-                      typeCount = (searchType[0]=="persons") ? "citoyens" : searchType[0];
-                      countHeader=searchCount[typeCount];
-                    }
-                    resultsStr=trad.result;
-                    if(countHeader > 1)
-                      resultsStr=trad.results;
               
-                    headerStr +='<h5>'+
-                          "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
-                          '<small>'+
-                            spanType+
-                          '</small>'+
-                      '</h5>';
-                    if(typeof pageCount != "undefined" && pageCount && search.app !="territorial"){
-                      footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-                    }
-                    if(search.app != "territorial" || data < 30){
-                      footerStr +='<div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">'+
-                        '<button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" '+
-                          'data-target="#dash-create-modal" data-toggle="modal" '+
-                          'data-toggle="tooltip" data-placement="top" '+ 
-                          'title=""> '+
-                            '<i class="fa fa-times"></i>'+
-                        '</button>'+
-                        '<h5 class="text-center letter-green margin-top-25">Create a page</h5>'+
-                        '<h5 class="text-center">'+
-                          '<small>'+
-                            spanType+
-                          '</small>'+
-                        '</h5>'+
-                      '</div>'; 
-                    }
-                    $(".headerSearchContainer").html(headerStr);
-                    $(".footerSearchContainer").html(footerStr);
-              }
+              $(".headerSearchContainer").html(directory.headerHtml(indexMin));
+              $(".footerSearchContainer").html(directory.footerHtml());
               str = "";
               // Algorithm when searching in multi collections (scroll algo by updated)
               if(search.app=="territorial")
@@ -275,14 +226,15 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 showMap(false);
                   $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
                   if(indexMin == 0){
-                    //ajout du footer   
-                    var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
-                    if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
-                    str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
-                    str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
-                    str += "</div>";
+                    //ajout du footer
+                    str=directory.endOfResult(true);   
+                  //  var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
+                   // if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
+                    //str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
+                    //str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
+                    //str += "</div>";
                     $("#dropdown_search").html(str);
-                    $("#searchBarText").focus();
+                    //$("#searchBarText").focus();
                   }
                      
               }
@@ -314,6 +266,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 }else{
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").html(str);
+                    if(search.app =="territorial" && Object.keys(data).length < 30){
+                      //formAdd=directory
+                      str=directory.endOfResult();   
+                      $("#dropdown_search").append(str);
+                      //  $("#dropdown_search").append(trad.nomoreresult);
+                    }
+                   
                     //alert();
                     if(search.app=="agenda"){
                       //alert();
@@ -516,7 +475,19 @@ function initPageTable(number){
   }
 
   function initBtnLink(){ mylog.log("initBtnLink");
-      
+    $(".main-btn-create").off().on("click",function(){
+        currentKFormType = $(this).data("ktype");
+        var type = $(this).data("type");
+
+        if(type=="all"){
+            $("#dash-create-modal").modal("show");
+            return;
+        }
+
+        if(type=="events") type="event";
+        if(type=="vote") type="entry";
+        dyFObj.openForm(type);
+    });
     $('.tooltips').tooltip();
     $(".dirStar").each(function(i,el){
       collection.applyColor($(el).data('type'),$(el).data('id'));
@@ -2526,6 +2497,125 @@ var directory = {
 
       str += "</div>";
       return str;
+    },
+    searchTypeHtml : function(){
+      spanType="";
+      $.each( searchType, function(key, val){
+            typeHeader = (val=="citoyens") ? "persons" : val;
+            var params = headerParams[typeHeader];
+            spanType += "<span class='text-"+params.color+"'>"+
+                        "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
+                      "</span> ";
+      });
+      return spanType;
+    },
+    endOfResult : function(noResult){
+      //Event scroll and all searching
+      $("#btnShowMoreResult").remove();
+      scrollEnd=true;
+      //msg specific for end search
+      match= (search.value != "") ? "match" : "";
+      msg= (notNull(noResult) && noResult) ? trad["noresult"+match] : trad["nomoreresult"+match];
+      contributeMsg="<span class='italic'><small>"+trad.contributecommunecterslogan+"</small><br/></span>";
+      if(userId !=""){
+        contributeMsg+='<a href="javascript:;" class="text-green-k tooltips" '+
+            'data-target="#dash-create-modal" data-toggle="modal" '+
+            'data-toggle="tooltip" data-placement="top" '+ 
+            'title=""> '+
+              '<i class="fa fa-plus-circle"></i> '+trad.sharesomething+
+          '</a>';
+      }else{
+        contributeMsg+='<a href="javascript:;" class="letter-green margin-left-10" data-toggle="modal" data-target="#modalLogin">'+
+                                    '<i class="fa fa-sign-in"></i> '+trad.connectyou+
+                            '</a>';
+      }
+      str = '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
+      str += "<h3 style='margin-bottom:10px; margin-left:15px;border-left: 2px solid lightgray;' class='text-dark padding-20'><small>"+msg+"<br/>"+contributeMsg+"</h3></small><br/>";
+      str += "</div>";
+      return str;
+    },
+    headerHtml : function(indexMin){
+      headerStr = '';
+      if(typeof search.count != "undefined" && search.count || indexMin==0 ){          
+          countHeader=0;
+          if(search.app=="territorial"){
+            $.each(searchCount, function(e, v){
+              countHeader+=v;
+            });
+          }else{
+            typeCount = (searchType[0]=="persons") ? "citoyens" : searchType[0];
+            countHeader=searchCount[typeCount];
+          }
+          resultsStr = (countHeader > 1) ? trad.results : trad.result;
+          headerStr +='<h5>'+
+              "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
+              '<small>'+
+                directory.searchTypeHtml()+
+              '</small>'+
+            '</h5>';      
+      }
+      return headerStr;
+    },
+    footerHtml : function(){
+      footerStr = '';
+      // GET PAGINATION STRUCTURE
+      if(search.app != "territorial"){
+        if(typeof pageCount != "undefined" && pageCount)
+          footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+        if(userId != ""){
+          if(search.app=="search" && searchType[0] !="news"){
+            addType=searchType[0];
+            typeForm =addType;
+            if(addType=="persons"){
+              btn='<a href="#element.invite" class="btn text-yellow lbhp tooltips padding-5 no-margin" '+
+                  'data-toggle="tooltip" data-placement="top" '+ 
+                'title=""> '+
+                  '<h5 class="no-margin">'+
+                    '<i class="fa fa-user"></i> '+trad.invitesomeone+
+                  '</h5>'+
+              '</a>';
+            }else{
+              subData="";
+              if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
+                 subData="data-ktype='"+addType+"' ";
+                 typeForm="organization";
+              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classified")
+                typeForm=typeObj[typeObj[addType].sameAs].ctrl;
+              btn='<button class="btn main-btn-create text-'+headerParams[addType].color+' tooltips" padding-5 no-margin '+
+                'data-type="'+typeForm+'" '+
+                subData+
+                'data-toggle="tooltip" data-placement="top" '+ 
+                'title="" style="border: none;background-color: white;"> '+
+                '<h5 class="no-margin">'+
+                  '<i class="fa fa-plus-circle"></i> '+trad["add"+addType]+
+                '</h5>'+
+              '</button>';
+            }
+            footerStr +='<div class="col-md-12 col-sm-12 col-xs-12 padding-5">'+
+              btn;
+            '</div>';
+          } /*else{
+          btn='<button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" '+
+            'data-target="#dash-create-modal" data-toggle="modal" '+
+            'data-toggle="tooltip" data-placement="top" '+ 
+            'title="Create a page"> '+
+              '<i class="fa fa-times"></i>'+
+          '</button>';
+        }*/ 
+        }
+        else{
+         '<div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">'+
+              '<small>'+
+                '<span>Connect you to share your knowledge</span>'+ 
+              //  directory.searchTypeHtml()+
+              '</small>'+
+            '</h5>'+
+          '</div>';  
+        }
+      }else{
+        footerStr="<span id='btnShowMoreResult'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span>";
+      }
+      return footerStr;
     },
     showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
         //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');

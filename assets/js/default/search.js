@@ -23,7 +23,7 @@ function initSearchInterface(){
             startSearch(0, indexStepInit, searchCallback);
            // else
              //   autoCompleteSearch(search.value, null, null, null, null);
-            pageCount=false;
+            //pageCount=false;
             //KScrollTo("#dropdown_search");
          }
     });
@@ -32,7 +32,7 @@ function initSearchInterface(){
     });
 
     $("#second-search-bar").keyup(function(e){
-        //$("#main-search-bar").val($(this).val());
+        $("#main-search-bar").val($(this).val());
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
             //initTypeSearch(typeInit);
@@ -397,6 +397,7 @@ var searchEngine = {
         searchEngine.allResults={};
         search.app="territorial";
         pageCount=false;
+        scrollEnd=false;
         $(window).bind("scroll",function(){  
             mylog.log("test scroll", scrollEnd, loadingData);
             if(!loadingData && !scrollEnd && !isMapEnd && search.app=="territorial"){

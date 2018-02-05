@@ -33,7 +33,7 @@ var totalDataGS = 0;
 var mapElementsGS = new Array(); 
 
 function startGlobalSearch(indexMin, indexMax, input){
-    mylog.log("startGlobalSearch", indexMin, indexMax, indexStepGS, loadingDataGS);
+    mylog.log("startGlobalSearch", indexMin, indexMax, input);
 
     setTimeout(function(){ loadingDataGS = false; }, 10000);
     if(notNull(input))
@@ -243,6 +243,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                     str += "</a>";
 
 				}else{
+					o.input = input;
 					if(type == "city")
 						str += directory.cityPanelHtml(o);
 					else if(type == "zone")

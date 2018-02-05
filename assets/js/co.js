@@ -1806,7 +1806,7 @@ function fillContactFields(id){
 var cotmp = {};
 function globalSearch(searchValue,types,contact){
 	
-	searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];
+	searchType = (types) ? types : ["organizations", "projects", "events"/*, "needs"*/, "citoyens"];
 
 	var data = { 	 
 		"name" : searchValue,

@@ -69,6 +69,7 @@ function constructScopesHtml(news){
 
 function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
 	mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);
+	mylog.log("changeCommunexionScope appendDom", appendDom);
 	communexionObj=scopeObject(values);
 	mylog.log("changeCommunexionScope communexionObj",communexionObj);
 	myScopes.open=communexionObj;
@@ -299,6 +300,7 @@ function bindScopesInputEvent(news){
             startSearch(0, indexStepInit); 
         }
     });
+
     $(".item-globalscope-checker").off().on('click', function(){ 
     	mylog.log(".item-globalscope-checker");
         //$(".item-globalscope-checker").addClass("inactive");

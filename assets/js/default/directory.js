@@ -1975,7 +1975,7 @@ var directory = {
 	// ********************************
 	cityPanelHtml : function(params){
 		mylog.log("-----------cityPanelHtml", params);
-		var domContainer= "#filter-scopes-menu .scopes-container";
+		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
 		valuesScopes = {
 			city : params._id.$id,
 			cityName : params.name,
@@ -2052,8 +2052,8 @@ var directory = {
 	// Zone DIRECTORY PANEL
 	// ********************************
 	zonePanelHtml : function(params){
-		mylog.log("-----------cityPanelHtml", params);
-		var domContainer= "#filter-scopes-menu .scopes-container";
+		mylog.log("-----------zonePanelHtml", params);
+		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
 		valuesScopes = {
 			id : params._id.$id,
 			name : params.name,
@@ -2586,6 +2586,7 @@ var directory = {
       spanType="";
       $.each( searchType, function(key, val){
             typeHeader = (val=="citoyens") ? "persons" : val;
+            mylog.log("searchTypeHtml typeHeader", typeHeader, headerParams);
             var params = headerParams[typeHeader];
             spanType += "<span class='text-"+params.color+"'>"+
                         "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+

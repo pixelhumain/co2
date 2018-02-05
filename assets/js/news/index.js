@@ -797,11 +797,13 @@ function bindSearchOnNews(){
     });
 }
 function bindScopesNewsEvent(news){
+
 	$(".manageMultiscopes").off().on("click", function(){
 		addScope=$(this).data("add");
 		scopeValue=$(this).data("scope-value");
+		key=$(this).data("scope-key");
 		if(addScope){
-			newScope=myScopes[myScopes.type][scopeValue];
+			newScope=myScopes[myScopes.type][key];
 			newScope.active=true;
 			newsScopes[scopeValue] = newScope;
 			$(this).attr("data-add",false).attr("data-original-title","Remove");
@@ -811,7 +813,7 @@ function bindScopesNewsEvent(news){
 			$("#content-added-scopes-container").append(pushHtml);
 			$(".form-create-news-container .form-actions .addplacesplease").remove();
 		}else{
-			delete newsScopes[scopeValue];
+			delete newsScopes[key];
 			$(this).parent().remove();
 		}
 	});

@@ -233,7 +233,7 @@ jQuery(document).ready(function() {
                 typeD="all";
                 $(".btn-directory-type").removeClass("active");
             }else{
-                //search.app="search";
+                search.app="search";
                 $(".btn-directory-type").removeClass("active");
                 $(this).addClass("active");
             }

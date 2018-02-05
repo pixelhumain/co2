@@ -259,7 +259,8 @@ var trad = {
 	'Search a city, a town or a postal code' : "<?php echo Yii::t("common","Search a city, a town or a postal code") ?>",
 	'Currently researching' : "<?php echo Yii::t("common","Currently researching") ?>",
 	'City Informations' : "<?php echo Yii::t("common","City Informations") ?>",
-
+	"searchcity": "<?php echo Yii::t("common","Search a city") ?>",
+	"facoritesplaces": "<?php echo Yii::t("common","Favorites places") ?>",
 	"Insee" : "<?php echo Yii::t("common","Insee") ?>",
 	"level3" : "<?php echo Yii::t("common","level3") ?>",
 	"level4" : "<?php echo Yii::t("common","level4") ?>",

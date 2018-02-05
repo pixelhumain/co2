@@ -336,12 +336,18 @@ function modifyNews(idNews,typeNews){
 	var commentTitle = $('.newsTitle[data-pk="'+idNews+'"] .timeline_title').html();
 	mylog.log("commentTitle", commentTitle);
 	var message = "";
+	var scopeTarget=updateNews[idNews].scope.type;
+	var scopeLabel=scopeTarget;
+	var newsScope={};
+	if(scopeTarget=="public") scopeIcon="globe";
+	else if(scopeTarget=="restricted"){scopeIcon="connectdevelop"; scopeLabel="network";}
+	else scopeIcon="lock";
 	if(notEmpty(commentTitle))
 		message += "<input type='text' id='textarea-edit-title"+idNews+"' class='form-control margin-bottom-5' style='text-align:left;' placeholder='Titre du message' value='"+commentTitle+"'>";
 	 	
 	 	message += "<div id='container-txtarea-news-"+idNews+"' class='updateMention'>";
 		message += 	"<textarea id='textarea-edit-news"+idNews+"' class='form-control newsContentEdit newsTextUpdate get-url-input' placeholder='modifier votre message'>"+commentContent+"</textarea>"+
-				   	"<div id='resultsUpdate' class='bg-white results col-sm-12 col-xs-12'>";
+				   	"<div id='resultsUpdate' class='bg-white results col-sm-12 col-xs-12 margin-top-20'>";
 				   	if(typeof updateNews[idNews]["media"] != "undefined"){
 				   		if(updateNews[idNews]["media"]["type"]=="url_content")
 				   			message += processUrl.getMediaCommonHtml(updateNews[idNews]["media"],"save");
@@ -365,7 +371,36 @@ function modifyNews(idNews,typeNews){
 					'<div class="form-group tagstags col-md-12 col-sm-12 col-xs-12">'+
           				'<input id="tagsUpdate" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">'+       
       				"</div>"+
-				   "</div>";
+      			/*	'<div class="dropdown no-padding col-md-12 col-sm-12 col-xs-12">'+
+          				'<a data-toggle="dropdown" class="btn btn-default col-md-12 col-sm-12 col-xs-12" id="btn-toogle-dropdown-scope-update" href="javascript:;">'+
+          					'<i class="fa fa-'+scopeIcon+'"></i> '+tradDynForm[scopeLabel]+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>'+
+          				'</a>'+
+          				'<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">';
+          					if(updateNews[idNews].target.type != "events"){
+            message+=		'<li>'+
+              					'<a href="javascript:;" id="scope-my-network" class="scopeShareUp" data-value="private">'+
+              						'<h4 class="list-group-item-heading"><i class="fa fa-lock"></i> '+tradDynForm.private+'</h4>'+
+               						'<p class="list-group-item-text small">'+tradDynForm["explainprivate"+updateNews[idNews].target.type]+'</p>'+
+              					'</a>'+
+            				'</li>';
+            				}
+            message+=		'<li>'+
+              					'<a href="javascript:;" id="scope-my-network" class="scopeShareUp" data-value="restricted">'+
+              						'<h4 class="list-group-item-heading"><i class="fa fa-connectdevelop"></i> '+tradDynForm.network+'</h4>'+
+                					'<p class="list-group-item-text small"> '+tradDynForm.explainnetwork+'</p>'+
+              					'</a>'+
+				            '</li>'+
+				            '<li>'+
+				              	'<a href="javascript:;" id="scope-my-wall" class="scopeShareUp" data-value="public">'+
+				              		'<h4 class="list-group-item-heading"><i class="fa fa-globe"></i> '+tradDynForm.public+'</h4>'+
+				                    '<p class="list-group-item-text small">'+tradDynForm.explainpublic+'</p>'+
+				              	'</a>'+
+				            '</li>'+
+			            '</ul>'+
+			            '<input type="hidden" name="scope" id="scopeUpdate" value="'+scopeTarget+'"/>'+
+	        		'</div>'+
+	        		'<div id="scopeListContainerFormUpdate" class="form-group col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-10"></div>'+*/
+				"</div>";
 	
 
 
@@ -392,7 +427,8 @@ function modifyNews(idNews,typeNews){
     		});*/
     		newNews = new Object;
     		newNews.idNews = idNews;
-    		newNews.text =$(".newsTextUpdate").val();
+    		newNews.text=$(".newsTextUpdate").val();
+    		newNews.scope=$("#scopeUpdate").val();
 			if($("#resultsUpdate").html() != ""){
 				newNews.media=new Object;	
 				newNews.media.type=$("#resultsUpdate .type").val();
@@ -439,8 +475,10 @@ function modifyNews(idNews,typeNews){
 			if ($("#tagsUpdate").val() != ""){
 				newNews.tags = $("#tagsUpdate").val().split(",");	
 			}
+			if(newNews.scope=="public")
+				newNews.localities = newsScopes;	
+				
 			newNews=mentionsInit.beforeSave(newNews, '.newsTextUpdate');
-			
 		    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));	
 			$.ajax({
 			        type: "POST",
@@ -557,6 +595,18 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	});
   	$('#tagsUpdate').select2({tags:tagsNews});
   	$("#tagsUpdate").select2('val', data.tags);
+  	$(".scopeShareUp").click(function() {
+		replaceText=$(this).find("h4").html();
+		$("#btn-toogle-dropdown-scope-update").html(replaceText+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>');
+		scopeChange=$(this).data("value");
+		$("input[name='scope']").val(scopeChange);
+		if(scopeChange == "public"){
+			if($("#scopeListContainerFormUpdate").html()=="") getScopeNewsHtml("#scopeListContainerFormUpdate");
+			$("#scopeListContainerFormUpdate").show(700);
+	  	}else
+	  		$("#scopeListContainerFormUpdate").hide(700);
+	});
+	if(data.scope.type=="public") $(".scopeShareUp[value='public']").trigger("click");
 	
 }
 
@@ -754,7 +804,7 @@ function toggleFilters(what){
  		$('.optionFilter').hide();
  	$(what).slideToggle();
  }
- function getScopeNewsHtml(){
+ function getScopeNewsHtml(target){
  	scopeHtml ='<div id="scopes-news-form" class="no-padding">'+
  			'<div id="news-scope-search" class="col-md-12 col-sm-12 col-xs-12 no-padding">'+
 	 			'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.addplacestyournews+'</label><br>'+
@@ -762,12 +812,12 @@ function toggleFilters(what){
 	            '<div id="input-sec-search" class="hidden-xs col-xs-12 col-md-4 col-sm-4 col-lg-4">'+
 	                '<div class="input-group shadow-input-header">'+
 	                      '<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
-	                      '<input type="text" class="form-control input-global-search" id="searchOnCityNews" autocomplete="off" style="height: 25px;border-radius: 0px;" placeholder="search city ...">'+
+	                      '<input type="text" class="form-control input-global-search" id="searchOnCityNews" autocomplete="off" style="height: 25px;border-radius: 0px;" placeholder="'+trad.searchcity+' ...">'+
 	                '</div>'+
 	                '<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
 	                '</div>'+
 	            '</div>'+
-            	'<a href="javascript:;" id="multiscopes-news-btn" class="scopes-btn-news margin-left-20" data-type="multiscopes"><i class="fa fa-star"></i> My favorites</a>'+
+            	'<a href="javascript:;" id="multiscopes-news-btn" class="scopes-btn-news margin-left-20" data-type="multiscopes"><i class="fa fa-star"></i> '+trad.facoritesplaces+'</a>'+
             	'<a href="javascript:;" id="communexion-news-btn" class="scopes-btn-news  margin-left-20" data-type="communexion"><i class="fa fa-home"></i> <span class="communexion-btn-label"></span></a>'+
             	'</div>'+
             '</div>'+
@@ -780,7 +830,8 @@ function toggleFilters(what){
             '<div id="content-added-scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
         '</div>';
 	//actionOnSetGlobalScope="save";
-	$("#scopeListContainerForm").html(scopeHtml);
+	domForm=(notNull(target))?target:"#scopeListContainerForm";
+	$(domForm).html(scopeHtml);
 	bindSearchOnNews();
 	bindScopesNewsEvent();
 	$("#multiscopes-news-btn").trigger("click");

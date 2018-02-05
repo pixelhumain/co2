@@ -531,6 +531,7 @@ class CommunecterController extends Controller
       'network'        => array("href" => "/ph/co2/element/network"),
       'getnetworks'        => array("href" => "/ph/co2/element/getnetworks"),
       "invoice"                => array("href" => "/ph/co2/element/invoice"),
+      "invite"                => array("href" => "/ph/co2/element/invite"),
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),

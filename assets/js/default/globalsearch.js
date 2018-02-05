@@ -243,139 +243,126 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                     str += "</a>";
 
 				}else{
-					
-					var valuesScopes = {};
-					if(type == "city"){
-						valuesScopes = {
-							city : o._id.$id,
-							cityName : o.name,
-							cp : o.cp,
-							country : o.country,
-							allCP : o.allCP,
-							level1 : o.level1,
-							level1Name : o.level1Name
-						}
-						typeSearchCity="city";
-						levelSearchCity="city";
-					}else{
+					if(type == "city")
+						str += directory.cityPanelHtml(o);
+					else if(type == "zone")
+						str += directory.zonePanelHtml(o);
+				// 	var valuesScopes = {};
+				// 	if(type == "city"){
+				// 		valuesScopes = {
+				// 			city : o._id.$id,
+				// 			cityName : o.name,
+				// 			cp : o.cp,
+				// 			country : o.country,
+				// 			allCP : o.allCP,
+				// 			level1 : o.level1,
+				// 			level1Name : o.level1Name
+				// 		}
+				// 		typeSearchCity="city";
+				// 		levelSearchCity="city";
+				// 	}else{
 
 						
-						valuesScopes = {
-							id : o._id.$id,
-							name : o.name,
-							country : o.countryCode,
-							level : o.level,
-							// level1 : o.level1,
-							// level1Name : o.level1Name
-						}
+				// 		valuesScopes = {
+				// 			id : o._id.$id,
+				// 			name : o.name,
+				// 			country : o.countryCode,
+				// 			level : o.level
+				// 		}
 
-						if(o.level.indexOf("1") >= 0){
-							typeSearchCity="level1";
-							levelSearchCity="1";
-							valuesScopes.numLevel = 1;
-						}else if(o.level.indexOf("2") >= 0){
-							typeSearchCity="level2";
-							levelSearchCity="2";
-							valuesScopes.numLevel = 2;
-						}else if(o.level.indexOf("3") >= 0){
-							typeSearchCity="level3";
-							levelSearchCity="3";
-							valuesScopes.numLevel = 3;
-						}else if(o.level.indexOf("4") >= 0){
-							typeSearchCity="level4";
-							levelSearchCity="4";
-							valuesScopes.numLevel = 4;
-						}
-						if(notNull(typeSearchCity))
-							valuesScopes.type = typeSearchCity;				
+				// 		if(o.level.indexOf("1") >= 0){
+				// 			typeSearchCity="level1";
+				// 			levelSearchCity="1";
+				// 			valuesScopes.numLevel = 1;
+				// 		}else if(o.level.indexOf("2") >= 0){
+				// 			typeSearchCity="level2";
+				// 			levelSearchCity="2";
+				// 			valuesScopes.numLevel = 2;
+				// 		}else if(o.level.indexOf("3") >= 0){
+				// 			typeSearchCity="level3";
+				// 			levelSearchCity="3";
+				// 			valuesScopes.numLevel = 3;
+				// 		}else if(o.level.indexOf("4") >= 0){
+				// 			typeSearchCity="level4";
+				// 			levelSearchCity="4";
+				// 			valuesScopes.numLevel = 4;
+				// 		}
+				// 		if(notNull(typeSearchCity))
+				// 			valuesScopes.type = typeSearchCity;				
 
-						mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
+				// 		mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
 
-						if( notEmpty( o.level1 ) && valuesScopes.id != o.level1){
-							mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
-							valuesScopes.level1 = o.level1 ;
-							valuesScopes.level1Name = o.level1Name ;
-						}
+				// 		if( notEmpty( o.level1 ) && valuesScopes.id != o.level1){
+				// 			mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
+				// 			valuesScopes.level1 = o.level1 ;
+				// 			valuesScopes.level1Name = o.level1Name ;
+				// 		}
 
-					}
+				// 	}
 						
 
-					if( notEmpty( o.nameCity ) ){
-						valuesScopes.name = o.nameCity ;
-					}
+				// 	if( notEmpty( o.nameCity ) ){
+				// 		valuesScopes.name = o.nameCity ;
+				// 	}
 
-					if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
-						valuesScopes.level4 = o.level4 ;
-						valuesScopes.level4Name = o.level4Name ;
-					}
-					if( notEmpty( o.level3 ) && valuesScopes.id != o.level3 ){
-						valuesScopes.level3 = o.level3 ;
-						valuesScopes.level3Name = o.level3Name ;
-					}
-					if( notEmpty( o.level2 ) && valuesScopes.id != o.level2){
-						valuesScopes.level2 = o.level2 ;
-						valuesScopes.level2Name = o.level2Name ;
-					}
-					
-					// if(typeof o.countCpByInsee != "undefined" && o.countCpByInsee > 0 ){
-					//   typeSearchCity="cp";
-					//   levelSearchCity="cp";
-					// }
-					var domContainer=(notNull(input)) ? input+" .scopes-container" : "";
-					/*str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
-					"data-scope-value='" + o._id.$id  + "' " + 
-					"data-scope-name='" + o.name + "' " +
-					"data-scope-level='city' " +
-					"data-scope-type='city' " +
-					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-					"data-scope-notsearch='"+true+"' " +
-					">"+
-					"<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
-					"</button>";*/
-					mylog.log("valuesScopes", valuesScopes);
-					str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
-					str +=    "data-scope-value='" + o._id.$id  + "' " + 
-						"data-scope-name='" + o.name + "' " +
-						"data-scope-level='"+levelSearchCity+"' " +
-						"data-scope-type='"+typeSearchCity+"' " +
-						"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-						"data-scope-notsearch='"+true+"' "+
-						"data-append-container='"+domContainer+"' ";
-					str += ">";
-					/* str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter'>";
-					str +=   htmlIco;
-					str += "</div>";*/
+				// 	if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
+				// 		valuesScopes.level4 = o.level4 ;
+				// 		valuesScopes.level4Name = o.level4Name ;
+				// 	}
+				// 	if( notEmpty( o.level3 ) && valuesScopes.id != o.level3 ){
+				// 		valuesScopes.level3 = o.level3 ;
+				// 		valuesScopes.level3Name = o.level3Name ;
+				// 	}
+				// 	if( notEmpty( o.level2 ) && valuesScopes.id != o.level2){
+				// 		valuesScopes.level2 = o.level2 ;
+				// 		valuesScopes.level2Name = o.level2Name ;
+				// 	}
 
-					if(type == "city"){
-						str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
+				// 	var domContainer=(notNull(input)) ? input+" .scopes-container" : "";
 
-						str += "<div class='entityName text-dark'>" + name ;
-						mylog.log("hereeee ", notNull(o.cp), o.cp, o );
-								if(notNull(o.cp))
-									str += " - "+ o.cp;
-						str +="</div>";
+				// 	mylog.log("valuesScopes", valuesScopes);
+				// 	str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
+				// 	str +=    "data-scope-value='" + o._id.$id  + "' " + 
+				// 		"data-scope-name='" + o.name + "' " +
+				// 		"data-scope-level='"+levelSearchCity+"' " +
+				// 		"data-scope-type='"+typeSearchCity+"' " +
+				// 		"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+				// 		"data-scope-notsearch='"+true+"' "+
+				// 		"data-append-container='"+domContainer+"' ";
+				// 	str += ">";
 
-						str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
-									'<span class="col-xs-1">'+
-									"<i class='fa fa-home'></i></span>" + o.country;
-						str += '</div>';
+				// 	if(type == "city"){
+				// 		str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
 
-						str += "</div>";
-					}else{
-						str += "<div class='col-xs-12 entityRight'>";
-						str += "<div class='entityName text-dark'>" + name + "</div>";
-						str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
-								'<span class="col-xs-1">'+
-									"<i class='fa fa-bullseye fa-stack-1x  bold text-red'></i>"+
-									"<i class='fa fa-stack-1x bold' style='left : 5px; bottom : -13px; font-size: 15px; color : #000000'>"+
-									levelSearchCity+"</i>"+ 
-								'</span>' + o.countryCode;
-						str += '</div>';
+				// 		str += "<div class='entityName text-dark'>" + name ;
+				// 		mylog.log("hereeee ", notNull(o.cp), o.cp, o );
+				// 				if(notNull(o.cp))
+				// 					str += " - "+ o.cp;
+				// 		str +="</div>";
 
-						str += "</div>";
-					}
+				// 		str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+				// 					'<span class="col-xs-1">'+
+				// 					"<i class='fa fa-home'></i></span>" + o.country;
+				// 		str += '</div>';
 
-					str += "</a>";
+				// 		str += "</div>";
+				// 	}else{
+				// 		str += "<div class='col-xs-12 entityRight'>";
+				// 		str += "<div class='entityName text-dark'>" + name + "</div>";
+				// 		str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+				// 				'<span class="col-xs-1">'+
+				// 					"<i class='fa fa-bullseye fa-stack-1x  bold text-red'></i>"+
+				// 					"<i class='fa fa-stack-1x bold' style='left : 5px; bottom : -13px; font-size: 15px; color : #000000'>"+
+				// 					levelSearchCity+"</i>"+ 
+				// 				'</span>' + o.countryCode;
+				// 				'<span></span>'
+
+				// 		str += '</div>';
+
+				// 		str += "</div>";
+				// 	}
+
+				// 	str += "</a>";
 				}
                               
               }); //end each

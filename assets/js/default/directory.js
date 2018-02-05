@@ -209,58 +209,9 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               }
               //var city, postalCode = "";
               //Prepare footer and header of directory 
-              if(typeof search.count != "undefined" && search.count || indexMin==0 ){
-                    headerStr = '';
-                    footerStr = '';
-                    spanType = '';
-                    $.each( searchType, function(key, val){
-                      typeHeader = (val=="citoyens") ? "persons" : val;
-                      var params = headerParams[typeHeader];
-                      spanType += "<span class='text-"+params.color+"'>"+
-                                  "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
-                                "</span> ";
-                    });
-                    countHeader=0;
-                    if(search.app=="territorial"){
-                      $.each(searchCount, function(e, v){
-                        countHeader+=v;
-                      });
-                    }else{
-                      typeCount = (searchType[0]=="persons") ? "citoyens" : searchType[0];
-                      countHeader=searchCount[typeCount];
-                    }
-                    resultsStr=trad.result;
-                    if(countHeader > 1)
-                      resultsStr=trad.results;
               
-                    headerStr +='<h5>'+
-                          "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
-                          '<small>'+
-                            spanType+
-                          '</small>'+
-                      '</h5>';
-                    if(typeof pageCount != "undefined" && pageCount && search.app !="territorial"){
-                      footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
-                    }
-                    if(search.app != "territorial" || data < 30){
-                      footerStr +='<div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">'+
-                        '<button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" '+
-                          'data-target="#dash-create-modal" data-toggle="modal" '+
-                          'data-toggle="tooltip" data-placement="top" '+ 
-                          'title=""> '+
-                            '<i class="fa fa-times"></i>'+
-                        '</button>'+
-                        '<h5 class="text-center letter-green margin-top-25">Create a page</h5>'+
-                        '<h5 class="text-center">'+
-                          '<small>'+
-                            spanType+
-                          '</small>'+
-                        '</h5>'+
-                      '</div>'; 
-                    }
-                    $(".headerSearchContainer").html(headerStr);
-                    $(".footerSearchContainer").html(footerStr);
-              }
+              $(".headerSearchContainer").html(directory.headerHtml(indexMin));
+              $(".footerSearchContainer").html(directory.footerHtml());
               str = "";
               // Algorithm when searching in multi collections (scroll algo by updated)
               if(search.app=="territorial")
@@ -275,14 +226,15 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 showMap(false);
                   $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
                   if(indexMin == 0){
-                    //ajout du footer   
-                    var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
-                    if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
-                    str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
-                    str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
-                    str += "</div>";
+                    //ajout du footer
+                    str=directory.endOfResult(true);   
+                  //  var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
+                   // if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
+                    //str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
+                    //str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
+                    //str += "</div>";
                     $("#dropdown_search").html(str);
-                    $("#searchBarText").focus();
+                    //$("#searchBarText").focus();
                   }
                      
               }
@@ -314,6 +266,13 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 }else{
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").html(str);
+                    if(search.app =="territorial" && Object.keys(data).length < 30){
+                      //formAdd=directory
+                      str=directory.endOfResult();   
+                      $("#dropdown_search").append(str);
+                      //  $("#dropdown_search").append(trad.nomoreresult);
+                    }
+                   
                     //alert();
                     if(search.app=="agenda"){
                       //alert();
@@ -516,7 +475,19 @@ function initPageTable(number){
   }
 
   function initBtnLink(){ mylog.log("initBtnLink");
-      
+    $(".main-btn-create").off().on("click",function(){
+        currentKFormType = $(this).data("ktype");
+        var type = $(this).data("type");
+
+        if(type=="all"){
+            $("#dash-create-modal").modal("show");
+            return;
+        }
+
+        if(type=="events") type="event";
+        if(type=="vote") type="entry";
+        dyFObj.openForm(type);
+    });
     $('.tooltips').tooltip();
     $(".dirStar").each(function(i,el){
       collection.applyColor($(el).data('type'),$(el).data('id'));
@@ -1999,97 +1970,181 @@ var directory = {
       str += "</div>";
       return str;
     },
+	// ********************************
+	// CITY DIRECTORY PANEL
+	// ********************************
+	cityPanelHtml : function(params){
+		mylog.log("-----------cityPanelHtml", params);
+		var domContainer= "#filter-scopes-menu .scopes-container";
+		valuesScopes = {
+			city : params._id.$id,
+			cityName : params.name,
+			cp : params.cp,
+			country : params.country,
+			allCP : params.allCP,
+			level1 : params.level1,
+			level1Name : params.level1Name
+		}
+		typeSearchCity="city";
+		levelSearchCity="city";
+
+		if( notEmpty( params.nameCity ) ){
+			valuesScopes.name = params.nameCity ;
+		}
+
+		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
+			valuesScopes.level4 = params.level4 ;
+			valuesScopes.level4Name = params.level4Name ;
+		}
+		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
+			valuesScopes.level3 = params.level3 ;
+			valuesScopes.level3Name = params.level3Name ;
+		}
+		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
+			valuesScopes.level2 = params.level2 ;
+			valuesScopes.level2Name = params.level2Name ;
+		}
+		str = "";
+		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
+			str += "data-scope-value='" + params._id.$id  + "' " + 
+					"data-scope-name='" + params.name + "' " +
+					"data-scope-level='"+levelSearchCity+"' " +
+					"data-scope-type='"+typeSearchCity+"' " +
+					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+					"data-scope-notsearch='"+true+"' "+
+					"data-append-container='"+domContainer+"' ";
+		str += ">";
+			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
+				str += "<div class='padding-10 informations'>";
+					str += "<div class='entityRight no-padding'>";
+						// params.hash = ""; //#main-col-search";
+						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
+						// params.onclickCp = 'setScopeValue($(this));';
+						// params.target = "";
+						// params.dataId = params.name; 
+
+						var title =  "<span> " + params.name + " " + (notEmpty(params.cp) ? " - " +  params.cp : "") +"</span>" ;
+
+						var subTitle = "";
+						if( notEmpty( params.level4Name ) )
+							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
+						if( notEmpty( params.level3Name ) )
+							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
+						if( notEmpty( params.level2Name ) )
+							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
+
+	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.country ;
+						str += " <span class='entityName letter-red '>"+
+									'<span class="col-xs-1">'+
+									"<i class='fa fa-university'></i> </span> " + title + 
+									"<br/>"+
+									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
+								"</span>";
+
+
+					str += "</div>";
+				str += "</div>";              
+			str += "</div>";
+		str += "</a>";
+	return str;
+    },
     // ********************************
-    // CITY DIRECTORY PANEL
-    // ********************************
-    cityPanelHtml : function(params){
-        if(directory.dirLog) mylog.log("-----------cityPanelHtml");
-        mylog.log("-----------cityPanelHtml", params);
-        str = "";  
-        str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 margin-bottom-10 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
-        str +=    "<div class='searchEntity'>";
+	// Zone DIRECTORY PANEL
+	// ********************************
+	zonePanelHtml : function(params){
+		mylog.log("-----------cityPanelHtml", params);
+		var domContainer= "#filter-scopes-menu .scopes-container";
+		valuesScopes = {
+			id : params._id.$id,
+			name : params.name,
+			country : params.countryCode,
+			level : params.level
+		}
 
-                if(params.updated != null)
-                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["actif"]+" </span>" + params.updated + "</div>";
+		if(params.level.indexOf("1") >= 0){
+			typeSearchCity="level1";
+			levelSearchCity="1";
+			valuesScopes.numLevel = 1;
+		}else if(params.level.indexOf("2") >= 0){
+			typeSearchCity="level2";
+			levelSearchCity="2";
+			valuesScopes.numLevel = 2;
+		}else if(params.level.indexOf("3") >= 0){
+			typeSearchCity="level3";
+			levelSearchCity="3";
+			valuesScopes.numLevel = 3;
+		}else if(params.level.indexOf("4") >= 0){
+			typeSearchCity="level4";
+			levelSearchCity="4";
+			valuesScopes.numLevel = 4;
+		}
+		if(notNull(typeSearchCity))
+			valuesScopes.type = typeSearchCity;				
 
-                str += "<div class='padding-10 informations'>";
-                      
-                    str += "<div class='entityRight no-padding'>";
-                    
-                    //params.hash = "#city.detail.insee."+params.insee+".postalCode."+params.cp;           
-                    params.hash = ""; //#main-col-search";
-                    params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
-                    params.onclickCp = 'setScopeValue($(this));';
-                    params.target = "";
-                    params.dataId = params.name; 
-                    //params.fullLocality =  "<b>" +params.name + "</b> - " +  params.cp+ "<br>" +  params.regionName;
+		mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
 
-                    params.fullLocality =  "<b>" + params.name + "</b> " + (notEmpty(params.cp) ? " - " +  params.cp : "") + " ( " + params.country + " ) " ;
-                    if( notEmpty( params.level4Name ) )
-                      params.fullLocality += "<br/>" +  params.level4Name ;
-                    else if( notEmpty( params.level3Name ) )
-                      params.fullLocality += "<br/>" +  params.level3Name ;
-                    else if( notEmpty( params.level2Name ) )
-                      params.fullLocality += "<br/>" +  params.level2Name ;
+		if( notEmpty( params.level1 ) && valuesScopes.id != params.level1){
+			mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
+			valuesScopes.level1 = params.level1 ;
+			valuesScopes.level1Name = params.level1Name ;
+		}
 
+		var subTitle = "";
 
-                    var thisLocality = "";
-                    if(params.fullLocality != "" && params.fullLocality != " ")
-                         thisLocality = '<span data-id="' + params.dataId + '"' + "  class='margin-bottom-5 entityName letter-red lbh add2fav'>"+
-                                          "<i class='fa fa-university'></i> " + params.fullLocality + 
-                                        "</span>";
-                    else thisLocality = "<br>";
-                    
-                    str += thisLocality;
+		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
+			valuesScopes.level4 = params.level4 ;
+			valuesScopes.level4Name = params.level4Name ;
+			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
+		}
+		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
+			valuesScopes.level3 = params.level3 ;
+			valuesScopes.level3Name = params.level3Name ;
+			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
+		}
+		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
+			valuesScopes.level2 = params.level2 ;
+			valuesScopes.level2Name = params.level2Name ;
+			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
+		}
 
-                    
-                    str += "</div>";
-                  str += "</div>";
-      
-                mylog.log("-----------cityPanelHtml params", params); 
+		str = "";
+		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
+			str += "data-scope-value='" + params._id.$id  + "' " + 
+					"data-scope-name='" + params.name + "' " +
+					"data-scope-level='"+levelSearchCity+"' " +
+					"data-scope-type='"+typeSearchCity+"' " +
+					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+					"data-scope-notsearch='"+true+"' "+
+					"data-append-container='"+domContainer+"' ";
+		str += ">";
+			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
+				str += "<div class='padding-10 informations'>";
+					str += "<div class='entityRight no-padding'>";
+						// params.hash = ""; //#main-col-search";
+						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
+						// params.onclickCp = 'setScopeValue($(this));';
+						// params.target = "";
+						// params.dataId = params.name; 
 
-                var valuesScopes = {
-                  city : params.id,
-                  cityName : params.name,
-                  cp : params.cp,
-                  country : country,
-                  level1 : params.level1,
-                  level1Name : params.level1Name
-                }
+						var title =  "<span>" + params.name + "</span>" ;
+	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.countryCode;
+						str += " <span class='entityName letter-red'>"+
+									'<span class="col-xs-1">'+
+										"<i class='fa fa-bullseye fa-stack-1x  bold text-red'></i>"+
+										"<i class='fa fa-stack-1x bold' style='left : 5px; bottom : -14px; font-size: 15px; color : #000000'>"+
+											levelSearchCity+
+										"</i>"+ 
+									"</span> "+
+									title + 
+									"<br/>"+
+									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
+								"</span>";
 
-                if( notEmpty( params.level4 ) ){
-                  valuesScopes.level4 = params.level4 ;
-                  valuesScopes.level4Name = params.level4Name ;
-                }
-                if( notEmpty( params.level3 ) ){
-                  valuesScopes.level3 = params.level3 ;
-                  valuesScopes.level3Name = params.level3Name ;
-                }
-                if( notEmpty( params.level2 ) ){
-                  valuesScopes.level2 = params.level2 ;
-                  valuesScopes.level2Name = params.level2Name ;
-                }
-
-                if( notEmpty( params.cities ) ){
-                  valuesScopes.cities = params.cities ;
-                }
-
-                if( notEmpty( params.postalCodes ) ){
-                  valuesScopes.postalCodes = params.postalCodes ;
-                }
-                str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
-                                "data-scope-value='" + params.id  + "' " + 
-                                "data-scope-name='" + params.name + "' " +
-                                "data-scope-level='city' " +
-                                "data-scope-type='city' " +
-                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-search='"+false+"' " +
-                                ">"+
-                                    "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
-                                "</button>";
-                str += "</div>";                
-              str += "</div>";
-              return str;
+					str += "</div>";
+				str += "</div>";              
+			str += "</div>";
+		str += "</a>";
+	return str;
     },
     // ********************************
     // URL DIRECTORY PANEL
@@ -2526,6 +2581,125 @@ var directory = {
 
       str += "</div>";
       return str;
+    },
+    searchTypeHtml : function(){
+      spanType="";
+      $.each( searchType, function(key, val){
+            typeHeader = (val=="citoyens") ? "persons" : val;
+            var params = headerParams[typeHeader];
+            spanType += "<span class='text-"+params.color+"'>"+
+                        "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
+                      "</span> ";
+      });
+      return spanType;
+    },
+    endOfResult : function(noResult){
+      //Event scroll and all searching
+      $("#btnShowMoreResult").remove();
+      scrollEnd=true;
+      //msg specific for end search
+      match= (search.value != "") ? "match" : "";
+      msg= (notNull(noResult) && noResult) ? trad["noresult"+match] : trad["nomoreresult"+match];
+      contributeMsg="<span class='italic'><small>"+trad.contributecommunecterslogan+"</small><br/></span>";
+      if(userId !=""){
+        contributeMsg+='<a href="javascript:;" class="text-green-k tooltips" '+
+            'data-target="#dash-create-modal" data-toggle="modal" '+
+            'data-toggle="tooltip" data-placement="top" '+ 
+            'title=""> '+
+              '<i class="fa fa-plus-circle"></i> '+trad.sharesomething+
+          '</a>';
+      }else{
+        contributeMsg+='<a href="javascript:;" class="letter-green margin-left-10" data-toggle="modal" data-target="#modalLogin">'+
+                                    '<i class="fa fa-sign-in"></i> '+trad.connectyou+
+                            '</a>';
+      }
+      str = '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
+      str += "<h3 style='margin-bottom:10px; margin-left:15px;border-left: 2px solid lightgray;' class='text-dark padding-20'><small>"+msg+"<br/>"+contributeMsg+"</h3></small><br/>";
+      str += "</div>";
+      return str;
+    },
+    headerHtml : function(indexMin){
+      headerStr = '';
+      if(typeof search.count != "undefined" && search.count || indexMin==0 ){          
+          countHeader=0;
+          if(search.app=="territorial"){
+            $.each(searchCount, function(e, v){
+              countHeader+=v;
+            });
+          }else{
+            typeCount = (searchType[0]=="persons") ? "citoyens" : searchType[0];
+            countHeader=searchCount[typeCount];
+          }
+          resultsStr = (countHeader > 1) ? trad.results : trad.result;
+          headerStr +='<h5>'+
+              "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
+              '<small>'+
+                directory.searchTypeHtml()+
+              '</small>'+
+            '</h5>';      
+      }
+      return headerStr;
+    },
+    footerHtml : function(){
+      footerStr = '';
+      // GET PAGINATION STRUCTURE
+      if(search.app != "territorial"){
+        if(typeof pageCount != "undefined" && pageCount)
+          footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
+        if(userId != ""){
+          if(search.app=="search" && searchType[0] !="news"){
+            addType=searchType[0];
+            typeForm =addType;
+            if(addType=="persons"){
+              btn='<a href="#element.invite" class="btn text-yellow lbhp tooltips padding-5 no-margin" '+
+                  'data-toggle="tooltip" data-placement="top" '+ 
+                'title=""> '+
+                  '<h5 class="no-margin">'+
+                    '<i class="fa fa-user"></i> '+trad.invitesomeone+
+                  '</h5>'+
+              '</a>';
+            }else{
+              subData="";
+              if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
+                 subData="data-ktype='"+addType+"' ";
+                 typeForm="organization";
+              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classified")
+                typeForm=typeObj[typeObj[addType].sameAs].ctrl;
+              btn='<button class="btn main-btn-create text-'+headerParams[addType].color+' tooltips" padding-5 no-margin '+
+                'data-type="'+typeForm+'" '+
+                subData+
+                'data-toggle="tooltip" data-placement="top" '+ 
+                'title="" style="border: none;background-color: white;"> '+
+                '<h5 class="no-margin">'+
+                  '<i class="fa fa-plus-circle"></i> '+trad["add"+addType]+
+                '</h5>'+
+              '</button>';
+            }
+            footerStr +='<div class="col-md-12 col-sm-12 col-xs-12 padding-5">'+
+              btn;
+            '</div>';
+          } /*else{
+          btn='<button class="btn btn-default btn-circle-1 btn-create-page bg-green-k text-white tooltips" '+
+            'data-target="#dash-create-modal" data-toggle="modal" '+
+            'data-toggle="tooltip" data-placement="top" '+ 
+            'title="Create a page"> '+
+              '<i class="fa fa-times"></i>'+
+          '</button>';
+        }*/ 
+        }
+        else{
+         '<div class="col-md-12 col-sm-12 col-xs-12 padding-5 text-center">'+
+              '<small>'+
+                '<span>Connect you to share your knowledge</span>'+ 
+              //  directory.searchTypeHtml()+
+              '</small>'+
+            '</h5>'+
+          '</div>';  
+        }
+      }else{
+        footerStr="<span id='btnShowMoreResult'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span>";
+      }
+      return footerStr;
     },
     showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
         //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');

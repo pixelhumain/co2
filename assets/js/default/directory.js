@@ -2035,8 +2035,8 @@ var directory = {
 
 	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.country ;
 						str += " <span class='entityName letter-red '>"+
-									'<span class="col-xs-1">'+
-									"<i class='fa fa-university'></i> </span> " + title + 
+									//'<span class="col-xs-1">'+
+									"<i class='fa fa-university'></i>" + title + 
 									"<br/>"+
 									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
 								"</span>";
@@ -2129,12 +2129,12 @@ var directory = {
 						var title =  "<span>" + params.name + "</span>" ;
 	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.countryCode;
 						str += " <span class='entityName letter-red'>"+
-									'<span class="col-xs-1">'+
-										"<i class='fa fa-bullseye fa-stack-1x  bold text-red'></i>"+
-										"<i class='fa fa-stack-1x bold' style='left : 5px; bottom : -14px; font-size: 15px; color : #000000'>"+
+									//'<span class="col-xs-1">'+
+										"<i class='fa fa-bullseye bold text-red'></i>"+
+										"<i class='fa bold text-dark'>"+
 											levelSearchCity+
-										"</i>"+ 
-									"</span> "+
+										"</i> "+ 
+									//"</span> "+
 									title + 
 									"<br/>"+
 									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+

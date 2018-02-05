@@ -815,6 +815,7 @@ function bindScopesNewsEvent(news){
 			$(this).parent().remove();
 		}
 	});
+	
 	$("#multiscopes-news-btn, #communexion-news-btn").off().on("click", function(){
 		$(".scopes-btn-news").removeClass("active");
 		$(this).addClass("active");

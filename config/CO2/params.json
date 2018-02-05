@@ -152,7 +152,7 @@
 			"emptyContextData" : false
 		},
 
-		"#ressource":
+		"#ressources":
 		    {"inMenu" : true, 
 		    "useHeader" : true, 
 		    "open" : true, 

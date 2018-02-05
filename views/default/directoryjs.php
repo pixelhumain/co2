@@ -221,7 +221,10 @@
           <!-- <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> -->
         </div>    
         
-        <?php if($typeSelected == "place"){ ?>
+        <?php 
+//echo "<h1>".$typeSelected."</h1>" ;
+//echo "<h1>".$_GET["app"]."</h1>" ;
+        if($typeSelected == "place"){ ?>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
                   data-type="classified" data-type-anc=""  data-key="all">
@@ -362,7 +365,7 @@
             <hr class="hidden-sm hidden-md hidden-lg" data-type="ressources">
           </div>
         <?php } ?>
-        <?php } else if( $typeSelected == "vote" ){?>
+        <?php } else if ( $typeSelected == "vote" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
             <button class="btn text-white bg-dark btn-open-filliaire">
@@ -391,7 +394,7 @@
             </button>
           </div>
 
-        <?php } else if( $typeSelected == "events" ){?>
+        <?php } else if ( $typeSelected == "events" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <!--<button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
@@ -411,8 +414,9 @@
               <?php } ?>
           </div>
 
-        <?php }else if($typeSelected == "classified"){ 
+        <?php } else if ($typeSelected == "classified" || $typeSelected == "ressources" ){ 
           if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>
+
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-right subsub classifiedFilters" id="sub-menu-left">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
             <hr> -->
@@ -421,16 +425,21 @@
             </h4>
             <hr>
             <?php 
-                $classified = CO2::getModuleContextList("classifieds","categories");
+                $dmod = ($typeSelected == "classified") ? $typeSelected."s" : $typeSelected;
+                $classified = CO2::getModuleContextList($dmod,"categories");
+
                 foreach ($classified['filters'] as $key => $cat) {
             ?>
                 <?php if(is_array($cat)) { ?>
                   <button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1" style="margin-left:-5px;" data-keycat="<?php echo $key; ?>">
                     <i class="fa fa-<?php echo @$cat["icon"]; ?> hidden-xs"></i> <?php echo Yii::t("category",$key); ?>
                   </button><br>
-                  <?php foreach ($cat["subcat"] as $key2 => $cat2) { ?>
-                    <button class="btn btn-default text-azure margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $cat2; ?>">
-                      <i class="fa fa-angle-right"></i> <?php echo Yii::t("category",$cat2); ?>
+                  <?php foreach (@$cat["subcat"] as $key2 => $cat2) { 
+                    $lbl2 = (isset($cat2["label"])) ? $cat2["label"] : $cat2 ;
+                    
+                    ?>
+                    <button class="btn btn-default text-azure margin-bottom-5 margin-left-15 hidden keycat keycat-<?php echo $key; ?>" data-categ="<?php echo $key; ?>" data-keycat="<?php echo $lbl2; ?>">
+                      <i class="fa fa-angle-right"></i> <?php echo Yii::t("category",$lbl2); ?>
                     </button><br class="hidden">
                   <?php } ?>
                 <?php } ?>
@@ -451,7 +460,7 @@
             </button> -->
             <?php 
                 $currentSection = 1;
-                foreach ($classified["sections"] as $key => $section) { ?>
+                foreach ($classified["sections"] as $key => $section) { /*?>
                   <!-- <div class="col-md-2 col-sm-4 col-xs-6 no-padding">
                     <button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" 
                             data-type-anc="<?php echo @$section["label"]; ?>" data-key="<?php echo @$section["key"]; ?>" 
@@ -460,7 +469,7 @@
                       <i class="fa fa-<?php echo $section["icon"]; ?> fa-2x hidden-xs"></i><br><?php echo Yii::t("category",$section["labelFront"]); ?>
                     </button>
                   </div> -->
-            <?php } ?>  
+            <?php */} ?>  
              <!-- <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> -->
           </div>
 
@@ -506,6 +515,7 @@
           <!-- </div> -->
 
         <?php } else{ 
+
           $service = CO2::getContextList("service");
           ?> 
           <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub no-padding shadow2" id="sub-menu-left">
@@ -584,7 +594,7 @@
           } 
         ?>
         <?php $col = ( !in_array($typeSelected, 
-                       array("classified","products","services","circuits","events","vote","all","places") )) ? 9 : 8; ?>
+                       array("classified","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 8; ?>
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
@@ -595,9 +605,6 @@
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
           <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
           <?php } ?>
-        <?php } ?>
-        <?php if(@$_GET["page"] && in_array(array("search","social","agenda","annonces","ressources"), $_GET["page"])){ ?> 
-          <!-- <div class="pageTable col-xs-12 padding-20 text-center"></div> -->
         <?php } ?>
         </div>
   </div>

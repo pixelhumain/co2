@@ -1970,97 +1970,181 @@ var directory = {
       str += "</div>";
       return str;
     },
+	// ********************************
+	// CITY DIRECTORY PANEL
+	// ********************************
+	cityPanelHtml : function(params){
+		mylog.log("-----------cityPanelHtml", params);
+		var domContainer= "#filter-scopes-menu .scopes-container";
+		valuesScopes = {
+			city : params._id.$id,
+			cityName : params.name,
+			cp : params.cp,
+			country : params.country,
+			allCP : params.allCP,
+			level1 : params.level1,
+			level1Name : params.level1Name
+		}
+		typeSearchCity="city";
+		levelSearchCity="city";
+
+		if( notEmpty( params.nameCity ) ){
+			valuesScopes.name = params.nameCity ;
+		}
+
+		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
+			valuesScopes.level4 = params.level4 ;
+			valuesScopes.level4Name = params.level4Name ;
+		}
+		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
+			valuesScopes.level3 = params.level3 ;
+			valuesScopes.level3Name = params.level3Name ;
+		}
+		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
+			valuesScopes.level2 = params.level2 ;
+			valuesScopes.level2Name = params.level2Name ;
+		}
+		str = "";
+		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
+			str += "data-scope-value='" + params._id.$id  + "' " + 
+					"data-scope-name='" + params.name + "' " +
+					"data-scope-level='"+levelSearchCity+"' " +
+					"data-scope-type='"+typeSearchCity+"' " +
+					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+					"data-scope-notsearch='"+true+"' "+
+					"data-append-container='"+domContainer+"' ";
+		str += ">";
+			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
+				str += "<div class='padding-10 informations'>";
+					str += "<div class='entityRight no-padding'>";
+						// params.hash = ""; //#main-col-search";
+						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
+						// params.onclickCp = 'setScopeValue($(this));';
+						// params.target = "";
+						// params.dataId = params.name; 
+
+						var title =  "<span> " + params.name + " " + (notEmpty(params.cp) ? " - " +  params.cp : "") +"</span>" ;
+
+						var subTitle = "";
+						if( notEmpty( params.level4Name ) )
+							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
+						if( notEmpty( params.level3Name ) )
+							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
+						if( notEmpty( params.level2Name ) )
+							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
+
+	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.country ;
+						str += " <span class='entityName letter-red '>"+
+									'<span class="col-xs-1">'+
+									"<i class='fa fa-university'></i> </span> " + title + 
+									"<br/>"+
+									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
+								"</span>";
+
+
+					str += "</div>";
+				str += "</div>";              
+			str += "</div>";
+		str += "</a>";
+	return str;
+    },
     // ********************************
-    // CITY DIRECTORY PANEL
-    // ********************************
-    cityPanelHtml : function(params){
-        if(directory.dirLog) mylog.log("-----------cityPanelHtml");
-        mylog.log("-----------cityPanelHtml", params);
-        str = "";  
-        str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 margin-bottom-10 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
-        str +=    "<div class='searchEntity'>";
+	// Zone DIRECTORY PANEL
+	// ********************************
+	zonePanelHtml : function(params){
+		mylog.log("-----------cityPanelHtml", params);
+		var domContainer= "#filter-scopes-menu .scopes-container";
+		valuesScopes = {
+			id : params._id.$id,
+			name : params.name,
+			country : params.countryCode,
+			level : params.level
+		}
 
-                if(params.updated != null)
-                  str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["actif"]+" </span>" + params.updated + "</div>";
+		if(params.level.indexOf("1") >= 0){
+			typeSearchCity="level1";
+			levelSearchCity="1";
+			valuesScopes.numLevel = 1;
+		}else if(params.level.indexOf("2") >= 0){
+			typeSearchCity="level2";
+			levelSearchCity="2";
+			valuesScopes.numLevel = 2;
+		}else if(params.level.indexOf("3") >= 0){
+			typeSearchCity="level3";
+			levelSearchCity="3";
+			valuesScopes.numLevel = 3;
+		}else if(params.level.indexOf("4") >= 0){
+			typeSearchCity="level4";
+			levelSearchCity="4";
+			valuesScopes.numLevel = 4;
+		}
+		if(notNull(typeSearchCity))
+			valuesScopes.type = typeSearchCity;				
 
-                str += "<div class='padding-10 informations'>";
-                      
-                    str += "<div class='entityRight no-padding'>";
-                    
-                    //params.hash = "#city.detail.insee."+params.insee+".postalCode."+params.cp;           
-                    params.hash = ""; //#main-col-search";
-                    params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
-                    params.onclickCp = 'setScopeValue($(this));';
-                    params.target = "";
-                    params.dataId = params.name; 
-                    //params.fullLocality =  "<b>" +params.name + "</b> - " +  params.cp+ "<br>" +  params.regionName;
+		mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
 
-                    params.fullLocality =  "<b>" + params.name + "</b> " + (notEmpty(params.cp) ? " - " +  params.cp : "") + " ( " + params.country + " ) " ;
-                    if( notEmpty( params.level4Name ) )
-                      params.fullLocality += "<br/>" +  params.level4Name ;
-                    else if( notEmpty( params.level3Name ) )
-                      params.fullLocality += "<br/>" +  params.level3Name ;
-                    else if( notEmpty( params.level2Name ) )
-                      params.fullLocality += "<br/>" +  params.level2Name ;
+		if( notEmpty( params.level1 ) && valuesScopes.id != params.level1){
+			mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
+			valuesScopes.level1 = params.level1 ;
+			valuesScopes.level1Name = params.level1Name ;
+		}
 
+		var subTitle = "";
 
-                    var thisLocality = "";
-                    if(params.fullLocality != "" && params.fullLocality != " ")
-                         thisLocality = '<span data-id="' + params.dataId + '"' + "  class='margin-bottom-5 entityName letter-red lbh add2fav'>"+
-                                          "<i class='fa fa-university'></i> " + params.fullLocality + 
-                                        "</span>";
-                    else thisLocality = "<br>";
-                    
-                    str += thisLocality;
+		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
+			valuesScopes.level4 = params.level4 ;
+			valuesScopes.level4Name = params.level4Name ;
+			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
+		}
+		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
+			valuesScopes.level3 = params.level3 ;
+			valuesScopes.level3Name = params.level3Name ;
+			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
+		}
+		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
+			valuesScopes.level2 = params.level2 ;
+			valuesScopes.level2Name = params.level2Name ;
+			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
+		}
 
-                    
-                    str += "</div>";
-                  str += "</div>";
-      
-                mylog.log("-----------cityPanelHtml params", params); 
+		str = "";
+		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
+			str += "data-scope-value='" + params._id.$id  + "' " + 
+					"data-scope-name='" + params.name + "' " +
+					"data-scope-level='"+levelSearchCity+"' " +
+					"data-scope-type='"+typeSearchCity+"' " +
+					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
+					"data-scope-notsearch='"+true+"' "+
+					"data-append-container='"+domContainer+"' ";
+		str += ">";
+			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
+				str += "<div class='padding-10 informations'>";
+					str += "<div class='entityRight no-padding'>";
+						// params.hash = ""; //#main-col-search";
+						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
+						// params.onclickCp = 'setScopeValue($(this));';
+						// params.target = "";
+						// params.dataId = params.name; 
 
-                var valuesScopes = {
-                  city : params.id,
-                  cityName : params.name,
-                  cp : params.cp,
-                  country : country,
-                  level1 : params.level1,
-                  level1Name : params.level1Name
-                }
+						var title =  "<span>" + params.name + "</span>" ;
+	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.countryCode;
+						str += " <span class='entityName letter-red'>"+
+									'<span class="col-xs-1">'+
+										"<i class='fa fa-bullseye fa-stack-1x  bold text-red'></i>"+
+										"<i class='fa fa-stack-1x bold' style='left : 5px; bottom : -14px; font-size: 15px; color : #000000'>"+
+											levelSearchCity+
+										"</i>"+ 
+									"</span> "+
+									title + 
+									"<br/>"+
+									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
+								"</span>";
 
-                if( notEmpty( params.level4 ) ){
-                  valuesScopes.level4 = params.level4 ;
-                  valuesScopes.level4Name = params.level4Name ;
-                }
-                if( notEmpty( params.level3 ) ){
-                  valuesScopes.level3 = params.level3 ;
-                  valuesScopes.level3Name = params.level3Name ;
-                }
-                if( notEmpty( params.level2 ) ){
-                  valuesScopes.level2 = params.level2 ;
-                  valuesScopes.level2Name = params.level2Name ;
-                }
-
-                if( notEmpty( params.cities ) ){
-                  valuesScopes.cities = params.cities ;
-                }
-
-                if( notEmpty( params.postalCodes ) ){
-                  valuesScopes.postalCodes = params.postalCodes ;
-                }
-                str += "<button class='btn btn-sm btn-danger communecterSearch item-globalscope-checker' "+
-                                "data-scope-value='" + params.id  + "' " + 
-                                "data-scope-name='" + params.name + "' " +
-                                "data-scope-level='city' " +
-                                "data-scope-type='city' " +
-                                "data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-                                "data-scope-search='"+false+"' " +
-                                ">"+
-                                    "<i class='fa fa-angle-right'></i> " + trad.testAOtherCommunexion + 
-                                "</button>";
-                str += "</div>";                
-              str += "</div>";
-              return str;
+					str += "</div>";
+				str += "</div>";              
+			str += "</div>";
+		str += "</a>";
+	return str;
     },
     // ********************************
     // URL DIRECTORY PANEL

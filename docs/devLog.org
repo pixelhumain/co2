@@ -44,6 +44,9 @@
 *** Ajoute public a tout les events
 co2/datamigration/PublicEvent
 
+*** Ajout le nom des cp dans tranlates
+co2/datamigration/UpdateTranslatewithNAmeCP
+
 *** tranforme les scopes au nouveau format
 co2/datamigration/UpdateMultiScope
 

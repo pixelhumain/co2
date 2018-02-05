@@ -227,9 +227,6 @@ function bindSearchCity(){
 			//initTypeSearch("cities");
 			searchTypeGS = ["cities"];
 			startGlobalSearch(0, 30, "#filter-scopes-menu");
-			//startSearch(0, 30,  function(data){
-			// 	mylog.log("bindSearchCity", data);
-			// });
 			//$(".btn-directory-type").removeClass("active");
 		}
 	});

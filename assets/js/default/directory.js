@@ -210,8 +210,8 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
               //var city, postalCode = "";
               //Prepare footer and header of directory 
               
-              $(".headerSearchContainer").html(directory.headerHtml(indexMin));
-              $(".footerSearchContainer").html(directory.footerHtml());
+              $(".headerSearchContainer").html( directory.headerHtml(indexMin) );
+              $(".footerSearchContainer").html( directory.footerHtml() );
               str = "";
               // Algorithm when searching in multi collections (scroll algo by updated)
               if(search.app=="territorial")
@@ -1107,7 +1107,7 @@ var directory = {
 		var classType=params.type;
 		if(params.type=="events") classType="";
 		//str += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
-		str += "<div class='col-lg-4 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+		str += "<div class='col-lg-3 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
 		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 
 
@@ -1615,7 +1615,7 @@ var directory = {
       if(directory.dirLog) mylog.log("----------- classifiedPanelHtml",params,params.name);
 
       str = "";  
-      str += "<div class='col-lg-4 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-lg-3 col-md-3 col-sm-6 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
       
      // directory.colPos = directory.colPos == "left" ? "right" : "left";

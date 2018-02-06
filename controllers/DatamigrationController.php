@@ -3780,5 +3780,223 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 		echo $nbelement." trnalate mis a jours / ";
 	}
+
+	public function actionBatchCorrectionLevel($id = null) {
+		ini_set('memory_limit', '-1');
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) && !empty($id) ){
+			$nbelement = 0 ;
+			$nbCity = 0;
+			$nbN = 0;
+
+			$zone = PHDB::findOneById( Zone::COLLECTION, $id);
+			$where = array();
+			$whereElt = array();
+
+			if(in_array("4", $zone["level"])){
+				$newLevel = "4";
+				$where["level4"] = $id;
+				$whereElt["address.level4"] = $id;
+				$whereNews = array('$or' => array(
+									array("scope.localities.level4" => $id),
+									array('$and' => array(
+										array("scope.localities.parentId" => $id),
+										array("scope.localities.parentType" => Zone::COLLECTION),
+									))
+							));
+
+				if(!empty($zone["level3"])){
+					$set["level3"] = $zone["level3"];
+					$set["level3Name"] = $zone["level3Name"];
+					$setElt["address.level3"] = $zone["level3"];
+					$setElt["address.level3Name"] = $zone["level3Name"];
+				}
+				
+				if(!empty($zone["level2"])){
+					$set["level2"] = $zone["level2"];
+					$set["level2Name"] = $zone["level2Name"];
+					$setElt["address.level2"] = $zone["level2"];
+					$setElt["address.level2Name"] = $zone["level2Name"];
+				}
+
+				if(!empty($zone["level1"])){
+					$set["level1"] = $zone["level1"];
+					$set["level1Name"] = $zone["level1Name"];
+					$setElt["address.level1"] = $zone["level1"];
+					$setElt["address.level1Name"] = $zone["level1Name"];
+				}
+
+			}
+			else if(in_array("3", $zone["level"])){
+				$newLevel = "3";
+				$where["level3"] = $id;
+				$whereElt["address.level3"] = $id;
+				$whereNews = array('$or' => array(
+									array("scope.localities.level3" => $id),
+									array('$and' => array(
+										array("scope.localities.parentId" => $id),
+										array("scope.localities.parentType" => Zone::COLLECTION),
+									))
+							));
+				if(!empty($zone["level2"])){
+					$set["level2"] = $zone["level2"];
+					$set["level2Name"] = $zone["level2Name"];
+					$setElt["address.level2"] = $zone["level2"];
+					$setElt["address.level2Name"] = $zone["level2Name"];
+				}
+				
+				if(!empty($zone["level1"])){
+					$set["level1"] = $zone["level1"];
+					$set["level1Name"] = $zone["level1Name"];
+					$setElt["address.level1"] = $zone["level1"];
+					$setElt["address.level1Name"] = $zone["level1Name"];
+				}
+			}
+			else if(in_array("2", $zone["level"])){
+				$newLevel = "2";
+				$where["level2"] = $id;
+				$whereElt["address.level2"] = $id;
+				$whereNews = array('$or' => array(
+									array("scope.localities.level2" => $id),
+									array('$and' => array(
+										array("scope.localities.parentId" => $id),
+										array("scope.localities.parentType" => Zone::COLLECTION),
+									))
+							));
+				
+				if(!empty($zone["level1"])){
+					$set["level1"] = $zone["level1"];
+					$set["level1Name"] = $zone["level1Name"];
+					$setElt["address.level1"] = $zone["level1"];
+					$setElt["address.level1Name"] = $zone["level1Name"];
+				}
+			}
+
+			if(!empty($zone) && !empty($where) && !empty($whereElt)){
+				// $cities = PHDB::find( City::COLLECTION, $where);
+
+				// if(!empty($cities )){
+				// 	foreach ($cities as $keyC => $city) {
+				// 		//echo $keyC." : ".$city["name"]."<br/>";
+				// 		$nbCity++;
+
+				// 		$res = PHDB::update(City::COLLECTION, 
+				// 							array("_id"=>new MongoId($keyC)),
+				// 							array('$set' => $set)
+				// 					);
+				// 	}
+				// }
+
+				// $types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
+
+				// foreach ($types as $keyType => $type) {
+				// 	$elts = PHDB::find($type, $whereElt );
+				// 	echo"**************".$type."**************<br/>";
+				// 	if(!empty($elts)){
+
+				// 		foreach ($elts as $keyE => $elt) {
+				// 			echo $keyE." : ".$elt["name"]."<br/>";
+				// 			$nbelement++;
+				// 			$newAd = $elt["address"];
+				// 			if($newLevel == "4"){
+				// 				if(!empty($zone["level3"])){
+				// 					$newAd["level3"] = $zone["level3"];
+				// 					$newAd["level3Name"] = $zone["level3Name"];
+				// 				}
+				// 				if(!empty($zone["level2"])){
+				// 					$newAd["level2"] = $zone["level2"];
+				// 					$newAd["level2Name"] = $zone["level2Name"];
+				// 				}
+				// 				if(!empty($zone["level1"])){
+				// 					$newAd["level1"] = $zone["level1"];
+				// 					$newAd["level1Name"] = $zone["level1Name"];
+				// 				}
+				// 			}
+							
+				// 			if($newLevel == "3"){
+				// 				if(!empty($zone["level2"])){
+				// 					$newAd["level2"] = $zone["level2"];
+				// 					$newAd["level2Name"] = $zone["level2Name"];
+				// 				}
+				// 				if(!empty($zone["level1"])){
+				// 					$newAd["level1"] = $zone["level1"];
+				// 					$newAd["level1Name"] = $zone["level1Name"];
+				// 				}
+				// 			}
+
+				// 			if($newLevel == "2"){
+				// 				if(!empty($zone["level1"])){
+				// 					$newAd["level1"] = $zone["level1"];
+				// 					$newAd["level1Name"] = $zone["level1Name"];
+				// 				}
+				// 			}
+				// 			$setElt = array("address" => $newAd);
+
+				// 			$res = PHDB::update($type, 
+				// 							array("_id"=>new MongoId($keyE)),
+				// 							array('$set' => $setElt)
+				// 					);
+				// 		}
+				// 	}
+				// }
+
+				echo"**************NEWS**************<br/>";
+				$news = PHDB::find( News::COLLECTION, $whereNews);
+
+				if(!empty($news )){
+					foreach ($news as $keyN => $new) {
+						echo $keyN." : ".$new["text"]."<br/>";
+
+						if(!empty($new["scope"]["localities"])){
+							$loc = array();
+							foreach ($new["scope"]["localities"] as $key => $value) {
+								if(	( !empty($value["level".$newLevel]) && $value["level".$newLevel] == $id ) ||
+									( !empty($value["parentId"]) && !empty($value["parentType"]) && 
+										$value["parentId"] == $id && $value["parentType"] == Zone::COLLECTION )) {
+									if($newLevel == "4"){
+										if(!empty($zone["level3"]))
+											$value["level3"] = $zone["level3"];
+										if(!empty($zone["level2"]))
+											$value["level2"] = $zone["level2"];
+										if(!empty($zone["level1"]))
+											$value["level1"] = $zone["level1"];
+									}
+									
+									if($newLevel == "3"){
+										if(!empty($zone["level2"]))
+											$value["level2"] = $zone["level2"];
+										if(!empty($zone["level1"]))
+											$value["level1"] = $zone["level1"];
+									}
+
+									if($newLevel == "2"){
+										if(!empty($zone["level1"]))
+											$value["level1"] = $zone["level1"];
+									}
+
+									$loc[] = $value;
+								}
+							}
+							$setNew["scope"] = $new["scope"] ;
+							var_dump($setNew);
+							$setNew["scope"]["localities"] = $loc;
+							
+							echo "<br/>";
+							$res = PHDB::update( News::COLLECTION, 
+												array("_id"=>new MongoId($keyN)),
+												array('$set' => $setNew));
+							$nbN++;
+						}
+						
+					}
+				}
+			}
+			echo  "NB city mis à jours: " .$nbCity."<br>" ;
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+			echo  "NB new mis à jours: " .$nbN."<br>" ;
+		}else{
+			echo "here";
+		}
+	}
 }
+
 

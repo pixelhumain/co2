@@ -797,13 +797,15 @@ function bindSearchOnNews(){
     });
 }
 function bindScopesNewsEvent(news){
+
 	$(".manageMultiscopes").off().on("click", function(){
 		addScope=$(this).data("add");
 		scopeValue=$(this).data("scope-value");
+		key=$(this).data("scope-key");
 		if(addScope){
-			newScope=myScopes[myScopes.type][scopeValue];
+			newScope=myScopes[myScopes.type][key];
 			newScope.active=true;
-			newsScopes[scopeValue] = newScope;
+			newsScopes[key] = newScope;
 			$(this).attr("data-add",false).attr("data-original-title","Remove");
 			$(this).find("i").removeClass("fa-plus-circle").addClass("fa-times-circle");
 			pushHtml=$(this).parent().get();
@@ -811,10 +813,12 @@ function bindScopesNewsEvent(news){
 			$("#content-added-scopes-container").append(pushHtml);
 			$(".form-create-news-container .form-actions .addplacesplease").remove();
 		}else{
-			delete newsScopes[scopeValue];
+			mylog.log("manageMultiscopes remove", key, newsScopes);
+			delete newsScopes[key];
 			$(this).parent().remove();
 		}
 	});
+	
 	$("#multiscopes-news-btn, #communexion-news-btn").off().on("click", function(){
 		$(".scopes-btn-news").removeClass("active");
 		$(this).addClass("active");

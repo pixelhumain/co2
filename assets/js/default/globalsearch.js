@@ -33,7 +33,7 @@ var totalDataGS = 0;
 var mapElementsGS = new Array(); 
 
 function startGlobalSearch(indexMin, indexMax, input){
-    mylog.log("startGlobalSearch", indexMin, indexMax, indexStepGS, loadingDataGS);
+    mylog.log("startGlobalSearch", indexMin, indexMax, input);
 
     setTimeout(function(){ loadingDataGS = false; }, 10000);
     if(notNull(input))
@@ -243,6 +243,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                     str += "</a>";
 
 				}else{
+					o.input = input;
 					if(type == "city")
 						str += directory.cityPanelHtml(o);
 					else if(type == "zone")
@@ -377,11 +378,11 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 
            	if(countData==0 && searchTypeGS == "cities"){
                 str="<div class='text-center col-md-12 col-sm-12 col-xs-12'>"+
-                      '<label class="text-dark italic"><i class="fa fa-ban"></i> No city found for "'+search+'"</label><br/>'+
-                      '<span class="info letter-blue"><i class="fa fa-info-circle"></i> Perhaps, this city has no data at this time</span><br/>'+
+                      '<label class="text-dark italic"><i class="fa fa-ban"></i> '+trad.nocityfoundfor+' "'+search+'"</label><br/>'+
+                      '<span class="info letter-blue"><i class="fa fa-info-circle"></i> '+trad.explainnofoundcity+'</span><br/>'+
                       '<button class="btn btn-blue bg-blue text-white main-btn-create" '+
                         'data-target="#dash-create-modal" data-toggle="modal">'+
-                          '<i class="fa fa-plus-circle"></i> Create a page'+
+                          '<i class="fa fa-plus-circle"></i> '+trad.createpage+
                       '</button>'+
                     "</div>";
               }

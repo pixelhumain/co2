@@ -50,6 +50,8 @@ var trad = {
 	"nomoreresult":"<?php echo Yii::t("common","No more results") ?>",
 	"noresultmatch":"<?php echo Yii::t("common","No result match in your search") ?>",
 	"nomoreresultmatch":"<?php echo Yii::t("common","No more results match in your search") ?>",
+	"nocityfoundfor":"<?php echo Yii::t("common","No city found for") ?>",
+	"explainnofoundcity":"<?php echo Yii::t("common", "Perhaps, this city has no data at this time") ?>",
 	"sharesomething":"<?php echo Yii::t("common","Share something") ?>",
 	"connectyou":"<?php echo Yii::t("common","Connect you") ?>",
 	"contributecommunecterslogan":"<?php echo Yii::t("common","Communecter is building and growing thnaks to every pixels") ?>",
@@ -145,7 +147,7 @@ var trad = {
 	"createpoi":"<?php echo Yii::t("common","Create a point of interest") ?>",
 	"createclassified":"<?php echo Yii::t("common","Create a classified ad") ?>",
 	"createcollection":"<?php echo Yii::t("common","Create a new collection") ?>",
-
+	"createpage":"<?php echo Yii::t("common","Create a page") ?>",
 	"organizations":"<?php echo Yii::t("common","organizations"); ?>",
 	"Organizations":"<?php echo Yii::t("common","Organizations"); ?>",
 	"projects":"<?php echo Yii::t("common","projects"); ?>",

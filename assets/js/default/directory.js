@@ -1975,13 +1975,14 @@ var directory = {
 	// ********************************
 	cityPanelHtml : function(params){
 		mylog.log("-----------cityPanelHtml", params);
-		var domContainer= "#filter-scopes-menu .scopes-container";
+		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
 		valuesScopes = {
 			city : params._id.$id,
 			cityName : params.name,
 			cp : params.cp,
 			country : params.country,
 			allCP : params.allCP,
+			uniqueCp : params.uniqueCp,
 			level1 : params.level1,
 			level1Name : params.level1Name
 		}
@@ -1990,6 +1991,10 @@ var directory = {
 
 		if( notEmpty( params.nameCity ) ){
 			valuesScopes.name = params.nameCity ;
+		}
+
+		if( notEmpty( params.uniqueCp ) ){
+			valuesScopes.uniqueCp = params.uniqueCp;
 		}
 
 		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
@@ -2035,8 +2040,8 @@ var directory = {
 
 	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.country ;
 						str += " <span class='entityName letter-red '>"+
-									'<span class="col-xs-1">'+
-									"<i class='fa fa-university'></i> </span> " + title + 
+									//'<span class="col-xs-1">'+
+									"<i class='fa fa-university'></i>" + title + 
 									"<br/>"+
 									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
 								"</span>";
@@ -2052,8 +2057,8 @@ var directory = {
 	// Zone DIRECTORY PANEL
 	// ********************************
 	zonePanelHtml : function(params){
-		mylog.log("-----------cityPanelHtml", params);
-		var domContainer= "#filter-scopes-menu .scopes-container";
+		mylog.log("-----------zonePanelHtml", params);
+		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
 		valuesScopes = {
 			id : params._id.$id,
 			name : params.name,
@@ -2129,12 +2134,12 @@ var directory = {
 						var title =  "<span>" + params.name + "</span>" ;
 	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.countryCode;
 						str += " <span class='entityName letter-red'>"+
-									'<span class="col-xs-1">'+
-										"<i class='fa fa-bullseye fa-stack-1x  bold text-red'></i>"+
-										"<i class='fa fa-stack-1x bold' style='left : 5px; bottom : -14px; font-size: 15px; color : #000000'>"+
+									//'<span class="col-xs-1">'+
+										"<i class='fa fa-bullseye bold text-red'></i>"+
+										"<i class='fa bold text-dark'>"+
 											levelSearchCity+
-										"</i>"+ 
-									"</span> "+
+										"</i> "+ 
+									//"</span> "+
 									title + 
 									"<br/>"+
 									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
@@ -2586,6 +2591,7 @@ var directory = {
       spanType="";
       $.each( searchType, function(key, val){
             typeHeader = (val=="citoyens") ? "persons" : val;
+            mylog.log("searchTypeHtml typeHeader", typeHeader, headerParams);
             var params = headerParams[typeHeader];
             spanType += "<span class='text-"+params.color+"'>"+
                         "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+

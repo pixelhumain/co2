@@ -3780,5 +3780,74 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 		echo $nbelement." trnalate mis a jours / ";
 	}
+
+	public function actionBatchCorrectionLevel($id = null) {
+		ini_set('memory_limit', '-1');
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) && !empty($id) ){
+			$nbelement = 0 ;
+			$nbCity = 0;
+
+			$zone = PHDB::findOneById( Zone::COLLECTION, $id);
+			$where = array();
+			$whereElt = array();
+
+			if(in_array("4", $zone["level"])){
+				$where["level4"] = $id;
+				$whereElt["address.level4"] = $id;
+			}
+			else if(in_array("3", $zone["level"])){
+				$where["level3"] = $id;
+				$whereElt["address.level3"] = $id;
+			}
+			else if(in_array("2", $zone["level"])){
+				$where["level2"] = $id;
+				$whereElt["address.level2"] = $id;
+			}
+
+			if(!empty($zone) && !empty($where) && !empty($whereElt)){
+				$cities = PHDB::find( City::COLLECTION, $where);
+
+				if(!empty($cities )){
+					foreach ($cities as $keyC => $city) {
+						echo $keyC." : ".$city["name"]."<br/>";
+						$nbCity++;
+					}
+				}
+
+				$types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
+
+				foreach ($types as $keyType => $type) {
+					$elts = PHDB::find($type, $where );
+					echo"**************".$type."**************<br/>";
+					if(!empty($elts)){
+
+						foreach ($elts as $keyE => $elt) {
+							echo $keyE." : ".$elt["name"]."<br/>";
+							$nbelement++;
+							// if(!empty($elt["address"]["codeInsee"])){
+								
+							// 		$unset = array("address" => "");
+							// 		if(!empty($elt["addresses"]))
+							// 			$unset["addresses"] = "";
+							// 		if(!empty($elt["multiscopes"]))
+							// 			$unset["multiscopes"] = "";	
+									
+							// 		$res = PHDB::update($type, 
+							// 				array("_id"=>new MongoId($key)),
+							// 				array('$unset' => $unset)
+							// 		);
+							// 		$nbelement++;
+							// }else{
+							// 	echo  "Error: ".$elt["name"]." " . $type. " " . $key. "<br>" ;
+							// }
+						}
+					}
+				}
+			}
+			echo  "NB city mis à jours: " .$nbCity."<br>" ;
+			echo  "NB Element mis à jours: " .$nbelement."<br>" ;
+		}
+	}
 }
+
 

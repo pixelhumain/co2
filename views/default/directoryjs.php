@@ -416,7 +416,7 @@
 
         <?php } else if ($typeSelected == "classified" || $typeSelected == "ressources" ){ 
           if(Yii::app()->params["CO2DomainName"] != "terla"){
-            
+
             $dmod = ($typeSelected == "classified") ? $typeSelected."s" : $typeSelected;
             $categories = CO2::getModuleContextList($dmod,"categories");
             $this->renderPartial($dmod.".views.co.directoryjs", array( "typeSelected" => $typeSelected,"categories" => $categories ));
@@ -501,7 +501,7 @@
           } 
         ?>
         <?php $col = ( !in_array($typeSelected, 
-                       array("classified","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 8; ?>
+                       array("classified","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 10; ?>
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 

@@ -189,7 +189,6 @@ function bindLeftMenuFilters () {
         } 
         else 
         {
-
             section = $(this).data("type-anc");
             sectionKey = $(this).data("key");
             //alert("section : " + section);
@@ -215,7 +214,6 @@ function bindLeftMenuFilters () {
                              icon : classified.sections[sectionKey].icon }
                 directory.sectionFilter( filters, ".classifiedFilters",what);
                 bindLeftMenuFilters ();
-                
             }
             else if(classified.currentLeftFilters != null) {
                 //alert('rebuild original'); 
@@ -225,7 +223,9 @@ function bindLeftMenuFilters () {
                 bindLeftMenuFilters ();
                 classified.currentLeftFilters = null;
             }
-            $('#searchTags').val(sectionKey);
+            if( $(this).data("key") == "all" ) sectionKey = "";
+            $('#searchTags').val( sectionKey );
+            //alert("section : " + $('#searchTags').val());
         }
 
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
@@ -247,7 +247,8 @@ function bindLeftMenuFilters () {
         }
     });
 
-    $(".btn-select-category-1").off().on("click", function(){ //alert("onclick");
+    $(".btn-select-category-1").off().on("click", function(){ 
+        //alert(".btn-select-category-1");
         searchType = [ typeInit ];
         var searchTxt = "";
         var section = $('#searchTags').val();
@@ -271,6 +272,7 @@ function bindLeftMenuFilters () {
             searchTxt += classType; 
         }
         $('#searchTags').val(searchTxt);
+        alert("section : " + $('#searchTags').val());
         startSearch(0, indexStepInit, searchCallback);  
     });
 
@@ -314,6 +316,7 @@ function bindLeftMenuFilters () {
         }
 
         $('#searchTags').val( searchTxt );
+        alert("section : " + $('#searchTags').val());
         KScrollTo("#container-scope-filter");
         startSearch(0, indexStepInit, searchCallback);  
     });

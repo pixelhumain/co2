@@ -131,8 +131,8 @@ $this->renderPartial($layoutPath.'header',
 			<label for="checkboxLink">Lier les entités : <input type="hidden" id="isLink" value=""/></label>
 			<input id="checkboxLink" name="checkboxLink" type="checkbox" data-on-text="<?php echo Yii::t("common","Yes") ?>" data-off-text="<?php echo Yii::t("common","No") ?>"/>
 			<br/>
-			<div id="searchLink" class="input-group col-xs-8 pull-left hide">
-				<span class="input-group-btn">
+			<div id="searchLink" class="col-xs-8 pull-left hide">
+				<span class="col-xs-8">
 					<select id="chooseElementLink" name="chooseElementLink" class="">
 						<option value="<?php echo Person::COLLECTION; ?>"><?php echo Yii::t("common", "Person"); ?></option>
 						<option value="<?php echo Organization::COLLECTION; ?>"><?php echo Yii::t("common", "Organization"); ?></option>
@@ -285,7 +285,7 @@ function bindAddData(){
 
 	$('#btn-start-search').off().on('click', function(e){
 		loadingData = false;
-		console.log("btn-start-search", typeof callBackSearch(loadingData));
+		mylog.log("btn-start-search", typeof callBackSearch(loadingData));
       	//signal que le chargement est terminé
       	startSearch(0, 15, callBackSearch);
   	});
@@ -429,8 +429,8 @@ function callBackSearch(data){
         var cityName = (typeof element.address != "undefined" &&
                   		typeof element.address.addressLocality != "undefined") ? element.address.addressLocality : "";
         var fullLocality = postalCode + " " + cityName;
-        var description = (typeof element.shortDescription != "undefined" &&
-                  			element.shortDescription != null) ? element.shortDescription : "";
+        // var description = (typeof element.shortDescription != "undefined" &&
+        //           			element.shortDescription != null) ? element.shortDescription : "";
 
 		console.log("id", id, typeof id) ;
 		//onclick='addElementLink("+ name + "," + name + ");'
@@ -442,15 +442,16 @@ function callBackSearch(data){
 				str += "<div class='col-md-8 col-sm-9 col-xs-6 entityRight'>";
 					str += "<span id='elementNameSearch"+id+"' class='entityName text-dark'>" + name + "</span>";
 		      	if(fullLocality != "" && fullLocality != " ")
-		        	str += "<span class='entityLocality'><i class='fa fa-home'></i> " + fullLocality + "</span>";
-		        if(description != "")
-		        	str += "<div class='entityDescription'>" + description + "</div>";
+		        	str += "<br/><span class='entityLocality'><i class='fa fa-home'></i> " + fullLocality + "</span>";
+		        // if(description != "")
+		        // 	str += "<div class='entityDescription'>" + description + "</div>";
 		    	str += tags;
 			str += "</div>";
 	    str += "</li>";
 
-	    $("#dropdown_searchInvite").html(str);
-	    $('#elementSearch'+id).off().on('click', function(e){
+	    $("#dropdown_searchInvite").append(str);
+	    $('#elementSearch'+id).click(function(e){
+	    	mylog.log("elementSearch");
 			$("#resultSearchEntity").removeClass("hide");
 			$("#nameSearchEntity").html(name);
 			$("#idSearchEntity").val(key);
@@ -516,30 +517,12 @@ function startSearch(indexMin, indexMax, callBack){
 
 function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
   console.log("autoCompleteSearch", typeof callBack, callBack);
-	if(typeof(cityInseeCommunexion) != "undefined"){
-	    var levelCommunexionName = { 1 : "CODE_POSTAL_INSEE",
-	                             2 : "INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}else{
-		var levelCommunexionName = { 1 : "INSEE",
-	                             2 : "CODE_POSTAL_INSEE",
-	                             3 : "DEPARTEMENT",
-	                             4 : "REGION"
-	                           };
-	}
+	
     //mylog.log("levelCommunexionName", levelCommunexionName[levelCommunexion]);
     var data = {
       "name" : name, 
       "locality" : "",//locality, 
-      "searchType" : searchType, 
-      "searchTag" : $('#searchTags').val().split(','), //is an array
-      "searchLocalityCITYKEY" : $('#searchLocalityCITYKEY').val().split(','),
-      "searchLocalityCODE_POSTAL" : $('#searchLocalityCODE_POSTAL').val().split(','), 
-      "searchLocalityDEPARTEMENT" : $('#searchLocalityDEPARTEMENT').val().split(','),
-      "searchLocalityREGION" : $('#searchLocalityREGION').val().split(','),
-      "searchBy" : levelCommunexionName[levelCommunexion], 
+      "searchType" : searchType,
       "indexMin" : indexMin, 
       "indexMax" : indexMax  };
 				

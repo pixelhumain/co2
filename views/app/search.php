@@ -32,7 +32,7 @@
     if(@$type=="classified"){ $page = "annonces";   $maxImg = 1; }
     if(@$type=="vote")      { $page = "power";      $maxImg = 1; }
     if(@$type=="place")     { $page = "place";      $maxImg = 1; }
-    if(@$type=="ressource") { $page = "ressource"; }
+    if(@$type=="ressources") { $page = "ressources"; }
 
     if(@$type=="cities")    { $lblCreate = ""; }
 

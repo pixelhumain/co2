@@ -20,8 +20,8 @@
 	        <img src="<?php echo $this->module->assetsUrl; ?>/images/docs/financement.png"" class="col-sm-12 img-responsive ">
 	        <div class="col-sm-12" style="margin-top:30px;margin-bottom:30px; " >
 
-		        <div class="col-sm-8 FinanceList"></div>
-				<div class="col-sm-4 Distrib" style="border-left:1px solid #ccc">
+		        <div class="col-xs-12 col-sm-8 FinanceList"></div>
+				<div class="col-xs-12 col-sm-4 Distrib" style="border-left:1px solid #ccc">
 					
 				</div>
 		    </div>

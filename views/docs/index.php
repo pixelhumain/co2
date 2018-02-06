@@ -53,6 +53,9 @@
 	.close-modal .lr, .close-modal .rl{
 		height: 40px !important;
 	}
+	ul.subMenu{
+		padding-left:15px;
+	}
 </style>
 <div id="header-doc" class="shadow2">
 	<button id="show-menu-xs" class="visible-xs tooltips" data-placement="bottom" data-title="Menu"><i class="fa fa-menu"></i></button>
@@ -64,57 +67,57 @@
 	<ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
 		<li class="">
 			<a href="javascript:" class="link-docs-menu active" data-type="welcome" data-dir="<?php echo Yii::app()->language ?>">
-				<i class="fa fa-angle-down"></i> <?php echo Yii::t("common","Welcome"); ?>
+				<i class="fa fa-angle-down"></i> <?php echo Yii::t("docs","WEL<span class='text-red'>CO</span>ME"); ?>
 			</a>
 		</li>
 		<li class="">
 			<a href="javascript:" class="link-docs-menu" data-type="about" data-dir="<?php echo Yii::app()->language ?>">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","<span class='text-red'>CO</span>NNAITRE"); ?>
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","A<span class='text-red'>BO</span>UT<span class='text-red'>CO</span>NNAITRE"); ?>
 			</a>
 			<ul class="subMenu">
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="philosophy" data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Open Atlas"); ?>
+						<?php echo Yii::t("common","Open Atlas"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="philosophy" data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Philosophy"); ?>
+						<?php echo Yii::t("docs","Philosophy"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="philosophy" data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Projects"); ?>
+						<?php echo Yii::t("docs","Projects"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="keywords" data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Keywords"); ?>
+						<?php echo Yii::t("docs","Keywords"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="partners" data-dir="panels">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Community"); ?>
+						<?php echo Yii::t("docs","Community"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="history" data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","History"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","History"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="commandement" data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","The 10 Commands"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","10 Commands"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="https://github.com/pixelhumain/buildingCommons/blob/master/codeSocialOpenSystem.md" target="_blank" class="">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Social code"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Social code"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="financement" data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Model economic"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Finances"); ?>
 					</a>
 				</li>
 			</ul>
@@ -122,50 +125,50 @@
 		<li role="separator" class="divider"></li>
 		<li class="">
 			<a href="javascript:" class="link-docs-menu" data-type="modules">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","<span class='text-red'>CO</span>MPRENDRE"); ?>
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","HOW <span class='text-red'>TO</span> USE<span class='text-red'>CO</span>MPRENDRE"); ?>
 			</a>
 			<ul class="subMenu">
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="elements">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Elements"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Elements"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="modules">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Modules"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Modules"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="import" data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Data play"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Data play"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="faq">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","FAQ"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","FAQ"); ?>
 					</a>
 				</li>
 			</ul>
 		</li>
 		<li class="">
 			<a href="javascript:" class="link-docs-menu" data-type="help" data-dir="<?php echo Yii::app()->language ?>">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","<span class='text-red'>CO</span>NSTRUIRE"); ?>
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","<span class='text-red'>CO</span>NTRIBUTE<span class='text-red'>CO</span>NSTRUIRE"); ?>
 			</a>
 		</li>
 		<li class="">
 			<a href="javascript:" class="link-docs-menu" data-type="code" data-lang="true">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","<span class='text-red'>CO</span>GEEK"); ?>
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","<span class='text-red'>CO</span>DING<span class='text-red'>CO</span>GEEK"); ?>
 			</a>
 			<ul class="subMenu">
 				<li class="">
 					<a href="api" target="_blank" >
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Play API"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Play with API"); ?>
 					</a>
 				</li>
 				
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="openSourceWeUse"  data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Open Source We use"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Open Source We use"); ?>
 					</a>
 				</li>
 				<li class="">
@@ -175,12 +178,12 @@
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="rd">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","R&D"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","R&D"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="roadmap"  data-dir="<?php echo Yii::app()->language ?>">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","RoadMap"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","RoadMap"); ?>
 					</a>
 				</li>
 			</ul>
@@ -188,34 +191,34 @@
 		
 		<li class="">
 			<a href="javascript:" class="link-docs-menu" data-type="contact" data-lang="true">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","<span class='text-red'>CO</span>MMUNIQUER"); ?>
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","<span class='text-red'>CO</span>MMUNICATE<span class='text-red'>CO</span>MMUNIQUER"); ?>
 			</a>
 			<ul class="subMenu">
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="contact" data-dir="panels">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Contact"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Contact"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="philosophy">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Share"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Share"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="affiches" data-dir="communication">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Drawings"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Drawings"); ?>
 					</a>
 				</li>
 				<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="video" data-dir="">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Videos"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Videos"); ?>
 					</a>
 				</li>
-				<li class="">
+				<!--<li class="">
 					<a href="javascript:" class="link-docs-menu" data-type="media">
-						<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Ils en parlent"); ?>
+						<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Medias"); ?>
 					</a>
-				</li>
+				</li>-->
 			</ul>
 		</li>
 	</ul>

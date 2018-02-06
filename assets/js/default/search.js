@@ -272,7 +272,7 @@ function bindLeftMenuFilters () {
             searchTxt += classType; 
         }
         $('#searchTags').val(searchTxt);
-        alert("section : " + $('#searchTags').val());
+        //alert("section : " + $('#searchTags').val());
         startSearch(0, indexStepInit, searchCallback);  
     });
 
@@ -312,11 +312,14 @@ function bindLeftMenuFilters () {
             $(".keycat").removeClass("active");
             $(this).addClass("active");
             
-            searchTxt = sectionKey+","+classType+","+classSubType;
+            if(typeof sectionKey != "undefined" && typeof sectionKey != null)
+                searchTxt = sectionKey+","+classType+","+classSubType;
+            else
+                searchTxt = classType+","+classSubType;
         }
 
         $('#searchTags').val( searchTxt );
-        alert("section : " + $('#searchTags').val());
+        //alert("section : " + $('#searchTags').val());
         KScrollTo("#container-scope-filter");
         startSearch(0, indexStepInit, searchCallback);  
     });

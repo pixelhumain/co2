@@ -74,6 +74,8 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 	mylog.log("changeCommunexionScope communexionObj",communexionObj);
 	myScopes.open=communexionObj;
 	var newsAction=(notNull(appendDom) && appendDom.indexOf("scopes-news-form") >= 0) ? true : false;
+	mylog.log("changeCommunexionScope newsAction", newsAction);
+
 	$(appendDom).html(constructScopesHtml(newsAction));
 	$(appendDom+" .scope-order").sort(sortSpan) // sort elements
 				.appendTo(appendDom); // append again to the list
@@ -85,20 +87,17 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 	}
 }
 function getCommunexionLabel(){
+	mylog.log("getCommunexionLabel");
 	if(typeof myScopes.communexion != "undefined" && Object.keys(myScopes.communexion).length>0){
 		var level=0;
 		var nameCommunexion="";
 		$.each(myScopes.communexion, function(e, v){
-			// if(v.level > level){
-			// 	level=v.level;
-			// 	nameCommunexion=v.name;
-			// }
-
 			if(v.type == "city")
 				nameCommunexion=v.name;
 		});
 		$(".communexion-btn-label").html(nameCommunexion);
 	}else{
+		mylog.log("getCommunexionLabel hide");
 		$("#communexion-news-btn, #communexion-btn").hide();
 	}
 };
@@ -202,6 +201,7 @@ function bindScopesInputEvent(news){
 			$(this).removeClass("active");
 			$(this).find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
 			myScopes.type="open";
+			myScopes.open={};
 			$(".scopes-container").html("");
 		}else{
 			$(".btn-menu-scopes").removeClass("active");

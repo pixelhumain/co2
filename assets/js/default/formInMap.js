@@ -337,6 +337,7 @@ var formInMap = {
 				var inseeGeoSHapes = {};
 				formInMap.saveCities = {};
 				$.each(data.cities, function(key, value){
+					mylog.log("autocompleteFormAddress value", value);
 					var insee = value.insee;
 					var country = value.country;
 					if(notEmpty(value.save) &&  value.save == true){
@@ -353,12 +354,19 @@ var formInMap = {
 								var lat = valueCP.geo.latitude;
 								var lng = valueCP.geo.longitude;
 
-								var lblList = value.name + ", " + valueCP.name + ", " + valueCP.postalCode ;
-								if(notNull(value.level4Name))
+								var lblList = value.name ;
+
+								if(valueCP.name != value.name)
+									lblList +=  ", " + valueCP.name ;
+
+								if(notEmpty(valueCP.postalCode))
+									lblList += ", " + valueCP.postalCode ;
+								
+								if(notEmpty(value.level4Name))
 									lblList += " ( " + value.level4Name + " ) ";
-								else if(notNull(value.level3Name))
+								else if(notEmpty(value.level3Name))
 									lblList += " ( " + value.level3Name + " ) ";
-								else if(notNull(value.level2Name))
+								else if(notEmpty(value.level2Name))
 									lblList += " ( " + value.level2Name + " ) ";
 
 								html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
@@ -377,11 +385,11 @@ var formInMap = {
 							var lat = value.geo.latitude;
 							var lng = value.geo.longitude;
 							var lblList = value.name ;
-							if(notNull(value.level4Name))
+							if(notEmpty(value.level4Name))
 								lblList += " ( " + value.level4Name + " ) ";
-							else if(notNull(value.level3Name))
+							else if(notEmpty(value.level3Name))
 								lblList += " ( " + value.level3Name + " ) ";
-							else if(notNull(value.level2Name))
+							else if(notEmpty(value.level2Name))
 								lblList += " ( " + value.level2Name + " ) ";
 
 							html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+

@@ -125,6 +125,9 @@ function callGeoWebService(providerName, requestPart, countryCode, success, erro
 		url = "//nominatim.openstreetmap.org/search?q=" + requestPart + "," + countryCode + "&format=json&polygon=0&addressdetails=1";
 		else if(formInMap.typeSearchInternational == "city")
 		url = "//nominatim.openstreetmap.org/search?city=" + requestPart + "&country=" + countryCode + "&format=json&polygon=0&addressdetails=1";
+	
+		if(notNull(mainLanguage))
+			url += "&accept-language="+ mainLanguage ;
 	}
 	
 	if(providerName == "google") {

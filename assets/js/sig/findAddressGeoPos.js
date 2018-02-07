@@ -220,6 +220,8 @@ function getCommonGeoObject(objs, providerName){
 			commonObj = addAttObjNominatim(commonObj, address, "countryCode", "country_code");
 			commonObj = addAttObjNominatim(commonObj, address, "postalCode", "postcode");
 			commonObj = addAttObjNominatim(commonObj, obj, "placeId", "place_id");
+			commonObj = addAttObjNominatim(commonObj, obj, "typeNom", "type");
+			commonObj = addAttObjNominatim(commonObj, obj, "classNom", "class");
 
 		}else 
 		if(providerName == "google"){

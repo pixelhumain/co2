@@ -45,11 +45,18 @@
 	header{
 		display: none;
 	}
+
+  @media screen and (max-width: 1024px) {
+  	.main-apropos{
+  		padding:15px 50px;
+  	}
+  }
+
 </style>
 
 
 
-<section class="padding-top-70">
+<section class="padding-top-15">
     <div class="row main-apropos padding-top-15 padding-bottom-50">
 	    
         <div class="col-lg-offset-1 col-md-offset-1 col-lg-10 col-md-10 col-sm-12 col-xs-12">
@@ -66,9 +73,13 @@
         	<br><hr>
 
         	<small class="font-montserrat text-light">
+        		<i class="fa fa-angle-right"></i> 
         		Les statistiques indiquées correspondent au nombre de chargement de chaque url (, etc)<br>
+        		<i class="fa fa-angle-right"></i> 
         		A chaque fois qu'une personne accède par exemple à la page #agenda, #live, ou #search, le nombre augmente.<br>
+        		<i class="fa fa-angle-right"></i> 
         		Les courbes donnent un apperçu de la fréquentation de chaque page, par jour, et par semaine.<br><br>
+        		<i class="fa fa-angle-right"></i> 
         		#LOGIN est incrémenté à chaque fois qu'un utilisateur se connecte à son compte.
         	</small>
 
@@ -95,7 +106,7 @@
 				<?php 	$totalLoad = 0; 
 						$domainLbl = str_replace("co2-", "", $domain);
 				?>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center margin-bottom-50">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center margin-bottom-50">
 							<?php foreach ($days as $key => $day) { $totalLoad += @$stats[$day]["nbLoad"] ? $stats[$day]["nbLoad"] : 0; } ?>
 							<h5 class="text-left letter-azure">
 								#<?php echo $domainLbl; ?> 
@@ -163,19 +174,19 @@ var datas = <?php echo json_encode($visits["hash"]); ?>;
 
 	function statChartInit(idCanvas, datas, dataKey, chartType, color){ //alert("start loadchart");
 
-		if($("#"+idCanvas).length == 0) return;
+		if($("#"+idCanvas).length == 0 || typeof $("#"+idCanvas).get(0) == "undefined") return;
 
         var dataChart = new Array();
         var labelsDates = new Array();
         
-        console.log("smartTest datas chart", datas);
+        //console.log("smartTest datas chart", datas);
         $.each(datas, function(key, val){
             console.log("smartTest valchart", val, key);
             dataChart.push(val.nbLoad);
             labelsDates.push(key);
         });
 
-        console.log("smartTest ready dataChart ?", dataChart);
+        //console.log("smartTest ready dataChart ?", dataChart);
         var data = {
             datasets: [{
                 label: dataKey,
@@ -187,7 +198,7 @@ var datas = <?php echo json_encode($visits["hash"]); ?>;
             labels: labelsDates 
         };
 
-        console.log("dataChart :: ", data, "chart : ", data, "idCanvas", idCanvas);
+        //console.log("dataChart :: ", data, "chart : ", data, "idCanvas", idCanvas);
         var ctx = $("#"+idCanvas).get(0).getContext("2d");
         var options;
         myPieChart = new Chart(ctx,{

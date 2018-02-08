@@ -3649,21 +3649,51 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		ini_set('memory_limit', '-1');
 		$nbelement = 0 ;
 		$nbelementtotal = 0 ;
-		$where = array("multiscopes" => array('$exists' => 1), "modifiedByBatch.updateMultiScope2" => array('$exists' => 0));
+		$where = array("multiscopes" => array('$exists' => 1), "modifiedByBatch.updateMultiScope" => array('$exists' => 0));
 		$fields = array("multiscopes", "name", "modifiedByBatch");
 		$person = PHDB::find(Person::COLLECTION, $where, $fields);
 		
 		foreach ($person as $key => $value) {
-			echo $key." : ".$value["name"]."<br/>";
+			//echo $key." : ".$value["name"]."<br/>";
 
 		 	if(!empty($value["multiscopes"])){
 		 		$newML = array();
 		 		foreach ($value["multiscopes"] as $keyCP => $valueCP) {
 		 			$newS = $valueCP;
-		 			$newS["id"] = $keyCP;
-		 			$newML[$newS["id"].$newS["type"]] = $newS;
+		 			
+
+		 			if($newS["type"] == "cp"){
+		 				$city = PHDB::findOne(City::COLLECTION, array("postalCodes.postalCode" =>$newS["name"]), array("country"));
+
+		 				if(!empty($city)){
+		 					$newS["cp"] = $newS["name"];
+		 					$newS["country"] = $city["country"];
+		 					$newML[$newS["cp"].$newS["country"].$newS["type"]] = $newS;
+		 				}
+		 				
+		 			}else if(!empty($newS["level"])){
+		 				$zone = PHDB::findOneById(Zone::COLLECTION, $keyCP,array("countryCode") );
+
+		 				if(!empty($zone)){
+		 					$newS["id"] = $keyCP;
+		 					$newS["country"] = $zone["countryCode"];
+		 					$newML[$newS["id"].$newS["type"]] = $newS;
+		 				}
+		 				
+		 			}else{
+
+		 				$city = PHDB::findOneById(City::COLLECTION, $keyCP,array("country") );
+
+		 				if(!empty($city)){
+		 					$newS["id"] = $keyCP;
+		 					$newS["country"] = $city["country"];
+		 					$newML[$newS["id"].$newS["type"]] = $newS;
+		 				}
+		 			}
 		 		}
-		 		$value["modifiedByBatch"][] = array("updateMultiScope2" => new MongoDate(time()));
+
+		 		$set[] =$newML ;
+		 		$value["modifiedByBatch"][] = array("updateMultiScope" => new MongoDate(time()));
 		 		$set =array("multiscopes" => $newML,
 		 					"modifiedByBatch" => $value["modifiedByBatch"]);
 		 					 
@@ -3675,7 +3705,9 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		 		$nbelement++;
 		 	}
 		}
-		echo $nbelement." trnalate mis a jours / ";
+		echo $nbelement." multiscopes mis a jours / ";
+
+		//echo json_encode($set);
 	}
 
 
@@ -3872,72 +3904,72 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			}
 
 			if(!empty($zone) && !empty($where) && !empty($whereElt)){
-				// $cities = PHDB::find( City::COLLECTION, $where);
+				$cities = PHDB::find( City::COLLECTION, $where);
 
-				// if(!empty($cities )){
-				// 	foreach ($cities as $keyC => $city) {
-				// 		//echo $keyC." : ".$city["name"]."<br/>";
-				// 		$nbCity++;
+				if(!empty($cities )){
+					foreach ($cities as $keyC => $city) {
+						//echo $keyC." : ".$city["name"]."<br/>";
+						$nbCity++;
 
-				// 		$res = PHDB::update(City::COLLECTION, 
-				// 							array("_id"=>new MongoId($keyC)),
-				// 							array('$set' => $set)
-				// 					);
-				// 	}
-				// }
+						$res = PHDB::update(City::COLLECTION, 
+											array("_id"=>new MongoId($keyC)),
+											array('$set' => $set)
+									);
+					}
+				}
 
-				// $types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
+				$types = array(Person::COLLECTION , Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION, Poi::COLLECTION);
 
-				// foreach ($types as $keyType => $type) {
-				// 	$elts = PHDB::find($type, $whereElt );
-				// 	echo"**************".$type."**************<br/>";
-				// 	if(!empty($elts)){
+				foreach ($types as $keyType => $type) {
+					$elts = PHDB::find($type, $whereElt );
+					echo"**************".$type."**************<br/>";
+					if(!empty($elts)){
 
-				// 		foreach ($elts as $keyE => $elt) {
-				// 			echo $keyE." : ".$elt["name"]."<br/>";
-				// 			$nbelement++;
-				// 			$newAd = $elt["address"];
-				// 			if($newLevel == "4"){
-				// 				if(!empty($zone["level3"])){
-				// 					$newAd["level3"] = $zone["level3"];
-				// 					$newAd["level3Name"] = $zone["level3Name"];
-				// 				}
-				// 				if(!empty($zone["level2"])){
-				// 					$newAd["level2"] = $zone["level2"];
-				// 					$newAd["level2Name"] = $zone["level2Name"];
-				// 				}
-				// 				if(!empty($zone["level1"])){
-				// 					$newAd["level1"] = $zone["level1"];
-				// 					$newAd["level1Name"] = $zone["level1Name"];
-				// 				}
-				// 			}
+						foreach ($elts as $keyE => $elt) {
+							echo $keyE." : ".$elt["name"]."<br/>";
+							$nbelement++;
+							$newAd = $elt["address"];
+							if($newLevel == "4"){
+								if(!empty($zone["level3"])){
+									$newAd["level3"] = $zone["level3"];
+									$newAd["level3Name"] = $zone["level3Name"];
+								}
+								if(!empty($zone["level2"])){
+									$newAd["level2"] = $zone["level2"];
+									$newAd["level2Name"] = $zone["level2Name"];
+								}
+								if(!empty($zone["level1"])){
+									$newAd["level1"] = $zone["level1"];
+									$newAd["level1Name"] = $zone["level1Name"];
+								}
+							}
 							
-				// 			if($newLevel == "3"){
-				// 				if(!empty($zone["level2"])){
-				// 					$newAd["level2"] = $zone["level2"];
-				// 					$newAd["level2Name"] = $zone["level2Name"];
-				// 				}
-				// 				if(!empty($zone["level1"])){
-				// 					$newAd["level1"] = $zone["level1"];
-				// 					$newAd["level1Name"] = $zone["level1Name"];
-				// 				}
-				// 			}
+							if($newLevel == "3"){
+								if(!empty($zone["level2"])){
+									$newAd["level2"] = $zone["level2"];
+									$newAd["level2Name"] = $zone["level2Name"];
+								}
+								if(!empty($zone["level1"])){
+									$newAd["level1"] = $zone["level1"];
+									$newAd["level1Name"] = $zone["level1Name"];
+								}
+							}
 
-				// 			if($newLevel == "2"){
-				// 				if(!empty($zone["level1"])){
-				// 					$newAd["level1"] = $zone["level1"];
-				// 					$newAd["level1Name"] = $zone["level1Name"];
-				// 				}
-				// 			}
-				// 			$setElt = array("address" => $newAd);
+							if($newLevel == "2"){
+								if(!empty($zone["level1"])){
+									$newAd["level1"] = $zone["level1"];
+									$newAd["level1Name"] = $zone["level1Name"];
+								}
+							}
+							$setElt = array("address" => $newAd);
 
-				// 			$res = PHDB::update($type, 
-				// 							array("_id"=>new MongoId($keyE)),
-				// 							array('$set' => $setElt)
-				// 					);
-				// 		}
-				// 	}
-				// }
+							$res = PHDB::update($type, 
+											array("_id"=>new MongoId($keyE)),
+											array('$set' => $setElt)
+									);
+						}
+					}
+				}
 
 				echo"**************NEWS**************<br/>";
 				$news = PHDB::find( News::COLLECTION, $whereNews);

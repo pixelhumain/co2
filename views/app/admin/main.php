@@ -72,7 +72,7 @@
 	<?php 	$totalLoad = 0; 
 			$domainLbl = str_replace("co2-", "", $domain);
 	?>
-			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center margin-bottom-50">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center margin-bottom-50">
 				<?php foreach ($days as $key => $day) { $totalLoad += @$stats[$day]["nbLoad"] ? $stats[$day]["nbLoad"] : 0; } ?>
 				<h5 class="text-left letter-azure">
 					#<?php echo $domainLbl; ?> 
@@ -140,17 +140,20 @@ var datas = <?php echo json_encode($visits["hash"]); ?>;
 
 
 	function statChartInit(idCanvas, datas, dataKey, chartType, color){ //alert("start loadchart");
+
+		if($("#"+idCanvas).length == 0 || typeof $("#"+idCanvas).get(0) == "undefined") return;
+
         var dataChart = new Array();
         var labelsDates = new Array();
         
-        console.log("smartTest datas chart", datas);
+        //console.log("smartTest datas chart", datas);
         $.each(datas, function(key, val){
             console.log("smartTest valchart", val, key);
             dataChart.push(val.nbLoad);
             labelsDates.push(key);
         });
 
-        console.log("smartTest ready dataChart ?", dataChart);
+        //console.log("smartTest ready dataChart ?", dataChart);
         var data = {
             datasets: [{
                 label: dataKey,
@@ -162,7 +165,7 @@ var datas = <?php echo json_encode($visits["hash"]); ?>;
             labels: labelsDates 
         };
 
-        console.log("dataChart :: ", data, "chart : ", data);
+        //console.log("dataChart :: ", data, "chart : ", data);
         var ctx = $("#"+idCanvas).get(0).getContext("2d");
         var options;
         myPieChart = new Chart(ctx,{

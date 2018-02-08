@@ -1,14 +1,12 @@
-<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
-
 <div class="panel-heading border-light center text-dark partition-white radius-10">
-	<span class="panel-title homestead"> <i class='fa fa-cube  faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">KEY CONCEPTS</span></span>
+	<span class="panel-title homestead"> <i class='fa fa-cube  faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">CONCEPTS CLÉS</span></span>
 </div>
 <div class="space20"></div>
 <div class="keywordList"></div>
 
 <style type="text/css">
 	.keypan{
-		height: 300px;
+		min-height: 370px;
 		border: 1px solid #ddd
 	}
 </style>
@@ -116,7 +114,7 @@ jQuery(document).ready(function()
 		icon = (obj.icon) ? obj.icon : "fa-tag" ;
 		color = (obj.color) ? obj.color : "#E33551" ;
 		$(".keywordList").append(
-		'<div class="col-xs-3"><div class="keypan panel panel-white">'+
+		'<div class="col-sm-4 col-xs-6"><div class="keypan panel panel-white">'+
 			'<div class="panel-heading border-light ">'+
 				'<span class="panel-title homestead"> <i class="fa '+icon+' faa-pulse animated-hover fa-2x"></i> <span style="font-size: 35px; color:'+color+';"> <br/>'+obj.title.toUpperCase()+'</span></span>'+
 			'</div>'+

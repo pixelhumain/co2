@@ -464,13 +464,13 @@
 
 				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {  
 		                
-		               			$urlNetwork = Element::getUrlMyNetwork((string)$element["_id"], $type); ?>
+		               			// $urlNetwork = Element::getUrlMyNetwork((string)$element["_id"], $type); ?>
 
-		               			<li class="text-left">
-					               	<a href='<?php echo $urlNetwork; ?>' target='_blanck'>
-										<i class='fa fa-map'></i> <?php echo Yii::t("common","My network"); ?>
+		               			<!-- <li class="text-left">
+					               	<a href='<?php //echo $urlNetwork; ?>' target='_blanck'>
+										<i class='fa fa-map'></i> <?php //echo Yii::t("common","My network"); ?>
 									</a>
-					            </li>
+					            </li> -->
 			            <?php } } ?>
 			            <li class="text-left">
 				               	<a href='javascript:;' onclick='co.graph()' >

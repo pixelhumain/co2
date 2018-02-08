@@ -515,16 +515,16 @@ var formInMap = {
 		mylog.log("countryCode", countryCode);
 		
 		var countryDataGouv = ["FR","GP","MQ","GF","RE","PM","YT"];
-		// if(countryDataGouv.indexOf(countryCode) != -1){
-		// 	countryCode = formInMap.changeCountryForNominatim(countryCode);
-		// 	mylog.log("countryCodeHere", countryCode);
-		// 	callDataGouv(requestPart, countryCode);
+		if(countryDataGouv.indexOf(countryCode) != -1){
+			countryCode = formInMap.changeCountryForNominatim(countryCode);
+			mylog.log("countryCodeHere", countryCode);
+			callDataGouv(requestPart, countryCode);
 			
-		// }else{
+		}else{
 			countryCode = formInMap.changeCountryForNominatim(countryCode);
 			mylog.log("countryCode", countryCode);
 			callNominatim(requestPart, countryCode);
-		//}
+		}
 		
 		formInMap.btnValideDisable(false);
 	},

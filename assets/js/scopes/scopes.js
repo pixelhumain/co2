@@ -373,14 +373,16 @@ function scopeObject(values){
 	}
 	mylog.log("scopeObject cp", typeof values.cp, typeof values.uniqueCp, values.uniqueCp);
 	if(typeof values.cp != "undefined" && typeof values.uniqueCp != "undefined" && values.uniqueCp == false){
+		mylog.log("communexionObj cp values", values);
+
 		objToPush={
-			id:values.cp+values.country,
+			id:values.cp+values.country+objToPush.type,
 			name:values.cp,
 			type:"cp",
 			active:false,
 			countryCode:values.country
 		}
-		communexionObj[objToPush.id+objToPush.type] = objToPush;
+		communexionObj[objToPush.id] = objToPush;
 		mylog.log("communexionObj cp", communexionObj);
 	}
 	

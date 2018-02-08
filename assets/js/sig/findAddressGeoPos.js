@@ -125,6 +125,9 @@ function callGeoWebService(providerName, requestPart, countryCode, success, erro
 		url = "//nominatim.openstreetmap.org/search?q=" + requestPart + "," + countryCode + "&format=json&polygon=0&addressdetails=1";
 		else if(formInMap.typeSearchInternational == "city")
 		url = "//nominatim.openstreetmap.org/search?city=" + requestPart + "&country=" + countryCode + "&format=json&polygon=0&addressdetails=1";
+	
+		if(notNull(mainLanguage))
+			url += "&accept-language="+ mainLanguage ;
 	}
 	
 	if(providerName == "google") {
@@ -220,6 +223,8 @@ function getCommonGeoObject(objs, providerName){
 			commonObj = addAttObjNominatim(commonObj, address, "countryCode", "country_code");
 			commonObj = addAttObjNominatim(commonObj, address, "postalCode", "postcode");
 			commonObj = addAttObjNominatim(commonObj, obj, "placeId", "place_id");
+			commonObj = addAttObjNominatim(commonObj, obj, "typeNom", "type");
+			commonObj = addAttObjNominatim(commonObj, obj, "classNom", "class");
 
 		}else 
 		if(providerName == "google"){

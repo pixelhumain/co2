@@ -849,10 +849,14 @@ function bindSearchOnNews(){
 }
 function bindScopesNewsEvent(news){
 
+	mylog.log("bindScopesNewsEvent", news);
+
 	$(".manageMultiscopes").off().on("click", function(){
+		mylog.log("manageMultiscopes");
 		addScope=$(this).data("add");
 		scopeValue=$(this).data("scope-value");
 		key=$(this).data("scope-key");
+		mylog.log("manageMultiscopes key scopeValue addScope", key, scopeValue, addScope);
 		if(addScope){
 			newScope=myScopes[myScopes.type][key];
 			newScope.active=true;
@@ -861,8 +865,10 @@ function bindScopesNewsEvent(news){
 			$(this).find("i").removeClass("fa-plus-circle").addClass("fa-times-circle");
 			pushHtml=$(this).parent().get();
 			$(this).parent().remove();
+			mylog.log("manageMultiscopes pushHtml", pushHtml);
 			$("#content-added-scopes-container").append(pushHtml);
 			$(".form-create-news-container .form-actions .addplacesplease").remove();
+			bindScopesNewsEvent();
 		}else{
 			mylog.log("manageMultiscopes remove", key, newsScopes);
 			delete newsScopes[key];
@@ -871,6 +877,7 @@ function bindScopesNewsEvent(news){
 	});
 	
 	$("#multiscopes-news-btn, #communexion-news-btn").off().on("click", function(){
+		mylog.log("#multiscopes-news-btn, #communexion-news-btn");
 		$(".scopes-btn-news").removeClass("active");
 		$(this).addClass("active");
 		myScopes.type=$(this).data("type");

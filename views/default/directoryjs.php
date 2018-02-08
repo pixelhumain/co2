@@ -501,7 +501,7 @@
           } 
         ?>
         <?php $col = ( !in_array($typeSelected, 
-                       array("classified","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 10; ?>
+                       array("classified","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 9; ?>
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 

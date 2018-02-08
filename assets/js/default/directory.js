@@ -1138,7 +1138,7 @@ var directory = {
 		if(params.updated != null )
 			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
 
-		var linkAction = ( modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
+		var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
 		if(params.type == "citoyens") 
 			params.hash += '.viewer.' + userId;
 		// if(typeof params.size == "undefined" || params.size == "max")

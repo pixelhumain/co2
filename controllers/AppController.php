@@ -236,17 +236,11 @@ class AppController extends CommunecterController {
             $element = News::getById($id);
         }
 
-        else if($type == Classified::COLLECTION){
-            $element = Classified::getById($id);
-        }
         else if($type == Product::COLLECTION){
             $element = Product::getById($id);
         }
         else if($type == Service::COLLECTION){
             $element = Service::getById($id);
-        }
-        else if($type == Poi::COLLECTION){
-            $element = Poi::getById($id);
         }
         else if($type == Survey::COLLECTION){
             $element = Survey::getById($id);

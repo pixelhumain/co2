@@ -368,7 +368,7 @@ function modifyNews(idNews,typeNews){
 				   		}
 				   	}
 		message +="</div>"+
-					'<div class="form-group tagstags col-md-12 col-sm-12 col-xs-12">'+
+					'<div class="form-group tagstags col-md-12 col-sm-12 col-xs-12 margin-top-20 no-padding">'+
           				'<input id="tags" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">'+       
       				"</div>"+
       				'<div class="dropdown no-padding col-md-12 col-sm-12 col-xs-12">'+

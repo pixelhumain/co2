@@ -729,8 +729,10 @@ function initPageTable(number){
       if($(".timeline-body .newsActivityStream"+id).length > 0)
         html = $(".timeline-body .newsActivityStream"+id).html();
       
-      if(html == "" && $(".searchEntity#entity"+id).length > 0) 
-        html = "<div class='searchEntity'>"+$(".searchEntity#entity"+id).html()+"</div>";
+      if(html == "" && $(".searchEntity#entity"+id).length > 0) {
+        var light = $(".searchEntity#entity"+id).hasClass("entityLight") ? "entityLight" : "";
+        html = "<div class='searchEntity "+light+"'>"+$(".searchEntity#entity"+id).html()+"</div>";
+      }
 
       if(html == "" && type !="news" && type!="activityStream" && typeof contextData != "undefined"){
         mylog.log("HERE", contextData);
@@ -1019,7 +1021,7 @@ var directory = {
     console.log("lightPanel", params);
     
     str = "";
-    str += "<div class='col-xs-12 searchEntity entityLight no-padding'>";
+    str += "<div class='col-xs-12 searchEntity entityLight no-padding'  id='entity"+params.id+"'>";
     
     str += "<div class='entityLeft pull-left text-right padding-10 hidden-xs'>";
       if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined")
@@ -1062,19 +1064,18 @@ var directory = {
         str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
 
 
-      if(typeof params.startDate != "undefined")
-        str += "<br><small class='letter-light'>"+params.startDate+"</small>";
+      // if(typeof params.startDate != "undefined")
+      //   str += "<br><small class='letter-light'>"+params.startDate+"</small>";
       
-      if(typeof params.startDate != "undefined" && typeof params.endDate != "undefined") 
-        str += " <small class='letter-light'><i class='fa fa-angle-double-right'></i></small> ";
+      // if(typeof params.startDate != "undefined" && typeof params.endDate != "undefined") 
+      //   str += " <small class='letter-light'><i class='fa fa-angle-double-right'></i></small> ";
 
-      if(typeof params.endDate != "undefined")
-        str += "<small class='letter-light'>"+params.endDate+"</small>";
+      // if(typeof params.endDate != "undefined")
+      //   str += "<small class='letter-light'>"+params.endDate+"</small>";
       
       if(typeof params.updatedLbl != "undefined" && (params.type == "events" ||  params.type == "classified"))
         str += "<br><small class='letter-light bold'><i class='fa fa-clock-o'></i> "+params.updatedLbl+"</small>";
       
-
 
       if(typeof params.shortDescription != "undefined" && params.shortDescription != "" && params.shortDescription != null)
         str += "<br><span class='description'>"+params.shortDescription+"</span>";
@@ -1086,13 +1087,45 @@ var directory = {
 
       if(typeof params.counts != "undefined"){
         $.each(params.counts, function (key, count){
-          str +=  "<small class='lbh letter-light bg-white url elipsis bold countMembers margin-right-10'>"+
+          str +=  "<small class='pull-left lbh letter-light bg-transparent url elipsis bold countMembers margin-right-10'>"+
                     "<i class='fa fa-link'></i> "+ count + " " + trad[key] +
                   "</small>";
         });
       }
 
-  
+      var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classified"])>=0 )  ? false : true;
+      if(typeof params.edit  != "undefined")
+        str += this.getAdminToolBar(params);
+
+      mylog.log("isFollowed ?", params.isFollowed, params.id, inMyContacts(params.typeSig, params.id), 
+                addFollowBtn, location.hash.indexOf("#page") < 0);
+
+      if(userId != null && userId != "" && params.id != userId && 
+        !inMyContacts(params.typeSig, params.id) && addFollowBtn && 
+        location.hash.indexOf("#page") < 0){
+        isFollowed=false;
+
+        if(typeof params.isFollowed != "undefined" ) isFollowed=true;
+        
+        mylog.log("isFollowed", params.isFollowed, isFollowed);
+        tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
+        str += "<button class='pull-left text-light btn btn-link no-padding followBtn'" + 
+                ' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"'"+
+                " data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+                "<small><i class='fa fa-link fa-rotate-270'></i> "+tip+"</small>"+ 
+            "</button>";
+      }
+
+
+      if(typeof params.id != "undefined" && typeof params.type != "undefined" && params.type != "citoyens" &&
+         userId != null && userId != "")
+      str += "<button id='btn-share-"+params.type+"' class='pull-left text-light btn btn-link no-padding btn-share'"+
+                                    " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
+                                    "<small><i class='fa fa-share'></i> "+trad["share"]+"</small></button> ";
+
+     
+
       str += "</div>";
 
     str += "</div>";

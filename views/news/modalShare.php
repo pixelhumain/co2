@@ -28,6 +28,7 @@
     #modal-share .modal-content{
         top: 150px;
         padding-bottom:10px!important;
+        padding-top:15px;
     }
     #modal-share{
         background-color: rgba(0,0,0,0.6);
@@ -59,6 +60,11 @@
     #modal-share #htmlElementToShare .container-img-profil{
         /*min-height: 250px !important;*/
         max-height: 250px !important;
+    }
+
+
+    #modal-share .modal-content .entityLight .entityCenter{
+        
     }
 </style>
 

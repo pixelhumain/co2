@@ -286,6 +286,7 @@ var trad = {
 	"hasgot":"<?php echo Yii::t("common","has got")?>",
 	"ismemberof":"<?php echo Yii::t("common","is member of")?>",
 	"contributeto":"<?php echo Yii::t("common","contributes to")?>",
+	"contribute":"<?php echo Yii::t("common","contribute")?>",
 	"of":"<?php echo Yii::t("common","of")?>",
 	"need":"<?php echo Yii::t("common","need")?>",
 	"pointinterest" : "<?php echo Yii::t("common","point of interest") ?>",

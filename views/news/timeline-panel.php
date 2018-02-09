@@ -11,6 +11,8 @@
   "displayShared-actions"    => "an action",
   "displayShared-resolutions"    => "a resolution",
   "displayShared-rooms"    => "a cooperative space",
+  "displayShared-ressources"    => "a need or a ressource",
+  "displayShared-places"    => "a place",
 ); ?>
   
   <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12">
@@ -156,11 +158,11 @@
          
           <?php if(@$media["type"]=="activityStream") { ?>
             <?php $iconColor = @Element::getColorIcon($media["object"]["type"]); ?>
-            <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news",$shareLabel["verb-".$media["verb"].$pluriel]); ?> 
+            <i class="fa fa-plus-circle"></i> <?php echo Yii::t("news",@$shareLabel["verb-".$media["verb"].$pluriel]); ?> 
             <span class="text-<?php echo @$iconColor; ?>">
               <a href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>" 
                  class="lbh">
-                <?php echo Yii::t("common", $shareLabel["displayShared-".@$media["object"]["type"]]); ?>
+                <?php echo Yii::t("common", @$shareLabel["displayShared-".@$media["object"]["type"]]); ?>
               </a>
             </span> 
             <?php if(@$media["object"]["type"] == "news"){ ?>

@@ -395,7 +395,11 @@
           </div>
 
         <?php } else if ( $typeSelected == "events" ){?>
-
+          <style type="text/css">
+            header{
+              padding-bottom:15px;
+            }
+          </style>
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
             <!--<button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
                 <i class="fa fa-search"></i> 

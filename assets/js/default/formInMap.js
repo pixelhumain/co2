@@ -369,16 +369,16 @@ var formInMap = {
 								else if(notEmpty(value.level2Name))
 									lblList += " ( " + value.level2Name + " ) ";
 
-								html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
-												"data-locId='"+key+"' "+
-												"data-level4='"+value.level4+"' data-level4name='"+value.level4Name+"'"+
-												"data-level3='"+value.level3+"' data-level3name='"+value.level3Name+"'"+
-												"data-level2='"+value.level2+"' data-level2name='"+value.level2Name+"'"+ 
-												"data-level1='"+value.level1+"' data-level1name='"+value.level1Name+"'"+ 
-												"data-country='"+country+"' "+
-												"data-city='"+val+"' data-cp='"+lbl+"' "+
-												"data-lat='"+lat+"' data-lng='"+lng+"' "+
-												"data-insee='"+insee+"' class='item-city-found'>"+lblList+"</a></li>";
+								html += '<li><a href="javascript:;" data-type="'+currentScopeType+'" '+
+												'data-locId="'+key+'" '+
+												'data-level4="'+value.level4+'" data-level4name="'+value.level4Name+'"'+
+												'data-level3="'+value.level3+'" data-level3name="'+value.level3Name+'"'+
+												'data-level2="'+value.level2+'" data-level2name="'+value.level2Name+'"'+ 
+												'data-level1="'+value.level1+'" data-level1name="'+value.level1Name+'"'+ 
+												'data-country="'+country+'" '+
+												'data-city="'+val+'" data-cp="'+lbl+'" '+
+												'data-lat="'+lat+'" data-lng="'+lng+'" '+
+												'data-insee="'+insee+'" class="item-city-found">'+lblList+'</a></li>';
 							});
 						}else{
 							var val = value.name; 
@@ -392,23 +392,16 @@ var formInMap = {
 							else if(notEmpty(value.level2Name))
 								lblList += " ( " + value.level2Name + " ) ";
 
-							html += "<li><a href='javascript:;' data-type='"+currentScopeType+"' "+
-												"data-locid='"+key+"' ";
-							if(notNull(value.level4Name))
-								lblList += " ( " + value.level4Name + " ) ";
-							else if(notNull(value.level3Name))
-								lblList += " ( " + value.level3Name + " ) ";
-							else if(notNull(value.level2Name))
-								lblList += " ( " + value.level2Name + " ) ";
-
-							html +=	"data-level4='"+value.level4+"' data-level4name='"+value.level4Name+"'"+
-									"data-level3='"+value.level3+"' data-level3name='"+value.level3Name+"'"+
-									"data-level2='"+value.level2+"' data-level2name='"+value.level2Name+"'"+ 
-									"data-level1='"+value.level1+"' data-level1name='"+value.level1Name+"'";
-							html += "data-country='"+country+"' "+
-									"data-city='"+val+"' data-lat='"+lat+"' "+
-									"data-lng='"+lng+"' data-insee='"+insee+"' "+
-									"class='item-city-found-uncomplete'>"+lblList+"</a></li>";
+							html += '<li><a href="javascript:;" data-type="'+currentScopeType+'" '+
+												'data-locid="'+key+'" ';
+							html +=	'data-level4="'+value.level4+'" data-level4name="'+value.level4Name+'"'+
+									'data-level3="'+value.level3+'" data-level3name="'+value.level3Name+'"'+
+									'data-level2="'+value.level2+'" data-level2name="'+value.level2Name+'"'+ 
+									'data-level1="'+value.level1+'" data-level1name="'+value.level1Name+'"';
+							html += 'data-country="'+country+'" '+
+									'data-city="'+val+'" data-lat="'+lat+'" '+
+									'data-lng="'+lng+'" data-insee="'+insee+'" '+
+									'class="item-city-found-uncomplete">'+lblList+'</a></li>';
 						}
 					};
 				});
@@ -522,16 +515,16 @@ var formInMap = {
 		mylog.log("countryCode", countryCode);
 		
 		var countryDataGouv = ["FR","GP","MQ","GF","RE","PM","YT"];
-		// if(countryDataGouv.indexOf(countryCode) != -1){
-		// 	countryCode = formInMap.changeCountryForNominatim(countryCode);
-		// 	mylog.log("countryCodeHere", countryCode);
-		// 	callDataGouv(requestPart, countryCode);
+		if(countryDataGouv.indexOf(countryCode) != -1){
+			countryCode = formInMap.changeCountryForNominatim(countryCode);
+			mylog.log("countryCodeHere", countryCode);
+			callDataGouv(requestPart, countryCode);
 			
-		// }else{
+		}else{
 			countryCode = formInMap.changeCountryForNominatim(countryCode);
 			mylog.log("countryCode", countryCode);
 			callNominatim(requestPart, countryCode);
-		//}
+		}
 		
 		formInMap.btnValideDisable(false);
 	},

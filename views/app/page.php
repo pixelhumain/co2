@@ -64,7 +64,7 @@
                 $this->renderPartial('../news/standalone', $params ); 
             }
 
-            if($type == Classified::COLLECTION){
+            if($type == Classified::COLLECTION || $type == Ressource::COLLECTION){
                 $params = array("element"=>$element , 
                                 "page" => "page",
                                 "type" => $type,
@@ -74,7 +74,7 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
-                $this->renderPartial('../classified/standalone', $params ); 
+                $this->renderPartial('classifieds.views.co.standalone', $params ); 
             }
             if($type == Product::COLLECTION){
                 $params = array("element"=>$element , 

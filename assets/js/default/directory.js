@@ -201,18 +201,23 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             if(!data){ 
               toastr.error(data.content); 
             } 
-            else{
+            else 
+            {
               // Remove count element from results
+              mylog.log("data.count",Object.keys(data).length);
               if(typeof data.count != "undefined"){
                 searchCount=data.count;
+                search.count = data.count;
                 delete data.count;
-              }
+              } else if( Object.keys(data).length != "undefined" ) 
+                searchCount[ searchType[0] ] = Object.keys(data).length;
+
               //var city, postalCode = "";
               //Prepare footer and header of directory 
-              
               $(".headerSearchContainer").html( directory.headerHtml(indexMin) );
               $(".footerSearchContainer").html( directory.footerHtml() );
               str = "";
+
               // Algorithm when searching in multi collections (scroll algo by updated)
               if(search.app=="territorial")
                 data=searchEngine.prepareAllSearch(data);
@@ -1133,7 +1138,7 @@ var directory = {
 		if(params.updated != null )
 			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
 
-		var linkAction = ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
+		var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
 		if(params.type == "citoyens") 
 			params.hash += '.viewer.' + userId;
 		// if(typeof params.size == "undefined" || params.size == "max")
@@ -1357,8 +1362,8 @@ var directory = {
           var devise = (typeof params.devise != "undefined") ? params.devise : "";
           var price = (typeof params.price != "undefined" && params.price != "") ? 
                         "<br/><i class='fa fa-money'></i> " + params.price + " " + devise : "";
-          
-          str += "<h4 class='text-azure'>"+price+"</h4>";
+          if(price != "")
+            str += "<h4 class='text-azure'>"+price+"</h4>";
 
 
           if(typeof params.category != "undefined"){
@@ -2625,6 +2630,7 @@ var directory = {
       return str;
     },
     headerHtml : function(indexMin){
+      mylog.log("-----------headerHtml :",search.count);
       headerStr = '';
       if(typeof search.count != "undefined" && search.count || indexMin==0 ){          
           countHeader=0;
@@ -2636,6 +2642,7 @@ var directory = {
             typeCount = (searchType[0]=="persons") ? "citoyens" : searchType[0];
             countHeader=searchCount[typeCount];
           }
+          mylog.log("-----------headerHtml :"+countHeader);
           resultsStr = (countHeader > 1) ? trad.results : trad.result;
           headerStr +='<h5>'+
               "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+

@@ -265,7 +265,7 @@ function bindButtonMenu(){
 
 	$("#downloadProfil").click(function () {
 		$.ajax({
-			url: baseUrl + "/communecter/data/get/type/citoyens/id/"+contextData.id ,
+			url: baseUrl+"/"+moduleId+"/data/get/type/citoyens/id/"+contextData.id ,
 			type: 'POST',
 			dataType: 'json',
 			async:false,

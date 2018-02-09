@@ -37,7 +37,7 @@
             }
           }
         }else{
-          if (@$media["scope"]["address"]) {
+          if (@$media["scope"]["address"] && @$media["scope"]["type"] && $media["scope"]["type"]==News::TYPE_PUBLIC) {
               $postalCode=(@$media["scope"]["address"]["postalCode"])?$media["scope"]["address"]["postalCode"].", " : "";
               $city=$media["scope"]["address"]["addressLocality"]; 
               $scopeSpan="<span class='label label-danger pull-right margin-left-5 margin-top-10'><i class='fa fa-bullseye'></i> ".$postalCode.$city."</span>"; 

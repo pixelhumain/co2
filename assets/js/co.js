@@ -1550,7 +1550,7 @@ function  bindExplainLinks() {
 }
 
 function  bindLBHLinks() { 
-	$(".lbh").off().on("click",function(e) {  	
+	$(".lbh").unbind("click").on("click",function(e) {  	
 		e.preventDefault();
 		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
@@ -3445,6 +3445,19 @@ function initKInterface(params){ console.log("initKInterface");
             scrollTop: ($($anchor.attr('href')).offset().top - 50)
         }, 1250, 'easeInOutExpo');
         event.preventDefault();
+    });
+
+    $(".toolbar-bottom-apps").hide().removeClass("hidden");
+    $('#show-bottom-app').off().click(function(){
+    	$(".toolbar-bottom-apps").toggle(100);
+	    $('.toolbar-bottom-apps .btn').click(function(){
+	    	console.log(".toolbar-bottom-apps btn click");
+	    	$(".toolbar-bottom-apps").hide(200);
+	    });
+    });
+    $('.toolbar-bottom-apps').unbind("mouseleave").mouseleave(function(){
+    	console.log(".toolbar-bottom-apps mouseleave");
+    	$(".toolbar-bottom-apps").hide(200);
     });
 
     // jQuery for page scrolling feature - requires jQuery Easing plugin

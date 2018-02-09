@@ -909,7 +909,7 @@ function bindScopesNewsEvent(news){
 		key=$(this).data("scope-key");
 		mylog.log("manageMultiscopes key scopeValue addScope", key, scopeValue, addScope);
 		if(addScope){
-			newScope=myScopes[myScopes.type][key];
+			newScope=myScopes[myScopes.typeNews][key];
 			newScope.active=true;
 			newsScopes[key] = newScope;
 			$(this).attr("data-add",false).attr("data-original-title","Remove");
@@ -931,10 +931,10 @@ function bindScopesNewsEvent(news){
 		mylog.log("#multiscopes-news-btn, #communexion-news-btn");
 		$(".scopes-btn-news").removeClass("active");
 		$(this).addClass("active");
-		myScopes.type=$(this).data("type");
+		myScopes.typeNews=$(this).data("type");
 		//$(this).find("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
 		$("#scopes-news-form .scopes-container").html(constructScopesHtml(true));
-		if(myScopes.type=="communexion")
+		if(myScopes.typeNews=="communexion")
 				$("#scopes-news-form .scopes-container .scope-order").sort(sortSpan) // sort elements
                   .appendTo("#scopes-news-form .scopes-container");
         bindScopesNewsEvent();

@@ -368,7 +368,8 @@ function initPageTable(number){
           onPageClick: function (page, evt) {
               // some code
               //alert(page);
-            simpleScroll();
+            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 81;
+            simpleScroll(scrollH);
             pageCount=false;
             searchPage=(page-1);
             search.page=searchPage;

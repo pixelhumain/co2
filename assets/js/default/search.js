@@ -36,7 +36,8 @@ function initSearchInterface(){
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
             //initTypeSearch(typeInit);
-            simpleScroll();
+            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
+            simpleScroll(scrollH);
             searchPage=0;
             search.value = $(this).val();
             search.count=true;

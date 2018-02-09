@@ -229,14 +229,17 @@ jQuery(document).ready(function() {
 
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
-            if($(this).hasClass("active")){
+            /*if($(this).hasClass("active")){
                 typeD="all";
                 $(".btn-directory-type").removeClass("active");
-            }else{
+            }else{*/
                 search.app="search";
                 $(".btn-directory-type").removeClass("active");
                 $(this).addClass("active");
-            }
+            /*}*/
+            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
+            simpleScroll(scrollH);
+           
             if(typeD == "events"){
                 var typeEvent = $(this).data("type-event");
                 searchSType = typeEvent;

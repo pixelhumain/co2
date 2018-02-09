@@ -134,7 +134,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 			 $(window).bind("scroll",function(){ 
 	    		if(!loadingData && !scrollEnd){
 	         		var heightWindow = $("html").height() - $("body").height();
-	         		if( $(this).scrollTop() >= heightWindow - 800){
+	         		if( $(this).scrollTop() >= heightWindow - 1000){
 	            		//loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
 	            		showNewsStream(false);
 	          		}

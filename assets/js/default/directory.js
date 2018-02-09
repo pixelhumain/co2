@@ -22,58 +22,62 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
-    mylog.log("startSearch directory.js", typeof callBack, callBack, loadingData);
-    if(loadingData) return;
-    
-    //console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
-    loadingData = true;
-    showIsLoading(true);
+    if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
+      startNewsSearch(true);
+    else{
+      mylog.log("startSearch directory.js", typeof callBack, callBack, loadingData);
+      if(loadingData) return;
+      
+      //console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
+      loadingData = true;
+      showIsLoading(true);
 
-    //mylog.log("loadingData true");
-    indexStep = indexStepInit;
+      //mylog.log("loadingData true");
+      indexStep = indexStepInit;
 
-    mylog.log("startSearch", indexMin, indexMax, indexStep, searchType);
-    var name=search.value;
-	  //var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
-    
-    //if(name == "") name = ($('#second-search-bar').length>0) ? $('#second-search-bar').val() : "";
-    //if(name == "" && searchType.indexOf("cities") > -1) return;  
+      mylog.log("startSearch", indexMin, indexMax, indexStep, searchType);
+      var name=search.value;
+  	  //var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
+      
+      //if(name == "") name = ($('#second-search-bar').length>0) ? $('#second-search-bar').val() : "";
+      //if(name == "" && searchType.indexOf("cities") > -1) return;  
 
-    if(typeof indexMin == "undefined") indexMin = 0;
-    if(typeof indexMax == "undefined") indexMax = indexStep;
+      if(typeof indexMin == "undefined") indexMin = 0;
+      if(typeof indexMax == "undefined") indexMax = indexStep;
 
-    currentIndexMin = indexMin;
-    currentIndexMax = indexMax;
+      currentIndexMin = indexMin;
+      currentIndexMax = indexMax;
 
-    if(indexMin == 0 && indexMax == indexStep) {
-      totalData = 0;
-      mapElements = new Array(); 
-    }
-    else{ if(scrollEnd) return; }
-    
-    if(name.length>=2 || name.length == 0)
-    {
-      var locality = "";
-      //if( communexionActivated ){
-  	    if(typeof(cityInseeCommunexion) != "undefined")
-        {
-    			if(levelCommunexion == 1) locality = cpCommunexion;
-    			if(levelCommunexion == 2) locality = inseeCommunexion;
-    		}else{
-    			if(levelCommunexion == 1) locality = inseeCommunexion;
-    			if(levelCommunexion == 2) locality = cpCommunexion;
-    		}
-        //if(levelCommunexion == 3) locality = cpCommunexion.substr(0, 2);
-        if(levelCommunexion == 3) locality = inseeCommunexion;
-        if(levelCommunexion == 4) locality = inseeCommunexion;
-        if(levelCommunexion == 5) locality = "";
+      if(indexMin == 0 && indexMax == indexStep) {
+        totalData = 0;
+        mapElements = new Array(); 
+      }
+      else{ if(scrollEnd) return; }
+      
+      //if(name.length>=2 || name.length == 0)
+      //{
+        var locality = "";
+        //if( communexionActivated ){
+    	    if(typeof(cityInseeCommunexion) != "undefined")
+          {
+      			if(levelCommunexion == 1) locality = cpCommunexion;
+      			if(levelCommunexion == 2) locality = inseeCommunexion;
+      		}else{
+      			if(levelCommunexion == 1) locality = inseeCommunexion;
+      			if(levelCommunexion == 2) locality = cpCommunexion;
+      		}
+          //if(levelCommunexion == 3) locality = cpCommunexion.substr(0, 2);
+          if(levelCommunexion == 3) locality = inseeCommunexion;
+          if(levelCommunexion == 4) locality = inseeCommunexion;
+          if(levelCommunexion == 5) locality = "";
 
-        mylog.log("Locality : ", locality);
-      //} 
-      mylog.log("locality",locality);
-      autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
-    } else{
-      toastr.info(trad["This request is too short !"]);
+          mylog.log("Locality : ", locality);
+        //} 
+        mylog.log("locality",locality);
+        autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
+    //  } else{
+      //  toastr.info(trad["This request is too short !"]);
+      //}
     }
 }
 

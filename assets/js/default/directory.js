@@ -22,58 +22,62 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
-    mylog.log("startSearch directory.js", typeof callBack, callBack, loadingData);
-    if(loadingData) return;
-    
-    //console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
-    loadingData = true;
-    showIsLoading(true);
+    if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
+      startNewsSearch(true);
+    else{
+      mylog.log("startSearch directory.js", typeof callBack, callBack, loadingData);
+      if(loadingData) return;
+      
+      //console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
+      loadingData = true;
+      showIsLoading(true);
 
-    //mylog.log("loadingData true");
-    indexStep = indexStepInit;
+      //mylog.log("loadingData true");
+      indexStep = indexStepInit;
 
-    mylog.log("startSearch", indexMin, indexMax, indexStep, searchType);
-    var name=search.value;
-	  //var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
-    
-    //if(name == "") name = ($('#second-search-bar').length>0) ? $('#second-search-bar').val() : "";
-    //if(name == "" && searchType.indexOf("cities") > -1) return;  
+      mylog.log("startSearch", indexMin, indexMax, indexStep, searchType);
+      //var name=search.value;
+  	  //var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
+      
+      //if(name == "") name = ($('#second-search-bar').length>0) ? $('#second-search-bar').val() : "";
+      //if(name == "" && searchType.indexOf("cities") > -1) return;  
 
-    if(typeof indexMin == "undefined") indexMin = 0;
-    if(typeof indexMax == "undefined") indexMax = indexStep;
+      if(typeof indexMin == "undefined") indexMin = 0;
+      if(typeof indexMax == "undefined") indexMax = indexStep;
 
-    currentIndexMin = indexMin;
-    currentIndexMax = indexMax;
+      currentIndexMin = indexMin;
+      currentIndexMax = indexMax;
 
-    if(indexMin == 0 && indexMax == indexStep) {
-      totalData = 0;
-      mapElements = new Array(); 
-    }
-    else{ if(scrollEnd) return; }
-    
-    if(name.length>=2 || name.length == 0)
-    {
-      var locality = "";
-      //if( communexionActivated ){
-  	    if(typeof(cityInseeCommunexion) != "undefined")
-        {
-    			if(levelCommunexion == 1) locality = cpCommunexion;
-    			if(levelCommunexion == 2) locality = inseeCommunexion;
-    		}else{
-    			if(levelCommunexion == 1) locality = inseeCommunexion;
-    			if(levelCommunexion == 2) locality = cpCommunexion;
-    		}
-        //if(levelCommunexion == 3) locality = cpCommunexion.substr(0, 2);
-        if(levelCommunexion == 3) locality = inseeCommunexion;
-        if(levelCommunexion == 4) locality = inseeCommunexion;
-        if(levelCommunexion == 5) locality = "";
+      if(indexMin == 0 && indexMax == indexStep) {
+        totalData = 0;
+        mapElements = new Array(); 
+      }
+      else{ if(scrollEnd) return; }
+      
+      //if(name.length>=2 || name.length == 0)
+      //{
+       // var locality = "";
+        //if( communexionActivated ){
+    	   /* if(typeof(cityInseeCommunexion) != "undefined")
+          {
+      			if(levelCommunexion == 1) locality = cpCommunexion;
+      			if(levelCommunexion == 2) locality = inseeCommunexion;
+      		}else{
+      			if(levelCommunexion == 1) locality = inseeCommunexion;
+      			if(levelCommunexion == 2) locality = cpCommunexion;
+      		}
+          //if(levelCommunexion == 3) locality = cpCommunexion.substr(0, 2);
+          if(levelCommunexion == 3) locality = inseeCommunexion;
+          if(levelCommunexion == 4) locality = inseeCommunexion;
+          if(levelCommunexion == 5) locality = "";
 
-        mylog.log("Locality : ", locality);
-      //} 
-      mylog.log("locality",locality);
-      autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
-    } else{
-      toastr.info(trad["This request is too short !"]);
+          mylog.log("Locality : ", locality);
+        //} 
+        mylog.log("locality",locality);*/
+        autoCompleteSearch(indexMin, indexMax, callBack);
+    //  } else{
+      //  toastr.info(trad["This request is too short !"]);
+      //}
     }
 }
 
@@ -110,7 +114,13 @@ function initTypeSearch(typeInit){
         //$(window).off("scroll");
     }
 }
-
+function initCountType(){
+  if(search.app=="search" || search.app=="territorial")
+    search.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", "places", "poi", "news", "classified","ressources"];
+  else if(search.app=="ressources") search.countType=["ressources"];
+  else if(search.app=="annonces") search.countType=["classified"];
+  else if(search.app=="agenda") search.countType=["events"];
+}
 
 function removeSearchType(type){
   var index = searchType.indexOf(type);
@@ -121,7 +131,7 @@ function removeSearchType(type){
   }
 }
 
-function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
+function autoCompleteSearch(indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
   //if(typeof myScopes != "undefined" )
     //var searchLocality = getLocalityForSearch();
@@ -130,11 +140,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
     
     var data = {
-      "name" : name, 
+      "name" : search.value, 
       "locality" : searchLocality,//locality, 
       "searchType" : searchType, 
       "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
-      "page":searchPage
+      "searchPage":searchPage
     };
     if(notNull(indexMin) && notNull(indexMax)){
       data.indexMin=indexMin;
@@ -146,8 +156,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       data.count=search.count;
     if(typeof search.ranges != "undefined")
       data.ranges=search.ranges;
+    if(typeof search.countType != "undefined")
+      data.countType=search.countType;
+    
     //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
-    if(search.app=="agenda" && name==""){
+    if(search.app=="agenda" && search.value==""){
       if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
         mylog.log("integrate AGENDA_WINDOW");
         data.startDate = STARTDATE;
@@ -182,8 +195,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     if(isMapEnd)
       $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading);
          
-    mylog.dir(data);
-    //alert();
+    //mylog.dir(data);
     $.ajax({
         type: "POST",
         url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
@@ -203,29 +215,28 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             } 
             else 
             {
-              // Remove count element from results
-              mylog.log("data.count",Object.keys(data).length);
-              if(typeof data.count != "undefined"){
+              //Get results object
+              results=data.results;
+              //Get count object
+              if(typeof data.count != "undefined")
                 searchCount=data.count;
-                search.count = data.count;
-                delete data.count;
-              } else if( Object.keys(data).length != "undefined" ) 
-                searchCount[ searchType[0] ] = Object.keys(data).length;
 
-              //var city, postalCode = "";
+              if(search.app!="search" || (typeof pageCount != "undefined" && pageCount)){
               //Prepare footer and header of directory 
-              $(".headerSearchContainer").html( directory.headerHtml(indexMin) );
-              $(".footerSearchContainer").html( directory.footerHtml() );
+                $(".headerSearchContainer").html( directory.headerHtml(indexMin) );
+                $(".footerSearchContainer").html( directory.footerHtml() );
+              }
               str = "";
 
               // Algorithm when searching in multi collections (scroll algo by updated)
+              
               if(search.app=="territorial")
-                data=searchEngine.prepareAllSearch(data);
+                results=searchEngine.prepareAllSearch(results);
               //Add correct number to type filters
               if(search.count)
                 refreshCountBadge();
               //parcours la liste des résultats de la recherche
-              str += directory.showResultsDirectoryHtml(data);
+              str += directory.showResultsDirectoryHtml(results);
               if(str == "") { 
 	              $.unblockUI();
                 showMap(false);
@@ -271,7 +282,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 }else{
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").html(str);
-                    if(search.app =="territorial" && Object.keys(data).length < 30){
+                    if(search.app =="territorial" && Object.keys(results).length < 30){
                       //formAdd=directory
                       str=directory.endOfResult();   
                       $("#dropdown_search").append(str);
@@ -330,7 +341,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             }*/
 
             if(search.app == "agenda" && typeof showResultInCalendar != "undefined" && search.value=="")
-              showResultInCalendar(data);
+              showResultInCalendar(results);
 
 
             if(mapElements.length==0) mapElements = data;
@@ -365,7 +376,8 @@ function initPageTable(number){
           onPageClick: function (page, evt) {
               // some code
               //alert(page);
-            simpleScroll();
+            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 81;
+            simpleScroll(scrollH);
             pageCount=false;
             searchPage=(page-1);
             search.page=searchPage;

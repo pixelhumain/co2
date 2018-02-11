@@ -135,7 +135,7 @@
         if (this.options.onMonthChange) {
           this.options.onMonthChange.call(this);
         }*/
-        
+        search.count=true;
         agendaWinMonth--;
         calculateAgendaWindow(agendaWinMonth);
         startSearch(0, indexStep, searchCallback);
@@ -153,7 +153,7 @@
         if (this.options.onMonthChange) {
           this.options.onMonthChange.call(this);
         }*/
-
+        search.count=true;
         agendaWinMonth++;
         calculateAgendaWindow(agendaWinMonth);
         startSearch(0, indexStep, searchCallback);

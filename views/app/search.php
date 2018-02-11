@@ -219,7 +219,7 @@ jQuery(document).ready(function() {
 
     setTitle(titlePage, "", titlePage);
   
-    initKInterface({"affixTop":70});
+    initKInterface({"affixTop":200});
     
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";

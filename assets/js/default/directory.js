@@ -290,6 +290,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                       typeElement=(search.type=="persons") ? "citoyens" : search.type;
                       initPageTable(searchCount[typeElement]);
                     }
+
                     pageEvent=false;
                     /*if(typeof myMultiTags != "undefined"){
                     $.each(myMultiTags, function(key, value){ //mylog.log("binding bold "+key);

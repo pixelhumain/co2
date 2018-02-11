@@ -36,7 +36,7 @@ function startSearch(indexMin, indexMax, callBack){
       indexStep = indexStepInit;
 
       mylog.log("startSearch", indexMin, indexMax, indexStep, searchType);
-      var name=search.value;
+      //var name=search.value;
   	  //var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
       
       //if(name == "") name = ($('#second-search-bar').length>0) ? $('#second-search-bar').val() : "";
@@ -56,9 +56,9 @@ function startSearch(indexMin, indexMax, callBack){
       
       //if(name.length>=2 || name.length == 0)
       //{
-        var locality = "";
+       // var locality = "";
         //if( communexionActivated ){
-    	    if(typeof(cityInseeCommunexion) != "undefined")
+    	   /* if(typeof(cityInseeCommunexion) != "undefined")
           {
       			if(levelCommunexion == 1) locality = cpCommunexion;
       			if(levelCommunexion == 2) locality = inseeCommunexion;
@@ -73,8 +73,8 @@ function startSearch(indexMin, indexMax, callBack){
 
           mylog.log("Locality : ", locality);
         //} 
-        mylog.log("locality",locality);
-        autoCompleteSearch(name, locality, indexMin, indexMax, callBack);
+        mylog.log("locality",locality);*/
+        autoCompleteSearch(indexMin, indexMax, callBack);
     //  } else{
       //  toastr.info(trad["This request is too short !"]);
       //}
@@ -114,7 +114,13 @@ function initTypeSearch(typeInit){
         //$(window).off("scroll");
     }
 }
-
+function initCountType(){
+  if(search.app=="search" || search.app=="territorial")
+    search.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", "places", "poi", "news", "classified","ressources"];
+  else if(search.app=="ressources") search.countType=["ressources"];
+  else if(search.app=="annonces") search.countType=["classified"];
+  else if(search.app=="agenda") search.countType=["events"];
+}
 
 function removeSearchType(type){
   var index = searchType.indexOf(type);
@@ -125,7 +131,7 @@ function removeSearchType(type){
   }
 }
 
-function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
+function autoCompleteSearch(indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
   //if(typeof myScopes != "undefined" )
     //var searchLocality = getLocalityForSearch();
@@ -134,11 +140,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
 
     
     var data = {
-      "name" : name, 
+      "name" : search.value, 
       "locality" : searchLocality,//locality, 
       "searchType" : searchType, 
       "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
-      "page":searchPage
+      "searchPage":searchPage
     };
     if(notNull(indexMin) && notNull(indexMax)){
       data.indexMin=indexMin;
@@ -150,8 +156,11 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
       data.count=search.count;
     if(typeof search.ranges != "undefined")
       data.ranges=search.ranges;
+    if(typeof search.countType != "undefined")
+      data.countType=search.countType;
+    
     //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
-    if(search.app=="agenda" && name==""){
+    if(search.app=="agenda" && search.value==""){
       if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
         mylog.log("integrate AGENDA_WINDOW");
         data.startDate = STARTDATE;
@@ -186,8 +195,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
     if(isMapEnd)
       $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading);
          
-    mylog.dir(data);
-    //alert();
+    //mylog.dir(data);
     $.ajax({
         type: "POST",
         url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
@@ -207,29 +215,28 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             } 
             else 
             {
-              // Remove count element from results
-              mylog.log("data.count",Object.keys(data).length);
-              if(typeof data.count != "undefined"){
+              //Get results object
+              results=data.results;
+              //Get count object
+              if(typeof data.count != "undefined")
                 searchCount=data.count;
-                search.count = data.count;
-                delete data.count;
-              } else if( Object.keys(data).length != "undefined" ) 
-                searchCount[ searchType[0] ] = Object.keys(data).length;
 
-              //var city, postalCode = "";
+              if(search.app!="search" || (typeof pageCount != "undefined" && pageCount)){
               //Prepare footer and header of directory 
-              $(".headerSearchContainer").html( directory.headerHtml(indexMin) );
-              $(".footerSearchContainer").html( directory.footerHtml() );
+                $(".headerSearchContainer").html( directory.headerHtml(indexMin) );
+                $(".footerSearchContainer").html( directory.footerHtml() );
+              }
               str = "";
 
               // Algorithm when searching in multi collections (scroll algo by updated)
+              
               if(search.app=="territorial")
-                data=searchEngine.prepareAllSearch(data);
+                results=searchEngine.prepareAllSearch(results);
               //Add correct number to type filters
               if(search.count)
                 refreshCountBadge();
               //parcours la liste des résultats de la recherche
-              str += directory.showResultsDirectoryHtml(data);
+              str += directory.showResultsDirectoryHtml(results);
               if(str == "") { 
 	              $.unblockUI();
                 showMap(false);
@@ -275,7 +282,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
                 }else{
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").html(str);
-                    if(search.app =="territorial" && Object.keys(data).length < 30){
+                    if(search.app =="territorial" && Object.keys(results).length < 30){
                       //formAdd=directory
                       str=directory.endOfResult();   
                       $("#dropdown_search").append(str);
@@ -333,7 +340,7 @@ function autoCompleteSearch(name, locality, indexMin, indexMax, callBack){
             }*/
 
             if(search.app == "agenda" && typeof showResultInCalendar != "undefined" && search.value=="")
-              showResultInCalendar(data);
+              showResultInCalendar(results);
 
 
             if(mapElements.length==0) mapElements = data;

@@ -220,7 +220,7 @@ jQuery(document).ready(function() {
     setTitle(titlePage, "", titlePage);
   
     initKInterface({"affixTop":70});
-    
+    initCountType();
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
     //if( type=="ressources" )search.app = "ressources";

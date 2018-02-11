@@ -233,7 +233,8 @@ jQuery(document).ready(function() {
                 typeD="all";
                 $(".btn-directory-type").removeClass("active");
             }else{*/
-                search.app="search";
+                if(search.app != "agenda")
+                    search.app="search";
                 $(".btn-directory-type").removeClass("active");
                 $(this).addClass("active");
             /*}*/
@@ -249,14 +250,16 @@ jQuery(document).ready(function() {
             if(typeD=="all"){
                 searchEngine.initInjectData();
                 searchEngine.initTerritorialSearch();
-            }//else{
+            }
+                //else{
                // initKInterface({"affixTop":200});
             //}
             //mylog.log("search.php",searchType);
             //setHeaderDirectory(typeD);
             loadingData = false;
             pageCount=true;
-            search.count=false;
+            if(search.app != "agenda") search.count=false; 
+            else search.count=true;
             pageEvent=false;
             search.type=searchType;
             startSearch(0, indexStepInit, searchCallback);

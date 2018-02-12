@@ -179,8 +179,8 @@
 						                    <option value="4">4</option>
 						                    <option value="5">5</option>
 						                  </select>
-						                </div> <br>
-								<?php } ?>
+						                </div> 
+								<?php } ?><br>
 								<span class="text-comment text-left pull-left <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>"><?php echo $comment["text"]; ?></span>
 							</span><br>
 							<small class="bold">

@@ -10,15 +10,12 @@
     //header + menu
 
     if($this->module->id != "network" && $type!=Classified::COLLECTION && ($type!=Product::COLLECTION || ($element["creator"]==Yii::app()->session["userId"] && $view != "show")))
+    //le param USEHEADER de params.json sert à afficher ou non le header, 
+    //donc normalement pas besoin de faire de IF ici
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page") ); 
 ?>
-<style>
-    header {
-        display:none;
-    }
-</style>
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="" id="onepage">

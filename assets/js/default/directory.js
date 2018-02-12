@@ -549,6 +549,7 @@ function initPageTable(number){
 
   	//on click sur les boutons link
 	$(".followBtn").click(function(){
+		mylog.log(".followBtn");
 		formData = new Object();
 		formData.parentId = $(this).attr("data-id");
 		formData.childId = userId;
@@ -559,9 +560,10 @@ function initPageTable(number){
 		//traduction du type pour le floopDrawer
 		var typeOrigine = dyFInputs.get(type).col;
 		if(typeOrigine == "persons"){ typeOrigine = personCOLLECTION;}
-   		formData.parentType = typeOrigine;
-   		mylog.log("followBtn",type);
-   		type = (type == "person") ? "people" : dyFInputs.get(type).col;
+		formData.parentType = typeOrigine;
+		mylog.log(".followBtn",type);
+		type = (type == "person") ? "people" : dyFInputs.get(type).col;
+		mylog.log(".followBtn",type);
 
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
@@ -579,7 +581,8 @@ function initPageTable(number){
 						$(thiselement).html("<i class='fa fa-unlink text-green'></i>");
 						$(thiselement).attr("data-ownerlink","unfollow");
 						$(thiselement).attr("data-original-title", (type == "events") ? "Ne plus participer" : "Ne plus suivre");
-						addFloopEntity(id, type, data.parent);
+						var parent  = (notNull(data.parentEntity) ? data.parentEntity : data.parent) ;
+						addFloopEntity(id, type, parent);
 					}
 					else
 						toastr.error(data.msg);
@@ -1025,7 +1028,7 @@ var directory = {
       if(typeof params.scope.localities != "undefined"){
         $.each(params.scope.localities, function(key, scope){
           params.fullLocality += " <small class='lbh letter-red margin-left-10'>"+
-                                    "<i class='fa fa-bullseye'></i> "+scope.name+
+                                    "<i class='fa fa-bullseye'></i> "+(notNull(scope.name) ? scope.name : scope.postalCode)+
                                  "</small> ";
         });
       }

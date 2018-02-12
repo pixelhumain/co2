@@ -109,6 +109,7 @@ function buildListContactHtml(contacts, myId){
 
 //création HTML d'un élément
 function getFloopItem(id, type, value){
+	mylog.log("getFloopItem" , id, type, value);
 	var oldElement = isOldElement(value);
 
 	var cp = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
@@ -242,6 +243,7 @@ function checkFloopSearch(thisElement, searchVal, type){
 
 //ajout d'un élément dans la liste
 function addFloopEntity(entityId, entityType, entityValue){
+	mylog.log("addFloopEntity", entityId, entityType, entityValue);
 	//Exception with citoyens collection which is managed like people in display
 	if(entityType == "citoyens") entityType = "people";
 
@@ -287,6 +289,7 @@ function showHideOldElements(type) {
 
 // Return true if the endDate of the Element is before the current Date. 
 function isOldElement(value) {
+	mylog.log("isOldElement", value);
 	var endDate = (typeof value["endDate"] != undefined) ? value["endDate"] : "";
 	if (endDate == "") return false;
 	return new Date(endDate) < new Date();

@@ -1872,6 +1872,7 @@ function globalSearch(searchValue,types,contact){
 				
 				compt++;
 
+
   			});
 			
 			if (compt > 0) {

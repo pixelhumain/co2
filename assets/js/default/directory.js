@@ -579,7 +579,7 @@ function initPageTable(number){
 						$(thiselement).html("<i class='fa fa-unlink text-green'></i>");
 						$(thiselement).attr("data-ownerlink","unfollow");
 						$(thiselement).attr("data-original-title", (type == "events") ? "Ne plus participer" : "Ne plus suivre");
-						addFloopEntity(id, type, data.parentEntity);
+						addFloopEntity(id, type, data.parent);
 					}
 					else
 						toastr.error(data.msg);

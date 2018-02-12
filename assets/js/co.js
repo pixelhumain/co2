@@ -1828,12 +1828,13 @@ function globalSearch(searchValue,types,contact){
              $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
           },
           success: function(data){
+          	mylog.log("globalSearch", data);
             var str = "";
  			var compt = 0;
  			var msg = "Verifiez si cet élément n'existe pas déjà";
  			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
  			cotmp = {};
- 			$.each(data, function(id, elem) {
+ 			$.each(data.results, function(id, elem) {
   				mylog.log("similarlink globalautocomplete", elem);
   				city = "";
 				postalCode = "";
@@ -1856,29 +1857,32 @@ function globalSearch(searchValue,types,contact){
 				
 				if(contact == true){
 					cotmp[id] = {id:id, name : elem.name};
-					str += 	"<div class='col-xs-6 col-sm-4 col-md-4 padding-10'>"+
+					str += 	"<div class='col-xs-12 padding-10'>"+
 								"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='btn btn-xs btn-default w50p' >"+
 									htmlIco + " " + elem.name + "</br>" + where +
 								"</a>" +
 							"</div>";
 					msg = "Verifiez si le contact est dans Communecter";
 				}else{
-					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger w50p text-left padding-5 margin-5' style='height:42px' >"+
+					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger col-xs-12 w50p text-left padding-5 margin-5' style='height:42px' >"+
 							"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
 						"</a>";
 				}
+				//str += directory.lightPanelHtml(elem);  
 				
 				compt++;
+
 
   			});
 			
 			if (compt > 0) {
 				$("#listSameName").html("<div class='col-sm-12 light-border text-red'> <i class='fa fa-eye'></i> "+msg+" : </div>"+str);
-				//bindLBHLinks();
+				$("#listSameName").show();
 			} else {
 				$("#listSameName").html("<span class='txt-green'><i class='fa fa-thumbs-up text-green'></i> Aucun élément avec ce nom.</span>");
 
 			}
+
 
 			
           }

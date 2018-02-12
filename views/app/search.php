@@ -259,7 +259,7 @@ jQuery(document).ready(function() {
             //setHeaderDirectory(typeD);
             loadingData = false;
             pageCount=true;
-            if(search.app != "agenda") search.count=false; 
+            if(Object.keys(search.countType).length>1) search.count=false; 
             else search.count=true;
             pageEvent=false;
             search.type=searchType;

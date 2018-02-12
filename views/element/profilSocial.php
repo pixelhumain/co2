@@ -557,7 +557,7 @@
 	            <h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> <?php echo Yii::t("common", "Event") ?></h6>
 	            <small><?php echo Yii::t("form", "Diffuse an event<br>Invite attendees<br>Communicate to your network") ?></small>
 	        </button>
-	        <button data-form-type="classified"  data-dismiss="modal"
+	        <button data-form-type="classifieds"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-event">
 	            <h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> <?php echo Yii::t("common", "Classified") ?></h6>
 	            <small><?php echo Yii::t("form","Create a classified ad<br>To share To give To sell To rent<br>Material Property Job") ?></small>
@@ -613,13 +613,13 @@
 	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
 	            </button>	            
 	        </div>
-
+			<?php /*
 	        <button data-form-type="place"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-place">
 	            <h6><i class="fa fa-home fa-2x bg-azure"></i><br> Lieu</h6>
 	            <small>Localiser des lieux importants<br>Partager ses ressources<br> ses compétence et ses besoins</small>
 	        </button>
-
+			*/ ?>
 	        <button data-form-type="ressources"  data-dismiss="modal"
 	            class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
 	            <h6><i class="fa fa-cube fa-2x bg-azure"></i><br> Ressource</h6>

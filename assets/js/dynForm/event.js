@@ -132,9 +132,9 @@ dynForm = {
             		"":tradDynForm["noparent"]
             	},
             	"groupOptions" : myAdminList( ["events"] ),
-            	init : function(){ console.log("init ParentId");
+            	init : function(){ mylog.log("init ParentId");
 	            	$("#ajaxFormModal #parentId").off().on("change",function(){
-	            		console.log("on change ParentId");
+	            		mylog.log("on change ParentId");
 	            		parentId = $(this).val();
 	            		startDateParent = "2000/01/01 00:00";
 	            		endDateParent = "2100/01/01 00:00";

@@ -998,6 +998,7 @@ var directory = {
     //  ELEMENT DIRECTORY PANEL
     // ********************************
   lightPanelHtml : function(params){
+    mylog.log("lightPanelHtml", params);
     var linkAction = "lbh"; // ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
     
     var onepageKey = CO2params["onepageKey"][0];
@@ -1031,7 +1032,7 @@ var directory = {
     }
 
     
-    console.log("lightPanel", params);
+    mylog.log("lightPanel", params);
     
     str = "";
     str += "<div class='col-xs-12 searchEntity entityLight no-padding'  id='entity"+params.id+"'>";

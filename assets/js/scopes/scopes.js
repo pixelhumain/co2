@@ -1,13 +1,17 @@
 function constructScopesHtml(news){
 	mylog.log("constructScopesHtml", news, notEmpty(news), !notEmpty(news));
 	html="";
-	$.each(myScopes[myScopes.type], function(key, value){
+
+	var typeScope = (news == true) ? myScopes.typeNews : myScopes.type;
+
+	$.each(myScopes[typeScope], function(key, value){
 		mylog.log("constructScopesHtml each", key, value);
 		var disabled = (value.active == false && !news) ? "disabled" : "";
-		if(news != true)
-			var btnType = (myScopes.type=="multiscopes") ? "multiscope" : "communexion";
-		else
-			var btnType = (myScopes.typeNews=="multiscopes") ? "multiscope" : "communexion";
+		var btnType = (typeScope=="multiscopes") ? "multiscope" : "communexion";
+		// if(news != true)
+		// 	var btnType = (myScopes.type=="multiscopes") ? "multiscope" : "communexion";
+		// else
+		// 	var btnType = (myScopes.typeNews=="multiscopes") ? "multiscope" : "communexion";
 
 		if(typeof value.name == "undefined") value.name = value.id;
 		if(news){
@@ -19,7 +23,8 @@ function constructScopesHtml(news){
 					"<i class='fa fa-plus-circle'></i>"+
 				"</span>";
 		}else{
-			if( (news != true && myScopes.type=="multiscopes") || (news == true && myScopes.typeNews=="multiscopes") )
+			if( typeScope=="multiscopes")
+			//if( (news != true && myScopes.type=="multiscopes") || (news == true && myScopes.typeNews=="multiscopes") )
 				btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
 					"data-add='false' data-scope-value='"+value.id+"' "+
 					'data-scope-key="'+key+'" '+

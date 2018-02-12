@@ -219,8 +219,9 @@ jQuery(document).ready(function() {
 
     setTitle(titlePage, "", titlePage);
   
-    initKInterface({"affixTop":70});
+    initKInterface({"affixTop":200});
     
+    initCountType();
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
     //if( type=="ressources" )search.app = "ressources";
@@ -229,14 +230,18 @@ jQuery(document).ready(function() {
 
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
-            if($(this).hasClass("active")){
+            /*if($(this).hasClass("active")){
                 typeD="all";
                 $(".btn-directory-type").removeClass("active");
-            }else{
-                search.app="search";
+            }else{*/
+                if(search.app != "agenda")
+                    search.app="search";
                 $(".btn-directory-type").removeClass("active");
                 $(this).addClass("active");
-            }
+            /*}*/
+            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
+            simpleScroll(scrollH);
+           
             if(typeD == "events"){
                 var typeEvent = $(this).data("type-event");
                 searchSType = typeEvent;
@@ -246,14 +251,16 @@ jQuery(document).ready(function() {
             if(typeD=="all"){
                 searchEngine.initInjectData();
                 searchEngine.initTerritorialSearch();
-            }//else{
+            }
+                //else{
                // initKInterface({"affixTop":200});
             //}
             //mylog.log("search.php",searchType);
             //setHeaderDirectory(typeD);
             loadingData = false;
             pageCount=true;
-            search.count=false;
+            if(search.app != "agenda") search.count=false; 
+            else search.count=true;
             pageEvent=false;
             search.type=searchType;
             startSearch(0, indexStepInit, searchCallback);

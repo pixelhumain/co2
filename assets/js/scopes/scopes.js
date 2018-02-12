@@ -1,10 +1,18 @@
 function constructScopesHtml(news){
-	mylog.log("constructScopesHtml", news);
+	mylog.log("constructScopesHtml", news, notEmpty(news), !notEmpty(news));
 	html="";
-	$.each(myScopes[myScopes.type], function(key, value){
+
+	var typeScope = (news == true) ? myScopes.typeNews : myScopes.type;
+
+	$.each(myScopes[typeScope], function(key, value){
 		mylog.log("constructScopesHtml each", key, value);
 		var disabled = (value.active == false && !news) ? "disabled" : "";
-		var btnType = (myScopes.type=="multiscopes") ? "multiscope" : "communexion";
+		var btnType = (typeScope=="multiscopes") ? "multiscope" : "communexion";
+		// if(news != true)
+		// 	var btnType = (myScopes.type=="multiscopes") ? "multiscope" : "communexion";
+		// else
+		// 	var btnType = (myScopes.typeNews=="multiscopes") ? "multiscope" : "communexion";
+
 		if(typeof value.name == "undefined") value.name = value.id;
 		if(news){
 			btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
@@ -15,7 +23,8 @@ function constructScopesHtml(news){
 					"<i class='fa fa-plus-circle'></i>"+
 				"</span>";
 		}else{
-			if(myScopes.type=="multiscopes")
+			if( typeScope=="multiscopes")
+			//if( (news != true && myScopes.type=="multiscopes") || (news == true && myScopes.typeNews=="multiscopes") )
 				btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
 					"data-add='false' data-scope-value='"+value.id+"' "+
 					'data-scope-key="'+key+'" '+
@@ -27,7 +36,6 @@ function constructScopesHtml(news){
 				//mylog.log("constructScopesHtml", value.id, key, getScope(key));
 				mylog.log("constructScopesHtml key", key);
 				if(typeof myScopes.multiscopes[key] != "undefined")
-				//if(	getScope(key, "multiscopes") != null )
 					btnScopeAction="<span class='manageMultiscopes active tooltips margin-right-5 margin-left-10' "+
 						"data-add='0' data-scope-value='"+value.id+"' "+
 						'data-scope-key="'+key+'" '+
@@ -86,6 +94,8 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 		bindScopesInputEvent();
 	}
 }
+
+
 function getCommunexionLabel(){
 	mylog.log("getCommunexionLabel");
 	if(typeof myScopes.communexion != "undefined" && Object.keys(myScopes.communexion).length>0){
@@ -222,6 +232,7 @@ function bindScopesInputEvent(news){
 	});
 
 	$(".item-scope-input").off().on("click", function(){ 
+		mylog.log(".item-scope-input");
 		scopeValue=$(this).data("scope-value");
 		typeSearch=$(this).data("btn-type");
 		key=$(this).data("scope-key");
@@ -244,10 +255,16 @@ function bindScopesInputEvent(news){
 	$(".item-globalscope-checker").off().on('click', function(){ 
 		mylog.log(".item-globalscope-checker");
 		var notSearch = $(this).data("scope-notsearch");
+		var container = $(this).data("append-container");
 		var testCo = true;
 		$("#searchOnCity").val("");
 		$(".dropdown-result-global-search").hide(700).html("");
-		myScopes.type="open";
+		mylog.log(".item-globalscope-checker container", container, container.indexOf("#scopes-news-form"));
+		if(container.indexOf("#scopes-news-form") == -1 )
+			myScopes.type="open";
+		else
+			myScopes.typeNews="open";
+
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
 		if(search.app=="territorial") searchEngine.initTerritorialSearch();
 		mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));

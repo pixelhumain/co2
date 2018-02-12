@@ -1,13 +1,8 @@
 {
-	"common" : { 
-		"name" : "Sport",
-		"icon" : "fa-futbol-o",
-		"tags" : ["sport"]
-	}, 
 	"food": {
-		"name" : "Agriculture | Food",
+		"name" : "Food",
 		"icon" : "fa-cutlery",
-		"tags" : ["agriculture","alimentation"]
+		"tags" : ["agriculture","alimentation", "nourriture", "AMAP"]
 	},  
 	"health": {
 		"name" : "Health",
@@ -19,20 +14,20 @@
 		"icon" : "fa-trash-o ",
 		"tags" : ["déchets"]
 	},  
-	"building": {
-		"name" : "Development | Transport | Construction",
+	"transport": {
+		"name" : "Transport",
 		"icon" : "fa-bus",
 		"tags" : ["aménagement","transport","construction"]
 	},  
 	"education": {
-		"name" : "Education | Childhood",
+		"name" : "Education",
 		"icon" : "fa-book",
-		"tags" : ["éducation","petite Enfance"]
+		"tags" : ["éducation","petite enfance"]
 	},  
 	"citizen": {
 		"name" : "Citizenship",
 		"icon" : "fa-user-circle-o",
-		"tags" : ["citoyenneté"]
+		"tags" : ["citoyenneté", "citoyen"]
 	},  
 	"economy": {
 		"name" : "Economy",
@@ -40,23 +35,29 @@
 		"tags" : [ "ess","economie social solidaire" ]
 	},  
 	"energy": {
-		"name" : "Energy | Climate",
+		"name" : "Energy",
 		"icon" : "fa-sun-o",
-		"tags" : ["energie" ,"climat"]
+		"tags" : ["énergie" ,"climat"]
 	},  
 	"culture": {
-		"name" : "Culture | Animation",
+		"name" : "Culture",
 		"icon" : "fa-universal-access",
 		"tags" : ["culture" ,"animation"]
 	},  
-	"biodiversity": {
-		"name" : "Biodiversity",
+	"environnement": {
+		"name" : "Environnement",
 		"icon" : "fa-tree",
-		"tags" : ["biodiversité"]
+		"tags" : ["environnement", "biodiversité", "écologie"]
 	},  
-	"tic": {
-		"name" : "ICT | Numeric | Internet",
+	"numeric": {
+		"name" : "Numeric",
 		"icon" : "fa-laptop",
 		"tags" : ["numérique","tic","internet"]
+	},
+	"sport" : { 
+		"name" : "Sport",
+		"icon" : "fa-futbol-o",
+		"tags" : ["sport"]
 	}
+	
 }

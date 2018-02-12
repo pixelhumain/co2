@@ -36,7 +36,8 @@ function initSearchInterface(){
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13){
             //initTypeSearch(typeInit);
-            simpleScroll();
+            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
+            simpleScroll(scrollH);
             searchPage=0;
             search.value = $(this).val();
             search.count=true;
@@ -179,6 +180,8 @@ function bindLeftMenuFilters () {
     {    
         searchType = [ typeInit ];
         indexStepInit = 100;
+        pageCount=true;
+        search.count=true;
         
         if( $(this).hasClass( "active" ) )
         {
@@ -254,7 +257,9 @@ function bindLeftMenuFilters () {
         var section = $('#searchTags').val();
         var classType = $(this).data("keycat");
         console.log("bindLeftMenuFilters sectionKey", sectionKey);
-        
+        // Event for count in DB
+        pageCount=true;
+        search.count=true;
         if( $(this).hasClass( "active" ) ){
             searchTxt = sectionKey;
             $(this).removeClass( "active" );
@@ -271,6 +276,7 @@ function bindLeftMenuFilters () {
             
             searchTxt += classType; 
         }
+
         $('#searchTags').val(searchTxt);
         //alert("section : " + $('#searchTags').val());
         startSearch(0, indexStepInit, searchCallback);  
@@ -305,6 +311,9 @@ function bindLeftMenuFilters () {
         var searchTxt = "";
         var classType = $(this).data("categ");
         var classSubType = $(this).data("keycat");
+        // Event for count in DB
+        pageCount=true;
+        search.count=true;
         if( $(this).hasClass( "active" ) ){
             searchTxt = sectionKey+","+classType;
             $(this).removeClass( "active" );

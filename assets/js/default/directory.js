@@ -1076,7 +1076,6 @@ var directory = {
       if(typeof params.url != "undefined" && params.url != null && params.url != "")
         str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
 
-
       // if(typeof params.startDate != "undefined")
       //   str += "<br><small class='letter-light'>"+params.startDate+"</small>";
       
@@ -1137,10 +1136,15 @@ var directory = {
                                     " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
                                     "<small><i class='fa fa-share'></i> "+trad["share"]+"</small></button> ";
 
-     
-
       str += "</div>";
 
+      str += "<div class='col-lg-4 col-md-3 col-sm-2 col-xs-12 gallery'>";
+        if(typeof params.gallery != "undefined"){
+          $.each(params.gallery, function(key, img){
+            str += "<a href='"+params.url+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
+          });
+        }
+      str += "</div>";
     str += "</div>";
 
     return str;

@@ -166,7 +166,10 @@
 					<div id="typeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
 						<span class="visible-xs pull-left margin-right-5"><i class="fa fa-angle-right"></i> <?php echo Yii::t("common", "Type"); ?> :</span>
 
-						<?php 
+						<?php
+						// var_dump($typesList);
+						// echo "<br/>";
+						// var_dump($element);
 						if(@$typesList && @$element["type"])
 							$showType=Yii::t( "category",$typesList[$element["type"]]);
 						else if (@$element["type"])

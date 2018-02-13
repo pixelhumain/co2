@@ -102,7 +102,7 @@ function getCommunexionLabel(){
 		var level=0;
 		var nameCommunexion="";
 		$.each(myScopes.communexion, function(e, v){
-			if(v.type == "city")
+			if(v.type == "cities")
 				nameCommunexion=v.name;
 		});
 		$(".communexion-btn-label").html(nameCommunexion);
@@ -416,7 +416,7 @@ function scopeObject(values){
 		objToPush={
 			id:values.city,
 			name:((notNull(values.allCP) && values.allCP == false) ?  values.name : values.cityName ) ,
-			type:"city",
+			type:"cities",
 			active:((notNull(values.allCP) && values.allCP == false) ?  false : true ) ,
 			countryCode:values.country,
 			allCP:values.allCP,
@@ -430,7 +430,7 @@ function scopeObject(values){
 		objToPush={
 			id:values.city,
 			name:values.cityName + " ( " +values.cp + " ) ",
-			type:"city",
+			type:"cities",
 			active:true,
 			countryCode:values.country,
 			allCP:values.allCP,

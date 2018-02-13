@@ -3686,6 +3686,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 		 				if(!empty($city)){
 		 					$newS["id"] = $keyCP;
+		 					$newS["type"] = City::COLLECTION;
 		 					$newS["country"] = $city["country"];
 		 					$newML[$newS["id"].$newS["type"]] = $newS;
 		 				}
@@ -3760,13 +3761,9 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				if(empty($names[$value["level2"]])){
 					$nameLevel2 = Zone::getById($value["level2"], array("name"));
 					$names[(String)$nameLevel2["_id"]] = $nameLevel2["name"];
-					// echo "heres<br/>";
 				}
 				
 				$set = array("level2Name" => $names[$value["level2"]]);
-
-				// var_dump($set);
-				// echo "<br/>-------------<br/>";
 
 				$res = PHDB::update(Zone::COLLECTION, 
 				  	array("_id"=>new MongoId($key)),
@@ -3794,13 +3791,9 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				if(empty($names[$value["level3"]])){
 					$nameLevel3 = Zone::getById($value["level3"], array("name"));
 					$names[(String)$nameLevel3["_id"]] = $nameLevel3["name"];
-					// echo "heres<br/>";
 				}
 				
 				$set = array("level3Name" => $names[$value["level3"]]);
-
-				// var_dump($set);
-				// echo "<br/>-------------<br/>";
 
 				$res = PHDB::update(Zone::COLLECTION, 
 				  	array("_id"=>new MongoId($key)),
@@ -4009,7 +4002,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 								}
 							}
 							$setNew["scope"] = $new["scope"] ;
-							var_dump($setNew);
+							//var_dump($setNew);
 							$setNew["scope"]["localities"] = $loc;
 							
 							echo "<br/>";
@@ -4028,6 +4021,70 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}else{
 			echo "here";
 		}
+	}
+
+
+
+
+	public function actionUpdateScopeNews(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementtotal = 0 ;
+		$where = array("scope.localities" => array('$exists' => 1), "modifiedByBatch.UpdateScopeNews" => array('$exists' => 0));
+		$fields = array("scope", "modifiedByBatch");
+		$news = PHDB::find(News::COLLECTION, $where, $fields);
+		
+		foreach ($news as $key => $value) {
+			//echo $key." : ".$value["name"]."<br/>";
+
+		 	if(!empty($value["scope"]["localities"])){
+		 		$newML = array();
+		 		foreach ($value["scope"]["localities"] as $keyCP => $scope) {
+		 			$newS = $scope;
+		 			
+		 			if($newS["parentType"] == City::COLLECTION || $newS["parentType"] == City::CONTROLLER){
+		 				$city = PHDB::findOne(City::COLLECTION, array("postalCodes.postalCode" =>$newS["name"]), array("country"));
+
+		 				if(!empty($city)){
+		 					$newS["cp"] = $newS["name"];
+		 					$newS["country"] = $city["country"];
+		 					$newML[$newS["cp"].$newS["country"].$newS["type"]] = $newS;
+		 				}
+		 				
+		 			}else if(!empty($newS["level"])){
+		 				$zone = PHDB::findOneById(Zone::COLLECTION, $keyCP,array("countryCode") );
+
+		 				if(!empty($zone)){
+		 					$newS["id"] = $keyCP;
+		 					$newS["country"] = $zone["countryCode"];
+		 					$newML[$newS["id"].$newS["type"]] = $newS;
+		 				}
+		 				
+		 			}else{
+
+		 				$city = PHDB::findOneById(City::COLLECTION, $keyCP,array("country") );
+
+		 				if(!empty($city)){
+		 					$newS["id"] = $keyCP;
+		 					$newS["country"] = $city["country"];
+		 					$newML[$newS["id"].$newS["type"]] = $newS;
+		 				}
+		 			}
+		 		}
+
+		 		$set[] =$newML ;
+		 		$value["modifiedByBatch"][] = array("updateMultiScope" => new MongoDate(time()));
+		 		$set =array("multiscopes" => $newML,
+		 					"modifiedByBatch" => $value["modifiedByBatch"]);
+		 					 
+		 		$res = PHDB::update(Person::COLLECTION, 
+				  	array("_id"=>new MongoId($key)),
+	                array('$set' => $set)
+	            );
+		 		$nbelement++;
+		 	}
+		}
+		echo $nbelement." multiscopes mis a jours / ";
 	}
 }
 

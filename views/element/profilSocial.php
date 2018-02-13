@@ -242,7 +242,9 @@
 		  <button type="button" class="btn btn-default bold hidden-xs btn-start-notifications hidden">
 		  	<i class="fa fa-bell"></i> 
 		  	<span class="hidden-xs hidden-sm">
-		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) echo Yii::t("common","My notif<span class='hidden-md'>ication</span>s"); else echo Yii::t("common","Notif<span class='hidden-md'>ication</span>s"); ?>
+		  		<?php if (@Yii::app()->session["userId"] == $element["_id"]) 
+		  					echo Yii::t("common","My notif<span class='hidden-md'>ication</span>s"); 
+		  			  else  echo Yii::t("common","Notif<span class='hidden-md'>ication</span>s"); ?>
 		  	</span>
 		  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
 		  		<?php echo @$countNotifElement ?>

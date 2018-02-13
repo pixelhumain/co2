@@ -5,15 +5,9 @@ dynForm = {
 			    type : "object",
 			    onLoads : {
 			    	//pour creer un subevnt depuis un event existant
+
 			    	"sub" : function(){
-			    			$("#ajaxFormModal #parentId").val( contextData.id );
-			    		 	$("#ajaxFormModal #parentType").val( contextData.type ); 
-			    		 	$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-									  					  .addClass("bg-purple");
-			    		 	
-			    		 	$("#ajax-modal-modal-title").html(
-			    		 		$("#ajax-modal-modal-title").html()+
-			    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
+			    			dyFInputs.setSub("bg-purple");
 			    	}
 			    },
 			    beforeBuild : function(){

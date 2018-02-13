@@ -5,17 +5,7 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	sub : function(){
-    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-						  					  .addClass("bg-url");
-    		 	
-    		 	$("#ajax-modal-modal-title").html(
-    		 		$("#ajax-modal-modal-title").html()+
-    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
-    		 
-             	if( contextData && contextData.id )
-					$("#ajaxFormModal #parentId").val( contextData.id );
-    			if( contextData && contextData.type )
-    				$("#ajaxFormModal #parentType").val( contextData.type ); 
+    		 	dyFInputs.setSub("bg-url");
     		},
 	    },
 	    afterSave : function(){

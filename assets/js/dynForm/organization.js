@@ -39,10 +39,17 @@ dynForm = {
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 
 	    		 	$("#ajax-modal-modal-title").append(
-	    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+
+	    		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+
 	    		 														contextData.name+
 	    		 														"</span></small>" );
-	    		}
+	    		}else if(userConnected){
+					$('#ajaxFormModal #parentId').val( userId );
+					$("#ajaxFormModal #parentType").val( "citoyens" );
+					$("#ajax-modal-modal-title").append(
+	    		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+
+	    		 														userConnected.name+
+	    		 														"</span></small>" );
+    			}
 	    	},
 	    },
 	    beforeBuild : function(){

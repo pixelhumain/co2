@@ -255,7 +255,7 @@
 
 		"#admin": {
 			"inMenu" : false, 
-			"useHeader" : true, 
+			"useHeader" : false, 
 			"open" : false, 
 			"subdomain" : "admin", 
 			"subdomainName" : "admin",
@@ -267,7 +267,7 @@
 
         "#adminpublic": {
             "inMenu" : false, 
-            "useHeader" : true, 
+            "useHeader" : false, 
             "open" : false, 
             "subdomain" : "admin", 
             "subdomainName" : "admin",

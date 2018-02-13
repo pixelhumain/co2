@@ -557,6 +557,7 @@ class CommunecterController extends Controller
       "power"             => array('href' => "/ph/co2/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/co2/app/superadmin",        "public" => false),
       "admin"             => array('href' => "/ph/co2/app/admin",             "public" => true),
+      "adminpublic"       => array('href' => "/ph/co2/app/adminpublic",       "public" => true),
       "info"              => array('href' => "/ph/co2/app/info",              "public" => true),
       "smartconso"          => array('href' => "/ph/co2/app/smartconso",      "public" => true),
       "city"              => array('href' => "/ph/co2/app/city",              "public" => false),
@@ -624,6 +625,7 @@ class CommunecterController extends Controller
 
     if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
+
     if( Yii::app()->controller->id != "test")
       $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
     $pagesWithoutLogin = array(

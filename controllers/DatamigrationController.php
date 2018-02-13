@@ -4086,6 +4086,48 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 		echo $nbelement." multiscopes mis a jours / ";
 	}
+
+
+
+	public function actionUpdateCPMisingImport(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementtotal = 0 ;
+		$where = array("source" => array('$exists' => 1), "address.postalCode" => array('$exists' => 0));
+		$fields = array("name","address");
+		$orgas = PHDB::find(Organization::COLLECTION, $where, $fields);
+		
+		foreach ($orgas as $key => $value) {
+		 	if(!empty($value["address"]) && empty($value["address"]["postalCode"])){
+		 		$city = PHDB::findOneById( City::COLLECTION, $value["address"]["localityId"], array("postalCodes") );
+		 		
+		 		$newAddress = $value["address"];
+		 		if(!empty($city) && !empty($city["postalCodes"])){
+		 			if( count($city["postalCodes"]) == 1 ) {
+		 				$newAddress["postalCode"] = $city["postalCodes"][0]["postalCode"];
+		 			}else{
+		 				foreach ($city["postalCodes"] as $keyCP => $valueCP) {
+		 					$name = strtoupper(str_replace(array("-","é"), array(" ","e"), $newAddress["addressLocality"]));
+		 					if(strtoupper($valueCP["name"]) == $name){
+		 						echo  $valueCP["postalCode"]." CP : <br/>";
+		 						$newAddress["postalCode"] = $valueCP["postalCode"];
+		 					}
+		 				}
+		 			}
+		 		}
+		 		$set =array("address" => $newAddress);
+		 		echo $key." Name : ".$value["name"]." : ".(!empty($newAddress["postalCode"]) ? $newAddress["postalCode"] : "NULL")."<br/>";
+
+		 		$res = PHDB::update(Organization::COLLECTION, 
+				  	array("_id"=>new MongoId($key)),
+	                array('$set' => $set)
+	            );
+	            echo $nbelement." multiscopes mis a jours / ";
+		 		$nbelement++;
+		 	}
+		}
+		
+	}
 }
 
 

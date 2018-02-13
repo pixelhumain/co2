@@ -197,13 +197,20 @@ class AppController extends CommunecterController {
     public function actionAdmin($view=null, $dir=null){
         CO2Stat::incNbLoad("co2-admin");   
         $params = array(
-            "view" => @$view,
             "dir" => @$dir,
         );
+        $view = ( !empty($view) ? $view : "index");
         $redirect="";
         if(Yii::app()->params["CO2DomainName"] == "terla")
             $redirect="terla/";
-        echo $this->renderPartial("../admin/".$redirect."index", $params, true);
+        echo $this->renderPartial("../admin/".$redirect.$view, $params, true);
+    }
+
+
+    public function actionAdminpublic($view = null){
+        CO2Stat::incNbLoad("co2-adminpublic");   
+        $view = ( !empty($view) ? $view : "index");
+        echo $this->renderPartial("../adminpublic/".$view, array(), true);
     }
 
     public function actionChat(){

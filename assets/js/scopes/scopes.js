@@ -102,7 +102,7 @@ function getCommunexionLabel(){
 		var level=0;
 		var nameCommunexion="";
 		$.each(myScopes.communexion, function(e, v){
-			if(v.type == "cities")
+			if(v.type == "city")
 				nameCommunexion=v.name;
 		});
 		$(".communexion-btn-label").html(nameCommunexion);

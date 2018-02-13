@@ -123,18 +123,22 @@ function getFloopItem(id, type, value){
 	var elementClass = oldElement ? "oldFloopDrawer"+type.name : "";
 	var elementStyle = oldElement ? "display:none" : ""; 
 
-	var HTML = '<li style="'+elementStyle+'" class="'+elementClass+'" id="floopItem-'+type.name+'-'+id+'">' +
-					'<a href="'+path+'" class="btn btn-default btn-scroll-type btn-select-contact lbh"  id="contact'+id+'">' +
-						'<div class="btn-chk-contact" idcontact="'+id+'">' +
+	var HTML = '<li style="'+elementStyle+'" class="'+elementClass+'" id="floopItem-'+type.name+'-'+id+'" idcontact="'+id+'">' +
+					'<a href="'+path+'" class="btn btn-default btn-scroll-type btn-select-contact lbh elipsis contact'+id+'">' +
+						'<div class="btn-chk-contact">' +
 							'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to bg-'+type.color+'" height="35" width="35">'+
 							'<span class="info-contact">' +
 								'<span class="name-contact text-dark text-bold" idcontact="'+id+'">' + value.name + '</span>'+
 								'<br/>'+
-								'<span class="cp-contact text-light" idcontact="'+id+'">' + cp + ' </span>'+
-								'<span class="city-contact text-light" idcontact="'+id+'">' + city + '</span>'+
+								'<span class="cp-contact text-light pull-left" idcontact="'+id+'">' + cp + ' </span>'+
+								'<span class="city-contact text-light pull-left" idcontact="'+id+'">' + city + '</span>'+
 							'</span>' +
 						'</div>' +
 					'</a>' +
+					'<button class="btn btn-xs btn-default pull-right btn-open-chat contact'+id+'" '+
+							'data-name-el="'+value.name+'" data-type-el="'+type.name+'"  idcontact="'+id+'">'+
+						'<i class="fa fa-comments"></i>'+
+					'</button>'+
 				'</li>';
 	return HTML;
 }
@@ -174,7 +178,6 @@ function getFloopContactTypes(type){
 	return goodType;
 }
 
-
 function bindEventFloopDrawer(){
 	
 	$(".floopDrawer #search-contact").keyup(function(){
@@ -208,6 +211,13 @@ function bindEventFloopDrawer(){
 			showFloopDrawer(false);
     });
 
+    /*TODO TIB*/
+    $(".btn-open-chat").click(function(){
+    	var nameElement = $(this).data("name-el");
+    	var typeElement = $(this).data("type-el");
+    	rcObj.loadChat(nameElement, typeElement,true,true );
+    });
+
 }
 
 function initFloopScrollByType(){
@@ -219,12 +229,12 @@ function initFloopScrollByType(){
 	$("#floopScrollByType").html(HTML);
 }
 
-
 //recherche text par nom, cp et city
 function filterFloopDrawer(searchVal){
+	console.log("filterFloopDrawer(searchVal)", searchVal);
 	//masque/affiche tous les contacts présents dans la liste
-	if(searchVal != "")	$(".floopDrawer .btn-select-contact").hide();
-	else				$(".floopDrawer .btn-select-contact").show();
+	if(searchVal != "")	$(".floopDrawer .btn-select-contact, .floopDrawer .btn-open-chat").hide();
+	else				$(".floopDrawer .btn-select-contact, .floopDrawer .btn-open-chat").show();
 	//recherche la valeur recherché dans les 3 champs "name", "cp", et "city"
 	$.each($(".floopDrawer .name-contact"), function() { checkFloopSearch($(this), searchVal); });
 	$.each($(".floopDrawer .cp-contact"),   function() { checkFloopSearch($(this), searchVal); });
@@ -237,7 +247,8 @@ function checkFloopSearch(thisElement, searchVal, type){
 	var found = content.search(new RegExp(searchVal, "i"));
 	if(found >= 0){
 		var id = thisElement.attr("idcontact");
-		$(".floopDrawer #contact"+id).show();
+		console.log("$('.floopDrawer .contact"+id+"').show()");
+		$(".floopDrawer .contact"+id).show();
 	}
 }
 

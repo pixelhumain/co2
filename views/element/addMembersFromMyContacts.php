@@ -503,7 +503,7 @@ function bindEventScopeModal(){
 	//parcourt tous les types de contacts
 	$.each(contactTypes, function(key, type){ //mylog.log("BINDEVENT CONTACTTYPES : " + type.name);
 		//initialise le scoll automatique de la liste de contact
-		$("#btn-scroll-type-"+type.name).click(function(){
+		$("#modalDirectoryForm  #btn-scroll-type-"+type.name).click(function(){
 
 			//console.log("click btn scroll type : "+type.name+ " " + $("#scroll-type-"+type.name).position().top);
 			if($("#select-type-search-contacts").prop("checked")==false){
@@ -522,19 +522,19 @@ function bindEventScopeModal(){
 		});
 	});
 	
-	$("#search-contact").keyup(function(){
+	$("#modalDirectoryForm #search-contact").keyup(function(){
 		filterContact($(this).val());
 	});
 
-	$("#btn-cancel").click(function(){
+	$("#modalDirectoryForm #btn-cancel").click(function(){
 		if(newMemberInCommunity && (currentView=="detail" || currentView=="directory")) {
 			urlCtrl.loadByHash(location.hash);
 		}
 	});
-	$("#btn-save").click(function(){
+	$("#modalDirectoryForm #btn-save").click(function(){
 		sendInvitation();
 	});
-	$("#btn-reset-scope").click(function(){
+	$("#modalDirectoryForm #btn-reset-scope").click(function(){
 		$.each($('.modal input:checkbox'), function(){
 			$(this).prop("checked", false);
 		});

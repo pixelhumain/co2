@@ -291,9 +291,21 @@ function addFloopEntity(entityId, entityType, entityValue){
 
 //ajout d'un élément dans la liste
 function removeFloopEntity(entityId, entityType){
-	$('#floopItem-'+entityType+'-'+entityId).remove();
-}
+	if(entityType == "citoyens") entityType = "people";
+	//floopContacts[entityType][entityValue);
 
+	type = getFloopContactTypes(entityType);
+	removeFromMyContacts(entityId, entityType);
+	$('#floopItem-'+type.name+'-'+entityId).remove();
+}
+function removeFromMyContacts(entityId, entityType){
+	$.each(floopContacts[entityType], function(e, v){
+		if(notNull(v) && typeof v._id != "undefined" && v._id.$id==entityId){
+			alert(e);
+			floopContacts[entityType].splice(e, 1);
+		}
+	});
+}
 function showHideOldElements(type) {
 	$(".oldFloopDrawer"+type).toggle("slow");
 }

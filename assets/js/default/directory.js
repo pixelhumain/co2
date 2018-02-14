@@ -602,7 +602,6 @@ function initPageTable(number){
 						$(thiselement).html("<i class='fa fa-chain'></i>");
 						$(thiselement).attr("data-ownerlink","follow");
 						$(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
-            alert(type);
 						removeFloopEntity(data.parentId, type);
             toastrMsg=(type == "events") ? "You doesn't take place anymore to" : trad["You are not following"];
 						toastr.success(toastrMsg+" "+data.parent.name);

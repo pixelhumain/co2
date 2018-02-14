@@ -148,10 +148,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 
 					city="";
 
-					var postalCode = o.cp
+					var postalCode = o.postalCode
 					if (o.address != null) {
 						city = o.address.addressLocality;
-						postalCode = o.cp ? o.cp : o.address.postalCode ? o.address.postalCode : "";
+						postalCode = o.postalCode ? o.postalCode : o.address.postalCode ? o.address.postalCode : "";
 					}
 
 					var id = getObjectId(o);
@@ -184,7 +184,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 										o.address != null &&
 										typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
 
-					if(postalCode == "") postalCode = typeof o.cp != "undefined" ? o.cp : "";
+					if(postalCode == "") postalCode = typeof o.postalCode != "undefined" ? o.postalCode : "";
 					var cityName = (typeof o.address != "undefined" &&
 									o.address != null &&
 									typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
@@ -246,7 +246,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 				// 		valuesScopes = {
 				// 			city : o._id.$id,
 				// 			cityName : o.name,
-				// 			cp : o.cp,
+				// 			cp : o.postalCode,
 				// 			country : o.country,
 				// 			allCP : o.allCP,
 				// 			level1 : o.level1,
@@ -329,9 +329,9 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 				// 		str += "<div class='col-md-12 col-sm-12 col-xs-12 entityRight'>";
 
 				// 		str += "<div class='entityName text-dark'>" + name ;
-				// 		mylog.log("hereeee ", notNull(o.cp), o.cp, o );
-				// 				if(notNull(o.cp))
-				// 					str += " - "+ o.cp;
+				// 		mylog.log("hereeee ", notNull(o.postalCode), o.postalCode, o );
+				// 				if(notNull(o.postalCode))
+				// 					str += " - "+ o.postalCode;
 				// 		str +="</div>";
 
 				// 		str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+

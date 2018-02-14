@@ -2038,7 +2038,7 @@ var directory = {
 		valuesScopes = {
 			city : params._id.$id,
 			cityName : params.name,
-			cp : params.cp,
+			postalCode : params.postalCode,
 			country : params.country,
 			allCP : params.allCP,
 			uniqueCp : params.uniqueCp,
@@ -2087,7 +2087,7 @@ var directory = {
 						// params.target = "";
 						// params.dataId = params.name; 
 
-						var title =  "<span> " + params.name + " " + (notEmpty(params.cp) ? " - " +  params.cp : "") +"</span>" ;
+						var title =  "<span> " + params.name + " " + (notEmpty(params.postalCode) ? " - " +  params.postalCode : "") +"</span>" ;
 
 						var subTitle = "";
 						if( notEmpty( params.level4Name ) )

@@ -580,7 +580,7 @@ function initPageTable(number){
 						toastr.success(data.msg);	
 						$(thiselement).html("<i class='fa fa-unlink text-green'></i>");
 						$(thiselement).attr("data-ownerlink","unfollow");
-						$(thiselement).attr("data-original-title", (type == "events") ? "Ne plus participer" : "Ne plus suivre");
+						$(thiselement).attr("data-original-title", (type == "events") ? trad.notparticipateanymore : trad.notfollowanymore);
 						//var parent  = (notNull(data.parentEntity) ? data.parentEntity : data.parent) ;
 						addFloopEntity(id, type, data.parent);
 					}
@@ -601,9 +601,9 @@ function initPageTable(number){
 					if ( data && data.result ) {
 						$(thiselement).html("<i class='fa fa-chain'></i>");
 						$(thiselement).attr("data-ownerlink","follow");
-						$(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
+						$(thiselement).attr("data-original-title", (type == "events") ? trad.participate : trad.Follow);
 						removeFloopEntity(data.parentId, type);
-            toastrMsg=(type == "events") ? "You doesn't take place anymore to" : trad["You are not following"];
+            toastrMsg=(type == "events") ? trad.younotparticipateanymore : trad["You are not following"];
 						toastr.success(toastrMsg+" "+data.parent.name);
 					} else {
 					   toastr.error("You leave succesfully");

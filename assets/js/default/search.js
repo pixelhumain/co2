@@ -84,14 +84,6 @@ function initSearchInterface(){
         $(".btn-directory-type").removeClass("active");
     });
 
-    $(".btn-create-elem").click(function(){
-        currentKFormType = $(this).data("ktype");
-        var type = $(this).data("type");
-        setTimeout(function(){
-                    dyFObj.openForm(type);
-                 },300);
-        
-    });
 
     $(".main-btn-create").click(function(){
         currentKFormType = $(this).data("ktype");

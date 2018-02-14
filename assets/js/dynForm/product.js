@@ -6,27 +6,11 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	sub : function(){
-	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
-    				$('#ajaxFormModal #parentId').val(contextData.id);
-	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
-	    			$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-							  					  .addClass("bg-azure");
-	    		 	$("#ajaxFormModal #toBeValidated").val(true);
-	    		 	$("#ajax-modal-modal-title").html(
-	    		 		$("#ajax-modal-modal-title").html()+
-	    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
-	    		}
+	    		dyFInputs.setSub("bg-azure");
+	    		$("#ajaxFormModal #toBeValidated").val(true);
 	    	},
 	    	onload : function(data){
 	    	},
-	    	/*,
-	    	loadData : function(data){
-		    	mylog.warn("--------------- loadData ---------------------",data);
-		    	$('#ajaxFormModal #name').val(data.name);
-		    	$('#ajaxFormModal #type').val(data.type);
-		    	$('#ajaxFormModal #parentId').val(data.parentId);
-	    		$("#ajaxFormModal #parentType").val( data.parentType ); 
-		    },*/
 	    },
 	    beforeBuild : function(){
 	    	dyFObj.setMongoId('products',function(){

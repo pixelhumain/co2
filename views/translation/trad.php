@@ -586,6 +586,7 @@ var tradDynForm = {
 	"whichkindofroom":"<?php echo Yii::t("form","Which kind of room do you want to create") ?>",
 	"whichkindofpoi":"<?php echo Yii::t("form","Which kind of point do you want to locate") ?>",
 	"whichkindofconfig":"<?php echo Yii::t("form","Which kind of config") ?>",
+	"whichRessourceType":"<?php echo Yii::t("form","Which kind of Ressource") ?>",
 	"whichkindofclassified":"<?php echo Yii::t("form","Which kind of classified is it") ?>",
 	"inwhichcategoryforclassified":"<?php echo Yii::t("form","In which category do you want to publish the classified") ?>",
 	"inwhichcategoryforpoi":"<?php echo Yii::t("form","In which category do you want to publish the point of interest") ?>",

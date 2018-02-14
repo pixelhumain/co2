@@ -23,9 +23,14 @@ dynForm = {
 	    		
     				if( $('#ajaxFormModal #parentId > optgroup > option[value="'+contextData.id+'"]').length == 0 )
 	    				$('#ajaxFormModal #parentId > optgroup[label="events"]').prepend('<option value="'+contextData.id+'" selected>'+tradDynForm["ispartof"]+' : '+contextData.name+'</option>');
-	    			else if ( contextData && contextData.id ){
+	    			else if ( contextData && contextData.id && contextData.type ){
 		    			$("#ajaxFormModal #parentId").val( contextData.id );
+		    			$("#ajaxFormModal #parentType").val( contextData.type ); 
+	    			} else if(userConnected){
+						$('#ajaxFormModal #parentId').val( userId );
+						$("#ajaxFormModal #parentType").val( "citoyens" );
 	    			}
+	    				
 
 	    			if ( contextData && typeof contextData.organizerId != "undefined"){
 		    			$("#ajaxFormModal #organizerId").val( contextData.organizerId );
@@ -33,8 +38,7 @@ dynForm = {
 	    			if(contextData && typeof contextData.organizerType != "undefined")
 	    				$("#ajaxFormModal #organizerType").val( contextData.organizerType );
 	    			//$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" sur "+contextData.name );
-	    			if( contextData && contextData.type )
-	    				$("#ajaxFormModal #parentType").val( contextData.type ); 
+	    			
 
 	    			if(contextData.startDateDB && contextData.endDateDB){
 	    				$("#ajaxFormModal").after("<input type='hidden' id='startDateParent' value='"+contextData.startDateDB+"'/>"+

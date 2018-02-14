@@ -548,7 +548,7 @@ function initPageTable(number){
    	});
 
   	//on click sur les boutons link
-	$(".followBtn").click(function(){
+	$(".followBtn").off().on("click", function(){
 		mylog.log(".followBtn");
 		formData = new Object();
 		formData.parentId = $(this).attr("data-id");

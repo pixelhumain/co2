@@ -1,7 +1,7 @@
 dynForm = {
     jsonSchema : {
-	    title : tradDynForm["addpoi"],
-	    icon : "map-marker",
+	    title : tradDynForm.ddpoi,
+	    in : "map-marker",
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
@@ -62,7 +62,7 @@ dynForm = {
 	    	info : {
                 inputType : "custom",
                 html:"<p class='text-"+typeObj["poi"].color+"'>"+
-                		tradDynForm["infocreatepoi"]+
+                		tradDynForm.infocreatepoi+
                 		"<hr>"+
 					 "</p>",
             },
@@ -71,7 +71,7 @@ dynForm = {
                 html:"",
             },
             sectionBtn :{
-                label : tradDynForm["whichkindofpoi"]+" ? ",
+                label : tradDynForm.hichkindofp+" ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : poi.sections,
@@ -96,7 +96,7 @@ dynForm = {
 	        name : dyFInputs.name("poi"),
 	        image : dyFInputs.image(),
             //description : dyFInputs.description,
-            description : dyFInputs.textarea(tradDynForm["description"], "..."),
+            description : dyFInputs.textarea(tradDynForm.description, "..."),
             location : dyFInputs.location,
             tags :dyFInputs.tags(),
             urls : dyFInputs.urls,

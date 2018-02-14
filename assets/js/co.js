@@ -3538,6 +3538,15 @@ function initKInterface(params){ console.log("initKInterface");
     	urlCtrl.loadByHash("#info.p.apropos")
     });
 
+    $(".btn-create-elem").click(function(){
+        currentKFormType = $(this).data("ktype");
+        var type = $(this).data("type");
+        setTimeout(function(){
+                    dyFObj.openForm(type, "sub");
+                 },300);
+        
+    });
+
     var affixTop = 100;
     if(notEmpty(params)){
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];

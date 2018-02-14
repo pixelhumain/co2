@@ -581,15 +581,15 @@ function initPageTable(number){
 						$(thiselement).html("<i class='fa fa-unlink text-green'></i>");
 						$(thiselement).attr("data-ownerlink","unfollow");
 						$(thiselement).attr("data-original-title", (type == "events") ? "Ne plus participer" : "Ne plus suivre");
-						var parent  = (notNull(data.parentEntity) ? data.parentEntity : data.parent) ;
-						addFloopEntity(id, type, parent);
+						//var parent  = (notNull(data.parentEntity) ? data.parentEntity : data.parent) ;
+						addFloopEntity(id, type, data.parent);
 					}
 					else
 						toastr.error(data.msg);
 				},
 			});
 		} else if ($(this).attr("data-ownerlink")=="unfollow"){
-			formData.connectType =  "followers";
+			formData.connectType = (type == "events") ? "attendees" : "followers";
 			//mylog.log(formData);
 			$.ajax({
 				type: "POST",
@@ -602,8 +602,10 @@ function initPageTable(number){
 						$(thiselement).html("<i class='fa fa-chain'></i>");
 						$(thiselement).attr("data-ownerlink","follow");
 						$(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
+            alert(type);
 						removeFloopEntity(data.parentId, type);
-						toastr.success(trad["You are not following"]+" "+data.parentEntity.name);
+            toastrMsg=(type == "events") ? "You doesn't take place anymore to" : trad["You are not following"];
+						toastr.success(toastrMsg+" "+data.parent.name);
 					} else {
 					   toastr.error("You leave succesfully");
 					}
@@ -1174,7 +1176,7 @@ var directory = {
         if(typeof params.edit  != "undefined")
 		str += this.getAdminToolBar(params);
 
-		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
+		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
 			isFollowed=false;
 
 			if(typeof params.isFollowed != "undefined" )
@@ -1953,11 +1955,12 @@ var directory = {
                   '<a href="'+params.hash+'" class="container-img-profil lbh add2fav block">'+params.imgMediumProfil+'</a>'+  
                 '</div>';
         
-        if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id)){
+        if(userId != null && userId != "" && params.id != userId /*&& !inMyContacts(params.typeSig, params.id)*/){
           var tip = trad["interested"];
+          actionConnect=(isFollowed) ? "unfollow": "follow";
             str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
                       'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-                      " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"'"+
+                      " data-ownerlink='"+actionConnect+"' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"'"+
                       " data-isFollowed='"+isFollowed+"'>"+
                       "<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
                     "</a>";

@@ -299,7 +299,7 @@ function initBtnLink(){
           $(thiselement).html("<i class='fa fa-unlink text-green'></i>");
           $(thiselement).attr("data-ownerlink","unfollow");
           $(thiselement).attr("data-original-title", (type == "events") ? "Ne plus participer" : "Ne plus suivre");
-          addFloopEntity(id, type, data.parentEntity);
+          addFloopEntity(id, type, data.parent);
         }
         else
           toastr.error(data.msg);
@@ -319,7 +319,7 @@ function initBtnLink(){
           $(thiselement).attr("data-ownerlink","follow");
           $(thiselement).attr("data-original-title", (type == "events") ? "Participer" : "Suivre");
           removeFloopEntity(data.parentId, type);
-          toastr.success(trad["You are not following"]+" "+data.parentEntity.name);
+          toastr.success(trad["You are not following"]+" "+data.parent.name);
         } else {
            toastr.error("You leave succesfully");
         }

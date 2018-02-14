@@ -484,7 +484,7 @@ function follow(parentType, parentId, childId, childType, callback){
 		success: function(data) {
 			if(data.result){
 				if (formData.parentType)
-					addFloopEntity(formData.parentId, formData.parentType, data.parentEntity);
+					addFloopEntity(formData.parentId, formData.parentType, data.parent);
 				toastr.success(data.msg);	
 				if (typeof callback == "function") 
 					callback();

@@ -356,20 +356,6 @@ function bindButtonMenu(){
 
 }
 
-function bindButtonOpenForm(){
-	//window select open form type (selectCreate)
-	$(".btn-open-form").off().on("click",function(){
-        var typeForm = $(this).data("form-type");
-        mylog.log("test", $(this).data("form-subtype")),
-        currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-
-        //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
-        if(contextData && contextData.type && contextData.id )
-            dyFObj.openForm(typeForm,"sub");
-        else
-            dyFObj.openForm(typeForm);
-    });
-}
 
 function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirectory", dataName, dataIcon, edit);
 	showLoader('#central-container');

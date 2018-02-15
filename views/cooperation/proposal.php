@@ -15,16 +15,47 @@
 
 	if(isset(Yii::app()->session['userId'])){
 		$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
-		$myRoles = @$me["links"]["memberOf"][@$proposal["parentId"]]["roles"] ? 
-				   @$me["links"]["memberOf"][@$proposal["parentId"]]["roles"] : array();
+
+		if($proposal["parentType"] == "projects") $link = "projects";
+		if($proposal["parentType"] == "organizations") $link = "memberOf";
+		$myRoles = @$me["links"][$link][@$proposal["parentId"]]["roles"] ? 
+				   @$me["links"][$link][@$proposal["parentId"]]["roles"] : array();
 	}else{
 		$myRoles = array();
 	}	
 	
+?>
+
+<?php 
 	//lock access if the user doesnt have the good role
 	$accessRoom = @$parentRoom ? Room::getAccessByRole($parentRoom, $myRoles) : ""; 
-	if($accessRoom == "lock") exit;
+	if($accessRoom == "lock") {
 ?>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<h4 class="letter-turq load-coop-data title-room" 
+	  		data-type="room" data-dataid="<?php echo @$proposal["idParentRoom"]; ?>">
+	  		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
+		</h4>
+		<h5 class="padding-left-10 letter-red">
+			<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation","You are not allowed to access this content"); ?>		  	
+		</h5>
+		<?php if(@$parentRoom["roles"] && @$parentRoom["roles"] != ""){ ?>
+			<?php
+				$roomRoles = @$parentRoom["roles"]; 	
+				if(!is_array(@$parentRoom["roles"])) 
+					$roomRoles = explode(",", @$parentRoom["roles"]); 	
+			?>
+			<h5 class="room-desc">
+				<small class="letter-blue">
+					<b><i class="fa fa-unlock-alt"></i> <?php echo Yii::t("cooperation","Access restricted only for"); ?> : </b>
+					<?php $r = ""; foreach ($roomRoles as $role) {
+						if($r!="") $r.=", "; $r.=$role;
+					} 	echo $r; ?>
+				</small>
+			</h5>
+		<?php } ?>
+	</div>
+<?php exit; } ?>
 
 <?php if(@$access=="deny"){ ?>
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -32,9 +63,9 @@
 			<i class="fa fa-ban"></i> <?php echo Yii::t("cooperation","You are not allowed to access this content"); ?>		  	
 		</h5>
 		<h5 class="padding-left-10 letter-red">
-			<small><?php echo Yii::t("cooperation","You must be member or contributor"); ?></small>  	
+			<small><?php echo Yii::t("cooperation","You must be member or contributor to read and participate"); ?></small>  	
 		</h5>
-	</div>
+	</div>yes 
 <?php exit; } ?>
 
 <?php if(@$proposal["idParentRoom"]){ ?>

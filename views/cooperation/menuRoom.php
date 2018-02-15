@@ -35,8 +35,11 @@
 
 	if(isset(Yii::app()->session['userId'])){
 		$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
-		$myRoles = @$me["links"]["memberOf"][@$parentId]["roles"] ? 
-				   @$me["links"]["memberOf"][@$parentId]["roles"] : array();
+		$link = "memberOf";
+		if($parentType == "projects") $link = "projects";
+		if($parentType == "organizations") $link = "memberOf";
+		$myRoles = @$me["links"][$link][@$parentId]["roles"] ? 
+				   @$me["links"][$link][@$parentId]["roles"] : array();
 	}else{
 		$myRoles = array();
 	}	
@@ -54,7 +57,7 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 no-padding bg-white text-dark" id="coop-container">
 	
-	<?php 
+	<?php
 		if(isset($roomList) && empty(@$roomList)){ ?>
 		<div class="col-lg-12 col-md-12 col-sm-12" id="menu-room">
 			<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$thisType)); ?>
@@ -135,11 +138,15 @@
 							<?php echo Yii::t("cooperation", "You are not logged"); ?>
 							</small>  	
 						</h5>
+						<br>
+						<button class="btn btn-link bg-orange" data-toggle="modal" data-target="#modalLogin">
+							<i class="fa fa-sign-in"></i> <?php echo Yii::t("cooperation", "Login to enter in this space"); ?>
+						</button> 	
+					<?php }else{ ?>
+						<h5 class="padding-left-10 letter-red">
+							<small><?php echo Yii::t("cooperation", "You must be member or contributor"); ?></small>  	
+						</h5>
 					<?php } ?>
-					
-					<h5 class="padding-left-10 letter-red">
-						<small><?php echo Yii::t("cooperation", "You must be member or contributor"); ?></small>  	
-					</h5>
 				</div>
 			<?php exit; } ?>
 
@@ -155,10 +162,25 @@
 							else foreach (@$room["roles"] as $r) $rolesLabel .= $rolesLabel == "" ? $r : ", ".$r; 
 						?>
 						<h5 class="padding-left-10 letter-red">
-							<small>
-								<?php echo Yii::t("cooperation", "This space is open only for this roles"); ?> : 
+							<small class="letter-blue">
+								<b><?php echo Yii::t("cooperation", "This space is open only for this roles"); ?> : </b>
 								<?php echo Yii::t("cooperation", $rolesLabel); ?>	
-							</small>  	
+							</small>
+							<br>
+							<small>
+								<b><?php echo Yii::t("cooperation", "My roles"); ?> : </b>
+								<?php if(!empty($myRoles)) 
+										foreach ($myRoles as $key => $role) { ?>
+										<?php echo $role; ?> 
+								<?php }else{ ?>
+									<?php echo Yii::t("cooperation", "You have no role in"); ?> 
+									<?php echo Yii::t("cooperation", "this ".$thisType); ?>
+									<br><br>
+									<i class="fa fa-info-circle"></i> 
+									<?php echo Yii::t("cooperation", "Ask an admin to get the appropriated role to access this space"); ?>
+								<?php } ?>
+							</small>
+
 						</h5>
 					</div>
 			<?php exit; } ?>

@@ -90,7 +90,7 @@
 
 #ajax-modal .modal-content,
 #formContact .modal-content{
-	background-color: rgba(0,0,0,0.6);
+	/*background-color: rgba(0,0,0,0.6);*/
 }
 #ajax-modal .container,
 #formContact .container{
@@ -100,13 +100,13 @@
 #ajax-modal.portfolio-modal,
 #formContact.portfolio-modal {
 	background-color: transparent;
-}
+}/*
 #ajax-modal .close-modal .lr,
 #ajax-modal .close-modal .rl,
 #formContact .close-modal .lr,
 #formContact .close-modal .rl{
 	background-color: #fff;
-}
+}*/
 
 #btn-show-activity-onmap{
     width:100%;

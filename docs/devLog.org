@@ -41,6 +41,10 @@
 
 * Version C0.23
 
+Dans paramsconfig.php
+remplacer "logoUrl2" => "/images/logoLTxt.jpg", => "logoUrl2" => "/images/headerPlaquette.png",
+
+
 *** Ajoute public a tout les events
 co2/datamigration/PublicEvent
 

@@ -77,8 +77,8 @@ class CO2 {
             }
             $communexion["currentLevel"] = "city";
             
-            if($communexion["values"]["cp"]){
-                $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$communexion["values"]["cp"]."/i"));
+            if($communexion["values"]["postalCode"]){
+                $where = array("postalCodes.postalCode" =>new MongoRegex("/^".$communexion["values"]["postalCode"]."/i"));
 
                 if(!empty($communexion["values"]["country"]))
                     $where = array_merge($where, array("country" => $communexion["values"]["country"]));

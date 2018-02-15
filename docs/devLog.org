@@ -41,14 +41,15 @@
 
 * Version C0.23
 
+Dans paramsconfig.php
+remplacer "logoUrl2" => "/images/logoLTxt.jpg", => "logoUrl2" => "/images/headerPlaquette.png",
+
+
 *** Ajoute public a tout les events
 co2/datamigration/PublicEvent
 
 *** Ajout le nom des cp dans tranlates
 co2/datamigration/UpdateTranslatewithNAmeCP
-
-*** tranforme les scopes au nouveau format
-co2/datamigration/UpdateMultiScope
 
 *** Ajout les nom des zones manquant
 co2/datamigration/UpdateZoneMissingNameLevel1
@@ -57,6 +58,27 @@ co2/datamigration/UpdateZoneMissingNameLevel3
 
 *** Corrige le probleme de level avec Occitanie
 co2/datamigration/BatchCorrectionLevel/id/597b1c4a6ff992f0038b45d4
+co2/datamigration/BatchCorrectionLevel/id/597b1d566ff992f0038b4610
+co2/datamigration/BatchCorrectionLevel/id/597b1be16ff992f0038b45b6
+co2/datamigration/BatchCorrectionLevel/id/597b1bac6ff992f0038b45a8
+co2/datamigration/BatchCorrectionLevel/id/597b1bb36ff992f0038b45a9
+co2/datamigration/BatchCorrectionLevel/id/597b1c136ff992f0038b45c2
+co2/datamigration/BatchCorrectionLevel/id/597b1c4e6ff992f0038b45d5
+co2/datamigration/BatchCorrectionLevel/id/597b1cc26ff992f0038b45f2
+co2/datamigration/BatchCorrectionLevel/id/597b1d106ff992f0038b4600
+co2/datamigration/BatchCorrectionLevel/id/597b1d266ff992f0038b4604
+co2/datamigration/BatchCorrectionLevel/id/597b1d326ff992f0038b4607
+co2/datamigration/BatchCorrectionLevel/id/597b1d3f6ff992f0038b460a
+co2/datamigration/BatchCorrectionLevel/id/597b1d456ff992f0038b460c
+
+*** tranforme les scopes au nouveau format
+co2/datamigration/UpdateMultiScope
+
+*** tranforme les scopes des news au nouveau format
+co2/datamigration/UpdateScopeNews
+
+
+
 
 * Version C0.22
 

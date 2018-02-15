@@ -9,7 +9,8 @@
 <!-- start: PAGE CONTENT -->
 
 
-<div class="col-lg-offset-1 col-lg-10 col-xs-12 no-padding" id="content-social" style="min-height:700px;">
+<div class="col-lg-offset-1 col-lg-10 col-xs-12 padding-15" id="content-social" style="min-height:700px;">
+	<h2>Admin Public</h2>
 	<div class="">
 		<ul class="list-group text-left no-margin">
 		<?php 

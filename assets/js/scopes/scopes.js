@@ -102,7 +102,7 @@ function getCommunexionLabel(){
 		var level=0;
 		var nameCommunexion="";
 		$.each(myScopes.communexion, function(e, v){
-			if(v.type == "city")
+			if(v.type == "cities")
 				nameCommunexion=v.name;
 		});
 		$(".communexion-btn-label").html(nameCommunexion);
@@ -350,7 +350,7 @@ function scopeObject(values){
 		mylog.log("communexionObj level1", communexionObj);
 	}
 
-	if(typeof values.level2 != "undefined"){
+	if(typeof values.level2 != "undefined" && ( notNull(values.level1) && values.level1 != values.level2 )  ){
 		objToPush={
 			id:values.level1,
 			name:values.level2Name,
@@ -363,7 +363,7 @@ function scopeObject(values){
 		mylog.log("communexionObj level2", communexionObj);
 	}
 
-	if(typeof values.level3 != "undefined"){
+	if(typeof values.level3 != "undefined" && ( notNull(values.level1) && values.level1 != values.level3 )){
 		objToPush={
 			id:values.level3,
 			name:values.level3Name,
@@ -376,7 +376,7 @@ function scopeObject(values){
 		mylog.log("communexionObj level3", communexionObj);
 	}
 
-	if(typeof values.level4 != "undefined"){
+	if(typeof values.level4 != "undefined" && ( notNull(values.level1) && values.level1 != values.level4 )){
 		objToPush={
 			id:values.level4,
 			name:values.level4Name,
@@ -388,13 +388,13 @@ function scopeObject(values){
 		communexionObj[objToPush.id+objToPush.type] = objToPush;
 		mylog.log("communexionObj level4", communexionObj);
 	}
-	mylog.log("scopeObject cp", typeof values.cp, typeof values.uniqueCp, values.uniqueCp);
-	if(typeof values.cp != "undefined" && typeof values.uniqueCp != "undefined" && values.uniqueCp == false){
+	mylog.log("scopeObject cp", typeof values.postalCode, typeof values.uniqueCp, values.uniqueCp);
+	if(typeof values.postalCode != "undefined" && typeof values.uniqueCp != "undefined" && values.uniqueCp == false){
 		mylog.log("communexionObj cp values", values);
 
 		objToPush={
-			id:values.cp+values.country+objToPush.type,
-			name:values.cp,
+			id:values.postalCode+values.country+objToPush.type,
+			name:values.postalCode,
 			type:"cp",
 			active:false,
 			countryCode:values.country
@@ -416,12 +416,14 @@ function scopeObject(values){
 		objToPush={
 			id:values.city,
 			name:((notNull(values.allCP) && values.allCP == false) ?  values.name : values.cityName ) ,
-			type:"city",
+			type:"cities",
 			active:((notNull(values.allCP) && values.allCP == false) ?  false : true ) ,
 			countryCode:values.country,
 			allCP:values.allCP,
-			cp:values.cp,
+			//postalCode:values.postalCode,
 		}
+		// if( notNull(values.allCP) && values.allCP == false )
+		// 	objToPush["postalCode"] = values.postalCode ;
 	}
 	communexionObj[objToPush.id+objToPush.type] = objToPush;
 	mylog.log("communexionObj", communexionObj);
@@ -429,14 +431,14 @@ function scopeObject(values){
 	if(notNull(values.allCP) && values.allCP == false){
 		objToPush={
 			id:values.city,
-			name:values.cityName + " ( " +values.cp + " ) ",
-			type:"city",
+			name:values.cityName + " ( " +values.postalCode + " ) ",
+			type:"cities",
 			active:true,
 			countryCode:values.country,
 			allCP:values.allCP,
-			cp:values.cp,
+			postalCode:values.postalCode,
 		}
-		communexionObj[objToPush.id+objToPush.type+objToPush.cp] = objToPush;
+		communexionObj[objToPush.id+objToPush.type+objToPush.postalCode] = objToPush;
 	}
 	mylog.log("scopeObject communexionObj", communexionObj);
 	return communexionObj;

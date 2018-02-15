@@ -484,7 +484,7 @@ function follow(parentType, parentId, childId, childType, callback){
 		success: function(data) {
 			if(data.result){
 				if (formData.parentType)
-					addFloopEntity(formData.parentId, formData.parentType, data.parentEntity);
+					addFloopEntity(formData.parentId, formData.parentType, data.parent);
 				toastr.success(data.msg);	
 				if (typeof callback == "function") 
 					callback();
@@ -2082,6 +2082,7 @@ function myContactLabel (type,id) {
 
 function inMyContacts (type,id) { 
 	var res = false ;
+	var type= (type=="citoyens") ? "people" : type;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
 			//mylog.log("val", val);
@@ -3432,6 +3433,21 @@ function showLoader(id){
 	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 }
 
+function bindButtonOpenForm(){
+	//window select open form type (selectCreate)
+	$(".btn-open-form").off().on("click",function(){
+        var typeForm = $(this).data("form-type");
+        mylog.log("test", $(this).data("form-subtype")),
+        currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
+
+        //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
+        if(contextData && contextData.type && contextData.id )
+            dyFObj.openForm(typeForm,"sub");
+        else
+            dyFObj.openForm(typeForm);
+    });
+}
+
 var timerCloseDropdownUser = false;
 function initKInterface(params){ console.log("initKInterface");
 
@@ -3451,18 +3467,6 @@ function initKInterface(params){ console.log("initKInterface");
         event.preventDefault();
     });
 
-    $(".toolbar-bottom-apps").hide().removeClass("hidden");
-    $('#show-bottom-app').off().click(function(){
-    	$(".toolbar-bottom-apps").toggle(100);
-	    $('.toolbar-bottom-apps .btn').click(function(){
-	    	console.log(".toolbar-bottom-apps btn click");
-	    	$(".toolbar-bottom-apps").hide(200);
-	    });
-    });
-    $('.toolbar-bottom-apps').unbind("mouseleave").mouseleave(function(){
-    	console.log(".toolbar-bottom-apps mouseleave");
-    	$(".toolbar-bottom-apps").hide(200);
-    });
 
     // jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.btn-scroll').bind('click', function(event) {
@@ -3470,6 +3474,8 @@ function initKInterface(params){ console.log("initKInterface");
         KScrollTo(target);
         event.preventDefault();
     });
+
+    bindButtonOpenForm();
 
     // Highlight the top nav as scrolling occurs
     $('body').scrollspy({

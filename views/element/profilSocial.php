@@ -294,7 +294,7 @@
 		  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
 		  	</button>
 	  	  <?php } else{ */?>
-			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?>, contextData )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
 			  		  id="open-rocketChat" style="border-right:0px!important;">
 			  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
 			  </button>

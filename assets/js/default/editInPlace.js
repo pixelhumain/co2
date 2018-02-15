@@ -206,6 +206,8 @@ function bindAboutPodElement() {
 									contextData.name = data.resultGoods.values.name;
 									$("#nameHeader > .name-header").html(contextData.name);
 									$("#nameAbout").html(contextData.name);
+									if(inMyContacts(contextData.type, contextData.id))
+										changeNameFloopEntity(contextData.id, contextData.type, contextData.name);
 								}
 
 								if(typeof data.resultGoods.values.username != "undefined"){

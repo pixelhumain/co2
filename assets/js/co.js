@@ -2082,6 +2082,7 @@ function myContactLabel (type,id) {
 
 function inMyContacts (type,id) { 
 	var res = false ;
+	var type= (type=="citoyens") ? "people" : type;
 	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
 		$.each( myContacts[type], function( key,val ){
 			//mylog.log("val", val);

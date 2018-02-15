@@ -296,6 +296,13 @@ function removeFloopEntity(entityId, entityType){
 	removeFromMyContacts(entityId, entityType);
 	$('#floopItem-'+type.name+'-'+entityId).remove();
 }
+//ajout d'un élément dans la liste
+function changeNameFloopEntity(entityId, entityType, entityName){
+	if(entityType == "citoyens") entityType = "people";
+	type = getFloopContactTypes(entityType);
+	//removeFromMyContacts(entityId, entityType);
+	$('#floopItem-'+type.name+'-'+entityId).find(".name-contact").text(entityName);
+}
 function removeFromMyContacts(entityId, entityType){
 	$.each(floopContacts[entityType], function(e, v){
 		if(notNull(v) && typeof v._id != "undefined" && v._id.$id==entityId){

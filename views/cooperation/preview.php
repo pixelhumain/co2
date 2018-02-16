@@ -18,7 +18,7 @@
                       Yii::app()->createUrl('/'.@$element['profilThumbImageUrl']) 
                       : $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 
-    $slugParent = @$element["slug"] ? $element["slug"] : "#page.".$type.$data[$type]["parentType"].$element["_id"];
+    $slugParent = @$element["slug"] ? $element["slug"] : "#page.type.".$data[$type]["parentType"].".id.".$element["_id"];
     $urlInCoSpace = "#".$slugParent.".view.coop.room.".$data[$type]["idParentRoom"].".".$type.".".$dataId;
 ?>
 

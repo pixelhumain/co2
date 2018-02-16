@@ -134,13 +134,20 @@ function getFloopItem(id, type, value){
 								'<span class="city-contact text-light pull-left" idcontact="'+id+'">' + city + '</span>'+
 							'</span>' +
 						'</div>' +
-					'</a>' +
-					'<button class="btn btn-xs btn-default pull-right btn-open-chat contact'+id+'" '+
-							'data-name-el="'+value.name+'" data-type-el="'+type.name+'"  idcontact="'+id+'">'+
-						'<i class="fa fa-comments"></i>'+
-					'</button>'+
-				'</li>';
-	return HTML;
+					'</a>';
+			
+			chatName = value.name;
+			chatSlug = (value.slug) ? value.slug : ""; 
+			chatUsername = (value.username) ? value.username : "";	 
+
+			chatColor = (value.hasRC) ? "text-red" : "";
+			HTML += '<button class="btn btn-xs btn-default btn-open-chat pull-right '+chatColor+' contact'+id+'" '+
+					'data-name-el="'+value.name+'" data-username="'+chatUsername+'" data-slug="'+chatSlug+'" data-type-el="'+type.name+'"  data-open="'+( (value.preferences.isOpenEdition)?true:false )+'"  data-hasRC="'+( ( value.hasRC )?true:false)+'" data-id="'+id+'">'+
+				'<i class="fa fa-comments"></i>'+
+			'</button>';
+			if( value.preferences.isOpenEdition == false )
+				HTML += '<i class="fa fa-lock pull-right"></i>';
+	return HTML+'</li>';
 }
 
 var translation = {
@@ -198,7 +205,6 @@ function bindEventFloopDrawer(){
 		});
 	});
 
-
     $("#ajaxSV,#menu-top-container").mouseenter(function() { 
       if(!floopShowLock)
 			showFloopDrawer(false);
@@ -211,11 +217,25 @@ function bindEventFloopDrawer(){
 			showFloopDrawer(false);
     });
 
-    /*TODO TIB*/
     $(".btn-open-chat").click(function(){
-    	var nameElement = $(this).data("name-el");
-    	var typeElement = $(this).data("type-el");
-    	rcObj.loadChat(nameElement, typeElement,true,true );
+    	var nameElo = $(this).data("name-el");
+    	var idEl = $(this).data("id");
+    	var usernameEl = $(this).data("username");
+    	var slugEl = $(this).data("slug");
+    	var typeEl = dyFInputs.get($(this).data("type-el")).col;
+    	var openEl = $(this).data("open");
+    	var hasRCEl = ( $(this).data("hasRC") ) ? true : false;
+    	//alert(nameElo +" | "+typeEl +" | "+openEl +" | "+hasRCEl);
+    	var ctxData = {
+    		name : nameElo,
+    		type : typeEl,
+    		id : idEl
+    	}
+    	if(typeEl == "citoyens")
+    		ctxData.username = usernameEl;
+    	else if(slugEl)
+    		ctxData.slug = slugEl;
+    	rcObj.loadChat(nameElo ,typeEl ,openEl ,hasRCEl, ctxData );
     });
 
 }
@@ -295,6 +315,13 @@ function removeFloopEntity(entityId, entityType){
 	type = getFloopContactTypes(entityType);
 	removeFromMyContacts(entityId, entityType);
 	$('#floopItem-'+type.name+'-'+entityId).remove();
+}
+//ajout d'un élément dans la liste
+function changeNameFloopEntity(entityId, entityType, entityName){
+	if(entityType == "citoyens") entityType = "people";
+	type = getFloopContactTypes(entityType);
+	//removeFromMyContacts(entityId, entityType);
+	$('#floopItem-'+type.name+'-'+entityId).find(".name-contact").text(entityName);
 }
 function removeFromMyContacts(entityId, entityType){
 	$.each(floopContacts[entityType], function(e, v){

@@ -29,21 +29,7 @@
 
 	<li class="submenucoop sub-rooms"><hr></li>
 	
-	<?php if(@$access=="deny"){ ?>
-		<li class="padding-10 submenucoop sub-rooms">
-			<h5 class="padding-left-10 letter-red">
-				<i class="fa fa-ban"></i> Vous n'êtes pas autorisé à accéder à ce contenu		  	
-			</h5>
-			<?php if(!isset(Yii::app()->session['userId'])){ ?>
-				<h5 class="padding-left-10">
-					<small class="letter-orange"><i class="fa fa-user-circle"></i> Vous n'êtes pas connecté</small>  	
-				</h5>
-			<?php } ?>
-			<h5 class="padding-left-10 letter-red">
-				<small>Devenez membre ou contributeur</small>  	
-			</h5>
-		</li>
-	<?php exit; } ?>
+	<?php if(@$access=="deny"){ exit; } ?>
 	
 	<div id="coop-room-list" class="margin-bottom-50">
 		<?php $this->renderPartial('../cooperation/roomList', array("roomList"=>$menuCoopData["roomList"], 
@@ -76,15 +62,15 @@
 
 	 	foreach($allStatus as $status=>$tradStatus){ ?>
 
-		<li class="submenucoop sub-proposals">
-			<a href="javascript:" class="load-coop-data" data-type="proposal" data-status="<?php echo $status ?>">
-		  		<i class="fa fa-<?php echo Cooperation::getIconCoop($status); ?>"></i> <?php echo Yii::t("cooperation", $tradStatus) ?>
-		  		<span class="badge pull-right bg-<?php echo Cooperation::getColorCoop($status); ?> margin-right-10">
-		  			<?php echo @$menuCoopData["allCount"]["proposals"][$status]; ?>
-		  		</span>
-		  	</a>
-		</li>
-	<?php } ?>
+			<li class="submenucoop sub-proposals">
+				<a href="javascript:" class="load-coop-data" data-type="proposal" data-status="<?php echo $status ?>">
+			  		<i class="fa fa-<?php echo Cooperation::getIconCoop($status); ?>"></i> <?php echo Yii::t("cooperation", $tradStatus) ?>
+			  		<span class="badge pull-right bg-<?php echo Cooperation::getColorCoop($status); ?> margin-right-10">
+			  			<?php echo @$menuCoopData["allCount"]["proposals"][$status]; ?>
+			  		</span>
+			  	</a>
+			</li>
+		<?php } ?>
 
 	
 	
@@ -96,30 +82,30 @@
 	  	</a>
 	</li>
 
-		<li class="submenucoop hidden sub-actions"><hr></li>
+	<li class="submenucoop hidden sub-actions"><hr></li>
 
-		<?php $allStatus = array("todo"=>"To do", 
-								 "disabled"=> "Disabled", 
-								 "done" => "Done");
-		
-			if(Yii::app()->session['userId'])
-			$allStatus["mine"] = "My actions";
-
-		 	foreach($allStatus as $status=>$tradStatus){ ?>
-
-			<li class="submenucoop sub-actions">
-				<a href="javascript:" class="load-coop-data" data-type="action" data-status="<?php echo $status ?>">
-			  		<i class="fa fa-<?php echo Cooperation::getIconCoop($status); ?>"></i> 
-			  		<?php echo Yii::t("cooperation", $tradStatus) ?>
-			  		<span class="badge pull-right bg-<?php echo Cooperation::getColorCoop($status); ?> margin-right-10">
-			  			<?php echo @$menuCoopData["allCount"]["actions"][$status]; ?>
-			  		</span>
-			  	</a>
-			</li>
-		<?php } ?>
-
+	<?php $allStatus = array("todo"=>"To do", 
+							 "disabled"=> "Disabled", 
+							 "done" => "Done");
 	
-<li class="submenucoop sub-rooms margin-top-50"></li>
+		if(Yii::app()->session['userId'])
+		$allStatus["mine"] = "My actions";
+
+	 	foreach($allStatus as $status=>$tradStatus){ ?>
+
+		<li class="submenucoop sub-actions">
+			<a href="javascript:" class="load-coop-data" data-type="action" data-status="<?php echo $status ?>">
+		  		<i class="fa fa-<?php echo Cooperation::getIconCoop($status); ?>"></i> 
+		  		<?php echo Yii::t("cooperation", $tradStatus) ?>
+		  		<span class="badge pull-right bg-<?php echo Cooperation::getColorCoop($status); ?> margin-right-10">
+		  			<?php echo @$menuCoopData["allCount"]["actions"][$status]; ?>
+		  		</span>
+		  	</a>
+		</li>
+	<?php } ?>
+
+		
+	<li class="submenucoop sub-rooms margin-top-50"></li>
 	
 	<!-- ----------- RESOLUTION --------------- -->
 	<li class="hidden">

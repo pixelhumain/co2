@@ -4,8 +4,11 @@
 
 		if(isset(Yii::app()->session['userId'])){
 			$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
-			$myRoles = @$me["links"]["memberOf"][@$parentId]["roles"] ? 
-					   @$me["links"]["memberOf"][@$parentId]["roles"] : array();
+			$link = "memberOf";
+			if($parentType == "projects") $link = "projects";
+			if($parentType == "organizations") $link = "memberOf";
+			$myRoles = @$me["links"][$link][@$parentId]["roles"] ? 
+					   @$me["links"][$link][@$parentId]["roles"] : array();
 		}else{
 			$myRoles = array();
 		}	

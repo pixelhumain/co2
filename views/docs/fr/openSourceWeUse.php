@@ -1,6 +1,5 @@
-<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
 <div class="panel-heading border-light center text-dark partition-white radius-10">
-	<span class="panel-title homestead"> <i class='fa text-red fa-heart  faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">OPEN SOURCE PROJECTS WE LOVE AND USE</span></span>
+	<span class="panel-title"> <i class='fa text-red fa-heart  faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">OPEN SOURCE PROJECTS WE LOVE AND USE</span></span>
 </div>
 <div class="space20"></div>
 <div class="keywordList col-xs-12"></div>

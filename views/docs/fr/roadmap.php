@@ -1,6 +1,5 @@
-<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
 <div class="panel-heading border-light center  text-dark partition-white radius-10">
-	<span class="panel-title homestead"> <i class='fa fa-compass faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">Road to the Futur</span></span>
+	<span class="panel-title"> <i class='fa fa-compass faa-pulse animated fa-3x  '></i> <span style="font-size: 48px">Road to the Futur</span></span>
 </div>
 
 <style type="text/css">

@@ -90,7 +90,7 @@
 
 #ajax-modal .modal-content,
 #formContact .modal-content{
-	background-color: rgba(0,0,0,0.6);
+	/*background-color: rgba(0,0,0,0.6);*/
 }
 #ajax-modal .container,
 #formContact .container{
@@ -100,13 +100,13 @@
 #ajax-modal.portfolio-modal,
 #formContact.portfolio-modal {
 	background-color: transparent;
-}
+}/*
 #ajax-modal .close-modal .lr,
 #ajax-modal .close-modal .rl,
 #formContact .close-modal .lr,
 #formContact .close-modal .rl{
 	background-color: #fff;
-}
+}*/
 
 #btn-show-activity-onmap{
     width:100%;
@@ -294,7 +294,7 @@
 		  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
 		  	</button>
 	  	  <?php } else{ */?>
-			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?>, contextData )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
 			  		  id="open-rocketChat" style="border-right:0px!important;">
 			  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
 			  </button>

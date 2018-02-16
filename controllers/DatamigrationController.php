@@ -4080,7 +4080,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		 				
 		 			}else{
 
-		 				$where = array( "postalCodes.postalCode"=>strval($newS["postalCode"]));
+		 				$where = array( "postalCodes.postalCode"=>strval(@$newS["postalCode"]));
 						$city = City::getWhereFindOne($where, $fields=null);
 						if(!empty($city)){
 							$newS["countryCode"] = $city["country"];

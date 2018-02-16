@@ -1149,6 +1149,11 @@ var directory = {
             str += "<a href='"+params.url+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
           });
         }
+        if(typeof params.media != "undefined"){
+          //$.each(params.gallery, function(key, img){
+            str += params.media;//"<a href='"+params.url+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
+          //});
+        }
       str += "</div>";
     str += "</div>";
 
@@ -2875,11 +2880,11 @@ var directory = {
                 if(params.type=="news"){
                       if(typeof params.media != "undefined"){
                         if (params.media.type=="gallery_images")
-                          params.imgProfil=getMediaImages(params.media, null, null, null,'directory');
+                          params.media=getMediaImages(params.media, null, null, null,'directory');
                         else if (params.media.type=="gallery_files")
-                          params.imgProfil=getMediaFiles(params.media,null);
-                        //else if(params.media.type=="url_content" && params.text=="")
-                          //params.imgProfil=processUrl.getMediaCommonHtml(params.media,"show",e);
+                          params.media=getMediaFiles(params.media,null);
+                        else if(params.media.type=="url_content" && params.text=="")
+                          params.media=processUrl.getMediaCommonHtml(params.media,"show",e);
                       }else
                         delete params.imgProfil;
                     }

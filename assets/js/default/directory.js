@@ -1165,6 +1165,11 @@ var directory = {
             str += "<a href='"+params.hash+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
           });
         }
+        if(typeof params.media != "undefined"){
+          //$.each(params.gallery, function(key, img){
+            str += params.media;//"<a href='"+params.url+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
+          //});
+        }
       str += "</div>";
     str += "</div>";
 
@@ -2890,33 +2895,21 @@ var directory = {
 				if(!params.useMinSize)
 					params.imgBanner = "<i class='fa fa-image fa-2x'></i>";
 
-                if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
-                    params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
+        if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
+            params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
 
-                if(params.type=="news"){
-                      if(typeof params.media != "undefined"){
-                        if (params.media.type=="gallery_images")
-                          params.imgProfil=getMediaImages(params.media, null, null, null,'directory');
-                        else if (params.media.type=="gallery_files")
-                          params.imgProfil=getMediaFiles(params.media,null);
-                        //else if(params.media.type=="url_content" && params.text=="")
-                          //params.imgProfil=processUrl.getMediaCommonHtml(params.media,"show",e);
-                      }else
-                        delete params.imgProfil;
-                    }
-                    /*if(dyFInputs.get(itemType) && 
-                        dyFInputs.get(itemType).col == "poi" && 
-                        typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
-                    params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
-                    */
-                    /*params.insee = params.insee ? params.insee : "";
-                    params.postalCode = "", params.city="",params.cityName="";
-                    if (params.address != null) {
-                        params.city = params.address.addressLocality;
-                        params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
-                        params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
-                    }
-                    params.fullLocality = params.postalCode + " " + params.cityName;*/
+        if(params.type=="news"){
+          delete params.imgProfil;
+          if(typeof params.media != "undefined"){
+            if (params.media.type=="gallery_images")
+              params.media=getMediaImages(params.media, null, null, null,'directory');
+            else if (params.media.type=="gallery_files")
+              params.media=getMediaFiles(params.media,null);
+            else if(params.media.type=="url_content" && params.text=="")
+              params.media=processUrl.getMediaCommonHtml(params.media,"show");
+          }
+                
+        }
                     if (false && typeof params.addresses != "undefined" && params.addresses != null) {
                       $.each(params.addresses, function(key, val){
                   //console.log("second address", val);

@@ -1,6 +1,5 @@
-<?php $this->renderPartial('../docs/panels/menuLink',array("url"=>"default/view/page/links")); ?>
 <div class="panel-heading border-light center text-dark partition-white radius-10 ">
-	<span class="panel-title homestead"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" style="margin-bottom:20px;" class="nc_map" height=50> <i class='fa fa-question faa-pulse animated  fa-3x  '></i> </span>
+	<span class="panel-title"> <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" style="margin-bottom:20px;" class="nc_map" height=50> <i class='fa fa-question faa-pulse animated  fa-2x  '></i> </span>
 </div>
 <div class="space20"></div>
 

@@ -1,6 +1,6 @@
 
 <div class="panel-heading border-light center text-dark partition-white radius-10">
-    <span class=" text-red homestead tpl_title"> Import Export API</span>
+    <span class=" text-red tpl_title"> Import Export API</span>
     <br/>
     <span class="tpl_shortDesc">Les organisations sont un des pilliers de la société<br/>, leurs activités est aussi productif que créateur de liens et de services. C'est en voyant tout les acteurs locaux , qu'on aura un vrai territoire connecté et que la valeur </span>
 </div>

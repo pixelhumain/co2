@@ -1,6 +1,5 @@
-
 <div class="panel-heading border-light center text-dark partition-white radius-10">
-    <span class=" text-red homestead tpl_title"> Open Common DataBase</span>
+    <span class=" text-red tpl_title"> Open Common DataBase</span>
     <br/>
     <span class="tpl_shortDesc">Un système d'information fait pour le partage, l'opendata, contributif et représentatif des actions et des activités de la société.</span>
 </div>

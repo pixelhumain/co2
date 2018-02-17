@@ -70,6 +70,7 @@ var trad = {
 	"reportanabuse": "<?php echo Yii::t("common", "Report an abuse")?>",
 	"notparticipateanymore": "<?php echo Yii::t("common","Not participate anymore") ?>",
 	"notfollowanymore": "<?php echo Yii::t("common","Not follow anymore") ?>",
+	"accountalreadyexistedwiththisemail": "<?php echo Yii::t("common","An account is already registered with this email") ?>",
 	"younotparticipateanymore": "<?php echo Yii::t("common","You don't participate anymore to") ?>",
 	"You are not following" : "<?php echo Yii::t("common", "You are not following")?>",
 	"suretodeletenews" : "<?php echo Yii::t("common","Are you sure you want to delete this news") ?>",

@@ -32,6 +32,12 @@
 	if($accessRoom == "lock") {
 ?>
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
+				data-original-title="<?php echo Yii::t("cooperation","Close this window"); ?>" data-placement="bottom"
+				id="btn-close-proposal">
+			<i class="fa fa-times"></i>
+		</button><br>
+		
 		<h4 class="letter-turq load-coop-data title-room" 
 	  		data-type="room" data-dataid="<?php echo @$proposal["idParentRoom"]; ?>">
 	  		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
@@ -55,6 +61,15 @@
 			</h5>
 		<?php } ?>
 	</div>
+
+	<script type="text/javascript">
+		jQuery(document).ready(function() { 
+			$("#modal-preview-coop #btn-close-proposal").off().click(function(){
+				$("#modal-preview-coop").hide(300);
+			});
+		});
+	</script>
+	
 <?php exit; } ?>
 
 <?php if(@$access=="deny"){ ?>

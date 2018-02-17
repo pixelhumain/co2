@@ -623,8 +623,8 @@
 	        </button>
 			*/ ?>
 	        <button data-form-type="ressources"  data-dismiss="modal"
-	            class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
-	            <h6><i class="fa fa-cube fa-2x bg-azure"></i><br> Ressource</h6>
+	            class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-vine">
+	            <h6><i class="fa fa-cube fa-2x bg-vine"></i><br> Ressource</h6>
 	            <small>Partager des ressources<br>des outils, des documents<br> des compétences et des besoins</small>
 	        </button>
 

@@ -9,7 +9,9 @@
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
 
-    if($this->module->id != "network" && $type!=Classified::COLLECTION && ($type!=Product::COLLECTION || ($element["creator"]==Yii::app()->session["userId"] && $view != "show")))
+    if($this->module->id != "network" && 
+        ($type!=Product::COLLECTION || 
+        ($element["creator"]==Yii::app()->session["userId"] && $view != "show")))
     //le param USEHEADER de params.json sert à afficher ou non le header, 
     //donc normalement pas besoin de faire de IF ici
         $this->renderPartial($layoutPath.'header', 
@@ -61,18 +63,6 @@
                 $this->renderPartial('../news/standalone', $params ); 
             }
 
-            if($type == Classified::COLLECTION || $type == Ressource::COLLECTION){
-                $params = array("element"=>$element , 
-                                "page" => "page",
-                                "type" => $type,
-                                "controller" => $controller,
-                                );
-
-                if(@$members) $params["members"] = $members;
-                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
-
-                $this->renderPartial('classifieds.views.co.standalone', $params ); 
-            }
             if($type == Product::COLLECTION){
                 $params = array("element"=>$element , 
                                 "page" => "page",
@@ -111,13 +101,40 @@
                 $this->renderPartial('../survey/entryStandalone', $params ); 
             }
 
-            if($type == Poi::COLLECTION){
+            if($type == Classified::COLLECTION){
                 $params = array("element"=>$element , 
                                 "page" => "page",
                                 "type" => $type,
                                 "controller" => $controller,
                                 );
 
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+
+                $this->renderPartial('classifieds.views.co.standalone', $params ); 
+                
+            }
+
+            if($type == Ressource::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
+
+                if(@$members) $params["members"] = $members;
+                if(@$invitedMe) $params["invitedMe"] = $invitedMe;
+
+                $this->renderPartial('ressources.views.co.standalone', $params ); 
+                
+            }
+
+            if($type == Poi::COLLECTION){
+                $params = array("element"=>$element , 
+                                "page" => "page",
+                                "type" => $type,
+                                "controller" => $controller,
+                                );
                 $this->renderPartial('../poi/standalone', $params ); 
             }
 		?>

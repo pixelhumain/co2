@@ -1581,9 +1581,36 @@ function  bindLBHLinks() {
 	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
 	    	//smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url ,"","blockUI",h);
 		}
-	})
+	});
+
+
+	//open any url in a modal window
+	$(".lbh-preview-element").unbind("click").on("click",function(e) {
+		e.preventDefault();
+		$("#openModal").modal("hide");
+		mylog.warn("***************************************");
+		mylog.warn("bindLBHLinks Preview ELEMENT", $(this).attr("href"),$(this).data("modalshow"));
+		mylog.warn("***************************************");
+		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
+		var url = (h.indexOf("#") == 0 ) ? "app/"+ urlCtrl.convertToPath(h) : "app/"+ h;
+		openPreviewElement( baseUrl+'/'+moduleId+"/"+url);
+			//smallMenu.open ( getAjax(directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
+	});
 }
 
+
+function openPreviewElement(url){
+	$("#modal-preview-coop").html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-azure'></i>").show(200);
+	$.ajax({
+		type: "POST",
+        url: url,
+        data: {"preview" : true},
+        success: function(html){
+        	$("#modal-preview-coop").html(html);
+        	$("#modal-preview-coop").removeClass("hidden").show();
+   		}
+	})
+}
 
 function mouseX(evt) {
     if (evt.pageX) {

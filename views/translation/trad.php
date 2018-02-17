@@ -781,12 +781,19 @@ var tradCategory = {
 	"Conference" :"<?php echo Yii::t("category","Conference") ?>",
 	"Debate" :"<?php echo Yii::t("category","Debate") ?>",
 	"Film" :"<?php echo Yii::t("category","Film") ?>",
+
 	"sharing" : "<?php echo Yii::t("category","Share") ?>", 
 	"donation" : "<?php echo Yii::t("category","Give") ?>", 
 	"forsale" : "<?php echo Yii::t("category","Sale") ?>",  
 	"forrent" : "<?php echo Yii::t("category","Rent") ?>", 
 	"lookingfor" : "<?php echo Yii::t("category","Need") ?>",  
 	"job" : "<?php echo Yii::t("category","Jobs") ?>",
+	
+	"to sharing" : "<?php echo Yii::t("category","To share") ?>", 
+	"to donation" : "<?php echo Yii::t("category","To give") ?>", 
+	"to forsale" : "<?php echo Yii::t("category","For sale") ?>",  
+	"to forrent" : "<?php echo Yii::t("category","For rent") ?>", 
+	"to job" 	 : "<?php echo Yii::t("category","Job offer") ?>",
 	
 	"Share":"<?php echo Yii::t("category","Share") ?>", 
     "To share":"<?php echo Yii::t("category","To share") ?>",

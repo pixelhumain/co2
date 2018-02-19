@@ -87,7 +87,9 @@
 
 	<div id="contentBanner" class="col-md-12 col-sm-12 col-xs-12 no-padding">
 		<?php if (@$element["profilBannerUrl"] && !empty($element["profilBannerUrl"])){	
-			$imgHtml='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" 
+
+			//<img src="" valign="bottom" alt="Logo Communecter" align="center" class="text-center" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;display: block;margin: 0 auto;float: none;text-align: center;">
+			$imgHtml='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" alt="'.Yii::t("common","Banner").'"
 				src="'.Yii::app()->createUrl('/'.$element["profilBannerUrl"]).'">';
 			if (@$element["profilRealBannerUrl"] && !empty($element["profilRealBannerUrl"])){
 				$imgHtml='<a href="'.Yii::app()->createUrl('/'.$element["profilRealBannerUrl"]).'"

@@ -2710,7 +2710,7 @@ var directory = {
                             '</a>';
       }
       str = '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
-      str += "<h3 style='margin-bottom:10px; margin-left:15px;border-left: 2px solid lightgray;' class='text-dark padding-20'><small>"+msg+"<br/>"+contributeMsg+"</h3></small><br/>";
+      str += "<h5 style='margin-bottom:10px; margin-left:15px;border-left: 2px solid lightgray;' class='text-dark padding-20'>"+msg+"<br/>"+contributeMsg+"</h5><br/>";
       str += "</div>";
       return str;
     },

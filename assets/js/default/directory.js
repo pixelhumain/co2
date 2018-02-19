@@ -1004,6 +1004,8 @@ var directory = {
   lightPanelHtml : function(params){
     mylog.log("lightPanelHtml", params);
     var linkAction = ( $.inArray(params.type, ["poi","classified","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
+    //linkAction = "lbh-preview-element";
+    
     console.log("linkAction", linkAction);
     var onepageKey = CO2params["onepageKey"][0];
 
@@ -1019,6 +1021,7 @@ var directory = {
       authorId=params.author.id;
     } 
 
+    //params.hash = "#page.type."+params.type+".id."+params.id;
     //lbhp add2fav'  data-modalshow='"+params.id+"'
 
     if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")

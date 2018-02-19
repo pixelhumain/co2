@@ -274,8 +274,9 @@ class AppController extends CommunecterController {
 
         if(@$_POST["preview"] == true){ 
             if($type == "classified") $this->renderPartial('classifieds.views.co.preview', $params );
-            if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
-            if($type == "poi") $this->renderPartial('../poi/preview', $params ); 
+            else if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
+            else if($type == "poi") $this->renderPartial('../poi/preview', $params ); 
+            else echo $this->renderPartial("page", $params, true);
         }else{
             echo $this->renderPartial("page", $params, true);
 	    }

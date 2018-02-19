@@ -1584,7 +1584,7 @@ function  bindLBHLinks() {
 	});
 
 
-	//open any url in a modal window
+	//open any url in a preview window
 	$(".lbh-preview-element").unbind("click").on("click",function(e) {
 		e.preventDefault();
 		$("#openModal").modal("hide");

@@ -1,7 +1,4 @@
-
-
-	<div class="explainCommunectMe col-xs-12">
-		
+	<div class="explainCommunectMe col-xs-12">		
 		<h1 class="homestead explainTitle blue "><i class="fa fa-home"></i> Communectez-moi</h1>
 		<center class="caretExplain blue"><i class="fa fa-caret-down"></i><br/></center>
 		<div class="explainDesc">

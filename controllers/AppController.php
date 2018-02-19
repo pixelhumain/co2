@@ -254,7 +254,7 @@ class AppController extends CommunecterController {
         }
 
         if(@$element["parentId"] && @$element["parentType"])
-            $element['parent'] = Element::getByTypeAndId( $element["parentType"], $element["parentId"]);
+            $element['parent'] = Element::getSimpleByTypeAndId( $element["parentType"], $element["parentId"]);
         if(@$element["organizerId"] && @$element["organizerType"] && 
             $element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow")
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
@@ -270,8 +270,16 @@ class AppController extends CommunecterController {
 
         $params = Element::getInfoDetail($params, $element, $type, $id);
         //var_dump(@$_POST); exit;
-        echo $this->renderPartial("page", $params, true);
-	}
+
+
+        if(@$_POST["preview"] == true){ 
+            if($type == "classified") $this->renderPartial('classifieds.views.co.preview', $params );
+            if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
+            if($type == "poi") $this->renderPartial('../poi/preview', $params ); 
+        }else{
+            echo $this->renderPartial("page", $params, true);
+	    }
+    }
 
     public function actionInteroperability(){
         CO2Stat::incNbLoad("co2-interoberability");

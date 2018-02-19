@@ -89,6 +89,21 @@ function isUniqueUsername(username) {
 	mylog.log("isUniqueUsername=", response);
 	return response;
 }
+function checkUniqueEmail(email) {
+	var response;
+	$.ajax({
+		url: baseUrl+'/'+moduleId+"/person/checkemail/",
+		data: {email: email},
+		type: 'POST',
+		dataType: 'json',
+		success: function(data) {
+		    response = data.res;
+		}
+	});
+	mylog.log("isUniqueEmail=", response);
+	return response;
+}
+
 function slugUnique(searchValue){
 	
 	//searchType = (types) ? types : ["organizations", "projects", "events", "needs", "citoyens"];

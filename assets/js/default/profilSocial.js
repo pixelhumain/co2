@@ -387,9 +387,9 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	var html = "<i class='fa fa-"+dataIcon+" fa-2x margin-right-10'></i> <i class='fa fa-angle-down'></i> ";
 	if(dataName == "follows")	{ html += elementName + " "+trad.isfollowing+" " + countData + " "+trad["page"+s]+""; }
 	else if(dataName == "followers")	{ html += countData + " <b>"+trad["follower"+s]+"</b> "+trad.to+" "+ elementName; }
-	else if(dataName == "members")	{ html += elementName + " "+trad.iscomposedof+" " + countData + " <b>"+trad["member"+s]+"</b>"; }
+	else if(dataName == "members")		{ html += elementName + " "+trad.iscomposedof+" " + countData + " <b>"+trad["member"+s]+"</b>"; }
 	else if(dataName == "attendees")	{ html += countData + " <b>"+trad["attendee"+s]+"</b> "+trad.toevent+" " + elementName; }
-	else if(dataName == "guests")	{ html += countData + " <b>"+trad["guest"+s]+"</b> "+trad.on+" " + elementName; }
+	else if(dataName == "guests")		{ html += countData + " <b>"+trad["guest"+s]+"</b> "+trad.on+" " + elementName; }
 	else if(dataName == "contributors")	{ html += countData + " <b>"+trad["contributor"+s]+"</b> "+trad.toproject+" " + elementName; }
 	
 	else if(dataName == "events"){ 
@@ -399,22 +399,22 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 			html += elementName + " "+trad.takepart+" " + countData+" <b> "+trad["event"+s]; 
 		}
 	}
-	else if(dataName == "organizations")	{ html += elementName + " "+trad.ismemberof+" "+ countData+" <b>"+trad["organization"+s]; }
+	else if(dataName == "organizations"){ html += elementName + " "+trad.ismemberof+" "+ countData+" <b>"+trad["organization"+s]; }
 	else if(dataName == "projects")		{ html += elementName + " "+trad.contributeto+" " + countData+" <b>"+trad["project"+s] }
 
-	else if(dataName == "collections"){ html += elementName+" "+trad.hasgot+" "+countData+" <b>"+trad["collection"+s]+"</b>"; }
-	else if(dataName == "poi"){ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
-	else if(dataName == "classified"){ html += countData+" <b>"+trad[classified+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
-	else if(dataName == "ressources"){ html += countData+" <b>ressource"+s+"</b> créé"+s+" par " + elementName; }
+	else if(dataName == "collections")	{ html += elementName+" "+trad.hasgot+" "+countData+" <b>"+trad["collection"+s]+"</b>"; }
+	else if(dataName == "poi")			{ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "classified")	{ html += countData+" <b>"+trad["classified"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "ressources")	{ html += countData+" <b>ressource"+s+"</b> "+trad['createdby'+s]+" " + elementName; }
 
-	else if(dataName == "needs"){ html += countData+" <b>"+trad[need+s]+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "needs")	{ html += countData+" <b>"+trad[need+s]+"</b> "+trad.of+" " + elementName; }
 
-	else if(dataName == "vote"){ html += countData+" <b>"+trad[proposal+s]+"</b> "+trad.of+" " + elementName; }
-	else if(dataName == "discuss"){ html += countData+" <b>"+trad.discussion+s+"</b> "+trad.of+" " + elementName; }
-	else if(dataName == "actions"){ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "vote")		{ html += countData+" <b>"+trad[proposal+s]+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "discuss")	{ html += countData+" <b>"+trad.discussion+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "actions")	{ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
 
-	else if(dataName == "actionRooms"){ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
-	else if(dataName == "networks"){ html += countData+" <b>"+trad.map+s+"</b> "+trad.of+" " + elementName;
+	else if(dataName == "actionRooms")	{ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
+	else if(dataName == "networks")		{ html += countData+" <b>"+trad.map+s+"</b> "+trad.of+" " + elementName;
 		if( (typeof openEdition != "undefined" && openEdition == true) || (typeof edit != "undefined" && edit == true) ){
 			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'network\', \'sub\')">';
 	    	html +=	'<i class="fa fa-plus"></i> '+tradDynForm["Add map"]+'</a>' ;
@@ -442,8 +442,6 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 			html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="dyFObj.openForm ( \'contactPoint\',\'sub\')">';
 	    	html +=	'<i class="fa fa-plus"></i> '+trad["Add contact"]+'</a>' ;
 	    }
-
-
 	}
 
 	if( openEdition || edit ){

@@ -382,9 +382,8 @@ var searchEngine = {
             classified : 0,
             poi : 0,
             news : 0,
-            place : 0,
-            ressource : 0,
-            city : 0
+            places : 0,
+            ressources : 0
         };
     },
     initTerritorialSearch: function (){ console.log("initTerritorialSearch");
@@ -397,8 +396,7 @@ var searchEngine = {
             poi : { indexMin : 0, indexMax : 30, waiting : 30 },
             news : { indexMin : 0, indexMax : 30, waiting : 30 },
             places : { indexMin : 0, indexMax : 30, waiting : 30 },
-            ressources : { indexMin : 0, indexMax : 30, waiting : 30 },
-            city : { indexMin : 0, indexMax : 30, waiting : 30 },
+            ressources : { indexMin : 0, indexMax : 30, waiting : 30 }
         };
         initTypeSearch("all");
         searchEngine.allResults={};

@@ -1003,8 +1003,8 @@ var directory = {
     // ********************************
   lightPanelHtml : function(params){
     mylog.log("lightPanelHtml", params);
-    var linkAction = "lbh"; // ( $.inArray(params.type, ["poi","classified"])>=0 ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
-    
+    var linkAction = ( $.inArray(params.type, ["poi","classified","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
+    console.log("linkAction", linkAction);
     var onepageKey = CO2params["onepageKey"][0];
 
     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x letter-"+params.color+"'></i>";
@@ -1019,6 +1019,7 @@ var directory = {
       authorId=params.author.id;
     } 
 
+    //lbhp add2fav'  data-modalshow='"+params.id+"'
 
     if(typeof params.fullLocality != "undefined" && params.fullLocality != "" && params.fullLocality != " ")
           params.fullLocality = " <small class='lbh letter-red margin-left-10'>"+
@@ -1042,8 +1043,11 @@ var directory = {
     str += "<div class='col-xs-12 searchEntity entityLight no-padding'  id='entity"+params.id+"'>";
     
     str += "<div class='entityLeft pull-left text-right padding-10 hidden-xs'>";
-      if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined")
-          str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+"''>" + params.imgProfil + "</a>";
+      if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined" && location.hash != "#agenda"){
+          str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+"'>" + params.imgProfil + "</a>";
+      }else if(params.type == "events" && location.hash == "#agenda"){
+          str +=    "<a href='"+params.hash+"' class='container-img-profil event "+linkAction+"'>" + params.imgMediumProfil + "</a>";
+      }
     str += "</div>"
 
     str += "<div class='entityCenter col-xs-11 col-sm-8 col-md-7 col-lg-6 no-padding'>";
@@ -1052,7 +1056,7 @@ var directory = {
         str +=    "<a href='"+params.hash+"' class='margin-top-15 iconType "+linkAction+"'>" + params.htmlIco + "</a>";
       
       if(typeof params.name != "undefined" && params.name != ""){
-        str += "<a href='"+params.hash+"' class='margin-top-10 lbh letter-blue title'>"+params.name+"</a>";
+        str += "<a href='"+params.hash+"' class='margin-top-10 letter-blue title "+linkAction+"'>"+params.name+"</a>";
 
 
       if(typeof params.price != "undefined" && typeof params.devise != "undefined")
@@ -1081,6 +1085,18 @@ var directory = {
       if(typeof params.url != "undefined" && params.url != null && params.url != "")
         str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
 
+      if(typeof params.section != "undefined"){
+        str += "<div class='entityType'>" + tradCategory["to "+params.section];
+        if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
+        str += "</div>";
+      } 
+
+      if(params.type=="events"){
+        var dateFormated = directory.getDateFormated(params);
+        var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;
+        str += dateFormated+countSubEvents;
+      } 
+
       // if(typeof params.startDate != "undefined")
       //   str += "<br><small class='letter-light'>"+params.startDate+"</small>";
       
@@ -1091,7 +1107,7 @@ var directory = {
       //   str += "<small class='letter-light'>"+params.endDate+"</small>";
       
       if(typeof params.updatedLbl != "undefined" && (params.type == "events" ||  params.type == "classified"))
-        str += "<br><small class='letter-light bold'><i class='fa fa-clock-o'></i> "+params.updatedLbl+"</small>";
+        str += "<small class='letter-light bold'><i class='fa fa-clock-o'></i> "+params.updatedLbl+"</small>";
       
 
       if(typeof params.shortDescription != "undefined" && params.shortDescription != "" && params.shortDescription != null)
@@ -1131,7 +1147,7 @@ var directory = {
                 " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"'"+
                 " data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
                 "<small><i class='fa fa-link fa-rotate-270'></i> "+tip+"</small>"+ 
-            "</button>";
+              "</button>";
       }
 
 
@@ -1146,8 +1162,13 @@ var directory = {
       str += "<div class='col-lg-4 col-md-3 col-sm-2 col-xs-12 gallery'>";
         if(typeof params.gallery != "undefined"){
           $.each(params.gallery, function(key, img){
-            str += "<a href='"+params.url+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
+            str += "<a href='"+params.hash+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
           });
+        }
+        if(typeof params.media != "undefined"){
+          //$.each(params.gallery, function(key, img){
+            str += params.media;//"<a href='"+params.url+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
+          //});
         }
       str += "</div>";
     str += "</div>";
@@ -1239,27 +1260,27 @@ var directory = {
 				str += "</div>";
 		} 
 
-	if(params.type=="events"){
-		var dateFormated = "<br/><i class='fa fa-clock'></i> "+directory.getDateFormated(params, true);
-		var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;
-		str += dateFormated+countSubEvents;
-	} 
+  	if(params.type=="events"){
+  		var dateFormated = "<br/><i class='fa fa-clock'></i> "+directory.getDateFormated(params, true);
+  		var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;
+  		str += dateFormated+countSubEvents;
+  	} 
 
-	var thisLocality = "";
-	if(params.fullLocality != "" && params.fullLocality != " ")
-		thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality add2fav"+linkAction+">"+
-							"<i class='fa fa-home'></i> " + params.fullLocality + "</a>";
-	else thisLocality = "<br>";
+  	var thisLocality = "";
+  	if(params.fullLocality != "" && params.fullLocality != " ")
+  		thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality add2fav"+linkAction+">"+
+  							"<i class='fa fa-home'></i> " + params.fullLocality + "</a>";
+  	else thisLocality = "<br>";
 
-	str += thisLocality;
+  	str += thisLocality;
 
-	str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
-	str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
-	str += "</div>";
-	str += "</div>";
-	str += "</div>";
-	str += "</div>";
-	return str;
+  	str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
+  	str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+  	str += "</div>";
+  	str += "</div>";
+  	str += "</div>";
+  	str += "</div>";
+  	return str;
 	},
 
     interopPanelHtml : function(params){
@@ -1402,12 +1423,12 @@ var directory = {
       // ********************************
       // NEXT PREVIOUS 
       // ********************************
-      str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-left text-right'></div>";
+      str += "<div class='col-xs-12 col-sm-1 col-md-2 pull-left text-right'></div>";
       //str += "<div class='col-xs-6 col-sm-2 col-md-3 pull-right text-left visible-xs'>"+nav.next+"</div>";
       // ********************************
       // RIGHT SECTION
       // ********************************
-      str += "<div class='col-xs-12 col-sm-8 col-md-6 margin-top-15'>";
+      str += "<div class='col-xs-12 col-sm-10 col-md-8 margin-top-15'>";
 
         // ********************************
         // LEFT SECTION
@@ -1427,7 +1448,7 @@ var directory = {
               str += "</div><hr>";
             }
           if(typeof params.typePoi != "undefined"){
-              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + trad[params.type] + "</span> > "+trad[params.typePoi];
+              str += "<div class='entityType text-dark'><span class='bold uppercase'>" + trad[params.type] + "</span> > "+tradCategory[params.typePoi];
                 
               str += "</div><hr>";
             }
@@ -1462,8 +1483,13 @@ var directory = {
             str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> Contact : " + params.contactInfo + "</div>";
             str += "<hr class='col-xs-12'>";
           } else {
-            str += "<div class='entityType letter-green bold' style='font-size:17px;'><i class='fa fa-address-card'></i> <a class='lbh btn btn-azure' href='#page.type.citoyens.id." + params.creator + "'>Contact la personne</a></div>";
-            str += "<hr class='col-xs-12'>";
+            str += "<div class='entityType letter-green bold' style='font-size:17px;'>"+
+                      "<i class='fa fa-address-card'></i> "+
+                      "<a class='lbh btn btn-link btn-azure' href='#page.type.citoyens.id." + params.creator + "'>"+
+                        "Voir la page de l'auteur"+
+                      "</a>"+
+                    "</div>";
+            str += "<hr class='col-xs-12 no-padding'>";
           }
 
           var thisLocality = "";
@@ -1537,7 +1563,7 @@ var directory = {
 
         if( params.creator == userId || params.author == userId || params.parentId == userId || dyFObj.canUserEdit() ){
           str += '<hr>'+
-              '<div class="col-md-offset-1 col-md-10 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
+              '<div class="col-md-12 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
               '<a href="javascript:;" class="btn btn-default text-red deleteThisBtn bold pull-left" data-type="'+params.type+'" data-id="'+params.id+'" ><i class="fa fa-trash"></i></a> '+
               '<a href="javascript:dyFObj.editElement(\''+params.type+'\', \''+params.id+'\' );" class="btn btn-default pull-right letter-green bold">'+
                   '<i class="fa fa-pencil"></i> '+trad["modifyelement"]+
@@ -2869,33 +2895,21 @@ var directory = {
 				if(!params.useMinSize)
 					params.imgBanner = "<i class='fa fa-image fa-2x'></i>";
 
-                if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
-                    params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
+        if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
+            params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
 
-                if(params.type=="news"){
-                      if(typeof params.media != "undefined"){
-                        if (params.media.type=="gallery_images")
-                          params.imgProfil=getMediaImages(params.media, null, null, null,'directory');
-                        else if (params.media.type=="gallery_files")
-                          params.imgProfil=getMediaFiles(params.media,null);
-                        //else if(params.media.type=="url_content" && params.text=="")
-                          //params.imgProfil=processUrl.getMediaCommonHtml(params.media,"show",e);
-                      }else
-                        delete params.imgProfil;
-                    }
-                    /*if(dyFInputs.get(itemType) && 
-                        dyFInputs.get(itemType).col == "poi" && 
-                        typeof params.medias != "undefined" && typeof params.medias[0].content.image != "undefined")
-                    params.imgProfil= "<img class='img-responsive' src='"+params.medias[0].content.image+"'/>";
-                    */
-                    /*params.insee = params.insee ? params.insee : "";
-                    params.postalCode = "", params.city="",params.cityName="";
-                    if (params.address != null) {
-                        params.city = params.address.addressLocality;
-                        params.postalCode = params.cp ? params.cp : params.address.postalCode ? params.address.postalCode : "";
-                        params.cityName = params.address.addressLocality ? params.address.addressLocality : "";
-                    }
-                    params.fullLocality = params.postalCode + " " + params.cityName;*/
+        if(params.type=="news"){
+          delete params.imgProfil;
+          if(typeof params.media != "undefined"){
+            if (params.media.type=="gallery_images")
+              params.media=getMediaImages(params.media, null, null, null,'directory');
+            else if (params.media.type=="gallery_files")
+              params.media=getMediaFiles(params.media,null);
+            else if(params.media.type=="url_content" && params.text=="")
+              params.media=processUrl.getMediaCommonHtml(params.media,"show");
+          }
+                
+        }
                     if (false && typeof params.addresses != "undefined" && params.addresses != null) {
                       $.each(params.addresses, function(key, val){
                   //console.log("second address", val);
@@ -2986,7 +3000,13 @@ var directory = {
                       //mylog.log("template principal",params,params.type, itemType);
 
 
-                      if(location.hash == "" || location.hash == "#search" || location.hash == "#web") 
+                      if($.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classified"] )>=0
+                          /*location.hash == "" || 
+                         location.hash == "#search" || 
+                         location.hash == "#annonces" || 
+                         location.hash == "#agenda" || 
+                         location.hash == "#ressources" || 
+                         location.hash == "#web"*/) 
                        str += directory.lightPanelHtml(params);  
 
                       else 

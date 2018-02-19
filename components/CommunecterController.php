@@ -258,6 +258,7 @@ class CommunecterController extends Controller
         'changepassword'  => array("href" => "/person/changepassword"),
         'changerole'      => array("href" => "/person/changerole"),
         'checkusername'   => array("href" => "/person/checkusername"),
+        'checkemail'   => array("href" => "/person/checkemail"),
         "invite"          => array("href" => "/ph/co2/person/invite"),
         "invitation"      => array("href" => "/ph/co2/person/invitation"),
         "updatefield"     => array("href" => "/person/updatefield"),

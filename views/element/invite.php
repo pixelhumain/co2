@@ -173,10 +173,10 @@
                                             <i class="fa fa-align-justify fa-2x"></i>
                                         </div>
                                         <div class="col-md-9">
-                                            <textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4">Bonjour, J'ai découvert un réseau sociétal citoyen appelé "Communecter - être connecté à sa commune". 
-Tu peux agir concrétement autour de chez toi et découvrir ce qui s'y passe. Viens rejoindre le réseau sur communecter.org.</textarea>
+                                            <textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4"><?php echo Yii::t("person","Hello, \\nCome and meet me on that website!\\nAn email, your town and you are connected to your city!\\nYou can see everything that happens in your city and act for the commons."); ?></textarea>
                                         </div>
                                     </div>
+                                    
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12 text-center">
 	                                <hr>
@@ -458,40 +458,53 @@ function runinviteFormValidation(el) {
             var parentId = $(".form-invite .invite-parentId").val();
             var invitedUserName = $("#invite-modal-element #inviteName").val();
             var invitedUserEmail = $("#invite-modal-element #inviteEmail").val();
-            $.blockUI({
-                message : '<span class="homestead"><i class="fa fa-spin fa-circle-o-noch"></i> Merci de patienter ...</span>'
-            });
-            $.ajax({
-                type: "POST",
-                url: baseUrl+"/"+moduleId+'/person/follows',
-                dataType : "json",
-                data: {
-                    parentId : parentId,
-                    invitedUserName : invitedUserName,
-                    invitedUserEmail : invitedUserEmail,
-                    msgEmail : $("#invite-modal-element #inviteText").val()
-                }
-            })
-            .done(function (data) {
-                $.unblockUI();
-                if (data &&  data.result) {               
-                    toastr.success('L\'invitation a été envoyée avec succès!');
-                    addFloopEntity(data.invitedUser.id, "<?php echo Person::COLLECTION ?>", data.invitedUser);
-                    $("#invite-modal-element #step3").addClass("hidden");
-                    $("#invite-modal-element #inviteName").val("");
-                    $("#invite-modal-element #inviteEmail").val("");
-                    $("#invite-modal-element #inviteText").val('Bonjour, J\'ai découvert un réseau sociétal citoyen appelé "Communecter - être connecté à sa commune".\nTu peux agir concrétement autour de chez toi et découvrir ce qui s\'y passe. Viens rejoindre le réseau sur communecter.org."');
-                    $('#invite-modal-element #invite-modal').modal('hide');
-                    $('#invite-modal-element #inviteSearch').val("");
-                    $("#invite-modal-element #btnInviteNew").prop("disabled",false);
-					$("#invite-modal-element #btnInviteNew").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
-                } else {
-                    $.unblockUI();
-                    $("#invite-modal-element #btnInviteNew").prop("disabled",false);
-					$("#invite-modal-element #btnInviteNew").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
-                    toastr.error(data.msg);
-                }
-            });
+            /*if(!checkUniqueEmail($("#invite-modal-element #inviteEmail").val())){
+    			if(!$("#invite-modal-element #inviteEmail").hasClass("has-error")){
+					$("#invite-modal-element #inviteEmail").removeClass('has-success').addClass('has-error');//.find("span").text("cucu");
+				}
+				if($("#step3 .modal-body .error-block-invite").length<=0){
+					errorMsg="<span class='error-block-invite col-xs-12 padding-5 text-left letter-red bold'>"+
+						"<i class='fa fa-times'></i> " + trad.accountalreadyexistedwiththisemail+
+					"</span>";
+					$("#step3 .modal-body").append(errorMsg);
+				}
+				$("#invite-modal-element #btnInviteNew").prop("disabled",false);
+				$("#invite-modal-element #btnInviteNew").find("i").removeClass("fa-spinner fa-spin").addClass("fa-send");	
+    		}
+    		else{*/
+    			$("#step3 .modal-body .error-block-invite").remove();
+    			$("#invite-modal-element #inviteEmail").removeClass('has-error');
+	            $.ajax({
+	                type: "POST",
+	                url: baseUrl+"/"+moduleId+'/person/follows',
+	                dataType : "json",
+	                data: {
+	                    parentId : parentId,
+	                    invitedUserName : invitedUserName,
+	                    invitedUserEmail : invitedUserEmail,
+	                    msgEmail : $("#invite-modal-element #inviteText").val()
+	                }
+	            })
+	            .done(function (data) {
+	                if (data &&  data.result) {               
+	                    toastr.success(data.msg);
+	                    floopId = (typeof data.invitedUser.id === 'object') ? data.invitedUser.id.$id : data.invitedUser.id;
+	                    addFloopEntity(floopId, "<?php echo Person::COLLECTION ?>", data.invitedUser);
+	                    $("#invite-modal-element #step3").addClass("hidden");
+	                    $("#invite-modal-element #inviteName").val("");
+	                    $("#invite-modal-element #inviteEmail").val("");
+	                    $("#invite-modal-element #inviteText").val('<?php echo Yii::t("person","Hello, \\nCome and meet me on that website!\\nAn email, your town and you are connected to your city!\\nYou can see everything that happens in your city and act for the commons."); ?>');
+	                    $('#invite-modal-element #invite-modal').modal('hide');
+	                    $('#invite-modal-element #inviteSearch').val("");
+	                    $("#invite-modal-element #btnInviteNew").prop("disabled",false);
+						$("#invite-modal-element #btnInviteNew").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
+	                } else {
+	                    $("#invite-modal-element #btnInviteNew").prop("disabled",false);
+						$("#invite-modal-element #btnInviteNew").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
+	                    toastr.error(data.msg);
+	                }
+	            });
+	       // }
         }
     });
 };

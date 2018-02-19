@@ -146,7 +146,8 @@ function getFloopItem(id, type, value){
 				'<i class="fa fa-comments"></i>'+
 			'</button>';
 			if( value.preferences.isOpenEdition == false )
-				HTML += '<i class="fa fa-lock pull-right"></i>';
+				HTML += '<i class="fa fa-lock pull-right margin-top-20 margin-right-5 text-light tooltips" '+
+							'data-position="left" data-original-title="value.preferences.isOpenEdition == false"></i>';
 	return HTML+'</li>';
 }
 

@@ -70,6 +70,7 @@ var trad = {
 	"reportanabuse": "<?php echo Yii::t("common", "Report an abuse")?>",
 	"notparticipateanymore": "<?php echo Yii::t("common","Not participate anymore") ?>",
 	"notfollowanymore": "<?php echo Yii::t("common","Not follow anymore") ?>",
+	"accountalreadyexistedwiththisemail": "<?php echo Yii::t("common","An account is already registered with this email") ?>",
 	"younotparticipateanymore": "<?php echo Yii::t("common","You don't participate anymore to") ?>",
 	"You are not following" : "<?php echo Yii::t("common", "You are not following")?>",
 	"suretodeletenews" : "<?php echo Yii::t("common","Are you sure you want to delete this news") ?>",
@@ -781,12 +782,19 @@ var tradCategory = {
 	"Conference" :"<?php echo Yii::t("category","Conference") ?>",
 	"Debate" :"<?php echo Yii::t("category","Debate") ?>",
 	"Film" :"<?php echo Yii::t("category","Film") ?>",
+
 	"sharing" : "<?php echo Yii::t("category","Share") ?>", 
 	"donation" : "<?php echo Yii::t("category","Give") ?>", 
 	"forsale" : "<?php echo Yii::t("category","Sale") ?>",  
 	"forrent" : "<?php echo Yii::t("category","Rent") ?>", 
 	"lookingfor" : "<?php echo Yii::t("category","Need") ?>",  
 	"job" : "<?php echo Yii::t("category","Jobs") ?>",
+	
+	"to sharing" : "<?php echo Yii::t("category","To share") ?>", 
+	"to donation" : "<?php echo Yii::t("category","To give") ?>", 
+	"to forsale" : "<?php echo Yii::t("category","For sale") ?>",  
+	"to forrent" : "<?php echo Yii::t("category","For rent") ?>", 
+	"to job" 	 : "<?php echo Yii::t("category","Job offer") ?>",
 	
 	"Share":"<?php echo Yii::t("category","Share") ?>", 
     "To share":"<?php echo Yii::t("category","To share") ?>",

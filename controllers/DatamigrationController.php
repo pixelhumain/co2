@@ -3547,8 +3547,6 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		//}
 	}
 
-
-
 	public function actionPublicEvent(){
 		ini_set('memory_limit', '-1');
 		$nbelement = 0 ;

@@ -842,7 +842,8 @@ function reverseToRepertory(){
 		showMapNetwork();
 	updateMap();
 	$("#ficheInfoDetail").hide( 700 );
-	$("#dropdown_search").show();;
+	$("#dropdown_search").show();
+	$(".main-col-search").removeClass("col-md-12 col-sm-12").addClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3");
 	//$("#dropdown_search").show();
 	$("#repertory").show();
 	$(".main-menu-left").show( 700 );

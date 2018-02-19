@@ -1,5 +1,8 @@
-<div class="panel-heading border-light center text-dark partition-white radius-10">
-	<span class="panel-title"> <i class='fa fa-heart text-red faa-pulse animated fa-2x  '></i> <span style="font-size: 48px">PHILOSOPHY</span></span>
+<div id="header-docs" class="panel-heading border-light center text-dark partition-white radius-10">
+	<span class="panel-title"> 
+		<i class='fa fa-heart text-red faa-pulse animated'></i> PHILOSOPHIE<br>
+		<span class="sub-title text-red">"Art is the heart of our culture"</span>
+	</span>
 </div>
 <div class="space20"></div>
 <div class="keywordList"></div>
@@ -48,17 +51,19 @@ var keywords = [
 			"<br>et que c'est pas juste un slogan "+
 			"<br>rien ne l'arretera tant qu'on ne le vivra pas "+
 			"<br>on continuera à chercher"
-	},
+	}/*,
 	{
 		"icon" : "fa-heart text-red",
 		"title":"Art is the heart of our culture",
 		"body":""
-	},
+	},*/
 ];
 	
 jQuery(document).ready(function() 
 {
-	$(".keywordList").html('');
+		getConceptList(keywords, ".keywordList");
+
+	/*$(".keywordList").html('');
 	$.each(keywords,function(i,obj) { 
 		icon = (obj.icon) ? obj.icon : "fa-tag" ;
 		color = (obj.color) ? obj.color : "#E33551" ;
@@ -73,7 +78,7 @@ jQuery(document).ready(function()
 				 "</blockquote>"+
 			"</div>"+
 		"</div>");
-	 });
+	 });*/
 });
 
 </script>

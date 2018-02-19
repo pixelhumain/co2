@@ -924,6 +924,38 @@ var tradCategory = {
 	"biodiversity":"<?php echo Yii::t("category","Biodiversity") ?>",
 	"tic":"<?php echo Yii::t("category","ICT | Numeric | Internet") ?>",
 };
+
+var tradTags = {
+	"agriculture" : "<?php echo Yii::t("tags","agriculture") ?>",
+	"food" : "<?php echo Yii::t("tags","food") ?>",
+	"nutrition" : "<?php echo Yii::t("tags","nutrition") ?>",
+	"AMAP" : "<?php echo Yii::t("tags","AMAP") ?>",
+	"health" : "<?php echo Yii::t("tags","health") ?>",
+	"waste" : "<?php echo Yii::t("tags","waste") ?>",
+	"urbanism" : "<?php echo Yii::t("tags","urbanism") ?>",
+	"transport" : "<?php echo Yii::t("tags","transport") ?>",
+	"construction" : "<?php echo Yii::t("tags","construction") ?>",
+	"education" : "<?php echo Yii::t("tags","education") ?>",
+	"childhood" : "<?php echo Yii::t("tags","childhood") ?>",
+	"citizen" : "<?php echo Yii::t("tags","citizen") ?>",
+	"société" : "<?php echo Yii::t("tags","society") ?>",
+	"ess" : "<?php echo Yii::t("tags","ess") ?>",
+	"social solidarity economy" : "<?php echo Yii::t("tags","social solidarity economy") ?>",
+	"energy"  : "<?php echo Yii::t("tags","energy") ?>",
+	"climat" : "<?php echo Yii::t("tags","climat") ?>",
+	"culture"  : "<?php echo Yii::t("tags","culture") ?>",
+	"animation" : "<?php echo Yii::t("tags","animation") ?>",
+	"environment" : "<?php echo Yii::t("tags","environment") ?>",
+	"biodiversity" : "<?php echo Yii::t("tags","biodiversity") ?>",
+	"ecology" : "<?php echo Yii::t("tags","ecology") ?>",
+	"numeric" : "<?php echo Yii::t("tags","numeric") ?>",
+	"ict" : "<?php echo Yii::t("tags","ict") ?>",
+	"computer" : "<?php echo Yii::t("tags","computer") ?>",
+	"web" : "<?php echo Yii::t("tags","web") ?>",
+	"internet" : "<?php echo Yii::t("tags","ict"),Yii::t("tags","internet") ?>",
+	"sport" : "<?php echo Yii::t("tags","sport") ?>"
+};
+
 var tradCountry = {
 	"BE":"Belgique", 
     "FR":"France",

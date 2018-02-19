@@ -1,6 +1,70 @@
  <?php 
 class CO2 {
 
+    public static function getCategories(){
+        return array(
+            "food"=> array(
+                "name" => "Food",
+                "icon" => "fa-cutlery",
+                "tags" => [ Yii::t("tags","agriculture"),Yii::t("tags","food"),Yii::t("tags","nutrition"),Yii::t("tags","AMAP") ]
+            ),  
+            "health"=> array(
+                "name" => "Health",
+                "icon" => "fa-heart-o",
+                "tags" => [ Yii::t("tags","health") ]
+            ),  
+            "waste"=> array(
+                "name" => "Waste",
+                "icon" => "fa-trash-o ",
+                "tags" => [ Yii::t("tags","waste") ]
+            ),  
+            "transport"=> array(
+                "name" => "Transport",
+                "icon" => "fa-bus",
+                "tags" => [ Yii::t("tags","urbanism"),Yii::t("tags","transport"),Yii::t("tags","construction") ]
+            ),  
+            "education"=> array(
+                "name" => "Education",
+                "icon" => "fa-book",
+                "tags" => [ Yii::t("tags","education"),Yii::t("tags","childhood") ]
+            ),  
+            "citizen"=> array(
+                "name" => "Citizenship",
+                "icon" => "fa-user-circle-o",
+                "tags" => [ Yii::t("tags","citizen"),Yii::t("tags","society") ]
+            ),  
+            "economy"=> array(
+                "name" => "Economy",
+                "icon" => "fa-money",
+                "tags" => [ Yii::t("tags","ess") ,Yii::t("tags","social solidarity economy") ]
+            ),  
+            "energy"=> array(
+                "name" => "Energy",
+                "icon" => "fa-sun-o",
+                "tags" => [ Yii::t("tags","energy"),Yii::t("tags","climat") ]
+            ),  
+            "culture"=> array(
+            "name" => "Culture",
+            "icon" => "fa-universal-access",
+            "tags" => [ Yii::t("tags","culture"),Yii::t("tags","animation") ]
+            ),  
+            "environnement"=> array(
+            "name" => "Environnement",
+            "icon" => "fa-tree",
+            "tags" => [ Yii::t("tags","environment"),Yii::t("tags","biodiversity"),Yii::t("tags","ecology") ]
+            ),  
+            "numeric"=> array(
+            "name" => "Numeric",
+            "icon" => "fa-laptop",
+            "tags" => [ Yii::t("tags","computer"),Yii::t("tags","ict"),Yii::t("tags","internet"),Yii::t("tags","web") ]
+            ),
+            "sport" => array( 
+            "name" => "Sport",
+            "icon" => "fa-futbol-o",
+            "tags" => [ Yii::t("tags","sport") ]
+            )
+        );
+    }
     public static function getThemeParams($domainName=null){
     	$domainName = @$domainName ? $domainName : Yii::app()->params["CO2DomainName"];
     	

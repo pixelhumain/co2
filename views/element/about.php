@@ -319,6 +319,20 @@
 							} ?>	
 				</div>
 			</div>
+
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
+					<span><i class="fa fa-hashtag"></i></span> <?php echo Yii::t("common","Gamification"); ?>
+				</div>
+				<div id="tgamificationAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5">
+						<i class="fa fa-hashtag"></i> <?php echo Yii::t("common","Gamification"); ?> :
+					</span>
+					<?php 	
+								echo Gamification::calcPoints( Yii::app()->session["userId"] );
+							 ?>	
+				</div>
+			</div>
 	</div>
 	
 </div>

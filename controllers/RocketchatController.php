@@ -101,6 +101,7 @@ class RocketchatController extends CommunecterController {
 	// accessing Element > creates 
 		// channels : http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas/type/test/roomType/channel/test/true
 		// groups : http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas/type/test/roomType/group/test/true
+		//http://www.communecter.org/co2/rocketchat/chat/name/codev/type/organizations/roomType/group
 	public function actionChat($name,$type="",$id=null,$roomType=null) {
 		$group = null;
 		if(Yii::app()->session["userId"])

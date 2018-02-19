@@ -1054,6 +1054,11 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 				if(mapEnd)
 					showMap(true);
 
+				if( url.indexOf("app/page/type") >= 0 )
+					addBtnSwitch();
+				else 
+					$(".addBtnFoot").removeClass("hidden");
+
 	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
 	        		uploadObj.set(contextData.type,contextData.id);
 	        	}

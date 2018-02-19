@@ -98,7 +98,7 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchType = ["organizations", "projects", "events", "places", "poi", "news", "classified","ressources"/*,"cities"*/];
+        searchType = ["organizations", "projects", "events", /*"places",*/ "poi", "news", "classified","ressources"/*,"cities"*/];
         if(search.value != "")
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
@@ -116,7 +116,7 @@ function initTypeSearch(typeInit){
 }
 function initCountType(){
   if(search.app=="search" || search.app=="territorial")
-    search.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", "places", "poi", "news", "classified","ressources"];
+    search.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", "news", "classified","ressources"];
   else if(search.app=="ressources") search.countType=["ressources"];
   else if(search.app=="annonces") search.countType=["classified"];
   else if(search.app=="agenda") search.countType=["events"];

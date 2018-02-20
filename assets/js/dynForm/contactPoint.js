@@ -14,7 +14,7 @@ dynForm = {
     			if( contextData && contextData.type )
     				$("#ajaxFormModal #parentType").val( contextData.type ); 
 				
-				console.log("input name ? ", $('#ajaxFormModal #name').length);
+				mylog.log("input name ? ", $('#ajaxFormModal #name').length);
 				$('#ajaxFormModal #name').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
 				$('#ajaxFormModal #email').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
 				$('#ajaxFormModal #role').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'});
@@ -24,6 +24,7 @@ dynForm = {
 			
 	    	//pour creer un contact depuis un element existant
 	    	sub : function(){
+
 			}
 	    },
 	    afterSave : function(){
@@ -35,7 +36,7 @@ dynForm = {
                 inputType : "custom",
                 html:"<p><i class='fa fa-info-circle'></i> "+tradDynForm["infocreatecontact"]+"</p>",
             },
-            name : dyFInputs.name("contact", {}, true),
+            name : dyFInputs.name("contactPoint", {}, true),
 	        similarLink : dyFInputs.similarLink,
 	        email : dyFInputs.text(tradDynForm["mainemail"], "exemple@mail.com"),
 	        role : dyFInputs.inputText(tradDynForm["contactrole"], tradDynForm["contactrole"]),

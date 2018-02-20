@@ -22,7 +22,7 @@
         }
     } 
     
-    .punch-line-container{
+    /*.punch-line-container{
     	color:#28262b
     	text-align:center;	
     }
@@ -36,7 +36,7 @@
     	font-size: 16px;
     	font-style: italic;
     	color: #777;
-    }
+    }*/
     .videoWrapper iframe{
     	width: 100%;
     	height: auto;
@@ -46,36 +46,15 @@
 .h_iframe .ratio {display:block;width:100%;height:auto;}
 .h_iframe iframe {position:absolute;top:0;left:0;width:100%; height:100%;background-color: white;}
 </style>
+<div id="header-docs"  class="panel-heading border-light center text-dark partition-white radius-10 ">
+	<span class="panel-title"> 
+		Moteur de Recherche Territorial<br>
+		<span class="sub-title text-red">Piloté par Open Atlas et développé par des contributeurs du monde entier.</span>
+	</span>
+</div>
 
-<div class="pageContent">
-	<div class="punch-line-container">
-		<h1>Moteur de Recherche Territorial</h1>
-		<span>Piloté par Open Atlas et développé par des contributeurs du monde entier.</span>
-	</div>	
-	<div class="content-section section-3 col-md-12 col-sm-12 col-xs-12 no-padding margin-top-50">
-		<div class="col-md-4 col-sm-4 col-xs-12">
-			<img src="<?php echo $this->module->assetsUrl; ?>/images/logoW.jpg" width="60"/>
-			<h2> Pour moi</h2>
-			<span>Je connais mon territoire</span>
-			<hr>
-			<p>Je sais ce qu’il se passe autour de moi.</p>
-		</div>
-			<div class="col-md-4 col-sm-4 col-xs-12">
-			<img src="<?php echo $this->module->assetsUrl; ?>/images/logoW.jpg" width="60"/>
-			<h2> Pour ma communauté</h2>
-			<span>Je gère mon organisation</span>
-			<hr>
-			<p>Je valorise ce que je fait tout en profitant des outils de gestions de projets.</p>
-		</div>
-		<div class="col-md-4 col-sm-4 col-xs-12">
-			<img src="<?php echo $this->module->assetsUrl; ?>/images/logoW.jpg" width="60"/>
-			<h2> Pour le bien commun</h2>
-			<span>Une intelligence collective en action</span>
-			<hr>
-			<p>Je participe à la construction d’une base de connaissance territoriale.</p>
-		</div>
-	
-	</div>
+<div class="pageContent margin-top-50">
+	<div class="keywordActors"></div>
 	<div class="wrapper col-md-12 col-sm-12 col-xs-12 no-padding">
     	<div class="h_iframe">
         <!-- a transparent image is preferable -->
@@ -85,61 +64,34 @@
     	
 	</div>
 	<div class="content-section-for section-3 col-md-12 col-sm-12 col-xs-12 no-padding margin-top-50">
-	<img src="<?php echo $this->module->assetsUrl; ?>/images/docs/<?php echo Yii::app()->language ?>/notebooks-1-1.png" width="100%"/>
-	</div>
-	<!--<div class="videoWrapper videoWrapper col-xs-12 col-sm-12 col-md-12 no-padding">
-		<a href="javascript:;" onclick="" class="btn-show-video"><i class="fa fa-youtube-play fa-5x"></i></a> -
-		<iframe
-				src="https://player.vimeo.com/video/133636468?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=57c0d4" 
-				frameborder="0" height="100" webkitallowfullscreen mozallowfullscreen allowfullscreen class="video" 
-				aria-hidden="true" tabindex="-1" style="width: 100%; border:0px solid black;">
-		</iframe>
-	</div>-->
-
-
-	<div class="col-sm-12 col-md-12 col-xs-12 no-padding margin-top-50" style="background-color:#fff; max-width:100%; float:left;">
-		<div class="col-md-12" style="background-color:#E33551;width:100%;padding:8px 0px 8px 0%;">
-			<h1 class="homestead text-center text-white">
-				<i class="fa fa-user-circle"></i><br><?php echo Yii::t("home","Friends of communecter") ?>
-			</h1>
-		</div>
-		<center>
-			<i class="fa fa-caret-down text-red"></i><br/>
-		</center>
-
-		<div id="co-friends" class="padding-15"></div>
-		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 ">
-			<img class="img-responsive img-thumbnail peopleTalkImg">
-			<span class="peopleTalkName text-extra-large"></span>
-			<br/>
-			<span class="peopleTalkProject text-extra-large"></span>
-		</div>
-		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 ">
-			<img class="img-responsive img-thumbnail peopleTalkImg">
-			<span class="peopleTalkName text-extra-large"></span>
-			<br/>
-			<span class="peopleTalkProject text-extra-large"></span>
-		</div>
-		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 ">
-			<img class="img-responsive img-thumbnail peopleTalkImg">
-			<span class="peopleTalkName text-extra-large"></span>
-			<br/>
-			<span class="peopleTalkProject text-extra-large"></span>
-		</div>
-		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 ">
-			<img class="img-responsive img-thumbnail peopleTalkImg">
-			<span class="peopleTalkName text-extra-large"></span>
-			<br/>
-			<span class="peopleTalkProject text-extra-large"></span>
-		</div>
-	</div>
+		<img src="<?php echo $this->module->assetsUrl; ?>/images/docs/<?php echo Yii::app()->language ?>/notebooks-1-1.png" width="100%"/>
+	</div>	
 </div>
 
 
 <script type="text/javascript">
-
+var keyActors = [
+	{
+		"icon" : "fa-street-view",
+		"title":"Pour moi",
+		"subtitle":"Je connais mon territoire",
+		"body":"Je sais ce qu’il se passe autour de moi."
+	},
+	{
+		"icon" : "fa-users",
+		"title":"Pour ma communauté",
+		"subtitle":"Je gère mon organisation",
+		"body":"Je sais ce qu’il se passe autour de moi."
+	},
+	{
+		"icon" : "fa-globe",
+		"title":"Pour le bien commun",
+		"subtitle":"Une intelligence collective en action",
+		"body":"Je participe à la construction d’une base de connaissance territoriale."
+	}
+];
 jQuery(document).ready(function() {
-	
+	getConceptList(keyActors, ".keywordActors");
 	openVideo();
 
 });

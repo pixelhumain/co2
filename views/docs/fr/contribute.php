@@ -78,7 +78,7 @@ var keywords = [
 	{
 		"icon" : "fa-users",
 		"title":"Amener de nouveaux contributeurs",
-		"subtitle" : "Plus on de fous…",
+		"subtitle" : "Plus on est de fous…",
 		"body":"Vous êtes déjà contributeur·ice ? Faites grandir la communauté.",
 		"link":{
 			"label":"En savoir plus",

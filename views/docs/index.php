@@ -85,9 +85,21 @@
     min-height: 70px;
 }
 .keypan{
-	    border: none;
+	border: none;
     margin-bottom: 10px;
     box-shadow: none;
+}
+.keypan, .keypanList{
+	box-shadow: none;	
+}
+.keypanList .panel-title i{
+	margin-right: 10px;
+}
+.keypanList .panel-body ul{
+	padding-left: 0px;
+}
+.keypanList .panel-title span{
+	font-size: 24px !important;
 }
 .keypan .panel-body{
 	min-height: 200px;
@@ -343,33 +355,41 @@ function navInDocs(page, dir, get){
 	ajaxPost('#container-docs' ,baseUrl+'/'+moduleId+"/default/view/page/"+page+"/dir/docs"+add,
 			 null,function(){},"html");
 }
-function getConceptList(list, dom){
+function getConceptList(list, dom, type){
 	str="";
+	classContainer = (notNull(type) && type=="list") ? "col-md-12 col-sm-12 col-xs-12" : "col-md-4 col-sm-6 col-xs-12";
+	classKeypan = (notNull(type) && type=="list") ? "keypanList" : "keypan";
 	$.each(list,function(i,obj) { 
-		icon = (obj.icon) ? obj.icon : "fa-tag" ;
+		//icon = (obj.icon) ? obj.icon : "fa-tag" ;
 		color = (obj.color) ? obj.color : "#E33551" ;
 		size = (obj.size) ? obj.size : "20" ;
-		str+=
-		'<div class="col-md-4 col-sm-6 col-xs-12"><div class="keypan panel panel-white">'+
-			'<div class="panel-heading border-light ">'+
-				'<span class="panel-title">'+ 
-					'<i class="fa '+icon+' faa-pulse animated-hover fa-2x"></i>'+
-					'<span style="font-size: '+size+'px; color:'+color+';"> <br/>'+obj.title.toUpperCase()+'</span>';
-					if(typeof obj.subtitle != "undefined")
+		str+='<div class="'+classContainer+'"><div class="'+classKeypan+' panel panel-white">'+
+				'<div class="panel-heading border-light ">'+
+					'<span class="panel-title">'; 
+						if(typeof obj.icon != "undefined")
+		str+=				'<i class="fa '+obj.icon+' faa-pulse animated-hover fa-2x"></i>';
+						if(!notNull(type) || type!="list")
+		str+=				'<br/>';
+		str+=			'<span style="font-size: '+size+'px; color:'+color+';">'+obj.title.toUpperCase()+'</span>';
+						if(typeof obj.subtitle != "undefined")
 		str+=				'<span style="font-size: 16px;font-style:italic"> <br/>'+obj.subtitle+'</span>';
 		str+=		'</span>'+
-			'</div>'+
-			'<hr/>'+
-			'<div class="panel-body">'
-				+obj.body+"<br>";
-				if(typeof obj.link != "undefined"){
-		str+=		"<a class='btn btn-danger btn-sm margin-top-10' href='"+obj.link.url+"'";
-					if(typeof obj.link.blank != "undefined" && obj.link.blank)
-		str+=			" target='_blank'"
-		str+=		">"+obj.link.label+"</a>";
-				}
+				'</div>';
+				if(!notNull(type) || type!="list")
+		str+=		'<hr/>';
+		str+=	'<div class="panel-body">';
+					if(typeof obj.date != "undefined")
+		str+=			obj.date+"<br>";
+					if(typeof obj.body != "undefined")
+		str+=			obj.body+"<br>";
+					if(typeof obj.link != "undefined"){
+		str+=			"<a class='btn btn-danger btn-sm margin-top-10' href='"+obj.link.url+"'";
+						if(typeof obj.link.blank != "undefined" && obj.link.blank)
+		str+=				" target='_blank'"
+		str+=			">"+obj.link.label+"</a>";
+					}
 		str+=	'</div>'+
-		"</div></div>";
+			"</div></div>";
 	 });
 	$(dom).html(str);
 }

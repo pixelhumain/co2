@@ -5,11 +5,6 @@
 	</span>
 	<span class="panel-body">Un système d'information fait pour le partage, l'opendata, contributif et représentatif des actions et des activités de la société.</span>
 </div>
-<!--<div class="panel-heading border-light center text-dark partition-white radius-10">
-    <span class=" text-red tpl_title"> Open Common DataBase</span>
-    <br/>
-    <span class="tpl_shortDesc">Un système d'information fait pour le partage, l'opendata, contributif et représentatif des actions et des activités de la société.</span>
-</div>-->
 
 <style type="text/css">
     ul li {list-style: none}
@@ -47,7 +42,7 @@
 			"title":"Outils",
 			"body":"<i class='fa fa-check'></i> Recherche une ou toutes les instances OCDB<br>"+
 					"<i class='fa fa-check'></i> Couplage OCDB, Wikipedia, OSM<br>"+
-					"<li><i class='fa fa-check'></i> Paysan Numérique : Curation, Récolte, Croisement"
+					"<i class='fa fa-check'></i> Paysan Numérique : Curation, Récolte, Croisement"
 		}
 	];
 	jQuery(document).ready(function(){

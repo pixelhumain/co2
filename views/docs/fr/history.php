@@ -125,7 +125,8 @@ var keywords = [
 	
 jQuery(document).ready(function() 
 {
-	$(".keywordList").html('');
+	getConceptList(keywords, ".keywordList", "list");
+	/*$(".keywordList").html('');
 	$.each(keywords,function(i,obj) { 
 		icon = (obj.icon) ? obj.icon : "fa-tag" ;
 		color = (obj.color) ? obj.color : "#E33551" ;
@@ -139,9 +140,9 @@ jQuery(document).ready(function()
 				'<blockquote class="space20">'+
 					obj.body+
 				 "</blockquote>"+
-			"</div>"+*/
+			"</div>"+
 		"</div></div>");
-	 });
+	 });*/
 });
 
 </script>

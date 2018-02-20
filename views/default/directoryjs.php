@@ -63,13 +63,52 @@
 .container-result-search{
   padding-top:30px;
 }
-
+.open-type-filter{
+  display:none;
+}
 @media (max-width: 768px) {
-  #col-btn-type-directory{
-    text-align: center!important;
+  .open-type-filter{
+        display: block;
+    position: absolute;
+    right: -33px;
+    height: 50px;
+    width: 50px;
+    border: 1px solid #dadada;
+    border-radius: 100%;
+    text-align: right;
+    padding-right: 8px;
+    z-index: -1;
+    font-size: 20px;
+  }
+  #col-btn-type-directory .btn-directory-type, #sub-menu-left .btn-select-type-anc{
+    background-color: white;
+  }
+  #col-btn-type-directory, #sub-menu-left{
+    position: absolute;
+    width: 56%;
+    left: -55.5%;
+    background-color: white;
+    top: 0px;
+    /* top: 214px; */
+    z-index: 300;
+    padding: 0px;
+    -webkit-box-shadow: 0px 2px 6px -1px rgba(0,0,0,.2);
+    box-shadow: 0px 2px 6px -1px rgba(0,0,0,.2);
+  }
+
+  #sub-menu-left.subsub .btn {
+    width: 100% !important;
+    background-color: white !important;
+    margin: 0px !important;
+    border-radius: 0px;
   }
 }
 
+  @media (min-width: 769px) {
+  #col-btn-type-directory, #sub-menu-left {
+    left:inherit !important;
+  }
+}
 
 /* ANNONCES MENU*/
 <?php 
@@ -253,13 +292,14 @@
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
 
           <div class="col-sm-3 col-md-2 col-xs-12 text-right no-padding" id="col-btn-type-directory">
+            <button class="open-type-filter tooltips" data-toggle="tooltip" data-placement="right" data-title="<?php echo Yii::t("common","Open filtering by type") ?>"><i class="fa fa-chevron-right"></i></button>
             <!--<button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
             </button><hr class="hidden-xs">-->
             <button class="btn text-black bg-white btn-directory-type btn-all active" data-type="all">
                 <i class="fa fa-search"></i> 
-                <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
+                <span class=""><?php echo Yii::t("common","All") ?></span>
             </button>
             <!--<button class="btn border-dark btn-directory-type active padding-10" data-type="all">
                 <i class="fa fa-asterisk"></i> 
@@ -311,12 +351,12 @@
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Projects") ?></span>
                 <span class="count-badge-filter" id="countprojects"></span>
             </button>
-            <hr class="hidden-xs no-margin" data-type="projects">
+            <!--<hr class="hidden-xs no-margin" data-type="projects">
             <button class="btn border-brown btn-directory-type padding-10" data-type="places">
                 <i class="fa fa-home"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Places") ?></span>
                 <span class="count-badge-filter" id="countplaces"></span>
-            </button>
+            </button>-->
             <hr class="hidden-xs no-margin" data-type="place">
             <button class="btn border-green-poi btn-directory-type padding-10" data-type="poi">
                 <i class="fa fa-map-marker"></i> 
@@ -360,9 +400,9 @@
                 <i class="fa fa-cubes"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Ressources") ?></span>
                 <span class="count-badge-filter" id="countressources"></span>
-            </button><br class="hidden-xs">
+            </button>
 
-            <hr class="hidden-sm hidden-md hidden-lg" data-type="ressources">
+            <hr class="hidden-sm hidden-md hidden-lg no-margin" data-type="ressources">
           </div>
         <?php } ?>
         <?php } else if ( $typeSelected == "vote" ){?>
@@ -405,6 +445,7 @@
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
             </button><hr class="hidden-xs">-->
+            <button class="open-type-filter tooltips" data-toggle="tooltip" data-placement="right" data-title="<?php echo Yii::t("common","Open filtering by type") ?>"><i class="fa fa-chevron-right"></i></button>
             
             <?php $categories = Event::$types; 
                   foreach ($categories as $key => $cat) {
@@ -617,7 +658,16 @@ jQuery(document).ready(function() {
     slidupScopetagsMin();
   });
 
-
+  $(".open-type-filter").click(function(){
+    if(!$(this).hasClass("show-dir")){
+      $(this).addClass("show-dir").data("title", "<?php echo Yii::t("common","Close") ?>").find("i").removeClass("fa-chevron-right").addClass("fa-times");
+      $("#col-btn-type-directory, #sub-menu-left").animate({ left : "0%" }, 400 );
+    }else{
+      $(this).removeClass("show-dir").data("title", "<?php echo Yii::t("common","Open filtering by type") ?>").find("i").removeClass("fa-times").addClass("fa-chevron-right");
+      $("#col-btn-type-directory, #sub-menu-left").animate({ left : "-55.5%" }, 400 );
+    
+    }
+  });
   searchType = (typeSelected == null) ? [ "persons" ] : [ typeSelected ];
   //allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","places","ressources" ];
 	topMenuActivated = true;

@@ -98,7 +98,7 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchType = ["organizations", "projects", "events", "places", "poi", "news", "classified","ressources"/*,"cities"*/];
+        searchType = ["organizations", "projects", "events", /*"places",*/ "poi", "news", "classified","ressources"/*,"cities"*/];
         if(search.value != "")
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
@@ -116,7 +116,7 @@ function initTypeSearch(typeInit){
 }
 function initCountType(){
   if(search.app=="search" || search.app=="territorial")
-    search.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", "places", "poi", "news", "classified","ressources"];
+    search.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", "news", "classified","ressources"];
   else if(search.app=="ressources") search.countType=["ressources"];
   else if(search.app=="annonces") search.countType=["classified"];
   else if(search.app=="agenda") search.countType=["events"];
@@ -2710,7 +2710,7 @@ var directory = {
                             '</a>';
       }
       str = '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
-      str += "<h3 style='margin-bottom:10px; margin-left:15px;border-left: 2px solid lightgray;' class='text-dark padding-20'><small>"+msg+"<br/>"+contributeMsg+"</h3></small><br/>";
+      str += "<h5 style='margin-bottom:10px; margin-left:15px;border-left: 2px solid lightgray;' class='text-dark padding-20'>"+msg+"<br/>"+contributeMsg+"</h5><br/>";
       str += "</div>";
       return str;
     },

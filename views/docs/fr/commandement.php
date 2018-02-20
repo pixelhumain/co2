@@ -3,7 +3,7 @@
 </div>
 <div class="space20"></div>
 <p>
-Don’t threaten people.
+Don’t threaten people.<br/>
 
 This includes threats of violence, and threats to hurt others in any way.
 
@@ -78,7 +78,6 @@ If you notice abusive behavior, please report it immediately by emailing reporta
 <div class="keywordList col-xs-6 col-xs-offset-3"></div>
 
 <script type="text/javascript">
-
 var keywords = [
 	
 	{

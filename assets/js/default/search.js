@@ -77,6 +77,7 @@ function initSearchInterface(){
     $("#menu-map-btn-start-search, #menu-btn-start-search, #main-search-bar-addon").off().click(function(){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
+        search.value=$("#main-search-bar").val();
         console.log("typeInit", typeInit);
         if(typeInit == "all") initTypeSearch("allSig");
         else initTypeSearch(typeInit);

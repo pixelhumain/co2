@@ -76,15 +76,71 @@
 	ul.subMenu{
 		padding-left: 30px
 	}
+#show-menu-xs{
+	    padding: 7px 15px;
+    font-size: 20px;
+}
+.keypan .panel-heading{
+	margin-top: 20px;
+    min-height: 70px;
+}
+.keypan{
+	    border: none;
+    margin-bottom: 10px;
+    box-shadow: none;
+}
+.keypan .panel-body{
+	min-height: 200px;
+}
+.keypan hr {
+	width: 75%;
+    margin: auto;
+}
+#header-docs .panel-title{
+	font-size: 40px;
+}
+#header-docs .panel-title .sub-title{
+	font-size: 20px !important;
+	font-style: italic;	
+}
+@media (max-width: 991px) {
+ /* .open-type-filter{
+        display: block;
+    position: absolute;
+    right: -33px;
+    height: 50px;
+    width: 50px;
+    border: 1px solid #dadada;
+    border-radius: 100%;
+    text-align: right;
+    padding-right: 8px;
+    z-index: -1;
+    font-size: 20px;
+  }*/
+  #menu-left{
+    width: 56%;
+    left: -56%;
+	background-color: white;
+	}
+  
+}
+
+@media (min-width: 991px) {
+  #menu-left {
+    left:0 !important;
+  }
+}
 </style>
 <div id="header-doc" class="shadow2">
-	<button id="show-menu-xs" class="visible-xs tooltips" data-placement="bottom" data-title="Menu"><i class="fa fa-menu"></i></button>
-	<h2><i class="fa fa-book"></i><?php echo Yii::t("docs", "All you need to know about") ?></h2>
+	<a href='javascript:;' id="show-menu-xs" class="visible-xs visible-sm pull-left" data-placement="bottom" data-title="Menu"><i class="fa fa-bars"></i></a>
+	<h2 class="elipsis"><i class="fa fa-book hidden-xs"></i> <?php echo Yii::t("docs", "All <span class='hidden-xs'>you need to know</span> about") ?></h2>
 	<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGOS/CO2/logo-head-search.png" 
-                     class="logo-menutop main pull-left hidden-xs hidden-sm" height=30>
+                     class="logo-menutop main pull-left" height=30>
+    <!--<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGOS/CO2/logo-min.png" 
+                     class="logo-menutop main pull-left visible-xs visible-sm" height=30>-->
 </div>
-<div id="menu-left" class="col-md-3 col-sm-2 hidden-xs shadow2">
-	<ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
+<div id="menu-left" class="col-md-3 col-sm-2 col-xs-12 shadow2">
+  	<ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
 		<li class="col-xs-12 no-padding">
 			<a href="javascript:" class="link-docs-menu active down-menu" data-type="welcome" data-dir="<?php echo Yii::app()->language ?>">
 				<i class="fa fa-angle-down"></i> <?php echo Yii::t("docs","WEL<span class='text-red'>CO</span>ME"); ?>
@@ -237,7 +293,7 @@
 		</li>
 	</ul>
 </div>
-<div id="container-docs" class="col-sm-offset-2 col-md-offset-3 col-md-9 col-sm-10 col-xs-12 no-padding">
+<div id="container-docs" class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 no-padding">
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function() {
@@ -258,8 +314,22 @@ jQuery(document).ready(function() {
 			}
 			
 		}
+		if($("#show-menu-xs").is(":visible")){
+			$("#show-menu-xs").removeClass("show-dir");
+			$("#menu-left").animate({ left : "-56%" }, 400 );
+		}
 		navInDocs($(this).data("type"), $(this).data("dir"), $(this).data("get"));
 	});
+	$("#show-menu-xs").click(function(){
+    if(!$(this).hasClass("show-dir")){
+      $(this).addClass("show-dir").data("title", "<?php echo Yii::t("common","Close") ?>").find("i").removeClass("fa-chevron-right").addClass("fa-times");
+      $("#menu-left").animate({ left : "0%" }, 400 );
+    }else{
+      $(this).removeClass("show-dir").data("title", "<?php echo Yii::t("common","Open filtering by type") ?>").find("i").removeClass("fa-times").addClass("fa-chevron-right");
+      $("#menu-left").animate({ left : "-56%" }, 400 );
+    
+    }
+  });
 });
 function navInDocs(page, dir, get){
 	showLoader('#container-docs');
@@ -272,5 +342,24 @@ function navInDocs(page, dir, get){
 	//	add="panels";
 	ajaxPost('#container-docs' ,baseUrl+'/'+moduleId+"/default/view/page/"+page+"/dir/docs"+add,
 			 null,function(){},"html");
+}
+function getConceptList(list, dom){
+	str="";
+	$.each(list,function(i,obj) { 
+		icon = (obj.icon) ? obj.icon : "fa-tag" ;
+		color = (obj.color) ? obj.color : "#E33551" ;
+		size = (obj.size) ? obj.size : "20" ;
+		str+=
+		'<div class="col-md-4 col-sm-6 col-xs-12"><div class="keypan panel panel-white">'+
+			'<div class="panel-heading border-light ">'+
+				'<span class="panel-title">'+ 
+					'<i class="fa '+icon+' faa-pulse animated-hover fa-2x"></i>'+
+					' <span style="font-size: '+size+'px; color:'+color+';"> <br/>'+obj.title.toUpperCase()+'</span></span>'+
+			'</div>'+
+			'<hr/>'+
+			'<div class="panel-body">'+obj.body+"</div>"+
+		"</div></div>";
+	 });
+	$(dom).html(str);
 }
 </script>

@@ -4,16 +4,9 @@
 <div class="space20"></div>
 <div class="keywordList"></div>
 
-<style type="text/css">
-	.keypan{
-		min-height: 370px;
-		border: 1px solid #ddd
-	}
-</style>
 <script type="text/javascript">
 
 var keywords = [
-	
 	{
 		"icon" : "fa-circle-o",
 		"title":"Territoire Connecté",
@@ -106,21 +99,10 @@ var keywords = [
 		"body":"Vision globale de l’action locale / Action simultanée sur un territoire global et local."
 	}
 ];
-	
+//var keyword ="../../modules/co2/config/".$domainName."/params.json";
 jQuery(document).ready(function() 
 {
-	$(".keywordList").html('');
-	$.each(keywords,function(i,obj) { 
-		icon = (obj.icon) ? obj.icon : "fa-tag" ;
-		color = (obj.color) ? obj.color : "#E33551" ;
-		$(".keywordList").append(
-		'<div class="col-sm-4 col-xs-6"><div class="keypan panel panel-white">'+
-			'<div class="panel-heading border-light ">'+
-				'<span class="panel-title homestead"> <i class="fa '+icon+' faa-pulse animated-hover fa-2x"></i> <span style="font-size: 35px; color:'+color+';"> <br/>'+obj.title.toUpperCase()+'</span></span>'+
-			'</div>'+
-			'<div class="panel-body">'+obj.body+"</div>"+
-		"</div></div>");
-	 });
+	getConceptList(keywords, ".keywordList");
 });
 
 </script>

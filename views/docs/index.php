@@ -226,7 +226,7 @@
 			</ul>
 		</li>
 		<li class="col-xs-12 no-padding">
-			<a href="javascript:" class="link-docs-menu down-menu" data-type="help" data-dir="<?php echo Yii::app()->language ?>">
+			<a href="javascript:" class="link-docs-menu down-menu" data-type="contribute" data-dir="<?php echo Yii::app()->language ?>">
 				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","<span class='text-red'>CO</span>NTRIBUTE"); ?>
 			</a>
 		</li>
@@ -354,10 +354,21 @@ function getConceptList(list, dom){
 			'<div class="panel-heading border-light ">'+
 				'<span class="panel-title">'+ 
 					'<i class="fa '+icon+' faa-pulse animated-hover fa-2x"></i>'+
-					' <span style="font-size: '+size+'px; color:'+color+';"> <br/>'+obj.title.toUpperCase()+'</span></span>'+
+					'<span style="font-size: '+size+'px; color:'+color+';"> <br/>'+obj.title.toUpperCase()+'</span>';
+					if(typeof obj.subtitle != "undefined")
+		str+=				'<span style="font-size: 16px;font-style:italic"> <br/>'+obj.subtitle+'</span>';
+		str+=		'</span>'+
 			'</div>'+
 			'<hr/>'+
-			'<div class="panel-body">'+obj.body+"</div>"+
+			'<div class="panel-body">'
+				+obj.body+"<br>";
+				if(typeof obj.link != "undefined"){
+		str+=		"<a class='btn btn-danger btn-sm margin-top-10' href='"+obj.link.url+"'";
+					if(typeof obj.link.blank != "undefined" && obj.link.blank)
+		str+=			" target='_blank'"
+		str+=		">"+obj.link.label+"</a>";
+				}
+		str+=	'</div>'+
 		"</div></div>";
 	 });
 	$(dom).html(str);

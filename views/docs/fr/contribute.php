@@ -39,7 +39,7 @@ var keywords = [
 		"body":"Lorsque les développeurs modifient le code de Communecter ils ne l’ajoutent pas à communecter.org directement mais passe par une étape de test à laquelle n’importe quel utilisateur peut participer.",
 		"link":{
 			"label":"En savoir plus",
-			"url": "https://wiki.communecter.org/fr/tester-l’outil.html",
+			"url": "https://wiki.communecter.org/fr/tester-l%27outil.html",
 			"blank":true
 		}
 	},
@@ -57,7 +57,7 @@ var keywords = [
 	{
 		"icon" : "fa-book",
 		"title":"Contribuer à la documentation",
-		"subtitle" : "La documentation est un pilier essentiel de tout projet open source.- Permettez de rendre la plateforme plus facile d’accès en partageant vos connaissances. Les utilisateur·ice·s débutants sont les meilleurs contributeurs à la documentation, donc n’hésitez pas !",
+		"body" : "La documentation est un pilier essentiel de tout projet open source.- Permettez de rendre la plateforme plus facile d’accès en partageant vos connaissances. Les utilisateur·ice·s débutants sont les meilleurs contributeurs à la documentation, donc n’hésitez pas !",
 		"link":{
 			"label":"En savoir plus",
 			"url": "https://wiki.communecter.org/fr/contribuer-à-la-documentation.html",
@@ -104,7 +104,7 @@ var keywords = [
 		"body":"Pour pouvoir continuer à améliorer la plateforme nous surveillons les appels à projets et proposons divers partenariats.",
 		"link":{
 			"label":"En savoir plus",
-			"url": "https://wiki.communecter.org/fr/trouver-de-l'argent.html",
+			"url": "https://wiki.communecter.org/fr/trouver-de-l%27argent.html",
 			"blank":true
 		}
 	},

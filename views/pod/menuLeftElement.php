@@ -275,29 +275,28 @@
 		<?php } ?>
 
 		<?php if( $type==Person::COLLECTION ){ ?>
-			<li><hr></li>
+			<!--<li><hr></li>
 			<li class="">
 				<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 					id="btn-start-networks" class="ssmla">
 					<i class="fa fa-map-o"></i> <?php echo Yii::t("common","My maps"); ?>
 				</a>
-			</li>
+			</li>-->
 		<?php } ?>
 		<li><hr></li>
 
 	<?php } ?>
 
-	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
-			  $type==Event::COLLECTION || $type==Person::COLLECTION){  
+	<?php if (in_array($type,[Project::COLLECTION,Organization::COLLECTION,Event::COLLECTION,Person::COLLECTION])){  
 			$hash = @$element["slug"] ? 
 					"#".$element["slug"] :
 					"#page.type.".$type.".id.".$element["_id"];
 	?>
-		<li>
+		<!--<li>
 			<a href="<?php echo $hash; ?>.net"  class="lbh letter-blue">
 				<i class="fa fa-desktop"></i> <?php echo Yii::t("common","My web page"); ?>
 			</a>
-		</li>			
+		</li>-->			
 	<?php } ?>
 </ul>
 

@@ -462,9 +462,9 @@
         <?php } else if ($typeSelected == "classified" || $typeSelected == "ressources" ){ 
           if(Yii::app()->params["CO2DomainName"] != "terla"){
 
-            $dmod = ($typeSelected == "classified") ? $typeSelected."s" : $typeSelected;
+            $dmod = ($typeSelected == "classified") ? "classifieds" : "ressources";
             $categories = CO2::getModuleContextList($dmod,"categories");
-            $this->renderPartial($dmod.".views.co.directoryjs", array( "typeSelected" => $typeSelected,"categories" => $categories ));
+            $this->renderPartial($dmod.".views.co.categories", array( "typeSelected" => $typeSelected,"categories" => $categories ));
           } else { 
 
           $service = CO2::getContextList("service");

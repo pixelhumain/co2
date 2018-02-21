@@ -22,7 +22,7 @@
 	"education": {
 		"name" : "Education",
 		"icon" : "fa-book",
-		"tags" : ["eductation","childhood"]
+		"tags" : ["education","childhood"]
 	},  
 	"citizen": {
 		"name" : "Citizenship",

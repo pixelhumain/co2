@@ -108,10 +108,10 @@
 	width: 75%;
     margin: auto;
 }
-#header-docs .panel-title{
+#header-docs .panel-title, .subtitleDocs .panel-title {
 	font-size: 40px;
 }
-#header-docs .panel-title .sub-title{
+#header-docs .panel-title .sub-title, .subtitleDocs .panel-title .sub-title{
 	font-size: 20px !important;
 	font-style: italic;	
 }
@@ -363,9 +363,13 @@ function getConceptList(list, dom, type){
 		//icon = (obj.icon) ? obj.icon : "fa-tag" ;
 		color = (obj.color) ? obj.color : "#E33551" ;
 		size = (obj.size) ? obj.size : "20" ;
-		str+='<div class="'+classContainer+'"><div class="'+classKeypan+' panel panel-white">'+
-				'<div class="panel-heading border-light ">'+
+		str+='<div class="'+classContainer+'"><div class="'+classKeypan+' panel panel-white">';
+				if(typeof obj.url != "undefined")
+		str+=		'<a href="'+obj.url+'" targte="_blank">';	
+		str+=	'<div class="panel-heading border-light ">'+
 					'<span class="panel-title">'; 
+						if(typeof obj.image != "undefined")
+		str+=				'<img class="img-responsive" src="'+obj.image+'"/> ';
 						if(typeof obj.icon != "undefined")
 		str+=				'<i class="fa '+obj.icon+' faa-pulse animated-hover fa-2x"></i>';
 						if(!notNull(type) || type!="list")
@@ -388,8 +392,10 @@ function getConceptList(list, dom, type){
 		str+=				" target='_blank'"
 		str+=			">"+obj.link.label+"</a>";
 					}
-		str+=	'</div>'+
-			"</div></div>";
+		str+=	'</div>';
+			if(typeof obj.url != "undefined")
+		str+=	'</a>';
+		str+="</div></div>";
 	 });
 	$(dom).html(str);
 }

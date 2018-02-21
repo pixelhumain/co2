@@ -221,7 +221,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
               if(typeof data.count != "undefined")
                 searchCount=data.count;
 
-              if(search.app!="search" || (typeof pageCount != "undefined" && pageCount)){
+              if(indexMin==0 || (typeof search.count != "undefined" && search.count)){
               //Prepare footer and header of directory 
                 $(".headerSearchContainer").html( directory.headerHtml(indexMin) );
                 $(".footerSearchContainer").html( directory.footerHtml() );
@@ -241,16 +241,12 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
 	              $.unblockUI();
                 showMap(false);
                   $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
+                  str=directory.endOfResult(true);
                   if(indexMin == 0){
-                    //ajout du footer
-                    str=directory.endOfResult(true);   
-                  //  var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
-                   // if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
-                    //str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
-                    //str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
-                    //str += "</div>";
                     $("#dropdown_search").html(str);
-                    //$("#searchBarText").focus();
+                  }else{
+                    $(".search-loader").remove();
+                    $("#dropdown_search").append(str);
                   }
                      
               }
@@ -381,10 +377,12 @@ function initPageTable(number){
             simpleScroll(scrollH);
             pageCount=false;
             searchPage=(page-1);
-            search.page=searchPage;
+            //search.page=searchPage;
+            indexStep=30;
+            indexMin=indexStep*searchPage;
             pageEvent=true;
             //autoCompleteSearch(search.value, null, null, null, null);
-            startSearch(null);
+            startSearch(indexMin,indexStep);
           }
       });
   }
@@ -468,12 +466,12 @@ function initPageTable(number){
         $(this).remove();
       }
     });
-    $(".adminIconDirectory, .container-img-profil").mouseenter(function(){
+    /*$(".adminIconDirectory, .container-img-profil").mouseenter(function(){
       $(this).parent().find(".adminToolBar").show();
     });
     $(".adminToolBar").mouseleave(function(){
       $(this).hide();
-    });
+    });*/
     mylog.log("initBtnAdmin")
     $(".disconnectConnection").click(function(){
       var $this=$(this); 
@@ -2718,7 +2716,7 @@ var directory = {
     headerHtml : function(indexMin){
       mylog.log("-----------headerHtml :",search.count);
       headerStr = '';
-      if(typeof search.count != "undefined" && search.count || indexMin==0 ){          
+      if((typeof search.count != "undefined" && search.count) || indexMin==0 ){          
           countHeader=0;
           if(search.app=="territorial"){
             $.each(searchCount, function(e, v){
@@ -2909,8 +2907,17 @@ var directory = {
               params.media=getMediaImages(params.media, null, null, null,'directory');
             else if (params.media.type=="gallery_files")
               params.media=getMediaFiles(params.media,null);
-            else if(params.media.type=="url_content" && params.text=="")
+            else if(params.media.type=="url_content")
               params.media=processUrl.getMediaCommonHtml(params.media,"show");
+            else if (params.media.type=="activityStream")
+              params.media=directory.showResultsDirectoryHtml(new Array(params.media.object),params.media.object.type);
+            if(params.text!= "")
+              delete params.media;
+            else{
+              params.text=params.media;
+              delete params.media;
+            }
+
           }
                 
         }
@@ -3082,10 +3089,10 @@ var directory = {
     },
     getAdminToolBar : function(data){
       countBtn=0;
-      var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
+      /*var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
        "<i class='fa fa-cog'></i>"+ //fa-bookmark fa-rotate-270
-       "</a>";
-      html+="<div class='adminToolBar'>";
+       "</a>";*/
+      var html="<div class='adminToolBar'>";
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+

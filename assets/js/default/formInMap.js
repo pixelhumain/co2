@@ -104,7 +104,7 @@ var formInMap = {
 			$("#divStreetAddress").addClass("hidden");
 		else
 			$("#divStreetAddress").removeClass("hidden");
-
+		$("#right_tool_map").removeClass("hidden-xs hidden-sm");
 		$("#right_tool_map_locality").removeClass("hidden");
 		$("#right_tool_map_search, #sub-menu-left").addClass("hidden");
 		$("#right_tool_map").removeClass("min");
@@ -542,6 +542,7 @@ var formInMap = {
 	},
 
 	backToForm : function(cancel){
+		$("#right_tool_map").addClass("hidden-xs hidden-sm");
 		$("#right_tool_map_locality").addClass("hidden");
 		$("#right_tool_map_search, #sub-menu-left").removeClass("hidden");
 		$("#right_tool_map").addClass("min");

@@ -129,7 +129,7 @@ background-color: #09adef;
 		<img src="<?php echo $this->module->assetsUrl; ?>/images/docs/<?php echo Yii::app()->language ?>/notebooks-1-1.png" width="100%"/>
 	</div>	
 	<div class="keywordValues col-md-12 col-sm-12 col-xs-12 margin-top-50"></div>
-	<div class="subtitleDocs panel-heading border-light center text-dark partition-white radius-10 ">
+	<div class="panel-heading border-light center text-dark partition-white radius-10 ">
 	<span class="panel-title"> 
 		Les atouts de Communecter<br>
 		<span class="sub-title text-red">Un réseau pas comme les autres</span>

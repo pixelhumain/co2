@@ -348,7 +348,8 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
             else $.extend(mapElements, data);
             
             //affiche les éléments sur la carte
-            Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
+            console.log("mapElements", results);
+            Sig.showMapElements(Sig.map, results, "search", "Résultats de votre recherche");
                         
             if(typeof callBack == "function")
               callBack();

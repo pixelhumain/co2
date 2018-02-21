@@ -537,7 +537,7 @@
 				defaultType=defaultType[1];
 			}
 
-			if (element.typeSig.substr(0,11) == "poi.interop") {
+			if (typeof element.typeSig != "undefined" && element.typeSig.substr(0,11) == "poi.interop") {
 				var imgProfilPath = getimgProfilPathForInteropDataOnMap(element.typeSig);
 			} else {
 				var imgProfilPath =  assetPath + "/images/thumb/default_"+defaultType+".png";

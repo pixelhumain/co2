@@ -241,16 +241,12 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
 	              $.unblockUI();
                 showMap(false);
                   $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
+                  str=directory.endOfResult(true);
                   if(indexMin == 0){
-                    //ajout du footer
-                    str=directory.endOfResult(true);   
-                  //  var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
-                   // if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
-                    //str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
-                    //str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
-                    //str += "</div>";
                     $("#dropdown_search").html(str);
-                    //$("#searchBarText").focus();
+                  }else{
+                    $(".search-loader").remove();
+                    $("#dropdown_search").append(str);
                   }
                      
               }

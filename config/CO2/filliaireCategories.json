@@ -2,42 +2,42 @@
 	"food": {
 		"name" : "Food",
 		"icon" : "fa-cutlery",
-		"tags" : ["agriculture","alimentation", "nourriture", "AMAP"]
+		"tags" : ["agriculture","food", "nutrition", "AMAP"]
 	},  
 	"health": {
 		"name" : "Health",
 		"icon" : "fa-heart-o",
-		"tags" : ["santé"]
+		"tags" : ["health"]
 	},  
 	"waste": {
 		"name" : "Waste",
 		"icon" : "fa-trash-o ",
-		"tags" : ["déchets"]
+		"tags" : ["waste"]
 	},  
 	"transport": {
 		"name" : "Transport",
 		"icon" : "fa-bus",
-		"tags" : ["aménagement","transport","construction"]
+		"tags" : ["urbanism","transport","construction"]
 	},  
 	"education": {
 		"name" : "Education",
 		"icon" : "fa-book",
-		"tags" : ["éducation","petite enfance"]
+		"tags" : ["eductation","childhood"]
 	},  
 	"citizen": {
 		"name" : "Citizenship",
 		"icon" : "fa-user-circle-o",
-		"tags" : ["citoyenneté", "citoyen"]
+		"tags" : ["society", "citizen", "citizenship"]
 	},  
 	"economy": {
 		"name" : "Economy",
 		"icon" : "fa-money",
-		"tags" : [ "ess","economie social solidaire" ]
+		"tags" : [ "ess","social solidarity economy" ]
 	},  
 	"energy": {
 		"name" : "Energy",
 		"icon" : "fa-sun-o",
-		"tags" : ["énergie" ,"climat"]
+		"tags" : ["energy" ,"climat"]
 	},  
 	"culture": {
 		"name" : "Culture",
@@ -47,12 +47,12 @@
 	"environnement": {
 		"name" : "Environnement",
 		"icon" : "fa-tree",
-		"tags" : ["environnement", "biodiversité", "écologie"]
+		"tags" : ["environment", "biodiversity", "ecology"]
 	},  
 	"numeric": {
 		"name" : "Numeric",
 		"icon" : "fa-laptop",
-		"tags" : ["numérique","tic","internet"]
+		"tags" : ["numeric","itc","internet"]
 	},
 	"sport" : { 
 		"name" : "Sport",

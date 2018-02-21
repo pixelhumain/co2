@@ -2904,8 +2904,17 @@ var directory = {
               params.media=getMediaImages(params.media, null, null, null,'directory');
             else if (params.media.type=="gallery_files")
               params.media=getMediaFiles(params.media,null);
-            else if(params.media.type=="url_content" && params.text=="")
+            else if(params.media.type=="url_content")
               params.media=processUrl.getMediaCommonHtml(params.media,"show");
+            else if (params.media.type=="activityStream")
+              params.media=directory.showResultsDirectoryHtml(new Array(params.media.object),params.media.object.type);
+            if(params.text!= "")
+              delete params.media;
+            else{
+              params.text=params.media;
+              delete params.media;
+            }
+
           }
                 
         }

@@ -121,7 +121,8 @@ class CO2 {
         if(@Yii::app()->session["userId"]){
             $personLoc=Element::getElementSimpleById(Yii::app()->session["userId"], Person::COLLECTION, null, array("address"));
             if(!empty($personLoc["address"]))
-                return City::detailsLocality($personLoc["address"]);
+                return Person::getCommunexion($personLoc["address"]);
+                //return City::detailsLocality($personLoc["address"]);
             else
                 return false;
         }

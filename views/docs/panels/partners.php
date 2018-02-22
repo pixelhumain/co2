@@ -1,19 +1,23 @@
-<div class="panel-heading border-light center text-dark partition-white radius-10">
-	<span class="panel-title"> <i class='fa fa-globe faa-pulse animated fa-2x  '></i> <span style="font-size: 48px; ">A NETWORK OF NETWORKS</span></span>
-	<br/>
-	People & Organizations get together to build a common
-	<br/>
-	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('dev');">Devs</a>
-	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('builder');">BUILDERS</a>
-	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('partner');">PARTNERS</a>
-	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('financer');">FINANCERS</a>
-	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('thinker');">THINKERS</a>
-	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('crowdfunder');">CROWDFUNDERS</a>
-	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('interoperate');">Interoperators</a>
-	<a class="btn btn-default" href="javascript:;" onclick="filterPartners('networkActor');">ALL</a>
+<div id="header-docs"  class="panel-heading border-light center text-dark partition-white radius-10 ">
+	<span class="panel-title"> 
+		<i class='fa fa-globe text-red faa-pulse animated'></i> <?php echo Yii::t("docs","A NETWORK OF NETWORKS") ?><br>
+		<!--<span class="sub-title text-red">"Art is the heart of our culture"</span>-->
+	</span>
+	<span class="panel-body">
+		<?php echo Yii::t("docs","People & Organizations get together to build a common") ?>
+		<br/>
+		<br/>
+		<div class="space20"></div>
+		<a class="btn btn-default" href="javascript:;" onclick="filterPartners('dev');"><?php echo Yii::t("docs","NURDS") ?></a>
+		<a class="btn btn-default" href="javascript:;" onclick="filterPartners('builder');"><?php echo Yii::t("docs","BUILDERS") ?></a>
+		<a class="btn btn-default" href="javascript:;" onclick="filterPartners('partner');"><?php echo Yii::t("docs","PARTNERS") ?></a>
+		<a class="btn btn-default" href="javascript:;" onclick="filterPartners('financer');"><?php echo Yii::t("docs","FINANCERS") ?></a>
+		<a class="btn btn-default" href="javascript:;" onclick="filterPartners('thinker');"><?php echo Yii::t("docs","THINKERS") ?></a>
+		<a class="btn btn-default" href="javascript:;" onclick="filterPartners('crowdfunder');"><?php echo Yii::t("docs","CROWDFUNDERS") ?></a>
+		<a class="btn btn-default" href="javascript:;" onclick="filterPartners('interoperate');"><?php echo Yii::t("docs","INTEROPERATORS") ?></a>
+		<a class="btn btn-default" href="javascript:;" onclick="filterPartners('networkActor');"><?php echo Yii::t("docs","ALL") ?></a>
+	</span>
 </div>
-
-
 <div class="space20"></div>
 <span style="font-size: 48px;" class="typeName text-red homestead"></span>
 <div class="keywordList"></div>
@@ -49,7 +53,7 @@ var keywords = [
 	},
 	{
 		"icon" : "fa-users",
-		"title": "LIVING.COOP",
+		"title": "LIVIN'COOP",
 		"link" : "www.livincoop.fr",
 		"img" : "http://www.livincoop.fr/beta_1.0/image/logo/logo_LC.png",
 		"class" : "partner"
@@ -945,7 +949,7 @@ jQuery(document).ready(function()
 			'<div class="panel-heading border-light ">'+
 				link+
 
-				'<span class="panel-title homestead"> '+icon+' <span style="font-size: 35px; color:'+color+';"> '+obj.title.toUpperCase()+'</span></span>'+
+				'<span class="panel-title"> '+icon+' <span style="font-size: 25px; color:'+color+';"> '+obj.title.toUpperCase()+'</span></span>'+
 				where+
 				body+
 				endlink+

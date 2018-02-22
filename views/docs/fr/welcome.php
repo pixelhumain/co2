@@ -22,7 +22,7 @@
         }
     } 
     
-    .punch-line-container{
+    /*.punch-line-container{
     	color:#28262b
     	text-align:center;	
     }
@@ -36,111 +36,201 @@
     	font-size: 16px;
     	font-style: italic;
     	color: #777;
-    }
-    .videoWrapper iframe{
+    }*/
+    /*.videoWrapper iframe{
     	width: 100%;
     	height: auto;
-    }
-.wrapper         {width:100%;height:100%;margin-top: 20px;}
+    }*/
+   .videoWrapper{
+   	display: none;
+   }
+.videoWrapper         {width:100%;height:100%;margin-top: 20px;}
 .h_iframe        {position:relative;}
 .h_iframe .ratio {display:block;width:100%;height:auto;}
 .h_iframe iframe {position:absolute;top:0;left:0;width:100%; height:100%;background-color: white;}
-</style>
-
-<div class="pageContent">
-	<div class="punch-line-container">
-		<h1>Moteur de Recherche Territorial</h1>
-		<span>Piloté par Open Atlas et développé par des contributeurs du monde entier.</span>
-	</div>	
-	<div class="content-section section-3 col-md-12 col-sm-12 col-xs-12 no-padding margin-top-50">
-		<div class="col-md-4 col-sm-4 col-xs-12">
-			<img src="<?php echo $this->module->assetsUrl; ?>/images/logoW.jpg" width="60"/>
-			<h2> Pour moi</h2>
-			<span>Je connais mon territoire</span>
-			<hr>
-			<p>Je sais ce qu’il se passe autour de moi.</p>
-		</div>
-			<div class="col-md-4 col-sm-4 col-xs-12">
-			<img src="<?php echo $this->module->assetsUrl; ?>/images/logoW.jpg" width="60"/>
-			<h2> Pour ma communauté</h2>
-			<span>Je gère mon organisation</span>
-			<hr>
-			<p>Je valorise ce que je fait tout en profitant des outils de gestions de projets.</p>
-		</div>
-		<div class="col-md-4 col-sm-4 col-xs-12">
-			<img src="<?php echo $this->module->assetsUrl; ?>/images/logoW.jpg" width="60"/>
-			<h2> Pour le bien commun</h2>
-			<span>Une intelligence collective en action</span>
-			<hr>
-			<p>Je participe à la construction d’une base de connaissance territoriale.</p>
-		</div>
+.videoSignal{
+	position: absolute;
+    width: 100%;
+    line-height: 100px;
+    height: 100%;
+    top: 0px;
+    background-color: rgba(0,0,0,0.2);
+    left: 0px;
+}
+.videoSignal:hover{
+	background-color: rgba(0,0,0,0.0);
+}
+/*.videoSignal a {
 	
+}*/
+.videoSignal:hover span{
+background-color: #09adef;
+}
+
+.videoSignal:hover span > i{
+	color: white;
+}
+.videoSignal span{
+ 	width: 130px;
+    margin: auto;
+    height: 75px;
+    background-color: rgba(0,0,0,0.6);
+    bottom: 0;
+    padding: 20px 40px;
+    left: 0;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    font-size: 100px;
+    top: 0%;
+    border-radius: 13px;
+}
+.videoSignal span > i  { 
+	color: white;
+    font-size: 50%;
+    position: relative;
+    margin: auto;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    font-size: 37px;
+    padding: 20px 40px;
+    top: 0px;
+}
+.keywordActors .panel-body{
+	min-height: inherit;
+}
+</style>
+<div id="header-docs"  class="panel-heading border-light center text-dark partition-white radius-10 ">
+	<span class="panel-title"> 
+		Moteur de Recherche Territorial<br>
+		<span class="sub-title text-red">Piloté par Open Atlas et développé par des contributeurs du monde entier.</span>
+	</span>
+</div>
+
+<div class="pageContent margin-top-20">
+	<div id="videoDocsImg" class="col-md-12 col-sm-12 col-xs-12 no-padding">
+    	<img class="img-responsive" src="<?php echo $this->module->assetsUrl; ?>/images/docs/image_video.png"/>
+    	<a href="javascript:;" class="videoSignal text-white center"><span><i class="fa fa-3x fa-play"></i></span></a>
 	</div>
-	<div class="wrapper col-md-12 col-sm-12 col-xs-12 no-padding">
+	<div class="videoWrapper col-md-12 col-sm-12 col-xs-12 no-padding">
     	<div class="h_iframe">
         <!-- a transparent image is preferable -->
         <img class="ratio" src="http://placehold.it/16x9"/>
-        <iframe src="https://player.vimeo.com/video/133636468?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=57c0d4" frameborder="0" allowfullscreen></iframe>
+        <iframe id="autoPlayVideo" src="https://player.vimeo.com/video/133636468?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=57c0d4" frameborder="0" allowfullscreen></iframe>
     	</div>
     	
 	</div>
+	
+	<div class="keywordActors col-md-12 col-sm-12 col-xs-12 margin-top-50"></div>
+	
 	<div class="content-section-for section-3 col-md-12 col-sm-12 col-xs-12 no-padding margin-top-50">
-	<img src="<?php echo $this->module->assetsUrl; ?>/images/docs/<?php echo Yii::app()->language ?>/notebooks-1-1.png" width="100%"/>
-	</div>
-	<!--<div class="videoWrapper videoWrapper col-xs-12 col-sm-12 col-md-12 no-padding">
-		<a href="javascript:;" onclick="" class="btn-show-video"><i class="fa fa-youtube-play fa-5x"></i></a> -
-		<iframe
-				src="https://player.vimeo.com/video/133636468?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=57c0d4" 
-				frameborder="0" height="100" webkitallowfullscreen mozallowfullscreen allowfullscreen class="video" 
-				aria-hidden="true" tabindex="-1" style="width: 100%; border:0px solid black;">
-		</iframe>
-	</div>-->
-
-
-	<div class="col-sm-12 col-md-12 col-xs-12 no-padding margin-top-50" style="background-color:#fff; max-width:100%; float:left;">
-		<div class="col-md-12" style="background-color:#E33551;width:100%;padding:8px 0px 8px 0%;">
-			<h1 class="homestead text-center text-white">
-				<i class="fa fa-user-circle"></i><br><?php echo Yii::t("home","Friends of communecter") ?>
-			</h1>
-		</div>
-		<center>
-			<i class="fa fa-caret-down text-red"></i><br/>
-		</center>
-
-		<div id="co-friends" class="padding-15"></div>
-		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 ">
-			<img class="img-responsive img-thumbnail peopleTalkImg">
-			<span class="peopleTalkName text-extra-large"></span>
-			<br/>
-			<span class="peopleTalkProject text-extra-large"></span>
-		</div>
-		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 ">
-			<img class="img-responsive img-thumbnail peopleTalkImg">
-			<span class="peopleTalkName text-extra-large"></span>
-			<br/>
-			<span class="peopleTalkProject text-extra-large"></span>
-		</div>
-		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 ">
-			<img class="img-responsive img-thumbnail peopleTalkImg">
-			<span class="peopleTalkName text-extra-large"></span>
-			<br/>
-			<span class="peopleTalkProject text-extra-large"></span>
-		</div>
-		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 ">
-			<img class="img-responsive img-thumbnail peopleTalkImg">
-			<span class="peopleTalkName text-extra-large"></span>
-			<br/>
-			<span class="peopleTalkProject text-extra-large"></span>
-		</div>
-	</div>
+		<img src="<?php echo $this->module->assetsUrl; ?>/images/docs/<?php echo Yii::app()->language ?>/notebooks-1-1.png" width="100%"/>
+	</div>	
+	<div class="keywordValues col-md-12 col-sm-12 col-xs-12 margin-top-50"></div>
+	<div class="subtitleDocs panel-heading border-light center text-dark partition-white radius-10 ">
+	<span class="panel-title"> 
+		Les atouts de Communecter<br>
+		<span class="sub-title text-red">Un réseau pas comme les autres</span>
+	</span>
+</div>
+	<div class="keywordApps col-md-12 col-sm-12 col-xs-12 margin-top-50"></div>
 </div>
 
 
 <script type="text/javascript">
-
+var keyActors = [
+	{
+		"icon" : "fa-street-view",
+		"title":"Pour moi",
+		"subtitle":"Je connais mon territoire",
+		"body":"Je sais ce qu’il se passe autour de moi."
+	},
+	{
+		"icon" : "fa-users",
+		"title":"Pour ma communauté",
+		"subtitle":"Je gère mon organisation",
+		"body":"Je sais ce qu’il se passe autour de moi."
+	},
+	{
+		"icon" : "fa-globe",
+		"title":"Pour le bien commun",
+		"subtitle":"Une intelligence collective en action",
+		"body":"Je participe à la construction d’une base de connaissance territoriale."
+	}
+];
+var keyValues = [
+	{
+		"icon" : "fa-code",
+		"title":"Open source",
+		"subtitle":"Communecter c'est un peu comme un gâteau",
+		"body":"Tout comme une recette de cuisine que l’on s’échange, le code source de Communecter est consultable, partageable, ré-utilisable et améliorable."
+	},
+	{
+		"icon" : "fa-share-alt",
+		"title":"Bases de données partagées",
+		"subtitle":"On est pas des vampires",
+		"body":"Nous ne nous approprions pas vos données : nous les mettons en commun."
+	},
+	{
+		"icon" : "fa-heart",
+		"title":"Libre",
+		"subtitle":"C'est comme un chapeau d'artiste",
+		"body":"Vous pouvez consommer ce bien-commun librement. Nous vous invitons tout de même le soutenir pour qu'il garde son indépendance"
+	},
+	{
+		"icon" : "fa-image",
+		"title":"Pas de publicité",
+		"subtitle":"Vie privée et tranquillité",
+		"body":"Naviguer l’esprit tranquille : vous ne trouverez pas de publicités commerciales sur Communecter."
+	},
+	{
+		"icon" : "fa-university",
+		"title":"Un commun",
+		"subtitle":"Une ressource gérée collectivement",
+		"body":"La gouvernance du projet se fait de manière stimergique et transparente : vous avez une idée ? Présentez la et lancez vous ! Si l’idée est pertinente attendez vous à ce que d’autres contributeurs vous viennent en aide."
+	},
+	{
+		"icon" : "fa-user-secret",
+		"title":"Données protégées",
+		"subtitle":"Le choix du partage",
+		"body":"On vous laisse le choix de partager ou non vos données. C'est vous qui décidez"
+	}
+];
+var keyApps = [
+{
+		"image" : moduleUrl+"/images/docs/comobi1.png",
+		"title":"Application mobile",
+		"url": "https://play.google.com/store/apps/details?id=org.communecter.mobile",
+		"body":"Grâce à nos crowdfunders nous avons pu développer une application Android que vous pouvez télécharger ici."
+	},
+	{
+		"image" : moduleUrl+"/images/docs/network_img.jpg",
+		"url":"https://wiki.communecter.org/fr/network---cr%C3%A9er-une-carte.html",
+		"title":"Cartographie personnalisée",
+		"body":"Grâce au module Network vous pouvez créer vos propres cartes. Retrouvez toute la documentation en cliquant sur le bouton ci-dessous."
+	},
+	{
+		"image" : moduleUrl+"/images/docs/copi.png",
+		"url":"https://wiki.communecter.org/fr/installer-communecter-sur-un-raspberry-pi.html",
+		"title":"Instance locale",
+		"body":"Avec CoPi vous pouvez installer votre propre Communecter. Vos donnés sont stockés à portée de main et potentiellement partageable avec le reste de la communauté."
+	},
+	{
+		"image" : moduleUrl+"/images/docs/Copedia.png",
+		"url":"https://wiki.communecter.org/fr/interop%C3%A9rabilit%C3%A9.html",
+		"title":"Interopérabilité",
+		"body":"Communecter communique avec des bases de données ouvertes (ex : Wikipédia, Openstreetmap, …) pour utiliser leurs données en échange de notre contribution à leur bien commun."
+	}
+];
 jQuery(document).ready(function() {
-	
-	openVideo();
+	getConceptList(keyActors, ".keywordActors");
+	getConceptList(keyValues, ".keywordValues");
+	getConceptList(keyApps, ".keywordApps");
+	$(".videoSignal").click(function(){
+		openVideo();
+	});
 
 });
 function showPeopleTalk(step)
@@ -173,9 +263,12 @@ function showPeopleTalk(step)
 }
 
 function openVideo(){
-	//$("#homeImg").fadeOut("slow",function() {
+	$("#videoDocsImg").fadeOut("slow",function() {
 		$(".videoWrapper").fadeIn('slow');
-	//});
+		 var symbol = $("#autoPlayVideo")[0].src.indexOf("?") > -1 ? "&" : "?";
+  		//modify source to autoplay and start video
+  		$("#autoPlayVideo")[0].src += symbol + "autoplay=1";
+	});
 }
 
 

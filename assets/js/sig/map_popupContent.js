@@ -8,7 +8,7 @@
 		//##
 		//création du contenu de la popup d'un data
 		Sig.getPopup = function(data){
-			//mylog.log("getPopup", data)
+			mylog.log("getPopup", data)
 			if(typeof(data.typeSig) != "undefined" && data.typeSig == "news"){
 				return this.getPopupSimpleNews(data);
 			}else if(typeof(data.typeSig) != "undefined" && data.typeSig == "city"){
@@ -17,6 +17,9 @@
 				return this.getPopupSiteUrl(data);
 			}else if(typeof(data.typeSig) != "undefined" && data.typeSig == "address"){
 				return this.getPopupAddress(data);
+			}else if(typeof(data.typeSig) != "undefined" && 
+				(data.typeSig == "classified" || data.typeSig == "ressources" )){
+				return this.getPopupClassified(data);
 			}else{
 				return this.getPopupSimple(data);
 			}
@@ -73,8 +76,10 @@
 				if(data['tags'].length > 0){
 					$.each(data['tags'], function(index, value){ 
 						totalTags++;
-						if(totalTags<4)
-							popupContent	+= 	"<div class='tag_item_map_list'>#" + value + " </div>";
+						if(totalTags<4){
+							var t = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
+							popupContent	+= 	"<div class='tag_item_map_list'>#" + t + " </div>";
+						}
 					});
 				}
 				popupContent	+= 	"</div>";
@@ -86,6 +91,110 @@
 								+ "<div class='popup-subtitle'>Description</div>"
 								+ "<div class='popup-info-profil'>" + data['shortDescription'] + "</div>"
 							+ "</div>";
+			}
+			//Contacts information
+			popupContent += this.getPopupContactsInformation(data);
+			//address
+			popupContent += this.getPopupAddressInformation(data);
+
+			popupContent += '</div>';
+
+			var dataType = ("undefined" != typeof data['typeSig']) ? data['typeSig'] : "";
+
+			if(dataType == "event" || dataType == "events"){				
+				popupContent += displayStartAndEndDate(data);
+			}
+
+			if (type.substr(0,11) == "poi.interop") {
+				url = data.url;
+				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
+			}else if (typeof TPL_IFRAME != "undefined" && TPL_IFRAME==true){
+				url = "https://www.communecter.org/"+url;
+				popupContent += "<a href='"+url+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
+			}else if (typeof networkJson != "undefined" && notNull(networkJson) && notNull(networkJson.dataSrc) && notNull(data.source)){
+				popupContent += "<a href='"+data.source+"' target='_blank' class='item_map_list popup-marker' id='popup"+id+"'>";
+			}else{
+				onclick = 'urlCtrl.loadByHash("'+url+'");';					
+				popupContent += "<a href='"+url+"' onclick='"+onclick+"' class='item_map_list popup-marker lbh' id='popup"+id+"'>";
+			}
+
+			popupContent += '<div class="btn btn-sm btn-more col-md-12"><i class="fa fa-hand-pointer-o"></i>'+trad.knowmore+'</div>';
+			popupContent += '</a></div>';
+
+			return popupContent;
+		};
+
+		//##
+		//création du contenu de la popup d'un data
+		Sig.getPopupClassified = function(data){
+			console.log("getPopupClassified", data);
+
+			var type = typeof data['typeSig'] != "undefined" ? data['typeSig'] : data['type'];
+			var id = this.getObjectId(data); 
+			var popupContent = "<div class='popup-marker'>";
+	
+			var ico = this.getIcoByType(data);
+			var color = this.getIcoColorByType(data);
+			var imgProfilPath =  Sig.getThumbProfil(data);
+			var icons = '<i class="fa fa-'+ ico + ' text-'+ color +'"></i>';
+			
+			var typeElement = type;
+			if(type == "people") 		typeElement = "citoyens";
+			if(type == "citoyens") 		typeElement = "citoyens";
+			if(type == "organization") typeElement = "organizations";
+			if(type == "event") 		typeElement = "events";
+			if(type == "project") 		typeElement = "projects";
+			//mylog.log("type", type, "typeElement", typeElement);
+			
+			var icon = 'fa-'+ this.getIcoByType(data);
+
+			var onclick = "";
+			var url = '#page.type.'+typeElement+'.id.'+id;
+			//mylog.log("url", url);
+			//mylog.log("------");
+			
+			if(type == "entry") 		url = "#survey.entry.id."+id;
+			if(type == "action") 		url = "#rooms.action.id."+id;
+			
+			popupContent += "<div class='item_map_list popup-marker' id='popup"+id+"'> <div class='main-panel'>"
+							+   "<div class='left-col'>"
+		    				+ 	   "<div class='thumbnail-profil'><img src='" + imgProfilPath + "' height=50 width=50 class='popup-info-profil-thumb'></div>"						
+		    				+ 	   "<div class='ico-type-account'>"+icons+"</div>"					
+		    				+   "</div>"
+							+   "<div class='right-col'>";
+					
+			if("undefined" != typeof data['name'])
+				popupContent	+= 	"<div class='info_item pseudo_item_map_list'>" + data['name'] + "</div>";
+			
+			if("undefined" != typeof data['tags'] && data['tags'] != null){
+				popupContent	+= 	"<div class='info_item items_map_list'>";
+				var totalTags = 0;
+				if(data['tags'].length > 0){
+					$.each(data['tags'], function(index, value){ 
+						totalTags++;
+						if(totalTags<4){
+							var t = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
+							popupContent	+= 	"<div class='tag_item_map_list'>#" + t + " </div>";
+						}
+					});
+				}
+				popupContent	+= 	"</div>";
+			}
+
+			if ("undefined" != typeof data['price'] && data['price'] != "" && data['price'] != null) {
+				popupContent += "<div class='info_item pseudo_item_map_list letter-green bold margin-top-5'>" + 
+									data['price'] + " " + data['devise'] + 
+								"</div>";
+			}
+
+			popupContent += "</div>";
+
+			//Short description
+			if ("undefined" != typeof data['description'] && data['description'] != "" && data['description'] != null) {
+				popupContent += //"<div id='pop-description' class='popup-section'>"
+								//+ "<div class='popup-subtitle'>Description</div>"
+								"<div class='info_item text_item_map_list'>" + data['description'] + "</div>";
+							//+ "</div>";
 			}
 			//Contacts information
 			popupContent += this.getPopupContactsInformation(data);
@@ -214,7 +323,7 @@
 		//##
 		//création du contenu de la popup d'un data de type News
 		Sig.getPopupSimpleNews = function(data){
-
+			console.log("getPopupSimpleNews", data);
 			var allData = data;
 			data = data.author;
 			//mylog.log("typeSig : " + allData['typeSig']);

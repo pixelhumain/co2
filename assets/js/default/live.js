@@ -184,6 +184,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 						$("#news-list").append(data);
 						if($("#noMoreNews").length<=0)
 							$("#newsstream").append(loading);
+
 						//buildTimeLine (data.news, 0, 5);
 						//bindTags();
 						//if(typeof(data.limitDate.created) == "object")

@@ -3629,10 +3629,8 @@ function initKInterface(params){ console.log("initKInterface");
     	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 		//	getContextDataLinks();
 		else{
-
 			if(isMapEnd == false && contextData && contextData.map && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id) )
 				Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
-			
 				showMap();
 		}
     });
@@ -3652,7 +3650,6 @@ function initKInterface(params){ console.log("initKInterface");
 	// }
 
     KScrollTo(".main-container");
-
 }
 
 function loadDashboardDDA(){

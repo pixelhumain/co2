@@ -160,6 +160,10 @@ foreach($news as $key => $media){
     <?php if(isset(Yii::app()->session["userId"])) { ?>
       initCommentsTools(news);
     <?php } ?>
+
+
+    console.log("mapElementsNews", news);
+    Sig.showMapElements(Sig.map, news, "search", "Auteurs");
     
 
     //alert("bind me");

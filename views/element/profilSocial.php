@@ -581,14 +581,15 @@
 	            <small><?php echo Yii::t("form", "Define roles of everyone<br>Communicate easily<br>Internal and external") ?></small>
 	        </button>
 
-
-			<div class="section-create-page">
-	        	
+	        	<?php if(in_array($type, [Person::COLLECTION, Organization::COLLECTION, Project::COLLECTION])){ ?>
 		        <button data-form-type="project"  data-dismiss="modal"
 		                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
 		            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> <?php echo Yii::t("common", "Project") ?></h6>
 		            <small><?php echo Yii::t("form", "Make visible a project<br>Find support<br>Build a community") ?></small>
 		        </button>
+		        <?php } ?>
+			<!--<div class="section-create-page">-->
+	        	<?php if($type==Person::COLLECTION){ ?>
 
 	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GROUP; ?>"  data-dismiss="modal"
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 letter-turq">
@@ -614,8 +615,9 @@
 	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
 	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> <?php echo Yii::t("common", "Government Organization") ?></h6>
 	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
-	            </button>	            
-	        </div>
+	            </button>	 
+	            <?php } ?>           
+	       <!-- </div>-->
 			<?php /*
 	        <button data-form-type="place"  data-dismiss="modal"
 	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-place">

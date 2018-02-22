@@ -470,11 +470,13 @@
 			this.Sig.getCoordinates = function(thisData, type)
 			{
 				//mylog.warn("--------------- getCoordinates ---------------------");
-				//mylog.dir("getCoordinates" , thisData);
+				mylog.dir("getCoordinates" , thisData);
 				//si la donnée est une news, on doit afficher la position de l'auteur
-				if( typeof thisData.typeSig !== "undefined"){
-					if(thisData.typeSig == "news" && typeof thisData.author !== "undefined"){
+				if( typeof thisData.typeSig !== "undefined" || typeof thisData.type !== "undefined"){
+					if((thisData.typeSig == "news" || thisData.type == "news") && typeof thisData.author !== "undefined"){
 						thisData = thisData.author;
+						//thisData["name"] = thisData.author["name"];
+						//thisData["geo"] = thisData.author["geo"];
 					}
 				}
 
@@ -596,7 +598,8 @@
 								}
 								//mylog.log("content POPUT thisAddr : ", thisData);
 										
-								
+								console.log("check coordinates", coordinates);
+
 								if(notEmpty(thisData["addresses"])){
 									$.each(thisData["addresses"], function(key, addr){ 
 										var thisAddr = JSON.parse(JSON.stringify(thisData)); //duplicate value, prevent modifying thisData after this line DO NOT REMOVE IT CAN KILL THE WORLLLLLD ! ARE YOU CRAZY ? 
@@ -770,7 +773,7 @@
 							value.typeSig == "information" || 
 							value.type == "activityStream"
 							) && typeof value.author !== "undefined") {
-							oneData = value.author;
+							//oneData = value.author;
 						}
 						// if(value.type == "activityStream" && typeof value.target !== "undefined") { //mylog.log("newsStream");
 						// 	oneData = value.target;
@@ -783,11 +786,11 @@
 					thisSig.showOneElementOnMap(data, thisMap);
 				}
 			
-				//mylog.log("before onEachFeature");
+				console.log("before onEachFeature", this.geoJsonCollection);
 				//mylog.dir(this.geoJsonCollection);
 				var points = L.geoJson(this.geoJsonCollection, {				//Pour les clusters seulement :
 						onEachFeature: function (feature, layer) {				//sur chaque marker
-							//mylog.log("onEachFeature");
+							mylog.log("onEachFeature", feature);
 							layer.bindPopup(feature["properties"]["content"]); 	//ajoute la bulle d'info avec les données
 							layer.setIcon(feature["properties"]["icon"]);	   	//affiche l'icon demandé
 							layer.on('mouseover', function(e) {	
@@ -804,7 +807,7 @@
 								thisMap.panTo(layer.getLatLng());	
 								layer.openPopup(); 
 							});
-						
+
 							//au click sur un element de la liste de droite, on zoom pour déclusturiser, et on ouvre la bulle
 							$(thisSig.cssModuleName + " .item_map_list_" + feature.properties.id).click(function(){
 								thisSig.allowMouseoverMaker = false;
@@ -843,8 +846,10 @@
 								thisSig.currentMarkerToOpen = layer;
 								thisSig.currentMarkerPopupOpen = layer;
 								setTimeout("Sig.openCurrentMarker()", 700);
-							});			
+							});	
+		
 						}
+
 
 					});
 					//mylog.warn("--------------- showMapElements  onEachFeature OK ---------------------");
@@ -967,7 +972,7 @@
 			$("#modalItemNotLocated .modal-body").html("<i class='fa fa-spin fa-reload'></i>");
 
 			var objectId = this.getObjectId(data);
-			var popup = this.getPopupSimple(data);
+			var popup = this.getPopup(data);
 			$("#modalItemNotLocated .modal-body").html(popup);
 			$("#modalItemNotLocated #btn-open-details").click(function(){
 				$("#popup"+objectId).click();

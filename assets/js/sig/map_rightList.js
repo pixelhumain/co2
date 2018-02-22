@@ -221,8 +221,10 @@
 							var totalTags = 0;
 							if(typeof allElement['tags'] != "undefined" && allElement['tags'] != null){
 								$.each(allElement['tags'], function(index, value){ totalTags++;
-									if(totalTags<4)
-									button	+= 	"<a href='javascript:' class='tag_item_map_list'>#" + value + " </a>";
+									if(totalTags<4){
+										var t = typeof tradCategory[value] != "undefined" ? tradCategory[value] : value;
+										button	+= 	"<a href='javascript:' class='tag_item_map_list'>#" + t + " </a>";
+									}
 								});
 							}
 							button	+= 	"</div>";
@@ -262,10 +264,16 @@
 					}		
 					button	+= 	"<div class='info_item text_item_map_list'>" + allElement['text'] + "</div>";
 				}
-				
-				button += '<div class="separation"></div>';
-				
 
+				if ("undefined" != typeof allElement['price'] && allElement['price'] != "" && allElement['price'] != null) {
+					button += "<div class='info_item pseudo_item_map_list letter-green bold margin-top-5 margin-left-15'>" + allElement['price'] + " " + allElement['devise'] + "</div>";
+				}
+
+				if("undefined" != typeof allElement['description'] && allElement['typeSig']=="classified"){
+					button	+= 	"<div class='info_item text_item_map_list'>" + allElement['description'] + "</div>";
+				}
+
+				button += '<div class="separation"></div>';
 				button += 	'</button>' +
 						 '<div>';
 

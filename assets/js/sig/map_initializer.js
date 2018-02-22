@@ -358,6 +358,8 @@
 											"address" 			: "MARKER",
 
 											"classified" 		: "classified-marker-default",
+											"ressources" 		: "ressources-marker-default",
+											"ressource" 		: "ressources-marker-default",
 											"service" 			: "services/medical",
 											"product" 			: "services/medical",
 											"products" 			: "services/shopping",
@@ -426,6 +428,9 @@
 
 											"classified" 		: { ico : "bullhorn", color : "azure" 	},
 
+											"ressource" 			: { ico : "cubes", color : "vine" 	},
+											"ressources" 			: { ico : "cubes", color : "vine" 	},
+											
 											"services" 			: { ico : "handshake-o", color : "orange" 	},
 
 									  };

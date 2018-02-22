@@ -162,7 +162,7 @@ foreach($news as $key => $media){
     <?php } ?>
 
 
-    console.log("mapElements", results);
+    console.log("mapElementsNews", news);
     Sig.showMapElements(Sig.map, news, "search", "Auteurs");
     
 

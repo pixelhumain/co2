@@ -201,6 +201,42 @@ class AppController extends CommunecterController {
         );
         $view = ( !empty($view) ? $view : "index");
         $redirect="";
+
+        if($view == "directory"){
+            $params = Admin::directory();
+            $view = "directoryTable";
+        }else if($view == "moderate"){
+            if(isset($_REQUEST['all'])){
+                $view =  "moderateAll";
+                $params["news"] = News::getNewsToModerate();
+                $params["comments"] =  Comment::getCommentsToModerate();
+
+                //we moderate comments which is part of a news already moderate isAnabuse == true
+                if(isset($params["comments"]) && is_array($params["comments"]))foreach($params["comments"] as $key => $val){
+                    $tmp = News::getById($val['contextId']);
+                    if(isset($tmp)){
+                        if(isset($tmp['moderate'])){
+                            if(isset($tmp['moderate']['isAnAbuse']) && $tmp['moderate']['isAnAbuse'] == true){
+                                unset($params["comments"][$key]);
+                            }
+                        }
+                    }
+                }
+            }
+            elseif(isset($_REQUEST['one'])){
+                $view =  "moderateOne"; 
+            }
+            else{
+                $view =  "moderate";
+            }
+        }else if ($view == "mailerrordashboard"){
+            $mailErrors = MailError::getMailErrorSince(time() - 60*60*24*7);
+            $params["mailErrors"] = $mailErrors;
+            $params["path"] = "../admin/";
+            $view = $params["path"]."mailErrorTable";
+        }
+
+
         if(Yii::app()->params["CO2DomainName"] == "terla")
             $redirect="terla/";
         echo $this->renderPartial("../admin/".$redirect.$view, $params, true);

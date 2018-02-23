@@ -72,6 +72,7 @@
 			$.each(typeSig, function(index, value){
 				mylog.log("add to listPanel", value);
 				thisSig.listPanel["types"].push(value); //new Array(objectId);
+				mylog.log("add ok listPanel", value);
 			});
 
 			//thisSig.listPanel["types"].push(typeSig);

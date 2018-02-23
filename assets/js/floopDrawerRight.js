@@ -109,7 +109,7 @@ function buildListContactHtml(contacts, myId){
 
 //création HTML d'un élément
 function getFloopItem(id, type, value){
-	mylog.log("getFloopItem" , id, type, value);
+	//mylog.log("getFloopItem" , id, type, value);
 	var oldElement = isOldElement(value);
 
 	var cp = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
@@ -145,9 +145,9 @@ function getFloopItem(id, type, value){
 					'data-name-el="'+value.name+'" data-username="'+chatUsername+'" data-slug="'+chatSlug+'" data-type-el="'+type.name+'"  data-open="'+( (value.preferences.isOpenEdition)?true:false )+'"  data-hasRC="'+( ( value.hasRC )?true:false)+'" data-id="'+id+'">'+
 				'<i class="fa fa-comments"></i>'+
 			'</button>';
-			if( value.preferences.isOpenEdition == false )
+			/*if( value.preferences.isOpenEdition == false )
 				HTML += '<i class="fa fa-lock pull-right margin-top-20 margin-right-5 text-light tooltips" '+
-							'data-position="left" data-original-title="value.preferences.isOpenEdition == false"></i>';
+							'data-position="left" data-original-title="value.preferences.isOpenEdition == false"></i>';*/
 	return HTML+'</li>';
 }
 
@@ -268,7 +268,7 @@ function checkFloopSearch(thisElement, searchVal, type){
 	var found = content.search(new RegExp(searchVal, "i"));
 	if(found >= 0){
 		var id = thisElement.attr("idcontact");
-		console.log("$('.floopDrawer .contact"+id+"').show()");
+		//console.log("$('.floopDrawer .contact"+id+"').show()");
 		$(".floopDrawer .contact"+id).show();
 	}
 }
@@ -337,7 +337,7 @@ function showHideOldElements(type) {
 
 // Return true if the endDate of the Element is before the current Date. 
 function isOldElement(value) {
-	mylog.log("isOldElement", value);
+	//mylog.log("isOldElement", value);
 	var endDate = (typeof value["endDate"] != undefined) ? value["endDate"] : "";
 	if (endDate == "") return false;
 	return new Date(endDate) < new Date();

@@ -210,7 +210,16 @@ class AppController extends CommunecterController {
     public function actionAdminpublic($view = null){
         CO2Stat::incNbLoad("co2-adminpublic");   
         $view = ( !empty($view) ? $view : "index");
-        echo $this->renderPartial("../adminpublic/".$view, array(), true);
+        $params = array();
+        if($view == "createfile"){
+            $count = PHDB::count(Import::MAPPINGS, array() ) ;
+            if($count == 0){
+                Import::initMappings(); 
+            }
+            $params["allMappings"] = Import::getMappings(); 
+        }
+
+        echo $this->renderPartial("../adminpublic/".$view, $params, true);
     }
 
     public function actionChat(){

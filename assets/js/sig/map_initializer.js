@@ -358,6 +358,8 @@
 											"address" 			: "MARKER",
 
 											"classified" 		: "classified-marker-default",
+											"ressources" 		: "ressources-marker-default",
+											"ressource" 		: "ressources-marker-default",
 											"service" 			: "services/medical",
 											"product" 			: "services/medical",
 											"products" 			: "services/shopping",
@@ -426,6 +428,9 @@
 
 											"classified" 		: { ico : "bullhorn", color : "azure" 	},
 
+											"ressource" 			: { ico : "cubes", color : "vine" 	},
+											"ressources" 			: { ico : "cubes", color : "vine" 	},
+											
 											"services" 			: { ico : "handshake-o", color : "orange" 	},
 
 									  };
@@ -537,7 +542,7 @@
 				defaultType=defaultType[1];
 			}
 
-			if (element.typeSig.substr(0,11) == "poi.interop") {
+			if (typeof element.typeSig != "undefined" && element.typeSig.substr(0,11) == "poi.interop") {
 				var imgProfilPath = getimgProfilPathForInteropDataOnMap(element.typeSig);
 			} else {
 				var imgProfilPath =  assetPath + "/images/thumb/default_"+defaultType+".png";

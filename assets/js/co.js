@@ -676,10 +676,10 @@ var urlCtrl = {
 	    "#admin.moderate" : {title:'MODERATE ', icon : 'download', useHeader: true},
 	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader: true},
 		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus', useHeader: true},
-	    "#adminpublic.index" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
-	    "#adminpublic.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
-	    "#adminpublic.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
-	   	"#adminpublic.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', useHeader : true},
+	    "#adminpublic.view.index" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    "#adminpublic.view.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
+	    "#adminpublic.view.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
+	   	"#adminpublic.view.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', useHeader : true},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -3036,6 +3036,7 @@ var typeObj = {
 	surveys : {sameAs:"survey"},
 	proposal : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
 	proposals : { sameAs : "proposal" },
+	resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
 	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
 	actions : { sameAs : "action" },
 	actionRooms : {sameAs:"room"},
@@ -3629,10 +3630,8 @@ function initKInterface(params){ console.log("initKInterface");
     	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
 		//	getContextDataLinks();
 		else{
-
 			if(isMapEnd == false && contextData && contextData.map && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id) )
 				Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
-			
 				showMap();
 		}
     });
@@ -3652,7 +3651,6 @@ function initKInterface(params){ console.log("initKInterface");
 	// }
 
     KScrollTo(".main-container");
-
 }
 
 function loadDashboardDDA(){

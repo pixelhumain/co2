@@ -221,7 +221,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
               if(typeof data.count != "undefined")
                 searchCount=data.count;
 
-              if(search.app!="search" || (typeof pageCount != "undefined" && pageCount)){
+              if(indexMin==0 || (typeof search.count != "undefined" && search.count)){
               //Prepare footer and header of directory 
                 $(".headerSearchContainer").html( directory.headerHtml(indexMin) );
                 $(".footerSearchContainer").html( directory.footerHtml() );
@@ -344,7 +344,8 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
             else $.extend(mapElements, data);
             
             //affiche les éléments sur la carte
-            Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
+            console.log("mapElements", results);
+            Sig.showMapElements(Sig.map, results, "search", "Résultats de votre recherche");
                         
             if(typeof callBack == "function")
               callBack();
@@ -376,10 +377,12 @@ function initPageTable(number){
             simpleScroll(scrollH);
             pageCount=false;
             searchPage=(page-1);
-            search.page=searchPage;
+            //search.page=searchPage;
+            indexStep=30;
+            indexMin=indexStep*searchPage;
             pageEvent=true;
             //autoCompleteSearch(search.value, null, null, null, null);
-            startSearch(null);
+            startSearch(indexMin,indexStep);
           }
       });
   }
@@ -463,12 +466,12 @@ function initPageTable(number){
         $(this).remove();
       }
     });
-    $(".adminIconDirectory, .container-img-profil").mouseenter(function(){
+    /*$(".adminIconDirectory, .container-img-profil").mouseenter(function(){
       $(this).parent().find(".adminToolBar").show();
     });
     $(".adminToolBar").mouseleave(function(){
       $(this).hide();
-    });
+    });*/
     mylog.log("initBtnAdmin")
     $(".disconnectConnection").click(function(){
       var $this=$(this); 
@@ -2444,9 +2447,11 @@ var directory = {
       description = description.replace(/\n/g,"<br>");
       
       name = escapeHtml(name);
-      if(directory.dirLog) mylog.log("-----------coopPanelHtml", params);
+      //if(directory.dirLog) 
+        mylog.log("-----------coopPanelHtml", params);
+        
         str = "";  
-        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
+        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;'>";
         str += "<div class='searchEntity coopPanelHtml' data-coop-type='"+ params.type + "'  data-coop-id='"+ params.id + "' "+
                     "data-coop-idparentroom='"+ idParentRoom + "' "+
                     "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
@@ -2713,7 +2718,7 @@ var directory = {
     headerHtml : function(indexMin){
       mylog.log("-----------headerHtml :",search.count);
       headerStr = '';
-      if(typeof search.count != "undefined" && search.count || indexMin==0 ){          
+      if((typeof search.count != "undefined" && search.count) || indexMin==0 ){          
           countHeader=0;
           if(search.app=="territorial"){
             $.each(searchCount, function(e, v){
@@ -2850,8 +2855,9 @@ var directory = {
                       itemType="poi";
                     }
 
-                    if( dyFInputs.get( itemType ) == null)
+                    if( dyFInputs.get( itemType ) == null){
                       itemType="poi";
+                    }
 
                     typeIco = itemType;
                     if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
@@ -2904,8 +2910,17 @@ var directory = {
               params.media=getMediaImages(params.media, null, null, null,'directory');
             else if (params.media.type=="gallery_files")
               params.media=getMediaFiles(params.media,null);
-            else if(params.media.type=="url_content" && params.text=="")
+            else if(params.media.type=="url_content")
               params.media=processUrl.getMediaCommonHtml(params.media,"show");
+            else if (params.media.type=="activityStream")
+              params.media=directory.showResultsDirectoryHtml(new Array(params.media.object),params.media.object.type);
+            if(params.text!= "")
+              delete params.media;
+            else{
+              params.text=params.media;
+              delete params.media;
+            }
+
           }
                 
         }
@@ -2996,7 +3011,7 @@ var directory = {
                         str += directory.storePanelHtml(params);
                       //template principal
                     }else{
-                      //mylog.log("template principal",params,params.type, itemType);
+                      mylog.log("template principal",params,params.type, itemType);
 
 
                       if($.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classified"] )>=0
@@ -3034,7 +3049,7 @@ var directory = {
                         else
                           str += directory.classifiedPanelHtml(params);
                       }
-                      else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+                      else if(params.type == "proposals" || params.type == "actions" || params.type == "resolutions" || params.type == "rooms")
                         str += directory.coopPanelHtml(params);  
                       else if(params.type.substring(0,11) == "poi.interop")
                         str += directory.interopPanelHtml(params);
@@ -3077,10 +3092,10 @@ var directory = {
     },
     getAdminToolBar : function(data){
       countBtn=0;
-      var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
+      /*var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
        "<i class='fa fa-cog'></i>"+ //fa-bookmark fa-rotate-270
-       "</a>";
-      html+="<div class='adminToolBar'>";
+       "</a>";*/
+      var html="<div class='adminToolBar'>";
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+
@@ -3277,7 +3292,12 @@ var directory = {
         $(dest).html(str);
         $.each( list,function(k,o){
             if( type == "btn" ){
-              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+'</a></div>'
+              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'">'+
+                      '<a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" '+
+                          'data-key="'+k+'" href="javascript:;">'+
+                        '<i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+
+                      '</a>'+
+                    '</div>'
             }
             else 
               str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+

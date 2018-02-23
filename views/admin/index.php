@@ -303,7 +303,7 @@
 		} else {
 			$("#navigationAdmin").hide(700);
 			$("#goBackToHome, #content-view-admin").show(700);
-			showLoader('#content-view-dashboard');
+			showLoader('#content-view-admin');
 		}
 	}
 	function descHtmlToMarkdown() {

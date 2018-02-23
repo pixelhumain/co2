@@ -192,7 +192,7 @@ foreach($news as $key => $media){
           });
         if(v.object.type != "news"){
           var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type);
-          $(".newsActivityStream"+v.object.id).html(html);
+          $(".newsActivityStream"+v.object.id + "[data-type='"+v.object.type+"']").html(html);
         }
       }
     });
@@ -237,6 +237,7 @@ foreach($news as $key => $media){
         });
       }
       if("undefined" != typeof v.media){
+
         if(typeof(v.media.type)=="undefined" || v.media.type=="url_content")
           media=processUrl.getMediaCommonHtml(v.media,"show",e);
         else if (v.media.type=="gallery_images")
@@ -246,6 +247,7 @@ foreach($news as $key => $media){
         else if (v.media.type=="activityStream")
           media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type);
         $("#result"+e).html(media);
+
          $(".videoSignal").off().on("click",function(){
           videoLink = $(this).find(".videoLink").val();
           iframe='<div class="embed-responsive embed-responsive-16by9 margin-bottom-5" style="background-color:black;">'+

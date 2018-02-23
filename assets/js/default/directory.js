@@ -2447,9 +2447,11 @@ var directory = {
       description = description.replace(/\n/g,"<br>");
       
       name = escapeHtml(name);
-      if(directory.dirLog) mylog.log("-----------coopPanelHtml", params);
+      //if(directory.dirLog) 
+        mylog.log("-----------coopPanelHtml", params);
+        
         str = "";  
-        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;''>";
+        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;'>";
         str += "<div class='searchEntity coopPanelHtml' data-coop-type='"+ params.type + "'  data-coop-id='"+ params.id + "' "+
                     "data-coop-idparentroom='"+ idParentRoom + "' "+
                     "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
@@ -2853,8 +2855,9 @@ var directory = {
                       itemType="poi";
                     }
 
-                    if( dyFInputs.get( itemType ) == null)
+                    if( dyFInputs.get( itemType ) == null){
                       itemType="poi";
+                    }
 
                     typeIco = itemType;
                     if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
@@ -3008,7 +3011,7 @@ var directory = {
                         str += directory.storePanelHtml(params);
                       //template principal
                     }else{
-                      //mylog.log("template principal",params,params.type, itemType);
+                      mylog.log("template principal",params,params.type, itemType);
 
 
                       if($.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classified"] )>=0
@@ -3046,7 +3049,7 @@ var directory = {
                         else
                           str += directory.classifiedPanelHtml(params);
                       }
-                      else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
+                      else if(params.type == "proposals" || params.type == "actions" || params.type == "resolutions" || params.type == "rooms")
                         str += directory.coopPanelHtml(params);  
                       else if(params.type.substring(0,11) == "poi.interop")
                         str += directory.interopPanelHtml(params);
@@ -3289,7 +3292,12 @@ var directory = {
         $(dest).html(str);
         $.each( list,function(k,o){
             if( type == "btn" ){
-              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'"><a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" data-key="'+k+'" href="javascript:;"><i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+'</a></div>'
+              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'">'+
+                      '<a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" '+
+                          'data-key="'+k+'" href="javascript:;">'+
+                        '<i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+
+                      '</a>'+
+                    '</div>'
             }
             else 
               str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+

@@ -203,7 +203,7 @@ class AppController extends CommunecterController {
         $view = /*( !empty($view) ? $view :*/ "index";
         $redirect="";
 
-        if($view == "directory"){
+        /*if($view == "directory"){
             $params = Admin::directory();
             $view = "directoryTable";
         }else if($view == "moderate"){
@@ -235,7 +235,7 @@ class AppController extends CommunecterController {
             $params["mailErrors"] = $mailErrors;
             $params["path"] = "../admin/";
             $view = $params["path"]."mailErrorTable";
-        }
+        }*/
 
 
         if(Yii::app()->params["CO2DomainName"] == "terla")

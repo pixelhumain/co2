@@ -77,6 +77,10 @@ co2/datamigration/UpdateMultiScope
 *** tranforme les scopes des news au nouveau format
 co2/datamigration/UpdateScopeNews
 
+*** Citoyen qui non pas de Code country dans leur addresse et sont toujours dans l'ancien format
+co2/datamigration/BatchCountryMissing
+*** Ajout de la variable language
+co2/datamigration/BatchLanguage
 
 
 

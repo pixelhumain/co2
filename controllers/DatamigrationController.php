@@ -4153,6 +4153,166 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 		
 	}
+
+	public function actionBatchLanguage(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementError = 0 ;
+		$where = array("language" => array('$exists' => 0));
+		$fields = array("name", "address", "invitedBy");
+		$persons = PHDB::find(Person::COLLECTION, $where, $fields);
+		$fr = array("FR", "RE", "NC", "GP", "GF", "MQ", "BE", "YT", "CA","CH");
+		$en = array("EN", "DE", "BG","FI","ES", "CG","IT");
+		//$en = array("EN");
+		foreach ($persons as $key => $value) {
+			$set = array();
+			
+			if(!empty($value["address"]) && !empty($value["address"]["addressCountry"])){
+				
+				if(in_array($value["address"]["addressCountry"], $fr))
+					$set["language"] = "fr";
+				else if(in_array($value["address"]["addressCountry"], $en))
+					$set["language"] = strtolower($value["address"]["addressCountry"]);
+				else
+					$set["language"] = $value["address"]["addressCountry"];
+
+			}else if( !empty($value["invitedBy"]) ) {
+
+				$set["language"] = 'fr';
+				$personInvite = PHDB::findOneById(Person::COLLECTION, $value["invitedBy"], array("address") );
+				if(!empty($personInvite["address"]) && !empty($personInvite["address"]["addressCountry"])){		
+					if(in_array($personInvite["address"]["addressCountry"], $fr))
+						$set["language"] = "fr";
+					else if(in_array($personInvite["address"]["addressCountry"], $en))
+						$set["language"] = strtolower($personInvite["address"]["addressCountry"]);
+					else 
+						$set["language"] = "fr";
+				}
+			}else {
+				$set["language"] = 'fr';
+			}
+
+
+			if(!empty($set)){
+				
+				if(!empty($value["name"]))
+					echo $key." Name : ".$value["name"]." : ".$set["language"]."<br/>";
+				else
+					echo $key." NOT : ".$set["language"]."<br/>";
+				
+				$res = PHDB::update(Person::COLLECTION, 
+						array("_id"=>new MongoId($key)),
+						array('$set' => $set)
+				);
+		 		$nbelement++;
+			}else{
+				echo $key." Name : ".$value["name"]." : ERROR <br/>";
+				$nbelementError++;
+			}	
+		}
+		echo $nbelement." language mis a jours / ";
+		echo $nbelementError." language error / ";
+	}
+
+
+	public function actionBatchCountryMissing(){
+		ini_set('memory_limit', '-1');
+		$nbelement = 0 ;
+		$nbelementError = 0 ;
+		$where = array("address.addressCountry" => array('$exists' => 0), "address.addressCountry" => "");
+		$fields = array("name", "address", "invitedBy");
+		$persons = PHDB::find(Person::COLLECTION, $where, $fields);
+		$set=array();
+		foreach ($persons as $key => $value) {
+			//echo $key." Name! : ".$value["name"]." ".$value["address"]["codeInsee"]." : <br/>";
+			$set=array();
+			if(!empty($value["address"]["addressLocality"]) && $value["address"]["addressLocality"] == "ST GILLES LES BAINS"){
+				$city = PHDB::findOneById(City::COLLECTION, "54c0965cf6b95c141800a518");
+				$add = $value["address"];
+				//var_dump($city);
+				if(!empty($city)){
+					unset($add["regionName"]);
+					unset($add["depName"]);
+
+					$add["addressCountry"] = $city["country"];
+					$add["level1"] = $city["level1"];
+					$add["level1Name"] = $city["level1Name"];
+					if(!empty($city["level2"])){
+						$add["level2"] = $city["level2"];
+						$add["level2Name"] = $city["level2Name"];
+					}
+
+					if(!empty($city["level3"])){
+						$add["level3"] = $city["level3"];
+						$add["level3Name"] = $city["level3Name"];
+					}
+
+					if(!empty($city["level4"])){
+						$add["level4"] = $city["level4"];
+						$add["level4Name"] = $city["level4Name"];
+					}
+
+					if(empty($add["localityId"])){
+						$add["localityId"] = (String) $city["_id"];
+					}
+				}
+				$set["address"] = $add;
+			}else if(!empty($value["address"]["codeInsee"])){
+				$city = PHDB::findOne(City::COLLECTION, array("insee" => $value["address"]["codeInsee"]));
+				$add = $value["address"];
+				//var_dump($city);
+				if(!empty($city)){
+					//echo $key." Name! : ".$value["name"]." ".$value["address"]["codeInsee"]." : <br/>";
+					unset($add["regionName"]);
+					unset($add["depName"]);
+
+					$add["addressCountry"] = $city["country"];
+					$add["level1"] = $city["level1"];
+					$add["level1Name"] = $city["level1Name"];
+					if(!empty($city["level2"])){
+						$add["level2"] = $city["level2"];
+						$add["level2Name"] = $city["level2Name"];
+					}
+
+					if(!empty($city["level3"])){
+						$add["level3"] = $city["level3"];
+						$add["level3Name"] = $city["level3Name"];
+					}
+
+					if(!empty($city["level4"])){
+						$add["level4"] = $city["level4"];
+						$add["level4Name"] = $city["level4Name"];
+					}
+
+					if(empty($add["localityId"])){
+						$add["localityId"] = (String) $city["_id"];
+					}
+					
+
+				}
+
+				$set["address"] = $add;
+			}
+
+			if(!empty($set)){
+				echo $key." Name : ".$value["name"]." <br/>";
+				
+				$res = PHDB::update(Person::COLLECTION, 
+						array("_id"=>new MongoId($key)),
+						array('$set' => $set)
+				);
+		 		$nbelement++;
+			}else{
+				echo $key." Name : ".$value["name"]." : ERROR <br/>";
+				$nbelementError++;
+			}
+		}
+
+
+
+		//echo json_encode($set);	
+		echo $nbelement." multiscopes mis a jours / ";
+	}
 }
 
 

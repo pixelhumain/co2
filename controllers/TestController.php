@@ -1552,4 +1552,15 @@ La vie en santé;Santé;;
 		// Rest::json($res);
 		// Yii::app()->end();
 	}
+
+
+	public function actionTestcommunexion(){
+		$personLoc=Element::getElementSimpleById(Yii::app()->session["userId"], Person::COLLECTION, null, array("address"));
+        if(!empty($personLoc["address"]))
+            $res = Person::getCommunexion($personLoc["address"]);
+		
+		Rest::json($res);
+		Yii::app()->end();
+	}
+
 }

@@ -198,8 +198,9 @@ class AppController extends CommunecterController {
         CO2Stat::incNbLoad("co2-admin");   
         $params = array(
             "dir" => @$dir,
+            "view"=>@$view,
         );
-        $view = ( !empty($view) ? $view : "index");
+        $view = /*( !empty($view) ? $view :*/ "index";
         $redirect="";
 
         if($view == "directory"){

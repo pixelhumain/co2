@@ -53,8 +53,36 @@ function checkPoll(){
 }
 function setLanguage(lang){
 	$.cookie('lang', lang, { expires: 365, path: "/" });
-	toastr.success(trad.changelanguageprocessing);
+	//toastr.success(trad.changelanguageprocessing);
 	//window.reloadurlCtrl.loadByHash(location.hash);
+	if(userId != ""){
+		param={
+			name : "language",
+			value : lang,
+			pk : userId
+		};
+		$.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/citoyens",
+	        data: param,
+	       	dataType: "json",
+	    	success: function(data){
+		    	if(data.result){
+					toastr.success(data.msg);
+
+					/*if(formInMap == true){
+						$(".locationEl"+ index).remove();
+						dyFInputs.locationObj.elementLocation = null;
+						dyFInputs.locationObj.elementLocations.splice(ix,1);
+						//TODO check if this center then apply on first
+						//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
+					}
+					else
+						urlCtrl.loadByHash(location.hash);*/
+		    	}
+		    }
+		});
+	}
 	location.reload();
 }
 var watchThis = null;

@@ -35,6 +35,12 @@
 	- a group can have many channels 
 - see all "my chatRooms" in one place
 
+show chat button permission rules
+- if element is Open edit > the channel is public 
+	+ button shows to members
+- if element is not OE 
+	+ button shows to members
+
 ## Relation 
 - we are interested in a close relation with other open source project like RC 
 - our interoperabilty will be the first of a long list

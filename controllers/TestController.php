@@ -1563,4 +1563,10 @@ La vie en santé;Santé;;
 		Yii::app()->end();
 	}
 
+
+	public function actionLanguage(){
+		echo Yii::app()->language ;
+		
+		
+	}
 }

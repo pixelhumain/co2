@@ -3502,12 +3502,14 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	public function actionRelaunchInvitation(){
 		ini_set('memory_limit', '-1');
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){		
-			$res=PHDB::find(Person::COLLECTION,array("pending"=>array('$exists'=>true)));
+			$res=PHDB::find(Person::COLLECTION,array("pending"=>array('$exists'=>true)), array("name", "language", "invitedBy", "email"));
 			$i=0;
 			$v=0;
 			foreach($res as $key => $value){
-				if(DataValidator::email($value["email"])==""){
-					Mail::relaunchInvitePerson($value);
+				if(DataValidator::email($value["email"])=="" && !empty($value["language"]) ){
+					echo $key." : ".$value["name"]." : ".$value["language"]." <br/> ";
+					Yii::app()->language = $value["language"];
+					//Mail::relaunchInvitePerson($value);
 					$i++;
 				}else{
 					$v++;

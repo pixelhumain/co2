@@ -3548,6 +3548,33 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			}
 		//}
 	}
+	public function actionActivityStreamDDA(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbNews = 0 ;
+			$newsDDA = PHDB::find( News::COLLECTION, array("type"=>"activityStream", 
+				'$or'=>array(
+					array("object.type"=>"proposals"),
+					array("object.type"=>"resolutions"),
+					array("object.type"=>"actions"),
+					array("object.type"=>"rooms")
+				)));
+			//var_dump($cities);
+			if(!empty($newsDDA)){
+				foreach (@$newsDDA as $key => $v) {
+					//if(!empty($city["_id"]["level3Name"]) && (!empty($city["_id"]["country"]) && $city["_id"]["country"] == "FR") )		
+					echo "<br/>------------------------<br/>".
+						"object:".$v["object"]["type"]."<br/>".
+						"target:".$v["target"]["type"]."<br/>".
+						"share:<br>";
+						print_r($v["sharedBy"]);
+					$nbNews++;
+				}
+			}
+			echo "Nombre news traitées : ".$nbNews;
+		}else
+			echo "sorry for you, you are not an agent C007";
+	}
 
 	public function actionPublicEvent(){
 		ini_set('memory_limit', '-1');

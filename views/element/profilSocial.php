@@ -261,12 +261,13 @@
 	  	  </script>
 
 		  <?php if(@Yii::app()->session["userId"] && Yii::app()->params['rocketchatEnabled'] )
-	  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition)) ) || 
+
+	  		if( 
 	  			($type==Person::COLLECTION) ||
 	  			//admins can create rooms
 	  			( Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) ) ||
 	  			//simple members can join only when admins had created
-	  			( @$element["hasRC"] && Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]))  )
+	  			( Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]))  )
 	  			{
 	  				if(@$element["slug"])
 						//todo : elements members of

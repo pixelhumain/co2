@@ -198,11 +198,12 @@ class AppController extends CommunecterController {
         CO2Stat::incNbLoad("co2-admin");   
         $params = array(
             "dir" => @$dir,
+            "view"=>@$view,
         );
-        $view = ( !empty($view) ? $view : "index");
+        $view = /*( !empty($view) ? $view :*/ "index";
         $redirect="";
 
-        if($view == "directory"){
+        /*if($view == "directory"){
             $params = Admin::directory();
             $view = "directoryTable";
         }else if($view == "moderate"){
@@ -234,7 +235,7 @@ class AppController extends CommunecterController {
             $params["mailErrors"] = $mailErrors;
             $params["path"] = "../admin/";
             $view = $params["path"]."mailErrorTable";
-        }
+        }*/
 
 
         if(Yii::app()->params["CO2DomainName"] == "terla")

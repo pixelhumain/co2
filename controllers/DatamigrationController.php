@@ -3505,11 +3505,13 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$res=PHDB::find(Person::COLLECTION,array("pending"=>array('$exists'=>true)), array("name", "language", "invitedBy", "email"));
 			$i=0;
 			$v=0;
+			$languageUser = Yii::app()->language;
 			foreach($res as $key => $value){
-				if(DataValidator::email($value["email"])=="" && !empty($value["language"]) ){
+				if(DataValidator::email($value["email"])=="" && !empty($value["language"])){
+
 					echo $key." : ".$value["name"]." : ".$value["language"]." <br/> ";
 					Yii::app()->language = $value["language"];
-					//Mail::relaunchInvitePerson($value);
+					Mail::relaunchInvitePerson($value);
 					$i++;
 				}else{
 					$v++;
@@ -3517,6 +3519,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			}
 			echo $i." mails envoyé pour relancer l'inscription<br>";
 			echo $v." utilisateur non inscrit (validé) qui ont un mail de marde<br>";
+			Yii::app()->language = $languageUser ;
 		}else 
 			echo "Pas d'envoie pour toi ma cocote !! Tu vas aller au four plutot";
 	}
@@ -4203,7 +4206,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				else if(in_array($value["address"]["addressCountry"], $en))
 					$set["language"] = strtolower($value["address"]["addressCountry"]);
 				else
-					$set["language"] = $value["address"]["addressCountry"];
+					$set["language"] = "fr";
 
 			}else if( !empty($value["invitedBy"]) ) {
 

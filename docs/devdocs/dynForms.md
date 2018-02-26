@@ -87,9 +87,18 @@ Upload Process in dynforms
 	* add the the COLLECTION canEdit test 
 	```
 	Document::save($params)
+		//update the given element with profile image info
+		PHDB::update($document["type"], array("_id" 
 	```
 
-	-errors : 
+
+check error.log
+```
+[Fri Feb 23 16:40:07.001529 2018] [:error] [pid 13890] [client 127.0.0.1:51658] KEY : Classified, referer: http://127.0.0.1/ph/co2
+[Fri Feb 23 16:40:07.422740 2018] [:error] [pid 13890] [client 127.0.0.1:51658] The entity classified and id 5a900b9c539f229b3425d048 has been updated with the URL of the profil images., referer: http://127.0.0.1/ph/co2
+```
+
+-errors : 
 	```
 	Vous n'êtes pas autorisé à modifier et/ou ajouter un document ici
 	```

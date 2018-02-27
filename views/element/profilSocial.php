@@ -464,6 +464,7 @@
 									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 								</a>
 				            </li>
+
 				            <?php }
 
 				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {  
@@ -476,11 +477,16 @@
 									</a>
 					            </li> -->
 			            <?php } } ?>
-			            <li class="text-left">
-				               	<a href='javascript:;' onclick='co.graph()' >
-									<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
-								</a>
-				            </li>
+						<li class="text-left">
+							<a href='javascript:;' onclick='co.graph()' >
+								<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
+							</a>
+						</li>
+						<li class="text-left">
+							<a href='javascript:;' onclick="javascript:window.print();" >
+								<i class='fa fa-print'></i> <?php echo Yii::t("home","Print out") ?>
+							</a>
+						</li>
 			  		</ul>
 		  		</li>
 		  	</ul>

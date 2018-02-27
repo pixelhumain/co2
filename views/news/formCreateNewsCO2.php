@@ -475,18 +475,18 @@
   <div class="col-xs-12 text-center font-montserrat">
     <hr>
     <h5 class="letter-red">
-      <i class="fa fa-ban"></i> Vous n'êtes pas connecté<br>
-      <small>Merci de vous connecter pour publier un message</small>
+      <i class="fa fa-ban"></i> <?php echo Yii::t("cooperation","You are not logged"); ?><br>
+      <small><?php echo Yii::t("cooperation","Please login to post a message"); ?></small>
       <br><br>
 
       <button class="btn btn-link bg-green-k" data-toggle="modal" data-target="#modalLogin">
-        <i class="fa fa-sign-in"></i> Je me connecte
+        <i class="fa fa-sign-in"></i> <?php echo Yii::t("cooperation","I'm logging in"); ?>
       </button>
       <button class="btn btn-link bg-blue-k margin-left-10" data-toggle="modal" data-target="#modalRegister">
-        <i class="fa fa-plus-circle"></i> Je créé mon compte
+        <i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation","I create my account"); ?>
       </button> 
       <br><br>
-      <small class="letter-blue"><i class="fa fa-check"></i> inscription gratuite</small>
+      <small class="letter-blue"><i class="fa fa-check"></i> <?php echo Yii::t("cooperation","free registration"); ?></small>
     </h5>
     <hr>
   </div>

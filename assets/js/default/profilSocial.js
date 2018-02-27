@@ -680,14 +680,14 @@ function loadMD(){
 }
 
 function loadMindMap(){
-	showLoader('#central-container');
+	//showLoader('#central-container');
 
 	/*if( ! jQuery.isFunction(jQuery.datetimepicker) ) {
 				lazyLoad( baseUrl+'/plugins/xdan.datetimepicker/jquery.datetimepicker.full.min.js', 
 						  baseUrl+'/plugins/xdan.datetimepicker/jquery.datetimepicker.min.css',
 						  callback);
 		    }*/
-	
+	/*
 	d3.json(baseUrl+'/api/person/get/id/'+contextData.id+"/format/tree", function(error, data) {
 	  if (error) throw error;
 	  
@@ -698,7 +698,8 @@ function loadMindMap(){
 	    linkShape: 'diagonal' // or bracket
 	  });
 	});
-					
+	*/
+	co.mind();				
 }
 
 function loadGraph(){

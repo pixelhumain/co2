@@ -22,6 +22,16 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
+
+    if(search.value.indexOf("co.") === 0 ){
+      searchT = search.value.split(".");
+      if( searchT[1] && typeof co[ searchT[1] ] == "function" ){
+        co[ searchT[1] ](search.value);
+        return;
+      } else {
+        co.mands();
+      }
+    }
     if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
       startNewsSearch(true);
     else{

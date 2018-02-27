@@ -69,7 +69,7 @@ function setLanguage(lang){
 	    	success: function(data){
 		    	if(data.result){
 					toastr.success(data.msg);
-
+					location.reload();
 					/*if(formInMap == true){
 						$(".locationEl"+ index).remove();
 						dyFInputs.locationObj.elementLocation = null;
@@ -82,8 +82,10 @@ function setLanguage(lang){
 		    	}
 		    }
 		});
+	}else{
+		location.reload();
 	}
-	location.reload();
+	
 }
 var watchThis = null;
 function bindRightClicks() { 

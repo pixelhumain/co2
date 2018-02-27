@@ -274,6 +274,13 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("rooms", $params, true);
     }
 
+    public function actionAnnonces(){ 
+        $this->redirect( Yii::app()->createUrl("/classifieds/co/market") );
+    }
+
+    public function actionHelp(){ 
+        $this->redirect( Yii::app()->createUrl("/ressources/co/ressources") );
+    }
 
 	public function actionPage($type, $id, $view=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");

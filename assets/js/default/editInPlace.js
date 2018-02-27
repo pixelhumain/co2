@@ -383,6 +383,7 @@ function bindAboutPodElement() {
 			if(contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true });
 			}else if(contextData.type == typeObj.event.col ){
+				mylog.log("Type event ", typeObj.event.col, contextData.type);
 				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["eventTypes"], tradDynForm["eventTypes"], eventTypes, { required : true });
 			}
 

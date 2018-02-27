@@ -289,7 +289,7 @@
                                 "authorId"=>@$media["object"]["authorId"],
                                 "timezone"=>$timezone,
                                 "thumbAuthor"=>@$media["object"]["author"]["profilThumbImageUrl"] ? 
-                                                $media["object"]["author"]["profilThumbImageUrl"] : "",
+                                                Yii::app()->createUrl($media["object"]["author"]["profilThumbImageUrl"]) : "",
                             ) 
                         ); 
         ?>  

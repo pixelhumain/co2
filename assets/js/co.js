@@ -3626,6 +3626,11 @@ function initKInterface(params){ console.log("initKInterface");
               top: affixTop
           }
       });
+      /*$("#col-btn-type-directory, #sub-menu-left").affix({
+          offset: {
+              top: affixTop
+          }
+      });*/
       /*$("#affix-filters-menu").affix({
           offset: {
               top: affixTop
@@ -3637,8 +3642,6 @@ function initKInterface(params){ console.log("initKInterface");
           }
       });
     }
-
-    $("#filter-thematic-menu").show(400);
 
     // Floating label headings for the contact form
     $(function() {

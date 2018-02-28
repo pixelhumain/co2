@@ -2819,6 +2819,9 @@ var directory = {
         search.resultsView=$(this).data("value");
         str=directory.showResultsDirectoryHtml(results);
         $("#dropdown_search").html(str);
+        //active les link lbh
+        bindLBHLinks();
+                
         if(userId != ""){
           param={
             typeEntity : "citoyens",

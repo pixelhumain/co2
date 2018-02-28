@@ -7,7 +7,7 @@
 				'/css/timeline2.css',
 				//'/css/circle.css',	
 				'/css/default/directory.css',	
-				'/js/comments.js',
+				//'/js/comments.js',
 				'/css/profilSocial.css',
 				'/css/calendar.css',
 		) , 

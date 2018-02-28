@@ -7,7 +7,7 @@
 
     $cssAnsScriptFilesModule = array(
       // '/css/news/newsSV.css',
-      '/js/comments.js',
+     // '/js/comments.js',
       '/css/news/index.css',
       '/css/default/directory.css',	
 	  '/css/timeline2.css',

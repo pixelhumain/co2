@@ -1225,10 +1225,9 @@ var directory = {
 		timeAction= (params.type=="events") ? trad.created : trad.actif;
 		if(params.updated != null )
 			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
-
-		var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
-		if(params.type == "citoyens") 
-			params.hash += '.viewer.' + userId;
+    var linkAction = ( $.inArray(params.type, ["poi","classified","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
+    
+		//var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
 		// if(typeof params.size == "undefined" || params.size == "max")
     if(typeof params.imgType !="undefined" && params.imgType=="banner"){
   		str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
@@ -1238,41 +1237,29 @@ var directory = {
 
   		if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
   			str += "<div class='entityCenter no-padding'>";
-  			str +=    "<a href='"+params.hash+"' class='container-thumbnail-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
-  			str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+">" + params.htmlIco + "</a>";
+  			str +=    "<a href='"+params.hash+"' class='container-thumbnail-profil add2fav "+linkAction+"'>" + params.imgProfil + "</a>";
+  			str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+"'>" + params.htmlIco + "</a>";
   			str += "</div>";
   		}
     }else{
-      str += "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgMediumProfil + "</a>";
+      str += "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+"'>" + params.imgMediumProfil + "</a>";
           str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
       str += "<div class='entityRight profil no-padding'>";
 
       if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
         str += "<div class='entityCenter no-padding'>";
-        str +=    "<a href='"+params.hash+"' class='add2fav pull-right "+linkAction+">" + params.htmlIco + "</a>";
+        str +=    "<a href='"+params.hash+"' class='add2fav pull-right "+linkAction+"'>" + params.htmlIco + "</a>";
         str += "</div>";
       }
     }
-    var devise = (typeof params.devise != "undefined") ? params.devise : "";
-    if(typeof params.price != "undefined" && params.price != "")
-
-    str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
- 
-    if(typeof params.category != "undefined"){
-      str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
-      if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
-      str += "</div>";
-    }
-    if(notEmpty(params.typeEvent))
-      str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.typeEvent] + "</span></div>";  
     
 		if(notEmpty(params.typePoi)){
 		//	str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
 		}
 
 		var iconFaReply ="";// notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-		str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
+		str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+"'>"+
 					iconFaReply + params.name + 
 				"</a>";  
 		
@@ -1299,6 +1286,19 @@ var directory = {
   	else thisLocality = "";
 
   	str += thisLocality;
+
+    var devise = (typeof params.devise != "undefined") ? params.devise : "";
+    if(typeof params.price != "undefined" && params.price != "")
+      str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
+ 
+    if(typeof params.category != "undefined"){
+      str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
+      if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
+      str += "</div>";
+    }
+    if(notEmpty(params.typeEvent))
+      str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.typeEvent] + "</span></div>";  
+    
     if(params.type=="events"){
       var dateFormated = directory.getDateFormated(params, true);
       var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;

@@ -1,7 +1,10 @@
 <?php 
-
+HtmlHelper::registerCssAndScriptsFiles( array(	//'/css/timeline2.css',
+													'/js/comments.js',
+											) , Yii::app()->theme->baseUrl. '/assets');
 	$cssAnsScriptFilesModule = array(
 		'/js/news/autosize.js',
+		//'/js/comments.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 

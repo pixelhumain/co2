@@ -1111,7 +1111,7 @@ var directory = {
         str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
 
       if(typeof params.section != "undefined"){
-        str += "<div class='entityType'>" + tradCategory["to "+params.section];
+        str += "<div class='entityType'>" + tradCategory[params.section];
         if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
         str += "</div>";
       } 

@@ -218,7 +218,9 @@
                            || (@$canManageNews && $canManageNews)){ ?>
                   <li>
                     <a href="javascript:;" class="deleteNews" onclick="deleteNews('<?php echo $key ?>', '<?php echo $media["type"] ?>', $(this))" data-id="'<?php echo $key ?>"><small><i class="fa fa-times"></i> <?php echo Yii::t("common", "Delete")?></small></a></li>
-                    <?php if (@$media["type"] != "activityStream" /*&& @$media["author"]["id"]==Yii::app()->session["userId"]*/){ ?>
+                    <?php if (@$media["type"] != "activityStream" 
+                              && ( (@$media["targetIsAuthor"] && $media["targetIsAuthor"]) 
+                                  || @$media["author"]["id"]==Yii::app()->session["userId"])){ ?>
                       <li><a href="javascript:" class="modifyNews" onclick="modifyNews('<?php echo $key ?>','<?php echo $media["type"] ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Update publication")?></small></a></li>
                     <?php }
                 } ?> 
@@ -289,7 +291,7 @@
                                 "authorId"=>@$media["object"]["authorId"],
                                 "timezone"=>$timezone,
                                 "thumbAuthor"=>@$media["object"]["author"]["profilThumbImageUrl"] ? 
-                                                $media["object"]["author"]["profilThumbImageUrl"] : "",
+                                                Yii::app()->createUrl($media["object"]["author"]["profilThumbImageUrl"]) : "",
                             ) 
                         ); 
         ?>  

@@ -69,6 +69,10 @@ function initSearchInterface(){
         if(e.keyCode == 13){
             if(typeInit == "all") initTypeSearch("allSig");
             else initTypeSearch(typeInit);
+            search.value = $(this).val();
+            search.count=true;
+            pageCount=true;
+            if(search.app=="territorial") searchEngine.initTerritorialSearch();
             startSearch(0, indexStepInit, searchCallback);
             $(".btn-directory-type").removeClass("active");
          }

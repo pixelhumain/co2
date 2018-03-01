@@ -350,12 +350,12 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
               showResultInCalendar(results);
 
 
-            if(mapElements.length==0) mapElements = data;
-            else $.extend(mapElements, data);
+            if(mapElements.length==0) mapElements = results;
+            else $.extend(mapElements, results);
             
             //affiche les éléments sur la carte
             console.log("mapElements", results);
-            Sig.showMapElements(Sig.map, results, "search", "Résultats de votre recherche");
+            Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
                         
             if(typeof callBack == "function")
               callBack();

@@ -52,13 +52,13 @@
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="text-green" id="btn-importdata" style="cursor:pointer;" href="javascript:;">
 					<i class="fa fa-upload fa-2x"></i>
-					<?php echo Yii::t("admin", "IMPORT DATA"); ?>
+					<?php echo Yii::t("common", "Converter"); ?>
 				</a>
 			</li>
 			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="letter-blue" id="btn-adddata" style="cursor:pointer;" href="javascript:;">
 					<i class="fa fa-plus fa-2x"></i>
-					<?php echo Yii::t("admin", "ADD DATA"); ?>
+					<?php echo Yii::t("common", "IMPORT DATA"); ?>
 				</a>
 			</li>
 
@@ -203,7 +203,7 @@
 			loadLog();
 		});
 		$("#btn-importdata").click(function(){
-			location.hash=hashUrlPage+".view.importdata";
+			location.hash=hashUrlPage+"public.view.createfile";
 			loadImport();
 		});
 		$("#btn-moderate").click(function(){
@@ -219,7 +219,7 @@
 			loadMailerror();
 		});
 		$("#btn-adddata").click(function(){
-			location.hash=hashUrlPage+".view.adddata";
+			location.hash=hashUrlPage+"public.view.adddata";
 			loadAdddata();
 		});
 		$(".btn-open-form").click(function(){

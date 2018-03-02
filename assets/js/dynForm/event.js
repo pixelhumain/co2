@@ -171,14 +171,14 @@ dynForm = {
             },
             parentType : dyFInputs.inputHidden(),
 	        type : dyFInputs.inputSelect(tradDynForm["eventTypes"],null,eventTypes, { required : true }),
-	        public : dyFInputs.checkboxSimple("true", "public", {
-			        							labelText: tradDynForm.isPublic + " ?", 
-			        							onText:tradDynForm.yes, 
-			        							offText:tradDynForm.no, 
-			        							onLabel : tradDynForm.yes,
-            									offLabel: tradDynForm.no,
-            									inputId: "#public"
-			        					}),
+	        // public : dyFInputs.checkboxSimple("true", "public", {
+			      //   							labelText: tradDynForm.isPublic + " ?", 
+			      //   							onText:tradDynForm.yes, 
+			      //   							offText:tradDynForm.no, 
+			      //   							onLabel : tradDynForm.yes,
+         //    									offLabel: tradDynForm.no,
+         //    									inputId: "#public"
+			      //   					}),
 	        image : dyFInputs.image( ),
             allDay : dyFInputs.allDay(),
             startDate : dyFInputs.startDateInput("datetime"),

@@ -135,7 +135,6 @@
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
 <?php $this->renderPartial($layoutPath.'footer', array()); ?>
-<?php $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"]); ?>
 <?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
 
 

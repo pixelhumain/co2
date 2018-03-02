@@ -315,6 +315,9 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                     });
                     }*/
                   }
+                  if(directory.viewMode=="block")
+                    setTimeout(function(){ directory.checkImage(results);}, 300);
+
                 }
                 //remet l'icon "loupe" du bouton search
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
@@ -476,12 +479,14 @@ function initPageTable(number){
         $(this).remove();
       }
     });
-    /*$(".adminIconDirectory, .container-img-profil").mouseenter(function(){
-      $(this).parent().find(".adminToolBar").show();
-    });
-    $(".adminToolBar").mouseleave(function(){
-      $(this).hide();
-    });*/
+    if(directory.viewMode=="block"){
+      $(".adminIconDirectory, .container-img-profil").mouseenter(function(){
+        $(this).parent().find(".adminToolBar").show();
+      });
+      $(".adminToolBar").mouseleave(function(){
+        $(this).hide();
+      });
+    }
     mylog.log("initBtnAdmin")
     $(".disconnectConnection").click(function(){
       var $this=$(this); 
@@ -838,7 +843,7 @@ var directory = {
     scopesT :[],
     multiTagsT : [],
     multiScopesT :[],
-
+    viewMode: directoryViewMode,
     colPos: "left",
     dirLog : false,
     defaultPanelHtml : function(params){
@@ -2803,29 +2808,46 @@ var directory = {
                       '</h4>'+
                       '<div class="pull-right">'+
                         '<button class="btn switchDirectoryView ';
-                          if(search.resultsView=="list") headerStr+='active ';
+                          if(directory.viewMode=="list") headerStr+='active ';
           headerStr+=     'margin-right-5" data-value="list"><i class="fa fa-bars"></i></button>'+
                         '<button class="btn switchDirectoryView ';
-                          if(search.resultsView=="block") headerStr+='active ';
+                          if(directory.viewMode=="block") headerStr+='active ';
           headerStr+=     '" data-value="block"><i class="fa fa-th-large"></i></button>'+
                     '</div>';      
       }
       return headerStr;
     },
-    switcherViewer : function(results){
+    checkImage : function(res){
+      $.each(res, function(i,v){
+        if($("#entity"+i+" .container-img-profil .img-responsive").length){
+          //alert(i);
+          var imgH = $("#entity"+i+" .container-img-profil .img-responsive")[0].scrollHeight;
+          //alert(imgH);
+          if(imgH > 240){
+            marginTop= imgH/3;
+            //alert(marginTop)
+            $("#entity"+i+" .container-img-profil .img-responsive").css({"margin-top":"-"+marginTop+"px"});
+          }
+        }
+      });
+      
+    },
+    switcherViewer : function(results, dom){
       $(".switchDirectoryView").off().on("click",function(){
         $(".switchDirectoryView").removeClass("active");
         $(this).addClass("active");
-        search.resultsView=$(this).data("value");
+        directory.viewMode=$(this).data("value");
         str=directory.showResultsDirectoryHtml(results);
-        $("#dropdown_search").html(str);
+        domId=(notNull(dom))? dom : "#dropdown_search";
+        $(domId).html(str);
+        setTimeout(function(){ directory.checkImage(results);}, 200);
         //active les link lbh
         bindLBHLinks();
-                
+        initBtnAdmin();
         if(userId != ""){
           param={
             typeEntity : "citoyens",
-            value : search.resultsView,
+            value : directory.viewMode,
             name : "directoryView"
           };
           $.ajax({
@@ -2899,7 +2921,7 @@ var directory = {
       }
       return footerStr;
     },
-    showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
+    showResultsDirectoryHtml : function ( data, contentType, size, edit, viewMode){ //size == null || min || max
         //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
         mylog.log("showResultsDirectoryHtml data", data,"size",  size, "contentType", contentType)
         //mylog.log(" dirLog",directory.dirLog);
@@ -2973,7 +2995,7 @@ var directory = {
                         params.parentIcon = "fa-"+parentObj.icon;
                         params.parentColor = parentObj.color;
                     }
-                    if(search.countType.length==1 && params.type == "classified" && typeof params.category != "undefined" && typeof classified != "undefined"){
+                    if((typeof search.countType != "undefined" && search.countType.length==1) && params.type == "classified" && typeof params.category != "undefined" && typeof classified != "undefined"){
                       params.ico = typeof classified.filters[params.category] != "undefined" ?
                                    "fa-" + classified.filters[params.category]["icon"] : "bullhorn";
                     }
@@ -3113,7 +3135,7 @@ var directory = {
                       mylog.log("template principal",params,params.type, itemType);
 
 
-                      if((typeof search.resultsView != "undefined" && search.resultsView=="list")  && $.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classified"] )>=0) 
+                      if((typeof directory.viewMode != "undefined" && directory.viewMode=="list" && !notNull(viewMode))  && $.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classified"] )>=0) 
                        str += directory.lightPanelHtml(params);  
                       else{ 
 
@@ -3124,7 +3146,7 @@ var directory = {
                         str += directory.elementPanelHtml(params);  
                     
                       else if(params.type == "events"){
-                        if(search.countType.length > 1)
+                        if(typeof search.countType != "undefined" && search.countType.length > 1)
                           str += directory.elementPanelHtml(params);
                         else
                           str += directory.eventPanelHtml(params);  
@@ -3136,7 +3158,7 @@ var directory = {
                       //    str += directory.roomsPanelHtml(params,itemType);  
                     
                       else if(params.type == "classified"){
-                        if(search.countType.length > 1)
+                        if(typeof search.countType != "undefined" && search.countType.length > 1)
                           str += directory.elementPanelHtml(params);  
                         else
                           str += directory.classifiedPanelHtml(params);
@@ -3169,10 +3191,16 @@ var directory = {
     },
     getAdminToolBar : function(data){
       countBtn=0;
-      /*var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
+      var html ="";
+      if(directory.viewMode=="block"){
+        html += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
        "<i class='fa fa-cog'></i>"+ //fa-bookmark fa-rotate-270
-       "</a>";*/
-      var html="<div class='adminToolBar'>";
+       "</a>";
+      }
+      html+="<div class='adminToolBar";
+      if(directory.viewMode=="block")
+      html+=  " entityProfil"
+      html+="'>";
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+

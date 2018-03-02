@@ -359,7 +359,6 @@ function bindButtonMenu(){
 
 function loadDataDirectory(dataName, dataIcon, edit){ mylog.log("loadDataDirectory", dataName, dataIcon, edit);
 	showLoader('#central-container');
-
 	var dataIcon = $(".load-data-directory[data-type-dir="+dataName+"]").data("icon");
 	//history.pushState(null, "New Title", hashUrlPage+".view.directory.dir."+dataName);
 	// $('#central-container').html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");return;
@@ -457,6 +456,14 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 		    }
 		}
 	}
+	html+='<div class="col-xs-12 text-right no-padding margin-top-5">'+
+                        '<button class="btn switchDirectoryView ';
+                          if(directory.viewMode=="list") html+='active ';
+         html+=     'margin-right-5" data-value="list"><i class="fa fa-bars"></i></button>'+
+                        '<button class="btn switchDirectoryView ';
+                          if(directory.viewMode=="block") html+='active ';
+         html+=     '" data-value="block"><i class="fa fa-th-large"></i></button>'+
+                    '</div>';
 
 	return html;
 }
@@ -739,6 +746,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	mylog.log("displayInTheContainer",data, dataName, dataIcon, contextType, edit)
 	var n=0;
 	listRoles={};
+	
 	$.each(data, function(key, val){ 
 		mylog.log("rolesShox",key, val);
 		if(typeof key != "undefined") n++; 
@@ -756,26 +764,91 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			});
 		}
 	});
-
+	var communityStr="";
+	if($.inArray( dataName , ["follows","followers","organizations","members","guests","attendees","contributors"] ) >= 0){
+		communityStr+="<div id='menuCommunity' class='col-md-12 col-sm-12 col-xs-12 padding-20'>";
+		if(contextData.type == "citoyens" ) {
+		communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
+			if(dataName=="follows")
+				communityStr+=' active';		
+		communityStr+='" data-type-dir="follows" data-icon="link">'+
+				'<i class="fa fa-link"></i> <span class="hidden-xs">'+trad.follows+'</span>';
+				if(typeof contextData.links != "undefined" && typeof contextData.links.follows != "undefined")
+		communityStr += "<span class='badge'>"+Object.keys(contextData.links.follows).length+"</span>";
+		communityStr +=	'</a>';
+		}
+		countHtml="";
+		if(typeof contextData.links != "undefined" && typeof contextData.links[connectTypeElement] != "undefined"){
+			countLinks=0;
+			countGuests=0;
+			$.each(contextData.links[connectTypeElement], function(e,v){
+				if(typeof v.isInviting == "undefined")
+					countLinks++;
+				else
+					countGuests++;
+			});
+			countHtml += "<span class='badge'>"+countLinks+"</span>";
+		}
+		communityStr+=	'<a href="javascript:" class="ssmla uppercase load-coummunity';
+			if(dataName==connectTypeElement)
+				communityStr+=' active';		
+		communityStr+='" data-type-dir="'+connectTypeElement+'" data-icon="users">'+
+				'<i class="fa fa-users"></i> <span class="hidden-xs">'+trad[connectTypeElement]+"</span>"+
+				countHtml+
+			'</a>';
+		
+		if(contextData.type != "citoyens" && contextData.type != "events") { 
+			communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
+			if(dataName=="followers")
+				communityStr+=' active';		
+		communityStr+='" data-type-dir="followers" data-icon="link">'+
+				'<i class="fa fa-link"></i> <span class="hidden-xs">'+trad.followers+'</span>';
+				if(typeof contextData.links != "undefined" && typeof contextData.links.followers != "undefined")
+		communityStr += "<span class='badge'>"+Object.keys(contextData.links.followers).length+"</span>";
+		communityStr +=	'</a>';
+		}
+		if(contextData.type != "citoyens") {
+			communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
+			if(dataName=="guests")
+				communityStr+=' active';		
+		communityStr+='" data-type-dir="guests" data-icon="send">'+
+				'<i class="fa fa-send"></i> <span class="hidden-xs">'+trad.guests+'</span>';
+				if(typeof countGuests != "undefined")
+		communityStr += "<span class='badge'>"+countGuests+"</span>";
+		communityStr +=	'</a>';
+		}
+		if (contextData.type=="citoyens" || contextData.type=="places" ){
+			communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
+			if(dataName=="organizations")
+				communityStr+=' active';		
+		communityStr+='" data-type-dir="organizations" data-icon="group"> '+
+					'<i class="fa fa-group"></i> <span class="hidden-xs">'+trad.organizations+'</span>';
+					if(typeof contextData.links != "undefined" && typeof contextData.links.memberOf != "undefined")
+		communityStr += "<span class='badge'>"+Object.keys(contextData.links.memberOf).length+"</span>";
+		communityStr += '</a>';
+			
+		}
+		communityStr+="</div>"; 
+	}
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
-
+		
 		var html = "";
-
+		html+=communityStr;
 		var btnMap = '<button class="btn btn-default btn-sm hidden-xs btn-show-onmap inline" id="btn-show-links-onmap">'+
 				            '<i class="fa fa-map-marker"></i>'+
 				        '</button>';
 
 		if(dataName == "networks") btnMap = "";
 
-		html += "<div class='col-md-12 margin-bottom-15 labelTitleDir'>";
+		html += "<div class='col-md-12 col-xs-12 margin-bottom-15 labelTitleDir'>";
 		
 		mylog.log("eztrzeter", dataName);
 		if(dataName != "urls" && dataName != "contacts")
 			html += btnMap;
 
 		html +=	thisTitle;
-		html += "<div id='listRoles' class='shadow2'></div>"+
+		html += "<div id='listRoles' class='shadow2 col-xs-12'></div>"+
 			 "<hr>";
 		html +=	"</div>";
 		
@@ -791,7 +864,9 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			if(mapElements.length==0) mapElements = data;
         	else $.extend(mapElements, data);
         	mylog.log("edit2", edit);
+			html +="<div id='content-results-profil'>";
 			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
+			html +="</div>";
 		}else{
 			$.each(data, function(col, val){
 				colName=col;
@@ -814,6 +889,8 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}
 		toogleNotif(false);
 		$("#central-container").html(html);
+		if(dataName != "collections" && directory.viewMode=="block")
+            setTimeout(function(){ directory.checkImage(data);}, 200);
 		if(dataName == "events"){
 			//init calendar view
 			calendar.init("#profil-content-calendar");
@@ -831,7 +908,6 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		bindButtonOpenForm();
 
 		getfilterRoles(listRoles);
-	
 		var dataToMap = data;
 		if(dataName == "collections"){
 			dataToMap = new Array();
@@ -855,8 +931,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		//var nothing = tradException.no;
 		//if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
 		//	nothing = tradException.nofem;
-
-		var html =  "<div class='col-md-12 margin-bottom-15'>"+
+		var html =  communityStr+"<div class='col-md-12 margin-bottom-15'>"+
 						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 					"</div>";
 		$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
@@ -864,7 +939,15 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 											"</span>");
 		toogleNotif(false);
 	}
-
+	if(communityStr != ""){
+		$(".load-coummunity").off().on("click",function(){ 
+			//responsiveMenuLeft();
+			var dataName = $(this).data("type-dir");
+			location.hash=hashUrlPage+".view.directory.dir."+dataName;
+			loadDataDirectory(dataName, "", edit);
+		});
+	}	
+	directory.switcherViewer(data, "#content-results-profil");
 }
 var loading = "<div class='loader text-dark text-center'>"+
 		"<span style='font-size:25px;'>"+

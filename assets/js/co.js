@@ -3515,6 +3515,14 @@ var timerCloseDropdownUser = false;
 function initKInterface(params){ console.log("initKInterface");
 
 	$(window).off();
+	$(window).click(function() {
+		if( $("#modal-preview-coop").css("display") == "block" )
+			$("#modal-preview-coop").css("display","none");
+	});
+
+	$('#modal-preview-coop').click(function(event){
+		event.stopPropagation();
+	});
 
 	$(window).resize(function(){
       resizeInterface();

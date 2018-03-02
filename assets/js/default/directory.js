@@ -172,10 +172,13 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
     //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
     if(search.app=="agenda" && search.value==""){
       if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
-        mylog.log("integrate AGENDA_WINDOW");
+        mylog.log("HEREintegrate AGENDA_WINDOW");
+
+        mylog.log("HERE DATE STARTDATE", STARTDATE, moment(STARTDATE).local().format("DD/MM/YYYY"));
+        mylog.log("HERE DATE ENDDATE", ENDDATE, moment(ENDDATE).local().format("DD/MM/YYYY"));
         data.startDate = STARTDATE;
         data.endDate = ENDDATE;
-        mylog.log("DATE **", "data", data) ;
+        mylog.log("HERE DATE **", "data", data) ;
       }
     }
     
@@ -455,7 +458,17 @@ function initPageTable(number){
 
       startWinDATE = start;   
       //console.log("startWinDATE **", startWinDATE) ;
+
+      //mylog.log("today type", typeof today, today);
+
+      today = new Date(today.setSeconds(0));
+      today = new Date(today.setMinutes(0));
+      today = new Date(today.setHours(0));
+      //mylog.log("today type", typeof today, today);
       STARTDATE = today.setDate(1);
+      mylog.log("STARTDATE type", typeof today, typeof STARTDATE, today);
+      //STARTDATE = STARTDATE.setSeconds(0);
+      //.setSeconds(0).setMinutes(0).setHours(0)
       //STARTDATE = today.setDate(today.getDate() - 1);
 
       //console.log("DATE **", "STARTDATE", STARTDATE, today);
@@ -1103,10 +1116,13 @@ var directory = {
         str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
 
       if(typeof params.section != "undefined"){
-        str += "<div class='entityType'>" + tradCategory["to "+params.section];
-        if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
+        str += "<div class='entityType'>" + tradCategory[params.section];
+        if(typeof params.subtype != "undefined") {
+          subTypeLab = ( typeof tradCategory[params.subtype] != "undefined" ) ? tradCategory[params.subtype] : params.subtype+" :: to Trad" ;
+          str += " > " + subTypeLab;
+        }
         str += "</div>";
-      } 
+      }
 
       if(params.type=="events"){
         var dateFormated = directory.getDateFormated(params);

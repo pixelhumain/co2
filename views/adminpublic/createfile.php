@@ -100,6 +100,7 @@ $this->renderPartial($layoutPath.'header',
 					<option value="<?php echo Project::COLLECTION; ?>"><?php echo Yii::t("common", "Project"); ?></option>
 					<option value="<?php echo Event::COLLECTION; ?>"><?php echo Yii::t("common", "Event"); ?></option>
 					<option value="<?php echo Person::COLLECTION; ?>"><?php echo Yii::t("common", "Person"); ?></option>
+					<option value="<?php echo Poi::COLLECTION; ?>"><?php echo Yii::t("common", "Poi"); ?></option>
 				</select>
 			</div>
 			<div class="col-sm-4 col-xs-12">

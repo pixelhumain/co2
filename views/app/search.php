@@ -7,6 +7,7 @@
     $cssAnsScriptFilesModule = array(
     '/assets/css/default/responsive-calendar.css',
     '/assets/css/default/search.css',
+    '/assets/js/comments.js'
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
 
@@ -14,7 +15,7 @@
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
     '/js/default/directory.js',
-        '/js/news/index.js',
+    '/js/news/index.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 

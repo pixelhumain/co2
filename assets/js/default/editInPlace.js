@@ -455,11 +455,14 @@ function bindAboutPodElement() {
 				if(notEmpty(contextData.birthDate))
 					dataUpdate.birthDate = moment(contextData.birthDate).local().format("DD/MM/YYYY");
 			}
-
+			mylog.log("ORGA ", contextData.type, typeObj.organization.col, dataUpdate.type);
 			if(contextData.type == typeObj.organization.col ){
+				mylog.log("ORGA type", contextData.typeOrga, contextData.typeOrganization);
 				if(notEmpty(contextData.typeOrga))
 					dataUpdate.type = contextData.typeOrga;
+				mylog.log("ORGA resultType", dataUpdate.type);
 			}
+			mylog.log("ORGA resultType2", dataUpdate.type);
 
 			if(contextData.type == typeObj.event.col ){
 				if(notEmpty(contextData.typeEvent))

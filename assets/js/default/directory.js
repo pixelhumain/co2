@@ -1112,9 +1112,12 @@ var directory = {
 
       if(typeof params.section != "undefined"){
         str += "<div class='entityType'>" + tradCategory[params.section];
-        if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
+        if(typeof params.subtype != "undefined") {
+          subTypeLab = ( typeof tradCategory[params.subtype] != "undefined" ) ? tradCategory[params.subtype] : params.subtype+" :: to Trad" ;
+          str += " > " + subTypeLab;
+        }
         str += "</div>";
-      } 
+      }
 
       if(params.type=="events"){
         var dateFormated = directory.getDateFormated(params);

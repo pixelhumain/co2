@@ -947,7 +947,7 @@ var tradCategory = {
 		"househelp":"<?php echo Yii::t("category","hostinghelp") ?>",
 
 	"competence":"<?php echo Yii::t("category","competence") ?>",
-		"artistic":"<?php echo Yii::t("category","artistic") ?>",
+		"Artistic":"<?php echo Yii::t("category","artistic") ?>",
 		"laws":"<?php echo Yii::t("category","laws") ?>",
 		"itdevlopment":"<?php echo Yii::t("category","itdevlopment") ?>",
 		"handcraft":"<?php echo Yii::t("category","handcraft") ?>",

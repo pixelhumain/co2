@@ -1588,7 +1588,7 @@ var directory = {
             //   "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
             // '</a>'+
         '</div>';
-
+/*
         if( params.creator == userId || params.author == userId || params.parentId == userId || dyFObj.canUserEdit() ){
           str += '<hr>'+
               '<div class="col-md-12 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
@@ -1597,7 +1597,7 @@ var directory = {
                   '<i class="fa fa-pencil"></i> '+trad["modifyelement"]+
               '</a></div>';
             }
-
+*/
 
 
       str += "</div>";

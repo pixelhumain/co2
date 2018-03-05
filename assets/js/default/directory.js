@@ -354,11 +354,11 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
 
             if(search.app == "agenda" && typeof showResultInCalendar != "undefined" && search.value=="")
               showResultInCalendar(results);
-            directory.switcherViewer(results);
+            
 
             if(mapElements.length==0) mapElements = results;
             else $.extend(mapElements, results);
-            
+            directory.switcherViewer(mapElements);
             //affiche les éléments sur la carte
             console.log("mapElements", results);
             Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");

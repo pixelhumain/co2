@@ -89,6 +89,7 @@
             <div class="pull-left elemt_name elipsis">
                 <i class="fa fa-<?php echo $specs["icon"]?> text-<?php echo @$specs["text-color"]?>"></i> 
                 <span class=""><?php echo $v["name"]; ?></span>
+                
                 <?php 
                 $id = null;
                 if(@$v["_id"])
@@ -98,6 +99,9 @@
                 //echo ($type) ? Element::getLink(@$type."s",$id) : "no type"; //echo @$type;?>
             </div><br>
             <div class="elemt_date pull-left text-left elipsis">
+                <a href="#page.type.citoyens.id.<?php echo @$v["creator"]; ?>" class="lbh">
+                    <i class="fa-user fa"></i>
+                </a>
                 <span class="dateTZ">
                     <?php echo @$v["updatedLbl"];?>
                     <?php if(@$v["price"]) echo " | <span class='text-azure'>" .@$v["price"].' '.@$v["devise"].'</span>';?> 

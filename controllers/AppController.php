@@ -308,6 +308,7 @@ class AppController extends CommunecterController {
 
         if(@$element["parentId"] && @$element["parentType"])
             $element['parent'] = Element::getSimpleByTypeAndId( $element["parentType"], $element["parentId"]);
+        
         if(@$element["organizerId"] && @$element["organizerType"] && 
             $element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow")
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);

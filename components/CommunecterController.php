@@ -156,6 +156,7 @@ class CommunecterController extends Controller
       "switch"               => array("href" => "/ph/co2/default/switch"),
       "live"                 => array("href" => "/ph/co2/default/live"),
       "sitemap"                 => array("href" => "/ph/co2/default/sitemap"),
+      "img"                 => array("href" => "/ph/co2/default/img"),
     ),
     "city"=> array(
       "index"               => array("href" => "/ph/co2/city/index", "public" => true),

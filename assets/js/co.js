@@ -3916,6 +3916,14 @@ var co = {
 			}
 			smallMenu.openAjaxHTML( baseUrl+'/graph/co/d3/'+what);
 		} );},
+	badge : function () { 
+		var what = "id/"+userId+"/type/citoyens";
+			if(contextData && contextData.id && contextData.type ) {
+				contextDataType = dyFInputs.get(contextData.type).ctrl;
+				what = "id/"+contextData.id+"/type/"+contextDataType;
+			}
+			smallMenu.openAjaxHTML( baseUrl+'/connect/co/badge/'+what);
+	},
 	gmenu : function () {  },
 	mind : function () { 
 		if( contextData && contextData.type == "citoyens")

@@ -167,37 +167,42 @@
 				&& ( 	$type != Person::COLLECTION || 
 			 			Preference::showPreference( $element, $type, "directory", Yii::app()->session["userId"]) ) ) { ?>
 
-		<?php if($type == Person::COLLECTION ) { ?>
-		<li class="">
-			<a href="javascript:" class="ssmla capitalize load-data-directory" 
-				data-type-dir="<?php echo @Element::$connectAs[$type]; ?>" data-icon="link">
-				<i class="fa fa-link"></i> <?php echo Yii::t("common",@Element::$connectAs[$type]); ?>
-			</a>
-		</li>
-		<?php } ?>
 		
+		<?php if($type == Person::COLLECTION ) { ?> 
+		<!--<li class="">
+			<a href="javascript:" class="ssmla capitalize load-data-directory" 
+				data-type-dir="<?php echo @Element::$connectAs[$type]; ?>" data-icon="users">
+				<i class="fa fa-link"></i> <?php echo Yii::t("common","Community"); ?>
+			</a>
+		</li>-->
+		<?php } ?>
+		<?php if($type == Person::COLLECTION ) 
+			$connectCommunity=@Element::$connectAs[$type];
+		 else 
+		 	$connectCommunity=@Element::$connectTypes[$type];
+		?>
 		<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
-				data-type-dir="<?php echo @Element::$connectTypes[$type]; ?>" data-icon="users">
-				<i class="fa fa-users"></i> <?php echo Yii::t("common",@Element::$connectTypes[$type]); ?>
+				data-type-dir="<?php echo @$connectCommunity; ?>" data-icon="users">
+				<i class="fa fa-users"></i> <?php echo Yii::t("common","Community"); ?>
 			</a>
 		</li>
 		
 		<?php if($type != Person::COLLECTION && $type != Event::COLLECTION) { ?>
-		<li class="">
+		<!--<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
 				data-type-dir="followers" data-icon="link">
 				<i class="fa fa-link"></i> <?php echo Yii::t("common","followers"); ?>
 			</a>
-		</li>
+		</li>-->
 		<?php } ?>
 		<?php if($type != Person::COLLECTION) { ?>
-		<li class="">
+		<!--<li class="">
 			<a href="javascript:" class="ssmla capitalize load-data-directory" 
 				data-type-dir="guests" data-icon="send">
 				<i class="fa fa-send"></i> <?php echo Yii::t("common","Guests"); ?>
 			</a>
-		</li>
+		</li>-->
 		<?php } ?>
 		
 
@@ -223,11 +228,11 @@
 				</a>
 			</li>
 			<?php if ($type==Person::COLLECTION || $type==Place::COLLECTION ){ ?>
-			<li class="">
+			<!--<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="organizations" data-icon="group">
 					<i class="fa fa-group"></i>  <?php echo Yii::t("common","Organizations"); ?>
 				</a>
-			</li>
+			</li>-->
 			<?php }  ?>
 			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Place::COLLECTION){ ?>
 			<li class="">

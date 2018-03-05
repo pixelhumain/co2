@@ -20,8 +20,8 @@ on garde les librairies specifique au module dans le module
 		'/js/jquery.filter_input.js',
 		//'/js/breadcrum_co.js',
 		'/js/scopes/scopes.js',
-		'/js/scopes/breadcrum_co.js',
-		'/js/scopes/multiscopes.js',
+		//'/js/scopes/breadcrum_co.js',
+		//'/js/scopes/multiscopes.js',
 		);
 
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl() );

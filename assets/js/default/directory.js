@@ -2748,13 +2748,18 @@ var directory = {
       msg= (notNull(noResult) && noResult) ? trad["noresult"+match] : trad["nomoreresult"+match];
       contributeMsg="<span class='italic'><small>"+trad.contributecommunecterslogan+"</small><br/></span>";
       if(userId !=""){
-        contributeMsg+='<a href="javascript:;" class="text-green-k tooltips" '+
-            'data-target="#dash-create-modal" data-toggle="modal" '+
-            'data-toggle="tooltip" data-placement="top" '+ 
-            'title=""> '+
+        contributeAction = ';" data-target="#dash-create-modal" data-toggle="modal" data-toggle="tooltip" data-placement="top"';
+        if(location.hash == "#ressources")
+          contributeAction = 'dyFObj.openForm(\'ressources\');"';
+        else if(location.hash == "#annonces")
+          contributeAction = 'dyFObj.openForm(\'classifieds\');"';
+        else if(location.hash == "#agenda")
+          contributeAction = 'dyFObj.openForm(\'event\');"';
+
+        contributeMsg+='<a href="javascript:'+contributeAction+' class="text-green-k tooltips" > '+
               '<i class="fa fa-plus-circle"></i> '+trad.sharesomething+
           '</a>';
-      }else{
+      } else {
         contributeMsg+='<a href="javascript:;" class="letter-green margin-left-10" data-toggle="modal" data-target="#modalLogin">'+
                                     '<i class="fa fa-sign-in"></i> '+trad.connectyou+
                             '</a>';

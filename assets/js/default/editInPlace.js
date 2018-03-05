@@ -192,6 +192,12 @@ function bindAboutPodElement() {
 								$(".emailOptionneltext").slideToggle();
 								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 											  					  .addClass("bg-dark");
+							},
+							onload : function (data) { 
+								//this is a hack too a strange bug
+								//this select doesn't carry it's value
+								if( contextData.type == typeObj.event.col || contextData.type == typeObj.organization.col )
+									$("#type").val(data.type);
 							}
 						},
 						beforeSave : function(){
@@ -381,14 +387,12 @@ function bindAboutPodElement() {
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true });
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm.organizationType, tradDynForm.organizationType, organizationTypes, { required : true });
 			}else if(contextData.type == typeObj.event.col ){
 				mylog.log("Type event ", typeObj.event.col, contextData.type);
-				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["eventTypes"], tradDynForm["eventTypes"], eventTypes, { required : true });
-			}
-
-			if(contextData.type == typeObj.project.col ){
-				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect(tradDynForm["theprojectmaturity"], tradDynForm["projectmaturity"], avancementProject);
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm.eventTypes, tradDynForm.eventTypes, eventTypes, { required : true });
+			}else if( contextData.type == typeObj.project.col ){
+				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect(tradDynForm.theprojectmaturity, tradDynForm.projectmaturity, avancementProject);
 			}
 
 			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
@@ -455,26 +459,21 @@ function bindAboutPodElement() {
 				if(notEmpty(contextData.birthDate))
 					dataUpdate.birthDate = moment(contextData.birthDate).local().format("DD/MM/YYYY");
 			}
+			
 			mylog.log("ORGA ", contextData.type, typeObj.organization.col, dataUpdate.type);
+			
 			if(contextData.type == typeObj.organization.col ){
 				mylog.log("ORGA type", contextData.typeOrga, contextData.typeOrganization);
 				if(notEmpty(contextData.typeOrga))
 					dataUpdate.type = contextData.typeOrga;
 				mylog.log("ORGA resultType", dataUpdate.type);
-			}
-			mylog.log("ORGA resultType2", dataUpdate.type);
-
-			if(contextData.type == typeObj.event.col ){
-				if(notEmpty(contextData.typeEvent))
+			}else if(contextData.type == typeObj.event.col ){
+				if(jsonHelper.notNull("contextData.typeEvent") )
 					dataUpdate.type = contextData.typeEvent;
-			}
-
-			if(contextData.type == typeObj.project.col ){
+			}else if(contextData.type == typeObj.project.col ){
 				if(notEmpty(contextData.avancement))
 					dataUpdate.avancement = contextData.avancement;
-			}
-			
-			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
+			}else if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				if(notEmpty(contextData.email)) 
 					dataUpdate.email = contextData.email;
 				if(notEmpty(contextData.fixe))
@@ -483,9 +482,7 @@ function bindAboutPodElement() {
 					dataUpdate.mobile = contextData.mobile;
 				if(notEmpty(contextData.fax))
 					dataUpdate.fax = contextData.fax;
-			}
-			
-			if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
+			}else if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
 
 			if(notEmpty(contextData.parentId)) 

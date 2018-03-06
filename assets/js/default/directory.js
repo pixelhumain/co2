@@ -319,7 +319,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                     }*/
                   }
                   if(directory.viewMode=="block")
-                    setTimeout(function(){ directory.checkImage(results);}, 300);
+                    setTimeout(function(){ directory.checkImage(results);}, 500);
 
                 }
                 //remet l'icon "loupe" du bouton search
@@ -358,7 +358,10 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
 
             if(mapElements.length==0) mapElements = results;
             else $.extend(mapElements, results);
-            directory.switcherViewer(mapElements);
+            if(location.hash == "#search" && search.type.length > 1)
+              directory.switcherViewer(mapElements);
+            else
+              directory.switcherViewer(results);
             //affiche les éléments sur la carte
             console.log("mapElements", results);
             Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");

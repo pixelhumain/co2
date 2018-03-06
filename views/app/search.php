@@ -1,7 +1,7 @@
 <?php 
     $cssAnsScriptFilesModule = array(
     '/plugins/jquery-simplePagination/jquery.simplePagination.js',
-    '/plugins/jquery-simplePagination/simplePagination.css'
+    '/plugins/jquery-simplePagination/simplePagination.css',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
     $cssAnsScriptFilesModule = array(
@@ -14,7 +14,7 @@
     $cssAnsScriptFilesModule = array(
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
-    '/js/default/directory.js',
+//    '/js/default/directory.js',
     '/js/news/index.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());

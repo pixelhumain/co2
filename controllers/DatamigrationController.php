@@ -3524,6 +3524,14 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			echo "Pas d'envoie pour toi ma cocote !! Tu vas aller au four plutot";
 	}
 
+	public function actionMailMaj(){
+		ini_set('memory_limit', '-1');
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){		
+			Mail::mailMaj();
+		}else 
+			echo "Pas d'envoie pour toi ma cocote !! Tu vas aller au four plutot";
+	}
+
 
 	public function actionRegionList(){
 		//if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){

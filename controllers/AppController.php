@@ -312,7 +312,7 @@ class AppController extends CommunecterController {
         if(@$element["organizerId"] && @$element["organizerType"] && 
             $element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow")
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
-
+        
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,
@@ -323,7 +323,7 @@ class AppController extends CommunecterController {
                         "element" => $element);
 
         $params = Element::getInfoDetail($params, $element, $type, $id);
-        //var_dump(@$_POST); exit;
+        //var_dump($params); exit;
 
 
         if(@$_POST["preview"] == true){ 

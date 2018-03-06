@@ -33,6 +33,8 @@
   /*margin-bottom:5px;*/
   width:100%;
   text-align: right;
+  line-height: 20px;
+  vertical-align: text-bottom;
   /*font-weight: 700;*/
   color: grey;
   text-transform: uppercase;
@@ -56,9 +58,9 @@
   border-right: 3px solid;
 }
 .btn-directory-type .label-filter{
-  line-height: 10px;
   max-width: 50%;
   font-size: 13px;
+  vertical-align: middle;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .open-type-filter{
@@ -194,7 +196,7 @@
 .count-badge-filter{
     /*position: absolute;
     right: 10px;*/
-    line-height: 20px;
+    line-height: 15px;
     padding-left: 10px;
     font-size: 10px;
 }

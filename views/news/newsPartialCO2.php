@@ -191,7 +191,7 @@ foreach($news as $key => $media){
             }
           });
         if(v.object.type != "news"){
-          var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type);
+          var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type, null, null, true);
           $(".newsActivityStream"+v.object.id + "[data-type='"+v.object.type+"']").html(html);
         }
       }
@@ -245,7 +245,7 @@ foreach($news as $key => $media){
         else if (v.media.type=="gallery_files")
           media=getMediaFiles(v.media,e);
         else if (v.media.type=="activityStream")
-          media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type);
+          media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type, null, null, true);
         $("#result"+e).html(media);
 
          $(".videoSignal").off().on("click",function(){

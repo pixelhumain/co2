@@ -23,17 +23,16 @@
   font-weight: 700;
   text-transform: uppercase;
 }
-#col-btn-type-directory{
-  border-right: 3px solid #f5f1f1;
-}
 #col-btn-type-directory hr{
-  border-top: 2px solid #f5f1f1;
+  border-top: 1px solid #f5f1f1;
+  width: 70%;
+  float: right;
 }
 #col-btn-type-directory .btn-directory-type,
 #sub-menu-left .btn-select-type-anc{
   /*margin-bottom:5px;*/
   width:100%;
-  text-align: left;
+  text-align: right;
   /*font-weight: 700;*/
   color: grey;
   text-transform: uppercase;
@@ -43,6 +42,9 @@
   padding-right: 15px !important;
   border-radius: 0px;
   border: 0px;
+}
+.btn-directory-type:focus{
+  outline: inherit !important;
 }
 .btn-directory-type:hover, .btn-directory-type.active{
   /*padding-right: 10px !important;*/
@@ -56,19 +58,15 @@
 .btn-directory-type .label-filter{
   line-height: 10px;
   max-width: 50%;
-  font-size: 11px;
+  font-size: 13px;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.container-result-search{
-  padding-top:30px;
 }
 .open-type-filter{
   display:none;
 }
 @media (max-width: 768px) {
   .open-type-filter{
-        display: block;
+    display: block;
     position: absolute;
     right: -33px;
     height: 50px;
@@ -84,12 +82,12 @@
     background-color: white;
   }
   #col-btn-type-directory, #sub-menu-left{
-    position: absolute;
+    position: fixed;
     width: 56%;
-    left: -55.5%;
+    left: -56%;
     background-color: white;
-    top: 0px;
-    /* top: 214px; */
+    /*top: 0px;*/
+    top: 214px; 
     z-index: 300;
     padding: 0px;
     -webkit-box-shadow: 0px 2px 6px -1px rgba(0,0,0,.2);
@@ -102,11 +100,20 @@
     margin: 0px !important;
     border-radius: 0px;
   }
+
+  #col-btn-type-directory.affix, #sub-menu-left.affix{
+    top: 130px;
+  }
 }
 
   @media (min-width: 769px) {
   #col-btn-type-directory, #sub-menu-left {
     left:inherit !important;
+  }
+
+  #col-btn-type-directory.affix, #sub-menu-left.affix{
+    top: 130px;
+    left: 5% !important;
   }
 }
 
@@ -169,7 +176,7 @@
   color:#4285f4;
 }
 #sub-menu-left.subsub{
-  min-width: 180px;
+ /* min-width: 180px;*/
 }
 
 .btn-menu-left-add{
@@ -185,10 +192,11 @@
   /*display: none!important;*/
 }
 .count-badge-filter{
-    position: absolute;
-    right: 10px;
+    /*position: absolute;
+    right: 10px;*/
     line-height: 20px;
-    font-size: 12px;
+    padding-left: 10px;
+    font-size: 10px;
 }
 
 @media (max-width: 768px) {
@@ -202,10 +210,12 @@
     font-size:0.8em;
   }
 }
-
+.headerSearchContainer{
+  min-height: 30px;
+}  
 </style>
  
-<div class="container-result-search col-md-12 col-sm-12 col-xs-12" style="padding-left:5%">
+<div class="container-result-search col-md-12 col-sm-12 col-xs-12 no-padding">
       <?php if(@$_GET['type']!="") { ?>
         <?php $typeSelected = $_GET['type']; ?>
         <?php if($typeSelected == "persons") $typeSelected = "citoyens" ; ?>
@@ -264,12 +274,12 @@
 //echo "<h1>".$typeSelected."</h1>" ;
 //echo "<h1>".$_GET["app"]."</h1>" ;
         if($typeSelected == "place"){ ?>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
+        <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
                   data-type="classified" data-type-anc=""  data-key="all">
             <i class="fa fa-circle-o"></i>
             <span class="hidden-xs hidden-sm"> Tous </span>
-          </button> -->
+          </button>
           <?php 
               $place = CO2::getModuleContextList("places","categories");
               $currentSection = 1;
@@ -284,20 +294,20 @@
                 </div>
           <?php } ?>  
           <hr class="col-md-12 col-sm-12 col-xs-12 no-padding" id="before-section-result"> 
-        </div>
+        </div>-->
         <?php } ?>
 
         <?php if($typeSelected == "all" ){ ?>   
           
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
-
-          <div class="col-sm-3 col-md-2 col-xs-12 text-right no-padding" id="col-btn-type-directory">
+          <div class="no-padding col-md-10 col-sm-9 col-xs-12 text-left pull-right headerSearchContainer"></div>
+          <div id="col-btn-type-directory" class="col-sm-3 col-md-2 col-xs-12 text-right no-padding margin-top-20">
             <button class="open-type-filter tooltips" data-toggle="tooltip" data-placement="right" data-title="<?php echo Yii::t("common","Open filtering by type") ?>"><i class="fa fa-chevron-right"></i></button>
             <!--<button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
             </button><hr class="hidden-xs">-->
-            <button class="btn text-black bg-white btn-directory-type btn-all active" data-type="all">
+            <button class="btn text-black btn-directory-type btn-all active" data-type="all">
                 <i class="fa fa-search"></i> 
                 <span class=""><?php echo Yii::t("common","All") ?></span>
             </button>
@@ -379,22 +389,19 @@
 
             <hr class="hidden-xs no-margin">
             
-            <button class="btn border-blue btn-directory-type padding-10" data-type="news">
+            <!--<button class="btn border-blue btn-directory-type padding-10" data-type="news">
                 <i class="fa fa-newspaper-o"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","News") ?></span>
                 <span class="count-badge-filter" id="countnews"></span>
             </button><br class="hidden-xs">
 
-            <hr class="hidden-xs no-margin">
+            <hr class="hidden-xs no-margin">-->
             
             <button class="btn border-blue btn-directory-type padding-10" data-type="classified">
                 <i class="fa fa-bullhorn"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Classified") ?></span>
                 <span class="count-badge-filter" id="countclassified"></span>
             </button><br class="hidden-xs">
-
-
-            <hr class="hidden-xs no-margin">
             
             <button class="btn border-blue btn-directory-type padding-10" data-type="ressources">
                 <i class="fa fa-cubes"></i> 
@@ -440,7 +447,8 @@
               padding-bottom:15px;
             }
           </style>
-          <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-5 no-padding" id="col-btn-type-directory">
+          <div class="no-padding col-md-10 col-sm-9 col-xs-12 text-left pull-right headerSearchContainer"></div>
+          <div id="col-btn-type-directory" class="col-md-2 col-sm-3 col-xs-12 text-right margin-top-20 no-padding">
             <!--<button class="btn text-black bg-white btn-directory-type btn-all" data-type-event="" data-type="events">
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
@@ -469,6 +477,7 @@
 
           $service = CO2::getContextList("service");
           ?> 
+          <!-- TEEEEEEERLAAAAAAA MENUUUUUUU -------------------------------
           <div class="col-lg-2 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 margin-top-25 text-left subsub no-padding shadow2" id="sub-menu-left">
               <h4 class="bg-orange text-white no-margin padding-10">FILTRE</h4>      
               <div class="col-md-12 no-padding padding-top-10 padding-bottom-10 label-category" id="title-sub-menu-category">
@@ -507,14 +516,14 @@
               <div class="col-md-12 text-dark margin-bottom-5">
                 <input type="checkbox" class="btn-select-category-1" data-keycat="healthfood"> <?php echo Yii::t("category","Food care"); ?>
               </div>
-            </div>
+            </div>-->
         <?php } 
         }
         else if($typeSelected == "place"){ ?>
 
-          <div class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub" id="sub-menu-left">
+          <!--<div id="sub-menu-left" class="col-lg-2 col-md-2 col-sm-3 col-xs-8 margin-top-15 text-left subsub">
             <!-- <h4 class="text-dark padding-bottom-5"><i class="fa fa-angle-down"></i> Catégories</h4>
-            <hr> -->
+            <hr> 
             <h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">
               <i class="fa fa-money"></i> Lieux
             </h4>
@@ -534,7 +543,7 @@
                 <?php } ?>
               </button>
             <?php } ?>
-          </div>
+          </div>-->
 
         <?php } ?>
 
@@ -550,8 +559,7 @@
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
-        <div class=" col-md-<?php echo $col ?> col-sm-<?php echo $col ?> col-xs-12">
-          <div class="no-padding col-xs-12 text-left headerSearchContainer"></div>
+        <div class="col-md-10 col-sm-9 col-xs-12 pull-right">
           <div class="no-padding col-xs-12" id="dropdown_search"></div>
           <div class="no-padding col-xs-12 text-left footerSearchContainer"></div>
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
@@ -642,7 +650,7 @@ var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
 var classified = <?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
 
 jQuery(document).ready(function() {
-
+  initKInterface({"affixTop":200});
 	currentTypeSearchSend = "search";
   $("#col-btn-type-directory .btn-directory-type").each(function(){
     if($(this).data("type") != "all")
@@ -664,7 +672,7 @@ jQuery(document).ready(function() {
       $("#col-btn-type-directory, #sub-menu-left").animate({ left : "0%" }, 400 );
     }else{
       $(this).removeClass("show-dir").data("title", "<?php echo Yii::t("common","Open filtering by type") ?>").find("i").removeClass("fa-times").addClass("fa-chevron-right");
-      $("#col-btn-type-directory, #sub-menu-left").animate({ left : "-55.5%" }, 400 );
+      $("#col-btn-type-directory, #sub-menu-left").animate({ left : "-56%" }, 400 );
     
     }
   });

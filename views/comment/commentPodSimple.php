@@ -1,7 +1,7 @@
 <?php 
-
 	$cssAnsScriptFilesModule = array(
 		'/js/news/autosize.js',
+		//'/js/comments.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 

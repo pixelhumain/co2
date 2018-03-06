@@ -7,7 +7,7 @@
 				'/css/timeline2.css',
 				//'/css/circle.css',	
 				'/css/default/directory.css',	
-				'/js/comments.js',
+				//'/js/comments.js',
 				'/css/profilSocial.css',
 				'/css/calendar.css',
 		) , 
@@ -784,7 +784,7 @@
 	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
 	var actionId = "<?php echo @$_GET['action']; ?>";
 	var isLiveNews = "";
-
+	var connectTypeElement="<?php echo Element::$connectTypes[$type] ?>";
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();

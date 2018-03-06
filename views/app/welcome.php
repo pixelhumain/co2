@@ -35,7 +35,7 @@ jQuery(document).ready(function() {
     initKInterface({"affixTop":0});
     $("#mainNav").addClass("affix");
     initWelcomeInterface();
-    location.hash = "";
+    //location.hash = "";
 });
 
 

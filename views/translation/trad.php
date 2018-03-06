@@ -54,7 +54,7 @@ var trad = {
 	"explainnofoundcity":"<?php echo Yii::t("common", "Perhaps, this city has no data at this time") ?>",
 	"sharesomething":"<?php echo Yii::t("common","Share something") ?>",
 	"connectyou":"<?php echo Yii::t("common","Connect you") ?>",
-	"contributecommunecterslogan":"<?php echo Yii::t("common","Communecter is building and growing thnaks to every pixels") ?>",
+	"contributecommunecterslogan":"<?php echo Yii::t("common","Communecter is build and grows thanks to many pixels") ?>",
 	"changelanguageprocessing":"<?php echo Yii::t("common","Changing language processing") ?>",
 	"removeopinionbefore" : "<?php echo Yii::t("common", "Remove your last opinion before") ?>",
 	"voteaddedsuccess" : "<?php echo Yii::t("common", "Your vote has been successfully added") ?>",

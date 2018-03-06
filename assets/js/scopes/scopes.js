@@ -145,6 +145,10 @@ function addToMultiscope(scopeValue){
 }
 
 
+function scopeExists(scopeValue){
+	return typeof myScopes.multiscopes[scopeValue] != "undefined";
+}
+
 function removeFromMultiscope(scopeValue){
 	mylog.log("removeFromMultiscope", scopeValue);
 	if(scopeExists(scopeValue)){
@@ -183,6 +187,7 @@ function bindSearchCity(){
 }
 
 function bindScopesInputEvent(news){
+	mylog.log("bindScopesInputEvent");
 	$(".manageMultiscopes").off().on("click", function(){
 		mylog.log("manageMultiscopes");
 		addScope=$(this).data("add");

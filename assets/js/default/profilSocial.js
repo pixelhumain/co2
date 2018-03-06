@@ -768,14 +768,14 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	if($.inArray( dataName , ["follows","followers","organizations","members","guests","attendees","contributors"] ) >= 0){
 		communityStr+="<div id='menuCommunity' class='col-md-12 col-sm-12 col-xs-12 padding-20'>";
 		if(contextData.type == "citoyens" ) {
-		communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
+			communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
 			if(dataName=="follows")
-				communityStr+=' active';		
-		communityStr+='" data-type-dir="follows" data-icon="link">'+
-				'<i class="fa fa-link"></i> <span class="hidden-xs">'+trad.follows+'</span>';
-				if(typeof contextData.links != "undefined" && typeof contextData.links.follows != "undefined")
-		communityStr += "<span class='badge'>"+Object.keys(contextData.links.follows).length+"</span>";
-		communityStr +=	'</a>';
+				communityStr+=' active';
+			communityStr+='" data-type-dir="follows" data-icon="link">'+
+					'<i class="fa fa-link"></i> <span class="hidden-xs">'+trad.follows+'</span>';
+			if(typeof contextData.links != "undefined" && typeof contextData.links.follows != "undefined")
+				communityStr += "<span class='badge'>"+Object.keys(contextData.links.follows).length+"</span>";
+			communityStr +=	'</a>';
 		}
 		countHtml="";
 		if(typeof contextData.links != "undefined" && typeof contextData.links[connectTypeElement] != "undefined"){
@@ -790,8 +790,8 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			countHtml += "<span class='badge'>"+countLinks+"</span>";
 		}
 		communityStr+=	'<a href="javascript:" class="ssmla uppercase load-coummunity';
-			if(dataName==connectTypeElement)
-				communityStr+=' active';		
+		if(dataName==connectTypeElement)
+			communityStr+=' active';		
 		communityStr+='" data-type-dir="'+connectTypeElement+'" data-icon="users">'+
 				'<i class="fa fa-users"></i> <span class="hidden-xs">'+trad[connectTypeElement]+"</span>"+
 				countHtml+
@@ -801,21 +801,21 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
 			if(dataName=="followers")
 				communityStr+=' active';		
-		communityStr+='" data-type-dir="followers" data-icon="link">'+
-				'<i class="fa fa-link"></i> <span class="hidden-xs">'+trad.followers+'</span>';
-				if(typeof contextData.links != "undefined" && typeof contextData.links.followers != "undefined")
-		communityStr += "<span class='badge'>"+Object.keys(contextData.links.followers).length+"</span>";
-		communityStr +=	'</a>';
+			communityStr+='" data-type-dir="followers" data-icon="link">'+
+							'<i class="fa fa-link"></i> <span class="hidden-xs">'+trad.followers+'</span>';
+			if(typeof contextData.links != "undefined" && typeof contextData.links.followers != "undefined")
+				communityStr += "<span class='badge'>"+Object.keys(contextData.links.followers).length+"</span>";
+			communityStr +=	'</a>';
 		}
 		if(contextData.type != "citoyens") {
 			communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
 			if(dataName=="guests")
 				communityStr+=' active';		
-		communityStr+='" data-type-dir="guests" data-icon="send">'+
-				'<i class="fa fa-send"></i> <span class="hidden-xs">'+trad.guests+'</span>';
-				if(typeof countGuests != "undefined")
-		communityStr += "<span class='badge'>"+countGuests+"</span>";
-		communityStr +=	'</a>';
+			communityStr+='" data-type-dir="guests" data-icon="send">'+
+					'<i class="fa fa-send"></i> <span class="hidden-xs">'+trad.guests+'</span>';
+			if(typeof countGuests != "undefined")
+				communityStr += "<span class='badge'>"+countGuests+"</span>";
+			communityStr +=	'</a>';
 		}
 		if (contextData.type=="citoyens" || contextData.type=="places" ){
 			communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';

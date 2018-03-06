@@ -1566,7 +1566,27 @@ La vie en santé;Santé;;
 
 	public function actionLanguage(){
 		echo Yii::app()->language ;
-		
-		
+	}
+
+	public function actionOrganizationMissing(){
+		$orga = PHDB::find(Organization::COLLECTION, array(	"type" => array('$exists' => false) ) );
+		$i = 0 ;
+		$v = 0;
+		foreach ($orga as $key => $value) {
+			echo date("d / m / y", $value["created"])." ".$value["name"];
+
+			if( !empty($value["source"]) ){
+				echo " : IMPORT";
+				$i++;
+			}else{
+				echo " : DYNFORM";
+				$v++;
+			}
+			
+			echo "<br/>";
+		}
+
+		echo $i." importé <br/>";
+		echo $v." dynform <br/>";
 	}
 }

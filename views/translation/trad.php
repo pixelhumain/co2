@@ -973,6 +973,7 @@ var tradTags = {
 	"health" : "<?php echo Yii::t("tags","health") ?>",
 	"waste" : "<?php echo Yii::t("tags","waste") ?>",
 	"urbanism" : "<?php echo Yii::t("tags","urbanism") ?>",
+	"development" : "<?php echo Yii::t("tags","development") ?>",
 	"transport" : "<?php echo Yii::t("tags","transport") ?>",
 	"construction" : "<?php echo Yii::t("tags","construction") ?>",
 	"education" : "<?php echo Yii::t("tags","education") ?>",

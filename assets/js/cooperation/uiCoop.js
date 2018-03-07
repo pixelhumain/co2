@@ -298,14 +298,14 @@ var uiCoop = {
 		});
 	},
 
-	"sendVote" : function(parentType, parentId, voteValue, idParentRoom, idAmdt){
+	"sendVote" : function(parentType, parentId, voteValue, idParentRoom, idAmdt, returnJson=false){
 		console.log("sendVote", parentType, parentId, voteValue, idParentRoom, idAmdt);
-		
+
 		var params = {
 			"parentType" : parentType,
 			"parentId" : parentId,
 			"voteValue" : voteValue,
-			"json" : false
+			"json" : returnJson
 		};
 		if(typeof idAmdt != "undefined")
 			params["idAmdt"] = idAmdt;
@@ -314,16 +314,21 @@ var uiCoop = {
 		
 		toastr.info(trad["processing save"]);
 		ajaxPost("", url, params,
-			function (proposalView){
-				console.log("success save vote");
+			function (proposalRes){
+				console.log("success save vote", proposalRes);
 				uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
 					function(){
 						toastr.success(trad["Your vote has been save with success"]);
 						
-						uiCoop.minimizeMenuRoom(true);
-						$(uiCoop.getParentContainer() + "#coop-data-container").html(proposalView);
-						if(parentType == "amendement")
-							uiCoop.showAmendement(true);
+						if(returnJson == false){
+							uiCoop.minimizeMenuRoom(true);
+							$(uiCoop.getParentContainer() + "#coop-data-container").html(proposalRes);
+							if(parentType == "amendement")
+								uiCoop.showAmendement(true);
+						}else{
+							$(".newsActivityStream"+parentId).html(directory.coopPanelHtml(proposalRes["proposal"]));
+							initBtnLink();
+						}
 					}, false);
 			}
 		);
@@ -569,7 +574,7 @@ var uiCoop = {
 		});
 
 
-		$(".btn-send-vote").click(function(){
+		$(".btn-send-vote").off().click(function(){
 			var voteValue = $(this).data('vote-value');
 			console.log("send vote", voteValue),
 			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
@@ -760,7 +765,7 @@ var uiCoop = {
 		$("#btn-refresh-resolution").click(function(){
 			toastr.info(trad["processing"]);
 			var idresolution = $(this).data("id-resolution");
-			uiCoop.getCoopData(null, null, "resolution", null, idresolution, 
+			uiCoop.getCoopData(parentTypeElement, parentIdElement, "resolution", null, idresolution, 
 				function(){
 					uiCoop.minimizeMenuRoom(true);
 					uiCoop.showAmendement(false);

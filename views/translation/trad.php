@@ -422,6 +422,12 @@ var trad = {
 	"Disagree" : "<?php echo Yii::t("cooperation", "Disagree") ?>",
 	"Abstain" : "<?php echo Yii::t("cooperation", "Abstain") ?>",
 	"Uncomplet" : "<?php echo Yii::t("cooperation", "Uncomplet") ?>",
+	"clicktovote" : "<?php echo Yii::t("cooperation", "click to vote") ?>",
+
+	"up" : "<?php echo Yii::t("cooperation", "up") ?>",
+	"down" : "<?php echo Yii::t("cooperation", "down") ?>",
+	"white" : "<?php echo Yii::t("cooperation", "white") ?>",
+	"uncomplet" : "<?php echo Yii::t("cooperation", "uncomplet") ?>",
 
 	"amendementTooShort" : "<?php echo Yii::t("cooperation", "Your amendement is too short ! Minimum : 10 caracters") ?>",
 
@@ -476,6 +482,8 @@ var trad = {
 	"addplacesplease": "<?php echo Yii::t("form","Please, add a place to your post") ?>",
 	"addplacestyournews" : "<?php echo Yii::t("form","Add places where you want to publish") ?>",
 	"selectedzones" : "<?php echo Yii::t("form","Selected zones") ?>",
+
+	"Open" : "<?php echo Yii::t("common","Open") ?>",
 };
 
 var tradDynForm = {
@@ -527,7 +535,7 @@ var tradDynForm = {
 	"eventparentEndDate":"<?php echo Yii::t("form","Event parent's end date") ?>",
 	"shortDescription":"<?php echo Yii::t("form","Short description") ?>",
 	"longDescription":"<?php echo Yii::t("form","Long description") ?>",
-	"textproposal":"<?php echo Yii::t("form","Your proposal") ?>",
+	"textproposal":"<?php echo Yii::t("form","Your proposal / question") ?>",
 	"eventTypes":"<?php echo Yii::t("form","Event type") ?>",
 	"organizationType":"<?php echo Yii::t("form","Organization type") ?>",
 	"servicesTypes":"<?php echo Yii::t("form","Service type") ?>",
@@ -690,7 +698,9 @@ var tradDynForm = {
 	"collectionname": "<?php echo Yii::t("form", "Name of the collection") ?>",
 	"isPublic": "<?php echo Yii::t("form", "is Public and will show Every where") ?>",
 	"This URL is already used" : "<?php echo Yii::t("form", "This URL is already used") ?>",
-	"This URL is not used" : "<?php echo Yii::t("form", "This URL is not used") ?>"
+	"This URL is not used" : "<?php echo Yii::t("form", "This URL is not used") ?>",
+	"Add answers" : "<?php echo Yii::t("form", "Add answers") ?>",
+	"answer" : "<?php echo Yii::t("form", "answer") ?>",
 };
 
 var tradCategory = {

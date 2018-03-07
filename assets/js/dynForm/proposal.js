@@ -100,6 +100,17 @@ dynForm = {
 						intval + "%</b> "+tradDynForm.ofvotes+" <span class='letter-green'>"+tradDynForm.favorables+"</span> "+tradDynForm.tobevalidated);
 				});
 
+				$("#ajaxFormModal .form-group.answersarray").hide();
+
+				$("#ajaxFormModal .multiChoicecheckboxSimple .btn-dyn-checkbox").click(function(){
+					var checkval = $(this).data("checkval");
+					console.log("checkval", checkval);
+					if(checkval=="true") $("#ajaxFormModal .form-group.answersarray").hide(200);
+					else	 	 $("#ajaxFormModal .form-group.answersarray").show(200);
+				});
+
+				$("#ajaxFormModal .multiChoicecheckboxSimple #multiChoice").remove();
+
 			}
 	    },
         beforeSave : function(){
@@ -196,11 +207,19 @@ dynForm = {
             },*/
             title : dyFInputs.name("proposal", { required : false }),
             description : dyFInputs.textarea(tradDynForm.textproposal, "..."),
-            infoargs : {
-                inputType : "custom",
-                html:"<div class='text-left'><b><i class='fa fa-info-circle'></i> "+tradDynForm.infoProposal1+"</b>"+
-                	 "<br>"+tradDynForm.infoProposal2+"</i></div>",
-            },
+            multiChoice : dyFInputs.checkboxSimple("true", "multiChoice", 
+            										{ "onText" : "pour / contre",//trad.yes,
+            										  "offText": "choix multiple", //trad.no,
+            										  "onLabel" : "pour / contre",//tradDynForm.anonymous,
+            										  "offLabel": "choix multiple", //tradDynForm.nominative,
+            										  //"inputId" : ".amendementDateEnddatetime",
+            										  "labelText": "Type de réponse",
+            										  //"labelInInput": "Activer les amendements",
+            										  "labelInformation": "<i class='fa fa-info-circle'></i> " + "Choisissez <b>choix multiple</b> pour définir une liste de réponses personnalisées" // tradDynForm.keepSecretIdentityVote
+
+            }),
+            answers : dyFInputs.multiChoice,
+            
 	        arguments : dyFInputs.textarea(tradDynForm.textargumentsandmore, "..."),
             amendementActivated : dyFInputs.checkboxSimple("true", "amendementActivated", 
             										{ "onText" : trad.yes,

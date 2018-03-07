@@ -236,21 +236,24 @@
 	
 	<?php if(@$proposal["status"] == "tovote"){ ?>
 		<hr>
+
+	<?php if(!isset($proposal["answers"])){ ?>
 		<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
 			 <h4><?php echo Yii::t("cooperation", "Proposal"); ?> <?php if($proposal["status"] != "closed"){ ?>
 			 	<?php echo Yii::t("cooperation", "temporaly"); ?> <?php } ?>
 				 <span class="bold letter-green"><?php echo Yii::t("cooperation", "Validated"); ?></span> · 
-				 <small><?php echo $totalVotant; ?> <?php echo Yii::t("cooperation", "voter"); ?>
-				 <?php echo $totalVotant > 1 ? "s" : ""; ?></small>
+				 <small><?php echo $totalVotant; ?> <?php echo Yii::t("cooperation", "voter"); ?><?php echo $totalVotant > 1 ? "s" : ""; ?></small>
 			 </h4>
 		<?php }else{ ?>
 			 <h4><?php echo Yii::t("cooperation", "Proposal"); ?> <?php if($proposal["status"] != "closed"){ ?>
 			 	<?php echo Yii::t("cooperation", "temporaly"); ?> <?php } ?> 
 				 <span class="bold letter-red"><?php echo Yii::t("cooperation", "Refused"); ?></span> · 
-				 <small><?php echo $totalVotant; ?> <?php echo Yii::t("cooperation", "voter"); ?>
-				 <?php echo $totalVotant > 1 ? "s" : ""; ?></small>
+				 <small><?php echo $totalVotant; ?> <?php echo Yii::t("cooperation", "voter"); ?><?php echo $totalVotant > 1 ? "s" : ""; ?></small>
 			 </h4>
 		<?php } ?>
+	<?php }else{ ?>
+		<h4><?php echo Yii::t("cooperation", "Survey in process"); ?></h4>
+	<?php } ?>
 
 		
 		<div class="progress <?php if($proposal["status"] != "tovote") echo "hidden-min"; ?>">
@@ -286,9 +289,10 @@
 		</h5>
 	<?php } ?>
 
-	<?php if(@$proposal["status"] == "tovote" && $hasVote!=false){ ?>
+	<?php if(@$proposal["status"] == "tovote" && $hasVote!==false){ ?>
 		<h5 class="pull-left no-margin"><i class="fa fa-user-circle"></i> <?php echo Yii::t("cooperation", "You did vote"); ?> 
 			<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
+				<?php if(@$proposal["status"]) { ?><i class="fa fa-hashtag"></i> <?php } ?>
 				<?php echo Yii::t("cooperation", $hasVote); ?>
 			</span>
 		</h5>
@@ -304,7 +308,8 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-15">
 		<hr>
 		<h4 class="">
-			<i class="fa fa-bell"></i> 
+			<i class="fa fa-bell"></i>
+			<?php if(!@@$proposal["answers"]){ ?>
 			<?php echo Yii::t("cooperation", "The <b>resolution</b> is done : "); ?>
 			<br class="visible-md">
 			<small><?php echo Yii::t("cooperation", "The proposal is"); ?> 
@@ -315,6 +320,9 @@
 			 	<span class="letter-red"><?php echo Yii::t("cooperation", "refused"); ?></span>
 				<?php } ?>
 			</small>
+			<?php }else{ ?>
+				<?php echo Yii::t("cooperation", "The <b>vote</b> is ended : "); ?>
+			<?php } ?>
 		</h4>
 		<?php if(@$proposal["voteDateEnd"]){ ?>
 			<i class='fa fa-clock-o'></i> <?php echo Yii::t("cooperation", "End of vote session"); ?> 
@@ -436,7 +444,7 @@
 				  	  			$totalVotant = Proposal::getTotalVoters($am);
 					  	  		foreach($voteRes as $key => $value){ 
 					  	  	?>
-								  <div class="progress-bar bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
+								  <div class="progress-bar bg-vote bg-<?php echo $value["bg-color"]; ?>" role="progressbar" 
 								  		style="width:<?php echo $value["percent"]; ?>%">
 								    <?php echo $value["percent"]; ?>%
 								  </div>
@@ -486,9 +494,16 @@
 
 
 <?php 
-	if(@$proposal["status"] != "amendable") 
-		$this->renderPartial('../cooperation/pod/vote', 
-				array("proposal"=>$proposal, "auth" => $auth, "hasVote" => $hasVote));
+	if(@$proposal["status"] != "amendable"){
+
+		if(@$proposal["answers"]){
+			$this->renderPartial('../cooperation/pod/voteMultiple', 
+					array("proposal"=>$proposal, "auth" => $auth, "hasVote" => $hasVote));
+		}else{
+			$this->renderPartial('../cooperation/pod/vote', 
+					array("proposal"=>$proposal, "auth" => $auth, "hasVote" => $hasVote));
+		}
+	}
 ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><hr></div>

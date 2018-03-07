@@ -76,6 +76,7 @@
 
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+	<?php if(!@$resolution["answers"]){ ?>
 	<hr>
 		<h4 class="">
 			<i class="fa fa-bell"></i> 
@@ -119,16 +120,56 @@
 			</button>
 		</h4>
 
-		<br>
+	<?php }else{ ?>
+	<?php
+		//var_dump($voteRes); exit;
+		$winer = 0; $maxV = ""; $nbWiner = 0;
+		foreach ($voteRes as $kv => $vote) {
+		 	if($vote["percent"] > $maxV){
+		 	 	$maxV = $vote["percent"];
+		 	 	$winer = "<span class='letter-vote-".$kv."'>#".($kv+1)."</span> ";
+		 	 	$nbWiner=1;
+		 	}else if($vote["percent"] == $maxV){
+		 		$winer .= "<span class='letter-vote-".$kv."'>#".($kv+1)."</span> ";
+		 	 	$nbWiner++;
+		 	}
+		 } 
+	?>
+		<hr>
+		<h4 class="">
+			<?php echo Yii::t("cooperation", "Answer"); echo $nbWiner>1?"s":""; ?> 
+			<b><?php echo Yii::t("cooperation", "adopted".($nbWiner>1?"s":"")); ?></b> : 
+			<b><?php echo $winer; ?></b> 
+		</h4>
+	<?php } ?>
+	<hr>
+
+	<h5>
+		<?php if(@$resolution["voteDateEnd"]){ ?>
+			<i class='fa fa-clock-o'></i> <?php echo Yii::t("cooperation", "End of vote session"); ?> 
+			<?php echo Translate::pastTime($resolution["voteDateEnd"], "date"); ?> · 
+			<small class='letter-green'> 
+				<?php echo date('d/m/Y H:i e', strtotime($resolution["voteDateEnd"])); ?>
+			</small>
+		<?php } ?>
 		
-		<div class="hidden podvote">
-			<?php 
+	</h5>
+	
+	<div class="hidden podvote">
+
+		<?php 			
+			if(@$resolution["answers"]){
+				$this->renderPartial('../cooperation/pod/voteMultiple', array("proposal"=>$resolution, 
+																		  "hasVote" => $hasVote, 
+																		  "auth" => $auth));
+			}else{
 				$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution, 
-																	  "hasVote" => $hasVote, 
-																	  "auth" => $auth));
-			?>
-		</div>
-		<br>		
+																  "hasVote" => $hasVote, 
+																  "auth" => $auth));
+			}
+		?>
+	</div>
+	<br>		
 </div>
 
 
@@ -147,6 +188,7 @@
 		} ?>
 			
 		<?php echo nl2br(@$resolution["description"]); ?>
+
 
 		<?php 
 			$i=0;
@@ -176,6 +218,19 @@
 			
 		<?php } ?>
 	</div>
+
+
+
+	<?php if(@$resolution["answers"]){ ?>
+		<div class="podvote">
+			<?php $this->renderPartial('../cooperation/pod/voteMultiple', array("proposal"=>$resolution, 
+																			  "hasVote" => $hasVote, 
+																			  "auth" => $auth));
+			?>
+		</div>
+		<br>
+	<?php } ?>	
+
 
 	<?php if(false && @$resolution["arguments"]){ ?>
 		<h4 class="margin-top-50"><i class="fa fa-angle-down"></i> 

@@ -1,24 +1,17 @@
 <style>
-#podVote{
-	/*border: 1px dashed grey;*/
-	border-radius: 20px;
-	margin-top:35px;
-	margin-bottom:30px;
-	background: #f3f3f3;
-	/*color: white;*/
-}
+
 </style>
 
 <div class="col-lg-12 col-md-12 col-sm-12 padding-top-15 padding-bottom-5" id="podVote">
 	
-	<div class="col-lg-3 col-md-4 col-sm-4 text-center padding-15 pull-right">
+	<div class="col-lg-2 col-md-2 col-sm-2 text-center padding-15 pull-right">
 		<canvas id="pieVote"/>
 	</div>
 
-		<div class="col-lg-4 col-md-4 col-sm-5 text-center no-padding pull-left">
+		<div class="col-lg-4 col-md-4 col-sm-5 text-left no-padding pull-left">
 			<h5 class="no-margin">
 				<?php if(@$proposal["status"] == "tovote" && $auth){ ?>
-					<i class="fa fa-hand-o-up"></i> <?php echo Yii::t("cooperation", "VOTE NOW"); ?>
+					<!-- <i class="fa fa-hand-o-up"></i> <?php echo Yii::t("cooperation", "VOTE NOW"); ?> -->
 				<?php }else if(@$proposal["status"] != "tovote"){ ?>
 					<i class="fa fa-balance-scale"></i> <?php echo Yii::t("cooperation", "RESULTS"); ?>
 				<?php }else if(!$auth){ ?>
@@ -52,36 +45,66 @@
 		 	if($hasVote && @$proposal["voteCanChange"] == "false") 
 		 		$tooltipsVoteCantChange = Yii::t("cooperation", "You can not change your vote");
  	?>
-		<div class="col-lg-8 col-md-8 col-sm-8 text-center no-padding pull-left margin-top-5">
-			<div class="col-lg-1 col-md-1 col-sm-1 text-center no-padding pull-left margin-top-5">
-				<?php if($key == $hasVote){ ?>
-					<i class="fa fa-chevron-right pull-right  hidden-sm hidden-md" style="margin-top:8px;"></i> 
-					<i class="fa fa-user-circle pull-right tooltips" style="margin-top:8px;"
+		<div class="col-lg-10 col-md-10 col-sm-10 text-center no-padding pull-left margin-top-5">
+			
+			<!-- <div class="col-lg-1 col-md-1 col-sm-1 text-center padding-5 pull-left margin-top-15">
+				
+			</div> -->
+			<!-- <div class="col-lg-1 hidden-md hidden-sm hidden-xs text-center pull-left margin-top-15" style="padding:10px 0 0 0;">
+				<i class="fa fa-hashtag"></i><b><?php echo ($key+1); ?></b>
+			</div>		
+ -->
+
+			<?php if(@$proposal["status"] == "tovote" && $auth && (!$hasVote || @$proposal["voteCanChange"] == "true")){ ?>
+				<div class="col-lg-1 col-md-2 col-sm-2 no-padding text-center pull-left margin-left-15 margin-top-20">
+					<button class="btn btn-send-vote btn-link btn-sm bg-vote bg-<?php echo $value["bg-color"]; ?> tooltips"
+							data-original-title="<?php echo Yii::t("cooperation", "click to vote"); ?>" data-placement="bottom"
+							data-vote-value="<?php echo $key; ?>"><i class="fa fa-gavel"></i>
+					</button>
+					<?php if($key === (int)$hasVote && $hasVote !== false){ ?>
+					<br>
+					<i class="fa fa-chevron-right pull-right margin-top-10"></i> 
+					<i class="fa fa-user-circle pull-right tooltips margin-top-10"
 						data-original-title="<?php echo Yii::t("cooperation", "You did vote"); ?> <?php echo Yii::t("cooperation", $hasVote); ?>" 
 						data-placement="right"></i>
 				<?php } ?>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-6 text-center pull-left margin-top-5">
-				<?php if(@$proposal["status"] == "tovote" && $auth && (!$hasVote || @$proposal["voteCanChange"] == "true")){ ?>
-					<button class="btn btn-send-vote btn-link btn-sm bg-<?php echo $value["bg-color"]; ?> tooltips"
-							data-original-title="cliquer pour voter" data-placement="right"
-							data-vote-value="<?php echo $value["voteValue"]; ?>"><?php echo Yii::t("cooperation", $key); ?>
-					</button>
-				<?php }else{ ?>
-					<label class="col-lg-12 col-md-12 col-sm-12 badge padding-10 bg-<?php echo $value["bg-color"]; ?> tooltips"
-						   data-original-title="<?php echo $tooltipsVoteCantChange; ?>" data-placement="right">
-						<?php echo Yii::t("cooperation", $key); ?>
-					</label>
+				</div>
+			<?php } ?>
+
+
+			<div class="col-lg-10 col-md-9 col-sm-9 text-left pull-left margin-top-15">
+				<div class="padding-10 border-vote border-vote-<?php echo $key; ?>">
+					<i class="fa fa-hashtag"></i><b><?php echo ($key+1); ?></b> 
+					<?php echo $value["voteValue"]; ?>
+				</div>
+				<?php if($value["percent"]!=0){ ?>		
+				<div class="progress progress-res-vote <?php if($proposal["status"] != "tovote") echo "hidden-min"; ?>">
+	  	  			<div class="progress-bar bg-vote bg-<?php echo $value["bg-color"]; ?> tooltips"
+							data-original-title="<?php echo $value["votant"]; ?> <?php echo Yii::t("cooperation", "voters"); ?>" data-placement="bottom" role="progressbar" 
+				  		style="width:<?php echo $value["percent"]; ?>%">
+				    	<?php echo $value["percent"]; ?>%
+				  	</div>
+				  	<div class="progress-bar bg-transparent" 
+					 role="progressbar" 
+				  		style="width:<?php echo 100-$value["percent"]; ?>%">
+				    	<span class=" tooltips" data-original-title="<?php echo $identities; ?>" data-placement="bottom">
+					 		<?php echo $value["votant"]; ?> <i class="fa fa-gavel"></i>
+					 	</span>
+				  	</div>
+				</div>
 				<?php } ?>
 
-			</div>
-			<div class="col-lg-2 col-md-2 col-sm-2 text-center pull-left margin-top-5 tooltips"
-						data-original-title="<?php echo $value["votant"]; ?> <?php echo Yii::t("cooperation", "voters"); ?>" data-placement="right">
-				<label><?php echo $value["percent"]; ?>%</label>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 text-center pull-left margin-top-5 hidden-sm hidden-xs tooltips"
-				 data-original-title="<?php echo $identities; ?>" data-placement="top">
-				<small><?php echo $value["votant"]; ?> <?php echo Yii::t("cooperation", "voter"); ?>(s)</small><br>
+				<?php if($value["percent"]==0){ ?>
+				<div class="col-lg-1 col-md-2 col-sm-2 no-padding text-left pull-left margin-top-5 tooltips"
+							data-original-title="<?php echo $value["votant"]; ?> <?php echo Yii::t("cooperation", "voters"); ?>" data-placement="bottom">
+					<label><?php echo $value["percent"]; ?>%</label>
+				</div>
+				<?php } ?>
+				<!-- <div class="col-lg-6 col-md-6 col-sm-6 text-right pull-right margin-top-5 hidden-sm hidden-xs tooltips"
+					 data-original-title="<?php echo $identities; ?>" data-placement="top">
+					<small><?php echo $value["votant"]; ?> <?php echo Yii::t("cooperation", "voter"); ?>(s)</small><br>
+				</div> -->
+
 			</div>
 		</div>
 
@@ -90,15 +113,15 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 pull-left padding-15 majority-space">
 
 		<?php if(@$proposal["status"] != "amendable" && $auth){ ?>
-			<?php if($hasVote!=false){ ?>
-				<h4 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
+			<?php if($hasVote!==false){ ?>
+				<h4 class="no-margin col-lg-8 col-md-8 col-sm-8 text-left pull-left" 
 					style="padding-left: 0px !important;"><?php echo Yii::t("cooperation", "You did vote"); ?> 
 					<span class="letter-<?php echo Cooperation::getColorVoted($hasVote); ?>">
-						<?php echo Yii::t("cooperation", $hasVote); ?>
+						<i class="fa fa-hashtag"></i><?php echo ($hasVote+1); ?>
 					</span>
 				</h4>
 			<?php }else{ ?>
-				<h4 class="no-margin col-lg-4 col-md-4 col-sm-5 text-center pull-left" 
+				<h4 class="no-margin col-lg-8 col-md-8 col-sm-8 text-left pull-left" 
 					style="padding-left: 0px !important;"><?php echo Yii::t("cooperation", "You did not vote"); ?></h4>
 			<?php } ?>
 			<br>
@@ -126,22 +149,6 @@
 			</small>
 		</h4>
 
-		<h4 class="pull-right text-right"> 
-			<small class="majority">
-				<i class="fa fa-2x fa-balance-scale"></i> <?php echo Yii::t("cooperation", "Rule of majority"); ?> : 
-				<b><?php echo @$proposal["majority"]; ?>%</b><br>
-				<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
-					 <?php echo Yii::t("cooperation", "Proposal"); ?> 
-					 <?php if($proposal["status"] == "tovote"){ ?><?php echo Yii::t("cooperation", "temporaly"); ?> <?php } ?>
-					 <span class="bold letter-green"><?php echo Yii::t("cooperation", "validated"); ?></span>
-				<?php }else{ ?>
-					 <?php echo Yii::t("cooperation", "Proposal"); ?> 
-					 <?php if($proposal["status"] == "tovote"){ ?><?php echo Yii::t("cooperation", "temporaly"); ?> <?php } ?> 
-					 <span class="bold letter-red"><?php echo Yii::t("cooperation", "refused"); ?></span>
-				<?php } ?>
-			</small>
-		</h4>
-
 	</div>
 
 </div>
@@ -158,13 +165,13 @@
 
 	function chartInit(){ //alert("start loadchart");
 		var voteValues = new Array();
-		console.log("voteRes", voteRes);
+		console.log("voteRes", voteRes, "voteValues", voteValues);
 		$.each(voteRes, function(key, val){
 			console.log("val.percent", val);
 			voteValues.push(val.percent);
 		});
 
-		var data = {
+		/*var data = {
 		    datasets: [{
 		    	data: voteValues,
 		    
@@ -190,7 +197,32 @@
 			        trad.Uncomplet
 			    ],
 			    
+		};*/
+
+		var backgroundColor = new Array();
+		var borderColor = new Array();
+		var labels = new Array();
+		$.each(voteRes, function(key, value){
+			console.log("voteValues", value);
+			backgroundColor.push(value["bg-color-val"]);
+			borderColor.push(value["bg-color-val"]);
+			labels.push("#" + key);
+		});
+
+		var data = {
+		    datasets: [{
+		    	data: voteValues,
+		    
+			    // These labels appear in the legend and in the tooltips when hovering different arcs
+			    backgroundColor: backgroundColor,
+	            borderColor: borderColor,
+	            borderWidth: 1
+            }],
+            labels: labels,
+			    
 		};
+		console.log("data", data);
+
 		var ctx = $("#pieVote").get(0).getContext("2d");
 		var options;
 		myPieChart = new Chart(ctx,{

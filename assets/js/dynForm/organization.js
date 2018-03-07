@@ -5,6 +5,9 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
+	    	onload : function(){
+	    		dyFInputs.setHeader("bg-green");
+    	   	},
 	    	sub : function(){
 				
 				if(typeof currentKFormType == "undefined" || currentKFormType == "" || 

@@ -1246,9 +1246,24 @@ var directory = {
 					"</a>";
 		}
 
-		timeAction= (params.type=="events") ? trad.created : trad.actif;
-		if(params.updated != null )
-			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
+		
+    
+    if(params.type=="events"){
+      if(params.updated != null && params.updated.indexOf(trad.ago)>=0)
+         params.updated = trad.rightnow;
+
+      if(params.updated != null && !params.useMinSize)
+        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
+
+    }else{
+      //timeAction= (params.type=="events") ? trad.created : trad.actif;
+      if(params.updated != null )
+        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad.actif+" </span>" + params.updated + "</div>";
+    }
+
+    
+
+
     var linkAction = ( $.inArray(params.type, ["poi","classified","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
     
 		//var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";

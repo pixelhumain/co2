@@ -4353,6 +4353,33 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		//echo json_encode($set);	
 		echo $nbelement." multiscopes mis a jours / ";
 	}
+
+
+	public function actionOrganizationMissing(){
+		$orga = PHDB::find(Organization::COLLECTION, array(	"type" => array('$exists' => false) ) );
+		$i = 0 ;
+		$v = 0;
+		foreach ($orga as $key => $value) {
+			echo date("d / m / y", $value["created"])." ; ".$value["name"];
+
+			if( !empty($value["source"]) ){
+				echo " ; IMPORT";
+				$i++;
+			}else{
+				echo " ; DYNFORM";
+				$v++;
+			}
+			
+			echo " ; ".Yii::app()->getRequest()->getBaseUrl(true)."/#page.type.organizations.id.".$key."<br/>";
+
+			$res = PHDB::update(Organization::COLLECTION, 
+					array("_id"=>new MongoId($key)),
+					array('$set' => array("type" => "Group"))
+			);
+		}
+		echo $i." importé <br/>";
+		echo $v." dynform <br/>";
+	}
 }
 
 

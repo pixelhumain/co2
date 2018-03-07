@@ -684,9 +684,10 @@
 		else
 			$("#divEndDate").addClass("hidden");
 		mylog.log("formatDateView", formatDateView);
-		if($("#startDateAbout").html() != "")
+		//if($("#startDateAbout").html() != "")
+		if(!$("#divStartDate").hasClass("hidden"))
 	    	$("#startDateAbout").html(moment(contextData.startDateDB).local().locale(mainLanguage).format(formatDateView));
-	    if($("#endDateAbout").html() != "")
+	    if(!$("#divEndDate").hasClass("hidden"))
 	    	$("#endDateAbout").html(moment( contextData.endDateDB).local().locale(mainLanguage).format(formatDateView));
 
 	    if($("#birthDate").html() != "")

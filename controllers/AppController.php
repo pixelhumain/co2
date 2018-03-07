@@ -323,7 +323,7 @@ class AppController extends CommunecterController {
                         "element" => $element);
 
         $params = Element::getInfoDetail($params, $element, $type, $id);
-        //var_dump(@$_POST); exit;
+        //var_dump($params); exit;
 
 
         if(@$_POST["preview"] == true){ 

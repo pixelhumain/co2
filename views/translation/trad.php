@@ -784,6 +784,7 @@ var tradCategory = {
 	"Conference" :"<?php echo Yii::t("category","Conference") ?>",
 	"Debate" :"<?php echo Yii::t("category","Debate") ?>",
 	"Film" :"<?php echo Yii::t("category","Film") ?>",
+	"Crowdfunding" :"<?php echo Yii::t("category","Crowdfunding") ?>",
 
 	"sharing" : "<?php echo Yii::t("category","Share") ?>", 
 	"donation" : "<?php echo Yii::t("category","Give") ?>", 

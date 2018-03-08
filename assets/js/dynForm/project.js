@@ -5,9 +5,11 @@ dynForm = {
 			    type : "object",
 			    onLoads : {
 			    	//pour creer un subevnt depuis un event existant
-
+			    	onload : function(){
+			    		dyFInputs.setHeader("bg-purple");
+		    	   	},
 			    	"sub" : function(){
-			    			dyFInputs.setSub("bg-purple");
+			    		dyFInputs.setSub("bg-purple");
 			    	}
 			    },
 			    beforeBuild : function(){

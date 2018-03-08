@@ -311,7 +311,7 @@ class AppController extends CommunecterController {
         if(@$element["organizerId"] && @$element["organizerType"] && 
             $element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow")
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
-        
+
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,

@@ -17,7 +17,7 @@
 	"transport": {
 		"name" : "Transport",
 		"icon" : "fa-bus",
-		"tags" : ["urbanism","transport","construction"]
+		"tags" : ["urbanism","transport","construction","development"]
 	},  
 	"education": {
 		"name" : "Education",

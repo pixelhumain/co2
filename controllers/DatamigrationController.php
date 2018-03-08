@@ -3730,7 +3730,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		 						$newS["postalCode"] = $newS["cp"];
 		 						unset($newS["cp"]);			
 		 					}
-		 					$newML[$newS["id"].$newS["type"]] = $newS;
+		 					$newML[(String)$city["_id"].$newS["type"]] = $newS;
 		 				}
 		 			}
 		 		}

@@ -17,7 +17,12 @@
 
 	"pages" : {
 		
-		"#app.index": {"redirect":"search"},
+		"#app.index": {
+			"redirect": {
+				"logged":"search",
+				"unlogged":"welcome"
+			}
+		},
 
 		"#welcome": {
 			"inMenu" : false, 

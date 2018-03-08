@@ -36,8 +36,7 @@ class AppController extends CommunecterController {
         Yii::app()->session["theme"] = "CO2";
         $params = CO2::getThemeParams();
         
-        $hash = $params["pages"]["#app.index"]["redirect"];
-        
+        $hash = (@Yii::app()->session["userId"]) ? $params["pages"]["#app.index"]["redirect"]["logged"] : $params["pages"]["#app.index"]["redirect"]["unlogged"];
         $params = array("type" => @$type );
 
         if(!@$hash || @$hash=="") $hash="search";

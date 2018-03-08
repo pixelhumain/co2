@@ -23,7 +23,7 @@
    
 ?>
 
-<section class="padding-top-70 bg-white inline-block pull-left" id="bg-homepage">
+<section class="bg-white inline-block pull-left no-padding" id="bg-homepage">
     <?php $this->renderPartial($layoutPath.'home.'.Yii::app()->params["CO2DomainName"], array());  ?>
 </section>
 

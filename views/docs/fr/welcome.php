@@ -151,7 +151,7 @@ var keyActors = [
 		"icon" : "fa-users",
 		"title":"Pour ma communauté",
 		"subtitle":"Je gère mon organisation",
-		"body":"Je sais ce qu’il se passe autour de moi."
+		"body":"Je valorise ce que je fait tout en profitant des outils de gestions de projets."
 	},
 	{
 		"icon" : "fa-globe",

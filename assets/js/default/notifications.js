@@ -142,8 +142,8 @@ function refreshNotifications(elementId,elementType,element,event)
         		$(".coopNotifs").html(data.coop).show(100);
         	}
         	else{
-        		$(".btn-dashboard-dda").hide();
-        		$(".coopNotifs").html("");
+        		//$(".btn-dashboard-dda").hide();
+        		//$(".coopNotifs").html("");
         	}
         } else {
             toastr.error("no notifications found ");

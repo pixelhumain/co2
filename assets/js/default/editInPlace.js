@@ -122,11 +122,13 @@ function bindAboutPodElement() {
 								}  
 								if(typeof data.resultGoods.values.startDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
+									//contextData.startDateDB = data.resultGoods.values.startDate;
 									//$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
 									//$("#startDateAbout").html(directory.returnDate(contextData.startDate, formatDateView));
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.endDate = data.resultGoods.values.endDate;
+									//contextData.endDateDB = data.resultGoods.values.endDate;
 									//$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
 									//$("#endDateAbout").html(directory.returnDate(contextData.endDate, formatDateView));
 								}

@@ -1076,11 +1076,11 @@ var directory = {
     str += "<div class='col-xs-12 searchEntity entityLight no-padding'  id='entity"+params.id+"'>";
     
     str += "<div class='entityLeft pull-left text-right padding-10 hidden-xs'>";
-      if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined" && location.hash != "#agenda"){
+      if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined" /*&& location.hash != "#agenda"*/){
           str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+"'>" + params.imgProfil + "</a>";
-      }else if(params.type == "events" && location.hash == "#agenda"){
-          str +=    "<a href='"+params.hash+"' class='container-img-profil event "+linkAction+"'>" + params.imgMediumProfil + "</a>";
-      }
+      }//else if(params.type == "events" && location.hash == "#agenda"){
+         // str +=    "<a href='"+params.hash+"' class='container-img-profil event "+linkAction+"'>" + params.imgMediumProfil + "</a>";
+      //}
     str += "</div>"
 
     str += "<div class='entityCenter col-xs-11 col-sm-8 col-md-7 col-lg-6 no-padding'>";
@@ -3177,41 +3177,40 @@ var directory = {
                       if((typeof directory.viewMode != "undefined" && directory.viewMode=="list" && !notNull(viewMode))  && $.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classified"] )>=0) 
                        str += directory.lightPanelHtml(params);  
                       else{ 
-
-                      if(params.type == "cities")
-                        str += directory.cityPanelHtml(params);  
-                    
-                      else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","places","ressources"] )>=0) 
-                        str += directory.elementPanelHtml(params);  
-                    
-                      else if(params.type == "events"){
-                        if(typeof search.countType != "undefined" && search.countType.length > 1)
-                          str += directory.elementPanelHtml(params);
-                        else
-                          str += directory.eventPanelHtml(params);  
-                      }
+                        if(params.type == "cities")
+                          str += directory.cityPanelHtml(params);  
                       
-                      else if (params.type == "news")
-                        str += directory.newsPanelHtml(params);
-                      //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
-                      //    str += directory.roomsPanelHtml(params,itemType);  
-                    
-                      else if(params.type == "classified"){
-                        if(typeof search.countType != "undefined" && search.countType.length > 1)
+                        else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","places","ressources"] )>=0) 
                           str += directory.elementPanelHtml(params);  
+                      
+                        else if(params.type == "events"){
+                          if(typeof search.countType != "undefined" && search.countType.length > 1)
+                            str += directory.elementPanelHtml(params);
+                          else
+                            str += directory.eventPanelHtml(params);  
+                        }
+                        
+                        else if (params.type == "news")
+                          str += directory.newsPanelHtml(params);
+                        //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
+                        //    str += directory.roomsPanelHtml(params,itemType);  
+                      
+                        else if(params.type == "classified"){
+                          if(typeof search.countType != "undefined" && search.countType.length > 1)
+                            str += directory.elementPanelHtml(params);  
+                          else
+                            str += directory.classifiedPanelHtml(params);
+                        }
+                        else if(params.type == "proposals" || params.type == "actions" || params.type == "resolutions" || params.type == "rooms")
+                          str += directory.coopPanelHtml(params);  
+                        else if(params.type.substring(0,11) == "poi.interop")
+                          str += directory.interopPanelHtml(params);
+                        else if(params.type == "network")
+                        	str += directory.network2PanelHtml(params);
+                          //str += directory.networkPanelHtml(params);
                         else
-                          str += directory.classifiedPanelHtml(params);
-                      }
-                      else if(params.type == "proposals" || params.type == "actions" || params.type == "resolutions" || params.type == "rooms")
-                        str += directory.coopPanelHtml(params);  
-                      else if(params.type.substring(0,11) == "poi.interop")
-                        str += directory.interopPanelHtml(params);
-                      else if(params.type == "network")
-                      	str += directory.network2PanelHtml(params);
-                        //str += directory.networkPanelHtml(params);
-                      else
-                        str += directory.defaultPanelHtml(params);
-                      }
+                          str += directory.defaultPanelHtml(params);
+                        }
                     }
                   }
               }else{

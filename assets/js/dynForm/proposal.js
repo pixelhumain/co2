@@ -9,6 +9,10 @@ dynForm = {
 	    	
 	    	},
 	    	onload : function(data){
+	    		
+	    		dataHelper.activateMarkdown("#ajaxFormModal #description");
+	    		dataHelper.activateMarkdown("#ajaxFormModal #arguments");
+
 				$("#ajaxFormModal #idParentRoom").val(currentRoomId);
 				console.log("checkcheck0", data, typeof data, contextData);
 
@@ -195,13 +199,13 @@ dynForm = {
             	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },*/
             title : dyFInputs.name("proposal", { required : false }),
-            description : dyFInputs.textarea(tradDynForm.textproposal, "..."),
+            description : dyFInputs.textarea(tradDynForm.textproposal, "...",null,true),
             infoargs : {
                 inputType : "custom",
                 html:"<div class='text-left'><b><i class='fa fa-info-circle'></i> "+tradDynForm.infoProposal1+"</b>"+
                 	 "<br>"+tradDynForm.infoProposal2+"</i></div>",
             },
-	        arguments : dyFInputs.textarea(tradDynForm.textargumentsandmore, "..."),
+	        arguments : dyFInputs.textarea(tradDynForm.textargumentsandmore, "...",null,true),
             amendementActivated : dyFInputs.checkboxSimple("true", "amendementActivated", 
             										{ "onText" : trad.yes,
             										  "offText": trad.no,

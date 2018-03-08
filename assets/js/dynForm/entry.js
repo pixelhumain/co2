@@ -6,7 +6,7 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	onload : function(data){
-	    		dataHelper.activateMarkdown("#ajaxFormModal #message");
+	    		dataHelper.activateMarkdown("#ajaxFormModal #description");
 	            if (typeof contextDataDDA.name != "undefined" && contextDataDDA.name != "")
 	    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+" dans :<br><small class='text-white'>"+contextDataDDA.name+"</small>" );
 	        }
@@ -73,7 +73,7 @@ dynForm = {
             	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },
             name : dyFInputs.name("vote"),
-            message : dyFInputs.textarea(tradDynForm.longDescription, "..."),
+            message : dyFInputs.textarea(tradDynForm.longDescription, "...",null,true),
             dateEnd : dyFInputs.dateEnd,
             tags : dyFInputs.tags(),
             image : dyFInputs.image(),

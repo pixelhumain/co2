@@ -64,6 +64,7 @@
 
 	<script type="text/javascript">
 		jQuery(document).ready(function() { 
+			alert("proposal");
 			$("#modal-preview-coop #btn-close-proposal").off().click(function(){
 				$("#modal-preview-coop").hide(300);
 			});
@@ -172,16 +173,23 @@
 
 
 <div class="col-lg-12 col-md-12 col-sm-12 pull-left margin-top-10" style="padding-left: 8px;">
+	<h3 class="radius-5 col-xs-12 bg-dark text-white text-bold padding-10 margin-bottom-10"  >	
+		<?php if(@$proposal["title"]){ ?>
+			<i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?>
+		<?php }else{ ?>
+			<i class="fa fa-angle-down"></i> <?php echo Yii::t("cooperation", "Proposal"); ?>
+		<?php } ?>
+	</h3>
 
 	<?php if(@$proposal["creator"]){ ?>
-	<label>
+
+		
+	<label class="pull-right">
+		<small> <?php echo Yii::t("cooperation","author"); ?> : </small>
 		<img class="img-circle" id="menu-thumb-profil" 
          width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
 		<a href="#page.type.citoyens.id.<?php echo $proposal["creator"]; ?>" class="lbh">
-			<?php echo $author["username"]; ?></a><?php if($myId == $proposal["creator"]){ ?><small>, 
-			<?php echo Yii::t("cooperation","your are the author of this proposal"); ?> </small>
-		<?php }else{ ?>
-		<small> <?php echo Yii::t("cooperation","is the author of this proposal"); ?></small>
+			<?php echo $author["username"]; ?></a><?php if($myId == $proposal["creator"]){ ?>
 		<?php } ?>
 	</label>
 	<?php } ?>
@@ -301,7 +309,7 @@
 
 
 <?php if(@$proposal["status"] == "resolved"){ ?>
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-15">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 		<hr>
 		<h4 class="">
 			<i class="fa fa-bell"></i> 
@@ -333,29 +341,20 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-5">
 	
-	<div class="padding-25 bg-lightblue radius-5 col-xs-12" id="container-text-proposal">
-
-			<?php if(@$proposal["title"]){ ?>
-				<h3><i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?></h3>
-			<?php }else{ ?>
-				<h3><i class="fa fa-angle-down"></i> <?php echo Yii::t("cooperation", "Proposal"); ?></h3>
-			<?php } ?>
-		
-			<?php if(@$proposal["description"]){
-					$proposal["description"] = Translate::strToClickable($proposal["description"]);
-			} ?>
-			
-			<div class="descriptionMarkdown">
-				<?php echo nl2br(@$proposal["description"]); ?>
-			</div>
-
+	
+	
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+	
+		<div class=" col-xs-12" id="container-text-proposal" style="padding:15px 0px 0px 40px; background-color: #eee;" ><?php echo @$proposal["description"]; ?></div>
+		<div class="col-xs-12"  >	
 			<?php if(@$proposal["tags"]){ ?>
-				<br><br> <b>Tags : </b>
+				<br> <b>Tags : </b>
 				<?php foreach($proposal["tags"] as $key => $tag){ ?>
-					<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
+					<span class="label label-danger margin-right-15">#<?php echo $tag; ?></span>
 				<?php } ?>	
 				
 			<?php } ?>
+		</div>
 	</div>
 
 
@@ -460,12 +459,8 @@
 	<?php if(@$proposal["arguments"]){ ?>
 		<hr>
 		<h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-50 no-padding"><i class="fa fa-angle-down"></i> <?php echo Yii::t("cooperation", "More informations, arguments, exemples, demonstrations, etc"); ?></h4>
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-			<?php if(@$proposal["arguments"]){
-					$proposal["arguments"] = Translate::strToClickable($proposal["arguments"]);
-			} ?>
-			<?php echo nl2br(@$proposal["arguments"]); ?>
-		</div>
+		
+		<div class="col-xs-12" id="container-text-complem" style="background-color: #eee" ><?php echo @$proposal["arguments"]; ?></div>
 	<?php } ?>
 
 	
@@ -543,9 +538,9 @@
 	currentRoomId = idParentRoom;
 
 	jQuery(document).ready(function() { 
-		
+		$("#container-text-proposal").html(dataHelper.markdownToHtml($("#container-text-proposal").html()) );
+		$("#container-text-complem").html(dataHelper.markdownToHtml($("#container-text-complem").html()) )
 		uiCoop.initUIProposal();
-
 	});
 
 </script>

@@ -372,6 +372,7 @@ var itemId = "<?php echo $survey["_id"] ?>";
 var endDate = "<?php echo date("d/m/Y",@$survey["dateEnd"]) ?>";
 
 jQuery(document).ready(function() {
+	alert("entryStandalone");
 	$.fn.editable.defaults.container='body';
 	$(".main-col-search").addClass("assemblyHeadSection");
   	//setTitle("Propositions, débats, votes","gavel");

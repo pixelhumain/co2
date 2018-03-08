@@ -240,7 +240,6 @@
 	currentRoomId = idParentRoom;
 
 	jQuery(document).ready(function() { 
-		
 		uiModeration.initUIModeration();
 
 	});

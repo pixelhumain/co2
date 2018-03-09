@@ -156,7 +156,7 @@ search.count=true;
   var startWinDATE = new Date();
   var agendaWinMonth = 0;
 <?php } ?>
-
+var scrollEnd = false;
 //var TPL = "kgougle";
 
 //allSearchType = ["persons", "NGO", "LocalBusiness", "projects", "Group"];

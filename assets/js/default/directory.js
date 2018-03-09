@@ -57,13 +57,11 @@ function startSearch(indexMin, indexMax, callBack){
 
       currentIndexMin = indexMin;
       currentIndexMax = indexMax;
-
       if(indexMin == 0 && indexMax == indexStep) {
         totalData = 0;
         mapElements = new Array(); 
       }
       else{ if(scrollEnd) return; }
-      
       //if(name.length>=2 || name.length == 0)
       //{
        // var locality = "";

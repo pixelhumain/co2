@@ -345,6 +345,7 @@ var trad = {
 	"ago":"<?php echo Yii::t("common","ago") ?>",
 	"rightnow":"<?php echo Yii::t("common","Right now") ?>",
 	"actif":"<?php echo Yii::t("common","online") ?>",
+	"created":"<?php echo Yii::t("common","created") ?>",
 	"posted":"<?php echo Yii::t("common","posted") ?>",
 	"writenby": "<?php echo Yii::t("common","Writen by") ?>",
 	"sharedby" : "<?php echo Yii::t("common","shared by") ?>",

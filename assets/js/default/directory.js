@@ -1234,30 +1234,32 @@ var directory = {
 			isFollowed=false;
 
 			if(typeof params.isFollowed != "undefined" )
+        if(params.type=="events"){
 				isFollowed=true;
-			mylog.log("isFollowed", params.isFollowed, isFollowed);
-			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
-			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-					' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-					" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-					"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-					"</a>";
+    			mylog.log("isFollowed", params.isFollowed, isFollowed);
+    			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
+    			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+    					' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+    					" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+    					"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+    			 "</a>";
+        }
 		}
 
 		
     
-    if(params.type=="events"){
+    /*if(params.type=="events"){
       if(params.updated != null && params.updated.indexOf(trad.ago)>=0)
          params.updated = trad.rightnow;
 
       if(params.updated != null && !params.useMinSize)
         str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
 
-    }else{
-      //timeAction= (params.type=="events") ? trad.created : trad.actif;
+    }else{*/
+      timeAction= /*(params.type=="events") ? trad.created :*/ trad.actif;
       if(params.updated != null )
-        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad.actif+" </span>" + params.updated + "</div>";
-    }
+        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
+    //}
 
     
 
@@ -2092,14 +2094,14 @@ var directory = {
                 
        // str += thisLocality;
 
-        var typeEvent = notEmpty(params.typeEvent) ? 
-                        (notEmpty(eventTypes[params.typeEvent]) ? 
-                        eventTypes[params.typeEvent] : 
-                        trad["event"]) : 
-                        trad["event"];
+        var typeEvent = //notEmpty(params.typeEvent) ? 
+                        (typeof tradCategory[params.typeEvent] != "undefined") ? 
+                        tradCategory[params.typeEvent] : 
+                       // trad["event"]) : 
+                        trad.event;
         //console.log("??????????????????",Object.keys(params));
         str += "<h5 class='text-dark lbh add2fav no-margin'>"+
-                  "<i class='fa fa-reply fa-rotate-180'></i> " + tradCategory[typeEvent] + thisLocality +
+                  "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + thisLocality +
                "</h5>";
 
         str += "<a href='"+params.hash+"' class='entityName text-dark lbh add2fav'>"+

@@ -253,7 +253,6 @@ $commentActive = true;
 *
 ***************************************** */
 jQuery(document).ready(function() {
-  
 });
 
 

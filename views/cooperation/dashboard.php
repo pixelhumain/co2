@@ -183,7 +183,6 @@
 <script type="text/javascript">
 	
 	jQuery(document).ready(function() { 
-		alert("dashboard");
 		uiCoop.initBtnLoadDataPreview();
 
 		resizeInterface();

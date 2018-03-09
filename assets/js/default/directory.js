@@ -1793,7 +1793,7 @@ var directory = {
                   "</div>";
         
         if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
+          str += "<a href='"+params.hash+"' class='container-img-profil lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>" + 
                     params.imgMediumProfil + 
                   "</a>";
 
@@ -1803,7 +1803,7 @@ var directory = {
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.hash+"' class='lbhp add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class='lbh-preview-element add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
@@ -1824,7 +1824,7 @@ var directory = {
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
+            str += "<a  href='"+params.hash+"' class='entityName text-dark lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>"+
                       iconFaReply + params.name + 
                    "</a>";  
        

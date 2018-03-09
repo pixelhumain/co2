@@ -2881,6 +2881,7 @@ var directory = {
         //active les link lbh
         bindLBHLinks();
         initBtnAdmin();
+        initBtnLink();
         if(userId != ""){
           param={
             typeEntity : "citoyens",

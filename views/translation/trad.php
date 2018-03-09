@@ -932,6 +932,7 @@ var tradCategory = {
 	"Type of ressource" :"<?php echo Yii::t("category","Type of ressource") ?>",
 	"Choose a category" :"<?php echo Yii::t("category","Choose a category") ?>",
 	"Sub category" :"<?php echo Yii::t("category","Sub category") ?>",
+	
 	"service":"<?php echo Yii::t("category","service") ?>",
 		"charity":"<?php echo Yii::t("category","charity") ?>",
 		"education":"<?php echo Yii::t("category","education") ?>",
@@ -948,7 +949,7 @@ var tradCategory = {
 		"househelp":"<?php echo Yii::t("category","hostinghelp") ?>",
 
 	"competence":"<?php echo Yii::t("category","competence") ?>",
-		"Artistic":"<?php echo Yii::t("category","artistic") ?>",
+		"artistic":"<?php echo Yii::t("category","artistic") ?>",
 		"laws":"<?php echo Yii::t("category","laws") ?>",
 		"itdevlopment":"<?php echo Yii::t("category","itdevlopment") ?>",
 		"handcraft":"<?php echo Yii::t("category","handcraft") ?>",

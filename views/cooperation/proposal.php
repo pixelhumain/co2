@@ -184,7 +184,7 @@
 
 		
 	<label class="pull-right">
-		<small> <?php echo Yii::t("cooperation","author"); ?> : </small>
+		<small> <?php echo Yii::t("cooperation","Author"); ?> : </small>
 		<img class="img-circle" id="menu-thumb-profil" 
          width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
 		<a href="#page.type.citoyens.id.<?php echo $proposal["creator"]; ?>" class="lbh">

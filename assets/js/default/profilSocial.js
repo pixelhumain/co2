@@ -444,19 +444,22 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	}
 
 	if( openEdition || edit ){
-		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections","actionRooms"] ) >= 0 ){
+		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections","actionRooms", "ressources"] ) >= 0 ){
 			if(dataName == "collections"){
 				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
 		    	html +=	'<i class="fa fa-plus"></i> '+trad.createcollection+'</a>' ; 
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
-				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" data-form-type="'+elemSpec.ctrl+'" data-dismiss="modal">';
+				var formType = (dataName=="classified") ? "classifieds" : elemSpec.ctrl;
+
+				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" data-form-type="'+formType+'" data-dismiss="modal">';
 		    	html +=	'<i class="fa fa-plus"></i> '+trad["create"+elemSpec.ctrl]+'</button>' ;  
 		    }
 		}
 	}
-	html+='<div class="col-xs-12 text-right no-padding margin-top-5">'+
+	if(dataName != "contacts" && dataName != "collections"){
+		html+='<div class="col-xs-12 text-right no-padding margin-top-5">'+
                         '<button class="btn switchDirectoryView ';
                           if(directory.viewMode=="list") html+='active ';
          html+=     'margin-right-5" data-value="list"><i class="fa fa-bars"></i></button>'+
@@ -464,7 +467,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
                           if(directory.viewMode=="block") html+='active ';
          html+=     '" data-value="block"><i class="fa fa-th-large"></i></button>'+
                     '</div>';
-
+    }
 	return html;
 }
 

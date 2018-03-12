@@ -1799,7 +1799,7 @@ var directory = {
 
         str += "<div class='padding-10 informations'>";
 
-        str += "<div class='entityRight no-padding'>";
+        str += "<div class='entityRight profil no-padding'>";
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";

@@ -1792,7 +1792,7 @@ var directory = {
                     params.updated + 
                   "</div>";
         
-        if(typeof params.size == "undefined" || params.size == "max")
+        //if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.hash+"' class='container-img-profil lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>" + 
                     params.imgMediumProfil + 
                   "</a>";

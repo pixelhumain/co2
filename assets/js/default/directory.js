@@ -1193,7 +1193,7 @@ var directory = {
 
       str += "</div>";
 
-      str += "<div class='col-lg-4 col-md-3 col-sm-2 col-xs-12 gallery'>";
+      /*str += "<div class='col-lg-4 col-md-3 col-sm-2 col-xs-12 gallery'>";
         if(typeof params.gallery != "undefined"){
           $.each(params.gallery, function(key, img){
             str += "<a href='"+params.hash+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
@@ -1204,7 +1204,7 @@ var directory = {
             str += params.media;//"<a href='"+params.url+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
           //});
         }
-      str += "</div>";
+      str += "</div>";*/
     str += "</div>";
 
     return str;
@@ -1792,14 +1792,14 @@ var directory = {
                     params.updated + 
                   "</div>";
         
-        if(typeof params.size == "undefined" || params.size == "max")
+        //if(typeof params.size == "undefined" || params.size == "max")
           str += "<a href='"+params.hash+"' class='container-img-profil lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>" + 
                     params.imgMediumProfil + 
                   "</a>";
 
         str += "<div class='padding-10 informations'>";
 
-        str += "<div class='entityRight no-padding'>";
+        str += "<div class='entityRight profil no-padding'>";
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";

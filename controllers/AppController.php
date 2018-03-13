@@ -311,7 +311,6 @@ class AppController extends CommunecterController {
         if(@$element["organizerId"] && @$element["organizerType"] && 
             $element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow")
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
-
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,
@@ -325,7 +324,8 @@ class AppController extends CommunecterController {
         //var_dump($params); exit;
 
 
-        if(@$_POST["preview"] == true){ 
+        if(@$_POST["preview"] == true){
+            $params["preview"]=$_POST["preview"]; 
             if($type == "classified") $this->renderPartial('classifieds.views.co.preview', $params );
             else if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
             else if($type == "poi") $this->renderPartial('../poi/preview', $params ); 

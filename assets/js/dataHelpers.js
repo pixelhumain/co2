@@ -3,6 +3,7 @@
 //for select input : {"value":"FR", "text":"France"}
 //for select2 input : {"id":"FR", "text":"France"}
 function getCountries(selectType) {
+	mylog.log("getCountries");
 	var result = new Array();
 	$.ajax({
 		url: baseUrl+'/'+moduleId+"/opendata/getcountries",

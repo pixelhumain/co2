@@ -395,7 +395,7 @@ function scopeObject(values){
 	}
 	mylog.log("scopeObject cp", typeof values.postalCode, typeof values.uniqueCp, values.uniqueCp);
 	if(typeof values.postalCode != "undefined" && typeof values.uniqueCp != "undefined" && values.uniqueCp == false){
-		mylog.log("communexionObj cp values", values);
+		mylog.log("scopeObject communexionObj cp values", values);
 
 		objToPush={
 			id:values.postalCode+values.country+objToPush.type,
@@ -405,7 +405,7 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id] = objToPush;
-		mylog.log("communexionObj cp", communexionObj);
+		mylog.log("scopeObject communexionObj cp", communexionObj);
 	}
 	
 	if(notNull(values.level) && typeof values.level != "undefined"){
@@ -431,7 +431,7 @@ function scopeObject(values){
 		// 	objToPush["postalCode"] = values.postalCode ;
 	}
 	communexionObj[objToPush.id+objToPush.type] = objToPush;
-	mylog.log("communexionObj", communexionObj);
+	mylog.log("scopeObject communexionObj", communexionObj);
 
 	if(notNull(values.allCP) && values.allCP == false){
 		objToPush={

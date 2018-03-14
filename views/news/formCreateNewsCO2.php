@@ -172,8 +172,102 @@
 .updateMention .mentions-input-box .mentions{ 
   padding:10px !important;
 }
+
 </style>
 <?php 
+  $contextScopeNews=array(
+    Organization::COLLECTION => array(
+      "public"=>array(
+        "icon"=>"globe",
+        "label"=>ucfirst(Yii::t("common", "public")),
+        "explain"=>Yii::t("news","Write a public message visible in live on selected places")
+      ),
+      "restricted"=>array(
+        "icon"=>"rss",
+        "label"=>ucfirst(Yii::t("common", "followers")),
+        "explain"=>Yii::t("news", "Posted on followers and members wall and visible to all on this wall")//Visible to all on this wall and published on community's network",
+      ),
+      "private"=>array(
+        "icon"=>"users",
+        "label"=>ucfirst(Yii::t("common", "members")),
+        "explain"=>Yii::t("news", "Posted on members wall and visible only for them")
+      ),
+      "init"=>array(
+        "admin"=>"restricted",
+        "noadmin"=>"private"
+      )
+    ),
+    Project::COLLECTION => array(
+      "public"=>array(
+        "icon"=>"globe",
+        "label"=>ucfirst(Yii::t("common", "public")),
+        "explain"=>Yii::t("news","Write a public message visible in live on selected places")
+      ),
+      "restricted"=>array(
+        "icon"=>"rss",
+        "label"=>ucfirst(Yii::t("common", "followers")),
+        "explain"=>Yii::t("news", "Posted on followers and contributors wall and visible to all on this wall")
+      ),
+      "private"=>array(
+        "icon"=>"users",
+        "label"=>ucfirst(Yii::t("common", "contributors")),
+        "explain"=>Yii::t("news", "Posted on contributors wall and visible only for them")
+      ),
+      "init"=>array(
+        "admin"=>"restricted",
+        "noadmin"=>"private"
+      )
+    ),
+    Event::COLLECTION => array(
+      "public"=>array(
+        "icon"=>"globe",
+        "label"=>ucfirst(Yii::t("common", "public")),
+        "explain"=>Yii::t("news","Write a public message visible in live on selected places")
+      ),
+      "restricted"=>array(
+        "icon"=>"rss",
+        "label"=>ucfirst(Yii::t("common", "attendees")),
+        "explain"=>Yii::t("news", "Posted on attendees wall and visible to all on this wall"),
+      ),
+      "private"=>array(
+        "icon"=>"users",
+        "label"=>ucfirst(Yii::t("common", "admins")),
+        "explain"=>Yii::t("news","Posted on administrators wall and visible only for them"),
+      ),
+      "init"=>array(
+        "admin"=>"restricted",
+        "noadmin"=>"private"
+      )
+    ),
+    Person::COLLECTION => array(
+      "public"=>array(
+        "icon"=>"globe",
+        "label"=>ucfirst(Yii::t("common", "public")),
+        "explain"=>Yii::t("news","Write a public message visible in live on selected places")
+      ),
+      "restricted"=>array(
+        "icon"=>"rss",
+        "label"=>ucfirst(Yii::t("common", "followers")),
+        "explain"=>Yii::t("news", "Posted on followers wall and visible to all on this wall"),
+      ),
+      "private"=>array(
+        "icon"=>"lock",
+        "label"=>ucfirst(Yii::t("common", "private")),
+        "explain"=>Yii::t("news","Visible only to me"),
+      ),
+      "init"=>array(
+        "admin"=>"restricted",
+        "noadmin"=>"private"
+      )
+    ),
+    "city" => array(
+      "public"=>array(
+        "icon"=>"globe",
+        "label"=>ucfirst(Yii::t("common", "public")),
+        "explain"=>Yii::t("news","Write a public message visible in live on selected places"),
+      )
+    )
+  );
   $isLive = isset($_GET["isLive"]) ? true : false;
   $contextName = "";
   $contextIcon = "bookmark fa-rotate-270";
@@ -184,13 +278,13 @@
     $contextName = $parent["name"];
     $contextIcon = "users";
     $contextTitle = Yii::t("common","Participants");
-    $restricted = Yii::t("common","Visible to all on this wall and published on community's network");
-    $titleRestricted = "Restreint";
-    $private = Yii::t("common","Visible only to the members"); 
-    $titlePrivate = "Privé";
-    $scopeBegin= ucfirst(Yii::t("common", "followers"));  
-    $public = true;
-    $iconBegin= "connectdevelop";
+    //$restricted = Yii::t("common","Visible to all on this wall and published on community's network");
+    //$titleRestricted = "Restreint";
+    //$private = Yii::t("common","Visible only to the members"); 
+    //$titlePrivate = "Privé";
+    //$scopeBegin= ucfirst(Yii::t("common", "followers"));  
+    //$public = true;
+    //$iconBegin= "connectdevelop";
     $headerName= "Journal de l'organisation";//.$contextName;
     $topTitle= "Journal de l'organisation";//.$contextName;
     if(@$canManageNews && $canManageNews==true)
@@ -208,10 +302,10 @@
       $contextIcon = "<i class='fa fa-circle text-yellow'></i> <i class='fa fa-user text-dark'></i> ";
       $contextTitle =  Yii::t("common", "DIRECTORY of")." ".$contextName;
       if(@Yii::app()->session["userId"] && $contextParentId==Yii::app()->session["userId"]){
-        $restricted = Yii::t("common","Visible to all on my wall and published on my network");
-        $private = Yii::t("common","Visible only to me");
+      //  $restricted = Yii::t("common","Visible to all on my wall and published on my network");
+       // $private = Yii::t("common","Visible only to me");
         $textForm = Yii::t("common","Published a message in your wall for your network");
-        $public = true;
+       // $public = true;
       } 
       if(Yii::app()->session["userId"] ==$contextParentId){
         $headerName= "Mon journal";
@@ -226,22 +320,22 @@
       $shortName=explode(" ", $parent["name"]);
       //$headerName= "Bonjour <span class='text-red'>".addslashes($shortName[0])."</span>, l'actu de votre réseau";
       $headerName= "L'actu de votre réseau";
-      $restricted = Yii::t("common","Visible to all on my wall and published on my network");
-      $private = Yii::t("common","Visible only to me");
+      //$restricted = Yii::t("common","Visible to all on my wall and published on my network");
+      //$private = Yii::t("common","Visible only to me");
       $textForm = Yii::t("common","Published a message in your wall for your network");
     }
-    $scopeBegin= ucfirst(Yii::t("common", "followers")); 
-    $iconBegin= "connectdevelop";
+    //$scopeBegin= ucfirst(Yii::t("common", "followers")); 
+    //$iconBegin= "connectdevelop";
   }
   else if( isset($type) && $type == Project::COLLECTION && isset($parent) ){
     $contextName = $parent["name"];
     $contextIcon = "lightbulb-o";
     $contextTitle = Yii::t("common", "Contributors of project");
-    $restricted = Yii::t("common","Visible to all on this wall and published on community's network");
-    $private = Yii::t("common","Visible only to the project's contributors"); 
-    $scopeBegin= ucfirst(Yii::t("common", "followers"));  
-    $iconBegin= "connectdevelop";
-    $public = true;
+    //$restricted = Yii::t("common","Visible to all on this wall and published on community's network");
+    //$private = Yii::t("common","Visible only to the project's contributors"); 
+    //$scopeBegin= ucfirst(Yii::t("common", "followers"));  
+    //$iconBegin= "connectdevelop";
+    //$public = true;
     $headerName= "Journal du projet";//.$contextName;
     $topTitle = "Journal du projet";//.$contextName;
     if(@$canManageNews && $canManageNews==true)
@@ -253,12 +347,12 @@
     $contextName = $parent["name"];
     $contextIcon = "calendar";
     $contextTitle = Yii::t("common", "Contributors of event");
-    $restricted = Yii::t("common","Visible to all on this wall and published on community's network");
-    $scopeBegin= ucfirst(Yii::t("common", "followers")); 
-    $iconBegin= "connectdevelop";
+    //$restricted = Yii::t("common","Visible to all on this wall and published on community's network");
+    //$scopeBegin= ucfirst(Yii::t("common", "followers")); 
+    //$iconBegin= "connectdevelop";
     $headerName= "Journal de l'événement";//.$contextName;
     $topTitle = "Journal de l'événement";//.$contextName;
-    $public = true;
+    //$public = true;
     //if(@$canManageNews && $canManageNews==true)
       $textForm = Yii::t("common","Post a message in the wall of").
                   " <b>".$contextName."</b>";
@@ -271,20 +365,20 @@
     $contextName = Yii::t("common","City")." : ".$city["name"];
     $contextIcon = "university";
     $contextTitle = Yii::t("common", "DIRECTORY Local network of")." ".$city["name"];
-    $scopeBegin= "Public";  
-    $iconBegin= "globe";
+    //$scopeBegin= "Public";  
+    //$iconBegin= "globe";
     $headerName= "Actualités de ".$city["name"];
     $topTitle = ""; //$headerName;
     $textForm = Yii::t("common","Write a idea, a message in the city wall of")." ".$contextName;
 
   }
-  else if( isset($type) && $type == "pixels"){
+  /*else if( isset($type) && $type == "pixels"){
     //$contextName = "<i class='fa fa-rss'></i> Signaler un bug";
     //$contextTitle = Yii::t("common", "Contributors of project");
     $headerName= " La foire aux bugs";
     $topTitle = " La foire aux bugs";
     $textForm = Yii::t("common","Write a bug or an idea to improve the development of communecter");
-  }
+  }*/
 
   $imgProfil = "";
   if($contextParentType != "city"){
@@ -366,9 +460,20 @@
           <input type="hidden" name="scope" value="public"/>-->
           
           <div class="dropdown col-md-6 no-padding">
-            <a data-toggle="dropdown" class="btn btn-default" id="btn-toogle-dropdown-scope" href="#"><i class="fa fa-<?php echo $iconBegin ?>"></i> <?php echo $scopeBegin ?> <i class="fa fa-caret-down" style="font-size:inherit;"></i></a>
+            <a data-toggle="dropdown" class="btn btn-default" id="btn-toogle-dropdown-scope" href="#"><i class="fa fa-<?php echo @$contextScopeNews[$contextParentType][$contextScopeNews[$contextParentType]["init"]["admin"]]["icon"] ?>"></i> <?php echo @$contextScopeNews[$contextParentType][$contextScopeNews[$contextParentType]["init"]["admin"]]["label"] ?> <i class="fa fa-caret-down" style="font-size:inherit;"></i></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-              <?php if (@$private && ($contextParentType==Project::COLLECTION || $contextParentType==Organization::COLLECTION)){ ?>
+              <?php if(@$contextScopeNews && @$contextScopeNews[$contextParentType]){
+                  foreach($contextScopeNews[$contextParentType] as $key => $v){
+                    if($key != "init"){ ?>
+                      <li>
+                        <a href="javascript:;" class="scopeShare" data-value="<?php echo $key ?>"><h4 class="list-group-item-heading"><i class="fa fa-<?php echo $v["icon"] ?>"></i> <?php echo $v["label"] ?></h4>
+                          <p class="list-group-item-text small"><?php echo $v["explain"] ?></p>
+                        </a>
+                      </li>
+                    <?php } 
+                  }
+                } ?>
+              <?php /*if (@$private && ($contextParentType==Project::COLLECTION || $contextParentType==Organization::COLLECTION)){ ?>
               <li>
                 <a href="javascript:;" id="scope-my-network" class="scopeShare" data-value="private"><h4 class="list-group-item-heading"><i class="fa fa-lock"></i> <?php echo ucfirst(Yii::t("common", "private")) ?></h4>
                   <p class="list-group-item-text small"><?php echo $private ?></p>
@@ -396,7 +501,7 @@
                   <p class="list-group-item-text small"><?php echo $private ?></p>
                 </a>
               </li>
-              <?php } ?>
+              <?php } */ ?>
               <!--<li>
                 <a href="#" id="scope-select" data-toggle="modal" data-target="#modal-scope"><i class="fa fa-plus"></i> Selectionner</a>
               </li>-->

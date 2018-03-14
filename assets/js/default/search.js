@@ -312,7 +312,10 @@ function bindLeftMenuFilters () {
         pageCount=true;
         search.count=true;
         if( $(this).hasClass( "active" ) ){
-            searchTxt = sectionKey+","+classType;
+            if(typeof sectionKey != "undefined" && typeof sectionKey != null)
+                searchTxt = sectionKey+","+classType;
+            else
+                searchTxt = classType;
             $(this).removeClass( "active" );
         }else{
             $(".keycat").removeClass("active");

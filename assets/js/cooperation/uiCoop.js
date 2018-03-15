@@ -45,6 +45,7 @@ var uiCoop = {
 	"initBtnLoadData" : function(){
 		//alert('initBtnLoadData');
 		$(".load-coop-data").off().click(function(){
+			mylog.log("load-coop-data");
 			var type = $(this).data("type");
 			
 			if(type == "locked"){
@@ -169,7 +170,7 @@ var uiCoop = {
 	},
 
 	"getCoopData" : function(parentType, parentId, type, status, dataId, onSuccess, showLoading){
-		console.log("getCoopData", parentType, parentId, type, status, dataId, onSuccess, showLoading)
+		mylog.log("getCoopData", parentType, parentId, type, status, dataId, onSuccess, showLoading)
 		var url = moduleId+'/cooperation/getcoopdata';
 		var params = {
 			"parentType" : parentType,
@@ -230,7 +231,7 @@ var uiCoop = {
 	},
 
 	"getCoopDataPreview" : function(type, dataId, onSuccess, showLoading){
-		console.log("getCoopDatagetCoopDataPreview", type, status, dataId, onSuccess, showLoading);
+		mylog.log("getCoopDatagetCoopDataPreview", type, status, dataId, onSuccess, showLoading);
 		var url = moduleId+'/cooperation/previewcoopdata';
 		var params = {
 			"type" : type,
@@ -260,6 +261,7 @@ var uiCoop = {
 				//uiCoop.initBtnLoadData();
 
 				$(".tooltips").tooltip();
+				$("#modal-preview-coop").modal("show");
 				bindLBHLinks();
 
 				if(typeof onSuccess == "function") onSuccess();

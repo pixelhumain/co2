@@ -676,6 +676,7 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
     var fieldHTML = "";
    
 	$.each(fieldObj.contactTypes, function(key, type){
+
 		mylog.log("fieldObj.contactTypes", key, type, typeof type);
 	fieldHTML += 			'<div class="panel panel-default" id="scroll-type-'+type.name+'">  '+	
 								'<div class="panel-heading">'+
@@ -686,6 +687,8 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 										'<ul>';
 										if(typeof fieldObj.values[type.name] != "undefined")
 										$.each(fieldObj.values[type.name], function(key2, value){ 
+
+											mylog.log("TESTTEST", key2, value);
 										if(typeof value != "undefined"){
 											var cp = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
 											var city = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
@@ -703,7 +706,7 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 													'<a href="javascript:">admin <i class="fa fa-user-secret"></i></a>'+
 													'</small>';
 												}
-	fieldHTML +=								'<div class="btn btn-default btn-scroll-type btn-select-contact"  												id="contact'+thisKey+'">' +
+	fieldHTML +=								'<div class="btn btn-default btn-scroll-type btn-select-contact"  												id="contact'+getObjectId(value)+'">' +
 													'<div class="col-md-1 no-padding"><input type="checkbox" name="scope-'+type.name+'" class="chk-scope-'+type.name+' chk-contact" id="chk-scope-'+thisKey+'" idcontact="'+thisKey+'" value="'+thisValue+'" data-type="'+type.name+'"></div> '+
 													'<div class="btn-chk-contact col-md-11 no-padding" idcontact="'+thisKey+'" typecontact="'+type.name+'">' +
 														'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35">'+
@@ -743,9 +746,11 @@ function filterContact(searchVal){
 		if(searchVal != "")	$(".btn-select-contact").hide();
 		else				$(".btn-select-contact").show();
 		//recherche la valeur recherché dans les 3 champs "name", "cp", et "city" 
-	    $.each($(".name-contact"), function() { checkSearch($(this), searchVal); }); 
-	    $.each($(".cp-contact"),    function()  { checkSearch($(this), searchVal); }); 
-	    $.each($(".city-contact"), function() { checkSearch($(this), searchVal); }); 
+	    $.each($(".name-contact"), function() { 
+	    	checkSearch($(this), searchVal); 
+	    }); 
+	    //$.each($(".cp-contact"),    function()  { checkSearch($(this), searchVal); }); 
+	    //$.each($(".city-contact"), function() { checkSearch($(this), searchVal); }); 
 	}else if(addLinkSearchMode == "all"){
 		if(searchVal.length>2){
 	    	clearTimeout(timeout);
@@ -815,10 +820,14 @@ function autoCompleteEmailAddMember(searchValue){
 
 //si l'élément contient la searchVal, on l'affiche
 function checkSearch(thisElement, searchVal, type){
+	mylog.log("checkSearch", thisElement, searchVal, type);
 	var content = thisElement.html();
+	mylog.log("checkSearch content", content);
 	var found = content.search(new RegExp(searchVal, "i"));
+	mylog.log("checkSearch found", found);
 	if(found >= 0){
 		var id = thisElement.attr("idcontact");
+		mylog.log("checkSearch id", id);
 		$("#contact"+id).show();
 	}
 }

@@ -2821,7 +2821,7 @@ var directory = {
       headerStr = '';
       if((typeof search.count != "undefined" && search.count) || indexMin==0 ){          
           countHeader=0;
-          if(search.countType.length > 1){
+          if(search.countType.length > 1 && typeof search.ranges != "undefined"){
             $.each(searchCount, function(e, v){
               countHeader+=v;
             });

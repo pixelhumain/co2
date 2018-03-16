@@ -19,7 +19,7 @@ function constructScopesHtml(news){
 				"data-add='true' data-scope-value='"+value.id+"' "+
 				'data-scope-key="'+key+'" '+
 				"data-toggle='tooltip' data-placement='top' "+
-				"data-original-title='Add zones to news'>"+
+				"data-original-title='"+trad.addZoneToNew+"'>"+
 					"<i class='fa fa-plus-circle'></i>"+
 				"</span>";
 		}else{
@@ -29,7 +29,7 @@ function constructScopesHtml(news){
 					"data-add='false' data-scope-value='"+value.id+"' "+
 					'data-scope-key="'+key+'" '+
 					"data-toggle='tooltip' data-placement='top' "+
-					"data-original-title='Remove from my favorites places'>"+
+					"data-original-title='"+trad.removeFromMyFavoritesPlaces+"'>"+
 						"<i class='fa fa-times-circle'></i>"+
 					"</span>";
 			else{
@@ -40,7 +40,7 @@ function constructScopesHtml(news){
 						"data-add='0' data-scope-value='"+value.id+"' "+
 						'data-scope-key="'+key+'" '+
 						"data-toggle='tooltip' data-placement='top' "+
-						"data-original-title='Remove from my favorites places'>"+
+						"data-original-title='"+trad.removeFromMyFavoritesPlaces+"'>"+
 							"<i class='fa fa-star'></i>"+
 						"</span>";
 				else
@@ -48,7 +48,7 @@ function constructScopesHtml(news){
 						"data-add='true' data-scope-value='"+value.id+"' "+
 						'data-scope-key="'+key+'" '+
 						"data-toggle='tooltip' data-placement='top' "+
-						"data-original-title='Add to my favorites places'>"+
+						"data-original-title='"+trad.addToMyFavoritesPlaces+"'>"+
 							"<i class='fa fa-star-o'></i>"+
 						"</span>";
 			}

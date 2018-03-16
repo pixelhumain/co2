@@ -4,7 +4,7 @@
 	}
 </style>
 
-<div class="col-md-12 no-padding" id="repertory" >
+<div class="col-md-12 no-padding" id="repertory" style="background-color: white">
 	<div id="dropdown_search_result" class="col-md-12 col-sm-12 col-xs-12"></div>
 	<div id="dropdown_search" class="col-md-12 container list-group-item dropdown_searchListNW"></div>
 </div>

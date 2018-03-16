@@ -81,18 +81,18 @@
 .thumb_sel .next_thumb:hover {
   background: url(<?php echo $this->module->assetsUrl ?>/images/news/thumb_selection.gif) no-repeat -26px 0px;
 }
-#dropdown_search{
+#form-news #dropdown_search{
   display:none;
-    border: 1px solid #eee;
-    max-height: 160px;
-    overflow-y: auto;
-    position: relative;
+  border: 1px solid #eee;
+  max-height: 160px;
+  overflow-y: auto;
+  position: relative;
 }
-#dropdown_search .li-dropdown-scope{
+#form-news #dropdown_search .li-dropdown-scope{
   text-align: left;
   width:100%;
 }
-#dropdown_search .li-dropdown-scope a{
+#form-news #dropdown_search .li-dropdown-scope a{
   font-size:12px;
       line-height: 25px;
 }
@@ -107,7 +107,7 @@
   max-height:300px !important;
 }
 
-#form-news{
+##form-news{
   display: inline-block;
     width: 100%;
     padding-bottom: 10px;

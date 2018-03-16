@@ -3587,7 +3587,7 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-dashboard-dda").click(function(){
         showFloopDrawer(false);
         showNotif(false);
-        loadDashboardDDA();
+        dashboard.loadDashboardDDA();
         $("#dropdown-user").removeClass("open");
         $("#dropdown-dda").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
@@ -3695,24 +3695,35 @@ function initKInterface(params){ console.log("initKInterface");
     KScrollTo(".main-container");
 }
 
-function loadDashboardDDA(){
-	mylog.log("loadDashboardDDA");
-	$("#list-dashboard-dda").html("<span class='text-center col-xs-12 padding-25'><i class='fa fa-circle-o-notch fa-spin'></i></span>");
-	$.ajax({
-		type: "POST",
-		url: baseUrl+'/'+moduleId+"/cooperation/getmydashboardcoop/",
-		//dataType: "json",
-		success: function(view){
-			mylog.log("loadDashboardDDA ok");
-			$("#list-dashboard-dda").html(view);
-		},
-		error: function (error) {
-			mylog.log("loadDashboardDDA error", error);
-			
+var dashboard = {
+	ddaView : null,
+	loadDashboardDDA : function(){
+		mylog.log("loadDashboardDDA");
+		$("#list-dashboard-dda").html("<span class='text-center col-xs-12 padding-25'><i class='fa fa-circle-o-notch fa-spin'></i></span>");
+		lazyLoad( baseUrl+'/plugins/showdown/showdown.min.js',null, function() { } );
+		if( dashboard.ddaView != null ){
+			$("#list-dashboard-dda").html(dashboard.ddaView);
+		} else {
+			$.ajax({
+				type: "POST",
+				url: baseUrl+'/'+moduleId+"/cooperation/getmydashboardcoop/",
+				//dataType: "json",
+				success: function(view){
+					mylog.log("loadDashboardDDA ok");
+					dashboard.ddaView = view;
+					$("#list-dashboard-dda").html(view);
+				},
+				error: function (error) {
+					mylog.log("loadDashboardDDA error", error);
+					
+				}
+					
+			});
 		}
-			
-	});
-}
+		
+	}
+};
+
 
 function getContextDataLinks(){
 	mylog.log("getContextDataLinks");
@@ -3872,6 +3883,7 @@ var co = {
 					$("#openModal div.modal-content").css("text-align","left");
 					lazyLoad( baseUrl+"/plugins/jsonview/jquery.jsonview.js", 
 							  baseUrl+"/plugins/jsonview/jquery.jsonview.css", function() { 
+							  	alert();
 						getAjax('', url, function(data){ 
 							urlT = url.split('/');
 							title = url+"<br/>"+urlT[8];

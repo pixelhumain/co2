@@ -479,6 +479,9 @@ var trad = {
 	"addplacesplease": "<?php echo Yii::t("form","Please, add a place to your post") ?>",
 	"addplacestyournews" : "<?php echo Yii::t("form","Add places where you want to publish") ?>",
 	"selectedzones" : "<?php echo Yii::t("form","Selected zones") ?>",
+	"removeFromMyFavoritesPlaces":"<?php echo Yii::t("common","Remove from my favorites places") ?>",
+	"addZoneToNew":"<?php echo Yii::t("common","Add zone to new") ?>",
+	"addToMyFavoritesPlaces":"<?php echo Yii::t("common","Add to my favorites places") ?>",
 };
 
 var tradDynForm = {
@@ -902,11 +905,13 @@ var tradCategory = {
     "Transport-Logistic":"<?php echo Yii::t("category","Transport-Logistic") ?>",
     "NGO":"<?php echo Yii::t("category","NGO") ?>",
     "LocalBusiness":"<?php echo Yii::t("category","Local Business") ?>",
+    "Local Business":"<?php echo Yii::t("category","Local Business") ?>",
     "Group":"<?php echo Yii::t("category","Group") ?>",
     "Discussion":"<?php echo Yii::t("rooms","Discussion") ?>",
     "Decision":"<?php echo Yii::t("rooms","Decision") ?>",
     "Action":"<?php echo Yii::t("rooms","Action") ?>",
     "GovernmentOrganization":"<?php echo Yii::t("category","Government Organization") ?>",
+    "Government Organization":"<?php echo Yii::t("category","Government Organization") ?>",
 	"discuss":"<?php echo Yii::t("rooms","Discussion") ?>",
 	"vote":"<?php echo Yii::t("rooms","Decision") ?>",
 	"financier":"<?php echo Yii::t("category","Financier") ?>",

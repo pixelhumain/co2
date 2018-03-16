@@ -28,7 +28,7 @@
 		//##
 		//création du contenu de la popup d'un data
 		Sig.getPopupSimple = function(data){
-			
+			mylog.log("getPopupSimple", data);
 			var type = typeof data['typeSig'] != "undefined" ? data['typeSig'] : data['type'];
 			var id = this.getObjectId(data); 
 			var popupContent = "<div class='popup-marker'>";
@@ -323,7 +323,7 @@
 		//##
 		//création du contenu de la popup d'un data de type News
 		Sig.getPopupSimpleNews = function(data){
-			console.log("getPopupSimpleNews", data);
+			mylog.log("getPopupSimpleNews", data);
 			var allData = data;
 			data = data.author;
 			//mylog.log("typeSig : " + allData['typeSig']);
@@ -627,6 +627,7 @@
 		}
 
 		Sig.getPopupModifyPosition = function(data){
+			mylog.log("getPopupModifyPosition", data);
 			//mylog.dir(data);
 			var type = typeof data['typeSig'] != "undefined" ? data['typeSig'] : data['type'];
 			var id = data["_id"]["$id"];

@@ -65,7 +65,7 @@
 	<script type="text/javascript">
 		jQuery(document).ready(function() { 
 			$("#modal-preview-coop #btn-close-proposal").off().click(function(){
-				$("#modal-preview-coop").hide(300);
+				$("#modal-preview-coop").css("display","none");
 			});
 		});
 	</script>

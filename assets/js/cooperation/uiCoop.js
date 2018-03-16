@@ -1,7 +1,7 @@
 /* uiCoop is use for all function relative to UI for Cooperation Spaces (DDA) */
 var uiCoop = {
 	"startUI" : function(loadData=true){
-		console.log("startUICOOP");
+		mylog.log("startUICOOP");
 		//$("#menu-left-container").hide();
 		//$("#div-reopen-menu-left-container").removeClass("hidden");
 		$("#main-coop-container").html("");
@@ -61,7 +61,7 @@ var uiCoop = {
 			var type = $(this).data("type");
 			var status = $(this).data("status");
 			var dataId = $(this).data("dataid");
-			//console.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
+			//mylog.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
 			uiCoop.getCoopData(contextData.type, contextData.id, type, status, dataId);
 		});
 	},
@@ -76,12 +76,12 @@ var uiCoop = {
 			}
 
 			var dataId = $(this).data("dataid");
-			//console.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
+			//mylog.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
 			uiCoop.getCoopDataPreview(type, dataId);
 		});
 	},
 
-	"initDragAndDrop" : function(){ console.log('initDragAndDrop');
+	"initDragAndDrop" : function(){ mylog.log('initDragAndDrop');
 		$('.draggable').draggable({
 		    revert : true, // sera renvoyé à sa place s'il n'est pas déposé dans #drop
 		    appendTo: 'body',
@@ -91,7 +91,7 @@ var uiCoop = {
     		start : function(){
     			uiCoop.dragId = $(this).data("dataid");
     			uiCoop.dragType = $(this).data("type");
-    			console.log("start drag", $(this).data("dataid"), "coopId", uiCoop.dragId, "coopType", uiCoop.dragType);
+    			mylog.log("start drag", $(this).data("dataid"), "coopId", uiCoop.dragId, "coopType", uiCoop.dragType);
     		}
 		});
 		$('.droppable').droppable({
@@ -103,30 +103,30 @@ var uiCoop = {
 		    },
 		    activate : function( event, ui ){
 		    	var roomid = $(this).data("dataid");
-		    	//console.log("activate", roomid);
+		    	//mylog.log("activate", roomid);
 		    	$(this).parent().addClass("bg-lightblue draggin");
 		    },
 		    deactivate : function( event, ui ){
 		    	var roomid = $(this).data("dataid");
-		    	//console.log("deactivate", roomid);
+		    	//mylog.log("deactivate", roomid);
 		    	$(this).removeClass("text-white").parent().removeClass("bg-lightblue draggin bg-turq");
 		    },
 		    over : function( event, ui ){
 		    	var roomid = $(this).data("dataid");
-		    	console.log("over", roomid);
+		    	mylog.log("over", roomid);
 		    	$(this).addClass("text-white").parent().addClass("bg-turq");
 		    	$(this).parent().removeClass("bg-lightblue");
 		    },
 		    out : function( event, ui ){
 		    	var roomid = $(this).data("dataid");
-		    	console.log("out", roomid);
+		    	mylog.log("out", roomid);
 		    	$(this).removeClass("text-white").parent().removeClass("bg-turq");
 		    	$(this).parent().addClass("bg-lightblue");
 		    }
 		});
 	},
 
-	"minimizeMenuRoom" : function(min){ console.log("minimizeMenuRoom", min);
+	"minimizeMenuRoom" : function(min){ mylog.log("minimizeMenuRoom", min);
 		if(min)	{
 			$("#menu-room").addClass("min col-lg-4 col-md-4 col-sm-4")
 							.removeClass("col-lg-12 col-md-12 col-sm-12");
@@ -140,7 +140,7 @@ var uiCoop = {
 		}
 	},
 
-	"maximizeReader" : function(max){ console.log("maximizeReader", max);
+	"maximizeReader" : function(max){ mylog.log("maximizeReader", max);
 		if(max)	{
 			$("#menu-room").addClass("hidden");
 			$("#coop-data-container").removeClass("col-lg-8 col-md-8 col-sm-8")
@@ -180,7 +180,7 @@ var uiCoop = {
 			"dataId" : dataId,
 			"json" : false
 		};
-		//console.log("showLoading ?", typeof showLoading, showLoading);
+		//mylog.log("showLoading ?", typeof showLoading, showLoading);
 		
 		if(typeof showLoading == "undefined" || showLoading == true){
 			if(typeof dataId == "undefined" || dataId == null || type == "room"){
@@ -238,7 +238,7 @@ var uiCoop = {
 			"dataId" : dataId,
 			"json" : false
 		};
-		//console.log("showLoading ?", typeof showLoading, showLoading);
+		//mylog.log("showLoading ?", typeof showLoading, showLoading);
 		
 		//if(typeof showLoading == "undefined" || showLoading == true){
 			
@@ -282,15 +282,15 @@ var uiCoop = {
 			}
 
 			$("#coop-container .submenucoop.sub-"+type).hide();
-			console.log("searchVal", searchVal, "type", type);
+			mylog.log("searchVal", searchVal, "type", type);
 			$.each($("#coop-container .submenucoop.sub-"+type), function(){
-				console.log("this", this);
+				mylog.log("this", this);
 				
 				var content = $(this).data("name-search");
 
 				if(typeof content != "undefined"){
 					var found = content.search(new RegExp(searchVal, "i"));
-					console.log("content", content);
+					mylog.log("content", content);
 					if(found >= 0){
 						var id = $(this).show();
 					}
@@ -301,7 +301,7 @@ var uiCoop = {
 	},
 
 	"sendVote" : function(parentType, parentId, voteValue, idParentRoom, idAmdt){
-		console.log("sendVote", parentType, parentId, voteValue, idParentRoom, idAmdt);
+		mylog.log("sendVote", parentType, parentId, voteValue, idParentRoom, idAmdt);
 		
 		var params = {
 			"parentType" : parentType,
@@ -317,7 +317,7 @@ var uiCoop = {
 		toastr.info(trad["processing save"]);
 		ajaxPost("", url, params,
 			function (proposalView){
-				console.log("success save vote");
+				mylog.log("success save vote");
 				uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
 					function(){
 						toastr.success(trad["Your vote has been save with success"]);
@@ -370,7 +370,7 @@ var uiCoop = {
 			txtAmdt: txtAmdt,
 			typeAmdt: typeAmdt
 		};
-		console.log("saveAmendement", param);
+		mylog.log("saveAmendement", param);
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
@@ -378,7 +378,7 @@ var uiCoop = {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-					console.log("success updateblock", data);
+					mylog.log("success updateblock", data);
 		    		uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, proposalId, function(){
 		    			uiCoop.showAmendement(true);
 		    			toastr.success(trad["Your amendement has been save with success"]);
@@ -424,7 +424,7 @@ var uiCoop = {
 			name: "idParentRoom",
 			value: idNewRoom
 		};
-		console.log("changeRoom", param);
+		mylog.log("changeRoom", param);
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
@@ -470,7 +470,7 @@ var uiCoop = {
 					uiCoop.showAmendement(true);
 		    	},
 		    	error: function(data){
-		    		console.log("error data ", data);
+		    		mylog.log("error data ", data);
 		    		toastr.error(trad["processing delete KO"]);
 		    	}
 		});
@@ -495,7 +495,7 @@ var uiCoop = {
 
 	getParentContainer : function(){
 		var res = ($("#modal-preview-coop #coop-container").length == 0) ? "#modalCoop " : "#modal-preview-coop ";
-		console.log("getParentContainer", res);
+		mylog.log("getParentContainer", res);
 		return ($("#modal-preview-coop #coop-container").length == 0) ? "#modalCoop " : "#modal-preview-coop ";
 	},
 
@@ -573,7 +573,7 @@ var uiCoop = {
 
 		$(".btn-send-vote").click(function(){
 			var voteValue = $(this).data('vote-value');
-			console.log("send vote", voteValue),
+			mylog.log("send vote", voteValue),
 			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
 		});
 
@@ -606,13 +606,13 @@ var uiCoop = {
 		$(".btn-option-status-proposal").click(function(){
 			var idProposal = $(this).data("id-proposal");
 			var status = $(this).data("status");
-			console.log("update status proposals", idProposal, status, parentTypeElement, parentIdElement);
+			mylog.log("update status proposals", idProposal, status, parentTypeElement, parentIdElement);
 			uiCoop.changeStatus("proposals", idProposal, status, parentTypeElement, parentIdElement);
 		});
 
 		$("#btn-edit-proposal").click(function(){
 			var idProposal = $(this).data("id-proposal");
-			console.log("edit idProposal", idProposal);
+			mylog.log("edit idProposal", idProposal);
 			dyFObj.editElement('proposals', idProposal);
 		});
 
@@ -678,13 +678,13 @@ var uiCoop = {
 		$(".btn-option-status-action").click(function(){
 			var idAction = $(this).data("id-action");
 			var status = $(this).data("status");
-			console.log("update status actions", idAction, status, parentTypeElement, parentIdElement);
+			mylog.log("update status actions", idAction, status, parentTypeElement, parentIdElement);
 			uiCoop.changeStatus("actions", idAction, status, parentTypeElement, parentIdElement);
 		});
 
 		$("#btn-edit-action").click(function(){
 			var idaction = $(this).data("id-action");
-			console.log("edit idAction", idAction);
+			mylog.log("edit idAction", idAction);
 			dyFObj.editElement('actions', idAction);
 		});
 

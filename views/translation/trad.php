@@ -479,6 +479,9 @@ var trad = {
 	"addplacesplease": "<?php echo Yii::t("form","Please, add a place to your post") ?>",
 	"addplacestyournews" : "<?php echo Yii::t("form","Add places where you want to publish") ?>",
 	"selectedzones" : "<?php echo Yii::t("form","Selected zones") ?>",
+	"removeFromMyFavoritesPlaces":"<?php echo Yii::t("common","Remove from my favorites places") ?>",
+	"addZoneToNew":"<?php echo Yii::t("common","Add zone to new") ?>",
+	"addToMyFavoritesPlaces":"<?php echo Yii::t("common","Add to my favorites places") ?>",
 };
 
 var tradDynForm = {

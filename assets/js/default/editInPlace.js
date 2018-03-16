@@ -336,7 +336,7 @@ function bindAboutPodElement() {
 									var htmlAbout = "<i>"+trad["notSpecified"]+"</i>";
 									var htmlHeader = "";
 
-									if(notEmpty(contextData.parentId)){
+									if(notEmpty(contextData.parentId) && contextData.parentId != "dontKnow"){
 										htmlAbout = '<a href="#page.type.'+contextData.parentType+'.id.'+contextData.parentId+'" class="lbh">'+ 
 											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
 											contextData.parent.name+'</a><br/>';

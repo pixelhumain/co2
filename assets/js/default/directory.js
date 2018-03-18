@@ -395,6 +395,7 @@ function initPageTable(number){
             pageCount=false;
             searchPage=(page-1);
             //search.page=searchPage;
+            scrollEnd=false;
             indexStep=30;
             indexMin=indexStep*searchPage;
             pageEvent=true;

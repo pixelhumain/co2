@@ -2456,7 +2456,9 @@ var directory = {
       description = description.replace(/\n/g,"<br>");
       
       name = escapeHtml(name);
-        
+      var thisId = typeof params["_id"] != "undefined" &&
+                   typeof params["_id"]["$id"] != "undefined" ? params["_id"]["$id"] : 
+                   typeof params["id"] != "undefined" ? params["id"] : "";
         str = "";  
         str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;'>";
         str += "<div class='searchEntity coopPanelHtml' data-coop-type='"+ params.type + "'  data-coop-id='"+ params.id + "' "+
@@ -2466,7 +2468,7 @@ var directory = {
           str += "<div class='panel-heading border-light col-lg-12 col-xs-12'>";
 
           str += "<button class='btn btn-sm btn-default pull-right openCoopPanelHtml bold letter-turq' "+
-                    "data-coop-type='"+ params.type + "'  data-coop-id='"+ params["_id"]["$id"] + "' "+
+                    "data-coop-type='"+ params.type + "'  data-coop-id='"+ thisId + "' "+
                     "data-coop-idparentroom='"+ idParentRoom + "' "+
                     "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
                     "><i class='fa fa-chevron-right'></i> <span class='hidden-xs'>"+trad["Open"]+"</span></button>";
@@ -2478,9 +2480,9 @@ var directory = {
           str += '<h5>';
           str +=  '<small><i class="fa fa-certificate"></i> '+trad[params.status]+'</small>';
           if(params.status == "tovote" && params["hasVote"]===false)
-            str +=  '<small class="margin-left-15 letter-red"><i class="fa fa-ban"></i> Vous n\'avez pas voté</small>';
+            str +=  '<small class="margin-left-15 letter-red"><i class="fa fa-ban"></i> '+trad["You did not vote"]+'</small>';
           else 
-            str +=  '<small class="margin-left-15"><i class="fa fa-thumbs-up"></i> Vous avez voté</small>';
+            str +=  '<small class="margin-left-15"><i class="fa fa-thumbs-up"></i> '+trad["You did vote"]+'</small>';
           str += '</h5>';
           }
 
@@ -2505,13 +2507,13 @@ var directory = {
 
                   str += '  <button class="btn btn-send-vote btn-link btn-sm bg-vote bg-'+voteRes["bg-color"]+'"';
                   str += '     title="'+trad["clicktovote"]+'" ';
-                  str += '      data-idparentproposal="'+params["_id"]["$id"]+'"';
+                  str += '      data-idparentproposal="'+thisId+'"';
                   str += '      data-idparentroom="'+params["idParentRoom"]+'"';
                   str += '      data-vote-value="'+key+'"><i class="fa fa-gavel"></i>';
                   str += '  </button>';
 
                   if(params["hasVote"] === ""+key)
-                  str +=  '<br><i class="fa fa-user-circle padding-10"></i> ';
+                  str +=  '<br><i class="fa fa-user-circle padding-10" title="'+trad["You voted for this answer"]+'"></i> ';
                 
                   str += '</div>';
                 }

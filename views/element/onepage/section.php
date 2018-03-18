@@ -78,15 +78,13 @@
     		<div class="<?php echo $col; ?> portfolio-item text-<?php echo $align; ?>">
 
                 <?php if($typeItem != "item"){ ?>
-                <a href="<?php echo Element::getHash($item); ?>" class="portfolio-link" data-toggle="modal">
-                <?php }else{ ?>
-                <div class="">
-                <?php } ?>
-                    <!-- <div class="caption">
-                        <div class="caption-content">
-                            <i class="fa fa-search-plus fa-3x"></i>
-                        </div>
-                    </div> -->
+                <?php $lbh = @$item["type"] == Ressource::COLLECTION || 
+                             @$item["type"] == Classified::COLLECTION ? 
+                             "lbh-preview-element" : "lbh"; ?>
+                <a href="<?php echo Element::getHash($item); ?>" 
+                   class="portfolio-link <?php echo $lbh; ?>" data-toggle="modal">
+                <?php }else{ ?><div class=""><?php } ?>
+                    
                     <?php if(!isset($useImg) || @$useImg == true){ 
                         $img =  @$item['profilThumbImageUrl'] ? 
                                 Yii::app()->createUrl('/'.@$item['profilThumbImageUrl']) : 

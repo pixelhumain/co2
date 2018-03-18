@@ -484,6 +484,10 @@ var trad = {
 	"selectedzones" : "<?php echo Yii::t("form","Selected zones") ?>",
 
 	"Open" : "<?php echo Yii::t("common","Open") ?>",
+
+	"You did vote" : "<?php echo Yii::t("cooperation", "You did vote") ?>",
+	"You did not vote" : "<?php echo Yii::t("cooperation", "You did not vote") ?>",
+	"You voted for this answer" : "<?php echo Yii::t("cooperation", "You voted for this answer") ?>",
 };
 
 var tradDynForm = {
@@ -691,6 +695,10 @@ var tradDynForm = {
 	"changingVoteEnabled" : "<?php echo Yii::t("cooperation", "changing vote enabled") ?>",
 	"authorizeChangeVote" : "<?php echo Yii::t("cooperation", "Authorize changing vote ?") ?>",
 	"allowChangeVote" : "<?php echo Yii::t("cooperation", "Do you want to allow voters to change them vote ?") ?>",
+	"You did vote" : "<?php echo Yii::t("cooperation", "You did vote") ?>",
+	"You did not vote" : "<?php echo Yii::t("cooperation", "You did not vote") ?>",
+	"You voted for this answer" : "<?php echo Yii::t("cooperation", "You choose this answer") ?>",
+
 	"istooheavy": "<?php echo Yii::t("form", "is too heavy") ?>",
 	"limitmax": "<?php echo Yii::t("form", "Size limit") ?>",
 	"invalidextension": "<?php echo Yii::t("form", "invalid format") ?>",
@@ -700,7 +708,8 @@ var tradDynForm = {
 	"This URL is already used" : "<?php echo Yii::t("form", "This URL is already used") ?>",
 	"This URL is not used" : "<?php echo Yii::t("form", "This URL is not used") ?>",
 	"Add answers" : "<?php echo Yii::t("form", "Add answers") ?>",
-	"answer" : "<?php echo Yii::t("form", "answer") ?>",
+	"answer" : "<?php echo Yii::t("form", "answer") ?>"
+
 };
 
 var tradCategory = {

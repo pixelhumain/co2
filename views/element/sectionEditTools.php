@@ -225,7 +225,6 @@
 
 		initOnepage(onepageEdition);
 
-		$("#main-page-name, title").html(elementName);
 		$(".btn-save-edition-tools").click(function(){
 			onepageEdition[currentIdSection] = {
 				"text-color" : $("#text-color").val(),
@@ -397,6 +396,7 @@
 
 	function setTxtColorSection(hex){
 		$(	"section"+currentIdSection+ " .item-name, "+
+			"section"+currentIdSection+ " .item-date, "+
 			"section"+currentIdSection+ " .item-desc, "+
 			"section"+currentIdSection+ " .section-title, "+
 			"section"+currentIdSection
@@ -404,6 +404,7 @@
 	}
 	function unsetTxtColorSection(){
 		$(	"section"+currentIdSection+ " .item-name, "+
+			"section"+currentIdSection+ " .item-date, "+
 			"section"+currentIdSection+ " .item-desc, "+
 			"section"+currentIdSection+ " .section-title, "+
 			"section"+currentIdSection

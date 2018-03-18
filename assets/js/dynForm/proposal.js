@@ -105,8 +105,17 @@ dynForm = {
 				$("#ajaxFormModal .multiChoicecheckboxSimple .btn-dyn-checkbox").click(function(){
 					var checkval = $(this).data("checkval");
 					console.log("checkval", checkval);
-					if(checkval=="true") $("#ajaxFormModal .form-group.answersarray").hide(200);
-					else	 	 $("#ajaxFormModal .form-group.answersarray").show(200);
+					if(checkval==true) {
+						$("#ajaxFormModal .form-group.answersarray").hide(200);
+						//enable amendement when simple answer 
+						$("#ajaxFormModal .amendementActivatedcheckboxSimple").show(200); console.log("show");
+						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='true']").click();
+					}else{
+						$("#ajaxFormModal .form-group.answersarray").show(200);
+						//disable amendement when multi answer
+						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']").click();
+						$("#ajaxFormModal .amendementActivatedcheckboxSimple").hide(200); console.log("hide");
+					}
 				});
 
 				$("#ajaxFormModal .multiChoicecheckboxSimple #multiChoice").remove();

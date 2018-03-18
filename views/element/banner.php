@@ -219,7 +219,7 @@
 						<a href="#page.type.<?php  echo $element['organizerType']; ?>.id.<?php  echo $element['organizerId']; ?>" 
 							class="lbh"> 
 							<i class="fa text-<?php  echo Element::getColorIcon($element['organizerType']); ?> fa-<?php  echo Element::getFaIcon($element['organizerType']); ?>"></i> 
-								<?php  echo $element['organizer']['name']; ?>
+								<?php  echo $element['organizer']['name']; ?>XXX
 						</a>
 					<?php } ?>
 				</div>

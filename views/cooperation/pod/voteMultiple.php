@@ -65,7 +65,8 @@
 					<br>
 					<i class="fa fa-chevron-right pull-right margin-top-10"></i> 
 					<i class="fa fa-user-circle pull-right tooltips margin-top-10"
-						data-original-title="<?php echo Yii::t("cooperation", "You did vote"); ?> <?php echo Yii::t("cooperation", $hasVote); ?>" 
+						data-original-title="<?php echo Yii::t("cooperation", "You did vote"); ?> 
+											 <?php echo !@$proposal["answers"] ? Yii::t("cooperation", $hasVote) : "#".($hasVote+1) ; ?>" 
 						data-placement="right"></i>
 				<?php } ?>
 				</div>

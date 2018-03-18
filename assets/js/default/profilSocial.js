@@ -865,11 +865,11 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	}
 
 }
-var loading = "<div class='loader text-dark text-center'>"+
-		"<span style='font-size:25px;'>"+
-			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
-			"<span class='text-dark'>"+trad.currentlyloading+" ...</span>" + 
-		"</div>";
+var loading = 	"<div class='loader shadow2 letter-blue text-center margin-bottom-50'>"+
+					"<span style=''>"+
+						"<i class='fa fa-spin fa-circle-o-notch'></i> "+
+						"<span>"+trad.currentlyloading+" ...</span>" + 
+				"</div>";
 
 function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 	loadingData = true;
@@ -890,7 +890,7 @@ function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM PROFILSOCIAL"); 
         	},
         success:
             function(data) {
-                if(data){ //alert(data);
+                if(data){ 
                 	$("#news-list").find(".loader").remove();
                 	$("#news-list").append(data);
                 	if($("#noMoreNews").length<=0)

@@ -439,10 +439,14 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 						dataType: "json",
 						success: function(data){
 							if ( data && data.result ) {
-								type=formData.parentType;
-								if(formData.parentType==  "citoyens")
-									type="people";
-								removeFloopEntity(data.parentId, type);
+								typeConnect=(formData.parentType==  "citoyens") ? "people" : formData.parentType;
+								idConnect=formData.parentId;
+								if(formData.parentId==userId){
+									typeConnect=(formData.childType==  "citoyens") ? "people" : formData.childType;
+									idConnect=formData.childId;
+								
+								}
+								removeFloopEntity(idConnect, typeConnect);
 								toastr.success("Le lien a été supprimé avec succès");
 								if (typeof callback == "function") 
 									callback();

@@ -769,6 +769,7 @@ function getAjaxFiche(url, breadcrumLevel){
 	urlHash=url;
 	pageView=false;
 	if(urlHash.indexOf("page") >= 0){
+		mylog.log("here");
 		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
 				mylog.log("url", url);
 				$("#repertory").hide( 700 );
@@ -795,6 +796,7 @@ function getAjaxFiche(url, breadcrumLevel){
 				urlHash.indexOf("news") < 0 &&
 				urlHash.indexOf("network") < 0 && 
 				urlHash.indexOf("invite") < 0 ){
+		mylog.log("here2");
 		pageView=true;
 		var urlSplit=urlHash.replace( "#","" ).split(".");
 		if(typeof urlSplit == "string")
@@ -932,7 +934,9 @@ function addTab(tab, tab2){
 	mylog.log("addTab", tab, tab2);
 	var res = [];
 	$.each(tab2, function(key2, value2){
+		mylog.log("addTab value2 ", key2, value2);
 		$.each(tab, function(key1, value1){
+			mylog.log("addTab key1 ", key1, value1);
 			var t = value1.slice();
 			t.push(value2);
 			res.push(t);

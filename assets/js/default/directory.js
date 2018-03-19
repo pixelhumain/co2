@@ -395,6 +395,7 @@ function initPageTable(number){
             pageCount=false;
             searchPage=(page-1);
             //search.page=searchPage;
+            scrollEnd=false;
             indexStep=30;
             indexMin=indexStep*searchPage;
             pageEvent=true;
@@ -1227,15 +1228,15 @@ var directory = {
 
 
 		var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
-        if(typeof params.edit  != "undefined")
-		str += this.getAdminToolBar(params);
+    if(typeof params.edit  != "undefined")
+		  str += this.getAdminToolBar(params);
 
 		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
 			isFollowed=false;
 
 			if(typeof params.isFollowed != "undefined" )
         if(params.type=="events"){
-				isFollowed=true;
+				  isFollowed=true;
     			mylog.log("isFollowed", params.isFollowed, isFollowed);
     			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
     			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 

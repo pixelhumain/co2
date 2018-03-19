@@ -261,7 +261,8 @@
 	  	  </script>
 
 		  <?php if(@Yii::app()->session["userId"] && Yii::app()->params['rocketchatEnabled'] )
-
+		 //  	echo "Authorisation::canEditItem : ".Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id);
+			// echo "<br/>Link::isLinked : ".Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]);
 	  		if( 
 	  			($type==Person::COLLECTION) ||
 	  			//admins can create rooms
@@ -289,16 +290,13 @@
 		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
 	  	  ?>
 	  	  
-	  	  <?php /*if(@$createSlugBeforeChat){ ?>
-	  	  	<button type="button" onclick="javascript:createSlugBeforeChat('<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
-		  		  id="open-rocketChat" style="border-right:0px!important;">
-		  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
-		  	</button>
-	  	  <?php } else{ */?>
 			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?>, contextData )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
 			  		  id="open-rocketChat" style="border-right:0px!important;">
-			  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
+			  		<i class="fa fa-comments elChatNotifs"></i> <?php echo Yii::t("cooperation", "Chat"); 
+			  		?>
+			  		
 			  </button>
+
 		  <?php //} ?>
 		  
 		  <?php } ?>

@@ -174,7 +174,7 @@
     	    if(@$members && sizeOf(@$members)>0)
     		$this->renderPartial('../element/onepage/section', 
     								array(  "items" => $members,
-											"sectionKey" => "directory",
+											"sectionKey" => "participant",
 											"sectionTitle" => $sectionTitle,
 											"sectionShadow" => true,
 											"msgNoItem" => "Aucun contact à afficher",
@@ -221,8 +221,7 @@
 
     <!-- RESSOURCES Section -->
 
-    <?php
-    		$sectionTitle = "RESSOURCES";
+    <?php	$sectionTitle = "RESSOURCES";
     	    if(@$typeItem == "citoyens") $sectionTitle = "MES RESSOURCES";
     	    else 						 $sectionTitle = "NOS RESSOURCES";
     	    
@@ -246,7 +245,68 @@
 												"imgShape" => "square",
 												"useDesc" => false,
 												"useBorderElement"=>$useBorderElement,
-												"countStrongLinks"=>$countStrongLinks,
+
+												"styleParams" => array(	"bgColor"=>"#FFF",
+																  		"textBright"=>"dark",
+																  		"fontScale"=>3),
+												));
+    	    }
+    		
+    ?>
+    
+    <!-- CLASSIFIED Section -->
+
+    <?php 	$classified = Element::getByIdAndTypeOfParent( 
+									Classified::COLLECTION, (string)$element["_id"], 
+									$typeItem, array("updated"=>-1));
+    	    
+
+    	    if(@$classified && sizeOf(@$classified)>0){
+    	    	foreach ($classified as $key => $value) {
+	    	    	$classified[$key]["type"] = Classified::COLLECTION;
+	    	    }
+
+	    	    $this->renderPartial('../element/onepage/section', 
+	    								array(  "items" => @$classified,
+												"sectionKey" => "classified",
+												"sectionTitle" => "Petites annonces",
+												"sectionShadow" => true,
+												"msgNoItem" => "Aucune annonce à afficher",
+												"edit" => $edit,
+												"imgShape" => "square",
+												"useDesc" => false,
+												"useBorderElement"=>$useBorderElement,
+
+												"styleParams" => array(	"bgColor"=>"#FFF",
+																  		"textBright"=>"dark",
+																  		"fontScale"=>3),
+												));
+    	    }
+    		
+    ?>
+    
+    <!-- POI Section -->
+
+    <?php 	$poi = Element::getByIdAndTypeOfParent( 
+									Poi::COLLECTION, (string)$element["_id"], 
+									$typeItem, array("updated"=>-1));
+    	    
+
+    	    if(@$poi && sizeOf(@$poi)>0){
+    	    	foreach ($poi as $key => $value) {
+	    	    	$poi[$key]["type"] = Poi::COLLECTION;
+	    	    }
+
+	    	    $this->renderPartial('../element/onepage/section', 
+	    								array(  "items" => @$poi,
+												"sectionKey" => "poi",
+												"sectionTitle" => "Points d'intérets",
+												"sectionShadow" => true,
+												"msgNoItem" => "Aucun point d'intéret à afficher",
+												"edit" => $edit,
+												"imgShape" => "square",
+												"useDesc" => false,
+												"useBorderElement"=>$useBorderElement,
 
 												"styleParams" => array(	"bgColor"=>"#FFF",
 																  		"textBright"=>"dark",
@@ -267,7 +327,7 @@
     	    if(@$followers && sizeOf(@$followers)>0)
     		$this->renderPartial('../element/onepage/section', 
     								array(  "items" => $followers,
-											"sectionKey" => "directory",
+											"sectionKey" => "followers",
 											"sectionTitle" => $sectionTitle,
 											"sectionShadow" => true,
 											"msgNoItem" => "Aucun contact à afficher",

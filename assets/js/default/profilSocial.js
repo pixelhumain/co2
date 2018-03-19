@@ -1024,13 +1024,13 @@ function loadLiveNow () {
 		mylog.log("loadLiveNow2", contextData.address);
 		if(notNull(contextData.address.level4)){
 			mylog.log("loadLiveNow3", contextData.address.level4);
-			level[contextData.address.level4] = { type : "level4", name : contextData.address.level4Name } ;
+			level[contextData.address.level4] = {id : contextData.address.level4, type : "level4", name : contextData.address.level4Name } ;
 		} else if(notNull(contextData.address.level3)){
-			level[contextData.address.level3] = { type : "level3", name : contextData.address.level3Name } ;
+			level[contextData.address.level3] = {id : contextData.address.level3, type : "level3", name : contextData.address.level3Name } ;
 		} else if(notNull(contextData.address.level2)){
-			level[contextData.address.level2] = { type : "level2", name : contextData.address.level2Name } ;
+			level[contextData.address.level2] = {id : contextData.address.level2, type : "level2", name : contextData.address.level2Name } ;
 		} else if(notNull(contextData.address.level1)){
-			level[contextData.address.level1] = { type : "level1", name : contextData.address.level1Name } ;
+			level[contextData.address.level1] = {id : contextData.address.level1, type : "level1", name : contextData.address.level1Name } ;
 		}
 	}
 

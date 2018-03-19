@@ -551,7 +551,7 @@ function updateNews(idNews, newText, type){
 }
 
 function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommentId*/){
-	getMediaFromUrlContent(idTextArea,"#form-news-update #results",1);
+	getMediaFromUrlContent(idTextArea,"#results",1);
 	if($("#form-news-update #results").html!="") $("#form-news-update #results").show();
 	//$(idTextArea).css('height', "34px");
 	//$("#container-txtarea-news-"+idNews).css('height', "34px");

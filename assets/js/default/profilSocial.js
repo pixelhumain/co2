@@ -876,7 +876,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 				if(col=="favorites")
 					colName="favoris";
 				html += "<a class='btn btn-default col-xs-12 shadow2 padding-10 margin-bottom-20' onclick='$(\"."+colName+"\").toggleClass(\"hide\")' ><h2><i class='fa fa-star'></i> "+colName+" ("+Object.keys(val.list).length+")</h2></a>"+
-						"<div class='"+colName+" hide'>";
+						"<div class='"+colName+" col-sm-12 col-xs-12  hide'>";
 				mylog.log("list", val);
 				if(val.count==0)
 					html +="<span class='col-xs-12 text-dark margin-bottom-20'>"+trad.noelementinthiscollection+"</span>";
@@ -934,7 +934,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		//var nothing = tradException.no;
 		//if(dataName == "organizations" || dataName == "collections" || dataName == "follows")
 		//	nothing = tradException.nofem;
-		var html =  communityStr+"<div class='col-md-12 margin-bottom-15'>"+
+		var html =  communityStr+"<div class='col-md-12 col-sm-12 col-xs-12  margin-bottom-15'>"+
 						getLabelTitleDir(dataName, dataIcon, parseInt(n), n)+
 					"</div>";
 		$("#central-container").html(html + "<span class='col-md-12 alert bold bg-white'>"+
@@ -1024,13 +1024,13 @@ function loadLiveNow () {
 		mylog.log("loadLiveNow2", contextData.address);
 		if(notNull(contextData.address.level4)){
 			mylog.log("loadLiveNow3", contextData.address.level4);
-			level[contextData.address.level4] = { type : "level4", name : contextData.address.level4Name } ;
+			level[contextData.address.level4] = {id : contextData.address.level4, type : "level4", name : contextData.address.level4Name } ;
 		} else if(notNull(contextData.address.level3)){
-			level[contextData.address.level3] = { type : "level3", name : contextData.address.level3Name } ;
+			level[contextData.address.level3] = {id : contextData.address.level3, type : "level3", name : contextData.address.level3Name } ;
 		} else if(notNull(contextData.address.level2)){
-			level[contextData.address.level2] = { type : "level2", name : contextData.address.level2Name } ;
+			level[contextData.address.level2] = {id : contextData.address.level2, type : "level2", name : contextData.address.level2Name } ;
 		} else if(notNull(contextData.address.level1)){
-			level[contextData.address.level1] = { type : "level1", name : contextData.address.level1Name } ;
+			level[contextData.address.level1] = {id : contextData.address.level1, type : "level1", name : contextData.address.level1Name } ;
 		}
 	}
 

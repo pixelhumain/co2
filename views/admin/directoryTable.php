@@ -283,8 +283,10 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 			&& typeof userConnected.roles.superAdmin != "undefined" 
 			&& userConnected.roles.superAdmin){
 			if(type == "<?php echo Person::COLLECTION ?>"){
+
+				mylog.log("superAdmin", e);
 				//Activated
-				if( typeof e.roles != "undefined" && typeof e.roles.tobeactivated != "undefined" )
+				if( typeof e.roles != "undefined" && typeof e.roles.tobeactivated != "undefined" && typeof e.roles.tobeactivated == true)
 				{
 					classes += "tobeactivated";
 					status.push({"key":"tobeactivated","label":"To be activated"});
@@ -292,7 +294,7 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 				}
 				//Beta Test
 				if (betaTest) {
-					if( typeof e.roles != "undefined" && typeof e.roles.betaTester != "undefined" ) {
+					if( typeof e.roles != "undefined" && typeof e.roles.betaTester != "undefined"  && typeof e.roles.betaTester == true ) {
 						classes += "betaTester";
 						actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 revokeBetaTesterBtn"><span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-check fa-stack-1x stack-right-bottom text-danger"></i></span> Revoke this beta tester </a></li>';
 					} else {
@@ -300,7 +302,8 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 					}
 				}
 				//Super Admin
-				if( typeof e.roles != "undefined" && typeof e.roles.superAdmin != "undefined" ) {
+				if( typeof e.roles != "undefined" && typeof e.roles.superAdmin != "undefined" && typeof e.roles.superAdmin == true ) {
+					
 					classes += "superAdmin";
 					status.push({"key":"superAdmin", "label":"Super admin"});
 					actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 revokeSuperAdminBtn"><span class="fa-stack"><i class="fa fa-user-plus fa-stack-1x"></i><i class="fa fa-times fa-stack-2x stack-right-bottom text-danger"></i></span> Revoke this super admin </a></li>';

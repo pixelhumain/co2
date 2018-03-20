@@ -768,10 +768,12 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 				if(v != "" && !rolesList.includes(v))
 					rolesList.push(v);
 				//Incrément and push roles in filter array
-				if(typeof listRoles[v] != "undefined")
-					listRoles[v].count++;
-				else
-					listRoles[v]={"count": 1}
+				if(v != ""){
+					if(typeof listRoles[v] != "undefined")
+						listRoles[v].count++;
+					else
+						listRoles[v]={"count": 1}
+				}
 			});
 		}
 	});

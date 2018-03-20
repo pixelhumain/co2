@@ -1331,7 +1331,7 @@ var directory = {
     if(typeof params.price != "undefined" && params.price != "")
       str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
  
-    if(typeof params.category != "undefined"){
+    if($.inArray(params.type, ["poi","classified","ressources"])>=0 && typeof params.category != "undefined"){
       str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
       if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
       str += "</div>";

@@ -900,8 +900,8 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}
 		toogleNotif(false);
 		$("#central-container").html(html);
-		if(dataName != "collections" && directory.viewMode=="block")
-            setTimeout(function(){ directory.checkImage(data);}, 300);
+		//if(dataName != "collections" && directory.viewMode=="block")
+          //  setTimeout(function(){ directory.checkImage(data);}, 300);
 		if(dataName == "events"){
 			//init calendar view
 			calendar.init("#profil-content-calendar");

@@ -316,8 +316,8 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                     });
                     }*/
                   }
-                  if(directory.viewMode=="block")
-                    setTimeout(function(){ directory.checkImage(results);}, 500);
+                 // if(directory.viewMode=="block")
+                    //setTimeout(function(){ directory.checkImage(results);}, 500);
 
                 }
                 //remet l'icon "loupe" du bouton search
@@ -2857,19 +2857,19 @@ var directory = {
       }
       return headerStr;
     },
-    checkImage : function(res){
-      $.each(res, function(i,v){
-        if($("#entity"+i+" .container-img-profil .img-responsive").length){
+    checkImage : function($this){
+    //  $.each(res, function(i,v){
+       // if($("#entity"+i+" .container-img-profil .img-responsive").length){
           //alert(i);
-          var imgH = $("#entity"+i+" .container-img-profil .img-responsive")[0].scrollHeight;
+          var imgH = $this.scrollHeight;
           //alert(imgH);
           if(imgH > 240){
             marginTop= imgH/3;
             //alert(marginTop)
-            $("#entity"+i+" .container-img-profil .img-responsive").css({"margin-top":"-"+marginTop+"px"});
+            $($this).css({"margin-top":"-"+marginTop+"px"});
           }
-        }
-      });
+        //}
+      //});
       
     },
     switcherViewer : function(results, dom){
@@ -2880,7 +2880,7 @@ var directory = {
         str=directory.showResultsDirectoryHtml(results);
         domId=(notNull(dom))? dom : "#dropdown_search";
         $(domId).html(str);
-        setTimeout(function(){ directory.checkImage(results);}, 200);
+        //setTimeout(function(){ directory.checkImage(results);}, 200);
         //active les link lbh
         bindLBHLinks();
         initBtnAdmin();
@@ -3052,7 +3052,7 @@ var directory = {
                     }
                     
                     if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
-                        params.imgMediumProfil= "<img class='img-responsive' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+                        params.imgMediumProfil= "<img class='img-responsive' onload='directory.checkImage(this);' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
                     
                     if("undefined" != typeof params.profilThumbImageUrl && params.profilThumbImageUrl != "")
                         params.imgProfil= "<img class='shadow2' src='"+baseUrl+params.profilThumbImageUrl+"'/>";

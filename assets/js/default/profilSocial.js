@@ -628,6 +628,14 @@ function loadActionRoom(){
 	ajaxPost('#fast-rooms', baseUrl+'/'+moduleId+'/rooms/index/type/'+contextData.type+
 									'/id/'+contextData.id, params, function(){},"html");
 }
+function loadSet(){
+	//toogleNotif(false);
+	//showLoader('#fast-rooms');
+	//var params = { };
+	//ajaxPost('#fast-rooms', baseUrl+'/'+moduleId+'/rooms/index/type/'+contextData.type+
+	//								'/id/'+contextData.id, params, function(){},"html");
+	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/person/settings");
+}
 
 
 function loadNetworks(){

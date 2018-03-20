@@ -1,21 +1,25 @@
 
 <?php 
 	HtmlHelper::registerCssAndScriptsFiles( 
-	array(  '/css/onepage.css',
-			'/vendor/colorpicker/js/colorpicker.js',
-			'/vendor/colorpicker/css/colorpicker.css',
-			'/css/news/index.css',	
-			'/css/timeline2.css',	
-		  ) , Yii::app()->theme->baseUrl. '/assets');
+		array(  '/css/onepage.css',
+				'/vendor/colorpicker/js/colorpicker.js',
+				'/vendor/colorpicker/css/colorpicker.css',
+				'/css/news/index.css',	
+				'/css/timeline2.css',	
+			  ) , Yii::app()->theme->baseUrl. '/assets');
 
 	HtmlHelper::registerCssAndScriptsFiles(
-	array('/js/news/index.js'), $this->module->assetsUrl);
+		array('/js/news/index.js', 
+			  '/js/default/editInPlace.js'), 
+			$this->module->assetsUrl);
 
 
 	HtmlHelper::registerCssAndScriptsFiles(
-	array('/plugins/showdown/showdown.min.js',
-		  '/plugins/to-markdown/to-markdown.js',
-		  ), Yii::app()->request->baseUrl);
+		array('/plugins/showdown/showdown.min.js',
+			  '/plugins/to-markdown/to-markdown.js',
+			  ), Yii::app()->request->baseUrl);
+
+	$themeParams = CO2::getThemeParams();
 
 	$imgDefault = $this->module->assetsUrl.'/images/news/profile_default_l.png';
 
@@ -40,7 +44,11 @@
  	$tags = @$element["tags"];
  	
  	$hash = @$element["slug"] ? "#".$element["slug"] :
-								"#page.type.".$type.".id.".$params["id"];
+								"#page.type.".$type.".id.".$element["_id"];
+   
+	//$hashOnepage = $hash.".".$themeParams["onepageKey"][0];
+	$hashOnepage = "#page.type.".$type.".id.".$element["_id"].".view.".$themeParams["onepageKey"][0];
+
     $typeItemHead = $typeItem;
     if($typeItem == "organizations" && @$element["type"]) $typeItemHead = $element["type"];
 
@@ -56,6 +64,26 @@
 		margin-left: 25%!important;
 	}
 
+	.btn-onepage-quickview{
+		position: fixed;
+		left: 120px;
+		top: 85px;
+		z-index: 2;
+	}
+
+	.btn-link.btn-central-tool{
+		border-radius: 50px;
+		padding:10px 15px;
+		margin-top:-22px;
+		border:none!important;
+	}
+	
+	.btn-link.btn-central-tool:hover{
+		background-color: rgba(255, 255, 255, 0.7);
+		text-decoration:none;
+		border:none!important;
+	}
+
 </style>
 
 <div>
@@ -68,6 +96,18 @@
 			<ul class="dropdown-menu arrow_box" id="menu-onepage"></ul>
 		</div>
 	</div>
+
+	<?php if($edit==true){ ?>
+		<a href="<?php echo $hashOnepage.".mode.noedit"; ?>" target=_blank
+			class="btn btn-link bg-red letter-white font-blackoutM btn-onepage-quickview">
+			<i class="fa fa-user-circle"></i> Visualiser comme un visiteur
+		</a>
+	<?php }else if(@$_GET["mode"]=="noedit"){ ?>
+		<a href="<?php echo $hash.".".$themeParams["onepageKey"][0]; ?>" 
+			class="btn btn-link bg-red letter-white font-blackoutM btn-onepage-quickview lbh">
+			<i class="fa fa-cogs"></i> Activer l'edition de la page
+		</a>
+	<?php } ?>
 
 	<!-- BANNER Section -->
     
@@ -85,18 +125,29 @@
     								   "type" => @$type,
     								   "openEdition" => @$openEdition)); 
 	?>
-    
+
+	<?php if($edit==true){ ?>
+		<div class="col-xs-12 text-center">
+			<button class="btn btn-link bg-white text-dark tooltips btn-central-tool btn-update-descriptions shadow2"
+					data-original-title="Modifier les descriptions" data-toogle="tooltips">
+				<i class="fa fa-pencil"></i> Modifier la description
+			</button>
+		</div>	
+	    <span class="contentInformation hidden">
+	    	<span  id="shortDescriptionAboutEdit"><?php echo (!empty(@$element["shortDescription"])) ? @$element["shortDescription"] : ""; ?></span>
+	  	</span>
+    <?php } ?>
     <!-- DESCRIPTION Section -->
 
-    <span id="descriptionMarkdown" name="descriptionMarkdown"  
-    	  class="hidden" ><?php echo (!empty($element["description"])) ? $element["description"] : ""; ?></span>
 
     <?php   
-    		$desc = array( array("shortDescription"=>@$element["description"]), );
+    		$desc = array( array("shortDescription"=>@$element["description"],
+    							 "useMarkdown" => true), );
 
     		if(@$desc && sizeOf(@$desc)>0)
     		$this->renderPartial('../element/onepage/section', 
-    								array(  "items" => $desc,
+    								array(  "element" => $element,
+    								   		"items" => $desc,
 											"sectionKey" => "description",
 											"sectionTitle" => "PRÉSENTATION",
 											"sectionShadow" => true,
@@ -120,7 +171,8 @@
     				if(Event::isPast($value)) unset($events[$key]);
     			
     			$this->renderPartial('../element/onepage/section', 
-    								array(  "items" => $events,
+    								array(  "element" => $element,
+    								   		"items" => $events,
 											"sectionKey" => "events",
 											"sectionTitle" => "ÉVÉNEMENTS À VENIR",
 											"sectionShadow" => true,
@@ -145,7 +197,8 @@
 	    	    if(@$typeItem != "citoyens") $sectionTitle = "NOS PROJETS";
 	    	    
 	    		$this->renderPartial('../element/onepage/section', 
-	    								array(  "items" => $projects,
+	    								array(  "element" => $element,
+    								   			"items" => $projects,
 												"sectionKey" => "projects",
 												"sectionTitle" => "NOS PROJETS",
 												"sectionShadow" => true,
@@ -173,7 +226,8 @@
     	    
     	    if(@$members && sizeOf(@$members)>0)
     		$this->renderPartial('../element/onepage/section', 
-    								array(  "items" => $members,
+    								array(  "element" => $element,
+    								   		"items" => $members,
 											"sectionKey" => "participant",
 											"sectionTitle" => $sectionTitle,
 											"sectionShadow" => true,
@@ -202,7 +256,8 @@
     	    
     	    if(@$members && sizeOf(@$memberOf)>0)
     		$this->renderPartial('../element/onepage/section', 
-    								array(  "items" => $memberOf,
+    								array(  "element" => $element,
+    								   		"items" => $memberOf,
 											"sectionKey" => "directory",
 											"sectionTitle" => $sectionTitle,
 											"sectionShadow" => true,
@@ -236,7 +291,8 @@
 	    	    }
 
 	    	    $this->renderPartial('../element/onepage/section', 
-	    								array(  "items" => @$ressources,
+	    								array(  "element" => $element,
+    								   			"items" => @$ressources,
 												"sectionKey" => "ressources",
 												"sectionTitle" => $sectionTitle,
 												"sectionShadow" => true,
@@ -267,7 +323,8 @@
 	    	    }
 
 	    	    $this->renderPartial('../element/onepage/section', 
-	    								array(  "items" => @$classified,
+	    								array(  "element" => $element,
+    								   			"items" => @$classified,
 												"sectionKey" => "classified",
 												"sectionTitle" => "Petites annonces",
 												"sectionShadow" => true,
@@ -298,7 +355,8 @@
 	    	    }
 
 	    	    $this->renderPartial('../element/onepage/section', 
-	    								array(  "items" => @$poi,
+	    								array(  "element" => $element,
+    								   			"items" => @$poi,
 												"sectionKey" => "poi",
 												"sectionTitle" => "Points d'intérets",
 												"sectionShadow" => true,
@@ -326,7 +384,8 @@
     	    
     	    if(@$followers && sizeOf(@$followers)>0)
     		$this->renderPartial('../element/onepage/section', 
-    								array(  "items" => $followers,
+    								array(  "element" => $element,
+    								   		"items" => $followers,
 											"sectionKey" => "followers",
 											"sectionTitle" => $sectionTitle,
 											"sectionShadow" => true,
@@ -365,7 +424,7 @@
 												"properties" => $element["properties"]["chart"],
 												"admin" =>$edit,
 												"isDetailView" => 1,
-												"openEdition" => $openEdition,
+												"openEdition" => @$openEdition,
 												"chartAlone" => true));
 					?>						  
 				</div>
@@ -401,12 +460,17 @@
 
 	<!-- GALLERY Section -->
 
+	<?php if(@$element["onepageEdition"]["#gallery"]["hidden"] != "true" || @$edit == true){ ?>
 	<section id="gallery" class="bg-white inline-block col-md-12 shadow">
 		<?php if(@$edit==true){ ?>
 			<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
 				    data-id="#gallery">
 		        	<i class="fa fa-cog"></i>
 		    </button>
+		    <?php $this->renderPartial('../element/onepage/btnShowHide', 
+	                                    array(  "element" => $element,
+	                                            "sectionKey" => "gallery"));
+	        ?>
 	    <?php } ?>
 
         <div class="row">
@@ -423,16 +487,22 @@
 		</ul>
 
 	</section>
-
+	<?php } ?>
 
 	<!-- TIMELINE Section -->
 
+	<?php if(@$element["onepageEdition"]["#timeline"]["hidden"] != "true" || @$edit == true){ ?>
 	<section id="timeline" class="bg-white inline-block col-md-12 shadow">
 		<?php if(@$edit==true){ ?>
-		<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
-			    data-id="#timeline">
-	        	<i class="fa fa-cog"></i>
-	    </button>
+			<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
+				    data-id="#timeline">
+		        	<i class="fa fa-cog"></i>
+		    </button>
+
+	        <?php $this->renderPartial('../element/onepage/btnShowHide', 
+	                                    array(  "element" => $element,
+	                                            "sectionKey" => "timeline"));
+	        ?>
 	    <?php } ?>
 
         <div class="row">
@@ -449,6 +519,7 @@
 		</ul>
 
 	</section>
+	<?php } ?>
 
 
 	<?php $this->renderPartial('../element/onepage/footer', 
@@ -481,7 +552,7 @@ var elementName = "<?php echo @$element["name"]; ?>";
 var mapData = <?php echo json_encode(@$mapData) ?>;
 var params = <?php echo json_encode(@$params) ?>;
 var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
-
+var openEdition = "<?php echo (string)@$element["openEdition"]; ?>";
 //console.dir("allparams", params);
 var currentIdSection = "";
 jQuery(document).ready(function() {
@@ -495,9 +566,12 @@ jQuery(document).ready(function() {
 	//change title in browser
 	$("#main-page-name, title").html(elementName);
 
+	if(edit==true)
+		bindDynFormEditable();
+
 	//console.log("body width", $("body").width());
 	if($("body").width()>767)
-	$("#btn-onepage-main-menu").trigger("click");
+		$("#btn-onepage-main-menu").trigger("click");
 
 	//activate btn to show all text of Description (max hide by default)
     $(".btn-full-desc").click(function(){
@@ -519,7 +593,7 @@ jQuery(document).ready(function() {
 		function(){},"html");
 
 	//load section TIMELINE
-	url = "news/index/type/<?php echo (string)$element["type"] ?>/id/<?php echo (string)$element["_id"] ?>?isFirst=1&";
+	url = "news/index/type/<?php echo (string)$element["type"] ?>/id/<?php echo (string)$element["_id"] ?>?isFirst=1&limit=10&";
 	ajaxPost('#timeline-page', baseUrl+'/'+moduleId+'/'+url+"renderPartial=true&tpl=co2&nbCol=2", null, 
 		function(){},"html");
 });
@@ -544,19 +618,22 @@ function initMenuOnepage(){
 }
 
 function initMarkdownDescription() {
-	//mylog.log("inintDescs");
-	if(edit == true || openEdition== true)
-		descHtmlToMarkdown();
-	//mylog.log("after");
-	//mylog.log("inintDescs", $("#descriptionMarkdown").html());
+	
 	var descHtml = "<center><i>"+trad.notSpecified+"</i></center>";
-	if($("#descriptionMarkdown").html().length > 0){
-		descHtml = dataHelper.markdownToHtml($("#descriptionMarkdown").html()) ;
-		//console.log("descHtml1", descHtml);
-	}
-	//$("#descriptionAbout").html(descHtml);
-	$("#description .item-desc").html(descHtml);
-	//mylog.log("descHtml2", descHtml);
+
+	$.each($(".descriptionMarkdown"), function(){
+		var sectionK = $(this).data("key");
+		var item = $(this).data("item");
+		descHtml = "<center><i>"+trad.notSpecified+"</i></center>";
+		
+		if($(this).html().length > 0){
+			descHtml = dataHelper.markdownToHtml($(this).html()) ;
+			console.log("initMarkdown", $(this).html(), sectionK, item, descHtml, 
+						"section#"+sectionK+" .portfolio-item.item-"+item+" .item-desc");
+			$("section#"+sectionK+" .portfolio-item.item-"+item+" .item-desc").html(descHtml);
+		}
+	});
+	
 }
 
 

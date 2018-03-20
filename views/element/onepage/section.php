@@ -1,4 +1,33 @@
+<?php foreach (@$element["onepageEdition"] as $sectionK => $val) {
+            if(@$val["beforeSection"] == "#".$sectionKey){
+                //echo "need to show free section : " . $sectionK;
+                $desc = @$val["items"];   // array( array("shortDescription"=>@$val["description"],
+                                                //"useMarkdown"=>@$val["useMarkdown"]), );
+
+                $this->renderPartial('../element/onepage/section', 
+                                    array(  "element" => $element,
+                                            "items" => @$desc,
+                                            "sectionKey" => substr($sectionK, 1, strlen($sectionK)),
+                                            "sectionTitle" => @$val["title"],
+                                            "sectionShadow" => true,
+                                            "msgNoItem" => "",
+                                            "imgShape" => "square",
+                                            "edit" => $edit,
+                                            "useImg" => false,
+                                            //"fullWidth" => true, //only for 1 element
+                                            "useBorderElement"=>$useBorderElement,
+
+                                            "styleParams" => array( "bgColor"=>"#FFF",
+                                                                    "textBright"=>"dark",
+                                                                    "fontScale"=>3),
+                                            ));
+            }
+      } 
+?>
+
 <?php 
+    //echo $sectionKey." "; var_dump(@$element["onepageEdition"]["#".@$sectionKey]); exit;
+    if(@$element["onepageEdition"]["#".@$sectionKey]["hidden"] == "true" && @$edit == false) return;
 
     $nbMax = @$nbMax ? $nbMax : 12;
 
@@ -34,16 +63,28 @@
         <?php } ?>
 </style>
 
-
+<?php if(@$edit==true && @$sectionKey != "description"){ ?>
+    <div class="col-xs-12 text-center">
+        <button class="btn btn-link bg-white text-dark tooltips btn-central-tool btn-update-descriptions shadow2"
+                data-original-title="Modifier les descriptions" data-toogle="tooltips">
+            <i class="fa fa-plus"></i> Ajouter section ici
+        </button>
+    </div>
+<?php } ?>
 
 <section id="<?php echo @$sectionKey; ?>" 
          class="portfolio <?php if(@$sectionShadow==true) echo 'shadow'; ?>">
     
     <?php if(@$edit==true){ ?>
-    <button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
-            data-id="#<?php echo @$sectionKey; ?>">
-            <i class="fa fa-cog"></i>
-    </button>
+        <button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
+                data-id="#<?php echo @$sectionKey; ?>">
+                <i class="fa fa-cog"></i>
+        </button>
+
+        <?php $this->renderPartial('../element/onepage/btnShowHide', 
+                                    array(  "element" => $element,
+                                            "sectionKey" => @$sectionKey));
+        ?>
     <?php } ?>
 
     <div class="container">
@@ -75,7 +116,7 @@
                     $icon = Element::getFaIcon($typeItem) ? Element::getFaIcon($typeItem) : "";
                     $iconColor = Element::getColorIcon($typeItem) ? Element::getColorIcon($typeItem) : "";
     	?>
-    		<div class="<?php echo $col; ?> portfolio-item text-<?php echo $align; ?>">
+    		<div class="<?php echo $col; ?> portfolio-item item-<?php echo $key; ?> text-<?php echo $align; ?>">
 
                 <?php if($typeItem != "item"){ ?>
                 <?php $lbh = @$item["type"] == Ressource::COLLECTION || 
@@ -124,6 +165,14 @@
                     <?php } ?>
 
                     <?php if($nbItem <= 4 && (!isset($useDesc) || @$useDesc == true)){ ?>
+                        <?php if(@$item["useMarkdown"]==true){ ?>
+                            <span id="descMarkdown<?php echo $sectionKey; ?>" 
+                                  data-item="<?php echo $key; ?>"
+                                  data-key="<?php echo $sectionKey; ?>" 
+                                  name="descriptionMarkdown" 
+                                  class="descriptionMarkdown hidden"
+                                  ><?php echo (!empty(@$item['shortDescription'])) ? @$item['shortDescription'] : ""; ?></span>
+                        <?php } ?>
                         <div class="col-md-12 col-sm-12 no-padding item-desc  <?php if(@$fullWidth && @$fullWidth == true) echo "text-left"; ?>">
                             <?php echo @$item['shortDescription'] ? @$item['shortDescription'] :
                                         "<span class='padding-10'><center><i>- Pas de présentation -</center></i></span>"; ?>

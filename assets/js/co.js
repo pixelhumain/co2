@@ -950,9 +950,18 @@ var urlCtrl = {
 			  				hashT.shift();
 			  				viewPage="/"+hashT.join("/");
 			  			}
-			  			console.log("HASH ?", hashT[0], CO2params["onepageKey"], ($.inArray(hashT[0], CO2params["onepageKey"])));
-			  			if($.inArray(hashT[0], CO2params["onepageKey"])>-1) viewPage = "/view/"+hashT[0];
-			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+
+			  			var key = hashT[0];
+			  			var get = "";
+			  			//console.log("load key indexOf", key, key.indexOf("?"));
+						if(key.indexOf("?")>-1){
+							get = key.substr(key.indexOf("?"), key.length);
+							key = key.substr(0, key.indexOf("?"), key.length);
+							//console.log("load key", key);
+						}
+			  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
+			  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
+			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get);
 			  		}else
 			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 	 			},

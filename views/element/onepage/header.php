@@ -56,11 +56,10 @@
                 <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 btn-tools margin-top-10 margin-bottom-10">
 
                     <?php if(@$edit == true){ ?>
-                    		<a href="<?php echo $hash; ?>.view.detail"
-                    				class="btn btn-default lbh">
+                    		<button class="btn btn-default btn-update-info">
                     				 <i class="fa fa-pencil hidden-xs"></i>
                     				 Editer les informations 
-                    		</a>
+                    		</button>
                     <?php } ?>
 
 
@@ -88,6 +87,25 @@
 
                     <span class="skills"><?php echo nl2br(@$element["shortDescription"]); ?></span>
                     <br>
+
+                    <?php if((@$element["preferences"]["publicFields"] && 
+                             in_array("locality", @$element["preferences"]["publicFields"])) ||
+                             @$element["type"] != Person::COLLECTION){ ?>
+                        <div class="commune text-red homestead margin-top-10">
+                            <?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
+                                    echo "<i class='fa fa-map-marker'></i> ".$element["address"]["addressLocality"];
+                                    if(@$element["address"]["streetAddress"]) echo ", ";
+                                    else echo " ";
+                                  }
+                                  if(@$element["address"] && @$element["address"]["streetAddress"]) {
+                                    echo "<small>".$element["address"]["streetAddress"]."</small>";
+                                    if(@$element["address"]["postalCode"]) echo ", ";
+                                  }
+                                  if(@$element["address"] && @$element["address"]["postalCode"]) 
+                                    echo $element["address"]["postalCode"];
+                            ?>
+                        </div>
+                    <?php } ?>
 
                     <?php if(@$element["preferences"]["publicFields"] && 
                     		 in_array("email", @$element["preferences"]["publicFields"])){ ?>
@@ -140,24 +158,6 @@
                 		<span class="badge bg-red"><?php echo $tag; ?></span>
                 	<?php } ?>
                 </div>
-
-                <?php if((@$element["preferences"]["publicFields"] && 
-                    	 in_array("locality", @$element["preferences"]["publicFields"])) ||
-                         @$element["type"] != Person::COLLECTION){ ?>
-                    <div class="commune text-red homestead margin-top-10">
-                		<?php if(@$element["address"] && @$element["address"]["addressLocality"]) {
-                				echo "<i class='fa fa-university'></i> ".$element["address"]["addressLocality"];
-                				if(@$element["address"]["streetAddress"]) echo ", ";
-                			  }
-                			  if(@$element["address"] && @$element["address"]["streetAddress"]) {
-                			  	echo "<small>".$element["address"]["streetAddress"]."</small>";
-                				if(@$element["address"]["postalCode"]) echo ", ";
-                			  }
-                			  if(@$element["address"] && @$element["address"]["postalCode"]) 
-                			  	echo $element["address"]["postalCode"];
-                		?>
-                    </div>
-                <?php } ?>
             </div>
 
         </div>

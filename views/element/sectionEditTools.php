@@ -24,11 +24,17 @@
 			box-shadow: -2px 0px 5px -1px rgba(0,0,0,0.5);
     	}
     	.edit-section-title{
+    		font-size: 20px;
+    		text-transform: uppercase;
     		margin-top: 55px !important;
+    		font-weight: 800;
+    		border: none;
     	}
 
-    	.btn-edit-section{
-    		margin-top:-30px;
+    	.btn-edit-section,
+    	.btn-show-section,
+    	.btn-hide-section{
+    		margin-top:-25px;
     	}
     	#onepage-edition-tools{
     		width:40%;
@@ -109,7 +115,7 @@
 	    </div>
 
     	<div class="col-md-12 col-sm-12 no-padding margin-bottom-10">
-    		<h3 class="margin-top-5 edit-section-title"></h3>
+    		<i class="fa fa-pencil letter-blue"></i> <input type="text" class="margin-top-5 edit-section-title font-montserrat">
 			<hr class="margin-bottom-5 margin-top-5">
 		</div>
 
@@ -226,26 +232,64 @@
 		initOnepage(onepageEdition);
 
 		$(".btn-save-edition-tools").click(function(){
-			onepageEdition[currentIdSection] = {
-				"text-color" : $("#text-color").val(),
-				"background-color" : $("#background-color").val(),
-				"background-img" : $("#background-img").val()
-			};
+			
+			onepageEdition[currentIdSection]["text-color"] = $("#text-color").val();
+			onepageEdition[currentIdSection]["background-color"] = $("#background-color").val();
+			onepageEdition[currentIdSection]["background-img"] = $("#background-img").val();
+			onepageEdition[currentIdSection]["title"] = $(".edit-section-title").val();
 
-			console.log("on save onepageEdition", onepageEdition);
+			//console.log("on save onepageEdition", onepageEdition);
 			var idSection = currentIdSection.substr(1, currentIdSection.length);
-			console.log("idSection", idSection);
+			//console.log("idSection", idSection);
 			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
 
 			hideEditionTools(false);
 		});
+
 		$(".btn-close-edition-tools").click(function(){
 			hideEditionTools(true);
 		});
-		$(".btn-edit-section").click(function(){ console.log("ahlo koi");
+
+		$(".btn-edit-section").click(function(){ 
 			var key = $(this).data("id");
 			showEditionTools(key);
 		});
+
+		$(".btn-hide-section").click(function(){ 
+			var key = $(this).data("id");
+			onepageEdition[key]["hidden"] = true;
+
+			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
+			
+			$("section"+key+" .btn-hide-section").addClass("active");
+			$("section"+key+" .btn-show-section").removeClass("active");
+
+			$("section"+key+" .badge-info-section").html(
+				'<small class="badge letter-blue bg-white margin-right-15">'+
+        			'<i class="fa fa-ban"></i> '+
+        			'Cette section n\'est pas visible pour les visiteurs de votre page'+
+   				'</small>');
+		});
+
+		$(".btn-show-section").click(function(){ 
+			var key = $(this).data("id");
+			onepageEdition[key]["hidden"] = false;
+
+			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
+			
+			$("section"+key+" .btn-show-section").addClass("active");
+			$("section"+key+" .btn-hide-section").removeClass("active");
+
+			$("section"+key+" .badge-info-section").html("");
+		});
+
+
+
+		$(".edit-section-title").keyup(function(){
+			var newTitle = $(".edit-section-title").val();
+			console.log("onchange title section", newTitle, "changing value", "section"+currentIdSection+" .sec-title");
+			$("section"+currentIdSection+" .sec-title").html(newTitle);
+		})
 
 
 		/* COLOR PICKER */
@@ -358,13 +402,13 @@
 		});
 		/* BGIMG PICKER */
 		
-		
+		$('.edit-section-title').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
 		
 	});
 
 	function initOnepage(onepageEdition){
 		$.each(onepageEdition, function(section, options){
-
+			console.log("initOnePage", section, options);
 			if(typeof options["background-img"] != "undefined" && options["background-img"] != ""){
 				$("section"+section).css('backgroundImage', "url('"+urlImgBg+options["background-img"]+"')");
 				if(options["background-img"].indexOf("pattern") >= 0){
@@ -391,7 +435,12 @@
 				}
 			}
 
+			if(typeof options["title"] != "undefined" && options["title"] != ""){
+				$("section"+section+" .sec-title").html(options["title"]);
+			}
+
 		});
+    
 	}
 
 	function setTxtColorSection(hex){
@@ -421,7 +470,7 @@
 		$("#onepage-edition-tools").show(300);
 		var title = $(idSection+" .section-title .sec-title").html();
 		if(currentIdSection == "#header") title = "EN-TÊTE";
-		$("#onepage-edition-tools .edit-section-title").html(title);
+		$("#onepage-edition-tools .edit-section-title").val(title);
 		KScrollTo("section"+idSection);
 
 		var rgb = $("section"+currentIdSection).css("backgroundColor");

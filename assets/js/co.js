@@ -2893,7 +2893,7 @@ var mentionsInit = {
 			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 				callback.call(this, data);
 				mentionsInit.isSearching=true;
-		   		var search = {"searchType" : ["citoyens","organizations","projects"]};
+		   		var search = {"searchType" : ["citoyens","organizations","projects"], "name": query};
 		  		$.ajax({
 					type: "POST",
 			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
@@ -2907,7 +2907,7 @@ var mentionsInit = {
 				        	data = [];
 				        	//for(var key in retdata){
 					        //	for (var id in retdata[key]){
-					        $.each(retdata, function (e, value){
+					        $.each(retdata.results, function (e, value){
 						        	avatar="";
 						        	//console.log(retdata[key]);
 						        	//aert(retdata[key][id].type);
@@ -2923,16 +2923,16 @@ var mentionsInit = {
 										name: value.name, 
 										type: value.type
 									}); 
-									if(typeof(findInLocal) == "undefined")
+									if(typeof(findInLocal) == "undefined"){
 										mentionsContact.push(object);
+									}
 						 	//		}
 				        	//}
 				        	});
 				        	data=mentionsContact;
-				        	mylog.log(data);
 				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 							callback.call(this, data);
-							mylog.log(callback);
+							mylog.log("callback",callback);
 			  			}
 					}	
 				})

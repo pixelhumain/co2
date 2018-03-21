@@ -694,7 +694,7 @@ var urlCtrl = {
 	    "#person.invite" : {title:'DETAIL ENTITY', icon : 'legal'},
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
-	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
+	    "#comment." : {title:'DISCUSSION ROOMS ', icon : 'comments'},
 	    //"#admin" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
 	    //"#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
 	    //"#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download', useHeader: true},

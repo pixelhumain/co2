@@ -3598,12 +3598,16 @@ function initKInterface(params){ console.log("initKInterface");
     });
     
     $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
-        $("#dropdown-user").removeClass("open");
+    	setTimeout(function(){ 
+    		if(!$("#dropdown-user").is(":hover"))
+    			$("#dropdown-user").removeClass("open");
+    	}, 200);
+        
     });
 
-    $("header .container").mouseenter(function(){ 
+    /*$("header .container").mouseenter(function(){ 
     	$("#dropdown-user").removeClass("open");
-    });
+    });*/
 
 
     $(".logout").click(function(){ 

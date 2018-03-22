@@ -1,4 +1,5 @@
-<?php 
+<?php
+$cs = Yii::app()->getClientScript(); 
 $cssAnsScriptFilesTheme = array(
 	//SELECT2
 	'/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',

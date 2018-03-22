@@ -30,11 +30,12 @@ var formInMap = {
 
 
 	showMarkerNewElement : function(modePC){
-		mylog.log("forminmap showMarkerNewElement", typeof mapBg);
+		mylog.log("forminmap showMarkerNewElement", typeof mapBg, mapBg);
 		if(typeof mapBg == "undefined")
 			mapBg = Sig.loadMap("mapCanvas", initSigParams);
 
 		Sig.clearMap();
+
 		formInMap.actived = true ;
 		formInMap.hiddenHtmlMap(true);
 
@@ -63,6 +64,7 @@ var formInMap = {
 
 
 		mylog.log("coordinates", coordinates);
+		mylog.log("options", options);
 
 		//efface le marker s'il existe
 		if(Sig.markerFindPlace != null) 
@@ -110,6 +112,8 @@ var formInMap = {
 		$("#right_tool_map").removeClass("min");
 		if(typeof networkJson == "undefined" || networkJson == null)
 			$("#mapLegende").addClass("hidden");
+
+		mylog.log("forminmap showMarkerNewElement END");
 	},
 
 	initUpdateLocality : function(address, geo, type, index){

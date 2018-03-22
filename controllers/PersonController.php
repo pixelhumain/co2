@@ -30,6 +30,7 @@ class PersonController extends CommunecterController {
           'sendemail'          => 'citizenToolKit.controllers.person.SendEmailAction',
 	        'logout'     	       => 'citizenToolKit.controllers.person.LogoutAction',
 	        'authenticate'       => 'citizenToolKit.controllers.person.AuthenticateAction',
+          //'settings'       => 'citizenToolKit.controllers.person.SettingsAction',
           'detail'             => 'citizenToolKit.controllers.person.DetailAction',
 	        'follows'  		       => 'citizenToolKit.controllers.person.FollowsAction',
 	        'disconnect'         => 'citizenToolKit.controllers.person.DisconnectAction',
@@ -74,6 +75,14 @@ public function actionAbout(){
   	$tags = PHDB::findOne( PHType::TYPE_LISTS,array("name"=>"tags"), array('list'));
   	
   	$this->render( "about" , array("person"=>$person,'tags'=>json_encode($tags['list'])) );
+
+}
+public function actionSettings(){
+
+    //$person = PHDB::findOne(PHType::TYPE_CITOYEN, array( "_id" => new MongoId(Yii::app()->session["userId"]) ) );
+    //$tags = PHDB::findOne( PHType::TYPE_LISTS,array("name"=>"tags"), array('list'));
+    
+    $this->renderPartial("../person/settings" , array(/*"person"=>$person,'tags'=>json_encode($tags['list'])*/) );
 
 }
 public function actionInitDataPeople()

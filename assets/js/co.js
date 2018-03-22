@@ -691,11 +691,10 @@ var urlCtrl = {
 	    "#rooms.editroom" : {title:'ADD A ROOM ', icon : 'plus', action:function(){ editRoomSV ();	}},
 		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
 	    "#element.notifications" : {title:'DETAIL ENTITY', icon : 'legal'},
-	    "#person.settings" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#person.invite" : {title:'DETAIL ENTITY', icon : 'legal'},
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
-	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
+	    "#comment." : {title:'DISCUSSION ROOMS ', icon : 'comments'},
 	    //"#admin" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
 	    //"#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
 	    //"#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download', useHeader: true},
@@ -714,6 +713,7 @@ var urlCtrl = {
 	    //"#adminpublic.view.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
 	    //"#adminpublic.view.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
 	   	//"#adminpublic.view.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', useHeader : true},
+	   // "#person.settings" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -2893,7 +2893,7 @@ var mentionsInit = {
 			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 				callback.call(this, data);
 				mentionsInit.isSearching=true;
-		   		var search = {"searchType" : ["citoyens","organizations","projects"]};
+		   		var search = {"searchType" : ["citoyens","organizations","projects"], "name": query};
 		  		$.ajax({
 					type: "POST",
 			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
@@ -2907,7 +2907,7 @@ var mentionsInit = {
 				        	data = [];
 				        	//for(var key in retdata){
 					        //	for (var id in retdata[key]){
-					        $.each(retdata, function (e, value){
+					        $.each(retdata.results, function (e, value){
 						        	avatar="";
 						        	//console.log(retdata[key]);
 						        	//aert(retdata[key][id].type);
@@ -2923,16 +2923,16 @@ var mentionsInit = {
 										name: value.name, 
 										type: value.type
 									}); 
-									if(typeof(findInLocal) == "undefined")
+									if(typeof(findInLocal) == "undefined"){
 										mentionsContact.push(object);
+									}
 						 	//		}
 				        	//}
 				        	});
 				        	data=mentionsContact;
-				        	mylog.log(data);
 				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 							callback.call(this, data);
-							mylog.log(callback);
+							mylog.log("callback",callback);
 			  			}
 					}	
 				})
@@ -3598,12 +3598,16 @@ function initKInterface(params){ console.log("initKInterface");
     });
     
     $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
-        $("#dropdown-user").removeClass("open");
+    	setTimeout(function(){ 
+    		if(!$("#dropdown-user").is(":hover"))
+    			$("#dropdown-user").removeClass("open");
+    	}, 200);
+        
     });
 
-    $("header .container").mouseenter(function(){ 
+    /*$("header .container").mouseenter(function(){ 
     	$("#dropdown-user").removeClass("open");
-    });
+    });*/
 
 
     $(".logout").click(function(){ 

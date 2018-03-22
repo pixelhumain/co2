@@ -129,7 +129,8 @@ function showMap(show)
 		console.log("showMap", show, "elementsMap", Sig.preloadElementsMap);
 		mapBg = Sig.loadMap("mapCanvas", initSigParams);
 	    Sig.showIcoLoading(false);
-	    Sig.showMapElements(Sig.map, Sig.preloadElementsMap, Sig.preloadIconLegende, Sig.preloadTextLegende);
+	    if( typeof formInMap == "undefined" || formInMap.actived != true)
+	    	Sig.showMapElements(Sig.map, Sig.preloadElementsMap, Sig.preloadIconLegende, Sig.preloadTextLegende);
 	}
 	
     if(mapBg == null) return;

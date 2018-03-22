@@ -111,7 +111,7 @@
 			if(!empty($medias)){
 			foreach ($medias as $data){ ?>
 				 <div class="item <?php if($i==0) echo "active"; ?>">
-			      <iframe width="100%" height="400" src="<?php echo $data["content"]["videoLink"] ?>" frameborder="0" allowfullscreen></iframe>
+			      <iframe width="100%" height="400" src="<?php echo @$data["content"]["videoLink"] ?>" frameborder="0" allowfullscreen></iframe>
 			    </div>
 		<?php $i++;
 		 } } ?>

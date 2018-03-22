@@ -628,6 +628,14 @@ function loadActionRoom(){
 	ajaxPost('#fast-rooms', baseUrl+'/'+moduleId+'/rooms/index/type/'+contextData.type+
 									'/id/'+contextData.id, params, function(){},"html");
 }
+function loadSet(){
+	//toogleNotif(false);
+	//showLoader('#fast-rooms');
+	//var params = { };
+	//ajaxPost('#fast-rooms', baseUrl+'/'+moduleId+'/rooms/index/type/'+contextData.type+
+	//								'/id/'+contextData.id, params, function(){},"html");
+	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/person/settings");
+}
 
 
 function loadNetworks(){
@@ -760,10 +768,12 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 				if(v != "" && !rolesList.includes(v))
 					rolesList.push(v);
 				//Incrément and push roles in filter array
-				if(typeof listRoles[v] != "undefined")
-					listRoles[v].count++;
-				else
-					listRoles[v]={"count": 1}
+				if(v != ""){
+					if(typeof listRoles[v] != "undefined")
+						listRoles[v].count++;
+					else
+						listRoles[v]={"count": 1}
+				}
 			});
 		}
 	});
@@ -892,8 +902,8 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}
 		toogleNotif(false);
 		$("#central-container").html(html);
-		if(dataName != "collections" && directory.viewMode=="block")
-            setTimeout(function(){ directory.checkImage(data);}, 300);
+		//if(dataName != "collections" && directory.viewMode=="block")
+          //  setTimeout(function(){ directory.checkImage(data);}, 300);
 		if(dataName == "events"){
 			//init calendar view
 			calendar.init("#profil-content-calendar");

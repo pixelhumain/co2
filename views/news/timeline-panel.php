@@ -79,7 +79,7 @@
               $pluriel = ""; 
           }else{ $pluriel = "-pluriel"; }*/ ?>
 
-            <img class="pull-left img-circle" 
+            <img class="pull-left img-circle img-author-news-<?php echo $authorId ?>" 
                src="<?php echo @$thumbAuthor; ?>" 
                height=40>
 
@@ -102,7 +102,7 @@
                   $media["lastAuthorShare"]["profilThumbImageUrl"] = 
                     Yii::app()->createUrl($media["lastAuthorShare"]["profilThumbImageUrl"]) ;
                 $pluriel = ""; ?>
-                <img class="pull-left img-circle" 
+                <img class="pull-left img-circle img-author-news-<?php echo $media["lastAuthorShare"]["id"] ?>" 
                   src="<?php echo @$media["lastAuthorShare"]["profilThumbImageUrl"]; ?>" 
                 height="40"/> 
               <?php } ?>

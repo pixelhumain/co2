@@ -758,7 +758,7 @@
      	navInSlug=true;
    
 	var hashUrlPage= ( (typeof contextData.slug != "undefined") ? 
-						"#"+contextData.slug : 
+						"#@"+contextData.slug : 
 						"#page.type."+contextData.type+".id."+contextData.id);
     
     if(location.hash.indexOf("#page")>=0){

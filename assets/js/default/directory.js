@@ -1111,8 +1111,12 @@ var directory = {
       }
 
 
-      if(typeof params.hash != "undefined")
-        str += "<br><a href='"+params.hash+"."+onepageKey+"' class='lbh letter-green url elipsis'>"+params.hash+"."+onepageKey+"</a>";
+      //if(typeof params.hash != "undefined")
+        //str += "<br><a href='"+params.hash+"."+onepageKey+"' class='lbh letter-green url elipsis'>"+params.hash+"."+onepageKey+"</a>";
+      if(typeof params.hash != "undefined"){
+        echoLabel= (typeof params.slug !="undefined") ? "@"+params.slug : params.hash;
+        str += "<br><a href='"+params.hash+"' class='"+linkAction+" letter-green url elipsis'>"+echoLabel+"</a>";
+      }
 
       if(typeof params.url != "undefined" && params.url != null && params.url != "")
         str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
@@ -3119,7 +3123,7 @@ var directory = {
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
 
                 if(typeof params.slug != "undefined" && params.slug != "" && params.slug != null)
-                  params.hash = "#" + params.slug;
+                  params.hash = "#@" + params.slug;
 
                 if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined")
                   params.hash = params.source;

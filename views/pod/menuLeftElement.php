@@ -56,6 +56,7 @@
 		</li>
 	<?php //if($type != Person::COLLECTION){
 		$modalTarget = "#modal-scope";
+
 				if ($type == Event::COLLECTION ){ 
 					$inviteLink = "people";
 					$inviteText =  Yii::t("common","Invite people") ;			
@@ -70,6 +71,7 @@
 					$inviteText =  Yii::t("common",'Invite people') ;
 					$modalTarget = "#invite-modal-element";
 				}
+			$modalTarget = "#modal-invite";
 				$whereConnect="";
 				if($type!=Person::COLLECTION)
 					$whereConnect='to the '.Element::getControlerByCollection($type);

@@ -71,19 +71,35 @@
 		z-index: 2;
 	}
 
-	.btn-link.btn-central-tool{
+	.btn-link.btn-central-tool,
+	.btn-link.btn-create-section{
 		border-radius: 50px;
 		padding:10px 15px;
 		margin-top:-22px;
 		border:none!important;
 	}
 	
-	.btn-link.btn-central-tool:hover{
-		background-color: rgba(255, 255, 255, 0.7);
+	.btn-link.btn-central-tool:hover,
+	.btn-link.btn-create-section:hover,
+	.btn-link.btn-central-tool:focus,
+	.btn-link.btn-create-section:focus{
+		background-color: rgba(255, 255, 255, 0.8);
 		text-decoration:none;
 		border:none!important;
 	}
 
+	.btn.btn-tool-free-sec{
+		background-color: rgba(255, 255, 255, 0.6);
+		border-radius: 15px;
+		padding:5px 10px;
+		border:none!important;
+	}
+	.btn.btn-tool-free-sec:hover,
+	.btn.btn-tool-free-sec:focus{
+		background-color: rgba(255, 255, 255, 0.8) !important;
+		text-decoration:none;
+		border:none!important;
+	}
 </style>
 
 <div>

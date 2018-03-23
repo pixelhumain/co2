@@ -61,19 +61,76 @@
             font-size:0.9em;
         }
         <?php } ?>
+        .portfolio.new-section{
+            display: none;
+            margin-top: -20px !important;
+        }
+        .ctn-new-sec{
+            margin-bottom: 40px;
+        }
+        .portfolio.new-section .md-ctn{
+            font-size: 12px;
+        }
+        .portfolio.new-section .md-editor{
+            margin-top:10px;
+        }
+
+        .popup-conf-delete-section{
+            display: none;
+        }
+
+        input.title-new-sec{
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size:16px;
+        }
 </style>
 
 <?php if(@$edit==true && @$sectionKey != "description"){ ?>
-    <div class="col-xs-12 text-center">
-        <button class="btn btn-link bg-white text-dark tooltips btn-central-tool btn-update-descriptions shadow2"
-                data-original-title="Modifier les descriptions" data-toogle="tooltips">
+    <div class="col-xs-12 text-center no-padding ctn-new-sec">
+        <button class="btn btn-link bg-white text-dark btn-create-section shadow2"
+                data-section-before="<?php echo @$sectionKey; ?>">
             <i class="fa fa-plus"></i> Ajouter section ici
         </button>
+        <section class="portfolio new-section margin-top-15 bg-white <?php if(@$sectionShadow==true) echo 'shadow'; ?> 
+                        new-section-before-<?php echo @$sectionKey; ?>"
+                        data-section-before="<?php echo @$sectionKey; ?>">
+            <div class="row">
+            <div class="col-xs-12 col-sm-offset-2 col-sm-8  col-md-offset-3 col-md-6  col-lg-offset-3 col-lg-6 padding-15">
+                <h5><i class="fa fa-plus"></i> Nouvelle section</h5>
+
+                <hr>
+                <input type="text" class="form-input col-xs-12 title-new-sec font-montserrat margin-bottom-15" 
+                        placeholder="Titre de la section">
+
+                <div class="md-ctn font-montserrat">
+                    <textarea class="markdown-desc-new-sec" id="MD-desc-new-sec-<?php echo @$sectionKey; ?>"></textarea>
+                </div>
+
+                <div class="col-xs-12 padding-15">
+                    <button class="btn btn-link btn-save-new-section bg-green-k pull-right"
+                            id="btn-save-new-section-<?php echo @$sectionKey; ?>"
+                            data-section-before="<?php echo @$sectionKey; ?>"
+                            data-new-section-key="free-section">
+                        <i class="fa fa-save"></i> Enregistrer
+                    </button>
+                    <button class="btn btn-link btn-cancel-new-section pull-right letter-red"
+                            data-section-before="<?php echo @$sectionKey; ?>">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+            </div>
+        </section>
     </div>
 <?php } ?>
 
+<?php 
+    //var_dump(strpos( @$sectionKey, "free-section-"));
+    $freeSec = (strpos(@$sectionKey, "free-section-") !== false) ? "free-section" : ""; ?>
+
 <section id="<?php echo @$sectionKey; ?>" 
-         class="portfolio <?php if(@$sectionShadow==true) echo 'shadow'; ?>">
+         class="portfolio <?php if(@$sectionShadow==true) echo 'shadow'; ?> <?php echo @$freeSec; ?>">
     
     <?php if(@$edit==true){ ?>
         <button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
@@ -85,6 +142,21 @@
                                     array(  "element" => $element,
                                             "sectionKey" => @$sectionKey));
         ?>
+
+        <?php if(@$freeSec=="free-section"){ ?>
+            <button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-delete-free-section" 
+                    data-section-key="<?php echo @$sectionKey; ?>">
+                    <i class="fa fa-trash"></i>
+            </button><br>
+            <div class="pull-right popup-conf-delete-section text-right bg-white letter-orange padding-15 shadow2 bold radius-15 margin-right-15" id="popup-conf-delete-section-<?php echo @$sectionKey; ?>">
+                <span class=" pull-right">Voulez-vous vraiment supprimer cette section ?</span>
+                <br><hr class="margin-5">
+                <button class="btn btn-link margin-top-5 bg-red btn-cancel-delete-free-section"                     
+                        data-section-key="<?php echo @$sectionKey; ?>">Non</button>
+                <button class="btn btn-link margin-top-5 bg-green-k btn-conf-delete-free-section"                      
+                        data-section-key="#<?php echo @$sectionKey; ?>">Oui</button>
+            </div>
+        <?php } ?>
     <?php } ?>
 
     <div class="container">
@@ -95,7 +167,15 @@
                 <h2 class="section-title">
                     <span class="sec-title"><?php echo $sectionTitle; ?></span> 
                     <?php if(@count($items) >= 2) echo "<small>(".@count($items).")</small>"; ?>
+
+                </h2>
+                <?php if($freeSec == "free-section" && @$edit==true){ ?> <br>
+                    <button class="btn btn-link text-dark bg-white btn-xs btn-tool-free-sec">
+                        <i class="fa fa-plus-circle"></i> Ajouter un paragraphe
+                    </button>
                     <br>
+                <?php } ?> 
+                <h2>
                     <i class="fa fa-angle-down"></i>
                 </h2>
             </div>
@@ -164,6 +244,13 @@
                         </a>
                     <?php } ?>
 
+                    <?php if($freeSec == "free-section" && @$edit==true){ ?> 
+                        <button class="btn btn-link text-dark bg-white btn-xs btn-tool-free-sec">
+                            <i class="fa fa-pencil"></i> Editer
+                        </button>
+                        <hr>
+                    <?php } ?> 
+
                     <?php if($nbItem <= 4 && (!isset($useDesc) || @$useDesc == true)){ ?>
                         <?php if(@$item["useMarkdown"]==true){ ?>
                             <span id="descMarkdown<?php echo $sectionKey; ?>" 
@@ -205,6 +292,7 @@
 <script type="text/javascript" >
     
     jQuery(document).ready(function() {
+
     });
     
 </script>

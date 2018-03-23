@@ -33,7 +33,8 @@
 
     	.btn-edit-section,
     	.btn-show-section,
-    	.btn-hide-section{
+    	.btn-hide-section,
+    	.btn-delete-free-section{
     		margin-top:-25px;
     	}
     	#onepage-edition-tools{
@@ -404,7 +405,85 @@
 		
 		$('.edit-section-title').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
 		
+		/*CREATE NEW SECTION*/
+		$(".btn-create-section").click(function(){
+			var section = $(this).data("section-before");
+
+			var i = 1;
+			$.each($(".free-section"), function(){ i++; });
+			console.log("set btn value new-section-key", "free-section-"+i, section);
+			$("#btn-save-new-section-"+section).data("new-section-key", "free-section-"+i); 
+			
+			$(".new-section-before-"+section).show(200);
+		});
+		$(".btn-cancel-new-section").click(function(){
+			var section = $(this).data("section-before");
+			$(".new-section-before-"+section).hide(200);
+		});
+		$(".btn-save-new-section").click(function(){
+			var beforeSection = $(this).data("section-before");
+			var newSectionKey = $(this).data("new-section-key");
+			saveNewsSection(beforeSection, newSectionKey);
+			$(".new-section-before-"+beforeSection).hide(200);
+		});
+		$(".btn-delete-free-section").click(function(){
+			var sectionKey = $(this).data("section-key");
+			$("#popup-conf-delete-section-"+sectionKey).show(200);
+		});
+		$(".btn-conf-delete-free-section").click(function(){
+			var sectionKey = $(this).data("section-key");
+			deleteFreeSection(sectionKey);
+			$("section#"+sectionKey).hide(200);
+		});
+		$(".btn-cancel-delete-free-section").click(function(){
+			var sectionKey = $(this).data("section-key");
+			console.log(".btn-cancel-delete-free-section", sectionKey, "#popup-conf-delete-section-"+sectionKey);
+			$("#popup-conf-delete-section-"+sectionKey).hide(200);
+		});
+
+		$.each($(".new-section"), function(){
+			var section = $(this).data("section-before");
+			dataHelper.activateMarkdown(".new-section #MD-desc-new-sec-"+section);
+			console.log("activateMarkdown('.new-section #MD-desc-new-sec'+section);", ".new-section #MD-desc-new-sec"+section);
+		});
+
+
+		/*CREATE NEW SECTION*/
+		
 	});
+
+	function saveNewsSection(beforeSection, newSectionKey){
+		var title = $(".new-section-before-"+beforeSection + " .title-new-sec").val();
+		var descMD = $(".new-section-before-"+beforeSection + " #MD-desc-new-sec-"+beforeSection).val();
+		console.log("saveNewsSection", beforeSection, newSectionKey, title, descMD);
+
+		onepageEdition["#"+newSectionKey] = {	"title" : title,
+												"beforeSection" : "#"+beforeSection,
+												"items" : [
+												 	{ "shortDescription" : descMD,
+												 	  "useMarkdown" : true }
+												 ] };
+
+		console.log("on save new section" ,"onepageEdition :", onepageEdition);
+		updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
+		urlCtrl.loadByHash(location.hash);
+	}
+
+	function deleteFreeSection(sectionKey){
+		var removeSection = {};
+		console.log("try to remove before", onepageEdition);
+		$.each(onepageEdition, function(key, val){
+			console.log("key != "+sectionKey, key != sectionKey);
+			if(key != sectionKey)
+				removeSection[key] = val ;
+
+		});
+		onepageEdition = removeSection;
+		console.log("try to remove after", removeSection);
+		console.log("on save new section" ,"onepageEdition :", onepageEdition);
+		updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
+		urlCtrl.loadByHash(location.hash);
+	}
 
 	function initOnepage(onepageEdition){
 		$.each(onepageEdition, function(section, options){

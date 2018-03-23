@@ -273,11 +273,18 @@ function bindScopesInputEvent(news){
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
 		if(search.app=="territorial") searchEngine.initTerritorialSearch();
 		mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
+
+
+
+
+		mylog.log("globalscope-checker values",  myScopes.search[$(this).data("scope-value")]);
 		changeCommunexionScope(	$(this).data("scope-value"), $(this).data("scope-name"), 
 								$(this).data("scope-type"), $(this).data("scope-level"),
-								$(this).data("scope-values"),  notSearch, testCo, $(this).data("append-container")) ;
+								myScopes.search[$(this).data("scope-value")],  notSearch, testCo, $(this).data("append-container")) ;
 	});
 }
+
+
 function countFavoriteScope(){
 	count=0;
 	if(notNull(myScopes.multiscopes))

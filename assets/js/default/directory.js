@@ -2137,81 +2137,46 @@ var directory = {
 	cityPanelHtml : function(params){
 		mylog.log("-----------cityPanelHtml", params);
 		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
-		valuesScopes = {
-			city : params._id.$id,
-			cityName : params.name,
-			postalCode : params.postalCode,
-			country : params.country,
-			allCP : params.allCP,
-			uniqueCp : params.uniqueCp,
-			level1 : params.level1,
-			level1Name : params.level1Name
-		}
-		typeSearchCity="city";
-		levelSearchCity="city";
+		typeSearchCity='city';
+		levelSearchCity='city';
 
-		if( notEmpty( params.nameCity ) ){
-			valuesScopes.name = params.nameCity ;
-		}
+		
+		str = '';
+		str += '<a href="javascript:" class="col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity" ';
+			str += 'data-scope-value="' + params._id.$id  + '"' + 
+					'data-scope-name="' + params.name + '"' +
+					'data-scope-level="'+levelSearchCity+'"' +
+					'data-scope-type="'+typeSearchCity+'"' +
+					//'data-scope-values="'+JSON.stringify(valuesScopes)+'"' +
+					'data-scope-notsearch="'+true+'"'+
+					'data-append-container="'+domContainer+'"';
+		str += '>';
+			str += '<div class="col-xs-12 margin-bottom-10 '+params.type+' '+params.elTagsList+' ">';
+				str += '<div class="padding-10 informations">';
+					str += '<div class="entityRight no-padding">';
 
-		if( notEmpty( params.uniqueCp ) ){
-			valuesScopes.uniqueCp = params.uniqueCp;
-		}
+						var title =  '<span> ' + params.name + ' ' + (notEmpty(params.postalCode) ? ' - ' +  params.postalCode : '') +'</span>' ;
 
-		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
-			valuesScopes.level4 = params.level4 ;
-			valuesScopes.level4Name = params.level4Name ;
-		}
-		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
-			valuesScopes.level3 = params.level3 ;
-			valuesScopes.level3Name = params.level3Name ;
-		}
-		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
-			valuesScopes.level2 = params.level2 ;
-			valuesScopes.level2Name = params.level2Name ;
-		}
-		str = "";
-		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
-			str += "data-scope-value='" + params._id.$id  + "' " + 
-					"data-scope-name='" + params.name + "' " +
-					"data-scope-level='"+levelSearchCity+"' " +
-					"data-scope-type='"+typeSearchCity+"' " +
-					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-					"data-scope-notsearch='"+true+"' "+
-					"data-append-container='"+domContainer+"' ";
-		str += ">";
-			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
-				str += "<div class='padding-10 informations'>";
-					str += "<div class='entityRight no-padding'>";
-						// params.hash = ""; //#main-col-search";
-						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
-						// params.onclickCp = 'setScopeValue($(this));';
-						// params.target = "";
-						// params.dataId = params.name; 
-
-						var title =  "<span> " + params.name + " " + (notEmpty(params.postalCode) ? " - " +  params.postalCode : "") +"</span>" ;
-
-						var subTitle = "";
+						var subTitle = '';
 						if( notEmpty( params.level4Name ) )
-							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
+							subTitle +=  (subTitle == '' ? '' : ', ') +  params.level4Name ;
 						if( notEmpty( params.level3Name ) )
-							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
+							subTitle +=  (subTitle == '' ? '' : ', ') +  params.level3Name ;
 						if( notEmpty( params.level2Name ) )
-							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
+							subTitle +=  (subTitle == '' ? '' : ', ') +  params.level2Name ;
 
-	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.country ;
-						str += " <span class='entityName letter-red '>"+
-									//'<span class="col-xs-1">'+
-									"<i class='fa fa-university'></i>" + title + 
-									"<br/>"+
-									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
-								"</span>";
+	                  	subTitle +=  (subTitle == '' ? '' : ', ') + params.country ;
+						str += ' <span class="entityName letter-red ">'+
+									'<i class="fa fa-university"></i>' + title + 
+									'<br/>'+
+									'<span style="color : grey; font-size : 13px">'+subTitle+'</span>'+
+								'</span>';
 
 
-					str += "</div>";
-				str += "</div>";              
-			str += "</div>";
-		str += "</a>";
+					str += '</div>';
+				str += '</div>';              
+			str += '</div>';
+		str += '</a>';
 	return str;
     },
     // ********************************
@@ -2220,96 +2185,74 @@ var directory = {
 	zonePanelHtml : function(params){
 		mylog.log("-----------zonePanelHtml", params);
 		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
-		valuesScopes = {
-			id : params._id.$id,
-			name : params.name,
-			country : params.countryCode,
-			level : params.level
-		}
+		// valuesScopes = {
+		// 	id : params._id.$id,
+		// 	name : params.name,
+		// 	country : params.countryCode,
+		// 	level : params.level
+		// }
 
 		if(params.level.indexOf("1") >= 0){
 			typeSearchCity="level1";
 			levelSearchCity="1";
-			valuesScopes.numLevel = 1;
 		}else if(params.level.indexOf("2") >= 0){
 			typeSearchCity="level2";
 			levelSearchCity="2";
-			valuesScopes.numLevel = 2;
 		}else if(params.level.indexOf("3") >= 0){
 			typeSearchCity="level3";
 			levelSearchCity="3";
-			valuesScopes.numLevel = 3;
 		}else if(params.level.indexOf("4") >= 0){
 			typeSearchCity="level4";
 			levelSearchCity="4";
-			valuesScopes.numLevel = 4;
-		}
-		if(notNull(typeSearchCity))
-			valuesScopes.type = typeSearchCity;				
-
-		mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
-
-		if( notEmpty( params.level1 ) && valuesScopes.id != params.level1){
-			mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
-			valuesScopes.level1 = params.level1 ;
-			valuesScopes.level1Name = params.level1Name ;
 		}
 
 		var subTitle = "";
 
-		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
-			valuesScopes.level4 = params.level4 ;
-			valuesScopes.level4Name = params.level4Name ;
+		if( notEmpty( params.level4 ) && params.id != params.level4){
 			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
 		}
-		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
-			valuesScopes.level3 = params.level3 ;
-			valuesScopes.level3Name = params.level3Name ;
+		if( notEmpty( params.level3 ) && params.id != params.level3 ){
 			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
 		}
-		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
-			valuesScopes.level2 = params.level2 ;
-			valuesScopes.level2Name = params.level2Name ;
+		if( notEmpty( params.level2 ) && params.id != params.level2){
 			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
 		}
 
-		str = "";
-		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
-			str += "data-scope-value='" + params._id.$id  + "' " + 
-					"data-scope-name='" + params.name + "' " +
-					"data-scope-level='"+levelSearchCity+"' " +
-					"data-scope-type='"+typeSearchCity+"' " +
-					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-					"data-scope-notsearch='"+true+"' "+
-					"data-append-container='"+domContainer+"' ";
-		str += ">";
-			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
-				str += "<div class='padding-10 informations'>";
-					str += "<div class='entityRight no-padding'>";
-						// params.hash = ""; //#main-col-search";
-						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
-						// params.onclickCp = 'setScopeValue($(this));';
-						// params.target = "";
+		str = '';
+		str += '<a href="javascript:" class="col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity" ';
+			str += 'data-scope-value="' + params._id.$id  + '" ' + 
+					'data-scope-name="' + params.name + '" ' +
+					'data-scope-level="'+levelSearchCity+'" ' +
+					'data-scope-type="'+typeSearchCity+'" ' +
+					//'data-scope-values="'+JSON.stringify(valuesScopes)+'" ' +
+					'data-scope-notsearch="'+true+'" '+
+					'data-append-container="'+domContainer+'" ';
+		str += '>';
+			str += '<div class="col-xs-12 margin-bottom-10 '+params.type+' '+params.elTagsList+' ">';
+				str += '<div class="padding-10 informations">';
+					str += '<div class="entityRight no-padding">';
+						// params.hash = '; //'main-col-search';
+						// params.onclick = "setScopeValue($(this))"; //'"+params.name.replace('"', '\"')+"');";
+						// params.onclickCp = "setScopeValue($(this));";
+						// params.target = ';
 						// params.dataId = params.name; 
 
-						var title =  "<span>" + params.name + "</span>" ;
-	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.countryCode;
-						str += " <span class='entityName letter-red'>"+
-									//'<span class="col-xs-1">'+
-										"<i class='fa fa-bullseye bold text-red'></i>"+
-										"<i class='fa bold text-dark'>"+
+						var title =  '<span>' + params.name + '</span>' ;
+	                  	subTitle +=  (subTitle == '' ? '' : ', ') + params.countryCode;
+						str += ' <span class="entityName letter-red">'+
+										'<i class="fa fa-bullseye bold text-red"></i>'+
+										'<i class="fa bold text-dark">'+
 											levelSearchCity+
-										"</i> "+ 
-									//"</span> "+
+										'</i> '+ 
 									title + 
-									"<br/>"+
-									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
-								"</span>";
+									'<br/>'+
+									'<span style="color : grey; font-size : 13px">'+subTitle+'</span>'+
+								'</span>';
 
-					str += "</div>";
-				str += "</div>";              
-			str += "</div>";
-		str += "</a>";
+					str += '</div>';
+				str += '</div>';              
+			str += '</div>';
+		str += '</a>';
 	return str;
     },
     // ********************************

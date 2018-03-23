@@ -954,7 +954,7 @@ function showFormBlock(bool){
 		$(".form-create-news-container .tools_bar").show("fast");
 		$(".form-create-news-container .scopescope").show("fast");
 		/////multiTagScopeLbl("send");
-		if(isLiveGlobal())
+		if(isLiveGlobal() || $(".form-create-news-container input[name='scope']").val()=="public")
 			scopeHtml=getScopeNewsHtml();
 		
 		//$("#lbl-my-scopes").html("<i class='fa fa-angle-down'></i> Sélectionnez les lieux de destination");

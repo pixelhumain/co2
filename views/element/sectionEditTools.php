@@ -405,7 +405,8 @@
 		
 		$('.edit-section-title').filter_input({regex:'[^<>#\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
 		
-		/*CREATE NEW SECTION*/
+
+		/*FREE SECTION*/
 		$(".btn-create-section").click(function(){
 			var section = $(this).data("section-before");
 
@@ -440,13 +441,50 @@
 			console.log(".btn-cancel-delete-free-section", sectionKey, "#popup-conf-delete-section-"+sectionKey);
 			$("#popup-conf-delete-section-"+sectionKey).hide(200);
 		});
-
-		$.each($(".new-section"), function(){
-			var section = $(this).data("section-before");
-			dataHelper.activateMarkdown(".new-section #MD-desc-new-sec-"+section);
-			console.log("activateMarkdown('.new-section #MD-desc-new-sec'+section);", ".new-section #MD-desc-new-sec"+section);
+		$(".btn-edit-item").click(function(){
+			var sectionKey = $(this).data("section-key");
+			var itemKey = $(this).data("item-key");
+			startUpdateFreeItem(sectionKey, itemKey);
 		});
-
+		$(".btn-delete-item").click(function(){
+			var sectionKey = $(this).data("section-key");
+			var itemKey = $(this).data("item-key");
+			console.log("start delete item", "#popup-conf-delete-item-"+sectionKey+"-"+itemKey);
+			$("#popup-conf-delete-item-"+sectionKey+"-"+itemKey).show(200);
+		});
+		$(".btn-cancel-delete-item").click(function(){
+			var sectionKey = "#"+$(this).data("section-key");
+			var itemKey = $(this).data("item-key");
+			$("#popup-conf-delete-item-"+sectionKey+"-"+itemKey).hide(200);
+		});
+		$(".btn-conf-delete-item").click(function(){
+			var sectionKey = "#"+$(this).data("section-key");
+			var itemKey = $(this).data("item-key");
+			var newOnepageEdition = new Array();
+			$.each(onepageEdition[sectionKey]["items"], function(key, val){
+				if(key != itemKey) newOnepageEdition.push(val);
+			});
+			onepageEdition[sectionKey]["items"] = newOnepageEdition;
+			console.log("save delete item ?", onepageEdition);
+			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
+			urlCtrl.loadByHash(location.hash);
+		});
+		$(".btn-create-item").click(function(){
+			var sectionKey = $(this).data("section-key");
+			startCreateFreeItem(sectionKey)
+		});
+		$(".btn-save-item").click(function(){
+			var sectionKey = "#"+$(this).data("section-key");
+			var itemKey = $(this).data("item-key");
+			var newOnepageEdition = new Array();
+			$.each(onepageEdition[sectionKey]["items"], function(key, val){
+				if(key != itemKey) newOnepageEdition.push(val);
+			});
+			onepageEdition[sectionKey]["items"] = newOnepageEdition;
+			console.log("save delete item ?", onepageEdition);
+			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
+			urlCtrl.loadByHash(location.hash);
+		});
 
 		/*CREATE NEW SECTION*/
 		
@@ -459,6 +497,101 @@
 
 		onepageEdition["#"+newSectionKey] = {	"title" : title,
 												"beforeSection" : "#"+beforeSection,
+												"items" : [
+												 	{ "shortDescription" : descMD,
+												 	  "useMarkdown" : true }
+												 ] };
+
+		console.log("on save new section" ,"onepageEdition :", onepageEdition);
+		updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
+		urlCtrl.loadByHash(location.hash);
+	}
+
+	function startCreateFreeItem(sectionKey){ console.log("startCreateFreeItem(",sectionKey,")");
+		$("#"+sectionKey + " .ctn-tool-create-item").html(
+			"<textarea class='text-dark' id='create-"+sectionKey+"' row='5'></textarea>"+
+			"<button class='btn btn-link pull-right bg-green-k btn-save-create-MD-item' "+
+					 "data-section-key='"+sectionKey+"' "+
+				"<i class='fa fa-save'></i> Enregistrer"+
+			"</button>"+
+			"<button class='btn btn-link pull-right letter-red btn-cancel-create-MD-item' "+
+					 "data-section-key='"+sectionKey+"' "+
+				"<i class='fa fa-trash'></i> Annuler"+
+			"</button>"
+			);
+		dataHelper.activateMarkdown("#create-"+sectionKey);
+		
+
+		$(".btn-cancel-create-MD-item").click(function(){
+			var sectionKey = $(this).data("section-key");
+			$("#"+sectionKey + " .ctn-tool-create-item").html("");
+		});
+
+		$(".btn-save-create-MD-item").click(function(){
+			console.log(".btn-save-create-MD-item click");
+			var sectionKey = $(this).data("section-key");
+			var descMD = $("textarea#create-"+sectionKey).val();
+
+			onepageEdition["#"+sectionKey]["items"].push({"shortDescription" : descMD, 
+														  "useMarkdown" : true });
+
+			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
+			urlCtrl.loadByHash(location.hash);
+		});
+	}
+
+	function startUpdateFreeItem(sectionKey, itemKey){ console.log("startUpdateFreeItem(",sectionKey,",", itemKey,")");
+		var MDdesc = $("#descriptionMarkdown"+sectionKey+"-"+itemKey).html();
+		$("#"+sectionKey + " .portfolio-item.item-"+itemKey+" .item-desc").html(
+			"<textarea class='text-dark' id='update-"+sectionKey+"-"+itemKey+"' row='5'>"+MDdesc+"</textarea>"+
+			"<button class='btn btn-link pull-right bg-green-k btn-save-edit-MD-item' "+
+					 "data-section-key='"+sectionKey+"' "+
+					 "data-item-key='"+itemKey+"'>"+
+				"<i class='fa fa-save'></i> Enregistrer"+
+			"</button>"+
+			"<button class='btn btn-link pull-right letter-red btn-cancel-edit-MD-item' "+
+					 "data-section-key='"+sectionKey+"' "+
+					 "data-item-key='"+itemKey+"'>"+
+				"<i class='fa fa-trash'></i> Annuler"+
+			"</button>"
+			);
+		dataHelper.activateMarkdown("#update-"+sectionKey+"-"+itemKey);
+		
+
+		$(".btn-cancel-edit-MD-item").click(function(){
+			console.log(".btn-cancel-edit-MD-item click");
+			var sectionKey = $(this).data("section-key");
+			var itemKey = $(this).data("item-key");
+			
+			initMarkdownDescription();
+			
+			console.log(".btn-cancel-edit-MD-item", sectionKey, itemKey, 
+						"#descriptionMarkdown"+sectionKey+"-"+itemKey, 
+						"#"+sectionKey + " .portfolio-item.item-"+itemKey+" .item-desc");
+		});
+
+		$(".btn-save-edit-MD-item").click(function(){
+			console.log(".btn-cancel-edit-MD-item click");
+			var sectionKey = $(this).data("section-key");
+			var itemKey = $(this).data("item-key");
+			var descMD = $("textarea#update-"+sectionKey+"-"+itemKey).val();
+
+			$("#descriptionMarkdown"+sectionKey+"-"+itemKey).html(descMD);
+			initMarkdownDescription();
+			
+			onepageEdition["#"+sectionKey]["items"][itemKey]["shortDescription"] = descMD;
+
+			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
+		});
+	}
+
+	function updateFreeItem(sectionKey, itemKey){
+		var title = $(".new-section-before-"+sectionKey + " .title-new-sec").val();
+		var descMD = $(".new-section-before-"+sectionKey + " #MD-desc-new-sec-"+sectionKey).val();
+		console.log("saveNewsSection", sectionKey, newSectionKey, title, descMD);
+
+		onepageEdition["#"+newSectionKey] = {	"title" : title,
+												"beforeSection" : "#"+sectionKey,
 												"items" : [
 												 	{ "shortDescription" : descMD,
 												 	  "useMarkdown" : true }
@@ -486,6 +619,21 @@
 	}
 
 	function initOnepage(onepageEdition){
+
+
+		$.each($(".new-section"), function(){
+			var section = $(this).data("section-before");
+			dataHelper.activateMarkdown(".new-section #MD-desc-new-sec-"+section);
+			console.log("activateMarkdown('.new-section #MD-desc-new-sec'+section);", ".new-section #MD-desc-new-sec"+section);
+		});
+		//initialise les sections dans la variable
+		$.each($("section"), function(){
+			var section = "#"+$(this).attr("id");
+			console.log("onepageEdition", onepageEdition, section, typeof onepageEdition[section]);
+			if(typeof onepageEdition[section] == "undefined")
+				onepageEdition[section] = {};
+		});
+
 		$.each(onepageEdition, function(section, options){
 			console.log("initOnePage", section, options);
 			if(typeof options["background-img"] != "undefined" && options["background-img"] != ""){

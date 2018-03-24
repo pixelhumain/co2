@@ -1,4 +1,5 @@
-<?php foreach (@$element["onepageEdition"] as $sectionK => $val) {
+<?php if(@$element["onepageEdition"])
+        foreach (@$element["onepageEdition"] as $sectionK => $val) {
             if(@$val["beforeSection"] == "#".$sectionKey){
                 //echo "need to show free section : " . $sectionK;
                 $desc = @$val["items"];   // array( array("shortDescription"=>@$val["description"],
@@ -75,8 +76,13 @@
             margin-top:10px;
         }
 
-        .popup-conf-delete-section{
+        .popup-conf-delete-section,
+        .popup-conf-delete-item{
             display: none;
+        }
+
+        .item-desc img{
+            max-width: 100%!important;
         }
 
         input.title-new-sec{
@@ -170,9 +176,11 @@
 
                 </h2>
                 <?php if($freeSec == "free-section" && @$edit==true){ ?> <br>
-                    <button class="btn btn-link text-dark bg-white btn-xs btn-tool-free-sec">
+                    <button class="btn btn-link btn-create-item text-dark bg-white btn-xs btn-tool-free-sec"
+                            data-section-key="<?php echo @$sectionKey; ?>">
                         <i class="fa fa-plus-circle"></i> Ajouter un paragraphe
                     </button>
+                    <div class="ctn-tool-create-item"></div>
                     <br>
                 <?php } ?> 
                 <h2>
@@ -184,6 +192,7 @@
 
         <div class="row">
     	<?php $cnt=0; 
+            if(!empty($items))
     		foreach ($items as $key => $item) { $cnt++; 
     		  	if($cnt<=$nbMax){
                     
@@ -245,15 +254,34 @@
                     <?php } ?>
 
                     <?php if($freeSec == "free-section" && @$edit==true){ ?> 
-                        <button class="btn btn-link text-dark bg-white btn-xs btn-tool-free-sec">
+                        <button class="btn btn-link text-dark bg-white btn-xs btn-edit-item btn-tool-free-sec"
+                                data-item-key="<?php echo $key; ?>"
+                                data-section-key="<?php echo $sectionKey; ?>" >
                             <i class="fa fa-pencil"></i> Editer
                         </button>
+                        <button class="btn btn-link text-dark bg-white btn-xs btn-delete-item btn-tool-free-sec"
+                                data-item-key="<?php echo $key; ?>"
+                                data-section-key="<?php echo $sectionKey; ?>" >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        <div class="pull-right popup-conf-delete-item text-center margin-top-15 margin-bottom-15 bg-white letter-orange padding-15 shadow2 bold radius-15 margin-right-15" id="popup-conf-delete-item-<?php echo @$sectionKey; ?>-<?php echo @$key; ?>">
+                            <span class=" pull-right">Voulez-vous vraiment supprimer ce paragraphe ?</span>
+                            <br><hr class="margin-5">
+                            <button class="btn btn-link margin-top-5 bg-red btn-cancel-delete-item"  
+                                    data-item-key="<?php echo $key; ?>"
+                                    data-section-key="<?php echo $sectionKey; ?>" >Non
+                            </button>
+                            <button class="btn btn-link margin-top-5 bg-green-k btn-conf-delete-item"    
+                                    data-item-key="<?php echo $key; ?>"
+                                    data-section-key="<?php echo $sectionKey; ?>" >Oui
+                            </button>
+                        </div>
                         <hr>
                     <?php } ?> 
 
                     <?php if($nbItem <= 4 && (!isset($useDesc) || @$useDesc == true)){ ?>
                         <?php if(@$item["useMarkdown"]==true){ ?>
-                            <span id="descMarkdown<?php echo $sectionKey; ?>" 
+                            <span id="descriptionMarkdown<?php if($sectionKey != "description") echo $sectionKey."-".$key; ?>" 
                                   data-item="<?php echo $key; ?>"
                                   data-key="<?php echo $sectionKey; ?>" 
                                   name="descriptionMarkdown" 

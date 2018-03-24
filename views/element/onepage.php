@@ -644,7 +644,7 @@ function initMarkdownDescription() {
 		
 		if($(this).html().length > 0){
 			descHtml = dataHelper.markdownToHtml($(this).html()) ;
-			console.log("initMarkdown", $(this).html(), sectionK, item, descHtml, 
+			console.log("initMarkdown", descHtml, 
 						"section#"+sectionK+" .portfolio-item.item-"+item+" .item-desc");
 			$("section#"+sectionK+" .portfolio-item.item-"+item+" .item-desc").html(descHtml);
 		}
@@ -652,7 +652,7 @@ function initMarkdownDescription() {
 	
 }
 
-
+/*
 function descHtmlToMarkdown() {
 	mylog.log("htmlToMarkdown");
 	if(typeof contextData.descriptionHTML != "undefined" && contextData.descriptionHTML == true) {
@@ -694,5 +694,5 @@ function descHtmlToMarkdown() {
 		}
 	}
 }
-
+*/
 </script>

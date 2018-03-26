@@ -974,6 +974,10 @@ var tradCategory = {
 		"buildingtools":"<?php echo Yii::t("category","buildingtools") ?>",
 		"gardeningtools":"<?php echo Yii::t("category","gardeningtools") ?>",
 		"medicalstuff":"<?php echo Yii::t("category","medicalstuff") ?>",
+	//chat
+	"internal" : "<?php echo Yii::t("category","Chat inside CO") ?>",
+    "external" : "<?php echo Yii::t("category","Chat outside CO") ?>",
+    "channelName"  : "<?php echo Yii::t("category","Channel Name") ?>",
 };
 
 var tradTags = {

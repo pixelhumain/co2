@@ -1088,10 +1088,9 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 				if(mapEnd)
 					showMap(true);
 
-				if( url.indexOf("app/page/type") >= 0 )
+				
 					addBtnSwitch();
-				else 
-					$(".addBtnFoot").removeClass("hidden");
+				
 
 	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
 	        		uploadObj.set(contextData.type,contextData.id);
@@ -3865,21 +3864,26 @@ var co = {
 			if(userId)
 				urlCtrl.loadByHash(url);
 			else co.nect();},
-		open : function (url,type) { 
+		open : function (url,type,target) { 
 			title = null;
 			callback = null;
 
-			if(type == "md"){
-				title = "Markdown";
+			if(type == "md" || type == "docmd")
+			{
+				targetLink = (target) ? "<a href='"+target+"' target='_blank'> <i class='fa fa-external-link'></i> </a>" : "";
+
+				title = (type == "docmd") ? "Documentation Communecter "+targetLink : "Markdown";
+				title = "<h1 class='text-red'>"+title+"</h1>";
 				callback = function() {
 					getAjax('', url, function(data){ 
 							descHtml = dataHelper.markdownToHtml(data) ; 
-							smallMenu.content(descHtml);
+							smallMenu.content(title+descHtml);
 						}
 					,"html");
 				}
 			} 
 			
+
 			else if(type == "youtube") {
 				title = "Youtube";
 				callback = function() { smallMenu.content('<iframe width="560" height="315" src="'+url+'" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>');}
@@ -3972,10 +3976,6 @@ var co = {
 	live : function () { urlCtrl.loadByHash("#live");	},
 	web : function () { urlCtrl.loadByHash("#web");	},
 	annonces : function () { urlCtrl.loadByHash("#annonces");	},
-	chat : function () { 
-		if(userId)
-			rcObj.loadChat("","citoyens", true, true) 
-		else co.nect();	},
 	add : function (str) { 
 		strT = str.split(".");
 		type = {

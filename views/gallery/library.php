@@ -457,10 +457,10 @@ function buildLink(data) {
 	if( navigator.onLine ){
 		if( data.url.indexOf(".md")>= 0  )
 			return '<a href="javascript:;" onclick="co.ctrl.open(\''+data.url+'\',\'md\')"><span>'+data.name+' </span></a>';
-		else if(getVidId(data.url) != null ){
+		/*else if(getVidId(data.url) != null ){
 			data.url = YouTubeUrlNormalize(data.url);
 			return '<a href="javascript:;" onclick="co.ctrl.open(\''+data.url+'\',\'youtube\')"><span>'+data.name+' </span></a>';
-		}
+		}*/
 	}
 
  }

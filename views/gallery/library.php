@@ -430,9 +430,8 @@ function getViewUrl(id,data){
     				'</div>';
 			}
 
-			link = buildLink(data);
 			html+='<div class="content-info col-md-10 col-sm-10 col-sx-10 padding-5">'+
-					link+
+					buildLink(data)+
 				'</div>'+
 				'<div class="tools tools-right pull-right padding-5">';
 			if(authorizationToEdit){
@@ -453,16 +452,16 @@ function getViewUrl(id,data){
 	return html;
 }
 function buildLink(data) { 
-	link = '<a href="'+data.url+'" target="_blank"><span>'+data.name+' </span></a>';
+	link = '<a href="'+data.url+'" target="_blank">'+data.name+'</a>';
 	if( navigator.onLine ){
 		if( data.url.indexOf(".md")>= 0  )
-			return '<a href="javascript:;" onclick="co.ctrl.open(\''+data.url+'\',\'md\')"><span>'+data.name+' </span></a>';
+			link =  '<a href="javascript:;" onclick="co.ctrl.open(\''+data.url+'\',\'md\')"><span>'+data.name+' </span></a>';
 		/*else if(getVidId(data.url) != null ){
 			data.url = YouTubeUrlNormalize(data.url);
-			return '<a href="javascript:;" onclick="co.ctrl.open(\''+data.url+'\',\'youtube\')"><span>'+data.name+' </span></a>';
+			link =  '<a href="javascript:;" onclick="co.ctrl.open(\''+data.url+'\',\'youtube\')"><span>'+data.name+' </span></a>';
 		}*/
 	}
-
+	return link
  }
 
  var getVidId = function(url)

@@ -115,6 +115,9 @@
 	font-size: 20px !important;
 	font-style: italic;	
 }
+#container-docs{
+	top: 40px;
+}
 @media (max-width: 991px) {
  /* .open-type-filter{
         display: block;

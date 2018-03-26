@@ -596,3 +596,6 @@
     <hr>
   </div>
 <?php } ?>
+<script type="text/javascript">
+  var contextScopeNews = <?php echo json_encode($contextScopeNews) ?>;
+</script>

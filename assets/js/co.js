@@ -965,9 +965,9 @@ var urlCtrl = {
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
 	    } 
 
-		else if(hash.length>2){
-			hash = hash.replace( "#","" );
-			hashT=hash.split(".");
+		else if(hash.length>2  || hash.indexOf("#@") >= 0){
+			hashT = (hash.indexOf("#@") >= 0) ? hash.replace( "#@","" ) : hash.replace( "#","" );
+			hashT=hashT.split(".");
 			if(typeof hashT == "string")
 				slug=hashT;
 			else

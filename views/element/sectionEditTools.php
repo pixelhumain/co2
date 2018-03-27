@@ -410,10 +410,14 @@
 		$(".btn-create-section").click(function(){
 			var section = $(this).data("section-before");
 
-			var i = 1;
-			$.each($(".free-section"), function(){ i++; });
-			console.log("set btn value new-section-key", "free-section-"+i, section);
-			$("#btn-save-new-section-"+section).data("new-section-key", "free-section-"+i); 
+			var num = 1; var tmpNum = 1;
+			$.each($(".free-section"), function(){ 
+				var tmpNum = $(this).attr("id");
+				tmpNum = parseInt(tmpNum.substr(tmpNum.length-1, 1));
+				if(tmpNum > num) num = tmpNum +1;
+			});
+			$("#btn-save-new-section-"+section).data("new-section-key", "free-section-"+num); 
+			$("#btn-save-new-section-"+section).attr("data-new-section-key", "free-section-"+num); 
 			
 			$(".new-section-before-"+section).show(200);
 		});
@@ -453,7 +457,7 @@
 			$("#popup-conf-delete-item-"+sectionKey+"-"+itemKey).show(200);
 		});
 		$(".btn-cancel-delete-item").click(function(){
-			var sectionKey = "#"+$(this).data("section-key");
+			var sectionKey = $(this).data("section-key");
 			var itemKey = $(this).data("item-key");
 			$("#popup-conf-delete-item-"+sectionKey+"-"+itemKey).hide(200);
 		});
@@ -486,6 +490,84 @@
 			urlCtrl.loadByHash(location.hash);
 		});
 
+
+		/* SELECT IMAGE */
+
+		$(".btn-open-modal-select-img").click(function(){
+			var beforeSection = $(this).data("section-before");
+			$(".btn-select-img-new-section").removeClass("selected");
+			$(".modal .btn-select-img-new-section").data("section-before", beforeSection);
+			$(".modal .btn-select-img-new-section").data("edit-mode", "createSection");
+		});
+
+		//in modalSelectImage
+		$(".btn-select-img-new-section").click(function(){
+			$(".btn-select-img-new-section").removeClass("selected");
+			$(this).addClass("selected");
+			var imgPath = $(this).data("img-path");
+			var beforeSection = $(this).data("section-before");
+			var itemKey = $(this).data("item-key");
+			console.log("select img", beforeSection, "edit-mode", $(this).data("edit-mode"));
+			
+			if($(this).data("edit-mode") == "update"){
+				$("section#"+beforeSection + " .portfolio-item.item-"+itemKey+" input.img-path-new-sec").val(imgPath);
+				$("section#"+beforeSection + " .portfolio-item.item-"+itemKey+" .img-section").attr("src", imgPath);
+			}else if($(this).data("edit-mode") == "createItem"){
+				$("section#"+beforeSection + " .ctn-tool-create-item input.img-path-new-sec").val(imgPath);
+				$("section#"+beforeSection + " .ctn-tool-create-item .preview-img").html(
+					"<img height=100 src='"+imgPath+"'>");
+			}else if($(this).data("edit-mode") == "createSection"){
+				$(".new-section-before-"+beforeSection + " input.img-path-new-sec").val(imgPath);
+				$(".new-section-before-"+beforeSection + " .preview-img").html(
+					"<img height=100 src='"+imgPath+"'>");
+			}
+
+			$(".new-section-before-"+beforeSection + " .btn-open-modal-select-gallery").hide(200);
+			$(".new-section-before-"+beforeSection + " .btn-cancel-image").show(200);
+		});
+
+		$("#modalSelectImgNewSection #btn-cancel, .btn-cancel-image").click(function(){
+			$("#modalSelectImgNewSection .btn-select-img-new-section").removeClass("selected");
+			$("input.img-path-new-sec").val("");
+			$(".preview-img").html("");
+			$(".btn-open-modal-select-gallery").show(200);
+			$(".btn-cancel-image").hide(200);
+		});
+
+		/* SELECT GALLERY */
+		$(".btn-open-modal-select-gallery").click(function(){
+			var beforeSection = $(this).data("section-before");
+			$("#modalSelectGalleryNewSection .btn-select-gallery").data("section-before", beforeSection);
+		});
+		$("#modalSelectGalleryNewSection #btn-cancel, .btn-cancel-gallery").click(function(){
+			$("#modalSelectGalleryNewSection .ctn-gallery").removeClass("selected");
+			$("input.gallery-new-sec").val("");
+			$(".preview-img").html("");
+			$(".btn-open-modal-select-img").show(200);
+			$(".btn-cancel-gallery").hide(200);
+		});
+
+		$("#modalSelectGalleryNewSection .btn-select-gallery").click(function(){
+			var id = $(this).data("id-ctn");
+			var beforeSection = $(this).data("section-before");
+			var name = $(this).data("gallery-name");
+			$(".new-section-before-"+beforeSection + " input.gallery-new-sec").val(name);
+			$("#modalSelectGalleryNewSection .ctn-gallery").removeClass("selected");
+			$("#modalSelectGalleryNewSection .ctn-gallery#"+id).addClass("selected");
+
+			var galleryContent = "<div class='gallery-selected'>" + 
+									$("#modalSelectGalleryNewSection .ctn-gallery#"+id).html() + 
+								 "</div>";
+
+			$(".new-section-before-"+beforeSection + " .preview-img").html(galleryContent);
+			
+
+			$(".new-section-before-"+beforeSection + " .btn-cancel-gallery").show(200);
+			$(".new-section-before-"+beforeSection + " .btn-open-modal-select-img").hide(200);
+			$(".new-section-before-"+beforeSection + " input.img-path-new-sec").val("");
+		});
+
+
 		/*CREATE NEW SECTION*/
 		
 	});
@@ -493,15 +575,22 @@
 	function saveNewsSection(beforeSection, newSectionKey){
 		var title = $(".new-section-before-"+beforeSection + " .title-new-sec").val();
 		var descMD = $(".new-section-before-"+beforeSection + " #MD-desc-new-sec-"+beforeSection).val();
+		var imgPath = $(".new-section-before-"+beforeSection + " .img-path-new-sec").val();
+		var galleryName = $(".new-section-before-"+beforeSection + " .gallery-new-sec").val();
 		console.log("saveNewsSection", beforeSection, newSectionKey, title, descMD);
 
 		onepageEdition["#"+newSectionKey] = {	"title" : title,
 												"beforeSection" : "#"+beforeSection,
 												"items" : [
-												 	{ "shortDescription" : descMD,
+												 	{ "imgPath" : imgPath,
+												 	  "galleryName" : galleryName,
+													  "shortDescription" : descMD,
 												 	  "useMarkdown" : true }
 												 ] };
 
+		if(galleryName != ""){
+			onepageEdition["#"+newSectionKey]["isGallery"] = true; 
+		} 
 		console.log("on save new section" ,"onepageEdition :", onepageEdition);
 		updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
 		urlCtrl.loadByHash(location.hash);
@@ -509,16 +598,32 @@
 
 	function startCreateFreeItem(sectionKey){ console.log("startCreateFreeItem(",sectionKey,")");
 		$("#"+sectionKey + " .ctn-tool-create-item").html(
+			'<br><button class="btn btn-link bg-blue-k btn-open-modal-select-img" data-section-before="'+sectionKey+'" '+
+                'data-target="#modalSelectImgNewSection" data-toggle="modal">'+
+                '<i class="fa fa-picture-o"></i> Joindre une photo'+
+            '</button><br><br>'+
+            '<input type="hidden" class="img-path-new-sec">' +
+            '<span class="preview-img"></span><hr>' +
+
 			"<textarea class='text-dark' id='create-"+sectionKey+"' row='5'></textarea>"+
+			"<br>" +
 			"<button class='btn btn-link pull-right bg-green-k btn-save-create-MD-item' "+
-					 "data-section-key='"+sectionKey+"' "+
+					 "data-section-key='"+sectionKey+"' >"+
 				"<i class='fa fa-save'></i> Enregistrer"+
-			"</button>"+
-			"<button class='btn btn-link pull-right letter-red btn-cancel-create-MD-item' "+
-					 "data-section-key='"+sectionKey+"' "+
-				"<i class='fa fa-trash'></i> Annuler"+
-			"</button>"
+			"</button> "+
+			"<button class='btn btn-link pull-right margin-right-10 bg-red btn-cancel-create-MD-item' "+
+					 "data-section-key='"+sectionKey+"' >"+
+				"<i class='fa fa-times'></i> Annuler"+
+			"</button><br><hr>"
 			);
+
+		$("#"+sectionKey + " .ctn-tool-create-item .btn-open-modal-select-img").click(function(){
+			var beforeSection = $(this).data("section-before");
+			console.log("init beforeSection", beforeSection);
+			$(".modal .btn-select-img-new-section").data("section-before", beforeSection);
+			$(".modal .btn-select-img-new-section").data("edit-mode", "createItem");
+		});
+
 		dataHelper.activateMarkdown("#create-"+sectionKey);
 		
 
@@ -531,9 +636,11 @@
 			console.log(".btn-save-create-MD-item click");
 			var sectionKey = $(this).data("section-key");
 			var descMD = $("textarea#create-"+sectionKey).val();
+			var imgPath = $("section#"+sectionKey + " input.img-path-new-sec").val();
 
 			onepageEdition["#"+sectionKey]["items"].push({"shortDescription" : descMD, 
-														  "useMarkdown" : true });
+														  "useMarkdown" : true,
+														  "imgPath" : imgPath });
 
 			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
 			urlCtrl.loadByHash(location.hash);
@@ -542,19 +649,51 @@
 
 	function startUpdateFreeItem(sectionKey, itemKey){ console.log("startUpdateFreeItem(",sectionKey,",", itemKey,")");
 		var MDdesc = $("#descriptionMarkdown"+sectionKey+"-"+itemKey).html();
-		$("#"+sectionKey + " .portfolio-item.item-"+itemKey+" .item-desc").html(
+		var sectionData = onepageEdition["#"+sectionKey]["items"][itemKey];
+		var isGallery = (typeof sectionData["galleryName"] != "undefined" && sectionData["galleryName"] != "");
+
+		var html = "";
+		if(!isGallery)
+		html += 
+			'<br><button class="btn btn-link bg-blue-k btn-open-modal-select-img" data-section-before="'+sectionKey+'" '+
+                'data-target="#modalSelectImgNewSection" data-toggle="modal">'+
+                '<i class="fa fa-picture-o"></i> Modifier la photo'+
+            '</button> '+
+            '<button class="btn btn-link bg-red btn-delete-img-item" data-section-before="'+sectionKey+'"  data-item-key="'+itemKey+'">'+
+                '<i class="fa fa-trash"></i> Supprimer la photo'+
+            '</button><br><br>'+
+            '<input type="hidden" class="img-path-new-sec"><hr>';
+
+         html += 
 			"<textarea class='text-dark' id='update-"+sectionKey+"-"+itemKey+"' row='5'>"+MDdesc+"</textarea>"+
+			"<br>" +
 			"<button class='btn btn-link pull-right bg-green-k btn-save-edit-MD-item' "+
 					 "data-section-key='"+sectionKey+"' "+
 					 "data-item-key='"+itemKey+"'>"+
 				"<i class='fa fa-save'></i> Enregistrer"+
-			"</button>"+
-			"<button class='btn btn-link pull-right letter-red btn-cancel-edit-MD-item' "+
+			"</button> "+
+			"<button class='btn btn-link pull-right margin-right-10 bg-red btn-cancel-edit-MD-item' "+
 					 "data-section-key='"+sectionKey+"' "+
 					 "data-item-key='"+itemKey+"'>"+
-				"<i class='fa fa-trash'></i> Annuler"+
-			"</button>"
-			);
+				"<i class='fa fa-times'></i> Annuler"+
+			"</button>";
+
+		$("#"+sectionKey + " .portfolio-item.item-"+itemKey+" .item-desc").html(html);
+
+		$("#"+sectionKey + " .portfolio-item.item-"+itemKey+" .item-desc .btn-open-modal-select-img").click(function(){
+			var beforeSection = $(this).data("section-before");
+			$(".modal .btn-select-img-new-section").data("section-before", beforeSection);
+			$(".modal .btn-select-img-new-section").data("item-key", itemKey);
+			$(".modal .btn-select-img-new-section").data("edit-mode", "update");
+		});
+
+		$("#"+sectionKey + " .portfolio-item.item-"+itemKey+" .item-desc .btn-delete-img-item").click(function(){
+			var beforeSection = $(this).data("section-before");
+			var itemKey = $(this).data("item-key");
+			onepageEdition["#"+sectionKey]["items"][itemKey]["imgPath"] = "";
+			$("#"+sectionKey + " .portfolio-item.item-"+itemKey+" img.img-section").attr("src", "");
+		});
+
 		dataHelper.activateMarkdown("#update-"+sectionKey+"-"+itemKey);
 		
 
@@ -575,11 +714,16 @@
 			var sectionKey = $(this).data("section-key");
 			var itemKey = $(this).data("item-key");
 			var descMD = $("textarea#update-"+sectionKey+"-"+itemKey).val();
-
+			var imgPath = $("section#"+sectionKey + " input.img-path-new-sec").val();
+		
+			if(descMD == "") descMD = " ";
 			$("#descriptionMarkdown"+sectionKey+"-"+itemKey).html(descMD);
 			initMarkdownDescription();
 			
 			onepageEdition["#"+sectionKey]["items"][itemKey]["shortDescription"] = descMD;
+
+			if(imgPath!="")
+			onepageEdition["#"+sectionKey]["items"][itemKey]["imgPath"] = imgPath;
 
 			updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
 		});
@@ -605,6 +749,12 @@
 	function deleteFreeSection(sectionKey){
 		var removeSection = {};
 		console.log("try to remove before", onepageEdition);
+		//search section with sectionBefore == sectionKey
+		//to move theme 
+		$.each(onepageEdition, function(key, val){
+			if(val["beforeSection"] == sectionKey)
+				onepageEdition[key]["beforeSection"] = onepageEdition[sectionKey]["beforeSection"];
+		});
 		$.each(onepageEdition, function(key, val){
 			console.log("key != "+sectionKey, key != sectionKey);
 			if(key != sectionKey)
@@ -615,7 +765,9 @@
 		console.log("try to remove after", removeSection);
 		console.log("on save new section" ,"onepageEdition :", onepageEdition);
 		updateField(typeEl, idEl, "onepageEdition", onepageEdition, false);
-		urlCtrl.loadByHash(location.hash);
+		
+		$("section"+sectionKey).remove();
+		$(".ctn-new-sec#before-"+sectionKey.substr(1, sectionKey.length)).remove();
 	}
 
 	function initOnepage(onepageEdition){

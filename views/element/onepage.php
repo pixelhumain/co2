@@ -100,6 +100,10 @@
 		text-decoration:none;
 		border:none!important;
 	}
+
+	.ctn-tool-create-item{
+		padding-top:15px;
+	}
 </style>
 
 <div>
@@ -179,6 +183,53 @@
 															  		"fontScale"=>3),
 											));
     ?>
+
+
+	<!-- GALLERY Section -->
+
+
+<?php $this->renderPartial('../element/onepage/sectionBefore', 
+                                    array(  "element" => @$element,
+                                            "edit" => @$edit,
+                                            "sectionKey" => "gallery",
+                                            "useBorderElement" => @$useBorderElement));
+?>
+
+<?php $this->renderPartial('../element/onepage/createFreeSection', 
+                                    array(  "sectionShadow" => @$sectionShadow,
+                                            "element" => $element,
+                                            "edit" => @$edit,
+                                            "sectionKey" => "gallery"));
+?>
+
+	<?php if(@$element["onepageEdition"]["#gallery"]["hidden"] != "true" || @$edit == true){ ?>
+	<section id="gallery" class="bg-white row shadow">
+		<?php if(@$edit==true){ ?>
+			<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
+				    data-id="#gallery">
+		        	<i class="fa fa-cog"></i>
+		    </button>
+		    <?php $this->renderPartial('../element/onepage/btnShowHide', 
+	                                    array(  "element" => $element,
+	                                            "sectionKey" => "gallery"));
+	        ?>
+	    <?php } ?>
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-title">
+                    <span class="sec-title">Galleries photos</span><br>
+                    <i class="fa fa-angle-down"></i>
+                </h2>
+            </div>
+        </div>
+
+		<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+			<ul class="timeline inline-block" id="gallery-page">
+		</ul>
+
+	</section>
+	<?php } ?>
 
     <!-- EVENTS Section -->
 
@@ -450,65 +501,27 @@
 	<?php } ?>
 
 
-    <!-- FREE Section -->
-    <?php  
-    	/*$items = array( array("name"=>"", "shortDescription"=>"Mon texte libre"),
-    						// array("name"=>"Utiliser les POI ?", "shortDescription"=>"Pour construire les block libres ?<br>Textes<br>Images<br>Video<br>GeoPos<br>Url<br>etc"),
-    						// array("name"=>"Lorem ratione", "shortDescription"=>"Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet"),
-    					);
 
-    		$this->renderPartial('../element/onepage/section', 
-    								array(  "items" => $items,
-											"sectionKey" => "freep",
-											"sectionTitle" => "Le manifeste",
-											"sectionShadow" => true,
-											"msgNoItem" => "Aucun projet à afficher",
-											"imgShape" => "circle",
-											"useImg" => false,
-											"fullWidth" => true, //only for 1 element
-
-											"styleParams" => array(	"bgColor"=>"#f1f2f6",
-															  		"textBright"=>"dark",
-															  		"fontScale"=>3),
-											));
-	*/
-	?>
-
-	<!-- GALLERY Section -->
-
-	<?php if(@$element["onepageEdition"]["#gallery"]["hidden"] != "true" || @$edit == true){ ?>
-	<section id="gallery" class="bg-white inline-block col-md-12 shadow">
-		<?php if(@$edit==true){ ?>
-			<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
-				    data-id="#gallery">
-		        	<i class="fa fa-cog"></i>
-		    </button>
-		    <?php $this->renderPartial('../element/onepage/btnShowHide', 
-	                                    array(  "element" => $element,
-	                                            "sectionKey" => "gallery"));
-	        ?>
-	    <?php } ?>
-
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-title">
-                    <span class="sec-title">Galleries photos</span><br>
-                    <i class="fa fa-angle-down"></i>
-                </h2>
-            </div>
-        </div>
-
-		<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
-			<ul class="timeline inline-block" id="gallery-page">
-		</ul>
-
-	</section>
-	<?php } ?>
 
 	<!-- TIMELINE Section -->
 
+
+	<?php $this->renderPartial('../element/onepage/sectionBefore', 
+	                                    array(  "element" => @$element,
+	                                            "edit" => @$edit,
+	                                            "sectionKey" => "timeline",
+	                                            "useBorderElement" => @$useBorderElement));
+	?>
+
+	<?php $this->renderPartial('../element/onepage/createFreeSection', 
+	                                    array(  "sectionShadow" => @$sectionShadow,
+	                                            "element" => $element,
+                                            	"edit" => @$edit,
+	                                            "sectionKey" => "timeline"));
+	?>
+
 	<?php if(@$element["onepageEdition"]["#timeline"]["hidden"] != "true" || @$edit == true){ ?>
-	<section id="timeline" class="bg-white inline-block col-md-12 shadow">
+	<section id="timeline" class="bg-white row shadow">
 		<?php if(@$edit==true){ ?>
 			<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
 				    data-id="#timeline">
@@ -541,6 +554,16 @@
 	<?php $this->renderPartial('../element/onepage/footer', 
     							array( "element" => $element,
     								   "edit" => @$edit)); 
+	?>
+
+
+	<?php $this->renderPartial('../element/onepage/modalSelectImage', 
+	                          array( "element" => @$element ));
+	?>
+
+
+	<?php $this->renderPartial('../element/onepage/modalSelectGallery', 
+	                          array( "element" => @$element ));
 	?>
 
 

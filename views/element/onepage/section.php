@@ -1,29 +1,9 @@
-<?php if(@$element["onepageEdition"])
-        foreach (@$element["onepageEdition"] as $sectionK => $val) {
-            if(@$val["beforeSection"] == "#".$sectionKey){
-                //echo "need to show free section : " . $sectionK;
-                $desc = @$val["items"];   // array( array("shortDescription"=>@$val["description"],
-                                                //"useMarkdown"=>@$val["useMarkdown"]), );
 
-                $this->renderPartial('../element/onepage/section', 
-                                    array(  "element" => $element,
-                                            "items" => @$desc,
-                                            "sectionKey" => substr($sectionK, 1, strlen($sectionK)),
-                                            "sectionTitle" => @$val["title"],
-                                            "sectionShadow" => true,
-                                            "msgNoItem" => "",
-                                            "imgShape" => "square",
-                                            "edit" => $edit,
-                                            "useImg" => false,
-                                            //"fullWidth" => true, //only for 1 element
-                                            "useBorderElement"=>$useBorderElement,
-
-                                            "styleParams" => array( "bgColor"=>"#FFF",
-                                                                    "textBright"=>"dark",
-                                                                    "fontScale"=>3),
-                                            ));
-            }
-      } 
+<?php $this->renderPartial('../element/onepage/sectionBefore', 
+                                    array(  "element" => @$element,
+                                            "edit" => @$edit,
+                                            "sectionKey" => @$sectionKey,
+                                            "useBorderElement" => @$useBorderElement));
 ?>
 
 <?php 
@@ -32,12 +12,12 @@
 
     $nbMax = @$nbMax ? $nbMax : 12;
 
-    $imgDefault = $this->module->assetsUrl.'/images/news/profile_default_l.png';
+    $imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 
     $nbItem = sizeof($items);
     $col = "col-sm-2 col-xs-4";
 
-    if($nbItem == 1) $col = "col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12";
+    if($nbItem == 1) $col = "col-lg-offset-2 col-lg-8 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12";
     if(@$fullWidth && @$fullWidth == true) $col = "col-md-12";
 
     if($nbItem == 2) $col = "col-sm-6";
@@ -77,7 +57,9 @@
         }
 
         .popup-conf-delete-section,
-        .popup-conf-delete-item{
+        .popup-conf-delete-item,
+        .btn-cancel-gallery,
+        .btn-cancel-image{
             display: none;
         }
 
@@ -85,51 +67,24 @@
             max-width: 100%!important;
         }
 
+        .img-section{
+            max-height: 300px;
+        }
+
         input.title-new-sec{
             text-transform: uppercase;
             font-weight: bold;
             font-size:16px;
         }
+
 </style>
 
-<?php if(@$edit==true && @$sectionKey != "description"){ ?>
-    <div class="col-xs-12 text-center no-padding ctn-new-sec">
-        <button class="btn btn-link bg-white text-dark btn-create-section shadow2"
-                data-section-before="<?php echo @$sectionKey; ?>">
-            <i class="fa fa-plus"></i> Ajouter section ici
-        </button>
-        <section class="portfolio new-section margin-top-15 bg-white <?php if(@$sectionShadow==true) echo 'shadow'; ?> 
-                        new-section-before-<?php echo @$sectionKey; ?>"
-                        data-section-before="<?php echo @$sectionKey; ?>">
-            <div class="row">
-            <div class="col-xs-12 col-sm-offset-2 col-sm-8  col-md-offset-3 col-md-6  col-lg-offset-3 col-lg-6 padding-15">
-                <h5><i class="fa fa-plus"></i> Nouvelle section</h5>
-
-                <hr>
-                <input type="text" class="form-input col-xs-12 title-new-sec font-montserrat margin-bottom-15" 
-                        placeholder="Titre de la section">
-
-                <div class="md-ctn font-montserrat">
-                    <textarea class="markdown-desc-new-sec" id="MD-desc-new-sec-<?php echo @$sectionKey; ?>"></textarea>
-                </div>
-
-                <div class="col-xs-12 padding-15">
-                    <button class="btn btn-link btn-save-new-section bg-green-k pull-right"
-                            id="btn-save-new-section-<?php echo @$sectionKey; ?>"
-                            data-section-before="<?php echo @$sectionKey; ?>"
-                            data-new-section-key="free-section">
-                        <i class="fa fa-save"></i> Enregistrer
-                    </button>
-                    <button class="btn btn-link btn-cancel-new-section pull-right letter-red"
-                            data-section-before="<?php echo @$sectionKey; ?>">
-                        Annuler
-                    </button>
-                </div>
-            </div>
-            </div>
-        </section>
-    </div>
-<?php } ?>
+<?php $this->renderPartial('../element/onepage/createFreeSection', 
+                                    array(  "sectionShadow" => @$sectionShadow,
+                                            "edit" => @$edit,
+                                            "element" => $element,
+                                            "sectionKey" => @$sectionKey));
+?>
 
 <?php 
     //var_dump(strpos( @$sectionKey, "free-section-"));
@@ -145,7 +100,7 @@
         </button>
 
         <?php $this->renderPartial('../element/onepage/btnShowHide', 
-                                    array(  "element" => $element,
+                                    array(  "sectionShadow" => @$sectionShadow,
                                             "sectionKey" => @$sectionKey));
         ?>
 
@@ -167,15 +122,15 @@
 
     <div class="container">
 
-        <?php if(@$sectionTitle != ""){ ?>
+        <?php if(@$sectionTitle != "" || @$edit==true){ ?>
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2 class="section-title">
                     <span class="sec-title"><?php echo $sectionTitle; ?></span> 
-                    <?php if(@count($items) >= 2) echo "<small>(".@count($items).")</small>"; ?>
+                    <?php if(@count($items) >= 2 && @$sectionTitle != "") echo "<small>(".@count($items).")</small>"; ?>
 
                 </h2>
-                <?php if($freeSec == "free-section" && @$edit==true){ ?> <br>
+                <?php if($freeSec == "free-section" && @$edit==true && @$isGallery != "true"){ ?> <br>
                     <button class="btn btn-link btn-create-item text-dark bg-white btn-xs btn-tool-free-sec"
                             data-section-key="<?php echo @$sectionKey; ?>">
                         <i class="fa fa-plus-circle"></i> Ajouter un paragraphe
@@ -196,6 +151,7 @@
     		foreach ($items as $key => $item) { $cnt++; 
     		  	if($cnt<=$nbMax){
                     
+                    if(@$item["galleryName"]!="" && sizeof($items)==1) $col="col-xs-12";
                     //récupération du type de l'element
                     $typeItem = (@$item["typeSig"] && $item["typeSig"] != "") ? $item["typeSig"] : "";
                     if($typeItem == "") $typeItem = @$item["type"] ? $item["type"] : "item";
@@ -241,6 +197,20 @@
 
                     <div class="col-md-12 col-sm-12 no-padding item-name"><?php echo @$item['name']; ?></div>
 
+
+                    <?php if(@$item['price']){ ?>
+                        <div class="col-md-12 col-sm-12 no-padding text-center">
+                            <?php if(@$item["description"]){ ?>
+                                <span class="item-desc">
+                                    <?php echo $item["description"]; ?>
+                                </span><br><br>
+                            <?php } ?>
+                            <span class="badge padding-10 bold bg-white shadow2 letter-green">
+                                <h5 class="no-margin"><?php echo $item["price"]; ?> <?php echo $item["devise"]; ?></h5 class="no-margin">
+                            </span>
+                        </div>
+                    <?php } ?>
+
                     <?php if($nbItem <= $nbMax){ ?>
                         <div class="col-md-12 col-sm-12 no-padding item-address text-red">
                             <?php  echo @$item['address']['addressLocality'] ?  
@@ -264,8 +234,8 @@
                                 data-section-key="<?php echo $sectionKey; ?>" >
                             <i class="fa fa-trash"></i>
                         </button>
-                        <div class="pull-right popup-conf-delete-item text-center margin-top-15 margin-bottom-15 bg-white letter-orange padding-15 shadow2 bold radius-15 margin-right-15" id="popup-conf-delete-item-<?php echo @$sectionKey; ?>-<?php echo @$key; ?>">
-                            <span class=" pull-right">Voulez-vous vraiment supprimer ce paragraphe ?</span>
+                        <div class="popup-conf-delete-item text-center margin-top-15 margin-bottom-15 bg-white letter-orange padding-15 shadow2 bold radius-15 margin-right-15" id="popup-conf-delete-item-<?php echo @$sectionKey; ?>-<?php echo @$key; ?>">
+                            <span class="">Voulez-vous vraiment supprimer ce paragraphe ?</span>
                             <br><hr class="margin-5">
                             <button class="btn btn-link margin-top-5 bg-red btn-cancel-delete-item"  
                                     data-item-key="<?php echo $key; ?>"
@@ -279,6 +249,39 @@
                         <hr>
                     <?php } ?> 
 
+                    <div class="col-xs-12 margin-top-15 no-padding text-center">
+
+                         <img class="img-responsive img-section" src="<?php echo @$item['imgPath']; ?>">
+
+                         <?php if(@$item['imgPath'] && @$item['imgPath']!=""){ ?><br><br><?php } ?>
+
+                         <?php if(@$item['galleryName'] && @$item['galleryName']!=""){ 
+                                $folder = @$element["type"]."/".@$element["_id"]; 
+                                $photoGallery = PHDB::findAndSort( Document::COLLECTION,
+                                                                array("folder"=>new MongoRegex("/.*{$folder}.*/i"),
+                                                                      "collection"=>$item['galleryName'],
+                                                                      "doctype" => "image"), array("created"=>-1));
+                        ?>
+                            <div class="col-xs-12 margin-bottom-25">
+                                <?php foreach ($photoGallery as $kk => $photo) { 
+                                        $imagePath = Yii::app()->baseUrl."/".Yii::app()->params['uploadUrl'].
+                                        $photo["moduleId"]."/".$photo["folder"]; 
+
+                                        if($photo["contentKey"]=="profil")
+                                             $imagePath .= "/".Document::GENERATED_MEDIUM_FOLDER;
+                                        else $imagePath .= "/".Document::GENERATED_IMAGES_FOLDER;
+
+                                        $imagePath .= "/".$photo["name"];
+                                ?>
+                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 padding-5 ctn-img">                     
+                                        <img src="<?php echo $imagePath; ?>" class="img-responsive">
+                                    </div>
+                                <?php } ?>
+                            </div>
+
+                         <?php } ?>
+                    </div>
+
                     <?php if($nbItem <= 4 && (!isset($useDesc) || @$useDesc == true)){ ?>
                         <?php if(@$item["useMarkdown"]==true){ ?>
                             <span id="descriptionMarkdown<?php if($sectionKey != "description") echo $sectionKey."-".$key; ?>" 
@@ -289,8 +292,7 @@
                                   ><?php echo (!empty(@$item['shortDescription'])) ? @$item['shortDescription'] : ""; ?></span>
                         <?php } ?>
                         <div class="col-md-12 col-sm-12 no-padding item-desc  <?php if(@$fullWidth && @$fullWidth == true) echo "text-left"; ?>">
-                            <?php echo @$item['shortDescription'] ? @$item['shortDescription'] :
-                                        "<span class='padding-10'><center><i>- Pas de présentation -</center></i></span>"; ?>
+                            <?php echo @$item['shortDescription'] ? @$item['shortDescription'] : ""; ?>
                             
                         </div>
                         <?php if($sectionKey == "description" && @$item['shortDescription']){ ?>

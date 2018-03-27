@@ -7,6 +7,7 @@
 	    left: 0;
 	    padding: 0;
 	    overflow-y: scroll;
+	    	background-color: white;
 	}
 	#header-doc{
 		position: fixed;
@@ -76,7 +77,7 @@
 	ul.subMenu{
 		padding-left: 30px
 	}
-#show-menu-xs{
+#show-menu-xs, #close-docs{
 	    padding: 7px 15px;
     font-size: 20px;
 }
@@ -116,7 +117,8 @@
 	font-style: italic;	
 }
 #container-docs{
-	top: 40px;
+	background-color: white;
+	z-index: 10000;
 }
 @media (max-width: 991px) {
  /* .open-type-filter{
@@ -135,7 +137,7 @@
   #menu-left{
     width: 56%;
     left: -56%;
-	background-color: white;
+	bottom: 0px;
 	}
   
 }
@@ -148,17 +150,16 @@
 </style>
 <div id="header-doc" class="shadow2">
 	<a href='javascript:;' id="show-menu-xs" class="visible-xs visible-sm pull-left" data-placement="bottom" data-title="Menu"><i class="fa fa-bars"></i></a>
-	<h2 class="elipsis"><i class="fa fa-book hidden-xs"></i> <?php echo Yii::t("docs", "All <span class='hidden-xs'>you need to know</span> about") ?></h2>
+	<h2 class="elipsis no-margin"><i class="fa fa-book hidden-xs"></i> <?php echo Yii::t("docs", "All <span class='hidden-xs'>you need to know</span> about") ?></h2>
 	<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGOS/CO2/logo-head-search.png" 
                      class="logo-menutop main pull-left" height=30>
-    <!--<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGOS/CO2/logo-min.png" 
-                     class="logo-menutop main pull-left visible-xs visible-sm" height=30>-->
+    <a href='javascript:;' class="lbh pull-right" id="close-docs"><span><i class="fa fa-sign-out"></i> <?php echo Yii::t("common","Back") ?></span></a>
 </div>
 <div id="menu-left" class="col-md-3 col-sm-2 col-xs-12 shadow2">
   	<ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
 		<li class="col-xs-12 no-padding">
-			<a href="javascript:" class="link-docs-menu active down-menu" data-type="welcome" data-dir="<?php echo Yii::app()->language ?>">
-				<i class="fa fa-angle-down"></i> <?php echo Yii::t("docs","WEL<span class='text-red'>CO</span>ME"); ?>
+			<a href="javascript:" class="link-docs-menu down-menu" data-type="welcome" data-dir="<?php echo Yii::app()->language ?>">
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","WEL<span class='text-red'>CO</span>ME"); ?>
 			</a>
 		</li>
 		<li class="col-xs-12 no-padding">
@@ -167,12 +168,12 @@
 			</a>
 			<ul class="subMenu col-xs-12 no-padding">
 				<li class="col-xs-12 no-padding">
-					<a href="javascript:" class="link-docs-menu" data-type="openatlas" data-dir="<?php echo Yii::app()->language ?>">
+					<a href="javascript:;" class="link-docs-menu" data-type="openatlas" data-dir="<?php echo Yii::app()->language ?>">
 						<?php echo Yii::t("common","Open Atlas"); ?>
 					</a>
 				</li>
 				<li class="col-xs-12 no-padding">
-					<a href="javascript:" class="link-docs-menu" data-type="philosophy" data-dir="<?php echo Yii::app()->language ?>">
+					<a href="javascript:;" class="link-docs-menu" data-type="philosophy" data-dir="<?php echo Yii::app()->language ?>">
 						<?php echo Yii::t("docs","Philosophy"); ?>
 					</a>
 				</li>
@@ -229,19 +230,19 @@
 					</a>
 				</li>
 				<li class="col-xs-12 no-padding">
-					<a href="javascript:" class="link-docs-menu" data-type="import" data-dir="<?php echo Yii::app()->language ?>">
+					<a href="javascript:;" class="link-docs-menu" data-type="import" data-dir="<?php echo Yii::app()->language ?>">
 						<?php echo Yii::t("docs","Game of data"); ?>
 					</a>
 				</li>
 				<li class="col-xs-12 no-padding">
-					<a href="javascript:" class="link-docs-menu" data-type="faq">
+					<a href="javascript:;" class="link-docs-menu" data-type="faq">
 						<?php echo Yii::t("docs","FAQ"); ?>
 					</a>
 				</li>
 			</ul>
 		</li>
 		<li class="col-xs-12 no-padding">
-			<a href="javascript:" class="link-docs-menu down-menu" data-type="contribute" data-dir="<?php echo Yii::app()->language ?>">
+			<a href="javascript:;" class="link-docs-menu down-menu" data-type="contribute" data-dir="<?php echo Yii::app()->language ?>">
 				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","<span class='text-red'>CO</span>NTRIBUTE"); ?>
 			</a>
 		</li>
@@ -308,15 +309,19 @@
 		</li>
 	</ul>
 </div>
-<div id="container-docs" class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 no-padding">
+<div id="container-docs" class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 no-padding text-center">
 </div>
 <script type="text/javascript">
+var page="<?php echo @$page ?>";
+var dir="<?php echo @$dir ?>"; 
 jQuery(document).ready(function() {
-	navInDocs("welcome", mainLanguage);
-	$(".link-docs-menu").click(function(){
+	if(page != "")
+		initDocs(page, dir);
+	else
+		initDocs("welcome", mainLanguage);
+
+	$(".link-docs-menu").off().on("click",function(){
 		if($(this).hasClass("down-menu")){
-			//$(".subMenu").hide(700);
-			//$(this).parent().find(".subMenu").show(700);
 			$("#menu-left > ul > li > a").removeClass("active").find("i").removeClass("fa-angle-down").addClass("fa-angle-right");
 			$(".subMenu .link-docs-menu").removeClass("active");
 			$(this).addClass("active").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
@@ -333,6 +338,11 @@ jQuery(document).ready(function() {
 			$("#show-menu-xs").removeClass("show-dir");
 			$("#menu-left").animate({ left : "-56%" }, 400 );
 		}
+		onchangeClick=false;
+		hashDocs="#docs.page."+$(this).data("type");
+		if(notNull($(this).data("dir")) && $(this).data("dir") != "")
+			hashDocs+= ".dir."+$(this).data("dir");
+		location.hash=hashDocs;
 		navInDocs($(this).data("type"), $(this).data("dir"), $(this).data("get"));
 	});
 	$("#show-menu-xs").click(function(){
@@ -346,16 +356,29 @@ jQuery(document).ready(function() {
     }
   });
 });
+function initDocs(page, dir){
+	if(urlBackDocs.indexOf("#docs") >= 0){
+		if(userId!="")
+			$("#close-docs").attr("href","#page.type.citoyens.id."+userId);
+		else
+			$("#close-docs").attr("href","#search");
+	}else
+		$("#close-docs").attr("href",urlBackDocs);
+	navInDocs(page, dir);
+	$(".link-docs-menu[data-type='"+page+"'][data-dir='"+dir+"']").addClass("active");
+	if(!$(".link-docs-menu[data-type='"+page+"'][data-dir='"+dir+"']").hasClass("down-menu"))
+		$(".link-docs-menu[data-type='"+page+"'][data-dir='"+dir+"']").parents().eq(2).find(".down-menu").addClass("active").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
+	else
+		$(".link-docs-menu[data-type='"+page+"'][data-dir='"+dir+"']").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
+}
 function navInDocs(page, dir, get){
+	simpleScroll(0);
 	showLoader('#container-docs');
-	add="";
+	urlToSend="docs/index/";
 	if(notNull(dir) && dir !="")
-		add="|"+dir;
-	//if(notNull(lang))
-	//	add=mainLanguage;
-	//else
-	//	add="panels";
-	ajaxPost('#container-docs' ,baseUrl+'/'+moduleId+"/default/view/page/"+page+"/dir/docs"+add,
+		urlToSend+="dir/"+dir+"/";
+	urlToSend+="page/"+page;
+	ajaxPost('#container-docs' ,baseUrl+'/'+moduleId+"/"+urlToSend,
 			 null,function(){},"html");
 }
 function getConceptList(list, dom, type){

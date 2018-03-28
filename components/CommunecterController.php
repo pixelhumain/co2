@@ -105,7 +105,9 @@ class CommunecterController extends Controller
       "cities" => array("href" => "/ph/co2/admin/cities"),
       "circuits" => array("href" => "/ph/co2/admin/circuits"),
     ),
-    
+    "docs" => array(
+      "index"     => array("href" => "/ph/co2/docs"),
+    ),
     "adminpublic" => array(
       "index"    => array("href" => "/ph/co2/adminpublic/index"),
       "adddata"    => array("href" => "/ph/co2/adminpublic/adddata"),
@@ -561,6 +563,7 @@ class CommunecterController extends Controller
       "power"             => array('href' => "/ph/co2/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/co2/app/superadmin",        "public" => false),
       "admin"             => array('href' => "/ph/co2/app/admin",             "public" => true),
+      "docs"             => array('href' => "/ph/co2/app/docs",             "public" => true),
       "adminpublic"       => array('href' => "/ph/co2/app/adminpublic",       "public" => true),
       "info"              => array('href' => "/ph/co2/app/info",              "public" => true),
       "smartconso"          => array('href' => "/ph/co2/app/smartconso",      "public" => true),

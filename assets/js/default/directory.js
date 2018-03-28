@@ -1166,7 +1166,7 @@ var directory = {
       }
 
       var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classified"])>=0 )  ? false : true;
-      if(typeof params.edit  != "undefined")
+      if(typeof params.edit  != "undefined" && notNull(params.edit))
         str += this.getAdminToolBar(params);
 
       mylog.log("isFollowed ?", params.isFollowed, params.id, inMyContacts(params.typeSig, params.id), 
@@ -1232,7 +1232,7 @@ var directory = {
 
 
 		var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
-    if(typeof params.edit  != "undefined")
+    if(typeof params.edit  != "undefined" && notNull(params.edit))
 		  str += this.getAdminToolBar(params);
 
 		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){

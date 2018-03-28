@@ -70,8 +70,9 @@
 					$inviteLink = "people";
 					$inviteText =  Yii::t("common",'Invite people') ;
 					$modalTarget = "#invite-modal-element";
+
 				}
-			$modalTarget = "#modal-invite";
+				$modalTarget = "#modal-invite";
 				$whereConnect="";
 				if($type!=Person::COLLECTION)
 					$whereConnect='to the '.Element::getControlerByCollection($type);

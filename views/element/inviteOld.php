@@ -213,7 +213,9 @@
 
 
 <script type="text/javascript">
+	var listMails = {};
 var searchApp=( ( '<?php echo (@$search == true); ?>' == "1") ? true : false );
+var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.sponsor, tradCategory.organizor, tradCategory.president, tradCategory.director, tradCategory.speaker, tradCategory.intervener];
 jQuery(document).ready(function() {
 	bindInviteModal();
     runinviteFormValidation();

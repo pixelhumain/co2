@@ -727,7 +727,7 @@
 		// 				"parentId" => (string)$element['_id'], 
 		// 				"members" => @$members));
 
-		// $this->renderPartial('../element/invite',
+		// $this->renderPartial('../element/inviteOld',
 		// 		array(	"type"=>$type, 
 		// 				"parentId" => (string)$element['_id'], 
 		// 				"members" => @$members));

@@ -1,8 +1,11 @@
 <style>
 
+
+
 #modal-invite .dropdown-menu{
 	top:65%;
 	left : 15px;
+	position: relative;
 
 }
 
@@ -109,24 +112,68 @@
 							</a>
 						</li>
 					</ul>
-					<hr>
 				</div>
 			</div>
 			<div class="row links-create-element">
 				<div id="step1" class="modal-body col-xs-6" >
 					<div class="form-group">
 						<input type="text" class="form-control text-left" placeholder="Un nom, un e-mail ..." autocomplete = "off" id="inviteSearch" name="inviteSearch" value="">
-						<ul class="dropdown-menu col-md-10" id="dropdown_searchInvite" style="">
+						<ul class="dropdown-menu col-xs-10" id="dropdown_searchInvite" style="">
 							<li class="li-dropdown-scope"></li>
 						</ul>
+						<div class="col-xs-12" id="form-invite">
+							<div class="modal-body text-center">
+								<h2 class="text-green">
+									<i class="fa fa-plus-circle padding-bottom-10"></i>
+									<span class="font-light"> Inviter quelqu'un</span>
+								</h2>
+
+								<div class="row margin-bottom-10">
+									<div class="col-md-1 col-md-offset-1" id="iconUser">    
+										<i class="fa fa-user fa-2x"></i>
+									</div>
+									<div class="col-md-9">
+										<input class="invite-name form-control" placeholder="<?php echo Yii::t("common", "Name");?>" id="inviteName" name="inviteName" value="" />
+									</div>
+								</div>
+								<div class="row margin-bottom-10">
+									<div class="col-md-1 col-md-offset-1">  
+										<i class="fa fa-envelope-o fa-2x"></i>
+									</div>
+									<div class="col-md-9">
+										<input class="invite-email form-control" placeholder="<?php echo Yii::t("common", "Email");?>" id="inviteEmail" name="inviteEmail" value="" />
+									</div>
+								</div>
+								<div class="row margin-bottom-10">
+									<div class="col-md-1 col-md-offset-1">  
+										<i class="fa fa-align-justify fa-2x"></i>
+									</div>
+									<div class="col-md-9">
+										<textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4" placeholder="Message personnaliser"></textarea>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+								<hr>
+								<button class="btn btn-primary" id="btnInviteNew" ><i class="fa fa-add"></i> Ajouter à la liste</button>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div id="step2" class="modal-body col-xs-6" >
 					<div class="form-group">
-						<h4> Liste des personnes a invités</h4>
-						<ul class="dropdown-menu col-md-10" id="dropdown-invite" style="">
-							<li class="li-dropdown-scope"></li>
-						</ul>
+						<div class="col-xs-12">
+							<h4> Liste des personnes a invités</h4>
+							<ul class="dropdown-menu col-xs-10" id="dropdown-invite" style="">
+								<li class="li-dropdown-scope"></li>
+							</ul>
+						</div>
+						<div class="col-xs-12" style="margin-top: 10px;">
+							<button id="btnValider" >
+								<i class="fa fa-check"> </i>Valider 
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -144,12 +191,16 @@
 
 	var listInvite = { 
 		citoyens : {},
-		organizations : {}
+		organizations : {},
+		invites : {},
 	};
 
 	jQuery(document).ready(function() {
 		mylog.log("members", members);
 		bindInvite();
+
+		$("#step2").hide();
+		$("#form-invite").hide();
 
 	});
 
@@ -162,13 +213,80 @@
 				clearTimeout(timeout);
 				timeout = setTimeout('autoCompleteInvite("'+encodeURI(search)+'")', 500); 
 			}else{
-				$("#modal-invite #dropdown_searchInvite").css({"display" : "none" });	
+				$("#modal-invite #dropdown_searchInvite").hide();	
+			}
+		});
+
+
+		$('#modal-invite #btnInviteNew').click(function(e){
+
+			var mail = $('#modal-invite #inviteEmail').val();
+			var msg = $('#modal-invite #inviteText').val();
+			var name = $('#modal-invite #inviteName').val();
+
+			if(typeof listInvite.invites[mail] == "undefined"){
+				listInvite.invites[mail] = {
+					name : name,
+					msg : msg
+				} ;
+			}else{
+				toastr.error("Deja la ma gueule");
+			}
+		});
+
+
+		$('#modal-invite #btnValider').click(function(e){
+			mylog.log("#modal-invite #btnValider", Object.keys(listInvite.organizations).length, Object.keys(listInvite.citoyens).length);
+			if( Object.keys(listInvite.organizations).length > 0 || Object.keys(listInvite.citoyens).length > 0 || Object.keys(listInvite.invites).length > 0 ) {
+				mylog.log("#modal-invite #btnValider here");
+				// $.ajax({
+				// 	type: "POST",
+				// 	url: baseUrl+"/"+moduleId+'/person/follows',
+				// 	dataType : "json",
+				// 	data: dataInvite,
+				// 	type:"POST",
+				// 	success: function(data){ 
+				// 		if (data &&  data.result) {								
+				// 		toastr.success('L\'invitation a été envoyée avec succès!');
+						// mylog.log(data);
+						
+						// if(typeof data.data !="undefined"){
+						// 	$.each(data.data, function(key, elt) {
+						// 		addFloopEntity(elt.invitedUser.id, "<?php //echo Person::COLLECTION ?>", elt.invitedUser);
+						// 	});
+						// }else
+						// 	addFloopEntity(data.invitedUser.id, "<?php //echo Person::COLLECTION ?>", data.invitedUser);
+						// urlCtrl.loadByHash(location.hash);
+
+				// 		} else {
+				// 			$.unblockUI();
+				// 				toastr.error(data.msg);
+				// 				$("#modal-invite #step3 #btn-save-invite").prop("disabled",false);
+				// 				$("#modal-invite #step3 #btn-save-invite").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
+				// 		}
+				// 	}
+				// })
+				// .done(function (data){
+				// 	$.unblockUI();
+				//
+				//});
 			}
 		});
 	}
 
-	function bindList(){
-		$('#modal-invite .add-name-contact').click(function(e){
+
+
+
+	function showListInvite(){
+		if(Object.keys(listInvite.organizations).length > 0 || Object.keys(listInvite.citoyens).length > 0|| Object.keys(listInvite.invites).length > 0 ){
+			$("#step2").show();
+		}else{
+			$("#step2").hide();
+		}
+	}
+
+	function bindAdd(){
+		$('#modal-invite .add-invite').click(function(e){
 			var id = $(this).data("id");
 			var type = $(this).data("type");
 			var name = $(this).data("name");
@@ -197,7 +315,31 @@
 			}
 
 			showElementInvite(listInvite, true);
+			bindRemove();
+		});
+	}
 
+	function bindRemove(){
+		$('#modal-invite .remove-invite').click(function(e){
+			var id = $(this).data("id");
+			var type = $(this).data("type");
+			var mail = $(this).data("mail");
+
+			if(type == "citoyens"){
+
+				if(typeof id != "undefined" && typeof listInvite.citoyens[id] != "undefined"){
+					delete listInvite.citoyens[id] ;
+				}else if(typeof mail != "undefined" && typeof listInvite.invites[mail] != "undefined"){
+					delete listInvite.invites[mail] ;
+				}
+				
+			}else if(type == "organizations"){
+				if(typeof listInvite.organizations[id] != "undefined"){
+					delete listInvite.organizations[id] ;
+				}
+			}
+			showElementInvite(listInvite, true);
+			bindRemove();
 		});
 
 	}
@@ -221,14 +363,16 @@
 		    success: function(data){
 		    	mylog.log("autoCompleteInvite success", data);
 			    showElementInvite(data);
-		    	bindList();
+		    	bindAdd();
 		 	}
 		});
 	}
 
 	function showElementInvite(contactsList, invite=false){
 		mylog.log("showElementInvite", contactsList, invite);
+		mylog.log("showElementInvite length", Object.keys(contactsList.citoyens).length);
 		var dropdown = "#dropdown_searchInvite";
+		var listNotExits = true;
 		if(invite == true){
 			var str = "";
 			dropdown = "#dropdown-invite";
@@ -236,99 +380,79 @@
 			var str = "<li class='li-dropdown-scope'><a href='javascript:;' onclick='newInvitation()'>Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</a></li>";
 		}
 		
-		if(notNull(contactsList.citoyens)){
+		if(notNull(contactsList.citoyens) && Object.keys(contactsList.citoyens).length ){
 			$.each(contactsList.citoyens, function(key, value){
 				mylog.log("contactsList key, value", key, value);
-				var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl+'/'+ value.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
-				str += "<li class='li-dropdown-scope'>";
-
-					if(invite == true){
-						str +="<div class='remove-invite' data-id='"+key+"' data-type='citoyens'> ";
-						str +="<i class='fa fa-remove'></i></div>";
-					}
-
-
-					str +="<div class='btn-scroll-type add-name-contact' data-id='"+key+"' "+
-										" data-name='"+value.name+"' "+
-										" data-profilThumbImageUrl='"+profilThumbImageUrl+"' "+
-										" data-type='citoyens' >";
-						str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35">';
-						str += '<span class="text-dark text-bold">' + value.name + '</span>';
-					str += "</div>";
-				str += "</li>";
+				str += htmlListInvite(value);
 			});
+			listNotExits = false;
 		}
-		
+
+		if(notNull(contactsList.invites) && Object.keys(contactsList.invites).length ){
+			$.each(contactsList.invites, function(key, value){
+				mylog.log("contactsList key, value", key, value);
+				str += htmlListInvite(value, invite);
+			});
+			listNotExits = false;
+		}
+			
 		$("#modal-invite "+dropdown).html(str);
-		$("#modal-invite "+dropdown).css({"display" : "inline" });
+		$("#modal-invite "+dropdown).show();
+
+		if(listNotExits)
+			newInvitation();
+		showListInvite();
+	}
+
+	function htmlListInvite(elem, invite){
+		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl+'/'+ elem.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
+		str += "<li class='li-dropdown-scope'>";
+			var classStr = " ";
+			if(invite == true){
+				str+='<button class="btn btn-link text-red tooltips col-xs-2 remove-invite" '
+						'id="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'Remove" '+
+						'name="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'Remove" '+
+						'data-toggle="tooltip" data-placement="top" '+
+						'data-type="citoyens" ' +
+						'data-id="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'" ' + 
+						'data-toggle="tooltip" data-placement="top" title="Remove" >'+
+						'<i class="fa fa-remove"></i>'+
+						'</button>';
+			}else{
+				classStr = " add-invite";
+			}
+
+			str +="<div class='btn-scroll-type "+classStr+"'"+
+					" data-id='"+( typeof elem.id != "undefined" ? elem.id : elem.email )+"' "+
+					'id="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'AddList" '+
+					'name="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'AddList"'+
+					" data-name='"+elem.name+"' "+
+					" data-profilThumbImageUrl='"+profilThumbImageUrl+"' "+
+					" data-type='citoyens' >";
+				str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35"> ';
+				str += '<span class="text-dark text-bold">' + elem.name + '</span>';
+			str += "</div>";
+		str += "</li>";
+		return str ;
 	}
 
 
-	function showElementInviteOld(fieldObj){
-		mylog.log("showElementInvite", fieldObj);
+	function newInvitation(){
+		$("#modal-invite #dropdown_searchInvite").hide();
+		$("#modal-invite #form-invite").show();
+		
+		
+		$('#modal-invite #inviteId').val("");
+		var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+		if(emailReg.test( $("#modal-invite #inviteSearch").val() )){
+			$('#modal-invite #inviteEmail').val( $("#modal-invite #inviteSearch").val());
+			$("#modal-invite #inviteName").val("");
+		}else{
+			$("#modal-invite #inviteName").val($("#modal-invite #inviteSearch").val());
+			$("#modal-invite #inviteEmail").val("");
+		}
 
-		var contacts = (notNull(fieldObj.values) ? fieldObj.values : new Array() );
-		fieldObj.values = contacts;
-		var fieldHTML = "";
-
-		$.each(fieldObj.contactTypes, function(key, type){
-
-			mylog.log("fieldObj.contactTypes", key, type, typeof type);
-			fieldHTML += '<div class="panel panel-default" id="scroll-type-'+type.name+'">  '+
-							'<div class="panel-heading">'+
-								'<h4 class="text-'+type.color+'"><i class="fa fa-'+type.icon+'"></i> '+trad[type.label]+'</h4>'+
-							'</div>'+
-							'<div class="panel-body no-padding">'+
-								'<div class="list-group padding-5">'+
-									'<ul>';
-									if(typeof fieldObj.values[type.name] != "undefined")
-										$.each(fieldObj.values[type.name], function(key2, value){
-											mylog.log("TESTTEST", key2, value);
-											if(typeof value != "undefined"){
-												var cp = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
-												var city = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
-												var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl+'/'+ value.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
-												var name =  typeof value.name != "undefined" ? value.name : 
-															typeof value.username != "undefined" ? value.username : "";
-												//mylog.log("data contact +++++++++++ "); mylog.dir(value);
-												var thisKey = key+''+key2;
-												//var thisValue = notEmpty(value["_id"]['$id']) ? value["_id"]['$id'] : "";
-												var thisValue = getObjectId(value);
-												if(name != "") {
-													fieldHTML += '<li>';
-													if (type.name == "people") {
-														fieldHTML += '<small id="isAdmin'+getObjectId(value)+'" class="btn-is-admin pull-right text-grey margin-top-10" data-id="'+thisKey+'">'+
-																		'<a href="javascript:">admin <i class="fa fa-user-secret"></i></a>'+
-																	'</small>';
-													}
-													fieldHTML += '<div class="btn btn-default btn-scroll-type btn-select-contact" id="contact'+getObjectId(value)+'">' +
-														'<div class="col-md-1 no-padding"><input type="checkbox" name="scope-'+type.name+'" class="chk-scope-'+type.name+' chk-contact" id="chk-scope-'+thisKey+'" idcontact="'+thisKey+'" value="'+thisValue+'" data-type="'+type.name+'"></div> '+
-														'<div class="btn-chk-contact col-md-11 no-padding" idcontact="'+thisKey+'" typecontact="'+type.name+'">' +
-															'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35">'+
-															'<span class="info-contact">' +
-																'<span class="scope-name-contact text-dark text-bold" idcontact="'+thisKey+'">' + value.name + '</span>'+
-																'<br/>'+
-																'<span class="scope-cp-contact text-light" idcontact="'+thisKey+'">' + cp + ' </span>'+
-																'<span class="scope-city-contact text-light" idcontact="'+thisKey+'">' + city + '</span>'+
-															'</span>' +
-														'</div>' +
-													'</div>';
-													if(isElementAdmin){
-		fieldHTML +=									'<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+thisKey+'"">'+
-															'<input id="tagsRoles'+getObjectId(value)+'" class="tagsRoles" type="" data-type="select2" name="roles" placeholder="<?php echo Yii::t("common","Add a role") ?>" value="" style="width:100%;">'+
-														'</div>';	
-													}
-		fieldHTML +=								'</li>';
-												}
-											}
-											});									
-		fieldHTML += 						'</ul>' +	
-										'</div>'+
-									'</div>'+
-								'</div>';
-		});
-		$("#modal-invite #dropdown_searchInvite").html(fieldHTML);
-		$("#modal-invite #dropdown_searchInvite").css({"display" : "inline" });
-		//bindEventScopeContactsModal();
+		$("#modal-invite #inviteText").val();
 	}
+
 </script>

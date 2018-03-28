@@ -251,8 +251,9 @@
 
                     <div class="col-xs-12 margin-top-15 no-padding text-center">
 
+                        <a class="thumb-info" href="<?php echo @$item['imgPath']; ?>" data-lightbox="all">
                          <img class="img-responsive img-section" src="<?php echo @$item['imgPath']; ?>">
-
+                        </a>
                          <?php if(@$item['imgPath'] && @$item['imgPath']!=""){ ?><br><br><?php } ?>
 
                          <?php if(@$item['galleryName'] && @$item['galleryName']!=""){ 
@@ -267,14 +268,17 @@
                                         $imagePath = Yii::app()->baseUrl."/".Yii::app()->params['uploadUrl'].
                                         $photo["moduleId"]."/".$photo["folder"]; 
 
+                                        $imageSavePath = $imagePath."/".$photo["name"];
                                         if($photo["contentKey"]=="profil")
                                              $imagePath .= "/".Document::GENERATED_MEDIUM_FOLDER;
                                         else $imagePath .= "/".Document::GENERATED_IMAGES_FOLDER;
 
                                         $imagePath .= "/".$photo["name"];
                                 ?>
-                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 padding-5 ctn-img">                     
-                                        <img src="<?php echo $imagePath; ?>" class="img-responsive">
+                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 padding-5 ctn-img">    
+                                        <a class="thumb-info" href="<?php echo $imageSavePath; ?>" data-lightbox="all">          
+                                            <img src="<?php echo $imagePath; ?>" class="img-responsive">
+                                        </a>
                                     </div>
                                 <?php } ?>
                             </div>

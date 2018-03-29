@@ -40,6 +40,7 @@ class Co2Module extends CWebModule {
 			'citizenToolKit.models.*',
 			'ressources.models.*',
 			'classifieds.models.*',
+			'news.models.*',
 			'places.models.*',
 			$this->id.'.models.*',
 			$this->id.'.components.*',

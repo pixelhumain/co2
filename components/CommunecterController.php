@@ -189,7 +189,7 @@ class CommunecterController extends Controller
       'getlevel'          => array("href" => "/ph/co2/city/getlevel"),
     ),
     "news"=> array(
-      "index"   => array( "href" => "/ph/co2/news/index", "public" => true,'title' => "Fil d'actualités - N.E.W.S", "subTitle"=>"Nord.Est.West.Sud","pageTitle"=>"Fil d'actualités - N.E.W.S"),
+      "index"   => array( "href" => "/ph/news/index", "public" => true,'title' => "Fil d'actualités - N.E.W.S", "subTitle"=>"Nord.Est.West.Sud","pageTitle"=>"Fil d'actualités - N.E.W.S"),
       "latest"  => array( "href" => "/ph/co2/news/latest"),
       "save"    => array( "href" => "/ph/co2/news/save"),
       "detail"    => array( "href" => "/ph/co2/news/detail"),
@@ -197,8 +197,8 @@ class CommunecterController extends Controller
       "updatefield"    => array( "href" => "/ph/co2/news/updatefield"),
       "update"    => array( "href" => "/ph/co2/news/update"),
       "extractprocess" => array( "href" => "/ph/co2/news/extractprocess"),
-      "moderate" => array( "href" => "/ph/co2/news/moderate"),
-      "share"          => array("href" => "/ph/co2/news/share"),
+      "moderate" => array( "href" => "/ph/news/moderate"),
+      "share"          => array("href" => "/ph/news/share"),
     ),
     "search"=> array(
       "getmemberautocomplete" => array("href" => "/ph/co2/search/getmemberautocomplete"),

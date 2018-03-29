@@ -671,7 +671,7 @@ function initPageTable(number){
 
       console.log("onclick coopPanelHtml", coopType, coopId, idParentRoom, parentId, parentType);
 
-      if(contextData.id == parentId && contextData.type == parentType){
+      if(contextData.id == parentId && contextData.type == parentType && typeof isOnepage == "undefined"){
         toastr.info(trad["processing"]);
         uiCoop.startUI();
         $("#modalCoop").modal("show");

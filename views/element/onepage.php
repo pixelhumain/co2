@@ -521,7 +521,7 @@
 	?>
 
 	<?php if(@$element["onepageEdition"]["#timeline"]["hidden"] != "true" || @$edit == true){ ?>
-	<section id="timeline" class="bg-white row shadow">
+	<section id="timeline" class="bg-white row shadow padding-15">
 		<?php if(@$edit==true){ ?>
 			<button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
 				    data-id="#timeline">
@@ -566,6 +566,18 @@
 	                          array( "element" => @$element ));
 	?>
 
+	<?php //render of modal for coop spaces 
+		$paramsCoop = array(  "element" => @$element, 
+                            "type" => @$type, 
+                            "edit" => @$edit,
+                            "thumbAuthor"=>@$thumbAuthor,
+                            "openEdition" => $openEdition,
+                            "iconColor" => $iconColor
+                        );
+
+    	$this->renderPartial('../cooperation/pod/modals', $paramsCoop ); 
+    ?>
+
 
     <?php 
     	$mapData = array();
@@ -586,6 +598,7 @@
 
 <script type="text/javascript" >
     
+var isOnepage = true;
 var edit = "<?php echo @$edit; ?>";
 var elementName = "<?php echo @$element["name"]; ?>";
 var mapData = <?php echo json_encode(@$mapData) ?>;

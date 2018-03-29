@@ -4380,6 +4380,31 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo $i." importé <br/>";
 		echo $v." dynform <br/>";
 	}
+
+
+	public function actionPoiGeoFormat(){
+		//{ $and : [ {"geo" : {$exists : 1} }, {"geo.@type" : {$ne : "GeoCoordinates"} } ] }
+		$where = array('$and' => array(
+					array("geo" => array('$exists' => 1)),
+					array("geo.@type" => array('$ne' => "GeoCoordinates"))
+				));
+		$poi = PHDB::find(Poi::COLLECTION, $where);
+		$i = 0 ;
+		foreach ($poi as $key => $value) {
+			
+			if(!empty($value["geo"])){
+				$geo = SIG::getFormatGeo($value["geo"]["coordinates"][1], $value["geo"]["coordinates"][0]);
+
+				$res = PHDB::update(Poi::COLLECTION, 
+						array("_id"=>new MongoId($key)),
+						array('$set' => array("geo" => $geo))
+				);
+				$i++;
+			}			
+		}
+		
+		echo $i." poi updaté <br/>";
+	}
 }
 
 

@@ -2452,9 +2452,11 @@ var directory = {
       //mylog.log("-----------idParentRoom", idParentRoom);
       
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
-      var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
-      description = description.replace(/\n/g,"<br>");
-      
+      var description = "";
+      if(typeof params.description != "undefined"){
+        description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
+        description = description.replace(/\n/g,"<br>");
+      }
       name = escapeHtml(name);
       var thisId = typeof params["_id"] != "undefined" &&
                    typeof params["_id"]["$id"] != "undefined" ? params["_id"]["$id"] : 

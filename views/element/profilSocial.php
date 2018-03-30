@@ -859,8 +859,10 @@
 				loadMD();
 			else if(sub=="settings")
 				loadSettings();
-			else if(sub=="coop")
+			else if(sub=="coop"){
+				onchangeClick=false;
 				loadCoop(roomId, proposalId, resolutionId, actionId);
+			}
 			else if(sub=="networks")
 				loadNetworks();
 			
@@ -889,7 +891,7 @@ function loadCoop(roomId, proposalId, resolutionId, actionId){
 	
 	setTimeout(function(){	
 		uiCoop.getCoopData(contextData.type, contextData.id, "room", null, roomId, function(){ 
-			toastr.success(trad["processing ok"]);
+			//toastr.success(trad["processing ok"]);
 			$("#modalCoop").modal("show");
 
 			var type = null;

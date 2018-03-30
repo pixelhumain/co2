@@ -32,12 +32,14 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" id="content-social">
 
-	<?php if(@Yii::app()->session["userIsAdmin"]){ ?>
+	<?php if(@Yii::app()->session["userIsAdmin"] || Yii::app()->session["userIsAdminPublic"]){ 
+		$title=(@Yii::app()->session["userIsAdmin"]) ? Yii::t("common","Administration portal") : Yii::t("common","Public administration portal");
+		?>
 	<div class="col-md-12 col-sm-12 col-xs-12" id="navigationAdmin">
 		<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGOS/CO2/logo-min.png" 
 	                     class="" height="100"><br/>
-	         <h3><?php echo Yii::t("common","Administration portal") ?></h3>
+	         <h3><?php echo $title ?></h3>
    		</div> 
 		<ul class="list-group text-left no-margin">
 		<?php if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )) { ?>
@@ -114,15 +116,26 @@
 					<?php echo Yii::t("admin", "CITIES", null, Yii::app()->controller->module->id); ?>              
 				</a>
 			</li> -->
-		<?php 	} ?>
-			<?php if( Role::isSourceAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ){ ?>
-			<li class="list-group-item text-red col-md-4 col-sm-6 ">
+			<!--<li class="list-group-item text-red col-md-4 col-sm-6 ">
 				<a class="lbh" style="cursor:pointer;" href="#stat.chart">
 					<i class="fa fa-plus fa-2x"></i>
 					<?php echo Yii::t("admin", "SOURCE ADMIN", null, Yii::app()->controller->module->id); ?>
 				</a>
+			</li>-->
+		<?php 	}else if( Role::isSourceAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) ) ){ ?>
+			<li class="list-group-item col-md-4 col-sm-6 ">
+				<a class="text-green" id="btn-importdata" style="cursor:pointer;" href="javascript:;">
+					<i class="fa fa-upload fa-2x"></i>
+					<?php echo Yii::t("common", "Converter"); ?>
+				</a>
 			</li>
-			<?php	} ?>
+			<li class="list-group-item col-md-4 col-sm-6 ">
+				<a class="letter-blue" id="btn-adddata" style="cursor:pointer;" href="javascript:;">
+					<i class="fa fa-plus fa-2x"></i>
+					<?php echo Yii::t("common", "IMPORT DATA"); ?>
+				</a>
+			</li>
+		<?php	} ?>
 		</ul>
 	</div>
 	<div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="goBackToHome">
@@ -142,13 +155,14 @@
 <script type="text/javascript">
 	//	initKInterface(); 
 	var superAdmin="<?php echo @Yii::app()->session["userIsAdmin"] ?>";
+	var sourceAdmin="<?php echo @Yii::app()->session["userIsAdminPublic"] ?>";
 	var edit=true;
 	var hashUrlPage = "#admin";
 	var subView="<?php echo @$_GET['view']; ?>";
 	var dir="<?php echo @$_GET['dir']; ?>";
 	jQuery(document).ready(function() {
 		//loadDetail(true);
-		if(superAdmin == ""){
+		if(superAdmin == "" && sourceAdmin == ""){
 			urlCtrl.loadByHash("");
 			bootbox.dialog({message:'<div class="alert-danger text-center"><strong><?php echo Yii::t("common","You are not authorized to acces adminastrator panel ! <br/>Connect you or contact us in order to become admin system") ?></strong></div>'});
 		}
@@ -203,7 +217,7 @@
 			loadLog();
 		});
 		$("#btn-importdata").click(function(){
-			location.hash=hashUrlPage+"public.view.createfile";
+			location.hash=hashUrlPage+".view.createfile";
 			loadImport();
 		});
 		$("#btn-moderate").click(function(){
@@ -219,7 +233,7 @@
 			loadMailerror();
 		});
 		$("#btn-adddata").click(function(){
-			location.hash=hashUrlPage+"public.view.adddata";
+			location.hash=hashUrlPage+".view.adddata";
 			loadAdddata();
 		});
 		$(".btn-open-form").click(function(){

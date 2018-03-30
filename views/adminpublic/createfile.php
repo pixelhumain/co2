@@ -276,7 +276,7 @@ $this->renderPartial($layoutPath.'header',
 			</div>
 			<div class="col-xs-12 col-sm-12 margin-top-15">
 				<button class="btn btn-danger col-sm-2 col-md-offset-4 " onclick="returnStep2()">Retour <i class="fa fa-reply"></i></button>
-				<a href="#adminpublic.addData" class="btn btn-success col-sm-2 col-md-offset-2" type="submit">Page d'ajout de données</a>
+				<a href="javascript:;" class="btn btn-success col-sm-2 col-md-offset-2 lbh" onclick="location.hash='#admin.view.adddata';loadAdddata();" type="submit">Page d'ajout de données</a>
 			</div>
 		</div>
 

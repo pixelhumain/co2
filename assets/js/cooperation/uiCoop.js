@@ -9,8 +9,11 @@ var uiCoop = {
 		$("#modal-preview-coop").hide(300);
 
 		$("#btn-close-coop").click(function(){
-			if(contextData.slug != "undefined")
-				location.hash="#"+contextData.slug;
+			onchangeClick=false;
+			location.hash=hashUrlPage;
+			loadNewsStream(true);
+			//if(contextData.slug != "undefined")
+			//	location.hash="#@"+contextData.slug;
 			$("#coop-data-container").html("");
 		});
 		//KScrollTo("#div-reopen-menu-left-container");

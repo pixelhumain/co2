@@ -22,6 +22,16 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
+
+    if(search.value.indexOf("co.") === 0 ){
+      searchT = search.value.split(".");
+      if( searchT[1] && typeof co[ searchT[1] ] == "function" ){
+        co[ searchT[1] ](search.value);
+        return;
+      } else {
+        co.mands();
+      }
+    }
     if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
       startNewsSearch(true);
     else{
@@ -47,13 +57,11 @@ function startSearch(indexMin, indexMax, callBack){
 
       currentIndexMin = indexMin;
       currentIndexMax = indexMax;
-
       if(indexMin == 0 && indexMax == indexStep) {
         totalData = 0;
         mapElements = new Array(); 
       }
       else{ if(scrollEnd) return; }
-      
       //if(name.length>=2 || name.length == 0)
       //{
        // var locality = "";
@@ -98,7 +106,7 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchType = ["organizations", "projects", "events", /*"places",*/ "poi", "news", "classified","ressources"/*,"cities"*/];
+        searchType = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classified","ressources"/*,"cities"*/];
         if(search.value != "")
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
@@ -116,7 +124,7 @@ function initTypeSearch(typeInit){
 }
 function initCountType(){
   if(search.app=="search" || search.app=="territorial")
-    search.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", "news", "classified","ressources"];
+    search.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", /*"news",*/ "classified","ressources"];
   else if(search.app=="ressources") search.countType=["ressources"];
   else if(search.app=="annonces") search.countType=["classified"];
   else if(search.app=="agenda") search.countType=["events"];
@@ -162,10 +170,13 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
     //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
     if(search.app=="agenda" && search.value==""){
       if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
-        mylog.log("integrate AGENDA_WINDOW");
+        mylog.log("HEREintegrate AGENDA_WINDOW");
+
+        mylog.log("HERE DATE STARTDATE", STARTDATE, moment(STARTDATE).local().format("DD/MM/YYYY"));
+        mylog.log("HERE DATE ENDDATE", ENDDATE, moment(ENDDATE).local().format("DD/MM/YYYY"));
         data.startDate = STARTDATE;
         data.endDate = ENDDATE;
-        mylog.log("DATE **", "data", data) ;
+        mylog.log("HERE DATE **", "data", data) ;
       }
     }
     
@@ -305,6 +316,9 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                     });
                     }*/
                   }
+                 // if(directory.viewMode=="block")
+                    //setTimeout(function(){ directory.checkImage(results);}, 500);
+
                 }
                 //remet l'icon "loupe" du bouton search
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
@@ -338,14 +352,17 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
 
             if(search.app == "agenda" && typeof showResultInCalendar != "undefined" && search.value=="")
               showResultInCalendar(results);
-
-
-            if(mapElements.length==0) mapElements = data;
-            else $.extend(mapElements, data);
             
+
+            if(mapElements.length==0) mapElements = results;
+            else $.extend(mapElements, results);
+            if(location.hash == "#search" && search.type.length > 1)
+              directory.switcherViewer(mapElements);
+            else
+              directory.switcherViewer(results);
             //affiche les éléments sur la carte
             console.log("mapElements", results);
-            Sig.showMapElements(Sig.map, results, "search", "Résultats de votre recherche");
+            Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
                         
             if(typeof callBack == "function")
               callBack();
@@ -378,6 +395,7 @@ function initPageTable(number){
             pageCount=false;
             searchPage=(page-1);
             //search.page=searchPage;
+            scrollEnd=false;
             indexStep=30;
             indexMin=indexStep*searchPage;
             pageEvent=true;
@@ -442,7 +460,17 @@ function initPageTable(number){
 
       startWinDATE = start;   
       //console.log("startWinDATE **", startWinDATE) ;
+
+      //mylog.log("today type", typeof today, today);
+
+      today = new Date(today.setSeconds(0));
+      today = new Date(today.setMinutes(0));
+      today = new Date(today.setHours(0));
+      //mylog.log("today type", typeof today, today);
       STARTDATE = today.setDate(1);
+      mylog.log("STARTDATE type", typeof today, typeof STARTDATE, today);
+      //STARTDATE = STARTDATE.setSeconds(0);
+      //.setSeconds(0).setMinutes(0).setHours(0)
       //STARTDATE = today.setDate(today.getDate() - 1);
 
       //console.log("DATE **", "STARTDATE", STARTDATE, today);
@@ -466,12 +494,14 @@ function initPageTable(number){
         $(this).remove();
       }
     });
-    /*$(".adminIconDirectory, .container-img-profil").mouseenter(function(){
-      $(this).parent().find(".adminToolBar").show();
-    });
-    $(".adminToolBar").mouseleave(function(){
-      $(this).hide();
-    });*/
+    if(directory.viewMode=="block"){
+      $(".adminIconDirectory, .container-img-profil").mouseenter(function(){
+        $(this).parent().find(".adminToolBar").show();
+      });
+      $(".adminToolBar").mouseleave(function(){
+        $(this).hide();
+      });
+    }
     mylog.log("initBtnAdmin")
     $(".disconnectConnection").click(function(){
       var $this=$(this); 
@@ -838,7 +868,7 @@ var directory = {
     scopesT :[],
     multiTagsT : [],
     multiScopesT :[],
-
+    viewMode: directoryViewMode,
     colPos: "left",
     dirLog : false,
     defaultPanelHtml : function(params){
@@ -1055,11 +1085,11 @@ var directory = {
     str += "<div class='col-xs-12 searchEntity entityLight no-padding'  id='entity"+params.id+"'>";
     
     str += "<div class='entityLeft pull-left text-right padding-10 hidden-xs'>";
-      if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined" && location.hash != "#agenda"){
+      if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined" /*&& location.hash != "#agenda"*/){
           str +=    "<a href='"+params.hash+"' class='container-img-profil "+linkAction+"'>" + params.imgProfil + "</a>";
-      }else if(params.type == "events" && location.hash == "#agenda"){
-          str +=    "<a href='"+params.hash+"' class='container-img-profil event "+linkAction+"'>" + params.imgMediumProfil + "</a>";
-      }
+      }//else if(params.type == "events" && location.hash == "#agenda"){
+         // str +=    "<a href='"+params.hash+"' class='container-img-profil event "+linkAction+"'>" + params.imgMediumProfil + "</a>";
+      //}
     str += "</div>"
 
     str += "<div class='entityCenter col-xs-11 col-sm-8 col-md-7 col-lg-6 no-padding'>";
@@ -1091,17 +1121,24 @@ var directory = {
       }
 
 
-      if(typeof params.hash != "undefined")
-        str += "<br><a href='"+params.hash+"."+onepageKey+"' class='lbh letter-green url elipsis'>"+params.hash+"."+onepageKey+"</a>";
+      //if(typeof params.hash != "undefined")
+        //str += "<br><a href='"+params.hash+"."+onepageKey+"' class='lbh letter-green url elipsis'>"+params.hash+"."+onepageKey+"</a>";
+      if(typeof params.hash != "undefined"){
+        echoLabel= (typeof params.slug !="undefined") ? "@"+params.slug : params.hash;
+        str += "<br><a href='"+params.hash+"' class='"+linkAction+" letter-green url elipsis'>"+echoLabel+"</a>";
+      }
 
       if(typeof params.url != "undefined" && params.url != null && params.url != "")
         str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
 
       if(typeof params.section != "undefined"){
-        str += "<div class='entityType'>" + tradCategory["to "+params.section];
-        if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
+        str += "<div class='entityType'>" + tradCategory[params.section];
+        if(typeof params.subtype != "undefined") {
+          subTypeLab = ( typeof tradCategory[params.subtype] != "undefined" ) ? tradCategory[params.subtype] : params.subtype+" :: to Trad" ;
+          str += " > " + subTypeLab;
+        }
         str += "</div>";
-      } 
+      }
 
       if(params.type=="events"){
         var dateFormated = directory.getDateFormated(params);
@@ -1139,7 +1176,7 @@ var directory = {
       }
 
       var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classified"])>=0 )  ? false : true;
-      if(typeof params.edit  != "undefined")
+      if(typeof params.edit  != "undefined" && notNull(params.edit))
         str += this.getAdminToolBar(params);
 
       mylog.log("isFollowed ?", params.isFollowed, params.id, inMyContacts(params.typeSig, params.id), 
@@ -1171,7 +1208,7 @@ var directory = {
 
       str += "</div>";
 
-      str += "<div class='col-lg-4 col-md-3 col-sm-2 col-xs-12 gallery'>";
+      /*str += "<div class='col-lg-4 col-md-3 col-sm-2 col-xs-12 gallery'>";
         if(typeof params.gallery != "undefined"){
           $.each(params.gallery, function(key, img){
             str += "<a href='"+params.hash+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
@@ -1182,7 +1219,7 @@ var directory = {
             str += params.media;//"<a href='"+params.url+"' class='lbh'><img src='"+img.path+"' class='margin-5' height='70'></a>";
           //});
         }
-      str += "</div>";
+      str += "</div>";*/
     str += "</div>";
 
     return str;
@@ -1200,58 +1237,85 @@ var directory = {
 		var classType=params.type;
 		if(params.type=="events") classType="";
 		//str += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
-		str += "<div class='col-lg-3 col-md-6 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
+		str += "<div class='col-lg-4 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+grayscale+" "+classType+" "+params.elTagsList+" "+params.elRolesList+" contain_"+params.type+"_"+params.id+"'>";
 		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 
 
 		var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
-        if(typeof params.edit  != "undefined")
-		str += this.getAdminToolBar(params);
+    if(typeof params.edit  != "undefined" && notNull(params.edit))
+		  str += this.getAdminToolBar(params);
 
 		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
 			isFollowed=false;
 
 			if(typeof params.isFollowed != "undefined" )
-				isFollowed=true;
-			mylog.log("isFollowed", params.isFollowed, isFollowed);
-			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
-			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-					' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-					" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-					"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-					"</a>";
+        if(params.type=="events"){
+				  isFollowed=true;
+    			mylog.log("isFollowed", params.isFollowed, isFollowed);
+    			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
+    			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
+    					' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+    					" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
+    					"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
+    			 "</a>";
+        }
 		}
 
-		timeAction= (params.type=="events") ? trad.created : trad.actif;
-		if(params.updated != null )
-			str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
+		
+    
+    /*if(params.type=="events"){
+      if(params.updated != null && params.updated.indexOf(trad.ago)>=0)
+         params.updated = trad.rightnow;
 
-		var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
-		if(params.type == "citoyens") 
-			params.hash += '.viewer.' + userId;
+      if(params.updated != null && !params.useMinSize)
+        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
+
+    }else{*/
+      timeAction= /*(params.type=="events") ? trad.created :*/ trad.actif;
+      if(params.updated != null )
+        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
+    //}
+
+    
+
+
+    var linkAction = ( $.inArray(params.type, ["poi","classified","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
+    
+		//var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
 		// if(typeof params.size == "undefined" || params.size == "max")
-		str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
-        str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
+    if(typeof params.imgType !="undefined" && params.imgType=="banner"){
+  		str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
+          str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
-		str += "<div class='entityRight no-padding'>";
+  		str += "<div class='entityRight banner no-padding'>";
 
-		if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
-			str += "<div class='entityCenter no-padding'>";
-			str +=    "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+">" + params.imgProfil + "</a>";
-			str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+">" + params.htmlIco + "</a>";
-			str += "</div>";
-		}
+  		if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
+  			str += "<div class='entityCenter no-padding'>";
+  			str +=    "<a href='"+params.hash+"' class='container-thumbnail-profil add2fav "+linkAction+"'>" + params.imgProfil + "</a>";
+  			str +=    "<a href='"+params.hash+"' class='add2fav pull-right margin-top-15 "+linkAction+"'>" + params.htmlIco + "</a>";
+  			str += "</div>";
+  		}
+    }else{
+      str += "<a href='"+params.hash+"' class='container-img-profil add2fav "+linkAction+"'>" + params.imgMediumProfil + "</a>";
+          str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
 
+      str += "<div class='entityRight profil no-padding'>";
+
+      if(typeof params.size == "undefined" || params.size == undefined || params.size == "max"){
+        str += "<div class='entityCenter no-padding'>";
+        str +=    "<a href='"+params.hash+"' class='add2fav pull-right "+linkAction+"'>" + params.htmlIco + "</a>";
+        str += "</div>";
+      }
+    }
+    
 		if(notEmpty(params.typePoi)){
-			str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
+		//	str += "<span class='typePoiDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typePoi] + "<hr></span>";  
 		}
 
-		var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-		str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+">"+
+		var iconFaReply ="";// notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+		str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+"'>"+
 					iconFaReply + params.name + 
 				"</a>";  
-		if(notEmpty(params.typeEvent))
-			str += "<span class='typeEventDir'><i class='fa fa-chevron-right'></i> " + tradCategory[params.typeEvent] + "</span>";  
 		
 		if(typeof(params.statusLink)!="undefined"){
 			if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
@@ -1265,28 +1329,36 @@ var directory = {
 
 		if(params.rolesLbl != "")
 			str += "<div class='rolesContainer'>"+params.rolesLbl+"</div>";
+ 
 
-		if( params.section ){
-			str += "<div class='entityType'>" + params.section+" > "+params.type+"<br/>"+params.elTagsList;
-			if(typeof params.subtype != "undefined") str += " > " + params.subtype;
-				str += "</div>";
-		} 
-
-  	if(params.type=="events"){
-  		var dateFormated = "<br/><i class='fa fa-clock'></i> "+directory.getDateFormated(params, true);
-  		var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;
-  		str += dateFormated+countSubEvents;
-  	} 
+  	 
 
   	var thisLocality = "";
   	if(params.fullLocality != "" && params.fullLocality != " ")
   		thisLocality = "<a href='"+params.hash+"' data-id='" + params.dataId + "'  class='entityLocality add2fav"+linkAction+">"+
   							"<i class='fa fa-home'></i> " + params.fullLocality + "</a>";
-  	else thisLocality = "<br>";
+  	else thisLocality = "";
 
   	str += thisLocality;
 
-  	str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
+    var devise = (typeof params.devise != "undefined") ? params.devise : "";
+    if(typeof params.price != "undefined" && params.price != "")
+      str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
+ 
+    if($.inArray(params.type, ["poi","classified","ressources"])>=0 && typeof params.category != "undefined"){
+      str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
+      if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
+      str += "</div>";
+    }
+    if(notEmpty(params.typeEvent))
+      str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.typeEvent] + "</span></div>";  
+    
+    if(params.type=="events"){
+      var dateFormated = directory.getDateFormated(params, true);
+      var countSubEvents = ( params.links && params.links.subEvents ) ? "<br/><i class='fa fa-calendar'></i> "+Object.keys(params.links.subEvents).length+" "+trad["subevent-s"]  : "" ;
+      str += dateFormated+countSubEvents;
+    }
+    str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
   	str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
   	str += "</div>";
   	str += "</div>";
@@ -1572,7 +1644,7 @@ var directory = {
             //   "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
             // '</a>'+
         '</div>';
-
+/*
         if( params.creator == userId || params.author == userId || params.parentId == userId || dyFObj.canUserEdit() ){
           str += '<hr>'+
               '<div class="col-md-12 col-sm-12 col-xs-12 shadow2 padding-15 margin-top-25">'+
@@ -1581,7 +1653,7 @@ var directory = {
                   '<i class="fa fa-pencil"></i> '+trad["modifyelement"]+
               '</a></div>';
             }
-
+*/
 
 
       str += "</div>";
@@ -1713,7 +1785,7 @@ var directory = {
       if(directory.dirLog) mylog.log("----------- classifiedPanelHtml",params,params.name);
 
       str = "";  
-      str += "<div class='col-lg-4 col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
       
      // directory.colPos = directory.colPos == "left" ? "right" : "left";
@@ -1735,18 +1807,18 @@ var directory = {
                     params.updated + 
                   "</div>";
         
-        if(typeof params.size == "undefined" || params.size == "max")
-          str += "<a href='"+params.hash+"' class='container-img-profil lbhp add2fav'  data-modalshow='"+params.id+"'>" + 
+        //if(typeof params.size == "undefined" || params.size == "max")
+          str += "<a href='"+params.hash+"' class='container-img-profil lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>" + 
                     params.imgMediumProfil + 
                   "</a>";
 
         str += "<div class='padding-10 informations'>";
 
-        str += "<div class='entityRight no-padding'>";
+        str += "<div class='entityRight profil no-padding'>";
 
             if(typeof params.size == "undefined" || params.size == "max"){
               str += "<div class='entityCenter no-padding'>";
-              str +=    "<a href='"+params.hash+"' class='lbhp add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
+              str +=    "<a href='"+params.hash+"' class='lbh-preview-element add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
 
@@ -1767,7 +1839,7 @@ var directory = {
             }
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbhp add2fav'  data-modalshow='"+params.id+"'>"+
+            str += "<a  href='"+params.hash+"' class='entityName text-dark lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>"+
                       iconFaReply + params.name + 
                    "</a>";  
        
@@ -2037,14 +2109,14 @@ var directory = {
                 
        // str += thisLocality;
 
-        var typeEvent = notEmpty(params.typeEvent) ? 
-                        (notEmpty(eventTypes[params.typeEvent]) ? 
-                        eventTypes[params.typeEvent] : 
-                        trad["event"]) : 
-                        trad["event"];
+        var typeEvent = //notEmpty(params.typeEvent) ? 
+                        (typeof tradCategory[params.typeEvent] != "undefined") ? 
+                        tradCategory[params.typeEvent] : 
+                       // trad["event"]) : 
+                        trad.event;
         //console.log("??????????????????",Object.keys(params));
         str += "<h5 class='text-dark lbh add2fav no-margin'>"+
-                  "<i class='fa fa-reply fa-rotate-180'></i> " + tradCategory[typeEvent] + thisLocality +
+                  "<i class='fa fa-reply fa-rotate-180'></i> " + typeEvent + thisLocality +
                "</h5>";
 
         str += "<a href='"+params.hash+"' class='entityName text-dark lbh add2fav'>"+
@@ -2075,81 +2147,46 @@ var directory = {
 	cityPanelHtml : function(params){
 		mylog.log("-----------cityPanelHtml", params);
 		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
-		valuesScopes = {
-			city : params._id.$id,
-			cityName : params.name,
-			postalCode : params.postalCode,
-			country : params.country,
-			allCP : params.allCP,
-			uniqueCp : params.uniqueCp,
-			level1 : params.level1,
-			level1Name : params.level1Name
-		}
-		typeSearchCity="city";
-		levelSearchCity="city";
+		typeSearchCity='city';
+		levelSearchCity='city';
 
-		if( notEmpty( params.nameCity ) ){
-			valuesScopes.name = params.nameCity ;
-		}
+		
+		str = '';
+		str += '<a href="javascript:" class="col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity" ';
+			str += 'data-scope-value="' + params._id.$id  + '"' + 
+					'data-scope-name="' + params.name + '"' +
+					'data-scope-level="'+levelSearchCity+'"' +
+					'data-scope-type="'+typeSearchCity+'"' +
+					//'data-scope-values="'+JSON.stringify(valuesScopes)+'"' +
+					'data-scope-notsearch="'+true+'"'+
+					'data-append-container="'+domContainer+'"';
+		str += '>';
+			str += '<div class="col-xs-12 margin-bottom-10 '+params.type+' '+params.elTagsList+' ">';
+				str += '<div class="padding-10 informations">';
+					str += '<div class="entityRight no-padding">';
 
-		if( notEmpty( params.uniqueCp ) ){
-			valuesScopes.uniqueCp = params.uniqueCp;
-		}
+						var title =  '<span> ' + params.name + ' ' + (notEmpty(params.postalCode) ? ' - ' +  params.postalCode : '') +'</span>' ;
 
-		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
-			valuesScopes.level4 = params.level4 ;
-			valuesScopes.level4Name = params.level4Name ;
-		}
-		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
-			valuesScopes.level3 = params.level3 ;
-			valuesScopes.level3Name = params.level3Name ;
-		}
-		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
-			valuesScopes.level2 = params.level2 ;
-			valuesScopes.level2Name = params.level2Name ;
-		}
-		str = "";
-		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
-			str += "data-scope-value='" + params._id.$id  + "' " + 
-					"data-scope-name='" + params.name + "' " +
-					"data-scope-level='"+levelSearchCity+"' " +
-					"data-scope-type='"+typeSearchCity+"' " +
-					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-					"data-scope-notsearch='"+true+"' "+
-					"data-append-container='"+domContainer+"' ";
-		str += ">";
-			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
-				str += "<div class='padding-10 informations'>";
-					str += "<div class='entityRight no-padding'>";
-						// params.hash = ""; //#main-col-search";
-						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
-						// params.onclickCp = 'setScopeValue($(this));';
-						// params.target = "";
-						// params.dataId = params.name; 
-
-						var title =  "<span> " + params.name + " " + (notEmpty(params.postalCode) ? " - " +  params.postalCode : "") +"</span>" ;
-
-						var subTitle = "";
+						var subTitle = '';
 						if( notEmpty( params.level4Name ) )
-							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
+							subTitle +=  (subTitle == '' ? '' : ', ') +  params.level4Name ;
 						if( notEmpty( params.level3Name ) )
-							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
+							subTitle +=  (subTitle == '' ? '' : ', ') +  params.level3Name ;
 						if( notEmpty( params.level2Name ) )
-							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
+							subTitle +=  (subTitle == '' ? '' : ', ') +  params.level2Name ;
 
-	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.country ;
-						str += " <span class='entityName letter-red '>"+
-									//'<span class="col-xs-1">'+
-									"<i class='fa fa-university'></i>" + title + 
-									"<br/>"+
-									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
-								"</span>";
+	                  	subTitle +=  (subTitle == '' ? '' : ', ') + params.country ;
+						str += ' <span class="entityName letter-red ">'+
+									'<i class="fa fa-university"></i>' + title + 
+									'<br/>'+
+									'<span style="color : grey; font-size : 13px">'+subTitle+'</span>'+
+								'</span>';
 
 
-					str += "</div>";
-				str += "</div>";              
-			str += "</div>";
-		str += "</a>";
+					str += '</div>';
+				str += '</div>';              
+			str += '</div>';
+		str += '</a>';
 	return str;
     },
     // ********************************
@@ -2158,96 +2195,74 @@ var directory = {
 	zonePanelHtml : function(params){
 		mylog.log("-----------zonePanelHtml", params);
 		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
-		valuesScopes = {
-			id : params._id.$id,
-			name : params.name,
-			country : params.countryCode,
-			level : params.level
-		}
+		// valuesScopes = {
+		// 	id : params._id.$id,
+		// 	name : params.name,
+		// 	country : params.countryCode,
+		// 	level : params.level
+		// }
 
 		if(params.level.indexOf("1") >= 0){
 			typeSearchCity="level1";
 			levelSearchCity="1";
-			valuesScopes.numLevel = 1;
 		}else if(params.level.indexOf("2") >= 0){
 			typeSearchCity="level2";
 			levelSearchCity="2";
-			valuesScopes.numLevel = 2;
 		}else if(params.level.indexOf("3") >= 0){
 			typeSearchCity="level3";
 			levelSearchCity="3";
-			valuesScopes.numLevel = 3;
 		}else if(params.level.indexOf("4") >= 0){
 			typeSearchCity="level4";
 			levelSearchCity="4";
-			valuesScopes.numLevel = 4;
-		}
-		if(notNull(typeSearchCity))
-			valuesScopes.type = typeSearchCity;				
-
-		mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
-
-		if( notEmpty( params.level1 ) && valuesScopes.id != params.level1){
-			mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
-			valuesScopes.level1 = params.level1 ;
-			valuesScopes.level1Name = params.level1Name ;
 		}
 
 		var subTitle = "";
 
-		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
-			valuesScopes.level4 = params.level4 ;
-			valuesScopes.level4Name = params.level4Name ;
+		if( notEmpty( params.level4 ) && params.id != params.level4){
 			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
 		}
-		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
-			valuesScopes.level3 = params.level3 ;
-			valuesScopes.level3Name = params.level3Name ;
+		if( notEmpty( params.level3 ) && params.id != params.level3 ){
 			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
 		}
-		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
-			valuesScopes.level2 = params.level2 ;
-			valuesScopes.level2Name = params.level2Name ;
+		if( notEmpty( params.level2 ) && params.id != params.level2){
 			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
 		}
 
-		str = "";
-		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
-			str += "data-scope-value='" + params._id.$id  + "' " + 
-					"data-scope-name='" + params.name + "' " +
-					"data-scope-level='"+levelSearchCity+"' " +
-					"data-scope-type='"+typeSearchCity+"' " +
-					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-					"data-scope-notsearch='"+true+"' "+
-					"data-append-container='"+domContainer+"' ";
-		str += ">";
-			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
-				str += "<div class='padding-10 informations'>";
-					str += "<div class='entityRight no-padding'>";
-						// params.hash = ""; //#main-col-search";
-						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
-						// params.onclickCp = 'setScopeValue($(this));';
-						// params.target = "";
+		str = '';
+		str += '<a href="javascript:" class="col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity" ';
+			str += 'data-scope-value="' + params._id.$id  + '" ' + 
+					'data-scope-name="' + params.name + '" ' +
+					'data-scope-level="'+levelSearchCity+'" ' +
+					'data-scope-type="'+typeSearchCity+'" ' +
+					//'data-scope-values="'+JSON.stringify(valuesScopes)+'" ' +
+					'data-scope-notsearch="'+true+'" '+
+					'data-append-container="'+domContainer+'" ';
+		str += '>';
+			str += '<div class="col-xs-12 margin-bottom-10 '+params.type+' '+params.elTagsList+' ">';
+				str += '<div class="padding-10 informations">';
+					str += '<div class="entityRight no-padding">';
+						// params.hash = '; //'main-col-search';
+						// params.onclick = "setScopeValue($(this))"; //'"+params.name.replace('"', '\"')+"');";
+						// params.onclickCp = "setScopeValue($(this));";
+						// params.target = ';
 						// params.dataId = params.name; 
 
-						var title =  "<span>" + params.name + "</span>" ;
-	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.countryCode;
-						str += " <span class='entityName letter-red'>"+
-									//'<span class="col-xs-1">'+
-										"<i class='fa fa-bullseye bold text-red'></i>"+
-										"<i class='fa bold text-dark'>"+
+						var title =  '<span>' + params.name + '</span>' ;
+	                  	subTitle +=  (subTitle == '' ? '' : ', ') + params.countryCode;
+						str += ' <span class="entityName letter-red">'+
+										'<i class="fa fa-bullseye bold text-red"></i>'+
+										'<i class="fa bold text-dark">'+
 											levelSearchCity+
-										"</i> "+ 
-									//"</span> "+
+										'</i> '+ 
 									title + 
-									"<br/>"+
-									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
-								"</span>";
+									'<br/>'+
+									'<span style="color : grey; font-size : 13px">'+subTitle+'</span>'+
+								'</span>';
 
-					str += "</div>";
-				str += "</div>";              
-			str += "</div>";
-		str += "</a>";
+					str += '</div>';
+				str += '</div>';              
+			str += '</div>';
+		str += '</a>';
 	return str;
     },
     // ********************************
@@ -2782,13 +2797,18 @@ var directory = {
       msg= (notNull(noResult) && noResult) ? trad["noresult"+match] : trad["nomoreresult"+match];
       contributeMsg="<span class='italic'><small>"+trad.contributecommunecterslogan+"</small><br/></span>";
       if(userId !=""){
-        contributeMsg+='<a href="javascript:;" class="text-green-k tooltips" '+
-            'data-target="#dash-create-modal" data-toggle="modal" '+
-            'data-toggle="tooltip" data-placement="top" '+ 
-            'title=""> '+
+        contributeAction = ';" data-target="#dash-create-modal" data-toggle="modal" data-toggle="tooltip" data-placement="top"';
+        if(location.hash == "#ressources")
+          contributeAction = 'dyFObj.openForm(\'ressources\');"';
+        else if(location.hash == "#annonces")
+          contributeAction = 'dyFObj.openForm(\'classifieds\');"';
+        else if(location.hash == "#agenda")
+          contributeAction = 'dyFObj.openForm(\'event\');"';
+
+        contributeMsg+='<a href="javascript:'+contributeAction+' class="text-green-k tooltips" > '+
               '<i class="fa fa-plus-circle"></i> '+trad.sharesomething+
           '</a>';
-      }else{
+      } else {
         contributeMsg+='<a href="javascript:;" class="letter-green margin-left-10" data-toggle="modal" data-target="#modalLogin">'+
                                     '<i class="fa fa-sign-in"></i> '+trad.connectyou+
                             '</a>';
@@ -2798,29 +2818,118 @@ var directory = {
       str += "</div>";
       return str;
     },
+    createBtnHtml : function(){
+      btn="";
+      if(searchType.length > 1){
+        btn+='<a href="javascript:;" class="btn margin-left-5 btn-add pull-right text-green-k" '+
+            'data-target="#dash-create-modal" '+
+            'data-toggle="modal">'+
+              '<i class="fa fa-plus-circle"></i> '+trad.createpage+
+          '</a>';
+      }else if(searchType[0]=="persons"){
+        btn+='<a href="#element.invite" class="btn text-yellow lbhp btn-add pull-right">'+
+                    '<i class="fa fa-plus-circle"></i> '+trad.invitesomeone+
+              '</a>';
+      }else{
+        addType=searchType[0];
+        typeForm =addType;
+          subData="";
+          if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
+             subData="data-ktype='"+addType+"' ";
+             typeForm="organization";
+          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classified")
+            typeForm=typeObj[typeObj[addType].sameAs].ctrl;
+          btn+='<button class="btn bg-white margin-left-5 btn-add pull-right text-'+headerParams[addType].color+' '+
+            'data-type="'+typeForm+'" '+
+            subData+'>'+
+              '<i class="fa fa-plus-circle"></i> '+trad["add"+addType]+
+          '</button>';
+      }
+      return btn;
+    },
     headerHtml : function(indexMin){
       mylog.log("-----------headerHtml :",search.count);
       headerStr = '';
       if((typeof search.count != "undefined" && search.count) || indexMin==0 ){          
           countHeader=0;
-          if(search.app=="territorial"){
+          if(search.countType.length > 1 && typeof search.ranges != "undefined"){
             $.each(searchCount, function(e, v){
               countHeader+=v;
             });
+            //posClass="right"
           }else{
             typeCount = (searchType[0]=="persons") ? "citoyens" : searchType[0];
             countHeader=searchCount[typeCount];
+           // posClass=(typeCount == "classified") ? "left" : "right";
           }
+          //headerStr="<div class='col-md-2 col-sm-3 hidden-xs'>";
+          //if(userId != "")
+            //headerStr+=directory.createBtnHtml();
+          //headerStr+="</div>";
+           
           mylog.log("-----------headerHtml :"+countHeader);
           resultsStr = (countHeader > 1) ? trad.results : trad.result;
-          headerStr +='<h5>'+
-              "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
-              '<small>'+
-                directory.searchTypeHtml()+
-              '</small>'+
-            '</h5>';      
+          headerStr +='<div class="col-xs-12 padding-20">'+
+                        '<h4 class="elipsis col-md-10 col-xs-10">'+
+                        "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
+                        '<small>'+
+                          directory.searchTypeHtml()+
+                        '</small>'+
+                      '</h4>'+
+                      '<div class="pull-right">'+
+                        '<button class="btn switchDirectoryView ';
+                          if(directory.viewMode=="list") headerStr+='active ';
+          headerStr+=     'margin-right-5" data-value="list"><i class="fa fa-bars"></i></button>'+
+                        '<button class="btn switchDirectoryView ';
+                          if(directory.viewMode=="block") headerStr+='active ';
+          headerStr+=     '" data-value="block"><i class="fa fa-th-large"></i></button>'+
+                    '</div>';      
       }
       return headerStr;
+    },
+    checkImage : function($this){
+    //  $.each(res, function(i,v){
+       // if($("#entity"+i+" .container-img-profil .img-responsive").length){
+          //alert(i);
+          var imgH = $this.scrollHeight;
+          //alert(imgH);
+          if(imgH > 240){
+            marginTop= imgH/3;
+            //alert(marginTop)
+            $($this).css({"margin-top":"-"+marginTop+"px"});
+          }
+        //}
+      //});
+      
+    },
+    switcherViewer : function(results, dom){
+      $(".switchDirectoryView").off().on("click",function(){
+        $(".switchDirectoryView").removeClass("active");
+        $(this).addClass("active");
+        directory.viewMode=$(this).data("value");
+        str=directory.showResultsDirectoryHtml(results);
+        domId=(notNull(dom))? dom : "#dropdown_search";
+        $(domId).html(str);
+        //setTimeout(function(){ directory.checkImage(results);}, 200);
+        //active les link lbh
+        bindLBHLinks();
+        initBtnAdmin();
+        initBtnLink();
+        if(userId != ""){
+          param={
+            typeEntity : "citoyens",
+            value : directory.viewMode,
+            name : "directoryView"
+          };
+          $.ajax({
+                type: "POST",
+                url: baseUrl+"/"+moduleId+"/element/updatesettings",
+                data: param,
+                dataType: "json",
+              success: function(data){}
+          });
+        }
+      });
     },
     footerHtml : function(){
       footerStr = '';
@@ -2883,7 +2992,7 @@ var directory = {
       }
       return footerStr;
     },
-    showResultsDirectoryHtml : function ( data, contentType, size, edit){ //size == null || min || max
+    showResultsDirectoryHtml : function ( data, contentType, size, edit, viewMode){ //size == null || min || max
         //mylog.log("START -----------showResultsDirectoryHtml :",Object.keys(data).length +' elements to render');
         mylog.log("showResultsDirectoryHtml data", data,"size",  size, "contentType", contentType)
         //mylog.log(" dirLog",directory.dirLog);
@@ -2957,36 +3066,36 @@ var directory = {
                         params.parentIcon = "fa-"+parentObj.icon;
                         params.parentColor = parentObj.color;
                     }
-                    if(params.type == "classified" && typeof params.category != "undefined" && typeof classified != "undefined"){
+                    if((typeof search.countType != "undefined" && search.countType.length==1) && params.type == "classified" && typeof params.category != "undefined" && typeof classified != "undefined"){
                       params.ico = typeof classified.filters[params.category] != "undefined" ?
-                                   "fa-" + classified.filters[params.category]["icon"] : "";
+                                   "fa-" + classified.filters[params.category]["icon"] : "bullhorn";
                     }
 
                     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
 
                     params.useMinSize = typeof size != "undefined" && size == "min";
 
-                params.imgProfil = ""; 
-                if(!params.useMinSize){
-                    params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
-                    params.imgMediumProfil = "<i class='fa fa-image fa-2x'></i>";
-                }
-                
-                if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
-                    params.imgMediumProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
-                
-                if("undefined" != typeof params.profilThumbImageUrl && params.profilThumbImageUrl != "")
-                    params.imgProfil= "<img class='thumbnailProfil shadow2' src='"+baseUrl+params.profilThumbImageUrl+"'/>";
+                    params.imgProfil = ""; 
+                    if(!params.useMinSize){
+                        params.imgProfil = "<i class='fa fa-image fa-2x'></i>";
+                        params.imgMediumProfil = "<i class='fa fa-image fa-2x'></i>";
+                    }
+                    
+                    if("undefined" != typeof params.profilMediumImageUrl && params.profilMediumImageUrl != "")
+                        params.imgMediumProfil= "<img class='img-responsive' onload='directory.checkImage(this);' src='"+baseUrl+params.profilMediumImageUrl+"'/>";
+                    
+                    if("undefined" != typeof params.profilThumbImageUrl && params.profilThumbImageUrl != "")
+                        params.imgProfil= "<img class='shadow2' src='"+baseUrl+params.profilThumbImageUrl+"'/>";
 
 
-				params.imgBanner = ""; 
-				if(!params.useMinSize)
-					params.imgBanner = "<i class='fa fa-image fa-2x'></i>";
+            				params.imgBanner = ""; 
+            				if(!params.useMinSize)
+            					params.imgBanner = "<i class='fa fa-image fa-2x'></i>";
 
-        if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
-            params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
+        //if("undefined" != typeof params.profilBannerUrl && params.profilBannerUrl != "")
+          //  params.imgBanner= "<img class='' height=100 src='"+baseUrl+params.profilBannerUrl+"'/>";
 
-        if(params.type=="news"){
+        /*if(params.type=="news"){
           delete params.imgProfil;
           if(typeof params.media != "undefined"){
             if (params.media.type=="gallery_images")
@@ -3006,7 +3115,7 @@ var directory = {
 
           }
                 
-        }
+        }*/
                     if (false && typeof params.addresses != "undefined" && params.addresses != null) {
                       $.each(params.addresses, function(key, val){
                   //console.log("second address", val);
@@ -3040,7 +3149,7 @@ var directory = {
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
 
                 if(typeof params.slug != "undefined" && params.slug != "" && params.slug != null)
-                  params.hash = "#" + params.slug;
+                  params.hash = "#@" + params.slug;
 
                 if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined")
                   params.hash = params.source;
@@ -3097,67 +3206,44 @@ var directory = {
                       mylog.log("template principal",params,params.type, itemType);
 
 
-                      if($.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classified"] )>=0
-                          /*location.hash == "" || 
-                         location.hash == "#search" || 
-                         location.hash == "#annonces" || 
-                         location.hash == "#agenda" || 
-                         location.hash == "#ressources" || 
-                         location.hash == "#web"*/) 
+                      if((typeof directory.viewMode != "undefined" && directory.viewMode=="list" && !notNull(viewMode))  && $.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classified"] )>=0) 
                        str += directory.lightPanelHtml(params);  
-
-                      else 
-
-                      if(params.type == "cities")
-                        str += directory.cityPanelHtml(params);  
-                    
-                      else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","places","ressources"] )>=0) 
-                        str += directory.elementPanelHtml(params);  
-                    
-                      else if(params.type == "events"){
-                        if(search.app=="territorial")
-                          str += directory.elementPanelHtml(params);
-                        else
-                          str += directory.eventPanelHtml(params);  
-                      }
+                      else{ 
+                        if(params.type == "cities")
+                          str += directory.cityPanelHtml(params);  
                       
-                      else if (params.type == "news")
-                        str += directory.newsPanelHtml(params);
-                      //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
-                      //    str += directory.roomsPanelHtml(params,itemType);  
-                    
-                      else if(params.type == "classified"){
-                        if(contextData != null)
+                        else if( $.inArray(params.type, ["citoyens","organizations","projects","poi","places","ressources"] )>=0) 
                           str += directory.elementPanelHtml(params);  
+                      
+                        else if(params.type == "events"){
+                          if(typeof search.countType != "undefined" && search.countType.length > 1)
+                            str += directory.elementPanelHtml(params);
+                          else
+                            str += directory.eventPanelHtml(params);  
+                        }
+                        
+                        else if (params.type == "news")
+                          str += directory.newsPanelHtml(params);
+                        //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
+                        //    str += directory.roomsPanelHtml(params,itemType);  
+                      
+                        else if(params.type == "classified"){
+                          if(typeof search.countType != "undefined" && search.countType.length > 1)
+                            str += directory.elementPanelHtml(params);  
+                          else
+                            str += directory.classifiedPanelHtml(params);
+                        }
+                        else if(params.type == "proposals" || params.type == "actions" || params.type == "resolutions" || params.type == "rooms")
+                          str += directory.coopPanelHtml(params);  
+                        else if(params.type.substring(0,11) == "poi.interop")
+                          str += directory.interopPanelHtml(params);
+                        else if(params.type == "network")
+                        	str += directory.network2PanelHtml(params);
+                          //str += directory.networkPanelHtml(params);
                         else
-                          str += directory.classifiedPanelHtml(params);
-                      }
-                      else if(params.type == "proposals" || params.type == "actions" || params.type == "resolutions" || params.type == "rooms")
-                        str += directory.coopPanelHtml(params);  
-                      else if(params.type.substring(0,11) == "poi.interop")
-                        str += directory.interopPanelHtml(params);
-                      else if(params.type == "network")
-                      	str += directory.network2PanelHtml(params);
-                        //str += directory.networkPanelHtml(params);
-                      else
-                        str += directory.defaultPanelHtml(params);
+                          str += directory.defaultPanelHtml(params);
+                        }
                     }
-                /*  else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
-                    str += directory.coopPanelHtml(params);  
-                  else if(params.type.substring(0,11) == "poi.interop")
-                    str += directory.interopPanelHtml(params);
-                  else
-                    str += directory.classifiedPanelHtml(params);
-                }
-                else if(params.type == "proposals" || params.type == "actions" || params.type == "rooms")
-                  str += directory.coopPanelHtml(params);  
-                else if(params.type.substring(0,11) == "poi.interop")
-                  str += directory.interopPanelHtml(params);
-                else if(params.type == "network")
-                else
-                  str += directory.defaultPanelHtml(params);
-                
-                    str += directory.defaultPanelHtml(params);*/
                   }
               }else{
                 mylog.log("pas d'id");
@@ -3175,10 +3261,16 @@ var directory = {
     },
     getAdminToolBar : function(data){
       countBtn=0;
-      /*var html = "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
+      var html ="";
+      if(directory.viewMode=="block"){
+        html += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips adminIconDirectory'>"+
        "<i class='fa fa-cog'></i>"+ //fa-bookmark fa-rotate-270
-       "</a>";*/
-      var html="<div class='adminToolBar'>";
+       "</a>";
+      }
+      html+="<div class='adminToolBar";
+      if(directory.viewMode=="block")
+      html+=  " entityProfil"
+      html+="'>";
       if(data.edit=="follows"){
           html +="<button class='btn btn-default btn-xs disconnectConnection'"+ 
             " data-type='"+data.type+"' data-id='"+data.id+"' data-connection='"+data.edit+"' data-parent-hide='2'"+
@@ -3562,7 +3654,7 @@ var directory = {
         params.startYear = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
         params.startDayNum = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("d") : "";
         params.startTime = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
-        params.startDate = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        //params.startDate = notEmpty(params.startDate) ? moment(params.startDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         
         params.endDateDB = notEmpty(params.endDate) ? params.endDate: null;
         params.endDay = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD") : "";
@@ -3570,7 +3662,7 @@ var directory = {
         params.endYear = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("YYYY") : "";
         params.endDayNum = notEmpty(params.startDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).format("d") : "";
         params.endTime = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("HH:mm") : "";
-        params.endDate   = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
+        //params.endDate   = notEmpty(params.endDate) ? moment(params.endDate/*,"YYYY-MM-DD HH:mm"*/).local().locale("fr").format("DD MMMM YYYY - HH:mm") : null;
         params.startDayNum = directory.getWeekDayName(params.startDayNum);
         params.endDayNum = directory.getWeekDayName(params.endDayNum);
 
@@ -3585,9 +3677,27 @@ var directory = {
        
         
         var str = "";
+        var dStart = params.startDay + params.startMonth + params.startYear;
+        var dEnd = params.endDay + params.endMonth + params.endYear;
+        mylog.log("DATEE", dStart, dEnd);
+
         if(params.startDate != null){
           if(notNull(onlyStr)){
-            str += params.startDay +" "+ params.startMonth +" "+ params.startYear;
+            str+="<h4 class='text-bold letter-orange no-margin'>";
+            if(params.endDate != null && dStart != dEnd)
+              str +=  '<small class="">'+trad.fromdate+'</small> ';
+            str += '<span class="letter-'+params.color+'">'+params.startDay+'</span>';
+            if(params.endDate == null || dStart == dEnd || (params.startMonth != params.endMonth || params.startYear != params.endYear))
+              str += ' <small class="">'+ params.startMonth+'</small>';
+            if(params.endDate == null || dStart == dEnd || params.startYear != params.endYear)
+              str += ' <small class="">'+ params.startYear+'</small>';
+            if(params.endDate != null && dStart != dEnd)
+              str += ' <small class="">'+trad.todate+'</small> <span class="letter-'+params.color+'">'+params.endDay +'</span> <small class="">'+ params.endMonth +' '+ params.endYear+"</small>";
+            str+="</h4>";
+            if(!notNull(params.allDay) || params.allDay != true){
+              str +=  '<small class="margin-top-5"><b><i class="fa fa-clock-o"></i> '+
+                                params.startTime+endTime+"</b></small>";
+            }
           }else{ 
             str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                     '<small>'+startLbl+' </small>'+
@@ -3601,14 +3711,8 @@ var directory = {
             str +=  '</h3>';
           }
         }    
-        var dStart = params.startDay + params.startMonth + params.startYear;
-        var dEnd = params.endDay + params.endMonth + params.endYear;
-        mylog.log("DATEE", dStart, dEnd);
-
-        if(params.endDate != null && dStart != dEnd){
-          if(notNull(onlyStr)){
-            str += trad["todate"]+" "+params.endDay +" "+ params.endMonth +" "+ params.endYear;
-          }else{
+        
+        if(params.endDate != null && dStart != dEnd && !notNull(onlyStr)){
             str += '<h3 class="letter-'+params.color+' text-bold no-margin" style="font-size:20px;">'+
                         "<small>"+trad["todate"]+" </small>"+
                         '<small class="letter-'+params.color+'">'+params.endDayNum+"</small> "+
@@ -3619,10 +3723,7 @@ var directory = {
                                   params.endTime+"</b></small>";
                         }
               str +=  '</h3>';
-          }
-        }
-            
-            
+        }   
         return str;
   },
 }

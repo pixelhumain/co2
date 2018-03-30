@@ -9,6 +9,10 @@ dynForm = {
 	    	
 	    	},
 	    	onload : function(data){
+	    		
+	    		dataHelper.activateMarkdown("#ajaxFormModal #description");
+	    		dataHelper.activateMarkdown("#ajaxFormModal #arguments");
+
 				$("#ajaxFormModal #idParentRoom").val(currentRoomId);
 				console.log("checkcheck0", data, typeof data, contextData);
 

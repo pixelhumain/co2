@@ -350,6 +350,7 @@ function createModalRoom($elements, $parentType, $parentId, $index, $title,
 	
 
 jQuery(document).ready(function() {
+	alert("rooms/header");
 	$('#form-create-room #btn-submit-form').addClass("hidden");
 });
 

@@ -190,10 +190,12 @@ a h1.text-azure:hover{
 if(!isset($_GET["renderPartial"]) && !isset($renderPartial)){
   echo "</div>"; // ferme le id="room-container"
 }
+
 ?>
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
+	alert("indexDDA");
 	setTitle("Espaces Coopératifs","connectdevelop");
 	$(".main-col-search").addClass("assemblyHeadSection");
 	$(".explainLink").click(function() {

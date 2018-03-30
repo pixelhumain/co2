@@ -36,8 +36,7 @@ class AppController extends CommunecterController {
         Yii::app()->session["theme"] = "CO2";
         $params = CO2::getThemeParams();
         
-        $hash = $params["pages"]["#app.index"]["redirect"];
-        
+        $hash = (@Yii::app()->session["userId"]) ? $params["pages"]["#app.index"]["redirect"]["logged"] : $params["pages"]["#app.index"]["redirect"]["unlogged"];
         $params = array("type" => @$type );
 
         if(!@$hash || @$hash=="") $hash="search";
@@ -193,14 +192,59 @@ class AppController extends CommunecterController {
         $params = array("type" => "vote");
     	echo $this->renderPartial("search", $params, true);
 	}
-
+    public function actionDocs($page=null, $dir=null){
+        CO2Stat::incNbLoad("co2-docs");   
+        $params = array(
+            "page" => @$page,
+            "dir"=>@$dir,
+        );
+        echo $this->renderPartial("../docs/index", $params, true);
+    }
+    
     public function actionAdmin($view=null, $dir=null){
         CO2Stat::incNbLoad("co2-admin");   
         $params = array(
             "dir" => @$dir,
+            "view"=>@$view,
         );
-        $view = ( !empty($view) ? $view : "index");
+        $view = /*( !empty($view) ? $view :*/ "index";
         $redirect="";
+
+        /*if($view == "directory"){
+            $params = Admin::directory();
+            $view = "directoryTable";
+        }else if($view == "moderate"){
+            if(isset($_REQUEST['all'])){
+                $view =  "moderateAll";
+                $params["news"] = News::getNewsToModerate();
+                $params["comments"] =  Comment::getCommentsToModerate();
+
+                //we moderate comments which is part of a news already moderate isAnabuse == true
+                if(isset($params["comments"]) && is_array($params["comments"]))foreach($params["comments"] as $key => $val){
+                    $tmp = News::getById($val['contextId']);
+                    if(isset($tmp)){
+                        if(isset($tmp['moderate'])){
+                            if(isset($tmp['moderate']['isAnAbuse']) && $tmp['moderate']['isAnAbuse'] == true){
+                                unset($params["comments"][$key]);
+                            }
+                        }
+                    }
+                }
+            }
+            elseif(isset($_REQUEST['one'])){
+                $view =  "moderateOne"; 
+            }
+            else{
+                $view =  "moderate";
+            }
+        }else if ($view == "mailerrordashboard"){
+            $mailErrors = MailError::getMailErrorSince(time() - 60*60*24*7);
+            $params["mailErrors"] = $mailErrors;
+            $params["path"] = "../admin/";
+            $view = $params["path"]."mailErrorTable";
+        }*/
+
+
         if(Yii::app()->params["CO2DomainName"] == "terla")
             $redirect="terla/";
         echo $this->renderPartial("../admin/".$redirect.$view, $params, true);
@@ -237,8 +281,16 @@ class AppController extends CommunecterController {
         echo $this->renderPartial("rooms", $params, true);
     }
 
+    public function actionAnnonces(){ 
+        $this->redirect( Yii::app()->createUrl("/classifieds/co/market") );
+    }
 
 	public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
+    public function actionHelp(){ 
+        $this->redirect( Yii::app()->createUrl("/ressources/co/ressources") );
+    }
+
+	public function actionPage($type, $id, $view=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
         //var_dump($view); exit;
             
@@ -262,12 +314,13 @@ class AppController extends CommunecterController {
             $element = Survey::getById($id);
         }
 
-        if(@$element["parentId"] && @$element["parentType"])
+        if(@$element["parentId"] && @$element["parentType"] && 
+            $element["parentId"] != "dontKnow" && $element["parentType"] != "dontKnow")
             $element['parent'] = Element::getSimpleByTypeAndId( $element["parentType"], $element["parentId"]);
+        
         if(@$element["organizerId"] && @$element["organizerType"] && 
             $element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow")
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
-
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,
@@ -284,7 +337,9 @@ class AppController extends CommunecterController {
         //visualisation utilisateur
         if(@$mode=="noedit"){ $params["edit"] = false; }
 
-        if(@$_POST["preview"] == true){ 
+
+        if(@$_POST["preview"] == true){
+            $params["preview"]=$_POST["preview"]; 
             if($type == "classified") $this->renderPartial('classifieds.views.co.preview', $params );
             else if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
             else if($type == "poi") $this->renderPartial('../poi/preview', $params ); 

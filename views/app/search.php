@@ -1,20 +1,21 @@
 <?php 
     $cssAnsScriptFilesModule = array(
     '/plugins/jquery-simplePagination/jquery.simplePagination.js',
-    '/plugins/jquery-simplePagination/simplePagination.css'
+    '/plugins/jquery-simplePagination/simplePagination.css',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
     $cssAnsScriptFilesModule = array(
     '/assets/css/default/responsive-calendar.css',
     '/assets/css/default/search.css',
+    '/assets/js/comments.js'
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
 
     $cssAnsScriptFilesModule = array(
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
-    '/js/default/directory.js',
-        '/js/news/index.js',
+//    '/js/default/directory.js',
+    '/js/news/index.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
 
@@ -135,7 +136,6 @@
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
 <?php $this->renderPartial($layoutPath.'footer', array()); ?>
-
 <?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
 
 
@@ -156,7 +156,7 @@ search.count=true;
   var startWinDATE = new Date();
   var agendaWinMonth = 0;
 <?php } ?>
-
+var scrollEnd = false;
 //var TPL = "kgougle";
 
 //allSearchType = ["persons", "NGO", "LocalBusiness", "projects", "Group"];
@@ -166,8 +166,6 @@ var currentKFormType = "";
 jQuery(document).ready(function() {
 
     setTitle(titlePage, "", titlePage);
-  
-    initKInterface({"affixTop":200});
     
     initCountType();
     var typeUrl = "?nopreload=true";

@@ -40,7 +40,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 $cssAnsScriptFilesModule = array(
   '/css/news/newsSV.css',
   '/css/cooperation.css',
-  '/js/comments.js',
+//  '/js/comments.js',
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->theme->baseUrl."/assets");
 

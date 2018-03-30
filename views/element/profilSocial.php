@@ -7,7 +7,7 @@
 				'/css/timeline2.css',
 				//'/css/circle.css',	
 				'/css/default/directory.css',	
-				'/js/comments.js',
+				//'/js/comments.js',
 				'/css/profilSocial.css',
 				'/css/calendar.css',
 		) , 
@@ -261,12 +261,14 @@
 	  	  </script>
 
 		  <?php if(@Yii::app()->session["userId"] && Yii::app()->params['rocketchatEnabled'] )
-	  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition)) ) || 
+		 //  	echo "Authorisation::canEditItem : ".Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id);
+			// echo "<br/>Link::isLinked : ".Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]);
+	  		if( 
 	  			($type==Person::COLLECTION) ||
 	  			//admins can create rooms
 	  			( Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) ) ||
 	  			//simple members can join only when admins had created
-	  			( @$element["hasRC"] && Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]))  )
+	  			( Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]))  )
 	  			{
 	  				if(@$element["slug"])
 						//todo : elements members of
@@ -274,7 +276,7 @@
 	  				else
 	  					$createSlugBeforeChat=true;
 	  				//todo : elements members of
-	  				$loadChat = $element["name"];
+	  				$loadChat = StringHelper::strip_quotes($element["name"]);
 	  				//people have pregenerated rooms so allways available 
 	  				$hasRC = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "true" : "false";
 	  				$canEdit = ( @$openEdition && $openEdition ) ? "true" : "false";
@@ -288,16 +290,13 @@
 		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
 	  	  ?>
 	  	  
-	  	  <?php /*if(@$createSlugBeforeChat){ ?>
-	  	  	<button type="button" onclick="javascript:createSlugBeforeChat('<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?> )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
-		  		  id="open-rocketChat" style="border-right:0px!important;">
-		  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
-		  	</button>
-	  	  <?php } else{ */?>
 			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?>, contextData )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
 			  		  id="open-rocketChat" style="border-right:0px!important;">
-			  		<i class="fa fa-comments elChatNotifs"></i> Messagerie 
+			  		<i class="fa fa-comments elChatNotifs"></i> <?php echo Yii::t("cooperation", "Chat"); 
+			  		?>
+			  		
 			  </button>
+
 		  <?php //} ?>
 		  
 		  <?php } ?>
@@ -463,6 +462,7 @@
 									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
 								</a>
 				            </li>
+
 				            <?php }
 
 				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {  
@@ -475,11 +475,16 @@
 									</a>
 					            </li> -->
 			            <?php } } ?>
-			            <li class="text-left">
-				               	<a href='javascript:;' onclick='co.graph()' >
-									<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
-								</a>
-				            </li>
+						<li class="text-left">
+							<a href='javascript:;' onclick='co.graph()' >
+								<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
+							</a>
+						</li>
+						<li class="text-left">
+							<a href='javascript:;' onclick="javascript:window.print();" >
+								<i class='fa fa-print'></i> <?php echo Yii::t("home","Print out") ?>
+							</a>
+						</li>
 			  		</ul>
 		  		</li>
 		  	</ul>
@@ -753,7 +758,7 @@
      	navInSlug=true;
    
 	var hashUrlPage= ( (typeof contextData.slug != "undefined") ? 
-						"#"+contextData.slug : 
+						"#@"+contextData.slug : 
 						"#page.type."+contextData.type+".id."+contextData.id);
     
     if(location.hash.indexOf("#page")>=0){
@@ -777,7 +782,7 @@
 	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
 	var actionId = "<?php echo @$_GET['action']; ?>";
 	var isLiveNews = "";
-
+	var connectTypeElement="<?php echo Element::$connectTypes[$type] ?>";
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();
@@ -849,8 +854,10 @@
 				loadMD();
 			else if(sub=="settings")
 				loadSettings();
-			else if(sub=="coop")
+			else if(sub=="coop"){
+				onchangeClick=false;
 				loadCoop(roomId, proposalId, resolutionId, actionId);
+			}
 			else if(sub=="networks")
 				loadNetworks();
 			
@@ -879,7 +886,7 @@ function loadCoop(roomId, proposalId, resolutionId, actionId){
 	
 	setTimeout(function(){	
 		uiCoop.getCoopData(contextData.type, contextData.id, "room", null, roomId, function(){ 
-			toastr.success(trad["processing ok"]);
+			//toastr.success(trad["processing ok"]);
 			$("#modalCoop").modal("show");
 
 			var type = null;

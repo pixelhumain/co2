@@ -17,7 +17,12 @@
 
 	"pages" : {
 		
-		"#app.index": {"redirect":"search"},
+		"#app.index": {
+			"redirect": {
+				"logged":"search",
+				"unlogged":"welcome"
+			}
+		},
 
 		"#welcome": {
 			"inMenu" : false, 
@@ -32,8 +37,19 @@
 			"lblBtnCreate" : "Create something",
 			"colorBtnCreate" : "green"
 		},
-
-
+		"#docs": {
+			"inMenu" : false, 
+			"useHeader" : false, 
+			"open" : true, 
+			"subdomain" : "docs", 
+			"subdomainName" : "Documentation",
+			"hash" : "#app.docs",
+			"icon" : "", 
+			"mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
+			"placeholderMainSearch" : "search something ...",
+			"lblBtnCreate" : "Create something",
+			"colorBtnCreate" : "green"
+		},
 		"#territorial": {
 			"inMenu" : true, 
 			"useHeader" : true, 

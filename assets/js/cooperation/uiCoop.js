@@ -1,7 +1,7 @@
 /* uiCoop is use for all function relative to UI for Cooperation Spaces (DDA) */
 var uiCoop = {
-	"startUI" : function(loadData=true){
-		console.log("startUICOOP");
+	startUI : function(loadData=true){
+		mylog.log("startUICOOP");
 		//$("#menu-left-container").hide();
 		//$("#div-reopen-menu-left-container").removeClass("hidden");
 		$("#main-coop-container").html("");
@@ -38,13 +38,14 @@ var uiCoop = {
 		}
 	},
 
-	"closeUI" : function(reloadStream){
+	closeUI : function(reloadStream){
 		
 	},
 
-	"initBtnLoadData" : function(){
+	initBtnLoadData : function(){
 		//alert('initBtnLoadData');
 		$(".load-coop-data").off().click(function(){
+			mylog.log("load-coop-data");
 			var type = $(this).data("type");
 			
 			if(type == "locked"){
@@ -60,27 +61,26 @@ var uiCoop = {
 			var type = $(this).data("type");
 			var status = $(this).data("status");
 			var dataId = $(this).data("dataid");
-			//console.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
+			//mylog.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
 			uiCoop.getCoopData(contextData.type, contextData.id, type, status, dataId);
 		});
 	},
-	"initBtnLoadDataPreview" : function(){
-		//alert('initBtnLoadData');
+	initBtnLoadDataPreview : function(){
+		//alert('initBtnLoadDataPreview');
 		$("#modal-preview-coop .load-coop-data, #list-dashboard-dda .load-coop-data").off().click(function(){
 			var type = $(this).data("type");
-			
 			if(type == "locked"){
 				toastr.info("Vous n'avez pas accès à cet espace");
 				return;
 			}
 
 			var dataId = $(this).data("dataid");
-			//console.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
+			//mylog.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
 			uiCoop.getCoopDataPreview(type, dataId);
 		});
 	},
 
-	"initDragAndDrop" : function(){ console.log('initDragAndDrop');
+	initDragAndDrop : function(){ mylog.log('initDragAndDrop');
 		$('.draggable').draggable({
 		    revert : true, // sera renvoyé à sa place s'il n'est pas déposé dans #drop
 		    appendTo: 'body',
@@ -90,7 +90,7 @@ var uiCoop = {
     		start : function(){
     			uiCoop.dragId = $(this).data("dataid");
     			uiCoop.dragType = $(this).data("type");
-    			console.log("start drag", $(this).data("dataid"), "coopId", uiCoop.dragId, "coopType", uiCoop.dragType);
+    			mylog.log("start drag", $(this).data("dataid"), "coopId", uiCoop.dragId, "coopType", uiCoop.dragType);
     		}
 		});
 		$('.droppable').droppable({
@@ -102,30 +102,30 @@ var uiCoop = {
 		    },
 		    activate : function( event, ui ){
 		    	var roomid = $(this).data("dataid");
-		    	//console.log("activate", roomid);
+		    	//mylog.log("activate", roomid);
 		    	$(this).parent().addClass("bg-lightblue draggin");
 		    },
 		    deactivate : function( event, ui ){
 		    	var roomid = $(this).data("dataid");
-		    	//console.log("deactivate", roomid);
+		    	//mylog.log("deactivate", roomid);
 		    	$(this).removeClass("text-white").parent().removeClass("bg-lightblue draggin bg-turq");
 		    },
 		    over : function( event, ui ){
 		    	var roomid = $(this).data("dataid");
-		    	console.log("over", roomid);
+		    	mylog.log("over", roomid);
 		    	$(this).addClass("text-white").parent().addClass("bg-turq");
 		    	$(this).parent().removeClass("bg-lightblue");
 		    },
 		    out : function( event, ui ){
 		    	var roomid = $(this).data("dataid");
-		    	console.log("out", roomid);
+		    	mylog.log("out", roomid);
 		    	$(this).removeClass("text-white").parent().removeClass("bg-turq");
 		    	$(this).parent().addClass("bg-lightblue");
 		    }
 		});
 	},
 
-	"minimizeMenuRoom" : function(min){ console.log("minimizeMenuRoom", min);
+	minimizeMenuRoom : function(min){ mylog.log("minimizeMenuRoom", min);
 		if(min)	{
 			$("#menu-room").addClass("min col-lg-4 col-md-4 col-sm-4")
 							.removeClass("col-lg-12 col-md-12 col-sm-12");
@@ -139,7 +139,7 @@ var uiCoop = {
 		}
 	},
 
-	"maximizeReader" : function(max){ console.log("maximizeReader", max);
+	maximizeReader : function(max){ mylog.log("maximizeReader", max);
 		if(max)	{
 			$("#menu-room").addClass("hidden");
 			$("#coop-data-container").removeClass("col-lg-8 col-md-8 col-sm-8")
@@ -152,7 +152,7 @@ var uiCoop = {
 		}
 	},
 
-	"showAmendement" : function(show){
+	showAmendement : function(show){
 		if(show){
 			$("#menu-room").addClass("hidden");
 			$("#coop-data-container").addClass("col-lg-12 col-md-12 col-sm-12")
@@ -168,8 +168,8 @@ var uiCoop = {
 		}
 	},
 
-	"getCoopData" : function(parentType, parentId, type, status, dataId, onSuccess, showLoading){
-		console.log("getCoopData", parentType, parentId, type, status, dataId, onSuccess, showLoading)
+	getCoopData : function(parentType, parentId, type, status, dataId, onSuccess, showLoading){
+		mylog.log("getCoopData", parentType, parentId, type, status, dataId, onSuccess, showLoading)
 		var url = moduleId+'/cooperation/getcoopdata';
 		var params = {
 			"parentType" : parentType,
@@ -179,7 +179,7 @@ var uiCoop = {
 			"dataId" : dataId,
 			"json" : false
 		};
-		//console.log("showLoading ?", typeof showLoading, showLoading);
+		//mylog.log("showLoading ?", typeof showLoading, showLoading);
 		
 		if(typeof showLoading == "undefined" || showLoading == true){
 			if(typeof dataId == "undefined" || dataId == null || type == "room"){
@@ -229,23 +229,20 @@ var uiCoop = {
 		);
 	},
 
-	"getCoopDataPreview" : function(type, dataId, onSuccess, showLoading){
-		console.log("getCoopDatagetCoopDataPreview", type, status, dataId, onSuccess, showLoading);
+	getCoopDataPreview : function(type, dataId, onSuccess, showLoading){
+		mylog.log("getCoopDatagetCoopDataPreview", type, status, dataId, onSuccess, showLoading);
+		
+		$("#modal-preview-coop").removeClass("hidden")
+								.css("display","block")
+								.html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-turq'></i>");
+
 		var url = moduleId+'/cooperation/previewcoopdata';
 		var params = {
 			"type" : type,
 			"dataId" : dataId,
 			"json" : false
 		};
-		//console.log("showLoading ?", typeof showLoading, showLoading);
-		
-		//if(typeof showLoading == "undefined" || showLoading == true){
-			
-		//}
 
-		$("#modal-preview-coop").removeClass("hidden");
-		$("#modal-preview-coop").show(300);
-		$("#modal-preview-coop").html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-turq'></i>");
 
 		ajaxPost("", url, params,
 			function (data){
@@ -260,6 +257,7 @@ var uiCoop = {
 				//uiCoop.initBtnLoadData();
 
 				$(".tooltips").tooltip();
+				$("#modal-preview-coop").css("display","block");
 				bindLBHLinks();
 
 				if(typeof onSuccess == "function") onSuccess();
@@ -270,7 +268,7 @@ var uiCoop = {
 		);
 	},
 
-	"initSearchInMenuRoom" : function(){
+	initSearchInMenuRoom : function(){
 		$(".inputSearchInMenuRoom").keyup(function(){
 			var type = $(this).data('type-search');
 			var searchVal = $(this).val();
@@ -280,15 +278,15 @@ var uiCoop = {
 			}
 
 			$("#coop-container .submenucoop.sub-"+type).hide();
-			console.log("searchVal", searchVal, "type", type);
+			mylog.log("searchVal", searchVal, "type", type);
 			$.each($("#coop-container .submenucoop.sub-"+type), function(){
-				console.log("this", this);
+				mylog.log("this", this);
 				
 				var content = $(this).data("name-search");
 
 				if(typeof content != "undefined"){
 					var found = content.search(new RegExp(searchVal, "i"));
-					console.log("content", content);
+					mylog.log("content", content);
 					if(found >= 0){
 						var id = $(this).show();
 					}
@@ -334,7 +332,7 @@ var uiCoop = {
 		);
 	},
 
-	"activateVote" : function(proposalId){
+	activateVote : function(proposalId){
 		
 		var param = {
 			block: "activeCoop",
@@ -359,7 +357,7 @@ var uiCoop = {
 
 	},
 
-	"saveAmendement" : function(proposalId, typeAmdt){
+	saveAmendement : function(proposalId, typeAmdt){
 		var txtAmdt = $("#txtAmdt").val();
 		if(txtAmdt.length < 10){
 			toastr.error(trad.amendementTooShort);
@@ -373,7 +371,7 @@ var uiCoop = {
 			txtAmdt: txtAmdt,
 			typeAmdt: typeAmdt
 		};
-		console.log("saveAmendement", param);
+		mylog.log("saveAmendement", param);
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
@@ -381,7 +379,7 @@ var uiCoop = {
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
-					console.log("success updateblock", data);
+					mylog.log("success updateblock", data);
 		    		uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, proposalId, function(){
 		    			uiCoop.showAmendement(true);
 		    			toastr.success(trad["Your amendement has been save with success"]);
@@ -391,7 +389,7 @@ var uiCoop = {
 
 	},
 
-	"changeStatus" : function(type, id, status, parentType, parentId){
+	changeStatus : function(type, id, status, parentType, parentId){
 		var param = {
 			parentType : parentType,
 			parentId : parentId,
@@ -418,7 +416,7 @@ var uiCoop = {
 		});
 	},
 
-	"changeRoom" : function(dragType, dragId, idNewRoom, parentType, parentId){
+	changeRoom : function(dragType, dragId, idNewRoom, parentType, parentId){
 		var param = {
 			parentType : parentType,
 			parentId : parentId,
@@ -427,7 +425,7 @@ var uiCoop = {
 			name: "idParentRoom",
 			value: idNewRoom
 		};
-		console.log("changeRoom", param);
+		mylog.log("changeRoom", param);
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
@@ -473,7 +471,7 @@ var uiCoop = {
 					uiCoop.showAmendement(true);
 		    	},
 		    	error: function(data){
-		    		console.log("error data ", data);
+		    		mylog.log("error data ", data);
 		    		toastr.error(trad["processing delete KO"]);
 		    	}
 		});
@@ -498,7 +496,7 @@ var uiCoop = {
 
 	getParentContainer : function(){
 		var res = ($("#modal-preview-coop #coop-container").length == 0) ? "#modalCoop " : "#modal-preview-coop ";
-		console.log("getParentContainer", res);
+		mylog.log("getParentContainer", res);
 		return ($("#modal-preview-coop #coop-container").length == 0) ? "#modalCoop " : "#modal-preview-coop ";
 	},
 
@@ -576,7 +574,7 @@ var uiCoop = {
 
 		$(".btn-send-vote").off().click(function(){
 			var voteValue = $(this).data('vote-value');
-			console.log("send vote", voteValue),
+			mylog.log("send vote", voteValue),
 			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
 		});
 
@@ -609,13 +607,13 @@ var uiCoop = {
 		$(".btn-option-status-proposal").click(function(){
 			var idProposal = $(this).data("id-proposal");
 			var status = $(this).data("status");
-			console.log("update status proposals", idProposal, status, parentTypeElement, parentIdElement);
+			mylog.log("update status proposals", idProposal, status, parentTypeElement, parentIdElement);
 			uiCoop.changeStatus("proposals", idProposal, status, parentTypeElement, parentIdElement);
 		});
 
 		$("#btn-edit-proposal").click(function(){
 			var idProposal = $(this).data("id-proposal");
-			console.log("edit idProposal", idProposal);
+			mylog.log("edit idProposal", idProposal);
 			dyFObj.editElement('proposals', idProposal);
 		});
 
@@ -681,13 +679,13 @@ var uiCoop = {
 		$(".btn-option-status-action").click(function(){
 			var idAction = $(this).data("id-action");
 			var status = $(this).data("status");
-			console.log("update status actions", idAction, status, parentTypeElement, parentIdElement);
+			mylog.log("update status actions", idAction, status, parentTypeElement, parentIdElement);
 			uiCoop.changeStatus("actions", idAction, status, parentTypeElement, parentIdElement);
 		});
 
 		$("#btn-edit-action").click(function(){
 			var idaction = $(this).data("id-action");
-			console.log("edit idAction", idAction);
+			mylog.log("edit idAction", idAction);
 			dyFObj.editElement('actions', idAction);
 		});
 

@@ -13,7 +13,7 @@ dynForm = {
                 
             },
             onload : function(data){
-
+                dataHelper.activateMarkdown("#ajaxFormModal #description");
                 $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
                                               .addClass("bg-turq");
 
@@ -120,7 +120,7 @@ dynForm = {
             },*/
             idParentRoom : dyFInputs.inputHidden(currentRoomId),
             name : dyFInputs.name("action"),
-            description : dyFInputs.textarea(tradDynForm.longDescription, "..."),
+            description : dyFInputs.textarea(tradDynForm.longDescription, "...",null,true),
             startDate :{
               inputType : "datetime",
               label : tradDynForm.startDate,

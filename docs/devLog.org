@@ -45,6 +45,9 @@ Dans paramsconfig.php
 remplacer "logoUrl2" => "/images/logoLTxt.jpg", => "logoUrl2" => "/images/headerPlaquette.png",
 
 
+*** Corrige les geo des poi mal formaté
+/co2/datamigration/PoiGeoFormat
+
 *** Ajoute public a tout les events
 co2/datamigration/PublicEvent
 
@@ -81,6 +84,9 @@ co2/datamigration/UpdateScopeNews
 co2/datamigration/BatchCountryMissing
 *** Ajout de la variable language
 co2/datamigration/BatchLanguage
+
+*** Ajout de la variable type au orga qui n'en n'ont pas
+co2/datamigration/OrganizationMissing
 
 
 

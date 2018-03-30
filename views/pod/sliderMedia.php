@@ -1,15 +1,18 @@
 <style type="text/css">
 	.carousel-media > ol > li.active{
 	   margin:1px;
+	  /* Specific terla theme
 	   border-top: 5px solid #EF5B34 !important;
+	   *****/
 	}
 	.carousel-media > ol > li{
 		    width: 60px !important;
     background-color: inherit;
-    border: inherit !important;
     height: 65px !important;
     border-radius: inherit;
+    /* Specific terla theme
     border-top: 5px solid lightgray !important;
+    *********************/
     text-indent: inherit;
 	}
 	
@@ -108,7 +111,7 @@
 			if(!empty($medias)){
 			foreach ($medias as $data){ ?>
 				 <div class="item <?php if($i==0) echo "active"; ?>">
-			      <iframe width="100%" height="400" src="<?php echo $data["content"]["videoLink"] ?>" frameborder="0" allowfullscreen></iframe>
+			      <iframe width="100%" height="400" src="<?php echo @$data["content"]["videoLink"] ?>" frameborder="0" allowfullscreen></iframe>
 			    </div>
 		<?php $i++;
 		 } } ?>
@@ -140,4 +143,13 @@
 
 	</div>
 </div>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+	$("#myCarousel").carousel();
+	// Enable Carousel Indicators
+$("ol.carousel-indicators > li").click(function(){
+    $("#myCarousel").carousel($(this).data("slide-to"));
+});
+	});
+</script>
 <?php } ?>

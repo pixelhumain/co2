@@ -3502,11 +3502,15 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	public function actionRelaunchInvitation(){
 		ini_set('memory_limit', '-1');
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){		
-			$res=PHDB::find(Person::COLLECTION,array("pending"=>array('$exists'=>true)));
+			$res=PHDB::find(Person::COLLECTION,array("pending"=>array('$exists'=>true)), array("name", "language", "invitedBy", "email"));
 			$i=0;
 			$v=0;
+			$languageUser = Yii::app()->language;
 			foreach($res as $key => $value){
-				if(DataValidator::email($value["email"])==""){
+				if(DataValidator::email($value["email"])=="" && !empty($value["language"])){
+
+					echo $key." : ".$value["name"]." : ".$value["language"]." <br/> ";
+					Yii::app()->language = $value["language"];
 					Mail::relaunchInvitePerson($value);
 					$i++;
 				}else{
@@ -3515,6 +3519,15 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			}
 			echo $i." mails envoyé pour relancer l'inscription<br>";
 			echo $v." utilisateur non inscrit (validé) qui ont un mail de marde<br>";
+			Yii::app()->language = $languageUser ;
+		}else 
+			echo "Pas d'envoie pour toi ma cocote !! Tu vas aller au four plutot";
+	}
+
+	public function actionMailMaj(){
+		ini_set('memory_limit', '-1');
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){		
+			Mail::mailMaj();
 		}else 
 			echo "Pas d'envoie pour toi ma cocote !! Tu vas aller au four plutot";
 	}
@@ -3545,6 +3558,33 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				}
 			}
 		//}
+	}
+	public function actionActivityStreamDDA(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbNews = 0 ;
+			$newsDDA = PHDB::find( News::COLLECTION, array("type"=>"activityStream", 
+				'$or'=>array(
+					array("object.type"=>"proposals"),
+					array("object.type"=>"resolutions"),
+					array("object.type"=>"actions"),
+					array("object.type"=>"rooms")
+				)));
+			//var_dump($cities);
+			if(!empty($newsDDA)){
+				foreach (@$newsDDA as $key => $v) {
+					//if(!empty($city["_id"]["level3Name"]) && (!empty($city["_id"]["country"]) && $city["_id"]["country"] == "FR") )		
+					echo "<br/>------------------------<br/>".
+						"object:".$v["object"]["type"]."<br/>".
+						"target:".$v["target"]["type"]."<br/>".
+						"share:<br>";
+						print_r($v["sharedBy"]);
+					$nbNews++;
+				}
+			}
+			echo "Nombre news traitées : ".$nbNews;
+		}else
+			echo "sorry for you, you are not an agent C007";
 	}
 
 	public function actionPublicEvent(){
@@ -3690,7 +3730,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		 						$newS["postalCode"] = $newS["cp"];
 		 						unset($newS["cp"]);			
 		 					}
-		 					$newML[$newS["id"].$newS["type"]] = $newS;
+		 					$newML[(String)$city["_id"].$newS["type"]] = $newS;
 		 				}
 		 			}
 		 		}
@@ -4174,7 +4214,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				else if(in_array($value["address"]["addressCountry"], $en))
 					$set["language"] = strtolower($value["address"]["addressCountry"]);
 				else
-					$set["language"] = $value["address"]["addressCountry"];
+					$set["language"] = "fr";
 
 			}else if( !empty($value["invitedBy"]) ) {
 
@@ -4312,6 +4352,58 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 		//echo json_encode($set);	
 		echo $nbelement." multiscopes mis a jours / ";
+	}
+
+
+	public function actionOrganizationMissing(){
+		$orga = PHDB::find(Organization::COLLECTION, array(	"type" => array('$exists' => false) ) );
+		$i = 0 ;
+		$v = 0;
+		foreach ($orga as $key => $value) {
+			echo date("d / m / y", $value["created"])." ; ".$value["name"];
+
+			if( !empty($value["source"]) ){
+				echo " ; IMPORT";
+				$i++;
+			}else{
+				echo " ; DYNFORM";
+				$v++;
+			}
+			
+			echo " ; ".Yii::app()->getRequest()->getBaseUrl(true)."/#page.type.organizations.id.".$key."<br/>";
+
+			$res = PHDB::update(Organization::COLLECTION, 
+					array("_id"=>new MongoId($key)),
+					array('$set' => array("type" => "Group"))
+			);
+		}
+		echo $i." importé <br/>";
+		echo $v." dynform <br/>";
+	}
+
+
+	public function actionPoiGeoFormat(){
+		//{ $and : [ {"geo" : {$exists : 1} }, {"geo.@type" : {$ne : "GeoCoordinates"} } ] }
+		$where = array('$and' => array(
+					array("geo" => array('$exists' => 1)),
+					array("geo.@type" => array('$ne' => "GeoCoordinates"))
+				));
+		$poi = PHDB::find(Poi::COLLECTION, $where);
+		$i = 0 ;
+		foreach ($poi as $key => $value) {
+			
+			if(!empty($value["geo"])){
+				$geo = SIG::getFormatGeo($value["geo"]["coordinates"][1], $value["geo"]["coordinates"][0]);
+
+				$res = PHDB::update(Poi::COLLECTION, 
+						array("_id"=>new MongoId($key)),
+						array('$set' => array("geo" => $geo))
+				);
+				$i++;
+			}			
+		}
+		
+		echo $i." poi updaté <br/>";
 	}
 }
 

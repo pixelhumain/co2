@@ -280,7 +280,7 @@ var contextDataDDA = {
 };
 
 jQuery(document).ready(function() {
-	
+	alert("actionStandalone");
 	$(".main-col-search").addClass("assemblyHeadSection");
   	setTitle("Espace d'actions","cogs");
   	$('.box-vote').show()

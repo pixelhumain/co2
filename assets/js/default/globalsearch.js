@@ -234,13 +234,103 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 
 						str += "</a>";
 					}else{
-	         	 		mylog.log("Here");
-
 						o.input = input;
-						if(type == "city")
+	         	 		mylog.log("Here",o);
+
+	         	 		
+						if(type == "city"){
+							var valuesScopes = {
+								city : o._id.$id,
+								cityName : o.name,
+								postalCode : o.postalCode,
+								country : o.country,
+								allCP : o.allCP,
+								uniqueCp : o.uniqueCp,
+								level1 : o.level1,
+								level1Name : o.level1Name
+							}
+
+							if( notEmpty( o.nameCity ) ){
+								valuesScopes.name = o.nameCity ;
+							}
+
+							if( notEmpty( o.uniqueCp ) ){
+								valuesScopes.uniqueCp = o.uniqueCp;
+							}
+
+							if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
+								valuesScopes.level4 = o.level4 ;
+								valuesScopes.level4Name = o.level4Name ;
+							}
+							if( notEmpty( o.level3 ) && valuesScopes.id != o.level3 ){
+								valuesScopes.level3 = o.level3 ;
+								valuesScopes.level3Name = o.level3Name ;
+							}
+							if( notEmpty( o.level2 ) && valuesScopes.id != o.level2){
+								valuesScopes.level2 = o.level2 ;
+								valuesScopes.level2Name = o.level2Name ;
+							}
+
+		         	 		myScopes.search[valuesScopes.city] = valuesScopes;
 							str += directory.cityPanelHtml(o);
-						else if(type == "zone")
+						}
+						else if(type == "zone"){
+							valuesScopes = {
+								id : o._id.$id,
+								name : o.name,
+								country : o.countryCode,
+								level : o.level
+							}
+
+							if(o.level.indexOf("1") >= 0){
+								typeSearchCity="level1";
+								levelSearchCity="1";
+								valuesScopes.numLevel = 1;
+							}else if(o.level.indexOf("2") >= 0){
+								typeSearchCity="level2";
+								levelSearchCity="2";
+								valuesScopes.numLevel = 2;
+							}else if(o.level.indexOf("3") >= 0){
+								typeSearchCity="level3";
+								levelSearchCity="3";
+								valuesScopes.numLevel = 3;
+							}else if(o.level.indexOf("4") >= 0){
+								typeSearchCity="level4";
+								levelSearchCity="4";
+								valuesScopes.numLevel = 4;
+							}
+							if(notNull(typeSearchCity))
+								valuesScopes.type = typeSearchCity;				
+
+							mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
+
+							if( notEmpty( o.level1 ) && valuesScopes.id != o.level1){
+								mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
+								valuesScopes.level1 = o.level1 ;
+								valuesScopes.level1Name = o.level1Name ;
+							}
+
+							var subTitle = "";
+
+							if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
+								valuesScopes.level4 = o.level4 ;
+								valuesScopes.level4Name = o.level4Name ;
+								subTitle +=  (subTitle == "" ? "" : ", ") +  o.level4Name ;
+							}
+							if( notEmpty( o.level3 ) && valuesScopes.id != o.level3 ){
+								valuesScopes.level3 = o.level3 ;
+								valuesScopes.level3Name = o.level3Name ;
+								subTitle +=  (subTitle == "" ? "" : ", ") +  o.level3Name ;
+							}
+							if( notEmpty( o.level2 ) && valuesScopes.id != o.level2){
+								valuesScopes.level2 = o.level2 ;
+								valuesScopes.level2Name = o.level2Name ;
+								subTitle +=  (subTitle == "" ? "" : ", ") +  o.level2Name ;
+							}
+
+							myScopes.search[valuesScopes.id] = valuesScopes;
 							str += directory.zonePanelHtml(o);
+						}
 				// 	var valuesScopes = {};
 				// 	if(type == "city"){
 				// 		valuesScopes = {

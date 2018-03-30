@@ -19,7 +19,7 @@ function constructScopesHtml(news){
 				"data-add='true' data-scope-value='"+value.id+"' "+
 				'data-scope-key="'+key+'" '+
 				"data-toggle='tooltip' data-placement='top' "+
-				"data-original-title='Add zones to news'>"+
+				"data-original-title='"+trad.addZoneToNew+"'>"+
 					"<i class='fa fa-plus-circle'></i>"+
 				"</span>";
 		}else{
@@ -29,7 +29,7 @@ function constructScopesHtml(news){
 					"data-add='false' data-scope-value='"+value.id+"' "+
 					'data-scope-key="'+key+'" '+
 					"data-toggle='tooltip' data-placement='top' "+
-					"data-original-title='Remove from my favorites places'>"+
+					"data-original-title='"+trad.removeFromMyFavoritesPlaces+"'>"+
 						"<i class='fa fa-times-circle'></i>"+
 					"</span>";
 			else{
@@ -40,7 +40,7 @@ function constructScopesHtml(news){
 						"data-add='0' data-scope-value='"+value.id+"' "+
 						'data-scope-key="'+key+'" '+
 						"data-toggle='tooltip' data-placement='top' "+
-						"data-original-title='Remove from my favorites places'>"+
+						"data-original-title='"+trad.removeFromMyFavoritesPlaces+"'>"+
 							"<i class='fa fa-star'></i>"+
 						"</span>";
 				else
@@ -48,7 +48,7 @@ function constructScopesHtml(news){
 						"data-add='true' data-scope-value='"+value.id+"' "+
 						'data-scope-key="'+key+'" '+
 						"data-toggle='tooltip' data-placement='top' "+
-						"data-original-title='Add to my favorites places'>"+
+						"data-original-title='"+trad.addToMyFavoritesPlaces+"'>"+
 							"<i class='fa fa-star-o'></i>"+
 						"</span>";
 			}
@@ -145,6 +145,10 @@ function addToMultiscope(scopeValue){
 }
 
 
+function scopeExists(scopeValue){
+	return typeof myScopes.multiscopes[scopeValue] != "undefined";
+}
+
 function removeFromMultiscope(scopeValue){
 	mylog.log("removeFromMultiscope", scopeValue);
 	if(scopeExists(scopeValue)){
@@ -183,6 +187,7 @@ function bindSearchCity(){
 }
 
 function bindScopesInputEvent(news){
+	mylog.log("bindScopesInputEvent");
 	$(".manageMultiscopes").off().on("click", function(){
 		mylog.log("manageMultiscopes");
 		addScope=$(this).data("add");
@@ -268,11 +273,18 @@ function bindScopesInputEvent(news){
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
 		if(search.app=="territorial") searchEngine.initTerritorialSearch();
 		mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
+
+
+
+
+		mylog.log("globalscope-checker values",  myScopes.search[$(this).data("scope-value")]);
 		changeCommunexionScope(	$(this).data("scope-value"), $(this).data("scope-name"), 
 								$(this).data("scope-type"), $(this).data("scope-level"),
-								$(this).data("scope-values"),  notSearch, testCo, $(this).data("append-container")) ;
+								myScopes.search[$(this).data("scope-value")],  notSearch, testCo, $(this).data("append-container")) ;
 	});
 }
+
+
 function countFavoriteScope(){
 	count=0;
 	if(notNull(myScopes.multiscopes))
@@ -390,7 +402,7 @@ function scopeObject(values){
 	}
 	mylog.log("scopeObject cp", typeof values.postalCode, typeof values.uniqueCp, values.uniqueCp);
 	if(typeof values.postalCode != "undefined" && typeof values.uniqueCp != "undefined" && values.uniqueCp == false){
-		mylog.log("communexionObj cp values", values);
+		mylog.log("scopeObject communexionObj cp values", values);
 
 		objToPush={
 			id:values.postalCode+values.country+objToPush.type,
@@ -400,7 +412,7 @@ function scopeObject(values){
 			countryCode:values.country
 		}
 		communexionObj[objToPush.id] = objToPush;
-		mylog.log("communexionObj cp", communexionObj);
+		mylog.log("scopeObject communexionObj cp", communexionObj);
 	}
 	
 	if(notNull(values.level) && typeof values.level != "undefined"){
@@ -426,7 +438,7 @@ function scopeObject(values){
 		// 	objToPush["postalCode"] = values.postalCode ;
 	}
 	communexionObj[objToPush.id+objToPush.type] = objToPush;
-	mylog.log("communexionObj", communexionObj);
+	mylog.log("scopeObject communexionObj", communexionObj);
 
 	if(notNull(values.allCP) && values.allCP == false){
 		objToPush={

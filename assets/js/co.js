@@ -53,9 +53,39 @@ function checkPoll(){
 }
 function setLanguage(lang){
 	$.cookie('lang', lang, { expires: 365, path: "/" });
-	toastr.success(trad.changelanguageprocessing);
+	//toastr.success(trad.changelanguageprocessing);
 	//window.reloadurlCtrl.loadByHash(location.hash);
-	location.reload();
+	if(userId != ""){
+		param={
+			name : "language",
+			value : lang,
+			pk : userId
+		};
+		$.ajax({
+	        type: "POST",
+	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/citoyens",
+	        data: param,
+	       	dataType: "json",
+	    	success: function(data){
+		    	if(data.result){
+					toastr.success(data.msg);
+					location.reload();
+					/*if(formInMap == true){
+						$(".locationEl"+ index).remove();
+						dyFInputs.locationObj.elementLocation = null;
+						dyFInputs.locationObj.elementLocations.splice(ix,1);
+						//TODO check if this center then apply on first
+						//$(".locationEl"+dyFInputs.locationObj.countLocation).remove();
+					}
+					else
+						urlCtrl.loadByHash(location.hash);*/
+		    	}
+		    }
+		});
+	}else{
+		location.reload();
+	}
+	
 }
 var watchThis = null;
 function bindRightClicks() { 
@@ -409,10 +439,14 @@ function disconnectTo(parentType,parentId,childId,childType,connectType, callbac
 						dataType: "json",
 						success: function(data){
 							if ( data && data.result ) {
-								type=formData.parentType;
-								if(formData.parentType==  "citoyens")
-									type="people";
-								removeFloopEntity(data.parentId, type);
+								typeConnect=(formData.parentType==  "citoyens") ? "people" : formData.parentType;
+								idConnect=formData.parentId;
+								if(formData.parentId==userId){
+									typeConnect=(formData.childType==  "citoyens") ? "people" : formData.childType;
+									idConnect=formData.childId;
+								
+								}
+								removeFloopEntity(idConnect, typeConnect);
 								toastr.success("Le lien a été supprimé avec succès");
 								if (typeof callback == "function") 
 									callback();
@@ -657,29 +691,29 @@ var urlCtrl = {
 	    "#rooms.editroom" : {title:'ADD A ROOM ', icon : 'plus', action:function(){ editRoomSV ();	}},
 		"#element.aroundme" : {title:"Around me" , icon : 'crosshairs', menuId:"menu-btn-around-me"},
 	    "#element.notifications" : {title:'DETAIL ENTITY', icon : 'legal'},
-	    "#person.settings" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#person.invite" : {title:'DETAIL ENTITY', icon : 'legal'},
 		"#element" : {title:'DETAIL ENTITY', icon : 'legal'},
 	    "#gallery" : {title:'ACTION ROOMS ', icon : 'photo'},
-	    "#comment" : {title:'DISCUSSION ROOMS ', icon : 'comments'},
-	    "#admin" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
-	    "#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
-	    "#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download', useHeader: true},
-	    "#admin.adddata" : {title:'ADDDATA ', icon : 'download', useHeader: true},
-	    "#admin.importdata" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
+	    "#comment." : {title:'DISCUSSION ROOMS ', icon : 'comments'},
+	    //"#admin" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
+	    //"#admin.checkgeocodage" : {title:'CHECKGEOCODAGE ', icon : 'download', useHeader: true},
+	    //"#admin.openagenda" : {title:'OPENAGENDA ', icon : 'download', useHeader: true},
+	    //"#admin.adddata" : {title:'ADDDATA ', icon : 'download', useHeader: true},
+	    //"#admin.importdata" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
 	    //"#admin.index" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
-	    "#admin.cities" : {title:'CITIES ', icon : 'university', useHeader: true},
-	    "#admin.sourceadmin" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
-	    "#admin.checkcities" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    //"#admin.cities" : {title:'CITIES ', icon : 'university', useHeader: true},
+	    //"#admin.sourceadmin" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    //"#admin.checkcities" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
 	    //"#admin.directory" : {title:'IMPORT DATA ', icon : 'download', useHeader: true},
-	    "#admin.mailerrordashboard" : {title:'MAIL ERROR ', icon : 'download', useHeader: true},
-	    "#admin.moderate" : {title:'MODERATE ', icon : 'download', useHeader: true},
-	    "#admin.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader: true},
-		"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus', useHeader: true},
-	    "#adminpublic.view.index" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
-	    "#adminpublic.view.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
-	    "#adminpublic.view.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
-	   	"#adminpublic.view.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', useHeader : true},
+	    //"#admin.mailerrordashboard" : {title:'MAIL ERROR ', icon : 'download', useHeader: true},
+	    //"#admin.moderate" : {title:'MODERATE ', icon : 'download', useHeader: true},
+	    //"#admin.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader: true},
+		//"#log.monitoring" : {title:'LOG MONITORING ', icon : 'plus', useHeader: true},
+	    //"#adminpublic.view.index" : {title:'SOURCE ADMIN', icon : 'download', useHeader: true},
+	    //"#adminpublic.view.createfile" : {title:'IMPORT DATA', icon : 'download', useHeader : true},
+	    //"#adminpublic.view.adddata" : {title:'ADDDATA ', icon : 'download', useHeader : true},
+	   	//"#adminpublic.view.interopproposed" : {title : 'INTEROP PROPOSED', icon : 'download', useHeader : true},
+	   // "#person.settings" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#admin.cleantags" : {title : 'CLEAN TAGS', icon : 'download'},
 	    "#default.directory" : {title:'COMMUNECTED DIRECTORY', icon : 'connectdevelop', menuId:"menu-btn-directory"},
 	    "#default.news" : {title:'COMMUNECTED NEWS ', icon : 'rss', menuId:"menu-btn-news" },
@@ -931,9 +965,9 @@ var urlCtrl = {
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'KESS KISS PASS in this '+typesLabels[hashT[3]],'rss' );
 	    } 
 
-		else if(hash.length>2){
-			hash = hash.replace( "#","" );
-			hashT=hash.split(".");
+		else if(hash.length>2  || hash.indexOf("#@") >= 0){
+			hashT = (hash.indexOf("#@") >= 0) ? hash.replace( "#@","" ) : hash.replace( "#","" );
+			hashT=hashT.split(".");
 			if(typeof hashT == "string")
 				slug=hashT;
 			else
@@ -2868,7 +2902,7 @@ var mentionsInit = {
 			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 				callback.call(this, data);
 				mentionsInit.isSearching=true;
-		   		var search = {"searchType" : ["citoyens","organizations","projects"]};
+		   		var search = {"searchType" : ["citoyens","organizations","projects"], "name": query};
 		  		$.ajax({
 					type: "POST",
 			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
@@ -2882,7 +2916,7 @@ var mentionsInit = {
 				        	data = [];
 				        	//for(var key in retdata){
 					        //	for (var id in retdata[key]){
-					        $.each(retdata, function (e, value){
+					        $.each(retdata.results, function (e, value){
 						        	avatar="";
 						        	//console.log(retdata[key]);
 						        	//aert(retdata[key][id].type);
@@ -2898,16 +2932,16 @@ var mentionsInit = {
 										name: value.name, 
 										type: value.type
 									}); 
-									if(typeof(findInLocal) == "undefined")
+									if(typeof(findInLocal) == "undefined"){
 										mentionsContact.push(object);
+									}
 						 	//		}
 				        	//}
 				        	});
 				        	data=mentionsContact;
-				        	mylog.log(data);
 				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
 							callback.call(this, data);
-							mylog.log(callback);
+							mylog.log("callback",callback);
 			  			}
 					}	
 				})
@@ -3205,6 +3239,7 @@ var keyboardNav = {
 		"67" : function(){$('#openModal').modal('hide');dyFObj.openForm('classified')},//c : classified
 		"69" : function(){$('#openModal').modal('hide');dyFObj.openForm('event')}, //e : event
 		"70" : function(){$('#openModal').modal('hide'); $(".searchIcon").trigger("click") },//f : find
+		"71" : function(){ co.graph() },//g : graph
 		"72" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/help') },//h : help
 		"73" : function(){$('#openModal').modal('hide');dyFObj.openForm('person')},//i : invite
 		"76" : function(){ smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+'/default/view/page/links')},//l : links and infos
@@ -3494,6 +3529,14 @@ var timerCloseDropdownUser = false;
 function initKInterface(params){ console.log("initKInterface");
 
 	$(window).off();
+	$(window).click(function() {
+		if( $("#modal-preview-coop").css("display") == "block" )
+			$("#modal-preview-coop").css("display","none");
+	});
+
+	$('#modal-preview-coop').click(function(event){
+		event.stopPropagation();
+	});
 
 	$(window).resize(function(){
       resizeInterface();
@@ -3557,19 +3600,23 @@ function initKInterface(params){ console.log("initKInterface");
     $(".btn-dashboard-dda").click(function(){
         showFloopDrawer(false);
         showNotif(false);
-        loadDashboardDDA();
+        dashboard.loadDashboardDDA();
         $("#dropdown-user").removeClass("open");
         $("#dropdown-dda").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
     
     $("#dropdown-user").mouseleave(function(){ //alert("dropdown-user mouseleave");
-        $("#dropdown-user").removeClass("open");
+    	setTimeout(function(){ 
+    		if(!$("#dropdown-user").is(":hover"))
+    			$("#dropdown-user").removeClass("open");
+    	}, 200);
+        
     });
 
-    $("header .container").mouseenter(function(){ 
+    /*$("header .container").mouseenter(function(){ 
     	$("#dropdown-user").removeClass("open");
-    });
+    });*/
 
 
     $(".logout").click(function(){ 
@@ -3607,6 +3654,11 @@ function initKInterface(params){ console.log("initKInterface");
               top: affixTop
           }
       });
+      /*$("#col-btn-type-directory, #sub-menu-left").affix({
+          offset: {
+              top: affixTop
+          }
+      });*/
       /*$("#affix-filters-menu").affix({
           offset: {
               top: affixTop
@@ -3618,8 +3670,6 @@ function initKInterface(params){ console.log("initKInterface");
           }
       });
     }
-
-    $("#filter-thematic-menu").show(400);
 
     // Floating label headings for the contact form
     $(function() {
@@ -3662,24 +3712,35 @@ function initKInterface(params){ console.log("initKInterface");
     KScrollTo(".main-container");
 }
 
-function loadDashboardDDA(){
-	mylog.log("loadDashboardDDA");
-	$("#list-dashboard-dda").html("<span class='text-center col-xs-12 padding-25'><i class='fa fa-circle-o-notch fa-spin'></i></span>");
-	$.ajax({
-		type: "POST",
-		url: baseUrl+'/'+moduleId+"/cooperation/getmydashboardcoop/",
-		//dataType: "json",
-		success: function(view){
-			mylog.log("loadDashboardDDA ok");
-			$("#list-dashboard-dda").html(view);
-		},
-		error: function (error) {
-			mylog.log("loadDashboardDDA error", error);
-			
+var dashboard = {
+	ddaView : null,
+	loadDashboardDDA : function(){
+		mylog.log("loadDashboardDDA");
+		$("#list-dashboard-dda").html("<span class='text-center col-xs-12 padding-25'><i class='fa fa-circle-o-notch fa-spin'></i></span>");
+		lazyLoad( baseUrl+'/plugins/showdown/showdown.min.js',null, function() { } );
+		if( dashboard.ddaView != null ){
+			$("#list-dashboard-dda").html(dashboard.ddaView);
+		} else {
+			$.ajax({
+				type: "POST",
+				url: baseUrl+'/'+moduleId+"/cooperation/getmydashboardcoop/",
+				//dataType: "json",
+				success: function(view){
+					mylog.log("loadDashboardDDA ok");
+					dashboard.ddaView = view;
+					$("#list-dashboard-dda").html(view);
+				},
+				error: function (error) {
+					mylog.log("loadDashboardDDA error", error);
+					
+				}
+					
+			});
 		}
-			
-	});
-}
+		
+	}
+};
+
 
 function getContextDataLinks(){
 	mylog.log("getContextDataLinks");
@@ -3839,6 +3900,7 @@ var co = {
 					$("#openModal div.modal-content").css("text-align","left");
 					lazyLoad( baseUrl+"/plugins/jsonview/jquery.jsonview.js", 
 							  baseUrl+"/plugins/jsonview/jquery.jsonview.css", function() { 
+							  	alert();
 						getAjax('', url, function(data){ 
 							urlT = url.split('/');
 							title = url+"<br/>"+urlT[8];
@@ -3884,6 +3946,14 @@ var co = {
 			}
 			smallMenu.openAjaxHTML( baseUrl+'/graph/co/d3/'+what);
 		} );},
+	badge : function () { 
+		var what = "id/"+userId+"/type/citoyens";
+			if(contextData && contextData.id && contextData.type ) {
+				contextDataType = dyFInputs.get(contextData.type).ctrl;
+				what = "id/"+contextData.id+"/type/"+contextDataType;
+			}
+			smallMenu.openAjaxHTML( baseUrl+'/connect/co/badge/'+what);
+	},
 	gmenu : function () {  },
 	mind : function () { 
 		if( contextData && contextData.type == "citoyens")

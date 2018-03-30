@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : tradDynForm.ddpoi,
+	    title : tradDynForm.addpoi,
 	    in : "map-marker",
 	    type : "object",
 	    onLoads : {
@@ -9,6 +9,7 @@ dynForm = {
 	    		dyFInputs.setSub("bg-green-poi");
 	    	},
 	    	onload : function(data){
+	    		dyFInputs.setHeader("bg-green-poi");
 	    		if(data && data.type){
 	    			$(".breadcrumbcustom").html( "<h4><a href='javascript:;'' class='btn btn-xs btn-danger'  onclick='dyFObj.elementObj.dynForm.jsonSchema.actions.clear()'><i class='fa fa-times'></i></a> "+tradCategory[data.type]+"</h4>");
 					$(".sectionBtntagList").hide();

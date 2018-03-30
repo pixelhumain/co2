@@ -329,7 +329,7 @@
 						<i class="fa fa-hashtag"></i> <?php echo Yii::t("common","Gamification"); ?> :
 					</span>
 					<?php 	
-								echo Gamification::calcPoints( Yii::app()->session["userId"] );
+								echo Gamification::calcPoints( Yii::app()->session["userId"] ).Yii::t("common","pts , based on Links and Posts popularity");
 							 ?>	
 				</div>
 			</div>
@@ -684,9 +684,10 @@
 		else
 			$("#divEndDate").addClass("hidden");
 		mylog.log("formatDateView", formatDateView);
-		if($("#startDateAbout").html() != "")
+		//if($("#startDateAbout").html() != "")
+		if(!$("#divStartDate").hasClass("hidden"))
 	    	$("#startDateAbout").html(moment(contextData.startDateDB).local().locale(mainLanguage).format(formatDateView));
-	    if($("#endDateAbout").html() != "")
+	    if(!$("#divEndDate").hasClass("hidden"))
 	    	$("#endDateAbout").html(moment( contextData.endDateDB).local().locale(mainLanguage).format(formatDateView));
 
 	    if($("#birthDate").html() != "")

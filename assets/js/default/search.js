@@ -69,6 +69,10 @@ function initSearchInterface(){
         if(e.keyCode == 13){
             if(typeInit == "all") initTypeSearch("allSig");
             else initTypeSearch(typeInit);
+            search.value = $(this).val();
+            search.count=true;
+            pageCount=true;
+            if(search.app=="territorial") searchEngine.initTerritorialSearch();
             startSearch(0, indexStepInit, searchCallback);
             $(".btn-directory-type").removeClass("active");
          }
@@ -308,7 +312,10 @@ function bindLeftMenuFilters () {
         pageCount=true;
         search.count=true;
         if( $(this).hasClass( "active" ) ){
-            searchTxt = sectionKey+","+classType;
+            if(typeof sectionKey != "undefined" && typeof sectionKey != null)
+                searchTxt = sectionKey+","+classType;
+            else
+                searchTxt = classType;
             $(this).removeClass( "active" );
         }else{
             $(".keycat").removeClass("active");

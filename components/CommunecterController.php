@@ -105,7 +105,9 @@ class CommunecterController extends Controller
       "cities" => array("href" => "/ph/co2/admin/cities"),
       "circuits" => array("href" => "/ph/co2/admin/circuits"),
     ),
-    
+    "docs" => array(
+      "index"     => array("href" => "/ph/co2/docs"),
+    ),
     "adminpublic" => array(
       "index"    => array("href" => "/ph/co2/adminpublic/index"),
       "adddata"    => array("href" => "/ph/co2/adminpublic/adddata"),
@@ -156,6 +158,7 @@ class CommunecterController extends Controller
       "switch"               => array("href" => "/ph/co2/default/switch"),
       "live"                 => array("href" => "/ph/co2/default/live"),
       "sitemap"                 => array("href" => "/ph/co2/default/sitemap"),
+      "img"                 => array("href" => "/ph/co2/default/img"),
     ),
     "city"=> array(
       "index"               => array("href" => "/ph/co2/city/index", "public" => true),
@@ -241,6 +244,7 @@ class CommunecterController extends Controller
     "person"=> array(
         "login"           => array("href" => "/ph/co2/person/login",'title' => "Log me In"),
         "logged"           => array("href" => "/ph/co2/person/logged"),
+        "settings"           => array("href" => "/ph/co2/person/settings"),
         "sendemail"       => array("href" => "/ph/co2/person/sendemail"),
         "index"           => array("href" => "/ph/co2/person/dashboard",'title' => "My Dashboard"),
         "authenticate"    => array("href" => "/ph/co2/person/authenticate",'title' => "Authentication"),
@@ -549,6 +553,7 @@ class CommunecterController extends Controller
       "help"            => array('href' => "/ph/co2/app/help",            "public" => true),
       "mediacrawler"      => array('href' => "/ph/co2/app/mediacrawler",      "public" => false),
       "page"              => array('href' => "/ph/co2/app/page",              "public" => true),
+      "admin"              => array('href' => "/ph/co2/app/admin",              "public" => true),
       "search"            => array('href' => "/ph/co2/app/search",            "public" => true),
       "activities"              => array('href' => "/ph/co2/app/search",              "public" => true),
       "store"            => array('href' => "/ph/co2/app/search",            "public" => true),
@@ -558,6 +563,7 @@ class CommunecterController extends Controller
       "power"             => array('href' => "/ph/co2/app/power",             "public" => true),
       "superadmin"        => array('href' => "/ph/co2/app/superadmin",        "public" => false),
       "admin"             => array('href' => "/ph/co2/app/admin",             "public" => true),
+      "docs"             => array('href' => "/ph/co2/app/docs",             "public" => true),
       "adminpublic"       => array('href' => "/ph/co2/app/adminpublic",       "public" => true),
       "info"              => array('href' => "/ph/co2/app/info",              "public" => true),
       "smartconso"          => array('href' => "/ph/co2/app/smartconso",      "public" => true),

@@ -3,6 +3,7 @@
 //for select input : {"value":"FR", "text":"France"}
 //for select2 input : {"id":"FR", "text":"France"}
 function getCountries(selectType) {
+	mylog.log("getCountries");
 	var result = new Array();
 	$.ajax({
 		url: baseUrl+'/'+moduleId+"/opendata/getcountries",
@@ -226,24 +227,22 @@ function addCustomValidators() {
 	    if (!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))) {
 	    	mylog.log(!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))); 
 
-	        return moment(value, "DD/MM/YYYY HH:mm").isAfter(moment($(params[0]).val(), "DD/MM/YYYY HH:mm"));
+	        return moment(value, "DD/MM/YYYY HH:mm").isSameOrAfter(moment($(params[0]).val(), "DD/MM/YYYY HH:mm"));
 	    }    
 	    return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) > Number($(params[0]).val())); 
 	},'Doit ètre aprés {1}.');
 
-
-	// jQuery.validator.addMethod("greaterThanOrSame", function(value, element, params) {
- //    	mylog.log("greaterThan", value, params);
- //    	mylog.log(moment(value, "DD/MM/YYYY HH:mm").format());
- //    	mylog.log(!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))); 
-	//     //if (!/Invalid|NaN/.test(new Date(value))) {
-	//     if (!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))) {
-	//     	mylog.log(!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))); 
-	    	
-	//         return moment(value, "DD/MM/YYYY HH:mm").isSameOrAfter(moment($(params[0]).val(), "DD/MM/YYYY HH:mm"));
-	//     }    
-	//     return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) > Number($(params[0]).val())); 
-	// },'Doit ètre aprés {1}.');
+// jQuery.validator.addMethod("greaterThanOrSame", function(value, element, params) {
+//    	mylog.log("greaterThan", value, params);
+//    	mylog.log(moment(value, "DD/MM/YYYY HH:mm").format());
+//    	mylog.log(!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))); 
+//     //if (!/Invalid|NaN/.test(new Date(value))) {
+//     if (!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))) {
+//     	mylog.log(!/Invalid|NaN/.test(new Date(moment(value, "DD/MM/YYYY HH:mm").format()))); 
+//         return moment(value, "DD/MM/YYYY HH:mm").isSameOrAfter(moment($(params[0]).val(), "DD/MM/YYYY HH:mm"));
+//     }    
+//     return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) > Number($(params[0]).val())); 
+// },'Doit ètre aprés {1}.');
 
 	jQuery.validator.addMethod("greaterThanNow", function(value, element, params) {   
 		mylog.log("greaterThanNow", value,  params[0]);

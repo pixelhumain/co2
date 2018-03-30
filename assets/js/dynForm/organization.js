@@ -5,6 +5,9 @@ dynForm = {
 	    type : "object",
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
+	    	onload : function(){
+	    		dyFInputs.setHeader("bg-green");
+    	   	},
 	    	sub : function(){
 				
 				if(typeof currentKFormType == "undefined" || currentKFormType == "" || 
@@ -80,6 +83,7 @@ dynForm = {
             },
 	        name : dyFInputs.name("organization"),
 	        similarLink : dyFInputs.similarLink,
+	        type : dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true }),
 	        type : dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true }),
             role : dyFInputs.inputSelect(	tradDynForm["yourrole"],
             								tradDynForm["whichrole"]+" ?", 

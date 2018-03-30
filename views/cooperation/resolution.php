@@ -36,20 +36,8 @@
   		data-type="room" data-dataid="<?php echo @$resolution["idParentRoom"]; ?>">
   		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
-	<br>
-
-	<label>
-		<img class="img-circle" id="menu-thumb-profil" 
-         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
-		<a href="#page.type.citoyens.id.<?php echo $resolution["creator"]; ?>" class="lbh">
-			<?php echo $author["username"]; ?></a><?php if($myId == $resolution["creator"]){ ?><small>, 
-			<?php echo Yii::t("cooperation","your are the author of this proposal"); ?> </small>
-		<?php }else{ ?>
-		<small> <?php echo Yii::t("cooperation","is the author of this proposal"); ?></small>
-		<?php } ?>
-	</label>
-  	
 </div>
+
 
 
 <div class="col-lg-4 col-md-5 col-sm-5">
@@ -75,8 +63,22 @@
 </div>
 
 
+
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
 	<?php if(!@$resolution["answers"]){ ?>
+	<h3 class="radius-5 col-xs-12 bg-dark text-white text-bold padding-10 margin-bottom-10"  >	
+		<?php if(@$resolution["title"]){ ?>
+			<i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?>
+		<?php } ?>
+	</h3>
+	<label class="pull-right">
+		<small> <?php echo Yii::t("cooperation","Author"); ?> : </small>
+		<img class="img-circle" id="menu-thumb-profil" 
+         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
+		<a href="#page.type.citoyens.id.<?php echo $resolution["creator"]; ?>" class="lbh">
+			<?php echo $author["username"]; ?></a><?php if($myId == $resolution["creator"]){ ?>
+		<?php } ?>
+	</label>
 	<hr>
 		<h4 class="">
 			<i class="fa fa-bell"></i> 
@@ -176,16 +178,10 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-5">
 	
-	<div class="padding-25 bg-lightblue radius-5 col-xs-12" id="container-text-resolution">
-		<?php if(@$resolution["title"]){ ?>
-				<h3><i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?></h3>
-		<?php }else{ ?>
-				<br>
-		<?php } ?>
-
-		<?php if(@$resolution["description"]){
-				$resolution["description"] = Translate::strToClickable($resolution["description"]);
-		} ?>
+	<div class="padding-25 radius-5 col-xs-12" style="background-color: #eee" >
+	
+		<div class=" col-xs-12" id="container-text-resolution" style="padding:15px 0px 0px 40px;background-color: #eee" ><?php echo @$resolution["description"]; ?></div>
+		
 			
 		<?php echo nl2br(@$resolution["description"]); ?>
 
@@ -209,15 +205,19 @@
 
 		<?php } //foreach ?>
 		<?php } //if($i == 0){ echo "<hr><i class='fa fa-ban'></i> Aucun amendement validé"; } ?>
-
-		<?php if(@$resolution["tags"]){ ?>
-			<br><br> <b>Tags : </b>
-			<?php foreach($resolution["tags"] as $key => $tag){ ?>
-				<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
-			<?php } ?>	
-			
-		<?php } ?>
+		
+		
 	</div>
+
+
+	<?php if(@$resolution["tags"]){ ?>
+		<div class="col-xs-12"  ><br> <b>Tags : </b>
+		<?php foreach($resolution["tags"] as $key => $tag){ ?>
+			<span class="label label-danger margin-right-15">#<?php echo $tag; ?></span>
+		<?php } ?>	
+		</div>
+	<?php } ?>
+		
 
 
 
@@ -235,7 +235,7 @@
 	<?php if(false && @$resolution["arguments"]){ ?>
 		<h4 class="margin-top-50"><i class="fa fa-angle-down"></i> 
 		<?php echo Yii::t("cooperation", "More informations, arguments, exemples, demonstrations, etc"); ?></h4>
-		<?php echo nl2br(@$resolution["arguments"]); ?>
+		<div class="col-xs-12" id="container-text-complem" style="background-color: #eee" ><?php echo @$resolution["arguments"]; ?></div>
 	<?php } ?>
 
 	
@@ -321,9 +321,9 @@
 </div>
 
 <?php $this->renderPartial('../cooperation/amendements', 
-							array("amendements"=>@$resolution["amendements"], 
-								  "proposal"=>@$resolution,
-								  "auth"=>$auth)); ?>
+							array("amendements" => @$resolution["amendements"], 
+								  "proposal"    => @$resolution,
+								  "auth"        => $auth)); ?>
 
 <script type="text/javascript">
 	var parentTypeElement = "<?php echo $resolution['parentType']; ?>";
@@ -334,6 +334,8 @@
 	var useIdParentResolution = false;
 
 	jQuery(document).ready(function() { 
+		$("#container-text-resolution").html(dataHelper.markdownToHtml($("#container-text-resolution").html()) );
+		$("#container-text-complem").html(dataHelper.markdownToHtml($("#container-text-complem").html()) );
 		uiCoop.initUIResolution();
 	});
 

@@ -34,9 +34,8 @@
   		data-type="room" data-dataid="<?php echo @$action["idParentRoom"]; ?>">
   		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
-	<br>
+	
 </div>
-
 
 <div class="col-lg-5 col-md-6 col-sm-6">
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
@@ -86,8 +85,11 @@
 	</button>
 </div>
 
+<h3 class=" padding-10  radius-5 col-xs-12 bg-turq text-white text-bold"  >	
+		<?php if(@$action["name"])echo "<i class='fa fa-hashtag'></i> ".@$action["name"];?>
+	</h3>
 
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left margin-top-15">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
 <?php
 	//if no assignee , no startDate no end Date
     $statusLbl = Yii::t("rooms", @$post["status"]);
@@ -174,21 +176,12 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-25">
 	
-	<div class="padding-15 bg-lightblue radius-5 col-xs-12" id="container-text-action" >	
-		<?php if(@$action["name"]){ ?>
-			<h3><i class="fa fa-hashtag"></i> <?php echo @$action["name"]; ?></h3>
-		<?php } ?>
-	
-		<?php if(@$action["description"]){
-				$action["description"] = Translate::strToClickable($action["description"]);
-		} ?>
-		
-		<?php echo nl2br(@$action["description"]); ?>
-
+	<div class=" col-xs-12" id="container-text-action" style="padding:15px 0px 0px 40px;background-color: #eee" ><?php echo @$action["description"]; ?></div>
+	<div class="col-xs-12"  >	
 		<?php if(@$action["tags"]){ ?>
-			<br><br> <b>Tags : </b>
+			<br> <b>Tags : </b>
 			<?php foreach($action["tags"] as $key => $tag){ ?>
-				<span class="letter-red margin-right-15">#<?php echo $tag; ?></span>
+				<span class="label label-danger margin-right-15">#<?php echo $tag; ?></span>
 			<?php } ?>	
 			
 		<?php } ?>
@@ -277,6 +270,7 @@
 	currentRoomId = idParentRoom;
 
 	jQuery(document).ready(function() { 
+		$("#container-text-action").html(dataHelper.markdownToHtml($("#container-text-action").html()) )
 		uiCoop.initUIAction();
 		$(".load-coop-data[data-type='proposal']").removeClass("active");
 		$(".load-coop-data[data-type='action']").removeClass("active");

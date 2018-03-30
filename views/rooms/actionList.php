@@ -593,7 +593,7 @@ clickedVoteObject = null;
 var nbSurveyTotal = <?php echo count($list); ?>;
 
 jQuery(document).ready(function() {
-  
+  alert("actionList")
   //setTitle("Actions Réactions","cogs text-red");
   $(".main-col-search").addClass("assemblyHeadSection");
   $('.tooltips').tooltip();

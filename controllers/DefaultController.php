@@ -108,6 +108,11 @@ class DefaultController extends CommunecterController {
     $this->render("index");
   }
 
+  public function actionImg($n) 
+  {
+    echo $this->module->getAssetsUrl()."/images/".$n;
+  }
+
   public function actionHome() 
   {
     //$this->layout = "//layouts/mainSearch";

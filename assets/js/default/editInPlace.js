@@ -122,11 +122,13 @@ function bindAboutPodElement() {
 								}  
 								if(typeof data.resultGoods.values.startDate != "undefined"){
 									contextData.startDate = data.resultGoods.values.startDate;
+									//contextData.startDateDB = data.resultGoods.values.startDate;
 									//$("#startDateAbout").html(moment(contextData.startDate).local().locale("fr").format(formatDateView));
 									//$("#startDateAbout").html(directory.returnDate(contextData.startDate, formatDateView));
 								}  
 								if(typeof data.resultGoods.values.endDate != "undefined"){
 									contextData.endDate = data.resultGoods.values.endDate;
+									//contextData.endDateDB = data.resultGoods.values.endDate;
 									//$("#endDateAbout").html(moment(contextData.endDate).local().locale("fr").format(formatDateView));
 									//$("#endDateAbout").html(directory.returnDate(contextData.endDate, formatDateView));
 								}
@@ -191,6 +193,12 @@ function bindAboutPodElement() {
 								$(".emailOptionneltext").slideToggle();
 								$("#ajax-modal .modal-header").removeClass("bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 											  					  .addClass("bg-dark");
+							},
+							onload : function (data) { 
+								//this is a hack too a strange bug
+								//this select doesn't carry it's value
+								if( contextData.type == typeObj.event.col || contextData.type == typeObj.organization.col )
+									$("#type").val(data.type);
 							}
 						},
 						beforeSave : function(){
@@ -327,7 +335,7 @@ function bindAboutPodElement() {
 									var htmlAbout = "<i>"+trad["notSpecified"]+"</i>";
 									var htmlHeader = "";
 
-									if(notEmpty(contextData.parentId)){
+									if(notEmpty(contextData.parentId) && contextData.parentId != "dontKnow"){
 										htmlAbout = '<a href="#page.type.'+contextData.parentType+'.id.'+contextData.parentId+'" class="lbh">'+ 
 											'<i class="fa fa-'+dyFInputs.get(contextData.parentType).icon+'"></i> '+
 											contextData.parent.name+'</a><br/>';
@@ -380,13 +388,12 @@ function bindAboutPodElement() {
 			}
 
 			if(contextData.type == typeObj.organization.col ){
-				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true });
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm.organizationType, tradDynForm.organizationType, organizationTypes, { required : true });
 			}else if(contextData.type == typeObj.event.col ){
-				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm["eventTypes"], tradDynForm["eventTypes"], eventTypes, { required : true });
-			}
-
-			if(contextData.type == typeObj.project.col ){
-				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect(tradDynForm["theprojectmaturity"], tradDynForm["projectmaturity"], avancementProject);
+				mylog.log("Type event ", typeObj.event.col, contextData.type);
+				form.dynForm.jsonSchema.properties.type = dyFInputs.inputSelect(tradDynForm.eventTypes, tradDynForm.eventTypes, eventTypes, { required : true });
+			}else if( contextData.type == typeObj.project.col ){
+				form.dynForm.jsonSchema.properties.avancement = dyFInputs.inputSelect(tradDynForm.theprojectmaturity, tradDynForm.projectmaturity, avancementProject);
 			}
 
 			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
@@ -453,23 +460,21 @@ function bindAboutPodElement() {
 				if(notEmpty(contextData.birthDate))
 					dataUpdate.birthDate = moment(contextData.birthDate).local().format("DD/MM/YYYY");
 			}
-
+			
+			mylog.log("ORGA ", contextData.type, typeObj.organization.col, dataUpdate.type);
+			
 			if(contextData.type == typeObj.organization.col ){
+				mylog.log("ORGA type", contextData.typeOrga, contextData.typeOrganization);
 				if(notEmpty(contextData.typeOrga))
 					dataUpdate.type = contextData.typeOrga;
-			}
-
-			if(contextData.type == typeObj.event.col ){
-				if(notEmpty(contextData.typeEvent))
+				mylog.log("ORGA resultType", dataUpdate.type);
+			}else if(contextData.type == typeObj.event.col ){
+				if(jsonHelper.notNull("contextData.typeEvent") )
 					dataUpdate.type = contextData.typeEvent;
-			}
-
-			if(contextData.type == typeObj.project.col ){
+			}else if(contextData.type == typeObj.project.col ){
 				if(notEmpty(contextData.avancement))
 					dataUpdate.avancement = contextData.avancement;
-			}
-			
-			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
+			}else if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				if(notEmpty(contextData.email)) 
 					dataUpdate.email = contextData.email;
 				if(notEmpty(contextData.fixe))
@@ -478,9 +483,7 @@ function bindAboutPodElement() {
 					dataUpdate.mobile = contextData.mobile;
 				if(notEmpty(contextData.fax))
 					dataUpdate.fax = contextData.fax;
-			}
-			
-			if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
+			}else if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
 
 			if(notEmpty(contextData.parentId)) 
@@ -575,21 +578,25 @@ function bindAboutPodElement() {
 							}
 						},
 						beforeSave : function(){
-							mylog.log("beforeSave");
+							mylog.log("beforeSave", contextData["socialNetwork"]);
 					    	//removeFieldUpdateDynForm(contextData.type);
-
 					    	var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus", "instagram", "diaspora", "mastodon"];
 							$.each(SNetwork, function(key, val){ 
 								mylog.log("val", val);
 								mylog.log("val2", $("#ajaxFormModal #"+val).val(), $("#ajaxFormModal #"+val).length);
+
 								if(	notNull(contextData["socialNetwork"]) && 
 									notNull(contextData["socialNetwork"][val]) &&
 									( 	$("#ajaxFormModal #"+val).length &&
 										$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] ) ) {
+									mylog.log("if", val);
 									$("#ajaxFormModal #"+val).remove();
 								} else if (	(	!notNull(contextData["socialNetwork"]) || 
-												!notNull(contextData["socialNetwork"][val]) ) && $("#ajaxFormModal #"+val).length )
+												!notNull(contextData["socialNetwork"][val]) ) && $("#ajaxFormModal #"+val).length ){
+									mylog.log("else", val);
 									$("#ajaxFormModal #"+val).remove();
+								}
+									
 							});
 					    },
 						afterSave : function(data){

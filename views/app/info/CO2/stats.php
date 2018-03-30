@@ -74,28 +74,28 @@
 
         	<small class="font-montserrat text-light">
         		<i class="fa fa-angle-right"></i> 
-        		Les statistiques indiquées correspondent au nombre de chargement de chaque url (, etc)<br>
+        		<?php echo Yii::t("common","The statistics shown correspond to the number of loadings of each url.") ?><br>
         		<i class="fa fa-angle-right"></i> 
-        		A chaque fois qu'une personne accède par exemple à la page #agenda, #live, ou #search, le nombre augmente.<br>
+        		<?php echo Yii::t("common","Each time a person accesses for example the page #agenda, #live, or #search, the number increases.") ?><br>
         		<i class="fa fa-angle-right"></i> 
-        		Les courbes donnent un apperçu de la fréquentation de chaque page, par jour, et par semaine.<br><br>
+        		<?php echo Yii::t("common","The curves provide an overview of page traffic by page, day and week.") ?><br><br>
         		<i class="fa fa-angle-right"></i> 
-        		#LOGIN est incrémenté à chaque fois qu'un utilisateur se connecte à son compte.
+        		<?php echo Yii::t("common","LOGIN is incremented each time a user logs in to their account.") ?>
         	</small>
 
 
 			<div class="col-md-12 stat-week no-padding" id="central-container">
 				<hr>
 				<h5 class="text-left text-azure">
-					<i class="fa fa-angle-down"></i> Nombre de visites - Semaine <?php echo $visits["week"]; ?></span>
+					<i class="fa fa-angle-down"></i> <?php echo Yii::t("common","Number of visits - Week") ?> <?php echo $visits["week"]; ?></span>
 					<br><br>
 					<button class="btn btn-default pull-left margin-right-5" id="back-week" 
 							data-week="<?php echo $backWeek.$backYear; ?>">
-						<i class="fa fa-chevron-left"></i> Sem <?php echo $backWeek; ?>
+						<i class="fa fa-chevron-left"></i> <?php echo Yii::t("common","Week") ?> <?php echo $backWeek; ?>
 					</button>
 					<?php if($nextWeek <= Date("W") || $nextYear < Date("Y")){ ?>
 					<button class="btn btn-default pull-left" id="next-week" data-week="<?php echo $nextWeek.$nextYear; ?>">
-						Sem <?php echo $nextWeek; ?> <i class="fa fa-chevron-right"></i> 
+						<?php echo Yii::t("common","Week") ?> <?php echo $nextWeek; ?> <i class="fa fa-chevron-right"></i> 
 					</button>
 					<?php } ?>
 				</h5>

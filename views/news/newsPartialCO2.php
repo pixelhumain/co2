@@ -158,18 +158,12 @@ foreach($news as $key => $media){
   jQuery(document).ready(function() {
     if($("#noMoreNews").length)
       scrollEnd=true;
-    
-    <?php if(isset(Yii::app()->session["userId"])) { ?>
-      initCommentsTools(news);
-    <?php } ?>
 
-
-    console.log("mapElementsNews", news);
     Sig.showMapElements(Sig.map, news, "search", "Auteurs");
     
 
     //alert("bind me");
-    $(".live-container #news-list .btn-tag-news").off().click(function(){ console.log("yahiyaho");
+    $(".live-container #news-list .btn-tag-news").off().click(function(){
         var tag = $(this).data("filter");
         $("#second-search-bar, #main-search-bar").val(tag);
         startNewsSearch(true);
@@ -177,7 +171,7 @@ foreach($news as $key => $media){
     });
 
     $.each(news, function(e,v){
-      updateNews[e]= v;
+        updateNews[e]= v;
         if(typeof v._id.$id != "undefined")
         if($("#news-list .newsActivityStream"+v._id.$id).length>0)
            $("#news-list #news"+v._id.$id).remove();
@@ -193,7 +187,7 @@ foreach($news as $key => $media){
             }
           });
         if(v.object.type != "news"){
-          var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type);
+          var html = directory.showResultsDirectoryHtml(new Array(v.object), v.object.type, null, null, true);
           $(".newsActivityStream"+v.object.id + "[data-type='"+v.object.type+"']").html(html);
         }
       }
@@ -247,7 +241,7 @@ foreach($news as $key => $media){
         else if (v.media.type=="gallery_files")
           media=getMediaFiles(v.media,e);
         else if (v.media.type=="activityStream")
-          media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type);
+          media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type, null, null, true);
         $("#result"+e).html(media);
 
          $(".videoSignal").off().on("click",function(){
@@ -282,6 +276,9 @@ foreach($news as $key => $media){
       var newsid = $(this).data("newsid");
       uiModeration.getNewsToModerate(newsid);
     });
+    <?php if(isset(Yii::app()->session["userId"])) { ?>
+      initCommentsTools(news);
+    <?php } ?>
 
     
     initBtnLink();

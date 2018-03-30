@@ -88,7 +88,7 @@
 
             $i=0;
         ?>
-             <?php foreach ($myAlbums as $name => $album) { $i++ ?>
+             <?php if(!empty($myAlbums)) foreach ($myAlbums as $name => $album) { $i++ ?>
              <div class="ctn-gallery col-xs-12 padding-15 margin-bottom-10" id="ctn-gallery-<?php echo $i; ?>">
                 <span class="folder-name letter-blue">
                     <button class="btn btn-sm btn-link bg-blue-k btn-select-gallery tooltips" 

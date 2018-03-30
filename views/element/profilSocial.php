@@ -1,6 +1,6 @@
 <?php 
 	HtmlHelper::registerCssAndScriptsFiles( 
-		array(  '/css/onepage.css',
+		array(  //'/css/onepage.css',
 				'/vendor/colorpicker/js/colorpicker.js',
 				'/vendor/colorpicker/css/colorpicker.css',
 				'/css/news/index.css',	

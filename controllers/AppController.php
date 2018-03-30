@@ -285,12 +285,11 @@ class AppController extends CommunecterController {
         $this->redirect( Yii::app()->createUrl("/classifieds/co/market") );
     }
 
-	public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
     public function actionHelp(){ 
         $this->redirect( Yii::app()->createUrl("/ressources/co/ressources") );
     }
 
-	public function actionPage($type, $id, $view=null, $dir=null){
+    public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
         //var_dump($view); exit;
             

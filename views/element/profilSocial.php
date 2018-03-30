@@ -391,6 +391,11 @@
 				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 				                </a>
 				            </li>
+				            <li class="text-left">
+				               	<a href="javascript:;" id="btn-preferences-notifications" class="bg-white">
+				                    <i class="fa fa-check"></i> <?php echo Yii::t("common", "Notifications preferences"); ?>
+				                </a>
+				            </li>
 			            <?php } ?>
 						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			  				<li class="text-left">

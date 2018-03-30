@@ -17,11 +17,15 @@ class PodController extends CommunecterController {
 	        'slideragenda'      => 'citizenToolKit.controllers.pod.SliderAgendaAction',
 	        'photovideo'     	=> 'citizenToolKit.controllers.pod.PhotoVideoAction',
 	        'fileupload'     	=> 'citizenToolKit.controllers.pod.FileUploadAction',
-	        'activitylist'     	=> 'citizenToolKit.controllers.pod.ActivityListAction'
+	        'activitylist'     	=> 'citizenToolKit.controllers.pod.ActivityListAction',
+	        //'preferences'     	=> 'citizenToolKit.controllers.pod.preferencesAction',
 	    );
 	}
 	public function actionCircuit(){
     	echo $this->renderPartial("circuit", array(), true);
  	}
+ 	public function actionPreferences(){
+    	$this->renderPartial("../pod/preferences" , array() );
+	}
 }
 ?>

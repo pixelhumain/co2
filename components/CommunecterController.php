@@ -381,6 +381,7 @@ class CommunecterController extends Controller
       "fileupload"   => array("href" => "ph/co2/pod/fileupload"),
       "activitylist"   => array("href" => "ph/co2/pod/activitylist"),
       "circuit"      => array("href" => "/ph/co2/pod/circuit"),
+      "preferences"      => array("href" => "/ph/co2/pod/preferences"),
     ),
     "bookmark" => array(
       "delete"        => array("href" => "ph/communecter/bookmark/delete"),

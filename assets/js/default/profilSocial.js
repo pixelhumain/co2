@@ -326,7 +326,12 @@ function bindButtonMenu(){
 			});
     	}
     });
-
+	$("#btn-preferences-notifications").off().on("click", function(){
+		responsiveMenuLeft();
+		//location.hash=hashUrlPage+".view.networks";
+		//history.pushState(null, "New Title", hashUrlPage+".view.contacts");
+		loadPreferences();
+	});
     $("#inviteBtn").on("click", function(){
     	mylog.log("invite");
     	$("#modal-invite").modal("show");
@@ -539,6 +544,14 @@ function loadGallery(){
 	toogleNotif(false);
 	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/image";
 	
+	showLoader('#central-container');
+	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+		null,
+		function(){},"html");
+}
+function loadPreferences(){
+	toogleNotif(false);
+	var url = "pod/preferences";
 	showLoader('#central-container');
 	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 		null,

@@ -623,10 +623,11 @@ var uiCoop = {
 		//$(".descriptionMarkdown").html(dataHelper.convertMardownToHtml($(".descriptionMarkdown").html()));
 		if($("#modal-preview-coop #coop-container").length == 0){
 			var addCoopHash=".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
+			onchangeClick=false;
 			if(typeof hashUrlPage != "undefined")
 				location.hash = hashUrlPage +addCoopHash;
 			else if(notNull(contextData) && typeof contextData.slug != "undefined")
-				location.hash = "#" + contextData.slug + addCoopHash;
+				location.hash = "#@" + contextData.slug + addCoopHash;
 			else
 				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash; 
 		}
@@ -698,10 +699,11 @@ var uiCoop = {
 
 		if($("#modal-preview-coop #coop-container").length == 0){
 			var addCoopHash=".view.coop.room." + idParentRoom + ".action." + idAction;
+			onchangeClick=false;
 			if(typeof hashUrlPage != "undefined")
 				location.hash = hashUrlPage +addCoopHash;
 			else if(notNull(contextData) && typeof contextData.slug != "undefined")
-				location.hash = "#" + contextData.slug + addCoopHash;
+				location.hash = "#@" + contextData.slug + addCoopHash;
 			else
 				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;  
 		}					  
@@ -803,10 +805,11 @@ var uiCoop = {
 
 		if($("#modal-preview-coop #coop-container").length == 0){
 			var addCoopHash=".view.coop.room." + idParentRoom + ".resolution." + idParentResolution;
+			onchangeClick=false;
 			if(typeof hashUrlPage != "undefined")
 				location.hash = hashUrlPage +addCoopHash;
 			else if(notNull(contextData) && typeof contextData.slug != "undefined")
-				location.hash = "#" + contextData.slug + addCoopHash;
+				location.hash = "#@" + contextData.slug + addCoopHash;
 			else
 				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;
 		}

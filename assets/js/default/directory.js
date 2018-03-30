@@ -705,6 +705,7 @@ function initPageTable(number){
         toastr.info(trad["processing"]);
         uiCoop.startUI();
         $("#modalCoop").modal("show");
+        onchangeClick=false;
         if(coopType == "rooms"){
           uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
         }else{

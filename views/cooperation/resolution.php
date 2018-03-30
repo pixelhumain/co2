@@ -180,8 +180,17 @@
 	
 	<div class="padding-25 radius-5 col-xs-12" style="background-color: #eee" >
 	
-		<div class=" col-xs-12" id="container-text-resolution" style="padding:15px 0px 0px 40px;background-color: #eee" ><?php echo @$resolution["description"]; ?></div>
-		
+		<div class=" col-xs-12" id="container-text-resolution" style="padding:15px 0px 0px 40px;background-color: #eee" >
+		<?php //echo @$resolution["description"]; ?></div>
+		<?php if(@$resolution["title"]){ ?>
+				<h3><i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?></h3>
+		<?php }else{ ?>
+				<br>
+		<?php } ?>
+
+		<?php if(@$resolution["description"]){
+				$resolution["description"] = Translate::strToClickable($resolution["description"]);
+		} ?>
 			
 		<?php echo nl2br(@$resolution["description"]); ?>
 

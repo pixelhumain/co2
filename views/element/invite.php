@@ -67,6 +67,12 @@
 
 <div class="portfolio-modal modal fade" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-content padding-top-15">
+		<div class="close-modal" data-dismiss="modal">
+			<div class="lr">
+				<div class="rl">
+				</div>
+			</div>
+		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -77,7 +83,7 @@
 									if($parentType == Person::COLLECTION)
 										echo Yii::t("invite","Search or invite your contacts");
 									else
-										echo Yii::t("invite","Search or invite members");
+										echo Yii::t("invite","Invite members");
 								?>
 							</span>
 							<br>
@@ -114,11 +120,11 @@
 					</ul>
 				</div>
 			</div>
-			<div class="row links-create-element">
+			<div class="row " id="divSearchInvite">
 				<div id="step1" class="modal-body col-xs-6" >
 					<div class="form-group">
 						<input type="text" class="form-control text-left" placeholder="Un nom, un e-mail ..." autocomplete = "off" id="inviteSearch" name="inviteSearch" value="">
-						<ul class="dropdown-menu col-xs-10" id="dropdown_searchInvite" style="">
+						<ul class="dropdown-menu col-xs-10" id="dropdown-search-invite" style="">
 							<li class="li-dropdown-scope"></li>
 						</ul>
 						<div class="col-xs-12" id="form-invite">
@@ -177,16 +183,38 @@
 					</div>
 				</div>
 			</div>
+			<div class="row" id="divResult">
+				<div id="stepResult" class="modal-body col-xs-12" >
+					<div class="form-group">
+						<div class="col-xs-12">
+							<h4> Résultat </h4>
+							<ul class="dropdown-menu col-xs-10" id="dropdown-result" style="">
+								<li class="li-dropdown-scope"></li>
+							</ul>
+						</div>
+						<div class="col-xs-12" style="margin-top: 10px;">
+							<button id="btnValider" >
+								<i class="fa fa-check"> </i>Valider 
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
 
 <script type="text/javascript">
-	//var parentType = "<?php echo $parentType; ?>";
+	var parentType = "<?php echo $parentType; ?>";
+	var parentId = "<?php echo $parentId; ?>";
 	var members = <?php echo json_encode( $members ); ?>;
 	var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.sponsor, tradCategory.organizor, tradCategory.president, tradCategory.director, tradCategory.speaker, tradCategory.intervener];
-	var contactTypes = [{ name : "people", color: "yellow", icon:"user", label:"People" }];
+	var contactTypes = {
+			citoyens : { color: "yellow", icon:"user", label:"People" },
+			organizations :	{ color: "green", icon:"group", label:"Organizations" } 
+		};
+
 	var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $parentType, @Yii::app()->session["userId"]) ?>";
 
 	var listInvite = { 
@@ -201,9 +229,9 @@
 
 		$("#step2").hide();
 		$("#form-invite").hide();
+		$("#divResult").hide();
 
 	});
-
 
 	function bindInvite(){
 		$('#modal-invite #inviteSearch').keyup(function(e){
@@ -213,10 +241,10 @@
 				clearTimeout(timeout);
 				timeout = setTimeout('autoCompleteInvite("'+encodeURI(search)+'")', 500); 
 			}else{
-				$("#modal-invite #dropdown_searchInvite").hide();	
+				$("#modal-invite #dropdown-search-invite").hide();
+				$("#modal-invite #form-invite").hide();
 			}
 		});
-
 
 		$('#modal-invite #btnInviteNew').click(function(e){
 
@@ -229,53 +257,70 @@
 					name : name,
 					msg : msg
 				} ;
+				$('#modal-invite #inviteEmail').val("");
+				$('#modal-invite #inviteText').val("");
+				$('#modal-invite #inviteName').val("");
+				$("#modal-invite #form-invite").hide();
 			}else{
 				toastr.error("Deja la ma gueule");
 			}
-		});
 
+			showElementInvite(listInvite, true);
+			bindRemove();
+		});
 
 		$('#modal-invite #btnValider').click(function(e){
 			mylog.log("#modal-invite #btnValider", Object.keys(listInvite.organizations).length, Object.keys(listInvite.citoyens).length);
-			if( Object.keys(listInvite.organizations).length > 0 || Object.keys(listInvite.citoyens).length > 0 || Object.keys(listInvite.invites).length > 0 ) {
+			if( Object.keys(listInvite.organizations).length > 0 || 
+				Object.keys(listInvite.citoyens).length > 0 || 
+				Object.keys(listInvite.invites).length > 0 ) {
 				mylog.log("#modal-invite #btnValider here");
-				// $.ajax({
-				// 	type: "POST",
-				// 	url: baseUrl+"/"+moduleId+'/person/follows',
-				// 	dataType : "json",
-				// 	data: dataInvite,
-				// 	type:"POST",
-				// 	success: function(data){ 
-				// 		if (data &&  data.result) {								
-				// 		toastr.success('L\'invitation a été envoyée avec succès!');
-						// mylog.log(data);
-						
-						// if(typeof data.data !="undefined"){
-						// 	$.each(data.data, function(key, elt) {
-						// 		addFloopEntity(elt.invitedUser.id, "<?php //echo Person::COLLECTION ?>", elt.invitedUser);
-						// 	});
-						// }else
-						// 	addFloopEntity(data.invitedUser.id, "<?php //echo Person::COLLECTION ?>", data.invitedUser);
-						// urlCtrl.loadByHash(location.hash);
 
-				// 		} else {
-				// 			$.unblockUI();
-				// 				toastr.error(data.msg);
-				// 				$("#modal-invite #step3 #btn-save-invite").prop("disabled",false);
-				// 				$("#modal-invite #step3 #btn-save-invite").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
-				// 		}
-				// 	}
-				// })
-				// .done(function (data){
-				// 	$.unblockUI();
-				//
-				//});
+				var params = {
+					parentId : parentId,
+					parentType : parentType,
+					listInvite : listInvite
+				};
+
+				$.ajax({
+					type: "POST",
+					url: baseUrl+'/'+moduleId+"/link/multiconnect",
+					data: params,
+					dataType: "json",
+					success: function(data){
+						mylog.log("link/multiconnect success", data);
+						var nbInvites = data.length;
+						var str = "";
+						$.each(data, function(key, value){
+							mylog.log("contactsList.invites key, value", key, value);
+							if(value.result == true){
+								str += "<li class='li-dropdown-scope'>";
+									str +="<div class='btn-scroll-type' >";
+										str += '<span class="text-dark text-bold">' + value.parent.name + ' : </span>';
+										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
+									str += "</div>";
+								str += "</li>";
+							}else{
+								str += "<li class='li-dropdown-scope'>";
+									str +="<div class='btn-scroll-type' >";
+										str += '<span class="text-dark text-bold">' + value.parent.name + ' : </span>';
+										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
+									str += "</div>";
+								str += "</li>";
+							}
+						});
+
+						$("#modal-invite #dropdown-result").html(str);
+						$("#divSearchInvite").hide();
+						$("#divResult").show();
+						$("#modal-invite #dropdown-result").show();
+						
+				 	}
+				});
+				
 			}
 		});
 	}
-
-
-
 
 	function showListInvite(){
 		if(Object.keys(listInvite.organizations).length > 0 || Object.keys(listInvite.citoyens).length > 0|| Object.keys(listInvite.invites).length > 0 ){
@@ -293,7 +338,6 @@
 			var profilThumbImageUrl = $(this).data("profilThumbImageUrl");
 
 			if(type == "citoyens"){
-
 				if(typeof listInvite.citoyens[id] == "undefined"){
 					listInvite.citoyens[id] = { 
 						name : name,
@@ -302,7 +346,6 @@
 				}else{
 					toastr.error("Deja la ma gueule");
 				}
-				
 			}else if(type == "organizations"){
 				if(typeof listInvite.organizations[id] == "undefined"){
 					listInvite.organizations[id] = { 
@@ -323,14 +366,15 @@
 		$('#modal-invite .remove-invite').click(function(e){
 			var id = $(this).data("id");
 			var type = $(this).data("type");
-			var mail = $(this).data("mail");
+
+			mylog.log(".remove-invite", id , type);
 
 			if(type == "citoyens"){
 
 				if(typeof id != "undefined" && typeof listInvite.citoyens[id] != "undefined"){
 					delete listInvite.citoyens[id] ;
-				}else if(typeof mail != "undefined" && typeof listInvite.invites[mail] != "undefined"){
-					delete listInvite.invites[mail] ;
+				}else if(typeof id != "undefined" && typeof listInvite.invites[id] != "undefined"){
+					delete listInvite.invites[id] ;
 				}
 				
 			}else if(type == "organizations"){
@@ -350,28 +394,34 @@
 		if (search.length < 3) { return }
 		tabObject = [];
 
+		var searchMode = "personOnly";
+		if(parentType == "organizations"){
+			searchMode = "mixte";
+		}
+
 		var data = { 
 			"search" : search,
-			"searchMode" : "personOnly"
+			"searchMode" : searchMode
 		};
+
 		mylog.log("url", baseUrl+'/'+moduleId+"/search/searchmemberautocomplete");
 		$.ajax({
 			type: "POST",
-		    url: baseUrl+'/'+moduleId+"/search/searchmemberautocomplete",
-		    data: data,
-		    dataType: "json",
-		    success: function(data){
-		    	mylog.log("autoCompleteInvite success", data);
-			    showElementInvite(data);
-		    	bindAdd();
-		 	}
+			url: baseUrl+'/'+moduleId+"/search/searchmemberautocomplete",
+			data: data,
+			dataType: "json",
+			success: function(data){
+				mylog.log("autoCompleteInvite success", data);
+				showElementInvite(data);
+				bindAdd();
+			}
 		});
 	}
 
 	function showElementInvite(contactsList, invite=false){
 		mylog.log("showElementInvite", contactsList, invite);
 		mylog.log("showElementInvite length", Object.keys(contactsList.citoyens).length);
-		var dropdown = "#dropdown_searchInvite";
+		var dropdown = "#dropdown-search-invite";
 		var listNotExits = true;
 		if(invite == true){
 			var str = "";
@@ -381,40 +431,60 @@
 		}
 		
 		if(notNull(contactsList.citoyens) && Object.keys(contactsList.citoyens).length ){
+			str += '<li class="li-dropdown-scope">'+
+						'<h5 class="padding-10 text-'+contactTypes.citoyens.color+'"><i class="fa fa-'+contactTypes.citoyens.icon+'"></i> '+contactTypes.citoyens.label+'<hr></h5>'+			
+					'</li>';
 			$.each(contactsList.citoyens, function(key, value){
-				mylog.log("contactsList key, value", key, value);
-				str += htmlListInvite(value);
+				mylog.log("contactsList.citoyens key, value", key, value);
+				str += htmlListInvite(key, value, invite);
 			});
 			listNotExits = false;
 		}
 
 		if(notNull(contactsList.invites) && Object.keys(contactsList.invites).length ){
 			$.each(contactsList.invites, function(key, value){
-				mylog.log("contactsList key, value", key, value);
-				str += htmlListInvite(value, invite);
+				mylog.log("contactsList.invites key, value", key, value);
+				str += htmlListInvite(key, value, invite);
 			});
 			listNotExits = false;
 		}
-			
+
+		if(notNull(contactsList.organizations) && Object.keys(contactsList.organizations).length ){
+			str += '<li class="li-dropdown-scope">'+
+						'<h5 class="padding-10 text-'+contactTypes.organizations.color+'"><i class="fa fa-'+contactTypes.organizations.icon+'"></i> '+contactTypes.organizations.label+'<hr></h5>'+			
+					'</li>';
+			$.each(contactsList.organizations, function(key, value){
+				mylog.log("contactsList.organizations key, value", key, value);
+				str += htmlListInvite(key, value, invite);
+			});
+			listNotExits = false;
+		}
+
+		mylog.log("showElementInvite", dropdown);
 		$("#modal-invite "+dropdown).html(str);
 		$("#modal-invite "+dropdown).show();
 
 		if(listNotExits)
 			newInvitation();
+		else
+			$("#modal-invite #form-invite").hide();
+
 		showListInvite();
 	}
 
-	function htmlListInvite(elem, invite){
+	function htmlListInvite(id, elem, invite){
+		//( typeof elem.id != "undefined" ? elem.id : elem.email )
+		mylog.log("htmlListInvite", elem, invite);
 		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl+'/'+ elem.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
-		str += "<li class='li-dropdown-scope'>";
+		var str = "<li class='li-dropdown-scope'>";
 			var classStr = " ";
 			if(invite == true){
-				str+='<button class="btn btn-link text-red tooltips col-xs-2 remove-invite" '
-						'id="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'Remove" '+
-						'name="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'Remove" '+
+				str+='<button class="btn btn-link text-red tooltips col-xs-2 remove-invite" '+
+						'id="'+id+'Remove" '+
+						'name="'+id+'Remove" '+
 						'data-toggle="tooltip" data-placement="top" '+
 						'data-type="citoyens" ' +
-						'data-id="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'" ' + 
+						'data-id="'+id+'" ' + 
 						'data-toggle="tooltip" data-placement="top" title="Remove" >'+
 						'<i class="fa fa-remove"></i>'+
 						'</button>';
@@ -423,9 +493,9 @@
 			}
 
 			str +="<div class='btn-scroll-type "+classStr+"'"+
-					" data-id='"+( typeof elem.id != "undefined" ? elem.id : elem.email )+"' "+
-					'id="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'AddList" '+
-					'name="'+( typeof elem.id != "undefined" ? elem.id : elem.email )+'AddList"'+
+					" data-id='"+id+"' "+
+					'id="'+id+'AddList" '+
+					'name="'+id+'AddList"'+
 					" data-name='"+elem.name+"' "+
 					" data-profilThumbImageUrl='"+profilThumbImageUrl+"' "+
 					" data-type='citoyens' >";
@@ -438,7 +508,7 @@
 
 
 	function newInvitation(){
-		$("#modal-invite #dropdown_searchInvite").hide();
+		$("#modal-invite #dropdown-search-invite").hide();
 		$("#modal-invite #form-invite").show();
 		
 		

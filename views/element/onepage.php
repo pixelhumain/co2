@@ -237,6 +237,7 @@
     			foreach ($events as $key => $value)
     				if(Event::isPast($value)) unset($events[$key]);
     			
+    			if(sizeOf(@$events)>0)
     			$this->renderPartial('../element/onepage/section', 
     								array(  "element" => $element,
     								   		"items" => $events,

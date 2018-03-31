@@ -687,6 +687,9 @@ function initPageTable(number){
 
     });
 
+    $.each($(".searchEntity.coopPanelHtml .descMD"), function(){
+      $(this).html(dataHelper.markdownToHtml($(this).html()) );
+    });
 
     $(".btn.openCoopPanelHtml").off().click(function(){
       var coopType = $(this).data("coop-type");
@@ -2470,8 +2473,8 @@ var directory = {
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
       var description = "";
       if(typeof params.description != "undefined"){
-        description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
-        description = description.replace(/\n/g,"<br>");
+        description = params.description; //.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
+        //description = description.replace(/\n/g,"<br>");
       }
       name = escapeHtml(name);
       var thisId = typeof params["_id"] != "undefined" &&
@@ -2504,7 +2507,7 @@ var directory = {
           str += '</h5>';
           }
 
-          str += '<span class="col-xs-12 no-padding text-dark">'+description+'</span>';
+          str += '<span class="col-xs-12 no-padding text-dark descMD">'+description+'</span>';
 
           if(params["auth"]){
 

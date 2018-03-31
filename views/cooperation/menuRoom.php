@@ -17,6 +17,7 @@
 	#menu-room .sub-resolutions .load-coop-data{
 		line-height: 14px;
 	}
+	
 </style>
 
 <?php 
@@ -342,9 +343,7 @@
 
 	jQuery(document).ready(function() { 
 	
-		$("#btn-edit-room").click(function(){
-
-		});
+		$("#menu-room .room-desc small").html(dataHelper.markdownToHtml($("#menu-room .room-desc small").html()));
 		
 		$("#btn-open-modal-delete").off().click(function(){
 			$("#modalDeleteRoom #btn-delete-room").attr("data-id-room", currentRoomId);

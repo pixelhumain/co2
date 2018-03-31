@@ -367,11 +367,12 @@
 		
 		if($("#modal-preview-coop #coop-container").length == 0){
 			if(currentRoomId != ""){
+				onchangeClick=false;
 				addCoopHash=".view.coop.room." + currentRoomId;
 				if(typeof hashUrlPage != "undefined")
 					location.hash = hashUrlPage +addCoopHash;
 				else if(notNull(contextData) && typeof contextData.slug != "undefined")
-					location.hash = "#" + contextData.slug + addCoopHash;
+					location.hash = "#@" + contextData.slug + addCoopHash;
 				else
 					location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;
 			}

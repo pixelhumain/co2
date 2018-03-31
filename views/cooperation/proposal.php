@@ -551,9 +551,7 @@
 
 	currentRoomId = idParentRoom;
 
-	jQuery(document).ready(function() { 
-		$("#container-text-proposal").html(dataHelper.markdownToHtml($("#container-text-proposal").html()) );
-		$("#container-text-complem").html(dataHelper.markdownToHtml($("#container-text-complem").html()) )
+	jQuery(document).ready(function() {
 		uiCoop.initUIProposal();
 	});
 

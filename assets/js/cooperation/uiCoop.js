@@ -206,7 +206,7 @@ var uiCoop = {
 						$("#main-coop-container").html(data);
 					uiCoop.minimizeMenuRoom(false);
 				}
-				else{
+				else{ 
 					$(uiCoop.getParentContainer() + "#coop-data-container").html(data);
 					uiCoop.minimizeMenuRoom(true);
 				}
@@ -577,7 +577,8 @@ var uiCoop = {
 
 		$(".btn-send-vote").off().click(function(){
 			var voteValue = $(this).data('vote-value');
-			mylog.log("send vote", voteValue),
+			mylog.log("send vote", voteValue, idParentProposal);
+			alert("idParentProposal " + idParentProposal);
 			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
 		});
 
@@ -620,7 +621,11 @@ var uiCoop = {
 			dyFObj.editElement('proposals', idProposal);
 		});
 
-		//$(".descriptionMarkdown").html(dataHelper.convertMardownToHtml($(".descriptionMarkdown").html()));
+		$(".descriptionMarkdown").html(dataHelper.convertMardownToHtml($(".descriptionMarkdown").html()));
+		
+		$("#container-text-proposal").html(dataHelper.markdownToHtml($("#container-text-proposal").html()) );
+		$("#container-text-complem").html(dataHelper.markdownToHtml($("#container-text-complem").html()) );
+
 		if($("#modal-preview-coop #coop-container").length == 0){
 			var addCoopHash=".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
 			onchangeClick=false;

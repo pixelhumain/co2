@@ -99,10 +99,6 @@
                 <i class="fa fa-cog"></i>
         </button>
 
-        <?php $this->renderPartial('../element/onepage/btnShowHide', 
-                                    array(  "sectionShadow" => @$sectionShadow,
-                                            "sectionKey" => @$sectionKey));
-        ?>
 
         <?php if(@$freeSec=="free-section"){ ?>
             <button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-delete-free-section" 
@@ -118,6 +114,13 @@
                         data-section-key="#<?php echo @$sectionKey; ?>">Oui</button>
             </div>
         <?php } ?>
+
+        <?php $this->renderPartial('../element/onepage/btnShowHide', 
+                                    array(  "element" => @$element,
+                                            "sectionShadow" => @$sectionShadow,
+                                            "sectionKey" => @$sectionKey));
+        ?>
+        
     <?php } ?>
 
     <div class="container">

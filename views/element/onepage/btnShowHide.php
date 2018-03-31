@@ -10,7 +10,7 @@
         data-id="#<?php echo @$sectionKey; ?>">
         <i class="fa fa-eye"></i>
 </button>
-<br>
+<br><br>
 <span class="pull-right badge-info-section">
 <?php if(@$element["onepageEdition"]["#".@$sectionKey]["hidden"] == "true"){ ?>
     <small class="badge letter-blue bg-white margin-right-15">

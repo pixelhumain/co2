@@ -400,6 +400,14 @@
         <a class="btn btn-xs pull-right" style="margin-top: -4px;" onclick="javasctipt:showFormBlock(false);">
           <i class="fa fa-times"></i>
         </a>
+
+        <?php //if(!$isLive){ ?>
+        <button onclick="dyFObj.openForm('survey')" class="btn btn-link btn-xs bold letter-light hidden-xs pull-right margin-right-5"
+                style="margin-top: -3px;">
+                <i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "create a survey") ?>
+        </button>
+        <?php //} ?>
+
       </div>
 
       <div class="tools_bar bg-white">

@@ -339,6 +339,9 @@
 	var currentRoomId = "<?php echo @$room["_id"] ? $room["_id"] : ""; ?>";
 	var currentRoomName = "<?php echo @$room["name"] ? $room["name"] : ""; ?>";
 
+	contextData["currentRoomId"] = currentRoomId;
+	contextData["currentRoomName"] = currentRoomName;
+	
 	console.log("currentRoomId", currentRoomId);
 
 	jQuery(document).ready(function() { 

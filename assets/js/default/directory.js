@@ -704,7 +704,7 @@ function initPageTable(number){
 
       console.log("onclick coopPanelHtml", coopType, coopId, idParentRoom, parentId, parentType);
 
-      if(contextData.id == parentId && contextData.type == parentType && typeof isOnepage == "undefined"){
+      if(contextData.id == parentId && contextData.type == parentType && typeof isOnepage == "undefined" && idParentRoom != ""){
         toastr.info(trad["processing"]);
         uiCoop.startUI();
         $("#modalCoop").modal("show");
@@ -2481,7 +2481,7 @@ var directory = {
                    typeof params["_id"]["$id"] != "undefined" ? params["_id"]["$id"] : 
                    typeof params["id"] != "undefined" ? params["id"] : "";
         str = "";  
-        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;'>";
+        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 coop-wraper margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;'>";
         str += "<div class='searchEntity coopPanelHtml' data-coop-type='"+ params.type + "'  data-coop-id='"+ params.id + "' "+
                     "data-coop-idparentroom='"+ idParentRoom + "' "+
                     "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
@@ -2496,76 +2496,86 @@ var directory = {
 
           if(name != "")
           str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
-
+          
+          console.log("hasVote ? ", params["hasVote"]);
           if(params.type != "rooms"){
-          str += '<h5>';
-          str +=  '<small><i class="fa fa-certificate"></i> '+trad[params.status]+'</small>';
-          if(params.status == "tovote" && params["hasVote"]===false)
-            str +=  '<small class="margin-left-15 letter-red"><i class="fa fa-ban"></i> '+trad["You did not vote"]+'</small>';
-          else 
-            str +=  '<small class="margin-left-15"><i class="fa fa-thumbs-up"></i> '+trad["You did vote"]+'</small>';
-          str += '</h5>';
+            str += '<h5>';
+            str +=  '<small><i class="fa fa-certificate"></i> '+trad[params.status]+'</small>';
+            if(params.status == "tovote" && params["hasVote"]===false)
+              str +=  '<small class="margin-left-15 letter-red"><i class="fa fa-ban"></i> '+trad["You did not vote"]+'</small>';
+            else if(params.status == "tovote" && params["hasVote"]!==false)
+              str +=  '<small class="margin-left-15"><i class="fa fa-thumbs-up"></i> '+trad["You did vote"]+'</small>';
+            //else 
+            //  str +=  '<small class="margin-left-15 letter-red"><i class="fa fa-thumbs-up"></i> '+trad["You did not vote"]+'</small>';
+            str += '</h5>';
           }
 
-          str += '<span class="col-xs-12 no-padding text-dark descMD">'+description+'</span>';
+          
+          str += '<div class="all-coop-detail">';
+            if(description != "") str += '<hr>';
 
-          if(params["auth"]){
-
-          str += '<span class="col-xs-12 no-padding"><hr></span>';
-
-            var isMulti = typeof params["answers"] != "undefined";
-            var answers = isMulti ? params["answers"] : 
-                                    { "up":"up", "down": "down", "white": "down", "uncomplet":"uncomplet"};
+            str += '<span class="col-xs-12 no-padding text-dark descMD">'+description+'</span>';
             
-            $.each(answers, function(key, val){
-              var voteRes = (typeof params["voteRes"] != "undefined" &&
-                             typeof params["voteRes"][key] != "undefined") ? params["voteRes"][key] : false;             
-               
-              str += '<div class="col-xs-12 no-padding">';
+            if((params["auth"] || typeof params["idParentRoom"] == "undefined") && params["status"] == "tovote"){
 
-                if(params["status"] == "tovote" && (!params["hasVote"] || params["voteCanChange"] == "true")){
-                  str += '<div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 no-padding text-right pull-left margin-top-20">';
+            str += '<span class="col-xs-12 no-padding"><hr></span>';
 
-                  str += '  <button class="btn btn-send-vote btn-link btn-sm bg-vote bg-'+voteRes["bg-color"]+'"';
-                  str += '     title="'+trad["clicktovote"]+'" ';
-                  str += '      data-idparentproposal="'+thisId+'"';
-                  str += '      data-idparentroom="'+params["idParentRoom"]+'"';
-                  str += '      data-vote-value="'+key+'"><i class="fa fa-gavel"></i>';
-                  str += '  </button>';
+              var isMulti = typeof params["answers"] != "undefined";
+              var answers = isMulti ? params["answers"] : 
+                                      { "up":"up", "down": "down", "white": "down", "uncomplet":"uncomplet"};
+              
+              $.each(answers, function(key, val){
+                var voteRes = (typeof params["voteRes"] != "undefined" &&
+                               typeof params["voteRes"][key] != "undefined") ? params["voteRes"][key] : false;             
+                 
+                str += '<div class="col-xs-12 no-padding">';
 
-                  if(params["hasVote"] === ""+key)
-                  str +=  '<br><i class="fa fa-user-circle padding-10" title="'+trad["You voted for this answer"]+'"></i> ';
-                
+                  if(params["status"] == "tovote" && (!params["hasVote"] || params["voteCanChange"] == "true")){
+                    str += '<div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 no-padding text-right pull-left margin-top-20">';
+
+                    str += '  <button class="btn btn-send-vote btn-link btn-sm bg-vote bg-'+voteRes["bg-color"]+'"';
+                    str += '     title="'+trad["clicktovote"]+'" ';
+                    str += '      data-idparentproposal="'+thisId+'"';
+                    str += '      data-idparentroom="'+params["idParentRoom"]+'"';
+                    str += '      data-vote-value="'+key+'"><i class="fa fa-gavel"></i>';
+                    str += '  </button>';
+
+                    if(params["hasVote"] === ""+key)
+                    str +=  '<br><i class="fa fa-user-circle padding-10" title="'+trad["You voted for this answer"]+'"></i> ';
+                  
+                    str += '</div>';
+                  }
+
+                  str += '<div class="col-lg-11 col-md-11 col-sm-11 col-xs-10">'
+                  
+                  var hashAnswer = !isMulti ? trad[voteRes["voteValue"]] : (key+1);
+
+                  str +=    '<div class="padding-10 margin-top-15 border-vote border-vote-'+key+'">';
+                  str +=      '<i class="fa fa-hashtag"></i><b>'+hashAnswer+'</b> ';
+                  if(isMulti) 
+                      str +=        voteRes["voteValue"];
+                  str +=    '</div>';
+                  
+                  if(voteRes !== false && voteRes["percent"]!=0){
+                    str +=  '<div class="progress progress-res-vote">';
+                    str +=       '<div class="progress-bar bg-vote bg-'+voteRes["bg-color"]+'" role="progressbar" ';
+                    str +=       'style="width:'+voteRes["percent"]+'%">';
+                    str +=       voteRes["percent"]+'%';
+                    str +=     '</div>';
+                    str +=     '<div class="progress-bar bg-transparent" role="progressbar" ';
+                    str +=       'style="width:'+(100-voteRes["percent"])+'%">';
+                    str +=      voteRes["votant"]+' <i class="fa fa-gavel"></i>';
+                    str +=     '</div>';
+                    str +=  '</div>';
+                  }
                   str += '</div>';
-                }
 
-                str += '<div class="col-lg-11 col-md-11 col-sm-11 col-xs-10">'
-                
-                var hashAnswer = !isMulti ? trad[voteRes["voteValue"]] : (key+1);
-
-                str +=    '<div class="padding-10 margin-top-15 border-vote border-vote-'+key+'">';
-                str +=      '<i class="fa fa-hashtag"></i><b>'+hashAnswer+'</b> ';
-                if(isMulti) 
-                    str +=        voteRes["voteValue"];
-                str +=    '</div>';
-                
-                if(voteRes !== false && voteRes["percent"]!=0){
-                  str +=  '<div class="progress progress-res-vote">';
-                  str +=       '<div class="progress-bar bg-vote bg-'+voteRes["bg-color"]+'" role="progressbar" ';
-                  str +=       'style="width:'+voteRes["percent"]+'%">';
-                  str +=       voteRes["percent"]+'%';
-                  str +=     '</div>';
-                  str +=     '<div class="progress-bar bg-transparent" role="progressbar" ';
-                  str +=       'style="width:'+(100-voteRes["percent"])+'%">';
-                  str +=      voteRes["votant"]+' <i class="fa fa-gavel"></i>';
-                  str +=     '</div>';
-                  str +=  '</div>';
-                }
                 str += '</div>';
+              });
+            }
 
-              str += '</div>';
-            });
-          }
+
+            str += "</div>";
 
           str += "</div>";
         str += "</div>";  

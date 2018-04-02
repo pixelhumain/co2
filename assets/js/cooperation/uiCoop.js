@@ -235,17 +235,18 @@ var uiCoop = {
 	getCoopDataPreview : function(type, dataId, onSuccess, showLoading){
 		mylog.log("getCoopDatagetCoopDataPreview", type, status, dataId, onSuccess, showLoading);
 		
-		$("#modal-preview-coop").removeClass("hidden")
-								.css("display","block")
-								.html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-turq'></i>");
-
+		setTimeout(function(){
+			$("#modal-preview-coop").removeClass("hidden")
+									.css("display","block")
+									.html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-turq'></i>");
+		}, 200);
+								
 		var url = moduleId+'/cooperation/previewcoopdata';
 		var params = {
 			"type" : type,
 			"dataId" : dataId,
 			"json" : false
 		};
-
 
 		ajaxPost("", url, params,
 			function (data){
@@ -578,7 +579,6 @@ var uiCoop = {
 		$(".btn-send-vote").off().click(function(){
 			var voteValue = $(this).data('vote-value');
 			mylog.log("send vote", voteValue, idParentProposal);
-			alert("idParentProposal " + idParentProposal);
 			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
 		});
 
@@ -819,6 +819,9 @@ var uiCoop = {
 				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;
 		}
 
+
+		$("#container-text-resolution").html(dataHelper.markdownToHtml($("#container-text-resolution").html()) );
+		$("#container-text-complem").html(dataHelper.markdownToHtml($("#container-text-complem").html()) );
 
 		if(msgController != ""){
 			toastr.error(msgController);

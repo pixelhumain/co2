@@ -19,6 +19,8 @@
                       : $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 
     $slugParent = @$element["slug"] ? $element["slug"] : "#page.type.".$data[$type]["parentType"].".id.".$element["_id"];
+
+    if(@$data[$type]["idParentRoom"])
     $urlInCoSpace = "#".$slugParent.".view.coop.room.".$data[$type]["idParentRoom"].".".$type.".".$dataId;
 ?>
 
@@ -51,10 +53,12 @@
      <h4 class="pull-left margin-top-25">
 	  <?php echo @$element["name"]; ?>
 	</h4>  
+	<?php if(@$urlInCoSpace){ ?>
 	<a href="<?php echo $urlInCoSpace; ?>" 
 	  class="btn btn-default pull-right hidden-xs lbh margin-top-15 margin-right-25 letter-turq bold">
 		<i class="fa fa-chevron-right"></i> <?php echo Yii::t("cooperation", "open in CO space"); ?>
-	</a>      	
+	</a>
+	<?php } ?>     	
 </div>
 
 <div id="coop-container" class="col-xs-12">

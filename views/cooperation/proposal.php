@@ -4,6 +4,7 @@
 
 	$myId = Yii::app()->session["userId"];
 	$hasVote = @$proposal["votes"] ? Cooperation::userHasVoted($myId, $proposal["votes"]) : false; 
+	$voteStarted = isset($proposal["votes"]);
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
 	
 	if(@$proposal["idParentRoom"])
@@ -83,15 +84,25 @@
 	</div>yes 
 <?php exit; } ?>
 
-<?php if(@$proposal["idParentRoom"]){ ?>
-<div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-15">
-  	<h4 class="letter-turq load-coop-data title-room" 
-  		data-type="room" data-dataid="<?php echo @$proposal["idParentRoom"]; ?>">
-  		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
-	</h4>
+<div class="col-lg-7 col-md-10 col-sm-10 pull-left margin-top-15">
+	<?php if(@$proposal["idParentRoom"]){ ?>
+	  	<h4 class="letter-turq load-coop-data title-room" 
+	  		data-type="room" data-dataid="<?php echo @$proposal["idParentRoom"]; ?>">
+	  		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
+		</h4>
+	<?php } ?>
 </div>
-<?php } ?>
 
+
+<div class="col-lg-7 col-md-6 col-sm-6 pull-left margin-top-10" style="padding-left: 8px;">
+	<h3 class="radius-5 col-xs-12 bg-turq text-white text-bold padding-10 no-margin"  >	
+		<?php if(@$proposal["title"]){ ?>
+			<i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?>
+		<?php }else{ ?>
+			<i class="fa fa-angle-down"></i> <?php echo Yii::t("cooperation", "Proposal"); ?>
+		<?php } ?>
+	</h3>
+</div>
 
 <div class="col-lg-5 col-md-6 col-sm-6">
 	<button class="btn btn-default pull-right margin-left-5 margin-top-10 tooltips" 
@@ -105,7 +116,7 @@
 			<i class="fa fa-cog"></i> options
 		  </button>
 		  <ul class="dropdown-menu">
-		  	<?php if(!@$proposal["amendements"] && !$hasVote){ ?>
+		  	<?php if(!@$proposal["amendements"] && !$voteStarted){ ?>
 		    <li><a href="javascript:" id="btn-edit-proposal" 
 		    		data-id-proposal="<?php echo $proposal["_id"]; ?>">
 		    	<i class="fa fa-pencil"></i> <?php echo Yii::t("cooperation","Edit my proposal"); ?>
@@ -115,7 +126,7 @@
 			<?php 
 				$tradTitle = Yii::t("cooperation","Edition disabled")." : ";
 				if(@$proposal["amendements"]) $tradTitle .= Yii::t("cooperation",'amendement session has begun'); 
-				else if($hasVote) $tradTitle .= Yii::t("cooperation",'vote session has begun');
+				else if($voteStarted) $tradTitle .= Yii::t("cooperation",'vote session has begun');
 			?>
 			<li><button class="btn btn-link tooltips" disabled="true" style="width: 100%;"
 				data-original-title="<?php echo $tradTitle; ?>" data-placement="left">
@@ -170,31 +181,22 @@
 	</button>
 </div>
 
-
 <div class="col-lg-12 col-md-12 col-sm-12 pull-left margin-top-10" style="padding-left: 8px;">
-	<h3 class="radius-5 col-xs-12 bg-dark text-white text-bold padding-10 margin-bottom-10"  >	
-		<?php if(@$proposal["title"]){ ?>
-			<i class="fa fa-hashtag"></i> <?php echo @$proposal["title"]; ?>
-		<?php }else{ ?>
-			<i class="fa fa-angle-down"></i> <?php echo Yii::t("cooperation", "Proposal"); ?>
-		<?php } ?>
-	</h3>
 
+	<hr style="margin-top:5px;margin-bottom: 25px;">
+	
 	<?php if(@$proposal["creator"]){ ?>
-
-		
-	<label class="pull-right">
-		<small> <?php echo Yii::t("cooperation","Author"); ?> : </small>
-		<img class="img-circle" id="menu-thumb-profil" 
-         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
-		<a href="#page.type.citoyens.id.<?php echo $proposal["creator"]; ?>" class="lbh">
-			<?php echo $author["username"]; ?></a><?php if($myId == $proposal["creator"]){ ?>
-		<?php } ?>
-	</label>
+		<label class="bg-light pull-right">
+			<small> <?php echo Yii::t("cooperation","Author"); ?> : </small>
+			<img class="img-circle" id="menu-thumb-profil" 
+	         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
+			<a href="#page.type.citoyens.id.<?php echo $proposal["creator"]; ?>" class="lbh lbl-author-coop elipsis">
+				<?php echo $author["username"]; ?>zrerzerz rz erz erz erze </a><?php if($myId == $proposal["creator"]){ ?>
+			<?php } ?>
+		</label>
 	<?php } ?>
 
-	<hr style="margin-top:5px;">
-	<h4 class="no-margin status-breadcrum">
+	<h4 class="no-margin status-breadcrum pull-left">
 		
 		<small><i class="fa fa-certificate"></i></small>
 		<?php if(@$proposal["status"] == "amendable"){ ?>		
@@ -223,6 +225,8 @@
 	</h4>
 
 	<?php if(@$proposal["status"] == "amendable"){ ?>
+
+	<div class="col-xs-12">
 		<hr>
 		<h4 class="text-purple no-margin">
 			<i class="fa fa-pencil"></i> <?php echo Yii::t("cooperation", "Proposal submited to amendements"); ?> 
@@ -233,8 +237,10 @@
 			
 		</h4>
 		<small><?php echo Yii::t("cooperation", "You can submit your amendements and vote amendement proposed by other users"); ?> </small>
-		<hr>
+	</div>
 	<?php } ?>
+
+	<div class="col-xs-12"><hr></div>
 </div>
 
 
@@ -242,7 +248,7 @@
 <div class="col-lg-9 col-md-12 col-sm-12 pull-left margin-bottom-15">
 	
 	<?php if(@$proposal["status"] == "tovote"){ ?>
-		<hr>
+		
 
 	<?php if(!isset($proposal["answers"])){ ?>
 		<?php if(@$voteRes["up"] && @$voteRes["up"]["percent"] && $voteRes["up"]["percent"] > @$proposal["majority"] ){ ?>
@@ -350,10 +356,12 @@
 	
 	
 	
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-	
-		<div class=" col-xs-12" id="container-text-proposal" style="padding:15px 0px 0px 40px; background-color: #eee;" ><?php echo @$proposal["description"]; ?></div>
-		<div class="col-xs-12"  >	
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+		<?php if(@$proposal["description"]){ ?>
+		<div class=" col-xs-12" id="container-text-proposal" 
+			 style="padding:15px!important; background-color: #eee;" ><?php echo @$proposal["description"]; ?></div>
+		<?php } ?>
+		<div class="col-xs-12">	
 			<?php if(@$proposal["tags"]){ ?>
 				<br> <b>Tags : </b>
 				<?php foreach($proposal["tags"] as $key => $tag){ ?>

@@ -389,6 +389,8 @@ var trad = {
 	"vote":"<?php echo Yii::t("rooms","Decision") ?>",
 	"actions":"<?php echo Yii::t("rooms","Action") ?>",
 	"action":"<?php echo Yii::t("rooms","action") ?>",
+	"survey":"<?php echo Yii::t("rooms","survey") ?>",
+	"surveys":"<?php echo Yii::t("rooms","surveys") ?>",
 	"actionRooms":"<?php echo Yii::t("rooms","actionRooms") ?>",
 	"room":"<?php echo Yii::t("rooms","room") ?>",
 	"gallery":"<?php echo Yii::t("common","Gallery") ?>",
@@ -521,6 +523,7 @@ var tradDynForm = {
 	"me":"<?php echo Yii::t("form","Me") ?>",
 	"dontknow":"<?php echo Yii::t("form","I don't know") ?>",
 	"syntaxmarkdownused":"<?php echo Yii::t("form","Markdown syntax is used for description. If you want to <a href='https://michelf.ca/projets/php-markdown/syntaxe/'' target='_blank'>know more about</a>") ?>",
+	"discovermarkdownsyntax":"<?php echo Yii::t("form","Discover <a href='https://michelf.ca/projets/php-markdown/syntaxe/' target='_blank'>markdown syntaxe </a>") ?>",
 	"speakingas":"<?php echo Yii::t("form","speaking as") ?>",
 	"ispartof":"<?php echo Yii::t("form","Is part of") ?>",
 	"ispartofelement":"<?php echo Yii::t("form","Is part of an element") ?>",
@@ -669,10 +672,15 @@ var tradDynForm = {
 	"invalidUsername":"<?php echo Yii::t("form","Invalid username : Only characters A-Z, a-z, 0-9 and '-' are acceptable.") ?>",
 
 	"inSpace" : "<?php echo Yii::t("cooperation","in this space") ?>",
+	"createsurvey" : "<?php echo Yii::t("cooperation","create a survey") ?>",
 	"infoProposal1" : "<?php echo Yii::t("cooperation","The final vote will be on the content of your proposal") ?>",
 	"infoProposal2" : "<?php echo Yii::t("cooperation","For clarity, please provide additional information about your proposal in the next section.") ?>",
 
 	"infoProposal3" : "<?php echo Yii::t("cooperation","A proposal is used to discuss and seek community input on a given idea or question") ?>",
+	"infoSurvey" : "<?php echo Yii::t("cooperation","Surveys are published for all your followers") ?>",
+	
+	"surveyname" : "<?php echo Yii::t("cooperation","Survey name") ?>",
+	"surveytext" : "<?php echo Yii::t("cooperation","Survey text") ?>",
 
 	"lblAmmendementEnabled" : "<?php echo Yii::t("cooperation","Enable amendments") ?>",
 

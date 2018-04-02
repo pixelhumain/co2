@@ -14,12 +14,11 @@ dynForm = {
             },
             onload : function(data){
 
-
                 console.log("init input hidden parentdata : ", contextData.id, contextData.type, currentRoomId);
                 $("#ajaxFormModal #parentId").val(contextData.id);
                 $("#ajaxFormModal #parentType").val(contextData.type);
                 $("#ajaxFormModal #idParentRoom").val(currentRoomId);
-                
+
                 dataHelper.activateMarkdown("#ajaxFormModal #description");
                 $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
                                               .addClass("bg-turq");

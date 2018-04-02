@@ -410,7 +410,9 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 
 	else if(dataName == "vote")		{ html += countData+" <b>"+trad[proposal+s]+"</b> "+trad.of+" " + elementName; }
 	else if(dataName == "discuss")	{ html += countData+" <b>"+trad.discussion+s+"</b> "+trad.of+" " + elementName; }
-	else if(dataName == "actions")	{ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "actions")	{ html += countData+" <b>"+trad.action+s+"</b> "+trad.of+" " + elementName; }
+
+	else if(dataName == "surveys")	{ html += countData+" <b>"+trad.survey+s+"</b> "+trad['createdby'+s]+" " + elementName; }
 
 	else if(dataName == "actionRooms")	{ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
 	else if(dataName == "networks")		{ html += countData+" <b>"+trad.map+s+"</b> "+trad.of+" " + elementName;
@@ -852,7 +854,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 				            '<i class="fa fa-map-marker"></i>'+
 				        '</button>';
 
-		if(dataName == "networks") btnMap = "";
+		if(dataName == "networks" || dataName == "surveys") btnMap = "";
 
 		html += "<div class='col-md-12 col-xs-12 margin-bottom-15 labelTitleDir'>";
 		
@@ -878,7 +880,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
         	else $.extend(mapElements, data);
         	mylog.log("edit2", edit);
 			html +="<div id='content-results-profil'>";
-			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
+			html += 	directory.showResultsDirectoryHtml(data, contextType, null, edit);
 			html +="</div>";
 		}else{
 			$.each(data, function(col, val){

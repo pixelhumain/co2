@@ -2,6 +2,9 @@
 	//var_dump($action); exit;
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $action["parentType"], $action["parentId"]);
 	$parentRoom = Room::getById($action["idParentRoom"]);
+	$author = Person::getById(@$action["creator"]);
+	$profilThumbImageUrl = Element::getImgProfil($author, "profilThumbImageUrl", $this->module->assetsUrl);
+	$myId = Yii::app()->session["userId"];
 
 	if(isset(Yii::app()->session['userId'])){
 		$me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
@@ -34,7 +37,9 @@
   		data-type="room" data-dataid="<?php echo @$action["idParentRoom"]; ?>">
   		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
-	
+	<h3 class=" padding-10  radius-5 col-xs-12 bg-turq text-white text-bold"  >	
+		<?php if(@$action["name"])echo "<i class='fa fa-hashtag'></i> ".@$action["name"];?>
+	</h3>
 </div>
 
 <div class="col-lg-5 col-md-6 col-sm-6">
@@ -85,11 +90,8 @@
 	</button>
 </div>
 
-<h3 class=" padding-10  radius-5 col-xs-12 bg-turq text-white text-bold"  >	
-		<?php if(@$action["name"])echo "<i class='fa fa-hashtag'></i> ".@$action["name"];?>
-	</h3>
-
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+
 <?php
 	//if no assignee , no startDate no end Date
     $statusLbl = Yii::t("rooms", @$post["status"]);
@@ -112,7 +114,7 @@
 ?>			
 
 	<hr style="margin-top:5px;">
-	<h4 class="no-margin status-breadcrum">
+	<h4 class="no-margin status-breadcrum pull-left">
 		
 		<small><i class="fa fa-certificate"></i></small>
 				
@@ -139,7 +141,20 @@
 			<small><?php echo Yii::t("cooperation", "done"); ?></small>
 		<?php } ?>
 	</h4>
-	<hr>
+
+	<!-- <hr> -->
+	<?php if(@$action["creator"]){ ?>
+		<label class="bg-light pull-right">
+			<small> <?php echo Yii::t("cooperation","Author"); ?> : </small>
+			<img class="img-circle" id="menu-thumb-profil" 
+	         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
+			<a href="#page.type.citoyens.id.<?php echo $action["creator"]; ?>" class="lbh lbl-author-coop elipsis">
+				<?php echo $author["username"]; ?></a><?php if($myId == $action["creator"]){ ?>
+			<?php } ?>
+		</label>
+	<?php } ?>
+		
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><hr></div>
 	<!-- <label class=""><i class="fa fa-bell"></i> Status : 
 		<small class="letter-<?php echo Cooperation::getColorCoop($action["status"]); ?>">
 			<?php echo Yii::t("cooperation", $action["status"]); ?>
@@ -147,7 +162,7 @@
 	</label>
 	<hr> -->
 
-	<h4 class="no-margin">
+	<h4 class="no-margin pull-left">
 		<i class="fa fa-clock-o"></i> Action à réaliser 
 		<?php
 			if( @$action["startDate"] && (bool)strtotime(@$action["startDate"]) != FALSE ){

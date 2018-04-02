@@ -31,11 +31,18 @@
 
 
 <div class="col-lg-8 col-md-7 col-sm-7 pull-left margin-top-15">
-	<?php $parentRoom = Room::getById($resolution["idParentRoom"]); ?>
-  	<h4 class="letter-turq load-coop-data title-room" 
+	<h4 class="letter-turq load-coop-data title-room" 
   		data-type="room" data-dataid="<?php echo @$resolution["idParentRoom"]; ?>">
   		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
+
+	<br>
+	<h3 class="radius-5 col-xs-12 bg-turq text-white text-bold padding-10 no-margin"  >	
+		<?php if(@$resolution["title"]){ ?>
+			<i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?>
+		<?php } ?>
+	</h3>
+	<hr style="margin-top:5px;margin-bottom: 25px;">
 </div>
 
 
@@ -65,21 +72,20 @@
 
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-	<?php if(!@$resolution["answers"]){ ?>
-	<h3 class="radius-5 col-xs-12 bg-dark text-white text-bold padding-10 margin-bottom-10"  >	
-		<?php if(@$resolution["title"]){ ?>
-			<i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?>
-		<?php } ?>
-	</h3>
-	<label class="pull-right">
-		<small> <?php echo Yii::t("cooperation","Author"); ?> : </small>
-		<img class="img-circle" id="menu-thumb-profil" 
-         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
-		<a href="#page.type.citoyens.id.<?php echo $resolution["creator"]; ?>" class="lbh">
-			<?php echo $author["username"]; ?></a><?php if($myId == $resolution["creator"]){ ?>
-		<?php } ?>
-	</label>
+
 	<hr>
+	<?php if(@$resolution["creator"]){ ?>
+		<label class="bg-light pull-right">
+			<small> <?php echo Yii::t("cooperation","Author"); ?> : </small>
+			<img class="img-circle" id="menu-thumb-profil" 
+	         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
+			<a href="#page.type.citoyens.id.<?php echo $resolution["creator"]; ?>" class="lbh lbl-author-coop elipsis">
+				<?php echo $author["username"]; ?></a><?php if($myId == $resolution["creator"]){ ?>
+			<?php } ?>
+		</label>
+	<?php } ?>
+	
+	<?php if(!@$resolution["answers"]){ ?>
 		<h4 class="">
 			<i class="fa fa-bell"></i> 
 			<?php echo Yii::t("cooperation", "The <b>resolution</b> is done : "); ?>
@@ -137,7 +143,7 @@
 		 	}
 		 } 
 	?>
-		<hr>
+		<!-- <hr> -->
 		<h4 class="">
 			<?php echo Yii::t("cooperation", "Answer"); echo $nbWiner>1?"s":""; ?> 
 			<b><?php echo Yii::t("cooperation", "adopted".($nbWiner>1?"s":"")); ?></b> : 
@@ -178,21 +184,22 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-5">
 	
-	<div class="padding-25 radius-5 col-xs-12" style="background-color: #eee" >
+	<div class="no-paddingradius-5 col-xs-12" style="background-color: #eee" >
 	
-		<div class=" col-xs-12" id="container-text-resolution" style="padding:15px 0px 0px 40px;background-color: #eee" >
-		<?php //echo @$resolution["description"]; ?></div>
-		<?php if(@$resolution["title"]){ ?>
-				<h3><i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?></h3>
-		<?php }else{ ?>
-				<br>
-		<?php } ?>
-
-		<?php if(@$resolution["description"]){
-				$resolution["description"] = Translate::strToClickable($resolution["description"]);
-		} ?>
+		<!-- <div class=" col-xs-12" id="container-text-resolution" style="padding:15px 0px 0px 40px;background-color: #eee" > -->
+		<?php //echo @$resolution["description"]; ?>
 			
-		<?php echo nl2br(@$resolution["description"]); ?>
+		<!-- </div> -->
+		<?php //if(@$resolution["title"]){ ?>
+				<!-- <h3><i class="fa fa-hashtag"></i> <?php //echo @$resolution["title"]; ?></h3> -->
+		<?php //}else{ ?>
+				<br>
+		<?php //} ?>
+
+		<?php if(@$resolution["description"]){ ?>
+		<div class=" col-xs-12" id="container-text-resolution" 
+			 style="padding:15px!important; background-color: #eee;" ><?php echo @$resolution["description"]; ?></div>
+		<?php } ?>
 
 
 		<?php 
@@ -343,8 +350,6 @@
 	var useIdParentResolution = false;
 
 	jQuery(document).ready(function() { 
-		$("#container-text-resolution").html(dataHelper.markdownToHtml($("#container-text-resolution").html()) );
-		$("#container-text-complem").html(dataHelper.markdownToHtml($("#container-text-complem").html()) );
 		uiCoop.initUIResolution();
 	});
 

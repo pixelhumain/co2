@@ -9,6 +9,7 @@
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], 
 			$resolution["parentType"], $resolution["parentId"]);
 
+	if(isset($resolution["idParentRoom"]))
 	$parentRoom = Room::getById($resolution["idParentRoom"]);
 
 	if(isset(Yii::app()->session['userId'])){
@@ -31,11 +32,12 @@
 
 
 <div class="col-lg-8 col-md-7 col-sm-7 pull-left margin-top-15">
-	<h4 class="letter-turq load-coop-data title-room" 
-  		data-type="room" data-dataid="<?php echo @$resolution["idParentRoom"]; ?>">
-  		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
-	</h4>
-
+	 <?php if(@$parentRoom){ ?>
+		<h4 class="letter-turq load-coop-data title-room" 
+	  		data-type="room" data-dataid="<?php echo @$resolution["idParentRoom"]; ?>">
+	  		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
+		</h4>
+	<?php } ?>
 	<br>
 	<h3 class="radius-5 col-xs-12 bg-turq text-white text-bold padding-10 no-margin"  >	
 		<?php if(@$resolution["title"]){ ?>
@@ -131,7 +133,7 @@
 	<?php }else{ ?>
 	<?php
 		//var_dump($voteRes); exit;
-		$winer = 0; $maxV = ""; $nbWiner = 0;
+		$winer = ""; $maxV = 1; $nbWiner = 0;
 		foreach ($voteRes as $kv => $vote) {
 		 	if($vote["percent"] > $maxV){
 		 	 	$maxV = $vote["percent"];
@@ -145,8 +147,10 @@
 	?>
 		<!-- <hr> -->
 		<h4 class="">
-			<?php echo Yii::t("cooperation", "Answer"); echo $nbWiner>1?"s":""; ?> 
-			<b><?php echo Yii::t("cooperation", "adopted".($nbWiner>1?"s":"")); ?></b> : 
+			<?php if($maxV == 1) echo Yii::t("cooperation", "No answer"); 
+				  else 			 echo Yii::t("cooperation", "Answer"); echo $nbWiner>1?"s":""; ?> 
+
+			<b><?php if($maxV > 1) echo Yii::t("cooperation", "adopted".($nbWiner>1?"s":""). " :");	?></b>
 			<b><?php echo $winer; ?></b> 
 		</h4>
 	<?php } ?>
@@ -345,7 +349,7 @@
 	var parentTypeElement = "<?php echo $resolution['parentType']; ?>";
 	var parentIdElement = "<?php echo $resolution['parentId']; ?>";
 	var idParentResolution = "<?php echo $resolution['_id']; ?>";
-	var idParentRoom = "<?php echo $resolution['idParentRoom']; ?>";
+	var idParentRoom = "<?php echo @$resolution['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
 	var useIdParentResolution = false;
 

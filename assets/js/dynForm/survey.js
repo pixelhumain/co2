@@ -194,7 +194,7 @@ dynForm = {
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<br><p><i class='fa fa-info-circle'></i> "+tradDynForm.infoProposal3+"</p>",
+                html:"<br><p><i class='fa fa-info-circle'></i> "+tradDynForm.infoSurvey+"</p>",
             },
 	        id : dyFInputs.inputHidden(),
 	        //idParentRoom : dyFInputs.inputHidden(),

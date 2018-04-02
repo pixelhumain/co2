@@ -361,7 +361,7 @@
 
   }
 
-  else if( isset($type) && $type == City::COLLECTION && isset($city) ){
+  else if( isset($type) && $type == City::CONTROLLER && isset($city) ){
     $contextName = Yii::t("common","City")." : ".$city["name"];
     $contextIcon = "university";
     $contextTitle = Yii::t("common", "DIRECTORY Local network of")." ".$city["name"];
@@ -401,12 +401,12 @@
           <i class="fa fa-times"></i>
         </a>
 
-        <?php //if(!$isLive){ ?>
+        <?php  if($type != City::CONTROLLER){ //si on est pas sur le live, on met le bouton "creer sondage" ?>
         <button onclick="dyFObj.openForm('survey')" class="btn btn-link btn-xs bold letter-light hidden-xs pull-right margin-right-5"
                 style="margin-top: -3px;">
                 <i class="fa fa-plus-circle"></i> <?php echo Yii::t("cooperation", "create a survey") ?>
         </button>
-        <?php //} ?>
+        <?php } ?>
 
       </div>
 

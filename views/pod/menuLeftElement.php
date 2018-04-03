@@ -282,6 +282,17 @@
 			</li>
 		<?php } ?>
 
+		<?php $paramsApp = CO2::getThemeParams(); 
+				if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
+			<li><hr></li>
+			<li class="">
+				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="surveys" data-icon="gavel">
+					<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Surveys"); ?>
+				</a>
+			</li>
+		<?php } ?>
+
 		<?php if( $type==Person::COLLECTION ){ ?>
 			<!--<li><hr></li>
 			<li class="">

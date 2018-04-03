@@ -39,11 +39,12 @@
 <section id="<?php echo @$sectionKey; ?>" 
          class="portfolio <?php if(@$sectionShadow==true) echo 'shadow'; ?>">
     
-    <?php //if(@$sectionKey!="description"){ ?>
-    <button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" data-id="#<?php echo @$sectionKey; ?>">
-        <i class="fa fa-cog"></i>
+    <?php if(@$edit==true){ ?>
+    <button class="btn btn-default btn-sm pull-right margin-right-15 hidden-xs btn-edit-section" 
+            data-id="#<?php echo @$sectionKey; ?>">
+            <i class="fa fa-cog"></i>
     </button>
-    <?php //} ?>
+    <?php } ?>
 
     <div class="container">
 
@@ -51,8 +52,9 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2 class="section-title">
-                    <span class="sec-title"><?php echo $sectionTitle; ?></span><br>
-                    <?php if($sectionKey == "directory") echo "<small>(".@$countStrongLinks.")</small><br>"; ?>
+                    <span class="sec-title"><?php echo $sectionTitle; ?></span> 
+                    <?php if(@count($items) >= 2) echo "<small>(".@count($items).")</small>"; ?>
+                    <br>
                     <i class="fa fa-angle-down"></i>
                 </h2>
             </div>
@@ -94,7 +96,7 @@
                         	 class="img-responsive thumbnail img-<?php echo $imgShape; ?> 
                                     <?php if(@$useBorderElement==true){ ?>
                                             thumb-type-color-<?php echo $iconColor; ?><?php } ?> inline"
-                             width=60 height=60 alt=""><br>
+                             width=80 height=80 alt=""><br>
                     <?php } ?>
 
                     <?php if(@$useBorderElement==true && $icon != "" && $iconColor != ""){ ?>
@@ -103,10 +105,22 @@
                         </div>
                     <?php } ?>
 
+                    <?php if(@$item['startDate']){ ?>
+                        <div class="col-md-12 col-sm-12 no-padding text-center bold item-date">
+                            <h5><?php echo Translate::pastTime(@$item['startDate'], "date"); ?></h5>
+                        </div>
+                    <?php } ?>
+
                     <div class="col-md-12 col-sm-12 no-padding item-name"><?php echo @$item['name']; ?></div>
+
                     <?php if($nbItem <= $nbMax){ ?>
                         <div class="col-md-12 col-sm-12 no-padding item-address text-red">
-                            <?php echo @$item['address']['addressLocality'] ?  '<i class="fa fa-map-marker"></i> '.$item['address']['addressLocality'] : ""; ?>
+                            <?php  echo @$item['address']['addressLocality'] ?  
+                                        '<i class="fa fa-map-marker"></i> '.$item['address']['addressLocality'] : ""; 
+                                  echo @$item['address']['streetAddress'] ?  
+                                        ' '.$item['address']['streetAddress'] : ""; 
+
+                            ?>
                         </div>
                         </a>
                     <?php } ?>
@@ -118,12 +132,11 @@
                             
                         </div>
                         <?php if($sectionKey == "description" && @$item['shortDescription']){ ?>
-                            <div class="col-md-12 no-padding"></div>
-                            <center>
-                                <button class="btn btn-default btn-full-desc" data-sectionkey="<?php echo @$sectionKey; ?>">
+                            <div class="col-xs-12 margin-top-15 no-padding text-center">
+                                 <button class="btn btn-default btn-full-desc" data-sectionkey="<?php echo @$sectionKey; ?>">
                                     <i class="fa fa-plus-circle"></i>
                                 </button>
-                            </center>
+                            </div>
                         <?php } ?>
                     <?php } ?>
 

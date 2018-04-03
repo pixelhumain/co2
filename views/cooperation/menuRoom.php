@@ -17,6 +17,7 @@
 	#menu-room .sub-resolutions .load-coop-data{
 		line-height: 14px;
 	}
+	
 </style>
 
 <?php 
@@ -338,13 +339,14 @@
 	var currentRoomId = "<?php echo @$room["_id"] ? $room["_id"] : ""; ?>";
 	var currentRoomName = "<?php echo @$room["name"] ? $room["name"] : ""; ?>";
 
+	contextData["currentRoomId"] = currentRoomId;
+	contextData["currentRoomName"] = currentRoomName;
+	
 	console.log("currentRoomId", currentRoomId);
 
 	jQuery(document).ready(function() { 
 	
-		$("#btn-edit-room").click(function(){
-
-		});
+		$("#menu-room .room-desc small").html(dataHelper.markdownToHtml($("#menu-room .room-desc small").html()));
 		
 		$("#btn-open-modal-delete").off().click(function(){
 			$("#modalDeleteRoom #btn-delete-room").attr("data-id-room", currentRoomId);
@@ -368,11 +370,12 @@
 		
 		if($("#modal-preview-coop #coop-container").length == 0){
 			if(currentRoomId != ""){
+				onchangeClick=false;
 				addCoopHash=".view.coop.room." + currentRoomId;
 				if(typeof hashUrlPage != "undefined")
 					location.hash = hashUrlPage +addCoopHash;
 				else if(notNull(contextData) && typeof contextData.slug != "undefined")
-					location.hash = "#" + contextData.slug + addCoopHash;
+					location.hash = "#@" + contextData.slug + addCoopHash;
 				else
 					location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;
 			}

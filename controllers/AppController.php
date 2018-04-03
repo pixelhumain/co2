@@ -289,7 +289,7 @@ class AppController extends CommunecterController {
         $this->redirect( Yii::app()->createUrl("/ressources/co/ressources") );
     }
 
-	public function actionPage($type, $id, $view=null, $dir=null){
+    public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
         //var_dump($view); exit;
             
@@ -329,8 +329,12 @@ class AppController extends CommunecterController {
                         "placeholderMainSearch" => "",
                         "element" => $element);
 
+        
         $params = Element::getInfoDetail($params, $element, $type, $id);
-        //var_dump($params); exit;
+        
+        //bloque l'édition de la page (même si on est l'admin)
+        //visualisation utilisateur
+        if(@$mode=="noedit"){ $params["edit"] = false; }
 
 
         if(@$_POST["preview"] == true){

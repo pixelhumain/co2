@@ -389,6 +389,8 @@ var trad = {
 	"vote":"<?php echo Yii::t("rooms","Decision") ?>",
 	"actions":"<?php echo Yii::t("rooms","Action") ?>",
 	"action":"<?php echo Yii::t("rooms","action") ?>",
+	"survey":"<?php echo Yii::t("rooms","survey") ?>",
+	"surveys":"<?php echo Yii::t("rooms","surveys") ?>",
 	"actionRooms":"<?php echo Yii::t("rooms","actionRooms") ?>",
 	"room":"<?php echo Yii::t("rooms","room") ?>",
 	"gallery":"<?php echo Yii::t("common","Gallery") ?>",
@@ -425,6 +427,12 @@ var trad = {
 	"Disagree" : "<?php echo Yii::t("cooperation", "Disagree") ?>",
 	"Abstain" : "<?php echo Yii::t("cooperation", "Abstain") ?>",
 	"Uncomplet" : "<?php echo Yii::t("cooperation", "Uncomplet") ?>",
+	"clicktovote" : "<?php echo Yii::t("cooperation", "click to vote") ?>",
+
+	"up" : "<?php echo Yii::t("cooperation", "up") ?>",
+	"down" : "<?php echo Yii::t("cooperation", "down") ?>",
+	"white" : "<?php echo Yii::t("cooperation", "white") ?>",
+	"uncomplet" : "<?php echo Yii::t("cooperation", "uncomplet") ?>",
 
 	"amendementTooShort" : "<?php echo Yii::t("cooperation", "Your amendement is too short ! Minimum : 10 caracters") ?>",
 
@@ -479,6 +487,12 @@ var trad = {
 	"addplacesplease": "<?php echo Yii::t("form","Please, add a place to your post") ?>",
 	"addplacestyournews" : "<?php echo Yii::t("form","Add places where you want to publish") ?>",
 	"selectedzones" : "<?php echo Yii::t("form","Selected zones") ?>",
+
+	"Open" : "<?php echo Yii::t("common","Open") ?>",
+
+	"You did vote" : "<?php echo Yii::t("cooperation", "You did vote") ?>",
+	"You did not vote" : "<?php echo Yii::t("cooperation", "You did not vote") ?>",
+	"You voted for this answer" : "<?php echo Yii::t("cooperation", "You voted for this answer") ?>",
 	"removeFromMyFavoritesPlaces":"<?php echo Yii::t("common","Remove from my favorites places") ?>",
 	"addZoneToNew":"<?php echo Yii::t("common","Add zone to new") ?>",
 	"addToMyFavoritesPlaces":"<?php echo Yii::t("common","Add to my favorites places") ?>",
@@ -508,7 +522,8 @@ var tradDynForm = {
 	"screenList":"<?php echo Yii::t("form","Screen shot View to Application") ?>",
 	"me":"<?php echo Yii::t("form","Me") ?>",
 	"dontknow":"<?php echo Yii::t("form","I don't know") ?>",
-	"syntaxmarkdownused":"<?php echo Yii::t("form","Markdown syntax is used for description. If you want to <a href='https://michelf.ca/projets/php-markdown/syntaxe/'' target='_blank'>know more about</a>") ?>",
+	"syntaxmarkdownused":"<?php echo Yii::t("form","Markdown syntax is used for description. If you want to <a href='https://daringfireball.net/projects/markdown/syntax' target='_blank'>know more about</a>") ?>",
+	"discovermarkdownsyntax":"<?php echo Yii::t("form","Discover <a href='https://daringfireball.net/projects/markdown/syntax' target='_blank'>markdown syntaxe </a>") ?>",
 	"speakingas":"<?php echo Yii::t("form","speaking as") ?>",
 	"ispartof":"<?php echo Yii::t("form","Is part of") ?>",
 	"ispartofelement":"<?php echo Yii::t("form","Is part of an element") ?>",
@@ -533,7 +548,7 @@ var tradDynForm = {
 	"eventparentEndDate":"<?php echo Yii::t("form","Event parent's end date") ?>",
 	"shortDescription":"<?php echo Yii::t("form","Short description") ?>",
 	"longDescription":"<?php echo Yii::t("form","Long description") ?>",
-	"textproposal":"<?php echo Yii::t("form","Your proposal") ?>",
+	"textproposal":"<?php echo Yii::t("form","Your proposal / question") ?>",
 	"eventTypes":"<?php echo Yii::t("form","Event type") ?>",
 	"organizationType":"<?php echo Yii::t("form","Organization type") ?>",
 	"servicesTypes":"<?php echo Yii::t("form","Service type") ?>",
@@ -549,6 +564,8 @@ var tradDynForm = {
 	"what":"<?php echo Yii::t("form","What") ?>",
 	"indicatethemoneyused":"<?php echo Yii::t("form","Indicate the currency used") ?>",
 	"currency":"<?php echo Yii::t("form","Currency") ?>",
+	"Location":"<?php echo Yii::t("form","Location") ?>",
+	"Scoping":"<?php echo Yii::t("form","Scoping") ?>",
 
 	"addroles":"<?php echo Yii::t("form","Add some roles") ?>",
 	"wantToAddSomething":"<?php echo Yii::t("form","choose what you want to add ?") ?>",
@@ -657,10 +674,15 @@ var tradDynForm = {
 	"invalidUsername":"<?php echo Yii::t("form","Invalid username : Only characters A-Z, a-z, 0-9 and '-' are acceptable.") ?>",
 
 	"inSpace" : "<?php echo Yii::t("cooperation","in this space") ?>",
+	"createsurvey" : "<?php echo Yii::t("cooperation","create a survey") ?>",
 	"infoProposal1" : "<?php echo Yii::t("cooperation","The final vote will be on the content of your proposal") ?>",
 	"infoProposal2" : "<?php echo Yii::t("cooperation","For clarity, please provide additional information about your proposal in the next section.") ?>",
 
 	"infoProposal3" : "<?php echo Yii::t("cooperation","A proposal is used to discuss and seek community input on a given idea or question") ?>",
+	"infoSurvey" : "<?php echo Yii::t("cooperation","Surveys are published for all your followers") ?>",
+	
+	"surveyname" : "<?php echo Yii::t("cooperation","Survey name") ?>",
+	"surveytext" : "<?php echo Yii::t("cooperation","Survey text") ?>",
 
 	"lblAmmendementEnabled" : "<?php echo Yii::t("cooperation","Enable amendments") ?>",
 
@@ -689,6 +711,10 @@ var tradDynForm = {
 	"changingVoteEnabled" : "<?php echo Yii::t("cooperation", "changing vote enabled") ?>",
 	"authorizeChangeVote" : "<?php echo Yii::t("cooperation", "Authorize changing vote ?") ?>",
 	"allowChangeVote" : "<?php echo Yii::t("cooperation", "Do you want to allow voters to change them vote ?") ?>",
+	"You did vote" : "<?php echo Yii::t("cooperation", "You did vote") ?>",
+	"You did not vote" : "<?php echo Yii::t("cooperation", "You did not vote") ?>",
+	"You voted for this answer" : "<?php echo Yii::t("cooperation", "You choose this answer") ?>",
+
 	"istooheavy": "<?php echo Yii::t("form", "is too heavy") ?>",
 	"limitmax": "<?php echo Yii::t("form", "Size limit") ?>",
 	"invalidextension": "<?php echo Yii::t("form", "invalid format") ?>",
@@ -696,7 +722,12 @@ var tradDynForm = {
 	"collectionname": "<?php echo Yii::t("form", "Name of the collection") ?>",
 	"isPublic": "<?php echo Yii::t("form", "is Public and will show Every where") ?>",
 	"This URL is already used" : "<?php echo Yii::t("form", "This URL is already used") ?>",
-	"This URL is not used" : "<?php echo Yii::t("form", "This URL is not used") ?>"
+	"This URL is not used" : "<?php echo Yii::t("form", "This URL is not used") ?>",
+	"Add answers" : "<?php echo Yii::t("form", "Add answers") ?>",
+	"answer" : "<?php echo Yii::t("form", "answer") ?>",
+
+	"selectcitytosharesurvey" : "<?php echo Yii::t("form", "Select a city to share your survey with everybody in town !") ?>",
+
 };
 
 var tradCategory = {

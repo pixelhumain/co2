@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : trad.addProposal,
+	    title : tradDynForm.createsurvey,
 	    icon : "gavel",
 	    type : "object",
 	    onLoads : {
@@ -9,17 +9,15 @@ dynForm = {
 	    	
 	    	},
 	    	onload : function(data){ 		
+	    		if(typeof currentRoomId == "undefined") var currentRoomId = "";
 
-	    		console.log("typeof contextData.currentRoomId", typeof contextData.currentRoomId);
-	    		//if(typeof contextData.currentRoomId == "undefined") var currentRoomId = "";
-
-	            console.log("init input hidden parentdata : ", contextData.id, contextData.type, contextData.currentRoomId);
+	            console.log("init input hidden parentdata : ", contextData.id, contextData.type, currentRoomId);
 	            $("#ajaxFormModal #parentId").val(contextData.id);
 	            $("#ajaxFormModal #parentType").val(contextData.type);
-	            $("#ajaxFormModal #idParentRoom").val(currentRoomId);
+	            //$("#ajaxFormModal #idParentRoom").val(currentRoomId);
 				
 	    		dataHelper.activateMarkdown("#ajaxFormModal #description");
-	    		dataHelper.activateMarkdown("#ajaxFormModal #arguments");
+	    		//dataHelper.activateMarkdown("#ajaxFormModal #arguments");
 
 				console.log("checkcheck0", data, typeof data, contextData);
 
@@ -28,51 +26,16 @@ dynForm = {
 
     		 	console.log("dynFormProposal", contextData);
     		 	
-    		 	//dataHelper.activateMarkdown("#ajaxFormModal #description");
-    			//$("#ajaxFormModal #survey").val( contextData.id );
-    			if (typeof contextData.name != "undefined" && contextData.name != "" && typeof currentRoomName != "undefined")
-    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+
-								    		 		"<small class='text-white'><br>" + 
-								    		 			tradDynForm.inSpace + 
-								    		 			" : <i class='text-white'>#"+currentRoomName+"</i>"+
-								    		 		"</small>" );
 
-				if(typeof data.amendementActivated != "undefined"){ //} || contextData.type == "citoyens"){
-					data.amendementActivated = (data.amendementActivated == "true" || data.amendementActivated == true) ? true : false;
-					data.voteActivated 		 = (data.voteActivated == "true" || data.voteActivated == true) 			? true : false;
-					
-					console.log("checkcheck1", data);
-
-					if(data.amendementActivated == false){
-						var idTrue = "#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='true']";
-	    				var idFalse = "#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']";
-	    				
-	    				$("#ajaxFormModal #amendementActivated").val("false");
-						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']").trigger( "click" );
-						
-						$(idFalse).addClass("bg-red").removeClass("letter-red");
-	    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
-
-	    				$("#ajaxFormModal .amendementActivatedcheckboxSimple .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> désactivés</span>');
-
-	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
-					}
-				}
+            	$("#ajax-modal #ajaxFormModal .titletext label").html("<i class='fa fa-chevron-down'></i> "+tradDynForm.surveyname);
+            	$("#ajax-modal #ajaxFormModal .titletext input#title").attr("placeholder", tradDynForm.surveyname);
+            	
 
 				if(typeof data.voteDateEnd != "undefined"){
 					var d = new Date(data.voteDateEnd);
 					var voteDateEnd = moment(d).format("DD/MM/YYYY HH:mm");
 					console.log("voteDateEnd", d, voteDateEnd);
 					$("#ajaxFormModal #voteDateEnd").val(voteDateEnd);
-				}
-
-				if(typeof data.amendementDateEnd != "undefined"){
-					d = new Date(data.amendementDateEnd);
-					var amendementDateEnd = moment(d).format("DD/MM/YYYY HH:mm");
-					$("#ajaxFormModal #amendementDateEnd").val(amendementDateEnd);
-				}else{
-					$("#ajaxFormModal #amendementDateEnd").val("");
 				}
 
 				$("#ajaxFormModal .majoritytext").append(
@@ -135,6 +98,8 @@ dynForm = {
 
 				$("#ajaxFormModal .multiChoicecheckboxSimple #multiChoice").remove();
 
+				$("#ajaxFormModal .locationBtn").html("<i class='fa fa-home'></i> Sélectionner une commune");
+
 			}
 	    },
         beforeSave : function(){
@@ -179,13 +144,14 @@ dynForm = {
 	            }
             }
 	    },
+
 	    properties : {
 	    	info : {
                 inputType : "custom",
-                html:"<br><p><i class='fa fa-info-circle'></i> "+tradDynForm.infoProposal3+"</p>",
+                html:"<br><p><i class='fa fa-info-circle'></i> "+tradDynForm.infoSurvey+"</p>",
             },
 	        id : dyFInputs.inputHidden(),
-	        idParentRoom : dyFInputs.inputHidden(currentRoomId),
+	        //idParentRoom : dyFInputs.inputHidden(),
             /*idParentRoom :{
             	inputType : "select",
             	label : "Choisir un espace",
@@ -229,8 +195,8 @@ dynForm = {
             	},
             	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
             },*/
-            title : dyFInputs.name("proposal", { required : false }),
-            description : dyFInputs.textarea(tradDynForm.textproposal, "..."),
+            title : dyFInputs.name("survey", { required : false }),
+            description : dyFInputs.textarea(tradDynForm.surveytext, "..."),
             multiChoice : dyFInputs.checkboxSimple("true", "multiChoice", 
             										{ "onText" : "pour / contre",//trad.yes,
             										  "offText": "choix multiple", //trad.no,
@@ -244,8 +210,8 @@ dynForm = {
             }),
             answers : dyFInputs.multiChoice,
             
-	        arguments : dyFInputs.textarea(tradDynForm.textargumentsandmore, "..."),
-            amendementActivated : dyFInputs.checkboxSimple("true", "amendementActivated", 
+	        //arguments : dyFInputs.textarea(tradDynForm.textargumentsandmore, "..."),
+            /*amendementActivated : dyFInputs.checkboxSimple("true", "amendementActivated", 
             										{ "onText" : trad.yes,
             										  "offText": trad.no,
             										  "onLabel" : trad.activated,
@@ -256,7 +222,7 @@ dynForm = {
             										  "labelInformation": "<i class='fa fa-info-circle'></i> "+
             										  					  tradDynForm.lblAmmendementDisabled
             }),
-            amendementDateEnd : dyFInputs.amendementDateEnd,
+            amendementDateEnd : dyFInputs.amendementDateEnd,*/
             voteActivated : dyFInputs.inputHidden( true ),
             voteDateEnd : dyFInputs.voteDateEnd,
             majority: dyFInputs.inputText( trad.ruleOfMajority + " (%) <small class='letter-green'>"+trad.giveValueMajority+"</small>", "50%" ),
@@ -284,8 +250,19 @@ dynForm = {
             										  "labelInformation": "<i class='fa fa-info-circle'></i> " + tradDynForm.allowChangeVote
 
             }),
-            
 
+            infoScope : {
+                inputType : "custom",
+                html:"<br><i class='fa fa-angle-down fa-2x letter-red'></i><br>"+
+                		"<span style='font-size:13px;' class='bg-red badge'><i class='fa fa-bullseye'></i> "+
+                			tradDynForm.selectcitytosharesurvey+
+                		"</span>",
+            },
+	        
+            location : {
+				label : tradDynForm["Scoping"],
+		       	inputType : "location"
+		    },
             tags : dyFInputs.tags(),
             //image : dyFInputs.image(),
             urls : dyFInputs.urls,

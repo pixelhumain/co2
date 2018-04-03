@@ -35,19 +35,6 @@
                   "colorBtnCreate" : "green"
             },
 
-            "#search": {
-                  "inMenu" : true, 
-                  "useHeader" : true, 
-                  "open" : true,
-                  "subdomain" : "search", 
-                  "subdomainName" : "Tous",
-                  "hash" : "#app.search",
-                  "icon" : "search", 
-                  "mainTitle" : "Le moteur de recherche des <i class='letter-red'>cagous</i>",
-                  "placeholderMainSearch" : "Que recherchez-vous ?",
-                  "lblBtnCreate" : "Créer une page",
-                  "colorBtnCreate" : "green"},
-
             
       	"#web":
       	  	{"inMenu" : true, 
@@ -59,6 +46,19 @@
                   "icon" : "search", 
                   "mainTitle" : "Le moteur de recherche des cagous",
                   "placeholderMainSearch" : "Que recherchez-vous ?"},
+
+            "#search": {
+                  "inMenu" : true, 
+                  "useHeader" : true, 
+                  "open" : true,
+                  "subdomain" : "search", 
+                  "subdomainName" : "Kgou",
+                  "hash" : "#app.search",
+                  "icon" : "search", 
+                  "mainTitle" : "Le moteur de recherche des <i class='letter-red'>cagous</i>",
+                  "placeholderMainSearch" : "Que recherchez-vous ?",
+                  "lblBtnCreate" : "Créer une page",
+                  "colorBtnCreate" : "green"},
 
       	"#referencement":
       	  	{"inMenu" : false, 

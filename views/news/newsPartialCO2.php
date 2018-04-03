@@ -44,15 +44,17 @@ li.timeline-inverted .timeline-panel#nbAbuse4::before{
 </style>
 
 <?php 
+
 $timezone = "";
 $pair = @$pair ? $pair : false;
 $nbCol = @$nbCol ? $nbCol : 2;
 
 foreach($news as $key => $media){ 
+  
   $class = $pair || ($nbCol == 1) ? "timeline-inverted" : "";
 	$pair = !$pair;
   // Author name and thumb
-  if(@$media["targetIsAuthor"] || $media["type"]=="activityStream"){   
+  if(@$media["targetIsAuthor"]){// || $media["type"]=="activityStream"){   
       if(@$media["target"]["profilThumbImageUrl"] && $media["target"]["profilThumbImageUrl"] != "")
         $thumbAuthor = Yii::app()->createUrl('/'.$media["target"]["profilThumbImageUrl"]);
       else

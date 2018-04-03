@@ -9,13 +9,17 @@
 		<button class="btn btn-default pull-right btn-close-preview" style="margin-top:-15px;">
 			<i class="fa fa-times"></i>
 		</button>
-		<?php if( $element["creator"] == Yii::app()->session["userId"] || Authorisation::canEditItem( Yii::app()->session["userId"], "poi", $id, $element["parentType"], $element["parentId"] ) ){?>
-		<button class="btn btn-default pull-right text-red deleteThisBtn" data-type="poi" data-id="<?php echo $id ?>" style="margin-top:-15px;">
-			<i class=" fa fa-trash"></i>
-		</button>
-		<button class="btn btn-default pull-right btn-edit-preview" style="margin-top:-15px;">
-			<i class="fa fa-pencil"></i>
-		</button>
+		<?php if( $element["creator"] == Yii::app()->session["userId"] || 
+				  Authorisation::canEditItem( Yii::app()->session["userId"], "poi", $id, $element["parentType"], $element["parentId"] ) ){ ?>
+			
+			<button class="btn btn-default pull-right margin-right-10 text-red deleteThisBtn" 
+					data-type="poi" data-id="<?php echo $id ?>" style="margin-top:-15px;">
+				<i class=" fa fa-trash"></i>
+			</button>
+			<button class="btn btn-default pull-right margin-right-10 btn-edit-preview" style="margin-top:-15px;">
+				<i class="fa fa-pencil"></i>
+			</button>
+			
 		<?php } ?>
 		<!-- <h3 class="text-center letter-green"><i class="fa fa-map-marker"></i> Point d'intéret</h3> -->
 		<div id="poi"></div>

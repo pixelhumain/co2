@@ -685,7 +685,7 @@ jQuery(document).ready(function()
 			dateLimit=initLimitDate.created;
 		
 		$(".my-main-container").bind("scroll",function(){ //mylog.log(loadingData, scrollEnd);
-		    if(!loadingData && !scrollEnd){
+			if(!loadingData && !scrollEnd){
 		          var heightContainer = $(".my-main-container")[0].scrollHeight;
 		          if(isLiveGlobal()){
 		          	heightContainer = $("#timeline").height(); mylog.log("heightContainer", heightContainer);

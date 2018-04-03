@@ -606,6 +606,4 @@
 <?php } ?>
 <script type="text/javascript">
   var contextScopeNews = <?php echo json_encode($contextScopeNews) ?>;
-  var publicSurvey = <?php echo ($type == City::CONTROLLER) ? "true" : "false"; ?>;
-  console.log("publicSurvey", publicSurvey);
 </script>

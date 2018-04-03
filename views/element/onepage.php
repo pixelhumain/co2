@@ -546,8 +546,8 @@
 
 		<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
 			<ul class="timeline inline-block" id="timeline-page">
-		</ul>
-
+			</ul>
+		</div>
 	</section>
 	<?php } ?>
 
@@ -600,6 +600,7 @@
 <script type="text/javascript" >
     
 var isOnepage = true;
+var typeItem = "<?php echo @$typeItem; ?>";;
 var edit = "<?php echo @$edit; ?>";
 var elementName = "<?php echo @$element["name"]; ?>";
 var mapData = <?php echo json_encode(@$mapData) ?>;
@@ -646,9 +647,18 @@ jQuery(document).ready(function() {
 		function(){},"html");
 
 	//load section TIMELINE
-	url = "news/index/type/<?php echo (string)$element["type"] ?>/id/<?php echo (string)$element["_id"] ?>?isFirst=1&limit=10&";
+	var url = "news/index/type/<?php echo $typeItem; ?>/id/<?php echo (string)$element["_id"] ?>?isFirst=1&";
 	ajaxPost('#timeline-page', baseUrl+'/'+moduleId+'/'+url+"renderPartial=true&tpl=co2&nbCol=2", null, 
-		function(){},"html");
+		function(){
+			$(window).bind("scroll",function(){ 
+			    if(!loadingData && !scrollEnd){
+			          var heightWindow = $("html").height() - $("body").height();
+			          if( $(this).scrollTop() >= heightWindow - 1000){
+			            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
+			          }
+			    }
+			});
+		},"html");
 });
 
 //create <li> in onepage main menu
@@ -687,6 +697,55 @@ function initMarkdownDescription() {
 		}
 	});
 	
+}
+
+
+var loading = 	"<li class='loader shadow2 letter-blue text-center margin-bottom-50' style='width: 60%;margin-left: 20%;'>"+
+					"<span style=''>"+
+						"<i class='fa fa-spin fa-circle-o-notch'></i> "+
+						"<span>"+trad.currentlyloading+" ...</span>" + 
+				"</li>";
+
+function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM ONEPAGE"); //loadLiveNow
+	loadingData = true;
+	currentIndexMin = indexMin;
+	currentIndexMax = indexMax;
+	
+	if(typeof dateLimit == "undefined") dateLimit = 0;
+
+	//isLive = isLiveBool==true ? "/isLive/true" : "";
+	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+"/date/"+dateLimit+"?tpl=co2&nbCol=2&renderPartial=true";
+	$.ajax({ 
+        type: "POST",
+        url: baseUrl+"/"+moduleId+'/'+url,
+        data: { indexMin: indexMin, 
+        		indexMax:indexMax, 
+        		renderPartial:true 
+        	},
+        success:
+            function(data) {
+                if(data){ 
+                	$("#news-list").find(".loader").remove();
+                	$("#news-list").append(data);
+                	if($("#noMoreNews").length<=0)
+						$("#news-list").append(loading);
+                	//bindTags();
+					
+				}
+				loadingData = false;
+				$(".stream-processing").hide();
+            },
+        error:function(xhr, status, error){
+            loadingData = false;
+            $("#news-list").html("erreur");
+        },
+        statusCode:{
+                404: function(){
+                	loadingData = false;
+                    $("#news-list").html("not found");
+            }
+        }
+    });
 }
 
 /*

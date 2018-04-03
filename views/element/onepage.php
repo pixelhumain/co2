@@ -29,6 +29,7 @@
     if($typeItem == "people") $typeItem = "citoyens";
     
     $allLinks = array();
+    if(@$element["links"])
     foreach ($element["links"] as $key => $elementsLink) {
 	    foreach ($elementsLink as $id => $el) {
 	    	$allLinks[$key][] = Element::getByTypeAndId($el["type"], $id);

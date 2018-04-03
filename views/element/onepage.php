@@ -606,6 +606,8 @@ var elementName = "<?php echo @$element["name"]; ?>";
 var mapData = <?php echo json_encode(@$mapData) ?>;
 var params = <?php echo json_encode(@$params) ?>;
 var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
+initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
+
 var openEdition = "<?php echo (string)@$element["openEdition"]; ?>";
 //console.dir("allparams", params);
 var currentIdSection = "";
@@ -652,8 +654,9 @@ jQuery(document).ready(function() {
 		function(){
 			$(window).bind("scroll",function(){ 
 			    if(!loadingData && !scrollEnd){
-			          var heightWindow = $("html").height() - $("body").height();
-			          if( $(this).scrollTop() >= heightWindow - 1000){
+			          var heightWindow = $("#onepage").height() - $("#mapCanvasBg").height();// - $("body").height();
+			          //console.log("scrolling", $(this).scrollTop(), ">=", heightWindow - 300);
+			          if( $(this).scrollTop() >= heightWindow - 300){
 			            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep);
 			          }
 			    }
@@ -713,6 +716,8 @@ function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM ONEPAGE"); //loa
 	
 	if(typeof dateLimit == "undefined") dateLimit = 0;
 
+	$("#news-list").append(loading);
+
 	//isLive = isLiveBool==true ? "/isLive/true" : "";
 	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+"/date/"+dateLimit+"?tpl=co2&nbCol=2&renderPartial=true";
 	$.ajax({ 
@@ -727,8 +732,8 @@ function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM ONEPAGE"); //loa
                 if(data){ 
                 	$("#news-list").find(".loader").remove();
                 	$("#news-list").append(data);
-                	if($("#noMoreNews").length<=0)
-						$("#news-list").append(loading);
+                	//if($("#noMoreNews").length<=0)
+						//$("#news-list").append(loading);
                 	//bindTags();
 					
 				}

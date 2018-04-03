@@ -17,6 +17,12 @@
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
+
+    HtmlHelper::registerCssAndScriptsFiles(
+        array('/plugins/showdown/showdown.min.js',
+              '/plugins/to-markdown/to-markdown.js',
+              ), Yii::app()->request->baseUrl);
+    
     $page = "live";
     
     if(Yii::app()->params["CO2DomainName"] == "kgougle")
@@ -165,7 +171,7 @@
 
 
 var indexStepInit = 5;
-var searchType = ["organizations", "projects", "events", "needs"];
+var searchType = ["organizations", "projects", "events", "needs", "proposals"];
 var allNewsType = ["news"];//, "idea", "question", "announce", "information"];
 
 var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
@@ -192,6 +198,9 @@ var dataNewsSearch = {};
 var	dateLimit=0;
 
 var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
+
+var contextData = <?php echo json_encode( Element::getElementForJS(@$parent, Person::COLLECTION) ); ?>; 
+
 //var scrollEnd = false;
 jQuery(document).ready(function() {
 	$(".subsub").hide();

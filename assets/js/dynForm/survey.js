@@ -26,50 +26,10 @@ dynForm = {
 
     		 	console.log("dynFormProposal", contextData);
     		 	
-    		 	//dataHelper.activateMarkdown("#ajaxFormModal #description");
-    			//$("#ajaxFormModal #survey").val( contextData.id );
-    			/*if (typeof contextData.name != "undefined" && contextData.name != "" && typeof currentRoomName != "undefined")
-    		 	$("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+
-								    		 		"<small class='text-white'><br>" + 
-								    		 			tradDynForm.inSpace + 
-								    		 			" : <i class='text-white'>#"+currentRoomName+"</i>"+
-								    		 		"</small>" );*/
 
             	$("#ajax-modal #ajaxFormModal .titletext label").html("<i class='fa fa-chevron-down'></i> "+tradDynForm.surveyname);
             	$("#ajax-modal #ajaxFormModal .titletext input#title").attr("placeholder", tradDynForm.surveyname);
-            	/*if(contextData.type == "citoyens"){
-            		$("#ajax-modal-modal-title").html("<i class='fa fa-gavel'></i> "+tradDynForm.createsurvey);
-            		$("#ajax-modal #ajaxFormModal .titletext label").html("<i class='fa fa-chevron-down'></i> "+tradDynForm.surveyname);
-            		$("#ajax-modal #ajaxFormModal .titletext input#title").attr("placeholder", tradDynForm.surveyname);
-            		$("#ajax-modal #ajaxFormModal .descriptiontextarea label").html("<i class='fa fa-chevron-down'></i> "+tradDynForm.surveytext);
-            		$("#amendementActivatedcheckboxSimple").hide();
-
-            	}else{
-            		$("#amendementActivatedcheckboxSimple").show();
-            	}*/
-
-				/*if(typeof data.amendementActivated != "undefined" || contextData.type == "citoyens"){
-					data.amendementActivated = (data.amendementActivated == "true" || data.amendementActivated == true) ? true : false;
-					data.voteActivated 		 = (data.voteActivated == "true" || data.voteActivated == true) 			? true : false;
-					
-					console.log("checkcheck1", data);
-
-					if(data.amendementActivated == false){
-						var idTrue = "#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='true']";
-	    				var idFalse = "#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']";
-	    				
-	    				$("#ajaxFormModal #amendementActivated").val("false");
-						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']").trigger( "click" );
-						
-						$(idFalse).addClass("bg-red").removeClass("letter-red");
-	    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
-
-	    				$("#ajaxFormModal .amendementActivatedcheckboxSimple .lbl-status-check").html(
-	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> désactivés</span>');
-
-	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
-					}
-				}*/
+            	
 
 				if(typeof data.voteDateEnd != "undefined"){
 					var d = new Date(data.voteDateEnd);
@@ -77,14 +37,6 @@ dynForm = {
 					console.log("voteDateEnd", d, voteDateEnd);
 					$("#ajaxFormModal #voteDateEnd").val(voteDateEnd);
 				}
-
-				/*if(typeof data.amendementDateEnd != "undefined"){
-					d = new Date(data.amendementDateEnd);
-					var amendementDateEnd = moment(d).format("DD/MM/YYYY HH:mm");
-					$("#ajaxFormModal #amendementDateEnd").val(amendementDateEnd);
-				}else{
-					$("#ajaxFormModal #amendementDateEnd").val("");
-				}*/
 
 				$("#ajaxFormModal .majoritytext").append(
 						"<small class='pull-left margin-top-5' id='info'><i class='fa fa-info-circle'></i> "+
@@ -145,6 +97,8 @@ dynForm = {
 				});
 
 				$("#ajaxFormModal .multiChoicecheckboxSimple #multiChoice").remove();
+
+				$("#ajaxFormModal .locationBtn").html("<i class='fa fa-home'></i> Sélectionner une commune");
 
 			}
 	    },
@@ -296,8 +250,19 @@ dynForm = {
             										  "labelInformation": "<i class='fa fa-info-circle'></i> " + tradDynForm.allowChangeVote
 
             }),
-            
 
+            infoScope : {
+                inputType : "custom",
+                html:"<br><i class='fa fa-angle-down fa-2x letter-red'></i><br>"+
+                		"<span style='font-size:13px;' class='bg-red badge'><i class='fa fa-bullseye'></i> "+
+                			tradDynForm.selectcitytosharesurvey+
+                		"</span>",
+            },
+	        
+            location : {
+				label : tradDynForm["Scoping"],
+		       	inputType : "location"
+		    },
             tags : dyFInputs.tags(),
             //image : dyFInputs.image(),
             urls : dyFInputs.urls,

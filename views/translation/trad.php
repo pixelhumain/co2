@@ -564,6 +564,8 @@ var tradDynForm = {
 	"what":"<?php echo Yii::t("form","What") ?>",
 	"indicatethemoneyused":"<?php echo Yii::t("form","Indicate the currency used") ?>",
 	"currency":"<?php echo Yii::t("form","Currency") ?>",
+	"Location":"<?php echo Yii::t("form","Location") ?>",
+	"Scoping":"<?php echo Yii::t("form","Scoping") ?>",
 
 	"addroles":"<?php echo Yii::t("form","Add some roles") ?>",
 	"wantToAddSomething":"<?php echo Yii::t("form","choose what you want to add ?") ?>",
@@ -722,7 +724,9 @@ var tradDynForm = {
 	"This URL is already used" : "<?php echo Yii::t("form", "This URL is already used") ?>",
 	"This URL is not used" : "<?php echo Yii::t("form", "This URL is not used") ?>",
 	"Add answers" : "<?php echo Yii::t("form", "Add answers") ?>",
-	"answer" : "<?php echo Yii::t("form", "answer") ?>"
+	"answer" : "<?php echo Yii::t("form", "answer") ?>",
+
+	"selectcitytosharesurvey" : "<?php echo Yii::t("form", "Select a city to share your survey with everybody in town !") ?>",
 
 };
 

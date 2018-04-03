@@ -3510,7 +3510,7 @@ function showLoader(id){
 	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 }
 
-function bindButtonOpenForm(){
+function bindButtonOpenForm(){ 
 	//window select open form type (selectCreate)
 	$(".btn-open-form").off().on("click",function(){
         var typeForm = $(this).data("form-type");

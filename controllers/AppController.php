@@ -192,7 +192,15 @@ class AppController extends CommunecterController {
         $params = array("type" => "vote");
     	echo $this->renderPartial("search", $params, true);
 	}
-
+    public function actionDocs($page=null, $dir=null){
+        CO2Stat::incNbLoad("co2-docs");   
+        $params = array(
+            "page" => @$page,
+            "dir"=>@$dir,
+        );
+        echo $this->renderPartial("../docs/index", $params, true);
+    }
+    
     public function actionAdmin($view=null, $dir=null){
         CO2Stat::incNbLoad("co2-admin");   
         $params = array(
@@ -281,7 +289,7 @@ class AppController extends CommunecterController {
         $this->redirect( Yii::app()->createUrl("/ressources/co/ressources") );
     }
 
-	public function actionPage($type, $id, $view=null, $dir=null){
+    public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
         //var_dump($view); exit;
             
@@ -321,8 +329,12 @@ class AppController extends CommunecterController {
                         "placeholderMainSearch" => "",
                         "element" => $element);
 
+        
         $params = Element::getInfoDetail($params, $element, $type, $id);
-        //var_dump($params); exit;
+        
+        //bloque l'édition de la page (même si on est l'admin)
+        //visualisation utilisateur
+        if(@$mode=="noedit"){ $params["edit"] = false; }
 
 
         if(@$_POST["preview"] == true){

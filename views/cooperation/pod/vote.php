@@ -33,7 +33,6 @@
  		$voteRes = Proposal::getAllVoteRes($proposal);
  		$totalVotant = Proposal::getTotalVoters($proposal); 
  		foreach ($voteRes as $key => $value) {
-
  			$identities = ""; 
  			if(@$proposal["voteAnonymous"] && @$proposal["voteAnonymous"] == "false"){
 	 			$nbVotant=0;

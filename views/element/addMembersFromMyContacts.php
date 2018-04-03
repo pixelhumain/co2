@@ -713,7 +713,7 @@ function showMyContactInModalAddMembers(fieldObj, jqElement){
 														'<span class="info-contact">' +
 															'<span class="scope-name-contact text-dark text-bold" idcontact="'+thisKey+'">' + value.name + '</span>'+
 															'<br/>'+
-															'<span class="scope-cp-contact text-light" idcontact="'+thisKey+'">' + cp + ' </span>'+
+															'<span class="scope-cp-contact text-light" idcontact="'+thisKey+'">' + cp + ' </span> '+
 															'<span class="scope-city-contact text-light" idcontact="'+thisKey+'">' + city + '</span>'+
 														'</span>' +
 													'</div>' +

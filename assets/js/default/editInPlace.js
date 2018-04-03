@@ -78,7 +78,7 @@ function bindAboutPodElement() {
 		});		
 	}
 
-	function bindDynFormEditable(){
+	function bindDynFormEditable(){ 
 		$(".btn-update-when").off().on( "click", function(){
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
@@ -179,8 +179,7 @@ function bindAboutPodElement() {
 			dyFObj.openForm(form, "initUpdateWhen", dataUpdate);
 		});
 
-
-		$(".btn-update-info").off().on( "click", function(){
+		$(".btn-update-info").off().on( "click", function(){ 
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {
@@ -579,21 +578,25 @@ function bindAboutPodElement() {
 							}
 						},
 						beforeSave : function(){
-							mylog.log("beforeSave");
+							mylog.log("beforeSave", contextData["socialNetwork"]);
 					    	//removeFieldUpdateDynForm(contextData.type);
-
 					    	var SNetwork = [ "telegram", "github", "skype", "twitter", "facebook", "gpplus", "instagram", "diaspora", "mastodon"];
 							$.each(SNetwork, function(key, val){ 
 								mylog.log("val", val);
 								mylog.log("val2", $("#ajaxFormModal #"+val).val(), $("#ajaxFormModal #"+val).length);
+
 								if(	notNull(contextData["socialNetwork"]) && 
 									notNull(contextData["socialNetwork"][val]) &&
 									( 	$("#ajaxFormModal #"+val).length &&
 										$("#ajaxFormModal #"+val).val().trim() == contextData["socialNetwork"][val] ) ) {
+									mylog.log("if", val);
 									$("#ajaxFormModal #"+val).remove();
 								} else if (	(	!notNull(contextData["socialNetwork"]) || 
-												!notNull(contextData["socialNetwork"][val]) ) && $("#ajaxFormModal #"+val).length )
+												!notNull(contextData["socialNetwork"][val]) ) && $("#ajaxFormModal #"+val).length ){
+									mylog.log("else", val);
 									$("#ajaxFormModal #"+val).remove();
+								}
+									
 							});
 					    },
 						afterSave : function(data){

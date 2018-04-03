@@ -263,20 +263,16 @@ var Login = function() {
 		          data: params,
 		          success: function(data){
 					if (data.result) {
-						alert(data.msg);
-			            window.location.reload();
+						$('.modal').modal('hide');
+		    		  	$("#modalNewPasswordSuccess").modal("show"); 
+		    		  	// Hide modal if "Okay" is pressed
+					    $('#modalNewPasswordSuccess .btn-default').click(function() {
+					        $('.modal').modal('hide');
+					    });
 					} else if (data.errId == "UNKNOWN_ACCOUNT_ID") {
-						if (confirm(data.msg)) {
-							$('.box-email').removeClass("animated flipInX").addClass("animated bounceOutRight").on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-								$(this).hide().removeClass("animated bounceOutRight");
-							});
-							$('.box-register').show().addClass("animated bounceInLeft").on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-								$(this).show().removeClass("animated bounceInLeft");
-
-							});
-						} else {
-							window.location.reload();
-						}
+						toastr.error(data.msg);
+						$(".forgotBtn").prop("disabled", false).data("loading", false);
+						forgotBtn.stop();
 					}
 		          },
 		          error: function(data) {
@@ -289,6 +285,74 @@ var Login = function() {
 			invalidHandler : function(event, validator) {//display error alert on form submit
 				errorHandler2.show();
 				forgotBtn.stop();
+			}
+		});
+	};
+	var runEmailValidationValidator = function() {
+		var form2 = $('.form-email-activation');
+		var errorHandler2 = $('.errorHandler', form2);
+		var sendValidateEmailBtn = null;
+		Ladda.bind('.sendValidateEmailBtn', {
+	        callback: function (instance) {
+	            sendValidateEmailBtn = instance;
+	        }
+	    });
+		form2.validate({
+			rules : {
+				email2 : {
+					required : true
+				}
+			},
+			submitHandler : function(form) {
+				errorHandler2.hide();
+				sendValidateEmailBtn.start();
+				var params = { 
+					"email" : $("#modalSendActivation #email2").val(),
+					"type"	: "validateEmail"
+				};
+		        $.ajax({
+		          type: "POST",
+		          url: baseUrl+"/"+moduleId+"/person/sendemail",
+		          data: params,
+		          success: function(data){
+					if (data.result) {
+						//$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
+			    		  	$('.modal').modal('hide');
+			    		  	$("#modalSendAgainSuccess").modal("show"); 
+			    		  	// Hide modal if "Okay" is pressed
+						    $('#modalSendAgainSuccess .btn-default').click(function() {
+						        $('.modal').modal('hide');
+						    	//window.location.href = baseUrl+'/#default.live';
+						    	//window.location.href = baseUrl+"/"+moduleId;
+						    	//window.location.reload();
+						    });
+					} else if (data.errId == "UNKNOWN_ACCOUNT_ID") {
+						toastr.error(data.msg);
+						$(".sendValidateEmailBtn").prop("disabled", false).data("loading", false);
+						sendValidateEmailBtn.stop();
+						/*if (confirm(data.msg)) {
+							$('.box-email').removeClass("animated flipInX").addClass("animated bounceOutRight").on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+								$(this).hide().removeClass("animated bounceOutRight");
+							});
+							$('.box-register').show().addClass("animated bounceInLeft").on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+								$(this).show().removeClass("animated bounceInLeft");
+
+							});
+						} else {
+							window.location.reload();
+						}*/
+					}
+		          },
+		          error: function(data) {
+		    	  	toastr.error("Something went really bad : contact your administrator !");
+		    	  },
+		          dataType: "json"
+		        });
+		        return false;
+			},
+			invalidHandler : function(event, validator) {//display error alert on form submit
+				errorHandler2.show();
+				sendValidateEmailBtn.stop();
 			}
 		});
 	};
@@ -430,6 +494,7 @@ var Login = function() {
 			runSetDefaultValidation();
 			runLoginValidator();
 			runForgotValidator();
+			runEmailValidationValidator();
 			runRegisterValidator();
 		}
 	};

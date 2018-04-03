@@ -130,7 +130,7 @@ function getFloopItem(id, type, value){
 							'<span class="info-contact">' +
 								'<span class="name-contact text-dark text-bold" idcontact="'+id+'">' + value.name + '</span>'+
 								'<br/>'+
-								'<span class="cp-contact text-light pull-left" idcontact="'+id+'">' + cp + ' </span>'+
+								'<span class="cp-contact text-light pull-left" idcontact="'+id+'">' + cp + '&nbsp;</span>'+
 								'<span class="city-contact text-light pull-left" idcontact="'+id+'">' + city + '</span>'+
 							'</span>' +
 						'</div>' +

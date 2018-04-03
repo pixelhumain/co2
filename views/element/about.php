@@ -92,7 +92,7 @@
 			<div class="col-md-3 col-sm-3 col-xs-3 hidden-xs labelAbout padding-10">
 				<span><i class="fa fa-paragraph"></i></span> <?php echo Yii::t("common", "Description") ?>
 			</div>
-			<div class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10" 
+			<div class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-20" 
 					style="word-wrap: break-word; overflow:hidden;">
 				<span class="visible-xs col-xs-12 no-padding">
 					<i class="fa fa-paragraph"></i> <?php echo Yii::t("common", "Description") ?>:

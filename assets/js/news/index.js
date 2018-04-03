@@ -93,7 +93,7 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
 
 var tagsFilterListHTML = "";
 var scopesFilterListHTML = "";
-function buildTimeLine (news, indexMin, indexMax)
+/*function buildTimeLine (news, indexMin, indexMax)
 {
 	mylog.log("-----------------buildTimeLine Editable Test----------------------");
 	if (dateLimit==0){
@@ -131,19 +131,19 @@ function buildTimeLine (news, indexMin, indexMax)
 	//	$("#newFeedForm").append(formCreateNews);
 	//	$("#formCreateNewsTemp").css("display", "inline");
 	//}
-	/*offsetLastNews="";
-	$i=0;
-	$( ".newsFeed:gt(-6)" ).each(function(){
-		if($i!=0){
-			if(typeof(offsetLastNews)!="undefined" && typeof(offsetLastNews.top)!="undefined")
-			mylog.log(offsetLastNews.top+" // VS // "+$(this).offset().top);
-			if($(this).offset().top == offsetLastNews.top){
-				$(this).css("margin-top","20px");
-			}
-		}
-		offsetLastNews=$(this).offset();
+	//offsetLastNews="";
+	//$i=0;
+	//$( ".newsFeed:gt(-6)" ).each(function(){
+	//	if($i!=0){
+	//		if(typeof(offsetLastNews)!="undefined" && typeof(offsetLastNews.top)!="undefined")
+	//		mylog.log(offsetLastNews.top+" // VS // "+$(this).offset().top);
+	//		if($(this).offset().top == offsetLastNews.top){
+	//			$(this).css("margin-top","20px");
+	//		}
+	//	}
+	//	offsetLastNews=$(this).offset();
 		//alert();
-	})*/
+	//})
 	$.each( news , function(key,o){
 		initXEditable();
 		manageModeContext(key);
@@ -226,7 +226,7 @@ function buildTimeLine (news, indexMin, indexMax)
 	//Unblock message when click to change type stream
 	if (dateLimit==0)
 		setTimeout(function(){$.unblockUI()},1);
-}
+}*/
 
 
 function bindEventNews(){
@@ -303,15 +303,6 @@ function bindEventNews(){
 		}
 	});
 
-	/*$(".form-create-news-container #get_url").keyup(function(){
-		if($(this).val() != "")
-			showFormBlock(true);	
-	});*/
-	//$(".form-create-news-container #get_url").focusout(function(){
-		//if($(this).val() == "")// && location.hash.indexOf("#default.live")!=0)
-			//showFormBlock(false);	
-	//});
-	
 	$(".videoSignal").click(function(){
 		videoLink = $(this).find(".videoLink").val();
 		iframe='<div class="embed-responsive embed-responsive-16by9">'+
@@ -326,26 +317,20 @@ function smoothScroll(scroolTo){
 }
 
 function modifyNews(idNews,typeNews){
-	//switchModeEdit(id);
 	var idNewsUpdate=idNews;
 	var typeNewsUpdate=typeNews;
-	if($('.newsContent[data-pk="'+idNews+'"] .allText').length)
-		var commentContent = $('.newsContent[data-pk="'+idNews+'"] .allText').html();
-	else
-		var commentContent = $('.newsContent[data-pk="'+idNews+'"] .timeline_text').html();
+	var commentContent = ($('.newsContent[data-pk="'+idNews+'"] .allText').length) ? $('.newsContent[data-pk="'+idNews+'"] .allText').html() :  $('.newsContent[data-pk="'+idNews+'"] .timeline_text').html();
 	var commentTitle = $('.newsTitle[data-pk="'+idNews+'"] .timeline_title').html();
-	mylog.log("commentTitle", commentTitle);
 	var message = "<div id='form-news-update'>";
 	var scopeTarget=updateNews[idNews].scope.type;
-	var scopeLabel=scopeTarget;
 	var newsScope={};
-	if(scopeTarget=="public") scopeIcon="globe";
-	else if(scopeTarget=="restricted"){scopeIcon="connectdevelop"; scopeLabel="network";}
-	else scopeIcon="lock";
+	var newsTargetType=updateNews[idNews].target.type;
+	var scopeLabel=contextScopeNews[newsTargetType][scopeTarget].label;
+	var scopeIcon=contextScopeNews[newsTargetType][scopeTarget].icon;
 	if(notEmpty(commentTitle))
 		message += "<input type='text' id='textarea-edit-title"+idNews+"' class='form-control margin-bottom-5' style='text-align:left;' placeholder='Titre du message' value='"+commentTitle+"'>";
 	 	
-	 	message += "<div id='container-txtarea-news-"+idNews+"' class='updateMention'>";
+	message += "<div id='container-txtarea-news-"+idNews+"' class='updateMention'>";
 		message += 	"<textarea id='textarea-edit-news"+idNews+"' class='form-control newsContentEdit newsTextUpdate get_url_input' placeholder='modifier votre message'>"+commentContent+"</textarea>"+
 				   	"<div id='results' class='bg-white results col-sm-12 col-xs-12 margin-top-20'>";
 				   	if(typeof updateNews[idNews]["media"] != "undefined"){
@@ -363,40 +348,28 @@ function modifyNews(idNews,typeNews){
                 			"<input type='hidden' class='type' value='activityStream'>"+
 							"<input type='hidden' class='objectId' value='"+updateNews[idNews]["media"]["object"]["id"]+"'>"+
 							"<input type='hidden' class='objectType' value='"+updateNews[idNews]["media"]["object"]["type"]+"'>";
-				   			//message += getMediaImages(updateNews[idNews]["media"], idNews,null,null, "update");
-				   			//message += "<input type='hidden' class='type' value='gallery_images'>";
 				   		}
 				   	}
 		message +="</div>"+
 					'<div class="form-group tagstags col-md-12 col-sm-12 col-xs-12 margin-top-20 no-padding">'+
           				'<input id="tags" type="" data-type="select2" name="tags" placeholder="#Tags" value="" style="width:100%;">'+       
       				"</div>"+
-      				'<div class="dropdown no-padding col-md-12 col-sm-12 col-xs-12">'+
+      				'<div class="dropdown no-padding col-md-12 col-sm-12 col-xs-12 margin-bottom-20">'+
           				'<a data-toggle="dropdown" class="btn btn-default col-md-12 col-sm-12 col-xs-12" id="btn-toogle-dropdown-scope-update" href="javascript:;">'+
-          					'<i class="fa fa-'+scopeIcon+'"></i> '+tradDynForm[scopeLabel]+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>'+
+          					'<i class="fa fa-'+scopeIcon+'"></i> '+scopeLabel+' <i class="fa fa-caret-down" style="font-size:inherit;"></i>'+
           				'</a>'+
           				'<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">';
-          					if(updateNews[idNews].target.type != "events"){
-            message+=		'<li>'+
-              					'<a href="javascript:;" id="scope-my-network" class="scopeShare" data-value="private">'+
-              						'<h4 class="list-group-item-heading"><i class="fa fa-lock"></i> '+tradDynForm.private+'</h4>'+
-               						'<p class="list-group-item-text small">'+tradDynForm["explainprivate"+updateNews[idNews].target.type]+'</p>'+
-              					'</a>'+
-            				'</li>';
-            				}
-            message+=		'<li>'+
-              					'<a href="javascript:;" id="scope-my-network" class="scopeShare" data-value="restricted">'+
-              						'<h4 class="list-group-item-heading"><i class="fa fa-connectdevelop"></i> '+tradDynForm.network+'</h4>'+
-                					'<p class="list-group-item-text small"> '+tradDynForm.explainnetwork+'</p>'+
-              					'</a>'+
-				            '</li>'+
-				            '<li>'+
-				              	'<a href="javascript:;" id="scope-my-wall" class="scopeShare" data-value="public">'+
-				              		'<h4 class="list-group-item-heading"><i class="fa fa-globe"></i> '+tradDynForm.public+'</h4>'+
-				                    '<p class="list-group-item-text small">'+tradDynForm.explainpublic+'</p>'+
-				              	'</a>'+
-				            '</li>'+
-			            '</ul>'+
+          					$.each(contextScopeNews[newsTargetType], function(e, v){
+          						if(e != "init"){
+          	message+=				'<li>'+
+              							'<a href="javascript:;" id="scope-my-network" class="scopeShare" data-value="'+e+'">'+
+              								'<h4 class="list-group-item-heading"><i class="fa fa-'+v.icon+'"></i> '+v.label+'</h4>'+
+               								'<p class="list-group-item-text small">'+v.explain+'</p>'+
+              							'</a>'+
+            						'</li>';
+          						}
+          					});
+			message+=   '</ul>'+
 			            '<input type="hidden" name="scope" id="scope" value="'+scopeTarget+'"/>'+
 	        		'</div>'+
 	        		'<div id="scopeListContainerFormUpdate" class="form-group col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-10"></div>'+
@@ -421,114 +394,34 @@ function modifyNews(idNews,typeNews){
 	      callback: function() {
 	      	heightCurrent=$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").height();
 	      	$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").append("<div class='updateLoading' style='line-height:"+heightCurrent+"px'><i class='fa fa-spin fa-spinner'></i> En cours de modification</div>");
-	      	
-	      	/*$('.newsTextUpdate').mentionsInput('getMentions', function(data) {
-      			mentionsInput=data;
-    		});*/
     		newNews = getNewsObject("#form-news-update", "update");// new Object;
-    		newNews.idNews = idNews;
-    		/*newNews.text=$(".newsTextUpdate").val();
-    		newNews.scope=$("#scopeUpdate").val();
-			if($("#resultsUpdate").html() != ""){
-				newNews.media=new Object;	
-				newNews.media.type=$("#resultsUpdate .type").val();
-				if($("#resultsUpdate .type").val()=="url_content"){
-					if($("#resultsUpdate .name").length)
-						newNews.media.name=$("#resultsUpdate .name").val();
-					if($("#resultsUpdate .description").length)
-						newNews.media.description=$("#resultsUpdate .description").val();
-					newNews.media.content=new Object;
-					newNews.media.content.type=$("#resultsUpdate .media_type").val(),
-					newNews.media.content.url=$("#resultsUpdate .url").val(),
-					newNews.media.content.image=$("#resultsUpdate .img_link").val();
-					if($("#resultsUpdate .size_img").length)
-						newNews.media.content.imageSize=$("#resultsUpdate .size_img").val();
-					if($("#resultsUpdate .video_link_value").length)
-						newNews.media.content.videoLink=$("#resultsUpdate .video_link_value").val();
-				}
-				else if($("#resultsUpdate .type").val()=="gallery_images"){
-					newNews.media.countImages=$("#resultsUpdate .docsId").length;
-					if(newNews.media.countImages>0){
-						newNews.media.images=[];
-						$(".docsId").each(function(){
-							newNews.media.images.push($(this).val());	
-						});
-					}else
-						news.media="unset";
-				}else if($("#resultsUpdate .type").val()=="gallery_files"){
-					newNews.media.countFiles=$("#resultsUpdate .docsId").length;
-					if(newNews.media.countFiles>0){
-						newNews.media.files=[];
-						$(".docsId").each(function(){
-							newNews.media.files.push($(this).val());	
-						});
-					}else
-						newNews.media="unset";		
-				}else{
-					newNews.media.object={
-						"id":$("#resultsUpdate .objectId"),
-						"type":$("#resultsUpdate .objectType")
-					};
-				}
-			}else
-				newNews.media="unset";
-			if ($("#tagsUpdate").val() != ""){
-				newNews.tags = $("#tagsUpdate").val().split(",");	
-			}
-			if(newNews.scope=="public")
-				newNews.localities = newsScopes;*/	
-				
-			newNews=mentionsInit.beforeSave(newNews, '.newsTextUpdate');
-		    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));	
+    		newNews.idNews = idNews;	
+			newNews=mentionsInit.beforeSave(newNews, '.newsTextUpdate');	
 			$.ajax({
-			        type: "POST",
-			        url: baseUrl+"/"+moduleId+"/news/update?tpl=co2",
-			        //dataType: "json",
-			        data: newNews,
-					type: "POST",
-			    })
-			    .done(function (data) {
-		    		if(data)
-		    		{
-		    			$("#"+typeNewsUpdate+idNewsUpdate).replaceWith(data);
-		    			bindEventNews();
-		    			//if the news is post in a different month than last news and current month
-		    			/*if(data.object.date.sec) {
-		    				var monthSection = new Date( parseInt(data.object.date.sec)*1000 );
-		    				
-		    				//if we need a month space to insert the news
-		    				if ( !$( "#"+'month'+monthSection.getMonth()+''+monthSection.getFullYear()).length ) {
-								urlCtrl.loadByHash(location.hash);
-		    				}
-						}
-						
-						if( 'undefined' != typeof updateNews && typeof updateNews == "function" ){
-							insertNews(data.object);
-						}
-						$("#get_url").height(50);
-						$.unblockUI();*/
-						toastr.success("Votre publication a bien été modifié");
-						return true;
-		    		}
-		    		else 
-		    		{
-		    			//$.unblockUI();
-						toastr.error(data.msg);
-		    		}
-		    		$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
-					$("#btn-submit-form").prop('disabled', false);
-					return false;
-			    }).fail(function(){
-				   toastr.error("Something went wrong, contact your admin"); 
-				   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
-				   $("#btn-submit-form").prop('disabled', false);
-			    });
-	      	/*updateNews(idNews,$("#textarea-edit-news"+idNews).val(), "newsContent");
-	      	if(notEmpty($("#textarea-edit-title"+idNews).val()))
-	      		updateNews(idNews,$("#textarea-edit-title"+idNews).val(), "name");*/
-
-	      	
-			//return true;
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/news/update?tpl=co2",
+		        data: newNews,
+				type: "POST",
+		    }).done(function (data) {
+	    		if(data)
+	    		{
+	    			$("#"+typeNewsUpdate+idNewsUpdate).replaceWith(data);
+	    			bindEventNews();
+	    			toastr.success("Votre publication a bien été modifié");
+					return true;
+	    		}
+	    		else 
+	    		{
+					toastr.error(data.msg);
+	    		}
+	    		$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+				$("#btn-submit-form").prop('disabled', false);
+				return false;
+		    }).fail(function(){
+			   toastr.error("Something went wrong, contact your admin"); 
+			   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+			   $("#btn-submit-form").prop('disabled', false);
+		    });
 	      }
 	    },
 	  }
@@ -553,8 +446,6 @@ function updateNews(idNews, newText, type){
 function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommentId*/){
 	getMediaFromUrlContent(idTextArea,"#results",1);
 	if($("#form-news-update #results").html!="") $("#form-news-update #results").show();
-	//$(idTextArea).css('height', "34px");
-	//$("#container-txtarea-news-"+idNews).css('height', "34px");
 	mentionsInit.get(idTextArea);
 	$(".removeMediaUrl").click(function(){
         $trigger=$(this).parents().eq(1).find(idTextArea);
@@ -568,23 +459,14 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	autosize($(idTextArea));
 	textNews=data.text;
 	$(idTextArea).val(textNews);
-	
-	//$(idTextArea).mentionsInput("update", data.mentions);
 	if(typeof data.mentions != "undefined" && data.mentions.length != 0){
 		text=data.text;
 		$.each(data.mentions, function(e,v){
 			if(typeof v.slug != "undefined")
 				text=text.replace("@"+v.slug, v.name);
 		});
-
-		/*$(idTextArea).mentionsInput('val', function(text) {
-      		text.replace("@@", "@");
-      		$(this).val(text);
-      		$(this).text(text);
-    	});*/
 		$(idTextArea).val(text);
 		$(idTextArea).mentionsInput("update", data.mentions);
-		//$(idTextArea).focus()
 	}
 	$(idTextArea).on('keyup ', function(e){
 		var heightTxtArea = $(idTextArea).css("height");
@@ -599,6 +481,7 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
   	if(data.scope.type == "public"){
   		convertScopeForUpdate(data.scope.localities);
 		getScopeNewsHtml("#scopeListContainerFormUpdate");
+		$("#scopeListContainerFormUpdate").show(700);
 	}
   	$("#form-news-update .scopeShare").click(function() {
 		replaceText=$(this).find("h4").html();
@@ -611,9 +494,8 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	  	}else
 	  		$("#scopeListContainerFormUpdate").hide(700);
 	});
-	//if(data.scope.type=="public") $(".scopeShareUp[value='public']").trigger("click");
-	
 }
+
 function convertScopeForUpdate(loc){
 	newsScopes={};
 	$.each(loc, function(e, v){
@@ -633,6 +515,7 @@ function convertScopeForUpdate(loc){
 		}
 	});
 }
+
 function deleteNews(id, type, $this){
 	//var $this=$(this);
 	bootbox.confirm(trad["suretodeletenews"], 
@@ -666,12 +549,7 @@ function deleteNews(id, type, $this){
 							} else {
 								toastr.success("Votre partage a été supprimé avec succès!!");
 								$("#"+type+id).replaceWith(data);
-							}
-							/*liParent=$this.parents().eq(4);
-							if (typeof(offset) != "undefined")
-								offset.top = offset.top-liParent.height();
-				        	liParent.fadeOut();*/
-				        	
+							}	
 						} else {
 				            toastr.error(trad["somethingwrong"] + " " + trad["tryagain"]);
 				        }
@@ -682,8 +560,7 @@ function deleteNews(id, type, $this){
 	)
 }
 
-function switchModeEdit(idNews){
-	//alert(mode);
+/*function switchModeEdit(idNews){
 	if(mode == "view"){
 		mode = "update";
 		manageModeContext(idNews);
@@ -694,7 +571,9 @@ function switchModeEdit(idNews){
 }
 
 function manageModeContext(id) {
-	listXeditables = [/*'#newsContent'+id,*/ '#newsTitle'+id];
+	listXeditables = [
+		//'#newsContent'+id,
+		'#newsTitle'+id];
 	if (mode == "view") {
 		//$('.editable-project').editable('toggleDisabled');
 		$.each(listXeditables, function(i,value) {
@@ -736,32 +615,7 @@ function initXEditable() {
 	        }
 	    }
 	});
-  /* 
-	$('.newsContent').editable({
-		url: baseUrl+"/"+moduleId+"/news/updatefield", 
-		emptytext: 'Vide',
-		showbuttons: 'bottom',
-		wysihtml5: {
-			html: true,
-			video: true,
-			image: true
-		},
-		width:100,
-		showbuttons: 'bottom',
-		success : function(data) {
-	        if(data.result) {
-		       // $('.newsContent').editable('toggleDisabled');
-		       	switchModeEdit(data.id);
-	        	toastr.success(data.msg);
-	        	mylog.log(data);
-	        	}
-	        else
-	        	toastr.error(data.msg);  
-	    },
-	});
-*/
-
-}
+}*/
 
  function insertNews(newsObj)
  {
@@ -954,21 +808,16 @@ function showFormBlock(bool){
 		$(".form-create-news-container .tools_bar").show("fast");
 		$(".form-create-news-container .scopescope").show("fast");
 		/////multiTagScopeLbl("send");
-		if(isLiveGlobal())
+		if(isLiveGlobal() || $(".form-create-news-container input[name='scope']").val()=="public")
 			scopeHtml=getScopeNewsHtml();
 		
-		//$("#lbl-my-scopes").html("<i class='fa fa-angle-down'></i> Sélectionnez les lieux de destination");
-		//$("#lbl-my-tags").html("<i class='fa fa-angle-down'></i> Sélectionner des tags<span class='hidden-xs'> pour définir le contenu de votre message</span>");
-		//$("br.visible-in-form").show();
-		///////
 		$('.extract_url').show();
 		$(".form-create-news-container #falseInput").hide();
 		$('#get_url').focus();
 		
 		$("#toogle_filters").hide();	
 		$(".form-create-news-container #btn-slidup-scopetags").hide("fast");
-		//$("#list_tags_scopes").appendTo(".form-create-news-container #scopeListContainer");
-		if(typeof slidupScopetagsMin != "undefined") slidupScopetagsMin(false);
+		//if(typeof slidupScopetagsMin != "undefined") slidupScopetagsMin(false);
 		
 	}else{
 		$(".form-create-news-container #text").hide();
@@ -978,9 +827,6 @@ function showFormBlock(bool){
 		$(".form-create-news-container .publiccheckbox").hide();
 		$(".form-create-news-container .tools_bar").hide();
 		$(".form-create-news-container .scopescope").hide();
-		//if(isLiveGlobal())
-		//	multiTagScopeLbl("search");
-		//actionOnSetGlobalScope="filter";
 		$("#scopeListContainerForm").html("");
 		$("#container-scope-filter").show();
 		$(".item-globalscope-checker").prop('disabled', false);
@@ -990,13 +836,12 @@ function showFormBlock(bool){
 		
 		$("#toogle_filters").show();	
 		$(".form-create-news-container #btn-slidup-scopetags").show("fast");
-		//$(".form-create-news-container #scopeListContainer").appendTo("#list_tags_scopes_container");
-		if(typeof slidupScopetagsMin != "undefined") slidupScopetagsMin(true);
+		//if(typeof slidupScopetagsMin != "undefined") slidupScopetagsMin(true);
 		
 	}
 }
 
-function getUrlContent(){ console.log("getUrlContent getUrlContent");
+/*function getUrlContent(){ console.log("getUrlContent getUrlContent");
     //user clicks previous thumbail
     $("body").on("click","#thumb_prev", function(e){        
         if(img_arr_pos>0) 
@@ -1066,8 +911,8 @@ function getUrlContent(){ console.log("getUrlContent getUrlContent");
 			}
         }
     });
-}
-function getMediaHtml(data,action,idNews){
+}*/
+/*function getMediaHtml(data,action,idNews){
 	if(typeof(data.images)!="undefined"){
 		extracted_images = data.images;
 		total_images = parseInt(data.images.length);
@@ -1168,7 +1013,7 @@ function getMediaHtml(data,action,idNews){
 	    
     content = '<div class="extracted_url">'+ inc_image +contentMedia+'</div>'+inputToSave;
     return content;
-}
+}*/
 function saveNews(){
 	var formNews = $('#form-news');
 	var errorHandler2 = $('.errorHandler', formNews);
@@ -1176,67 +1021,10 @@ function saveNews(){
 
 	var validation = {
 		submitHandler : function(form) {
-			//showPanel("box-login");
 			$('#modalLogin').modal("show");
 		}
 	};
 	if(userId != null && userId != ""){
-		/*validation = {
-			errorElement : "span", // contain the error msg in a span tag
-			errorClass : 'help-block',
-			errorPlacement : function(error, element) {// render error placement for each input type
-				if (element.attr("type") == "radio" || element.attr("type") == "checkbox") {// for chosen elements, need to insert the error after the chosen container
-					error.insertAfter($(element).closest('.form-group').children('div').children().last());
-				} else if (element.parent().hasClass("input-icon")) {
-					error.insertAfter($(element).parent());
-				} else {
-					error.insertAfter(element);
-					// for other inputs, just perform default behavior
-				}
-			},
-			ignore : "",
-			rules : {
-				goSaveNews : {
-					required:{
-						depends: function() {
-							if($(".noGoSaveNews").length){
-								return true;
-							}
-							else{
-								return false;
-							}
-						}	
-					}
-				},
-				getUrl : {
-					required:{
-						depends: function() {
-							if($("#results").html() !=""){
-								return false							
-							}else{
-								return true;	
-							}
-						}	
-					}
-				},
-			},
-			messages : {
-				getUrl : "* "+trad["emptymsg"],
-				goSaveNews: "* Image is still loading"
-
-			},
-			submitHandler : function(form) {
-				successHandler2.show();
-				errorHandler2.hide();
-				/*if(element){
-					alert(element);
-					jsonHelper.stringFormtoJson( $("#form-news #get_url").val(), element+"Form" );
-				    mylog.warn("------------ form serialised as JSON ------------------");
-				    mylog.dir( $("#"+element+"Form").serializeFormJSON() );
-				    elementValidation (element+"Form", typeObj[element].rules, typeObj[element].save);
-					$("#"+element+"Form").submit();
-					return false;
-				}*/
 		$("#btn-submit-form").prop('disabled', true);
 		$("#btn-submit-form i").removeClass("fa-arrow-circle-right").addClass("fa-circle-o-notch fa-spin");
 		$(".form-create-news-container .form-actions .help-block").remove();
@@ -1255,75 +1043,50 @@ function saveNews(){
 			$("#btn-submit-form").prop('disabled', false);		
 		}else{
 			newNews=getNewsObject("#form-news");
-				
-				mylog.log("contextParentType", contextParentType);
-				/*if($("input[name='cityInsee']").length && contextParentType == "city")
-					newNews.codeInsee = $("input[name='cityInsee']").val();
-				if($("input[name='cityPostalCode']").length && contextParentType == "city")
-					newNews.postalCode = $("input[name='cityPostalCode']").val();*/
-				newNews=mentionsInit.beforeSave(newNews, 'textarea.mention');
-				mylog.log(newNews);
-				$.ajax({
-			        type: "POST",
-			        url: baseUrl+"/"+moduleId+"/news/save?tpl=co2",
-			        //dataType: "json",
-			        data: newNews,
-					type: "POST",
-			    })
-			    .done(function (data) {
-		    		if(data)
-		    		{
-		    			$("#form-news #get_url").val("");
-		    			mentionsInit.reset('textarea.mention');
- 						//$('textarea.mention').mentionsInput('reset');
- 						newsScopes={};
- 						$("#form-news #results").html("").hide();
- 						$("#form-news #tags").select2('val', "");
- 						showFormBlock(false);
-		    			$("#news-list").prepend(data);
-		    			bindEventNews();
-		    			//if the news is post in a different month than last news and current month
-		    			/*if(data.object.date.sec) {
-		    				var monthSection = new Date( parseInt(data.object.date.sec)*1000 );
-		    				
-		    				//if we need a month space to insert the news
-		    				if ( !$( "#"+'month'+monthSection.getMonth()+''+monthSection.getFullYear()).length ) {
-								urlCtrl.loadByHash(location.hash);
-		    				}
-						}
-						
-						if( 'undefined' != typeof updateNews && typeof updateNews == "function" ){
-							insertNews(data.object);
-						}
-						$("#get_url").height(50);
-						$.unblockUI();*/
-						toastr.success(trad["successsavenews"]);
-		    		}
-		    		else 
-		    		{
-		    			//$.unblockUI();
-						toastr.error(data.msg);
-		    		}
-		    		$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
-					$("#btn-submit-form").prop('disabled', false);
-					return false;
-			    }).fail(function(){
-				   toastr.error("Something went wrong, contact your admin"); 
-				   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
-				   $("#btn-submit-form").prop('disabled', false);
-			    });
-	//		}
-	//	};
+			newNews=mentionsInit.beforeSave(newNews, 'textarea.mention');
+			$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/news/save?tpl=co2",
+		        //dataType: "json",
+		        data: newNews,
+				type: "POST",
+		    })
+		    .done(function (data) {
+	    		if(data)
+	    		{
+	    			$("#form-news #get_url").val("");
+	    			mentionsInit.reset('textarea.mention');
+					newsScopes={};
+					$("#form-news #results").html("").hide();
+					$("#form-news #tags").select2('val', "");
+					showFormBlock(false);
+	    			$("#news-list").prepend(data);
+	    			bindEventNews();
+		    		toastr.success(trad["successsavenews"]);
+		    	}
+		    	else 
+		    		toastr.error(data.msg);
+	    		
+	    		$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+				$("#btn-submit-form").prop('disabled', false);
+				return false;
+		    }).fail(function(){
+			   toastr.error("Something went wrong, contact your admin"); 
+			   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+			   $("#btn-submit-form").prop('disabled', false);
+		    });
 		}
 	}
-	//formNews.submit(function(e) { e.preventDefault(); }).validate(validation);
 }
+
 function getNewsObject(formId, actionType){
 	newNews = {
 		text : $(formId+" .get_url_input").val(),
 		scope : $(formId+" input[name='scope']").val(),
 	};
+	
 	var actionType=(notNull(actionType))? actionType : "save";
+	
 	if($(formId+" #results").html() != ""){
 		newNews.media=new Object;	
 		newNews.media.type=$(formId+" #results .type").val();
@@ -1369,11 +1132,10 @@ function getNewsObject(formId, actionType){
 		}
 	}else if(actionType=="update")
 		newNews.media="unset";
-	if ($(formId+" #tags").val() != ""){
-		newNews.tags = $(formId+" #tags").val().split(",");	
-	}
-    //if(typeof newNews.tags != "undefined") newNews.tags = newNews.tags.concat($('#searchTags').val().split(','));
-	//else newNews.tags = $('#searchTags').val().split(',');
+	
+	if ($(formId+" #tags").val() != "")
+		newNews.tags = $(formId+" #tags").val().split(",");
+
 	if(actionType=="save"){		
 		newNews.parentId = $(formId+" #parentId").val(),
 		newNews.parentType = $(formId+" #parentType").val(),
@@ -1381,15 +1143,19 @@ function getNewsObject(formId, actionType){
 	}
 	
 	if(newNews.scope=="public")
-		newNews.localities = newsScopes;	
+		newNews.localities = newsScopes;
+
 	if($(formId+' #authorIsTarget').length && $(formId+' #authorIsTarget').val()==1)
 		newNews.targetIsAuthor = true;
+	
 	return newNews;
 }
+
 function showAllNews(){
 	$(".newsFeed").show();
 	$('.optionFilter').hide();
 }
+
 function initFormImages(){
 	$("#photoAddNews").on('submit',(function(e) {
 		e.preventDefault();
@@ -1466,12 +1232,14 @@ function initFormImages(){
 		});
 	}));
 }
+
 function addMoreSpace(){
 	bootbox.dialog({
 	message: "You have attempt the limit of 20Mo of images for this "+contextParentType+"<br/>Please choose one of those  two solutions beyond:<br/>Delete images in the <a href='javascript:;' onclick='bootbox.hideAll();urlCtrl.loadByHash(\"#gallery.index.id."+contextParentId+".type."+contextParentType+"\")'>photo gallery</a> <br/><br/>OR<br/><br/> Subscribe 12€ to the NGO Open Atlas which takes in charge communecter.org on <a href='https://www.helloasso.com/associations/open-atlas' target='_blank'>helloAsso</a> for 20Mo more. <br/><br/>Effectively, stocking images represents a cost for us and donate to the NGO will demonstrate your contribution the project and to the common we built together",
   title: "Limit of <color class='red'>20 Mo</color> overhead"
   });
 }
+
 function showMyImage(fileInput) {
 	if($(".noGoSaveNews").length){
 		toastr.info(trad.waitendofloading);
@@ -1598,6 +1366,7 @@ function getMediaImages(o,newsId,authorId,targetName, actionType){
 	}
 	return html;
 }
+
 function getMediaFiles(o,newsId, edit){
 	html="";
 	for(var i in o.files){
@@ -1611,7 +1380,8 @@ function getMediaFiles(o,newsId, edit){
 		html +="</div>";
 	}
 	return html;
-}	
+}
+	
 function deleteImage(id,name,hideMsg,communevent){
 	var imgToDelete=id;
 	if(communevent==true)

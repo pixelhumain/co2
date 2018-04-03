@@ -865,7 +865,7 @@
 
 					this.checkListElementMap(thisMap); 
 					
-					mylog.log("fitBounds", typeof noFitBoundAroundMe);
+					mylog.log("fitBounds !", typeof noFitBoundAroundMe);
 					//mylog.dir(this.markersLayer.getBounds());
 					if( typeof noFitBoundAroundMe == "undefined" || noFitBoundAroundMe != true){
 						if("undefined" != typeof this.markersLayer.getBounds() &&

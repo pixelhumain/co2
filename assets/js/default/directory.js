@@ -687,8 +687,11 @@ function initPageTable(number){
 
     });
 
+    $.each($(".searchEntity.coopPanelHtml .descMD"), function(){
+      $(this).html(dataHelper.markdownToHtml($(this).html()) );
+    });
 
-    $(".coopPanelHtml").off().click(function(){
+    $(".btn.openCoopPanelHtml").off().click(function(){
       var coopType = $(this).data("coop-type");
       var coopId = $(this).data("coop-id");
       var idParentRoom = $(this).data("coop-idparentroom");
@@ -701,10 +704,11 @@ function initPageTable(number){
 
       console.log("onclick coopPanelHtml", coopType, coopId, idParentRoom, parentId, parentType);
 
-      if(contextData.id == parentId && contextData.type == parentType){
+      if(contextData.id == parentId && contextData.type == parentType && typeof isOnepage == "undefined" && idParentRoom != ""){
         toastr.info(trad["processing"]);
         uiCoop.startUI();
         $("#modalCoop").modal("show");
+        onchangeClick=false;
         if(coopType == "rooms"){
           uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
         }else{
@@ -725,6 +729,7 @@ function initPageTable(number){
           uiCoop.getCoopDataPreview(coopType, coopId);
         }
       }
+
 /*
       if(contextData.id == parentId && contextData.type == parentType){
           toastr.info(trad["processing"]);
@@ -747,6 +752,15 @@ function initPageTable(number){
         urlCtrl.loadByHash(hash);
       }*/
 
+    });
+
+
+    $(".btn-send-vote").off().click(function(){
+      var idParentProposal = $(this).data('idparentproposal');
+      var voteValue = $(this).data('vote-value');
+      var idParentRoom = $(this).data('idparentroom');
+      console.log("send vote", voteValue);
+      uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom, null, true);
     });
 
     initBtnShare();
@@ -1111,8 +1125,12 @@ var directory = {
       }
 
 
-      if(typeof params.hash != "undefined")
-        str += "<br><a href='"+params.hash+"."+onepageKey+"' class='lbh letter-green url elipsis'>"+params.hash+"."+onepageKey+"</a>";
+      //if(typeof params.hash != "undefined")
+        //str += "<br><a href='"+params.hash+"."+onepageKey+"' class='lbh letter-green url elipsis'>"+params.hash+"."+onepageKey+"</a>";
+      if(typeof params.hash != "undefined"){
+        echoLabel= (typeof params.slug !="undefined") ? "@"+params.slug : params.hash;
+        str += "<br><a href='"+params.hash+"' class='"+linkAction+" letter-green url elipsis'>"+echoLabel+"</a>";
+      }
 
       if(typeof params.url != "undefined" && params.url != null && params.url != "")
         str += "<br><a href='"+params.url+"' class='lbh text-light url bold elipsis'>"+params.url+"</a>";
@@ -1162,7 +1180,7 @@ var directory = {
       }
 
       var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classified"])>=0 )  ? false : true;
-      if(typeof params.edit  != "undefined")
+      if(typeof params.edit  != "undefined" && notNull(params.edit))
         str += this.getAdminToolBar(params);
 
       mylog.log("isFollowed ?", params.isFollowed, params.id, inMyContacts(params.typeSig, params.id), 
@@ -1228,7 +1246,7 @@ var directory = {
 
 
 		var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
-    if(typeof params.edit  != "undefined")
+    if(typeof params.edit  != "undefined" && notNull(params.edit))
 		  str += this.getAdminToolBar(params);
 
 		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
@@ -2133,81 +2151,46 @@ var directory = {
 	cityPanelHtml : function(params){
 		mylog.log("-----------cityPanelHtml", params);
 		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
-		valuesScopes = {
-			city : params._id.$id,
-			cityName : params.name,
-			postalCode : params.postalCode,
-			country : params.country,
-			allCP : params.allCP,
-			uniqueCp : params.uniqueCp,
-			level1 : params.level1,
-			level1Name : params.level1Name
-		}
-		typeSearchCity="city";
-		levelSearchCity="city";
+		typeSearchCity='city';
+		levelSearchCity='city';
 
-		if( notEmpty( params.nameCity ) ){
-			valuesScopes.name = params.nameCity ;
-		}
+		
+		str = '';
+		str += '<a href="javascript:" class="col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity" ';
+			str += 'data-scope-value="' + params._id.$id  + '"' + 
+					'data-scope-name="' + params.name + '"' +
+					'data-scope-level="'+levelSearchCity+'"' +
+					'data-scope-type="'+typeSearchCity+'"' +
+					//'data-scope-values="'+JSON.stringify(valuesScopes)+'"' +
+					'data-scope-notsearch="'+true+'"'+
+					'data-append-container="'+domContainer+'"';
+		str += '>';
+			str += '<div class="col-xs-12 margin-bottom-10 '+params.type+' '+params.elTagsList+' ">';
+				str += '<div class="padding-10 informations">';
+					str += '<div class="entityRight no-padding">';
 
-		if( notEmpty( params.uniqueCp ) ){
-			valuesScopes.uniqueCp = params.uniqueCp;
-		}
+						var title =  '<span> ' + params.name + ' ' + (notEmpty(params.postalCode) ? ' - ' +  params.postalCode : '') +'</span>' ;
 
-		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
-			valuesScopes.level4 = params.level4 ;
-			valuesScopes.level4Name = params.level4Name ;
-		}
-		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
-			valuesScopes.level3 = params.level3 ;
-			valuesScopes.level3Name = params.level3Name ;
-		}
-		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
-			valuesScopes.level2 = params.level2 ;
-			valuesScopes.level2Name = params.level2Name ;
-		}
-		str = "";
-		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
-			str += "data-scope-value='" + params._id.$id  + "' " + 
-					"data-scope-name='" + params.name + "' " +
-					"data-scope-level='"+levelSearchCity+"' " +
-					"data-scope-type='"+typeSearchCity+"' " +
-					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-					"data-scope-notsearch='"+true+"' "+
-					"data-append-container='"+domContainer+"' ";
-		str += ">";
-			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
-				str += "<div class='padding-10 informations'>";
-					str += "<div class='entityRight no-padding'>";
-						// params.hash = ""; //#main-col-search";
-						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
-						// params.onclickCp = 'setScopeValue($(this));';
-						// params.target = "";
-						// params.dataId = params.name; 
-
-						var title =  "<span> " + params.name + " " + (notEmpty(params.postalCode) ? " - " +  params.postalCode : "") +"</span>" ;
-
-						var subTitle = "";
+						var subTitle = '';
 						if( notEmpty( params.level4Name ) )
-							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
+							subTitle +=  (subTitle == '' ? '' : ', ') +  params.level4Name ;
 						if( notEmpty( params.level3Name ) )
-							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
+							subTitle +=  (subTitle == '' ? '' : ', ') +  params.level3Name ;
 						if( notEmpty( params.level2Name ) )
-							subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
+							subTitle +=  (subTitle == '' ? '' : ', ') +  params.level2Name ;
 
-	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.country ;
-						str += " <span class='entityName letter-red '>"+
-									//'<span class="col-xs-1">'+
-									"<i class='fa fa-university'></i>" + title + 
-									"<br/>"+
-									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
-								"</span>";
+	                  	subTitle +=  (subTitle == '' ? '' : ', ') + params.country ;
+						str += ' <span class="entityName letter-red ">'+
+									'<i class="fa fa-university"></i>' + title + 
+									'<br/>'+
+									'<span style="color : grey; font-size : 13px">'+subTitle+'</span>'+
+								'</span>';
 
 
-					str += "</div>";
-				str += "</div>";              
-			str += "</div>";
-		str += "</a>";
+					str += '</div>';
+				str += '</div>';              
+			str += '</div>';
+		str += '</a>';
 	return str;
     },
     // ********************************
@@ -2216,96 +2199,74 @@ var directory = {
 	zonePanelHtml : function(params){
 		mylog.log("-----------zonePanelHtml", params);
 		var domContainer=(notNull(params.input)) ? params.input+" .scopes-container" : "";
-		valuesScopes = {
-			id : params._id.$id,
-			name : params.name,
-			country : params.countryCode,
-			level : params.level
-		}
+		// valuesScopes = {
+		// 	id : params._id.$id,
+		// 	name : params.name,
+		// 	country : params.countryCode,
+		// 	level : params.level
+		// }
 
 		if(params.level.indexOf("1") >= 0){
 			typeSearchCity="level1";
 			levelSearchCity="1";
-			valuesScopes.numLevel = 1;
 		}else if(params.level.indexOf("2") >= 0){
 			typeSearchCity="level2";
 			levelSearchCity="2";
-			valuesScopes.numLevel = 2;
 		}else if(params.level.indexOf("3") >= 0){
 			typeSearchCity="level3";
 			levelSearchCity="3";
-			valuesScopes.numLevel = 3;
 		}else if(params.level.indexOf("4") >= 0){
 			typeSearchCity="level4";
 			levelSearchCity="4";
-			valuesScopes.numLevel = 4;
-		}
-		if(notNull(typeSearchCity))
-			valuesScopes.type = typeSearchCity;				
-
-		mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
-
-		if( notEmpty( params.level1 ) && valuesScopes.id != params.level1){
-			mylog.log("valuesScopes test", (valuesScopes.id != params.level1), valuesScopes.id, params.level1);
-			valuesScopes.level1 = params.level1 ;
-			valuesScopes.level1Name = params.level1Name ;
 		}
 
 		var subTitle = "";
 
-		if( notEmpty( params.level4 ) && valuesScopes.id != params.level4){
-			valuesScopes.level4 = params.level4 ;
-			valuesScopes.level4Name = params.level4Name ;
+		if( notEmpty( params.level4 ) && params.id != params.level4){
 			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level4Name ;
 		}
-		if( notEmpty( params.level3 ) && valuesScopes.id != params.level3 ){
-			valuesScopes.level3 = params.level3 ;
-			valuesScopes.level3Name = params.level3Name ;
+		if( notEmpty( params.level3 ) && params.id != params.level3 ){
 			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level3Name ;
 		}
-		if( notEmpty( params.level2 ) && valuesScopes.id != params.level2){
-			valuesScopes.level2 = params.level2 ;
-			valuesScopes.level2Name = params.level2Name ;
+		if( notEmpty( params.level2 ) && params.id != params.level2){
 			subTitle +=  (subTitle == "" ? "" : ", ") +  params.level2Name ;
 		}
 
-		str = "";
-		str += "<a href='javascript:' class='col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity' ";
-			str += "data-scope-value='" + params._id.$id  + "' " + 
-					"data-scope-name='" + params.name + "' " +
-					"data-scope-level='"+levelSearchCity+"' " +
-					"data-scope-type='"+typeSearchCity+"' " +
-					"data-scope-values='"+JSON.stringify(valuesScopes)+"' " +
-					"data-scope-notsearch='"+true+"' "+
-					"data-append-container='"+domContainer+"' ";
-		str += ">";
-			str += "<div class='col-xs-12 margin-bottom-10 "+params.type+" "+params.elTagsList+" '>";
-				str += "<div class='padding-10 informations'>";
-					str += "<div class='entityRight no-padding'>";
-						// params.hash = ""; //#main-col-search";
-						// params.onclick = 'setScopeValue($(this))'; //"'+params.name.replace("'", "\'")+'");';
-						// params.onclickCp = 'setScopeValue($(this));';
-						// params.target = "";
+		str = '';
+		str += '<a href="javascript:" class="col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity" ';
+			str += 'data-scope-value="' + params._id.$id  + '" ' + 
+					'data-scope-name="' + params.name + '" ' +
+					'data-scope-level="'+levelSearchCity+'" ' +
+					'data-scope-type="'+typeSearchCity+'" ' +
+					//'data-scope-values="'+JSON.stringify(valuesScopes)+'" ' +
+					'data-scope-notsearch="'+true+'" '+
+					'data-append-container="'+domContainer+'" ';
+		str += '>';
+			str += '<div class="col-xs-12 margin-bottom-10 '+params.type+' '+params.elTagsList+' ">';
+				str += '<div class="padding-10 informations">';
+					str += '<div class="entityRight no-padding">';
+						// params.hash = '; //'main-col-search';
+						// params.onclick = "setScopeValue($(this))"; //'"+params.name.replace('"', '\"')+"');";
+						// params.onclickCp = "setScopeValue($(this));";
+						// params.target = ';
 						// params.dataId = params.name; 
 
-						var title =  "<span>" + params.name + "</span>" ;
-	                  	subTitle +=  (subTitle == "" ? "" : ", ") + params.countryCode;
-						str += " <span class='entityName letter-red'>"+
-									//'<span class="col-xs-1">'+
-										"<i class='fa fa-bullseye bold text-red'></i>"+
-										"<i class='fa bold text-dark'>"+
+						var title =  '<span>' + params.name + '</span>' ;
+	                  	subTitle +=  (subTitle == '' ? '' : ', ') + params.countryCode;
+						str += ' <span class="entityName letter-red">'+
+										'<i class="fa fa-bullseye bold text-red"></i>'+
+										'<i class="fa bold text-dark">'+
 											levelSearchCity+
-										"</i> "+ 
-									//"</span> "+
+										'</i> '+ 
 									title + 
-									"<br/>"+
-									"<span style='color : grey; font-size : 13px'>"+subTitle+"</span>"+
-								"</span>";
+									'<br/>'+
+									'<span style="color : grey; font-size : 13px">'+subTitle+'</span>'+
+								'</span>';
 
-					str += "</div>";
-				str += "</div>";              
-			str += "</div>";
-		str += "</a>";
+					str += '</div>';
+				str += '</div>';              
+			str += '</div>';
+		str += '</a>';
 	return str;
     },
     // ********************************
@@ -2504,35 +2465,118 @@ var directory = {
     // PROPOSAL DIRECTORY PANEL
     // ********************************
     coopPanelHtml : function(params, key){
-      //if(directory.dirLog) 
       mylog.log("-----------proposalPanelHtml", params, key);
       var idParentRoom = typeof params.idParentRoom != "undefined" ? params.idParentRoom : "";
       if(idParentRoom == "" && params.type == "rooms") idParentRoom = params.id;
-      mylog.log("-----------idParentRoom", idParentRoom);
+      //mylog.log("-----------idParentRoom", idParentRoom);
       
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
-      var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
-      description = description.replace(/\n/g,"<br>");
-      
+      var description = "";
+      if(typeof params.description != "undefined"){
+        description = params.description; //.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
+        //description = description.replace(/\n/g,"<br>");
+      }
       name = escapeHtml(name);
-      //if(directory.dirLog) 
-        mylog.log("-----------coopPanelHtml", params);
-        
+      var thisId = typeof params["_id"] != "undefined" &&
+                   typeof params["_id"]["$id"] != "undefined" ? params["_id"]["$id"] : 
+                   typeof params["id"] != "undefined" ? params["id"] : "";
         str = "";  
-        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;'>";
+        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 coop-wraper margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;'>";
         str += "<div class='searchEntity coopPanelHtml' data-coop-type='"+ params.type + "'  data-coop-id='"+ params.id + "' "+
                     "data-coop-idparentroom='"+ idParentRoom + "' "+
                     "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
                     ">";
           str += "<div class='panel-heading border-light col-lg-12 col-xs-12'>";
 
+          str += "<button class='btn btn-sm btn-default pull-right openCoopPanelHtml bold letter-turq' "+
+                    "data-coop-type='"+ params.type + "'  data-coop-id='"+ thisId + "' "+
+                    "data-coop-idparentroom='"+ idParentRoom + "' "+
+                    "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
+                    "><i class='fa fa-chevron-right'></i> <span class='hidden-xs'>"+trad["Open"]+"</span></button>";
+
           if(name != "")
           str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
+          
+          console.log("hasVote ? ", params["hasVote"]);
+          if(params.type != "rooms"){
+            str += '<h5>';
+            str +=  '<small><i class="fa fa-certificate"></i> '+trad[params.status]+'</small>';
+            if(params.status == "tovote" && params["hasVote"]===false)
+              str +=  '<small class="margin-left-15 letter-red"><i class="fa fa-ban"></i> '+trad["You did not vote"]+'</small>';
+            else if(params.status == "tovote" && params["hasVote"]!==false)
+              str +=  '<small class="margin-left-15"><i class="fa fa-thumbs-up"></i> '+trad["You did vote"]+'</small>';
+            //else 
+            //  str +=  '<small class="margin-left-15 letter-red"><i class="fa fa-thumbs-up"></i> '+trad["You did not vote"]+'</small>';
+            str += '</h5>';
+          }
 
-          if(params.type != "rooms")
-          str += '<h5 class=""><small><i class="fa fa-certificate"></i> '+ trad[params.status] + '</small></h5>';
+          
+          str += '<div class="all-coop-detail">';
+            if(description != "") str += '<hr>';
 
-          str += '<span class="text-dark">'+description+'</span>';
+            str += '<span class="col-xs-12 no-padding text-dark descMD">'+description+'</span>';
+            
+            if((params["auth"] || typeof params["idParentRoom"] == "undefined") && params["status"] == "tovote"){
+
+            str += '<span class="col-xs-12 no-padding"><hr></span>';
+
+              var isMulti = typeof params["answers"] != "undefined";
+              var answers = isMulti ? params["answers"] : 
+                                      { "up":"up", "down": "down", "white": "down", "uncomplet":"uncomplet"};
+              
+              $.each(answers, function(key, val){
+                var voteRes = (typeof params["voteRes"] != "undefined" &&
+                               typeof params["voteRes"][key] != "undefined") ? params["voteRes"][key] : false;             
+                 
+                str += '<div class="col-xs-12 no-padding">';
+
+                  if(params["status"] == "tovote" && (!params["hasVote"] || params["voteCanChange"] == "true")){
+                    str += '<div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 no-padding text-right pull-left margin-top-20">';
+
+                    str += '  <button class="btn btn-send-vote btn-link btn-sm bg-vote bg-'+voteRes["bg-color"]+'"';
+                    str += '     title="'+trad["clicktovote"]+'" ';
+                    str += '      data-idparentproposal="'+thisId+'"';
+                    str += '      data-idparentroom="'+params["idParentRoom"]+'"';
+                    str += '      data-vote-value="'+key+'"><i class="fa fa-gavel"></i>';
+                    str += '  </button>';
+
+                    if(params["hasVote"] === ""+key)
+                    str +=  '<br><i class="fa fa-user-circle padding-10" title="'+trad["You voted for this answer"]+'"></i> ';
+                  
+                    str += '</div>';
+                  }
+
+                  str += '<div class="col-lg-11 col-md-11 col-sm-11 col-xs-10">'
+                  
+                  var hashAnswer = !isMulti ? trad[voteRes["voteValue"]] : (key+1);
+
+                  str +=    '<div class="padding-10 margin-top-15 border-vote border-vote-'+key+'">';
+                  str +=      '<i class="fa fa-hashtag"></i><b>'+hashAnswer+'</b> ';
+                  if(isMulti) 
+                      str +=        voteRes["voteValue"];
+                  str +=    '</div>';
+                  
+                  if(voteRes !== false && voteRes["percent"]!=0){
+                    str +=  '<div class="progress progress-res-vote">';
+                    str +=       '<div class="progress-bar bg-vote bg-'+voteRes["bg-color"]+'" role="progressbar" ';
+                    str +=       'style="width:'+voteRes["percent"]+'%">';
+                    str +=       voteRes["percent"]+'%';
+                    str +=     '</div>';
+                    str +=     '<div class="progress-bar bg-transparent" role="progressbar" ';
+                    str +=       'style="width:'+(100-voteRes["percent"])+'%">';
+                    str +=      voteRes["votant"]+' <i class="fa fa-gavel"></i>';
+                    str +=     '</div>';
+                    str +=  '</div>';
+                  }
+                  str += '</div>';
+
+                str += '</div>';
+              });
+            }
+
+
+            str += "</div>";
+
           str += "</div>";
         str += "</div>";  
       str += "</div>";
@@ -3119,7 +3163,7 @@ var directory = {
                 params.hash = '#page.type.'+params.type+'.id.' + params.id;
 
                 if(typeof params.slug != "undefined" && params.slug != "" && params.slug != null)
-                  params.hash = "#" + params.slug;
+                  params.hash = "#@" + params.slug;
 
                 if(typeof networkJson != "undefined" && typeof networkJson.dataSrc != "undefined")
                   params.hash = params.source;

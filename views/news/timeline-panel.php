@@ -1,6 +1,7 @@
 <?php $shareLabel=array(
   "verb-create" => "created",
   "verb-share" => "shared",
+  "verb-publish" => "published",
   "verb-share-pluriel" => "have shared",
   "displayShared-news"      => "a news",
   "displayShared-projects"    => "a project",
@@ -8,12 +9,22 @@
   "displayShared-events"      => "an event",
   "displayShared-classified"    => "an announce",
   "displayShared-proposals"    => "a proposal",
+  "displayShared-survey"    => "a survey",
   "displayShared-actions"    => "an action",
   "displayShared-resolutions"    => "a resolution",
   "displayShared-rooms"    => "a cooperative space",
   "displayShared-ressources"    => "a need or a ressource",
   "displayShared-places"    => "a place",
-); ?>
+); 
+
+if(@$media["object"]){
+  if($media["object"]["type"] == Proposal::COLLECTION && @$media["object"]["isSurvey"])
+      $media["object"]["tradType"] = "survey";
+  else
+      $media["object"]["tradType"] = $media["object"]["type"];
+}
+
+?>
   
   <div id="newsTagsScope<?php echo $key ?>" class="col-md-12 col-sm-12 col-xs-12">
     
@@ -162,7 +173,7 @@
             <span class="text-<?php echo @$iconColor; ?>">
               <a href="#page.type.<?php echo @$media["object"]["type"]; ?>.id.<?php echo @$media["object"]["id"]; ?>" 
                  class="lbh">
-                <?php echo Yii::t("common", @$shareLabel["displayShared-".@$media["object"]["type"]]); ?>
+                <?php echo Yii::t("common", @$shareLabel["displayShared-".@$media["object"]["tradType"]]); ?>
               </a>
             </span> 
             <?php if(@$media["object"]["type"] == "news"){ ?>
@@ -171,19 +182,18 @@
               <?php echo @$media["object"]["authorName"]; ?>
               </a>
             <?php } ?>
-             <?php if(@$media["target"]["id"] != @$authorId && 
-                   @$media["verb"] != "create") { ?>
-            <?php if(@$media["target"]["id"] != @$contextId){ ?>
-                  dans le journal de 
-                  <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
-                          class="lbh">
-                          <?php echo @$media["target"]["name"]; ?>
-                  </a>
-            <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId == Yii::app()->session["userId"] ){ ?>
-                dans votre journal
-            <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId != Yii::app()->session["userId"] ){ ?>
-                dans ce journal
-            <?php } ?>
+             <?php if(@$media["target"]["id"] != @$authorId && @$media["verb"] != "create") { ?>
+                <?php if(@$media["target"]["id"] != @$contextId){ ?>
+                      <?php echo Yii::t("news","in the newspaper of"); ?>
+                      <a href="#page.type.<?php echo @$media["target"]["type"]; ?>.id.<?php echo @$media["target"]["id"]; ?>" 
+                              class="lbh">
+                              <?php echo @$media["target"]["name"]; ?>
+                      </a>
+                <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId == Yii::app()->session["userId"] ){ ?>
+                    <?php echo Yii::t("news","in your newspaper"); ?>
+                <?php }else if(@$media["target"]["id"] == @$contextId && @$contextId != Yii::app()->session["userId"] ){ ?>
+                    <?php echo Yii::t("news","in this newspaper"); ?>
+                <?php } ?>
           <?php } ?>
 
           <?php } ?>

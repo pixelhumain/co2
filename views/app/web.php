@@ -60,8 +60,9 @@
         width:100%;
     }
 */
-    #filter-scopes-menu{
-        display: none;
+    #filter-scopes-menu,
+    #filter-thematic-menu{
+        display: none!important;
     }
 
     #main-input-group{

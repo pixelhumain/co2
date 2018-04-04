@@ -687,8 +687,11 @@ function initPageTable(number){
 
     });
 
+    $.each($(".searchEntity.coopPanelHtml .descMD"), function(){
+      $(this).html(dataHelper.markdownToHtml($(this).html()) );
+    });
 
-    $(".coopPanelHtml").off().click(function(){
+    $(".btn.openCoopPanelHtml").off().click(function(){
       var coopType = $(this).data("coop-type");
       var coopId = $(this).data("coop-id");
       var idParentRoom = $(this).data("coop-idparentroom");
@@ -701,10 +704,11 @@ function initPageTable(number){
 
       console.log("onclick coopPanelHtml", coopType, coopId, idParentRoom, parentId, parentType);
 
-      if(contextData.id == parentId && contextData.type == parentType){
+      if(contextData.id == parentId && contextData.type == parentType && typeof isOnepage == "undefined" && idParentRoom != ""){
         toastr.info(trad["processing"]);
         uiCoop.startUI();
         $("#modalCoop").modal("show");
+        onchangeClick=false;
         if(coopType == "rooms"){
           uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
         }else{
@@ -725,6 +729,7 @@ function initPageTable(number){
           uiCoop.getCoopDataPreview(coopType, coopId);
         }
       }
+
 /*
       if(contextData.id == parentId && contextData.type == parentType){
           toastr.info(trad["processing"]);
@@ -747,6 +752,15 @@ function initPageTable(number){
         urlCtrl.loadByHash(hash);
       }*/
 
+    });
+
+
+    $(".btn-send-vote").off().click(function(){
+      var idParentProposal = $(this).data('idparentproposal');
+      var voteValue = $(this).data('vote-value');
+      var idParentRoom = $(this).data('idparentroom');
+      console.log("send vote", voteValue);
+      uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom, null, true);
     });
 
     initBtnShare();
@@ -2451,35 +2465,118 @@ var directory = {
     // PROPOSAL DIRECTORY PANEL
     // ********************************
     coopPanelHtml : function(params, key){
-      //if(directory.dirLog) 
       mylog.log("-----------proposalPanelHtml", params, key);
       var idParentRoom = typeof params.idParentRoom != "undefined" ? params.idParentRoom : "";
       if(idParentRoom == "" && params.type == "rooms") idParentRoom = params.id;
-      mylog.log("-----------idParentRoom", idParentRoom);
+      //mylog.log("-----------idParentRoom", idParentRoom);
       
       var name = (typeof params.title != "undefined" && params.title != "undefined") ? params.title : params.name;
-      var description = params.description.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
-      description = description.replace(/\n/g,"<br>");
-      
+      var description = "";
+      if(typeof params.description != "undefined"){
+        description = params.description; //.length > 200 ? params.description.substr(0, 200) + "..." : params.description;
+        //description = description.replace(/\n/g,"<br>");
+      }
       name = escapeHtml(name);
-      //if(directory.dirLog) 
-        mylog.log("-----------coopPanelHtml", params);
-        
+      var thisId = typeof params["_id"] != "undefined" &&
+                   typeof params["_id"]["$id"] != "undefined" ? params["_id"]["$id"] : 
+                   typeof params["id"] != "undefined" ? params["id"] : "";
         str = "";  
-        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;'>";
+        str += "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 coop-wraper margin-bottom-10 ' style='word-wrap: break-word; overflow:hidden;'>";
         str += "<div class='searchEntity coopPanelHtml' data-coop-type='"+ params.type + "'  data-coop-id='"+ params.id + "' "+
                     "data-coop-idparentroom='"+ idParentRoom + "' "+
                     "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
                     ">";
           str += "<div class='panel-heading border-light col-lg-12 col-xs-12'>";
 
+          str += "<button class='btn btn-sm btn-default pull-right openCoopPanelHtml bold letter-turq' "+
+                    "data-coop-type='"+ params.type + "'  data-coop-id='"+ thisId + "' "+
+                    "data-coop-idparentroom='"+ idParentRoom + "' "+
+                    "data-coop-parentid='"+ params.parentId + "' "+"data-coop-parenttype='"+ params.parentType + "' "+
+                    "><i class='fa fa-chevron-right'></i> <span class='hidden-xs'>"+trad["Open"]+"</span></button>";
+
           if(name != "")
           str += '<h4 class="panel-title letter-turq"><i class="fa '+ params.ico + '"></i> '+ name + '</h4>';
+          
+          console.log("hasVote ? ", params["hasVote"]);
+          if(params.type != "rooms"){
+            str += '<h5>';
+            str +=  '<small><i class="fa fa-certificate"></i> '+trad[params.status]+'</small>';
+            if(params.status == "tovote" && params["hasVote"]===false)
+              str +=  '<small class="margin-left-15 letter-red"><i class="fa fa-ban"></i> '+trad["You did not vote"]+'</small>';
+            else if(params.status == "tovote" && params["hasVote"]!==false)
+              str +=  '<small class="margin-left-15"><i class="fa fa-thumbs-up"></i> '+trad["You did vote"]+'</small>';
+            //else 
+            //  str +=  '<small class="margin-left-15 letter-red"><i class="fa fa-thumbs-up"></i> '+trad["You did not vote"]+'</small>';
+            str += '</h5>';
+          }
 
-          if(params.type != "rooms")
-          str += '<h5 class=""><small><i class="fa fa-certificate"></i> '+ trad[params.status] + '</small></h5>';
+          
+          str += '<div class="all-coop-detail">';
+            if(description != "") str += '<hr>';
 
-          str += '<span class="text-dark">'+description+'</span>';
+            str += '<span class="col-xs-12 no-padding text-dark descMD">'+description+'</span>';
+            
+            if((params["auth"] || typeof params["idParentRoom"] == "undefined") && params["status"] == "tovote"){
+
+            str += '<span class="col-xs-12 no-padding"><hr></span>';
+
+              var isMulti = typeof params["answers"] != "undefined";
+              var answers = isMulti ? params["answers"] : 
+                                      { "up":"up", "down": "down", "white": "down", "uncomplet":"uncomplet"};
+              
+              $.each(answers, function(key, val){
+                var voteRes = (typeof params["voteRes"] != "undefined" &&
+                               typeof params["voteRes"][key] != "undefined") ? params["voteRes"][key] : false;             
+                 
+                str += '<div class="col-xs-12 no-padding">';
+
+                  if(params["status"] == "tovote" && (!params["hasVote"] || params["voteCanChange"] == "true")){
+                    str += '<div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 no-padding text-right pull-left margin-top-20">';
+
+                    str += '  <button class="btn btn-send-vote btn-link btn-sm bg-vote bg-'+voteRes["bg-color"]+'"';
+                    str += '     title="'+trad["clicktovote"]+'" ';
+                    str += '      data-idparentproposal="'+thisId+'"';
+                    str += '      data-idparentroom="'+params["idParentRoom"]+'"';
+                    str += '      data-vote-value="'+key+'"><i class="fa fa-gavel"></i>';
+                    str += '  </button>';
+
+                    if(params["hasVote"] === ""+key)
+                    str +=  '<br><i class="fa fa-user-circle padding-10" title="'+trad["You voted for this answer"]+'"></i> ';
+                  
+                    str += '</div>';
+                  }
+
+                  str += '<div class="col-lg-11 col-md-11 col-sm-11 col-xs-10">'
+                  
+                  var hashAnswer = !isMulti ? trad[voteRes["voteValue"]] : (key+1);
+
+                  str +=    '<div class="padding-10 margin-top-15 border-vote border-vote-'+key+'">';
+                  str +=      '<i class="fa fa-hashtag"></i><b>'+hashAnswer+'</b> ';
+                  if(isMulti) 
+                      str +=        voteRes["voteValue"];
+                  str +=    '</div>';
+                  
+                  if(voteRes !== false && voteRes["percent"]!=0){
+                    str +=  '<div class="progress progress-res-vote">';
+                    str +=       '<div class="progress-bar bg-vote bg-'+voteRes["bg-color"]+'" role="progressbar" ';
+                    str +=       'style="width:'+voteRes["percent"]+'%">';
+                    str +=       voteRes["percent"]+'%';
+                    str +=     '</div>';
+                    str +=     '<div class="progress-bar bg-transparent" role="progressbar" ';
+                    str +=       'style="width:'+(100-voteRes["percent"])+'%">';
+                    str +=      voteRes["votant"]+' <i class="fa fa-gavel"></i>';
+                    str +=     '</div>';
+                    str +=  '</div>';
+                  }
+                  str += '</div>';
+
+                str += '</div>';
+              });
+            }
+
+
+            str += "</div>";
+
           str += "</div>";
         str += "</div>";  
       str += "</div>";

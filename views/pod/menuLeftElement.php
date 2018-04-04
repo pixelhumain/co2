@@ -56,6 +56,7 @@
 		</li>
 	<?php //if($type != Person::COLLECTION){
 		$modalTarget = "#modal-scope";
+
 				if ($type == Event::COLLECTION ){ 
 					$inviteLink = "people";
 					$inviteText =  Yii::t("common","Invite people") ;			
@@ -69,7 +70,9 @@
 					$inviteLink = "people";
 					$inviteText =  Yii::t("common",'Invite people') ;
 					$modalTarget = "#invite-modal-element";
+
 				}
+				$modalTarget = "#modal-invite";
 				$whereConnect="";
 				if($type!=Person::COLLECTION)
 					$whereConnect='to the '.Element::getControlerByCollection($type);
@@ -275,6 +278,17 @@
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classified" data-icon="bullhorn">
 					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
+				</a>
+			</li>
+		<?php } ?>
+
+		<?php $paramsApp = CO2::getThemeParams(); 
+				if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
+			<li><hr></li>
+			<li class="">
+				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="surveys" data-icon="gavel">
+					<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Surveys"); ?>
 				</a>
 			</li>
 		<?php } ?>

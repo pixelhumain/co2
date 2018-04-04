@@ -78,7 +78,7 @@ function bindAboutPodElement() {
 		});		
 	}
 
-	function bindDynFormEditable(){
+	function bindDynFormEditable(){ 
 		$(".btn-update-when").off().on( "click", function(){
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
@@ -179,8 +179,7 @@ function bindAboutPodElement() {
 			dyFObj.openForm(form, "initUpdateWhen", dataUpdate);
 		});
 
-
-		$(".btn-update-info").off().on( "click", function(){
+		$(".btn-update-info").off().on( "click", function(){ 
 			var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				dynForm : {

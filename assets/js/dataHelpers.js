@@ -475,7 +475,8 @@ var dataHelper = {
 			$(elem).markdown(markdownParams);
 		}
 
-		$(elem).before(tradDynForm["syntaxmarkdownused"]);
+		//$(elem).before(tradDynForm["syntaxmarkdownused"]);
+		$(elem).before("<small class='block letter-light text-left'><i class='fa fa-info-circle'></i> "+tradDynForm["discovermarkdownsyntax"]+"</small>");
 	}
 
 }

@@ -1,6 +1,6 @@
 <?php 
 	HtmlHelper::registerCssAndScriptsFiles( 
-		array(  '/css/onepage.css',
+		array(  //'/css/onepage.css',
 				'/vendor/colorpicker/js/colorpicker.js',
 				'/vendor/colorpicker/css/colorpicker.css',
 				'/css/news/index.css',	
@@ -116,6 +116,44 @@
 	margin-top: 8px;
 }
 
+
+#central-container #content-results-profil .coop-wraper{
+	width:31%!important;
+	margin: 0 1% 15px 0 !important;
+	border:1px solid #229296!important;
+	padding:0px;
+}
+
+#central-container #content-results-profil .coop-wraper .searchEntity.coopPanelHtml{
+	border:0px !important;
+}
+
+#central-container #content-results-profil .coop-wraper .searchEntity.coopPanelHtml .all-coop-detail{
+	display:none;
+}
+
+#central-container #content-results-profil .coop-wraper .searchEntity.coopPanelHtml .panel-title{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 75%;
+	display: inline-block;
+	margin-top:7px;
+	font-size: 13px;
+}
+
+#central-container #content-results-profil button.openCoopPanelHtml .hidden-xs,
+#central-container button.switchDirectoryView{
+	display: none;
+}
+
+
+
+@media screen and (max-width: 992px) {
+	#central-container #content-results-profil .coop-wraper.col-sm-12{
+		width:48%!important;
+	}
+}
 </style>
 
 <?php 
@@ -314,11 +352,13 @@
 		  <?php if(@Yii::app()->session["userId"])
 		  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
 		  			($type==Person::COLLECTION && (string)$element["_id"]==@Yii::app()->session["userId"])){ ?>
+
+			
+		  
 		  <button type="button" class="btn btn-default bold letter-green hidden-xs" 
 		  		  id="open-select-create" style="border-right:0px!important;">
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
-
 		  <?php } ?>
 
 		  <?php /* Links in new TAB
@@ -727,13 +767,18 @@
 				) );
 
 	//if( $type != Person::COLLECTION)
-		$this->renderPartial('../element/addMembersFromMyContacts',
-				array(	"type"=>$type, 
-						"parentId" => (string)$element['_id'], 
-						"members" => @$members));
+		// $this->renderPartial('../element/addMembersFromMyContacts',
+		// 		array(	"type"=>$type, 
+		// 				"parentId" => (string)$element['_id'], 
+		// 				"members" => @$members));
+
+		// $this->renderPartial('../element/inviteOld',
+		// 		array(	"type"=>$type, 
+		// 				"parentId" => (string)$element['_id'], 
+		// 				"members" => @$members));
 
 		$this->renderPartial('../element/invite',
-				array(	"type"=>$type, 
+				array(	"parentType"=>$type, 
 						"parentId" => (string)$element['_id'], 
 						"members" => @$members));
 
@@ -788,6 +833,9 @@
 	var actionId = "<?php echo @$_GET['action']; ?>";
 	var isLiveNews = "";
 	var connectTypeElement="<?php echo Element::$connectTypes[$type] ?>";
+	
+	if(contextData.type == "citoyens") var currentRoomId = "";
+
 	jQuery(document).ready(function() {
 		bindButtonMenu();
 		inintDescs();
@@ -813,7 +861,9 @@
 		//Sig.showMapElements(Sig.map, mapElements);
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
+		
 	});
+
 	function initMetaPage(title, description, image){
 		if(title != ""){
 			$("meta[name='title']").attr("content",title);

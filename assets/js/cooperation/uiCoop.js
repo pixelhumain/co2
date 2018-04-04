@@ -9,8 +9,11 @@ var uiCoop = {
 		$("#modal-preview-coop").hide(300);
 
 		$("#btn-close-coop").click(function(){
-			if(contextData.slug != "undefined")
-				location.hash="#"+contextData.slug;
+			onchangeClick=false;
+			location.hash=hashUrlPage;
+			loadNewsStream(true);
+			//if(contextData.slug != "undefined")
+			//	location.hash="#@"+contextData.slug;
 			$("#coop-data-container").html("");
 		});
 		//KScrollTo("#div-reopen-menu-left-container");
@@ -203,7 +206,7 @@ var uiCoop = {
 						$("#main-coop-container").html(data);
 					uiCoop.minimizeMenuRoom(false);
 				}
-				else{
+				else{ 
 					$(uiCoop.getParentContainer() + "#coop-data-container").html(data);
 					uiCoop.minimizeMenuRoom(true);
 				}
@@ -232,17 +235,18 @@ var uiCoop = {
 	getCoopDataPreview : function(type, dataId, onSuccess, showLoading){
 		mylog.log("getCoopDatagetCoopDataPreview", type, status, dataId, onSuccess, showLoading);
 		
-		$("#modal-preview-coop").removeClass("hidden")
-								.css("display","block")
-								.html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-turq'></i>");
-
+		setTimeout(function(){
+			$("#modal-preview-coop").removeClass("hidden")
+									.css("display","block")
+									.html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-turq'></i>");
+		}, 200);
+								
 		var url = moduleId+'/cooperation/previewcoopdata';
 		var params = {
 			"type" : type,
 			"dataId" : dataId,
 			"json" : false
 		};
-
 
 		ajaxPost("", url, params,
 			function (data){
@@ -296,14 +300,14 @@ var uiCoop = {
 		});
 	},
 
-	sendVote : function(parentType, parentId, voteValue, idParentRoom, idAmdt){
-		mylog.log("sendVote", parentType, parentId, voteValue, idParentRoom, idAmdt);
-		
+	"sendVote" : function(parentType, parentId, voteValue, idParentRoom, idAmdt, returnJson=false){
+		console.log("sendVote", parentType, parentId, voteValue, idParentRoom, idAmdt);
+
 		var params = {
 			"parentType" : parentType,
 			"parentId" : parentId,
 			"voteValue" : voteValue,
-			"json" : false
+			"json" : returnJson
 		};
 		if(typeof idAmdt != "undefined")
 			params["idAmdt"] = idAmdt;
@@ -312,16 +316,21 @@ var uiCoop = {
 		
 		toastr.info(trad["processing save"]);
 		ajaxPost("", url, params,
-			function (proposalView){
-				mylog.log("success save vote");
+			function (proposalRes){
+				console.log("success save vote", proposalRes);
 				uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
 					function(){
 						toastr.success(trad["Your vote has been save with success"]);
 						
-						uiCoop.minimizeMenuRoom(true);
-						$(uiCoop.getParentContainer() + "#coop-data-container").html(proposalView);
-						if(parentType == "amendement")
-							uiCoop.showAmendement(true);
+						if(returnJson == false){
+							uiCoop.minimizeMenuRoom(true);
+							$(uiCoop.getParentContainer() + "#coop-data-container").html(proposalRes);
+							if(parentType == "amendement")
+								uiCoop.showAmendement(true);
+						}else{
+							$(".newsActivityStream"+parentId).html(directory.coopPanelHtml(proposalRes["proposal"]));
+							initBtnLink();
+						}
 					}, false);
 			}
 		);
@@ -567,9 +576,9 @@ var uiCoop = {
 		});
 
 
-		$(".btn-send-vote").click(function(){
+		$(".btn-send-vote").off().click(function(){
 			var voteValue = $(this).data('vote-value');
-			mylog.log("send vote", voteValue),
+			mylog.log("send vote", voteValue, idParentProposal);
 			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);
 		});
 
@@ -612,13 +621,18 @@ var uiCoop = {
 			dyFObj.editElement('proposals', idProposal);
 		});
 
-		//$(".descriptionMarkdown").html(dataHelper.convertMardownToHtml($(".descriptionMarkdown").html()));
+		$(".descriptionMarkdown").html(dataHelper.convertMardownToHtml($(".descriptionMarkdown").html()));
+		
+		$("#container-text-proposal").html(dataHelper.markdownToHtml($("#container-text-proposal").html()) );
+		$("#container-text-complem").html(dataHelper.markdownToHtml($("#container-text-complem").html()) );
+
 		if($("#modal-preview-coop #coop-container").length == 0){
 			var addCoopHash=".view.coop.room." + idParentRoom + ".proposal." + idParentProposal;
+			onchangeClick=false;
 			if(typeof hashUrlPage != "undefined")
 				location.hash = hashUrlPage +addCoopHash;
 			else if(notNull(contextData) && typeof contextData.slug != "undefined")
-				location.hash = "#" + contextData.slug + addCoopHash;
+				location.hash = "#@" + contextData.slug + addCoopHash;
 			else
 				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash; 
 		}
@@ -690,10 +704,11 @@ var uiCoop = {
 
 		if($("#modal-preview-coop #coop-container").length == 0){
 			var addCoopHash=".view.coop.room." + idParentRoom + ".action." + idAction;
+			onchangeClick=false;
 			if(typeof hashUrlPage != "undefined")
 				location.hash = hashUrlPage +addCoopHash;
 			else if(notNull(contextData) && typeof contextData.slug != "undefined")
-				location.hash = "#" + contextData.slug + addCoopHash;
+				location.hash = "#@" + contextData.slug + addCoopHash;
 			else
 				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;  
 		}					  
@@ -758,7 +773,7 @@ var uiCoop = {
 		$("#btn-refresh-resolution").click(function(){
 			toastr.info(trad["processing"]);
 			var idresolution = $(this).data("id-resolution");
-			uiCoop.getCoopData(null, null, "resolution", null, idresolution, 
+			uiCoop.getCoopData(parentTypeElement, parentIdElement, "resolution", null, idresolution, 
 				function(){
 					uiCoop.minimizeMenuRoom(true);
 					uiCoop.showAmendement(false);
@@ -795,14 +810,18 @@ var uiCoop = {
 
 		if($("#modal-preview-coop #coop-container").length == 0){
 			var addCoopHash=".view.coop.room." + idParentRoom + ".resolution." + idParentResolution;
+			onchangeClick=false;
 			if(typeof hashUrlPage != "undefined")
 				location.hash = hashUrlPage +addCoopHash;
 			else if(notNull(contextData) && typeof contextData.slug != "undefined")
-				location.hash = "#" + contextData.slug + addCoopHash;
+				location.hash = "#@" + contextData.slug + addCoopHash;
 			else
 				location.hash = "#page.type." + parentTypeElement + ".id." + parentIdElement +addCoopHash;
 		}
 
+
+		$("#container-text-resolution").html(dataHelper.markdownToHtml($("#container-text-resolution").html()) );
+		$("#container-text-complem").html(dataHelper.markdownToHtml($("#container-text-complem").html()) );
 
 		if(msgController != ""){
 			toastr.error(msgController);

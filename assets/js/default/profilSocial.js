@@ -415,7 +415,9 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 
 	else if(dataName == "vote")		{ html += countData+" <b>"+trad[proposal+s]+"</b> "+trad.of+" " + elementName; }
 	else if(dataName == "discuss")	{ html += countData+" <b>"+trad.discussion+s+"</b> "+trad.of+" " + elementName; }
-	else if(dataName == "actions")	{ html += countData+" <b>"+trad.actions+s+"</b> "+trad.of+" " + elementName; }
+	else if(dataName == "actions")	{ html += countData+" <b>"+trad.action+s+"</b> "+trad.of+" " + elementName; }
+
+	else if(dataName == "surveys")	{ html += countData+" <b>"+trad.survey+s+"</b> "+trad['createdby'+s]+" " + elementName; }
 
 	else if(dataName == "actionRooms")	{ html += countData+" <b>espace de décision"+s+"</b> de " + elementName; }
 	else if(dataName == "networks")		{ html += countData+" <b>"+trad.map+s+"</b> "+trad.of+" " + elementName;
@@ -871,7 +873,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 				            '<i class="fa fa-map-marker"></i>'+
 				        '</button>';
 
-		if(dataName == "networks") btnMap = "";
+		if(dataName == "networks" || dataName == "surveys") btnMap = "";
 
 		html += "<div class='col-md-12 col-xs-12 margin-bottom-15 labelTitleDir'>";
 		
@@ -897,7 +899,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
         	else $.extend(mapElements, data);
         	mylog.log("edit2", edit);
 			html +="<div id='content-results-profil'>";
-			html += directory.showResultsDirectoryHtml(data, contextType, null, edit);
+			html += 	directory.showResultsDirectoryHtml(data, contextType, null, edit);
 			html +="</div>";
 		}else{
 			$.each(data, function(col, val){
@@ -981,11 +983,11 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	}	
 	directory.switcherViewer(data, "#content-results-profil");
 }
-var loading = "<div class='loader text-dark text-center'>"+
-		"<span style='font-size:25px;'>"+
-			"<i class='fa fa-spin fa-circle-o-notch'></i> "+
-			"<span class='text-dark'>"+trad.currentlyloading+" ...</span>" + 
-		"</div>";
+var loading = 	"<div class='loader shadow2 letter-blue text-center margin-bottom-50'>"+
+					"<span style=''>"+
+						"<i class='fa fa-spin fa-circle-o-notch'></i> "+
+						"<span>"+trad.currentlyloading+" ...</span>" + 
+				"</div>";
 
 function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM PROFILSOCIAL"); //loadLiveNow
 	loadingData = true;
@@ -1006,7 +1008,7 @@ function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM PROFILSOCIAL"); 
         	},
         success:
             function(data) {
-                if(data){ //alert(data);
+                if(data){ 
                 	$("#news-list").find(".loader").remove();
                 	$("#news-list").append(data);
                 	if($("#noMoreNews").length<=0)

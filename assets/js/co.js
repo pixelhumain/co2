@@ -984,9 +984,18 @@ var urlCtrl = {
 			  				hashT.shift();
 			  				viewPage="/"+hashT.join("/");
 			  			}
-			  			console.log("HASH ?", hashT[0], CO2params["onepageKey"], ($.inArray(hashT[0], CO2params["onepageKey"])));
-			  			if($.inArray(hashT[0], CO2params["onepageKey"])>-1) viewPage = "/view/"+hashT[0];
-			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage);
+
+			  			var key = hashT[0];
+			  			var get = "";
+			  			//console.log("load key indexOf", key, key.indexOf("?"));
+						if(key.indexOf("?")>-1){
+							get = key.substr(key.indexOf("?"), key.length);
+							key = key.substr(0, key.indexOf("?"), key.length);
+							//console.log("load key", key);
+						}
+			  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
+			  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
+			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get);
 			  		}else
 			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 	 			},
@@ -3066,9 +3075,9 @@ var typeObj = {
 	entry : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
 		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
 	vote : {col:"actionRooms",ctrl:"survey"},
-	survey : {col:"actionRooms",ctrl:"entry",color:"lightblue2",icon:"cog"},
+	survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
 	surveys : {sameAs:"survey"},
-	proposal : { col:"proposals", ctrl:"proposal",color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+	proposal : { col:"proposals", ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
 	proposals : { sameAs : "proposal" },
 	resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
 	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
@@ -3501,7 +3510,7 @@ function showLoader(id){
 	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 }
 
-function bindButtonOpenForm(){
+function bindButtonOpenForm(){ 
 	//window select open form type (selectCreate)
 	$(".btn-open-form").off().on("click",function(){
         var typeForm = $(this).data("form-type");
@@ -3520,13 +3529,13 @@ var timerCloseDropdownUser = false;
 function initKInterface(params){ console.log("initKInterface");
 
 	$(window).off();
-	$(window).click(function() {
+	$(".main-container").click(function() {
 		if( $("#modal-preview-coop").css("display") == "block" )
 			$("#modal-preview-coop").css("display","none");
 	});
 
 	$('#modal-preview-coop').click(function(event){
-		event.stopPropagation();
+		//event.stopPropagation();
 	});
 
 	$(window).resize(function(){

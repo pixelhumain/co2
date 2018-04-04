@@ -9,6 +9,7 @@
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], 
 			$resolution["parentType"], $resolution["parentId"]);
 
+	if(isset($resolution["idParentRoom"]))
 	$parentRoom = Room::getById($resolution["idParentRoom"]);
 
 	if(isset(Yii::app()->session['userId'])){
@@ -31,11 +32,19 @@
 
 
 <div class="col-lg-8 col-md-7 col-sm-7 pull-left margin-top-15">
-	<?php $parentRoom = Room::getById($resolution["idParentRoom"]); ?>
-  	<h4 class="letter-turq load-coop-data title-room" 
-  		data-type="room" data-dataid="<?php echo @$resolution["idParentRoom"]; ?>">
-  		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
-	</h4>
+	 <?php if(@$parentRoom){ ?>
+		<h4 class="letter-turq load-coop-data title-room" 
+	  		data-type="room" data-dataid="<?php echo @$resolution["idParentRoom"]; ?>">
+	  		<i class="fa fa-connectdevelop"></i> <i class="fa fa-hashtag"></i> <?php echo @$parentRoom["name"]; ?>
+		</h4>
+	<?php } ?>
+	<br>
+	<h3 class="radius-5 col-xs-12 bg-turq text-white text-bold padding-10 no-margin"  >	
+		<?php if(@$resolution["title"]){ ?>
+			<i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?>
+		<?php } ?>
+	</h3>
+	<hr style="margin-top:5px;margin-bottom: 25px;">
 </div>
 
 
@@ -65,20 +74,20 @@
 
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-	<h3 class="radius-5 col-xs-12 bg-dark text-white text-bold padding-10 margin-bottom-10"  >	
-		<?php if(@$resolution["title"]){ ?>
-			<i class="fa fa-hashtag"></i> <?php echo @$resolution["title"]; ?>
-		<?php } ?>
-	</h3>
-	<label class="pull-right">
-		<small> <?php echo Yii::t("cooperation","Author"); ?> : </small>
-		<img class="img-circle" id="menu-thumb-profil" 
-         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
-		<a href="#page.type.citoyens.id.<?php echo $resolution["creator"]; ?>" class="lbh">
-			<?php echo $author["username"]; ?></a><?php if($myId == $resolution["creator"]){ ?>
-		<?php } ?>
-	</label>
+
 	<hr>
+	<?php if(@$resolution["creator"]){ ?>
+		<label class="bg-light pull-right">
+			<small> <?php echo Yii::t("cooperation","Author"); ?> : </small>
+			<img class="img-circle" id="menu-thumb-profil" 
+	         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
+			<a href="#page.type.citoyens.id.<?php echo $resolution["creator"]; ?>" class="lbh lbl-author-coop elipsis">
+				<?php echo $author["username"]; ?></a><?php if($myId == $resolution["creator"]){ ?>
+			<?php } ?>
+		</label>
+	<?php } ?>
+	
+	<?php if(!@$resolution["answers"]){ ?>
 		<h4 class="">
 			<i class="fa fa-bell"></i> 
 			<?php echo Yii::t("cooperation", "The <b>resolution</b> is done : "); ?>
@@ -121,27 +130,82 @@
 			</button>
 		</h4>
 
-		<br>
+	<?php }else{ ?>
+	<?php
+		//var_dump($voteRes); exit;
+		$winer = ""; $maxV = 1; $nbWiner = 0;
+		foreach ($voteRes as $kv => $vote) {
+		 	if($vote["percent"] > $maxV){
+		 	 	$maxV = $vote["percent"];
+		 	 	$winer = "<span class='letter-vote-".$kv."'>#".($kv+1)."</span> ";
+		 	 	$nbWiner=1;
+		 	}else if($vote["percent"] == $maxV){
+		 		$winer .= "<span class='letter-vote-".$kv."'>#".($kv+1)."</span> ";
+		 	 	$nbWiner++;
+		 	}
+		 } 
+	?>
+		<!-- <hr> -->
+		<h4 class="">
+			<?php if($maxV == 1) echo Yii::t("cooperation", "No answer"); 
+				  else 			 echo Yii::t("cooperation", "Answer"); echo $nbWiner>1?"s":""; ?> 
+
+			<b><?php if($maxV > 1) echo Yii::t("cooperation", "adopted".($nbWiner>1?"s":""). " :");	?></b>
+			<b><?php echo $winer; ?></b> 
+		</h4>
+	<?php } ?>
+	<hr>
+
+	<h5>
+		<?php if(@$resolution["voteDateEnd"]){ ?>
+			<i class='fa fa-clock-o'></i> <?php echo Yii::t("cooperation", "End of vote session"); ?> 
+			<?php echo Translate::pastTime($resolution["voteDateEnd"], "date"); ?> · 
+			<small class='letter-green'> 
+				<?php echo date('d/m/Y H:i e', strtotime($resolution["voteDateEnd"])); ?>
+			</small>
+		<?php } ?>
 		
-		<div class="hidden podvote">
-			<?php 
+	</h5>
+	
+	<div class="hidden podvote">
+
+		<?php 			
+			if(@$resolution["answers"]){
+				$this->renderPartial('../cooperation/pod/voteMultiple', array("proposal"=>$resolution, 
+																		  "hasVote" => $hasVote, 
+																		  "auth" => $auth));
+			}else{
 				$this->renderPartial('../cooperation/pod/vote', array("proposal"=>$resolution, 
-																	  "hasVote" => $hasVote, 
-																	  "auth" => $auth));
-			?>
-		</div>
-		<br>		
+																  "hasVote" => $hasVote, 
+																  "auth" => $auth));
+			}
+		?>
+	</div>
+	<br>		
 </div>
 
 
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-5">
 	
-	<div class="padding-25 radius-5 col-xs-12" style="background-color: #eee" >
+	<div class="no-paddingradius-5 col-xs-12" style="background-color: #eee" >
 	
-		<div class=" col-xs-12" id="container-text-resolution" style="padding:15px 0px 0px 40px;background-color: #eee" ><?php echo @$resolution["description"]; ?></div>
-		
+		<!-- <div class=" col-xs-12" id="container-text-resolution" style="padding:15px 0px 0px 40px;background-color: #eee" > -->
+		<?php //echo @$resolution["description"]; ?>
 			
+		<!-- </div> -->
+		<?php //if(@$resolution["title"]){ ?>
+				<!-- <h3><i class="fa fa-hashtag"></i> <?php //echo @$resolution["title"]; ?></h3> -->
+		<?php //}else{ ?>
+				<br>
+		<?php //} ?>
+
+		<?php if(@$resolution["description"]){ ?>
+		<div class=" col-xs-12" id="container-text-resolution" 
+			 style="padding:15px!important; background-color: #eee;" ><?php echo @$resolution["description"]; ?></div>
+		<?php } ?>
+
+
 		<?php 
 			$i=0;
 			if(@$resolution["amendements"]){
@@ -174,6 +238,19 @@
 		</div>
 	<?php } ?>
 		
+
+
+
+	<?php if(@$resolution["answers"]){ ?>
+		<div class="podvote">
+			<?php $this->renderPartial('../cooperation/pod/voteMultiple', array("proposal"=>$resolution, 
+																			  "hasVote" => $hasVote, 
+																			  "auth" => $auth));
+			?>
+		</div>
+		<br>
+	<?php } ?>	
+
 
 	<?php if(false && @$resolution["arguments"]){ ?>
 		<h4 class="margin-top-50"><i class="fa fa-angle-down"></i> 
@@ -272,13 +349,11 @@
 	var parentTypeElement = "<?php echo $resolution['parentType']; ?>";
 	var parentIdElement = "<?php echo $resolution['parentId']; ?>";
 	var idParentResolution = "<?php echo $resolution['_id']; ?>";
-	var idParentRoom = "<?php echo $resolution['idParentRoom']; ?>";
+	var idParentRoom = "<?php echo @$resolution['idParentRoom']; ?>";
 	var msgController = "<?php echo @$msgController ? $msgController : ''; ?>";
 	var useIdParentResolution = false;
 
 	jQuery(document).ready(function() { 
-		$("#container-text-resolution").html(dataHelper.markdownToHtml($("#container-text-resolution").html()) );
-		$("#container-text-complem").html(dataHelper.markdownToHtml($("#container-text-complem").html()) );
 		uiCoop.initUIResolution();
 	});
 

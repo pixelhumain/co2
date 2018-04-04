@@ -330,7 +330,7 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		//location.hash=hashUrlPage+".view.networks";
 		//history.pushState(null, "New Title", hashUrlPage+".view.contacts");
-		loadPreferences();
+		loadSettings();
 	});
     $("#inviteBtn").on("click", function(){
     	mylog.log("invite");
@@ -518,7 +518,13 @@ function loadNewsStream(isLiveBool){
 }
 function loadSettings(){
 	mylog.log("confidentiality", seePreferences);
-	loadNewsStream(true);
+	$("#modal-settings").modal("show");
+	var url = "settings/index";
+	showLoader('#modal-settings');
+	ajaxPost('#modal-settings', baseUrl+'/'+moduleId+'/'+url, 
+		null,
+		function(){},"html");
+	/*loadNewsStream(true);
 	history.pushState(null, "New Title", hashUrlPage);
 	$("#modal-confidentiality").modal("show");
 	if(seePreferences=="true"){
@@ -538,7 +544,7 @@ function loadSettings(){
 		    	}
 		    }
 		});
-	}
+	}*/
 }
 function loadGallery(){
 	toogleNotif(false);

@@ -383,6 +383,9 @@ class CommunecterController extends Controller
       "circuit"      => array("href" => "/ph/co2/pod/circuit"),
       "preferences"      => array("href" => "/ph/co2/pod/preferences"),
     ),
+    "settings" => array(
+      "index" => array("href" => "/ph/co2/settings/index", "public" => true),
+    ),
     "bookmark" => array(
       "delete"        => array("href" => "ph/communecter/bookmark/delete"),
     ),

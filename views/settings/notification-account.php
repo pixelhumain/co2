@@ -2,9 +2,8 @@
 $cs = Yii::app()->getClientScript(); 
 $cssAnsScriptFilesTheme = array(
 	//SELECT2
-	'/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
-	'/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js' , 
-
+	'/plugins/bootstrap-toggle/css/bootstrap-toggle.min.css',
+	'/plugins/bootstrap-toggle/js/bootstrap-toggle.min.js' , 
 );
 //if ($type == Project::COLLECTION)
 //	array_push($cssAnsScriptFilesTheme, "/assets/plugins/Chart.js/Chart.min.js");
@@ -47,11 +46,51 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			<span class="labelNotifications">Votes (new vote, alert before the end of votes, vote's result)</span>
 		</div>
 	</div>-->
-<div class="col-md-12">
-<h1>Notifications settings</h1>
-<span> Activate or desactivate notifications and mails you want to received. You have a basic settings with three level personal, your network (including admin and members link) and public (your points of communexion)</span>
+<div class="col-xs-12">
+	<h1>My account notifications settings</h1>
+	<span> Manage notifications you want to received link to your user account. For your personal notifications inside the platform you can directly activate or desactivate what you want. You can also choose a personal mail notification packages. Of course you are free to desactivate all notifications</span>
 </div>
-<table>
+<div id="notifications-settings" class="col-xs-12">
+	<h2>Notifications:</h2>
+	<div class="col-xs-12">
+		<label>Someone invites you to join an organization, a project or an event</label>
+		<input class="toggle-btn" checked type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info">
+	</div>
+	<div class="col-xs-12">
+		<label>Someone confirms a demand you did in order to join an organization, a project or an event</label>
+		<input class="toggle-btn" checked type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info">
+	</div>
+	<div class="col-xs-12">
+		<label>Someone is following you</label>
+		<input class="toggle-btn" checked type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info">
+	</div>
+	<div class="col-xs-12">
+		<label>Someone mentions you in a news or a comment</label>
+		<input class="toggle-btn" checked type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info">
+	</div>
+	<div class="col-xs-12">
+		<label>Someone writes a news on your wall</label>
+		<input class="toggle-btn" checked type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info">
+	</div>
+	<div class="col-xs-12">
+		<label>Someone likes or unlikes one of your news</label>
+		<input class="toggle-btn" checked type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info">
+	</div>
+	<div class="col-xs-12">
+		<label>Someone comments one of your news or answers to your comment</label>
+		<input class="toggle-btn" checked type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info">
+	</div>
+	<div class="col-xs-12">
+		<label>Registration of people you invited</label>
+		<input class="toggle-btn" checked type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info">
+	</div>
+	<div class="col-xs-12">
+		<label>Someone contacts you about one of your classified or a ressource</label>
+		<input class="toggle-btn" checked type="checkbox" data-toggle="toggle" data-size="mini" data-onstyle="info">
+	</div>
+
+</div>
+<!--<table>
 	<th>
 		<tr>
 			<td></td><td colspan="2">Personal notifcations</td><td colspan="2">Network notifications</td><td colspan="2">Communected notifications</td>
@@ -222,9 +261,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 			</td>
 		</tr>
 	</th>
-</table>
+</table>-->
 <script type="text/javascript">
-defaultNotificationsSettings={
+/*defaultNotificationsSettings={
 	"notification":{
 		"personal":{
 			"comments":true,
@@ -273,19 +312,22 @@ defaultNotificationsSettings={
 			"survey":false	
 		}
 	}
-}
-notificationSettings=defaultNotificationsSettings;
+}*/
+//notificationSettings=defaultNotificationsSettings;
 jQuery(document).ready(function() {
-	$("[name='my-checkbox']").bootstrapSwitch();
-	$("[name='my-checkbox']").on("switchChange.bootstrapSwitch", function (event, state) {
+	//$('.toggle-btn').bootstrapToggle();
+	$('.toggle-btn').off().on("change",function() {
+      //alert($(this).prop('checked'));
+    });
+	/*$("[name='my-checkbox']").on("switchChange.bootstrapSwitch", function (event, state) {
 		mylog.log("state = "+state );
 		if (state == true) {
 			$(this).prev().val(1);
 		} else {
 			$(this).prev().val(0);
 		}		
-	});
-	initNotificationSettings(notificationSettings);
+	});*/
+	//initNotificationSettings(notificationSettings);
 });
 
 function initNotificationSettings(settings){

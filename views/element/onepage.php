@@ -651,7 +651,7 @@ jQuery(document).ready(function() {
 		function(){},"html");
 
 	//load section TIMELINE
-	var url = "news/index/type/<?php echo $typeItem; ?>/id/<?php echo (string)$element["_id"] ?>?isFirst=1&";
+	var url = "news/index/type/<?php echo $typeItem; ?>/id/<?php echo (string)$element["_id"] ?>/isLive/true?isFirst=1&";
 	ajaxPost('#timeline-page', baseUrl+'/'+moduleId+'/'+url+"renderPartial=true&tpl=co2&nbCol=2", null, 
 		function(){
 			$(window).bind("scroll",function(){ 
@@ -673,7 +673,7 @@ function initMenuOnepage(){
 		var title = $(this).find("h2.section-title span.sec-title").html();
 		if(typeof title != "undefined"){
 			$("ul#menu-onepage").append(
-			'<li><a href="javascript:" data-target="#'+id+'"><i class="fa fa-angle-right"></i> '+title+'</a></li>');
+			'<li><a  class="elipsis" href="javascript:" data-target="#'+id+'"><i class="fa fa-angle-right"></i> '+title+'</a></li>');
 		}
 	});
 
@@ -721,7 +721,7 @@ function loadStream(indexMin, indexMax){ mylog.log("LOAD STREAM ONEPAGE"); //loa
 	$("#news-list").append(loading);
 
 	//isLive = isLiveBool==true ? "/isLive/true" : "";
-	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+"/date/"+dateLimit+"?tpl=co2&nbCol=2&renderPartial=true";
+	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+"/date/"+dateLimit+"/isLive/true?tpl=co2&nbCol=2&renderPartial=true";
 	$.ajax({ 
         type: "POST",
         url: baseUrl+"/"+moduleId+'/'+url,

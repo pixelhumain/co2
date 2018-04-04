@@ -651,6 +651,11 @@ jQuery(document).ready(function() {
 		function(){},"html");
 
 	//load section TIMELINE
+	initSectionNews();
+});
+
+function initSectionNews(){ console.log("initSectionNews");
+	//load section TIMELINE
 	var url = "news/index/type/<?php echo $typeItem; ?>/id/<?php echo (string)$element["_id"] ?>/isLive/true?isFirst=1&";
 	ajaxPost('#timeline-page', baseUrl+'/'+moduleId+'/'+url+"renderPartial=true&tpl=co2&nbCol=2", null, 
 		function(){
@@ -664,7 +669,7 @@ jQuery(document).ready(function() {
 			    }
 			});
 		},"html");
-});
+}
 
 //create <li> in onepage main menu
 function initMenuOnepage(){

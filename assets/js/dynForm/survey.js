@@ -121,28 +121,18 @@ dynForm = {
 	    	
 			$("#ajaxFormModal #voteDateEnd").val( moment(   $("#ajaxFormModal #voteDateEnd").val(), dateformat).format() );
         },
-	    afterSave : function(data){
-            if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
-                $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-            else 
-            { 
-                dyFObj.closeForm(); 
-               	var oldCount = $("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html();
-               	console.log("data success save proposal", data);
-               	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
-               	
-               	if(typeof data.map.idParentRoom != "undefined"){
-	               	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
-	                setTimeout(function(){
-	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, data.id);
-	                }, 1000);
-	            }else{
-	            	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, currentRoomId);
-	                setTimeout(function(){
-	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idParentProposal);
-	                }, 1000);
-	            }
-            }
+	    afterSave : function(data){ console.log("after save survey", data);
+             dyFObj.closeForm();
+              if(typeof startNewsSearch != "undefined" && location.hash == "#live") 
+            	startNewsSearch(true);
+         	 else if(typeof loadNewsStream != "undefined") 
+            	loadNewsStream(true);
+             else if(typeof initSectionNews != "undefined") {
+            	$('#timeline-page').html("<div class='col-xs-12 text-center'><i class='fa fa-spin fa-circle-o-notch fa-2x'></i></div>");
+            	setTimeout(function(){ initSectionNews(); }, 2000);
+           	 }
+             else
+             	urlCtrl.loadByHash(location.hash);
 	    },
 
 	    properties : {
@@ -225,7 +215,7 @@ dynForm = {
             amendementDateEnd : dyFInputs.amendementDateEnd,*/
             voteActivated : dyFInputs.inputHidden( true ),
             voteDateEnd : dyFInputs.voteDateEnd,
-            majority: dyFInputs.inputText( trad.ruleOfMajority + " (%) <small class='letter-green'>"+trad.giveValueMajority+"</small>", "50%" ),
+            //majority: dyFInputs.inputText( trad.ruleOfMajority + " (%) <small class='letter-green'>"+trad.giveValueMajority+"</small>", "50%" ),
             
             voteAnonymous : dyFInputs.checkboxSimple("true", "voteAnonymous", 
             										{ "onText" : trad.yes,

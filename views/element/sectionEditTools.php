@@ -184,7 +184,8 @@
 			    	<h5><?php echo $sec["title"]; ?></h5>
 				   	<?php 
 				   		$path = $sec["folder"]."/";
-				   		$path = ".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3);
+				   		$p = PH::notlocalServer() ? "." : "";
+				   		$path = $p.".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3);
 				   		if(file_exists ( $path )){
 				          $files = glob($path.'*.{jpg,jpeg,png}', GLOB_BRACE);
 				        }

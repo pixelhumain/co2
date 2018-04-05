@@ -687,6 +687,13 @@ function initPageTable(number){
 
     });
 
+    initUiCoopDirectory();
+
+    initBtnShare();
+  }
+
+  function initUiCoopDirectory(){
+    
     $.each($(".searchEntity.coopPanelHtml .descMD"), function(){
       $(this).html(dataHelper.markdownToHtml($(this).html()) );
     });
@@ -729,43 +736,17 @@ function initPageTable(number){
           uiCoop.getCoopDataPreview(coopType, coopId);
         }
       }
-
-/*
-      if(contextData.id == parentId && contextData.type == parentType){
-          toastr.info(trad["processing"]);
-          uiCoop.startUI();
-          $("#modalCoop").modal("show");
-          if(coopType == "rooms"){
-            uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
-          }else{
-            setTimeout(function(){
-              uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
-              function(){
-                toastr.info(trad["processing"]);
-                uiCoop.getCoopData(contextData.type, contextData.id, coopType, null, coopId);
-              }, false);
-            }, 1000);
-          }
-      }else{
-        var hash = "#page.type." + parentType + ".id." + parentId + 
-                ".view.coop.room." + idParentRoom + "."+coopType+"." + coopId;
-        urlCtrl.loadByHash(hash);
-      }*/
-
     });
 
 
-    $(".btn-send-vote").off().click(function(){
+    $(".timeline-panel .btn-send-vote").off().click(function(){
       var idParentProposal = $(this).data('idparentproposal');
       var voteValue = $(this).data('vote-value');
       var idParentRoom = $(this).data('idparentroom');
       console.log("send vote", voteValue);
       uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom, null, true);
     });
-
-    initBtnShare();
   }
-
 
   function initBtnShare(){
     mylog.log("init btn-share ");
@@ -2968,7 +2949,7 @@ var directory = {
               if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
                  subData="data-ktype='"+addType+"' ";
                  typeForm="organization";
-              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classified")
+              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classified" && typeForm != "cities")
                 typeForm=typeObj[typeObj[addType].sameAs].ctrl;
               btn='<button class="btn main-btn-create text-'+headerParams[addType].color+' tooltips" padding-5 no-margin '+
                 'data-type="'+typeForm+'" '+

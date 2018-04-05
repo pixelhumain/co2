@@ -99,7 +99,9 @@ dynForm = {
 				$("#ajaxFormModal .multiChoicecheckboxSimple #multiChoice").remove();
 
 				$("#ajaxFormModal .locationBtn").html("<i class='fa fa-home'></i> Sélectionner une commune");
-
+				//getScopeNewsHtml("#ajaxFormModal .infoScopecustom");
+				//myScopes.type = "communexion";
+				//$("#ajaxFormModal .infoScopecustom").html(constructScopesHtml(false));
 			}
 	    },
         beforeSave : function(){

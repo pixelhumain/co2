@@ -550,7 +550,8 @@
 								  "proposal"=>@$proposal,
 								  "auth"=>$auth)); ?>
 
-<script type="text/javascript">
+<script type="text/javascript"> 
+	var contextProposal = <?php echo json_encode($proposal); ?>;
 	var parentTypeElement = "<?php echo $proposal['parentType']; ?>";
 	var parentIdElement = "<?php echo $proposal['parentId']; ?>";
 	var idParentProposal = "<?php echo $proposal['_id']; ?>";
@@ -561,6 +562,9 @@
 
 	jQuery(document).ready(function() {
 		uiCoop.initUIProposal();
+		$(".newsActivityStream"+idParentProposal).html(directory.coopPanelHtml(contextProposal));
+		if(typeof initUiCoopDirectory != 'undefined')
+			initUiCoopDirectory();
 	});
 
 </script>

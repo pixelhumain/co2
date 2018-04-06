@@ -189,7 +189,7 @@
 				   		//$path = Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path;
 
 				   		$path = PH::notlocalServer() ? 
-				   				Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path :
+				   				".".Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path :
 				   				".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3);
 
 				   		echo $path;

@@ -191,7 +191,7 @@
 			<img class="img-circle" id="menu-thumb-profil" 
 	         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
 			<a href="#page.type.citoyens.id.<?php echo $proposal["creator"]; ?>" class="lbh lbl-author-coop elipsis">
-				<?php echo $author["username"]; ?>zrerzerz rz erz erz erze </a><?php if($myId == $proposal["creator"]){ ?>
+				<?php echo $author["username"]; ?></a><?php if($myId == $proposal["creator"]){ ?>
 			<?php } ?>
 		</label>
 	<?php } ?>

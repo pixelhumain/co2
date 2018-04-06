@@ -1143,7 +1143,19 @@ var directory = {
       if(typeof params.updatedLbl != "undefined" && (params.type == "events" ||  params.type == "classified"))
         str += "<small class='letter-light bold'><i class='fa fa-clock-o'></i> "+params.updatedLbl+"</small>";
       
+      if(typeof(params.statusLink)!="undefined"){
+        if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+          str+="<br><span class='text-red'>"+trad.administrator+"</span>";
+        if(typeof(params.statusLink.isAdminInviting)!="undefined"){
+          str+="<br><span class='text-red'>"+trad.invitingToAdmin+"</span>";
+        }
+        if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
+          str+="<br><span class='text-red'>"+trad.waitingValidation+"</span>";
+      }
 
+      if(params.rolesLbl != "")
+        str += "<br><span class='rolesContainer'>"+params.rolesLbl+"</span>";
+ 
       if(typeof params.shortDescription != "undefined" && params.shortDescription != "" && params.shortDescription != null)
         str += "<br><span class='description'>"+params.shortDescription+"</span>";
       else if(typeof params.description != "undefined" && params.description != "" && params.description != null)

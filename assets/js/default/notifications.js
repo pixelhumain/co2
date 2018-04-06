@@ -198,7 +198,7 @@ function buildNotifications(list, element, event)
 	if(typeof list != "undefined" && typeof list == "object"){
 		$.each( list , function( notifKey , notifObj )
 		{
-			console.log("build notif", notifObj);
+			//console.log("build notif", notifObj);
 			var url = (typeof notifObj.notify != "undefined") ? notifObj.notify.url : "#";
 			//convert url to hash for loadByHash
 			if(url.indexOf("communecter/")>0){

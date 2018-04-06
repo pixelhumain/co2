@@ -107,7 +107,7 @@ function initTypeSearch(typeInit){
 
     if(typeInit == "all") {
         searchType = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classified","ressources"/*,"cities"*/];
-        if(search.value != "")
+        if(search.value != "" || Object.keys(getSearchLocalityObject()).length > 0) 
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
         indexStepInit = 30;

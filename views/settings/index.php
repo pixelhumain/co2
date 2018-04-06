@@ -119,6 +119,9 @@
 #container-settings-view{
 	background-color: white;
 	top:55px;
+	overflow-y: scroll;
+    bottom: 0px;
+    position: fixed;
 }
 @media (max-width: 991px) {
  /* .open-type-filter{
@@ -184,7 +187,7 @@
 		</li>
 	</ul>
 </div>
-<div id="container-settings-view" class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 no-padding text-center">
+<div id="container-settings-view" class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 no-padding">
 </div>
 <script type="text/javascript">
 var page="<?php echo @$page ?>";

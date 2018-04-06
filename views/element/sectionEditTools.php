@@ -186,6 +186,7 @@
 				   		$path = $sec["folder"]."/";
 				   		$p = PH::notlocalServer() ? "." : "";
 				   		$path = $p.".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3);
+				   		echo $path;
 				   		if(file_exists ( $path )){
 				          $files = glob($path.'*.{jpg,jpeg,png}', GLOB_BRACE);
 				        }

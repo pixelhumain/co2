@@ -2,20 +2,29 @@ var notifications = null;
 var maxNotifTimstamp = 0;
 
 function bindNotifEvents(element){ console.log("bindNotifEvents");
-	$(".notifList"+element+" a.notif").off().on("mousedown",function (e) 
+	$(".notifList"+element+" a.notif").off().on("click",function (e) 
 	{
 		markAsRead( $(this).data("id") );
 		hash = $(this).data("href");
 		elem = $(this).parent();
 		//elem.removeClass('animated bounceInRight').addClass("animated bounceOutRight");
 		//elem.removeClass("enable");
+		var thisJQ = this;
 		setTimeout(function(){
           //  elem.addClass("read");
             //elem.removeClass('animated bounceOutRight');
             if(e.which==2)
 				window.open(baseUrl+hash, '_blank');
-			else		
-            	urlCtrl.loadByHash(hash);
+			else{
+				console.log("objtype", $(thisJQ).data("objtype"));
+				if($(thisJQ).data("objtype") == "proposals" || 
+					$(thisJQ).data("objtype") == "actions" || $(thisJQ).data("objtype") == "resolutions"){
+					var objType = $(thisJQ).data("objtype");
+					 uiCoop.getCoopDataPreview(objType.substr(0, objType.length-1), $(thisJQ).data("objid"));
+				}else{
+	            	urlCtrl.loadByHash(hash);
+	            }
+			}
             //notifCount();
         }, 200);
 	});
@@ -189,6 +198,7 @@ function buildNotifications(list, element, event)
 	if(typeof list != "undefined" && typeof list == "object"){
 		$.each( list , function( notifKey , notifObj )
 		{
+			console.log("build notif", notifObj);
 			var url = (typeof notifObj.notify != "undefined") ? notifObj.notify.url : "#";
 			//convert url to hash for loadByHash
 			if(url.indexOf("communecter/")>0){
@@ -216,13 +226,20 @@ function buildNotifications(list, element, event)
 			var isSeen = (typeof notifObj.notify.id[userId] != "undefined" && typeof notifObj.notify.id[userId].isUnseen != "undefined") ? "" : "seen";
 			var isRead = (typeof notifObj.notify.id[userId] != "undefined" && typeof notifObj.notify.id[userId].isUnread != "undefined") ? "" : "read";
 
+			var notifObjType = (typeof notifObj.object != "undefined" && typeof notifObj.object.type != "undefined") ? 
+								notifObj.object.type : "";
+
+			var notifObjId = (typeof notifObj.object != "undefined" && typeof notifObj.object.id != "undefined") ? 
+								notifObj.object.id : "";
+
 			str = "<li class='notifLi notif_"+notifKey+" "+isSeen+" "+isRead+" ";
 					if(event==null)
 						str+="hide";
 					else
 						str+="enable";
 				str+="'>"+
-					"<a href='javascript:;' class='notif col-md-12 col-sm-12 col-xs-12 no-padding' data-id='"+notifKey+"' data-href='"+ url +"'>"+
+					"<a href='javascript:;' class='notif col-md-12 col-sm-12 col-xs-12 no-padding' "+
+						"data-objtype='"+notifObjType+"' data-objid='"+notifObjId+"' data-id='"+notifKey+"' data-href='"+ url +"'>"+
 						"<div class='content-icon col-md-1 col-sm-1 col-xs-1 no-padding'>"+
 							"<span class='label bg-dark pull-left'>"+
 								'<i class="fa '+icon+'"></i>'+

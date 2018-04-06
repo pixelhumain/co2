@@ -84,12 +84,14 @@ dynForm = {
 					var checkval = $(this).data("checkval");
 					console.log("checkval", checkval);
 					if(checkval==true) {
-						$("#ajaxFormModal .form-group.answersarray").hide(200);
+						$("#ajaxFormModal .form-group.answersarray").hide(20);
+						$("#ajaxFormModal .form-group.answersarray").attr("style", "");
 						//enable amendement when simple answer 
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple").show(200); console.log("show");
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='true']").click();
 					}else{
-						$("#ajaxFormModal .form-group.answersarray").show(200);
+						//$("#ajaxFormModal .form-group.answersarray").show(200);
+						$("#ajaxFormModal .form-group.answersarray").attr("style", "display: inline-block; margin-left: 0%;");
 						//disable amendement when multi answer
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']").click();
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple").hide(200); console.log("hide");
@@ -171,7 +173,10 @@ dynForm = {
             										  					  tradDynForm.lblAmmendementDisabled
             }),
             amendementDateEnd : dyFInputs.amendementDateEnd,*/
+
             voteActivated : dyFInputs.inputHidden( true ),
+
+
             voteDateEnd : dyFInputs.voteDateEnd,
             //majority: dyFInputs.inputText( trad.ruleOfMajority + " (%) <small class='letter-green'>"+trad.giveValueMajority+"</small>", "50%" ),
             

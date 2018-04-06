@@ -1,7 +1,5 @@
 <style>
 
-
-
 #modal-invite .dropdown-menu{
 	top:65%;
 	left : 15px;
@@ -38,7 +36,6 @@
 	border-left: 1px solid rgba(128, 128, 128, 0.26);
 }
 
-
 #modal-invite .btn-scroll-type{
 	border:none!important;
 	padding: 3px;
@@ -59,6 +56,7 @@
 	margin-bottom: 3px;
 	background:transparent !important;
 }
+
 #modal-invite .btn-scroll-type:hover{
 	background-color:rgba(0, 0, 0, 0.04) !important;
 }
@@ -78,15 +76,15 @@
 				<div class="col-lg-12">
 					<h3 class="letter-red no-margin hidden-xs">
 						<i class="fa fa-plus-circle"></i> 
-							<span id="title-invite">
-								<?php
-									if($parentType == Person::COLLECTION)
-										echo Yii::t("invite","Search or invite your contacts");
-									else
-										echo Yii::t("invite","Invite members");
-								?>
-							</span>
-							<br>
+						<span id="title-invite">
+							<?php
+								if($parentType == Person::COLLECTION)
+									echo Yii::t("invite","Search or invite your contacts");
+								else
+									echo Yii::t("invite","Invite members");
+							?>
+						</span>
+						<br>
 					</h3>
 				</div>
 			</div>
@@ -124,10 +122,8 @@
 				<div id="step1" class="modal-body col-xs-6" >
 					<div class="form-group">
 						<input type="text" class="form-control text-left" placeholder="Un nom, un e-mail ..." autocomplete = "off" id="inviteSearch" name="inviteSearch" value="">
-						<ul class="dropdown-menu col-xs-10" id="dropdown-search-invite" style="">
-							<li class="li-dropdown-scope"></li>
-						</ul>
-						<div class="col-xs-12" id="form-invite">
+						<div class="col-xs-12" id="dropdown-search-invite" style="max-height: 400px; overflow: auto;"></div>
+						<div class="col-xs-12" id="form-invite" style="padding:5px">
 							<div class="modal-body text-center">
 								<h2 class="text-green">
 									<i class="fa fa-plus-circle padding-bottom-10"></i>
@@ -171,9 +167,7 @@
 					<div class="form-group">
 						<div class="col-xs-12">
 							<h4> Liste des personnes a invités</h4>
-							<ul class="dropdown-menu col-xs-10" id="dropdown-invite" style="">
-								<li class="li-dropdown-scope"></li>
-							</ul>
+							<div class="col-xs-12" id="dropdown-invite" style="max-height: 400px; overflow: auto;"></div>
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<button id="btnValider" >
@@ -427,35 +421,36 @@
 			var str = "";
 			dropdown = "#dropdown-invite";
 		}else{
-			var str = "<li class='li-dropdown-scope'><a href='javascript:;' onclick='newInvitation()'>Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</a></li>";
+			var str = "<div class='col-xs-12'><div class='btn-scroll-type'><a href='javascript:;' onclick='newInvitation()' >Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</a></div></div>";
 		}
 		
 		if(notNull(contactsList.citoyens) && Object.keys(contactsList.citoyens).length ){
-			str += '<li class="li-dropdown-scope">'+
+			str += '<div class="col-xs-12">'+
 						'<h5 class="padding-10 text-'+contactTypes.citoyens.color+'"><i class="fa fa-'+contactTypes.citoyens.icon+'"></i> '+contactTypes.citoyens.label+'<hr></h5>'+			
-					'</li>';
+					'</div>';
 			$.each(contactsList.citoyens, function(key, value){
 				mylog.log("contactsList.citoyens key, value", key, value);
-				str += htmlListInvite(key, value, invite);
+				str += htmlListInvite(key, value, invite, "citoyens");
 			});
+
 			listNotExits = false;
 		}
 
 		if(notNull(contactsList.invites) && Object.keys(contactsList.invites).length ){
 			$.each(contactsList.invites, function(key, value){
 				mylog.log("contactsList.invites key, value", key, value);
-				str += htmlListInvite(key, value, invite);
+				str += htmlListInvite(key, value, invite, "citoyens");
 			});
 			listNotExits = false;
 		}
 
 		if(notNull(contactsList.organizations) && Object.keys(contactsList.organizations).length ){
-			str += '<li class="li-dropdown-scope">'+
+			str += '<div class="col-xs-12">'+
 						'<h5 class="padding-10 text-'+contactTypes.organizations.color+'"><i class="fa fa-'+contactTypes.organizations.icon+'"></i> '+contactTypes.organizations.label+'<hr></h5>'+			
-					'</li>';
+					'</div>';
 			$.each(contactsList.organizations, function(key, value){
 				mylog.log("contactsList.organizations key, value", key, value);
-				str += htmlListInvite(key, value, invite);
+				str += htmlListInvite(key, value, invite, "organizations");
 			});
 			listNotExits = false;
 		}
@@ -472,11 +467,11 @@
 		showListInvite();
 	}
 
-	function htmlListInvite(id, elem, invite){
+	function htmlListInvite(id, elem, invite, type){
 		//( typeof elem.id != "undefined" ? elem.id : elem.email )
 		mylog.log("htmlListInvite", elem, invite);
 		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl+'/'+ elem.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
-		var str = "<li class='li-dropdown-scope'>";
+		var str = "<div class='col-xs-12'>";
 			var classStr = " ";
 			if(invite == true){
 				str+='<button class="btn btn-link text-red tooltips col-xs-2 remove-invite" '+
@@ -498,11 +493,11 @@
 					'name="'+id+'AddList"'+
 					" data-name='"+elem.name+"' "+
 					" data-profilThumbImageUrl='"+profilThumbImageUrl+"' "+
-					" data-type='citoyens' >";
+					" data-type='"+type+"' >";
 				str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35"> ';
 				str += '<span class="text-dark text-bold">' + elem.name + '</span>';
 			str += "</div>";
-		str += "</li>";
+		str += "</div>";
 		return str ;
 	}
 

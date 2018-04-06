@@ -192,7 +192,7 @@
 				   				".".Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path :
 				   				".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3);
 
-				   		echo $path;
+				   		//echo $path;
 				   		if(file_exists ( $path )){
 				          $files = glob($path.'*.{jpg,jpeg,png}', GLOB_BRACE);
 				        }
@@ -234,7 +234,10 @@
     var idEl = "<?php echo $id; ?>";
     var currentIdSection = "";
     var onepageEdition = <?php echo @$element["onepageEdition"] ? json_encode(@$element["onepageEdition"]) : "{}" ?>;
-    var urlImgBg = "<?php echo substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/', 3); ?>";
+    
+    var urlImgBg = "<?php echo PH::notlocalServer() ? 
+				   				".".Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path :
+				   				".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3); ?>";
 
 	jQuery(document).ready(function() { 
 

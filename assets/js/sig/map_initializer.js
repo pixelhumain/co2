@@ -355,6 +355,10 @@
 
 											"url" 				: "url-marker-default",
 
+											"proposal" 			: "proposal-marker-default",
+											"proposals" 		: "proposal-marker-default",
+											"survey" 			: "proposal-marker-default",
+
 											"address" 			: "MARKER",
 
 											"classified" 		: "classified-marker-default",
@@ -427,6 +431,10 @@
 											"address" 			: { ico : "map-marker", color : "red" 	},
 
 											"classified" 		: { ico : "bullhorn", color : "azure" 	},
+
+											"proposal" 			: { ico : "gavel", color : "turq" 	},
+											"proposals" 		: { ico : "gavel", color : "turq" 	},
+											"survey" 			: { ico : "gavel", color : "turq" 	},
 
 											"ressource" 			: { ico : "cubes", color : "vine" 	},
 											"ressources" 			: { ico : "cubes", color : "vine" 	},

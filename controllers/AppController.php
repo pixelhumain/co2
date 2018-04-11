@@ -298,6 +298,7 @@ class AppController extends CommunecterController {
             $type == Poi::COLLECTION || $type == Place::COLLECTION || $type == Ressource::COLLECTION || 
             $type == Classified::COLLECTION){
             $element = Element::getByTypeAndId($type, $id);
+            var_dump($element);exit;
         }
         else if($type == News::COLLECTION){
             $element = News::getById($id);
@@ -329,13 +330,14 @@ class AppController extends CommunecterController {
                         "placeholderMainSearch" => "",
                         "element" => $element);
 
-        
+        //var_dump($element);exit;
         $params = Element::getInfoDetail($params, $element, $type, $id);
         
         //bloque l'édition de la page (même si on est l'admin)
         //visualisation utilisateur
         if(@$mode=="noedit"){ $params["edit"] = false; }
 
+        //var_dump($params);exit;
 
         if(@$_POST["preview"] == true){
             $params["preview"]=$_POST["preview"]; 

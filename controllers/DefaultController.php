@@ -96,10 +96,12 @@ class DefaultController extends CommunecterController {
 
   public function actionDirectory() 
   {
+
     $this->renderPartial("directory");
   }
   public function actionDirectoryjs() 
   {
+    var_dump("here");exit ;
     $this->renderPartial("directoryjs");
   }
 

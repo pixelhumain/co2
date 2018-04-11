@@ -577,7 +577,7 @@ var uiCoop = {
 		});
 
 
-		$(".btn-send-vote").off().click(function(){
+		$("#podVote .btn-send-vote").off().click(function(){
 			var voteValue = $(this).data('vote-value');
 			mylog.log("send vote", voteValue, idParentProposal);
 			uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom);

@@ -1110,7 +1110,7 @@ var directory = {
         //str += "<br><a href='"+params.hash+"."+onepageKey+"' class='lbh letter-green url elipsis'>"+params.hash+"."+onepageKey+"</a>";
       if(typeof params.hash != "undefined"){
         var echoLabel= (typeof params.slug !="undefined") ? "@"+params.slug : params.hash;
-        if((typeof params.slug !="undefined") ){
+        if((typeof params.slug !="undefined" && params.slug != null) ){
           var echoLabel= "https://www.co.tools/" + params.slug;
           str += "<br><a href='"+baseUrl+"/onepage/co/index/slug/"+params.slug+"' class='letter-green url elipsis'>"+echoLabel+"</a>";
         }else{

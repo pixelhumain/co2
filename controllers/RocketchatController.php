@@ -126,9 +126,11 @@ class RocketchatController extends CommunecterController {
 			
 			if($roomType == "external"){
 				//??? : should we check Authorisation::canEditItem
-				$group = array( "name" => $name, "url" => urldecode($_POST["url"]) );
+				$group = array( "name" => $_POST["title"], "url" => urldecode($_POST["url"]) );
 				$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-	 									array('$addToSet' => array(	"tools.chat.ext"=> $group  )));
+	 									array(
+	 										'$set' => array("hasRC"=>true),
+	 										'$addToSet' => array( "tools.chat.int"=> $group  )));
 			}
 			else if($roomType == "channel"){
 				$path = "/channel/".$name;
@@ -153,9 +155,8 @@ class RocketchatController extends CommunecterController {
 
 			if($group != null && @$group->create->channel->_id ) {
 		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-		 										array('$set' => array(
-		 											"hasRC"=>true, 
-		 											"tools.chat"=>array("int" => array( array( "url" => $path ) ) ))));
+		 										array('$set' => array("hasRC"=>true), 
+		 											  '$addToSet' => array( "tools.chat.int" => array( "name" => $name , "url" => $path ) ) ));
 		 	}
 
 		 	if($group != null){

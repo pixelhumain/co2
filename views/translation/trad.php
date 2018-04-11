@@ -727,7 +727,13 @@ var tradDynForm = {
 	"answer" : "<?php echo Yii::t("form", "answer") ?>",
 
 	"selectcitytosharesurvey" : "<?php echo Yii::t("form", "Select a city to share your survey with everybody in town !") ?>",
-
+	//chat
+	"internal" : "<?php echo Yii::t("category","Chat inside CO") ?>",
+    "external" : "<?php echo Yii::t("category","Chat outside CO") ?>",
+    "channelName"  : "<?php echo Yii::t("category","Channel Name") ?>",
+    "addNewChannel"  : "<?php echo Yii::t("common","Add a new channel") ?>",
+    "publicChannelExplain" : "Public channels can be searched and random people can join",
+    "privateChannelExplain" : "Private channels can only be viewed by it's members",
 };
 
 var tradCategory = {
@@ -1005,10 +1011,6 @@ var tradCategory = {
 		"buildingtools":"<?php echo Yii::t("category","buildingtools") ?>",
 		"gardeningtools":"<?php echo Yii::t("category","gardeningtools") ?>",
 		"medicalstuff":"<?php echo Yii::t("category","medicalstuff") ?>",
-	//chat
-	"internal" : "<?php echo Yii::t("category","Chat inside CO") ?>",
-    "external" : "<?php echo Yii::t("category","Chat outside CO") ?>",
-    "channelName"  : "<?php echo Yii::t("category","Channel Name") ?>",
 };
 
 var tradTags = {

@@ -1,5 +1,6 @@
 /* uiCoop is use for all function relative to UI for Cooperation Spaces (DDA) */
 var uiCoop = {
+	moduleIdCoop : "co2",
 	startUI : function(loadData=true){
 		mylog.log("startUICOOP");
 		//$("#menu-left-container").hide();
@@ -173,7 +174,7 @@ var uiCoop = {
 
 	getCoopData : function(parentType, parentId, type, status, dataId, onSuccess, showLoading){
 		mylog.log("getCoopData", parentType, parentId, type, status, dataId, onSuccess, showLoading)
-		var url = moduleId+'/cooperation/getcoopdata';
+		var url = uiCoop.moduleIdCoop+'/cooperation/getcoopdata';
 		var params = {
 			"parentType" : parentType,
 			"parentId" : parentId,
@@ -241,7 +242,7 @@ var uiCoop = {
 									.html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-turq'></i>");
 		}, 200);
 								
-		var url = moduleId+'/cooperation/previewcoopdata';
+		var url = baseUrl+"/"+uiCoop.moduleIdCoop+'/cooperation/previewcoopdata';
 		var params = {
 			"type" : type,
 			"dataId" : dataId,
@@ -312,7 +313,7 @@ var uiCoop = {
 		if(typeof idAmdt != "undefined")
 			params["idAmdt"] = idAmdt;
 
-		var url = moduleId+'/cooperation/savevote';
+		var url = baseUrl+"/"+uiCoop.moduleIdCoop+'/cooperation/savevote';
 		
 		toastr.info(trad["processing save"]);
 		ajaxPost("", url, params,
@@ -351,7 +352,7 @@ var uiCoop = {
 
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/element/updateblock/",
+		        url: baseUrl+"/"+uiCoop.moduleIdCoop+"/element/updateblock/",
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
@@ -379,7 +380,7 @@ var uiCoop = {
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/element/updateblock/",
+		        url: baseUrl+"/"+uiCoop.moduleIdCoop+"/element/updateblock/",
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
@@ -406,7 +407,7 @@ var uiCoop = {
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/element/updatefield/",
+		        url: baseUrl+"/"+uiCoop.moduleIdCoop+"/element/updatefield/",
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
@@ -433,7 +434,7 @@ var uiCoop = {
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/element/updatefield/",
+		        url: baseUrl+"/"+uiCoop.moduleIdCoop+"/element/updatefield/",
 		        data: param,
 		       	dataType: "json",
 		    	success: function(data){
@@ -446,7 +447,7 @@ var uiCoop = {
 		toastr.info(trad["processing save"]);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/element/delete/type/"+typeDelete+"/id/"+idDelete,
+		        url: baseUrl+"/"+uiCoop.moduleIdCoop+"/element/delete/type/"+typeDelete+"/id/"+idDelete,
 		        success: function(data){
 		    		uiCoop.getCoopData(contextData.type, contextData.id, "room");
 					uiCoop.startUI();
@@ -464,7 +465,7 @@ var uiCoop = {
 		toastr.info(trad["processing delete"]);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/cooperation/deleteamendement/",
+		        url: baseUrl+"/"+uiCoop.moduleIdCoop+"/cooperation/deleteamendement/",
 		        data: param,
 		       	//dataType: "json",
 		    	success: function(data){
@@ -484,7 +485,7 @@ var uiCoop = {
 	assignMe : function(idAction){
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/rooms/assignme",
+		        url: baseUrl+"/"+uiCoop.moduleIdCoop+"/rooms/assignme",
 		        data: { "id" : idAction },
 		        success: function(data){
 		    		if(data.result){
@@ -509,7 +510,7 @@ var uiCoop = {
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> " + trad.loadingComments);
 		
 		$(".footer-comments").html("");
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/proposals/id/"+idParentProposal,
+		getAjax("#comments-container",baseUrl+"/"+uiCoop.moduleIdCoop+"/comment/index/type/proposals/id/"+idParentProposal,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
 
@@ -650,7 +651,7 @@ var uiCoop = {
 		
 		$(".footer-comments").html("");
 
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/actions/id/"+idAction,
+		getAjax("#comments-container",baseUrl+"/"+uiCoop.moduleIdCoop+"/comment/index/type/actions/id/"+idAction,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 		},"html");
 
@@ -717,7 +718,7 @@ var uiCoop = {
 	initUIResolution : function(){
 		$("#comments-container").html("<i class='fa fa-spin fa-refresh'></i> Chargement des commentaires");
 		
-		getAjax("#comments-container",baseUrl+"/"+moduleId+"/comment/index/type/resolutions/id/"+idParentResolution,
+		getAjax("#comments-container",baseUrl+"/"+uiCoop.moduleIdCoop+"/comment/index/type/resolutions/id/"+idParentResolution,
 			function(){  //$(".commentCount").html( $(".nbComments").html() ); 
 				$(".container-txtarea").hide();
 

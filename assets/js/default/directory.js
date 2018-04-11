@@ -1128,8 +1128,15 @@ var directory = {
       //if(typeof params.hash != "undefined")
         //str += "<br><a href='"+params.hash+"."+onepageKey+"' class='lbh letter-green url elipsis'>"+params.hash+"."+onepageKey+"</a>";
       if(typeof params.hash != "undefined"){
-        echoLabel= (typeof params.slug !="undefined") ? "@"+params.slug : params.hash;
-        str += "<br><a href='"+params.hash+"' class='"+linkAction+" letter-green url elipsis'>"+echoLabel+"</a>";
+        var echoLabel= (typeof params.slug !="undefined") ? "@"+params.slug : params.hash;
+        if((typeof params.slug !="undefined") ){
+          var echoLabel= "https://www.co.tools/" + params.slug;
+          str += "<br><a href='"+baseUrl+"/onepage/co/index/slug/"+params.slug+"' class='letter-green url elipsis'>"+echoLabel+"</a>";
+        }else{
+          var echoLabel= params.hash;
+          str += "<br><a href='"+params.hash+"' class='"+linkAction+" letter-green url elipsis'>"+echoLabel+"</a>";
+
+        }
       }
 
       if(typeof params.url != "undefined" && params.url != null && params.url != "")

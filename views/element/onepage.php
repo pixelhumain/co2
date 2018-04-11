@@ -606,7 +606,8 @@ var elementName = "<?php echo @$element["name"]; ?>";
 var mapData = <?php echo json_encode(@$mapData) ?>;
 var params = <?php echo json_encode(@$params) ?>;
 var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
-initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
+
+//initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
 
 var openEdition = "<?php echo (string)@$element["openEdition"]; ?>";
 //console.dir("allparams", params);

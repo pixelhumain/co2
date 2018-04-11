@@ -427,8 +427,10 @@
 
       <div id='form-news' class="col-sm-12 no-padding">
         
-        <input type="hidden" id="parentId" name="parentId" value="<?php if($contextParentType != "city") echo $contextParentId; else echo Yii::app()->session["userId"]; ?>"/>
-        <input type="hidden" id="parentType" name="parentType" value="<?php if($contextParentType != "city") echo $contextParentType; else echo Person::COLLECTION; ?>"/> 
+        <input type="hidden" id="parentId" name="parentId" 
+               value="<?php if($contextParentType != "city") echo $contextParentId; else echo Yii::app()->session["userId"]; ?>"/>
+        <input type="hidden" id="parentType" name="parentType" 
+               value="<?php if($contextParentType != "city") echo $contextParentType; else echo Person::COLLECTION; ?>"/> 
         
         <input type="hidden" id="typeNews" name="type" value="news"/>
 
@@ -456,7 +458,9 @@
           <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
             <hr class="submit">
             
-            <button id="btn-submit-form" onclick="saveNews();" class="btn btn-success pull-right"><?php echo Yii::t("common","Submit") ?> <i class="fa fa-arrow-circle-right"></i></button>
+            <button id="btn-submit-form" onclick="saveNews();" class="btn btn-success pull-right">
+              <?php echo Yii::t("common","Submit") ?> <i class="fa fa-arrow-circle-right"></i>
+            </button>
 
 
           <?php if((@$canManageNews && $canManageNews==true) 

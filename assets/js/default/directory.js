@@ -107,7 +107,7 @@ function initTypeSearch(typeInit){
 
     if(typeInit == "all") {
         searchType = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classified","ressources"/*,"cities"*/];
-        if(search.value != "")
+        if(search.value != "" || Object.keys(getSearchLocalityObject()).length > 0) 
           searchType.push("persons");
         //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
         indexStepInit = 30;
@@ -687,6 +687,13 @@ function initPageTable(number){
 
     });
 
+    initUiCoopDirectory();
+
+    initBtnShare();
+  }
+
+  function initUiCoopDirectory(){
+    
     $.each($(".searchEntity.coopPanelHtml .descMD"), function(){
       $(this).html(dataHelper.markdownToHtml($(this).html()) );
     });
@@ -729,43 +736,17 @@ function initPageTable(number){
           uiCoop.getCoopDataPreview(coopType, coopId);
         }
       }
-
-/*
-      if(contextData.id == parentId && contextData.type == parentType){
-          toastr.info(trad["processing"]);
-          uiCoop.startUI();
-          $("#modalCoop").modal("show");
-          if(coopType == "rooms"){
-            uiCoop.getCoopData(contextData.type, contextData.id, "room", null, coopId);
-          }else{
-            setTimeout(function(){
-              uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
-              function(){
-                toastr.info(trad["processing"]);
-                uiCoop.getCoopData(contextData.type, contextData.id, coopType, null, coopId);
-              }, false);
-            }, 1000);
-          }
-      }else{
-        var hash = "#page.type." + parentType + ".id." + parentId + 
-                ".view.coop.room." + idParentRoom + "."+coopType+"." + coopId;
-        urlCtrl.loadByHash(hash);
-      }*/
-
     });
 
 
-    $(".btn-send-vote").off().click(function(){
+    $(".timeline-panel .btn-send-vote").off().click(function(){
       var idParentProposal = $(this).data('idparentproposal');
       var voteValue = $(this).data('vote-value');
       var idParentRoom = $(this).data('idparentroom');
       console.log("send vote", voteValue);
       uiCoop.sendVote("proposal", idParentProposal, voteValue, idParentRoom, null, true);
     });
-
-    initBtnShare();
   }
-
 
   function initBtnShare(){
     mylog.log("init btn-share ");
@@ -1162,7 +1143,19 @@ var directory = {
       if(typeof params.updatedLbl != "undefined" && (params.type == "events" ||  params.type == "classified"))
         str += "<small class='letter-light bold'><i class='fa fa-clock-o'></i> "+params.updatedLbl+"</small>";
       
+      if(typeof(params.statusLink)!="undefined"){
+        if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+          str+="<br><span class='text-red'>"+trad.administrator+"</span>";
+        if(typeof(params.statusLink.isAdminInviting)!="undefined"){
+          str+="<br><span class='text-red'>"+trad.invitingToAdmin+"</span>";
+        }
+        if(typeof(params.statusLink.toBeValidated)!="undefined" || typeof(params.statusLink.isAdminPending)!="undefined")
+          str+="<br><span class='text-red'>"+trad.waitingValidation+"</span>";
+      }
 
+      if(params.rolesLbl != "")
+        str += "<br><span class='rolesContainer'>"+params.rolesLbl+"</span>";
+ 
       if(typeof params.shortDescription != "undefined" && params.shortDescription != "" && params.shortDescription != null)
         str += "<br><span class='description'>"+params.shortDescription+"</span>";
       else if(typeof params.description != "undefined" && params.description != "" && params.description != null)
@@ -2968,7 +2961,7 @@ var directory = {
               if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
                  subData="data-ktype='"+addType+"' ";
                  typeForm="organization";
-              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classified")
+              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classified" && typeForm != "cities")
                 typeForm=typeObj[typeObj[addType].sameAs].ctrl;
               btn='<button class="btn main-btn-create text-'+headerParams[addType].color+' tooltips" padding-5 no-margin '+
                 'data-type="'+typeForm+'" '+

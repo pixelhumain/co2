@@ -3671,6 +3671,9 @@ function initKInterface(params){ console.log("initKInterface");
       });
     }
 
+
+    $(".logo-menutop.hidden-top, .menu-btn-start-search, #input-sec-search").attr("style", "");
+
     // Floating label headings for the contact form
     $(function() {
         $("body").on("input propertychange", ".floating-label-form-group", function(e) {

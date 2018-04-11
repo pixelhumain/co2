@@ -4,7 +4,12 @@
 	"metaDesc" : "Bienvenue chez l'habitant",
 
 	"pages" : {
-		"#app.index": {"redirect":"welcome"},
+		"#app.index": {
+			"redirect": {
+				"logged":"search",
+				"unlogged":"welcome"
+			}
+		},
 
 		"#welcome": {
 			"inMenu" : false, 

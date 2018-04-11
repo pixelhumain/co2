@@ -75,7 +75,6 @@
     #resUrl .searchEntity{
         margin-left:-48px !important;
     }
-
     @media (min-width: 1300px) {
         .subModuleTitle{
             width: 56%;

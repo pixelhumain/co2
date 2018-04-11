@@ -291,14 +291,12 @@ class AppController extends CommunecterController {
 
     public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
-        //var_dump($view); exit;
             
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
             $type == Project::COLLECTION || $type == Organization::COLLECTION || 
             $type == Poi::COLLECTION || $type == Place::COLLECTION || $type == Ressource::COLLECTION || 
             $type == Classified::COLLECTION){
             $element = Element::getByTypeAndId($type, $id);
-            var_dump($element);exit;
         }
         else if($type == News::COLLECTION){
             $element = News::getById($id);

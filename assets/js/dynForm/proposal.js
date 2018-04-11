@@ -123,13 +123,16 @@ dynForm = {
 					if(checkval==true) {
 						$("#ajaxFormModal .form-group.answersarray").hide(200);
 						//enable amendement when simple answer 
-						$("#ajaxFormModal .amendementActivatedcheckboxSimple").show(200); console.log("show");
+						$("#ajaxFormModal .amendementActivatedcheckboxSimple").show(200);
+						$("#ajaxFormModal .majoritytext").show(200);
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='true']").click();
 					}else{
 						$("#ajaxFormModal .form-group.answersarray").show(200);
 						//disable amendement when multi answer
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']").click();
-						$("#ajaxFormModal .amendementActivatedcheckboxSimple").hide(200); console.log("hide");
+						$("#ajaxFormModal .amendementActivatedcheckboxSimple").hide(200);
+						$("#ajaxFormModal .majoritytext").hide(200);
+
 					}
 				});
 
@@ -258,6 +261,7 @@ dynForm = {
             }),
             amendementDateEnd : dyFInputs.amendementDateEnd,
             voteActivated : dyFInputs.inputHidden( true ),
+          	
             voteDateEnd : dyFInputs.voteDateEnd,
             majority: dyFInputs.inputText( trad.ruleOfMajority + " (%) <small class='letter-green'>"+trad.giveValueMajority+"</small>", "50%" ),
             

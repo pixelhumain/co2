@@ -84,12 +84,14 @@ dynForm = {
 					var checkval = $(this).data("checkval");
 					console.log("checkval", checkval);
 					if(checkval==true) {
-						$("#ajaxFormModal .form-group.answersarray").hide(200);
+						$("#ajaxFormModal .form-group.answersarray").hide(20);
+						$("#ajaxFormModal .form-group.answersarray").attr("style", "");
 						//enable amendement when simple answer 
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple").show(200); console.log("show");
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='true']").click();
 					}else{
-						$("#ajaxFormModal .form-group.answersarray").show(200);
+						//$("#ajaxFormModal .form-group.answersarray").show(200);
+						$("#ajaxFormModal .form-group.answersarray").attr("style", "display: inline-block; margin-left: 0%;");
 						//disable amendement when multi answer
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple .btn-dyn-checkbox[data-checkval='false']").click();
 						$("#ajaxFormModal .amendementActivatedcheckboxSimple").hide(200); console.log("hide");
@@ -99,7 +101,9 @@ dynForm = {
 				$("#ajaxFormModal .multiChoicecheckboxSimple #multiChoice").remove();
 
 				$("#ajaxFormModal .locationBtn").html("<i class='fa fa-home'></i> Sélectionner une commune");
-
+				//getScopeNewsHtml("#ajaxFormModal .infoScopecustom");
+				//myScopes.type = "communexion";
+				//$("#ajaxFormModal .infoScopecustom").html(constructScopesHtml(false));
 			}
 	    },
         beforeSave : function(){
@@ -121,28 +125,18 @@ dynForm = {
 	    	
 			$("#ajaxFormModal #voteDateEnd").val( moment(   $("#ajaxFormModal #voteDateEnd").val(), dateformat).format() );
         },
-	    afterSave : function(data){
-            if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
-                $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-            else 
-            { 
-                dyFObj.closeForm(); 
-               	var oldCount = $("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html();
-               	console.log("data success save proposal", data);
-               	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
-               	
-               	if(typeof data.map.idParentRoom != "undefined"){
-	               	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
-	                setTimeout(function(){
-	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, data.id);
-	                }, 1000);
-	            }else{
-	            	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, currentRoomId);
-	                setTimeout(function(){
-	                	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idParentProposal);
-	                }, 1000);
-	            }
-            }
+	    afterSave : function(data){ console.log("after save survey", data);
+             dyFObj.closeForm();
+              if(typeof startNewsSearch != "undefined" && location.hash == "#live") 
+            	startNewsSearch(true);
+         	 else if(typeof loadNewsStream != "undefined") 
+            	loadNewsStream(true);
+             else if(typeof initSectionNews != "undefined") {
+            	$('#timeline-page').html("<div class='col-xs-12 text-center'><i class='fa fa-spin fa-circle-o-notch fa-2x'></i></div>");
+            	setTimeout(function(){ initSectionNews(); }, 2000);
+           	 }
+             else
+             	urlCtrl.loadByHash(location.hash);
 	    },
 
 	    properties : {
@@ -151,51 +145,7 @@ dynForm = {
                 html:"<br><p><i class='fa fa-info-circle'></i> "+tradDynForm.infoSurvey+"</p>",
             },
 	        id : dyFInputs.inputHidden(),
-	        //idParentRoom : dyFInputs.inputHidden(),
-            /*idParentRoom :{
-            	inputType : "select",
-            	label : "Choisir un espace",
-            	init : function(){
-            		if( userId )
-            		{
-            			/*filling the seclect* /
-	            		if(notNull(window.myVotesList)){
-	            			html = buildSelectGroupOptions( window.myVotesList);
-	            			$("#survey").append(html); 
-	            		} else {
-	            			getAjax( null , baseUrl+"/" + moduleId + "/rooms/index/type/citoyens/id/"+userId+"/view/data/fields/votes" , function(data){
-	            			    window.myVotesList = {};
-	            			    $.each( data.votes , function( k,v ) 
-	            			    { 
-	            			    	parentName = "";
-		            			    if(!window.myVotesList[ v.parentType]){
-		            			    	var label = ( v.parentType == "cities" && cpCommunexion && v.parentId.indexOf(cpCommunexion) ) ? cityNameCommunexion : v.parentType;
-		            			    	window.myVotesList[ v.parentType] = {"label":label};
-		            			    	window.myVotesList[ v.parentType].options = {}
-		            			    } /*else{
-		            			    	//if(notNull(myContactsById[v.parentType]) && notNull(myContactsById[v.parentType][v['_id']['$id']]))
-		            			    	//parentName = myContactsById[v.parentType][v['_id']['$id']].name;
-		            			    }* /
-	            			    	window.myVotesList[ v.parentType].options[v['_id']['$id'] ] = v.name+parentName; 
-	            			    }); 
-	            			    //run through myContacts to fill parent names 
-	            			    mylog.dir(window.myVotesList);
-	            			    
-	            			    html = buildSelectGroupOptions(window.myVotesList);
-								$("#survey").append(html);
-								if(contextData && contextData.id)
-									$("#ajaxFormModal #survey").val( contextData.id );
-						    } );
-	            		}
-	            		/*$("#survey").change(function() { 
-	            			mylog.dir( $(this).val().split("_"));
-	            		});* /
-
-            		}
-            	},
-            	//custom : "<br/><span class='text-small'>Une thématique est un espace de décision lié à une ville, une organisation ou un projet <br/>Vous pouvez créer des espaces coopératifs sur votre commune, organisation et projet</span>"
-            },*/
-            title : dyFInputs.name("survey", { required : false }),
+	        title : dyFInputs.name("survey", { required : false }),
             description : dyFInputs.textarea(tradDynForm.surveytext, "..."),
             multiChoice : dyFInputs.checkboxSimple("true", "multiChoice", 
             										{ "onText" : "pour / contre",//trad.yes,
@@ -223,9 +173,12 @@ dynForm = {
             										  					  tradDynForm.lblAmmendementDisabled
             }),
             amendementDateEnd : dyFInputs.amendementDateEnd,*/
+
             voteActivated : dyFInputs.inputHidden( true ),
+
+
             voteDateEnd : dyFInputs.voteDateEnd,
-            majority: dyFInputs.inputText( trad.ruleOfMajority + " (%) <small class='letter-green'>"+trad.giveValueMajority+"</small>", "50%" ),
+            //majority: dyFInputs.inputText( trad.ruleOfMajority + " (%) <small class='letter-green'>"+trad.giveValueMajority+"</small>", "50%" ),
             
             voteAnonymous : dyFInputs.checkboxSimple("true", "voteAnonymous", 
             										{ "onText" : trad.yes,

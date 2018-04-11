@@ -155,15 +155,15 @@
 
 				return L.icon({
 				    iconUrl: iconUrl,
-				    iconSize: [33, 44], //38, 95],
+				   /* iconSize: [33, 44], //38, 95],
 				    iconAnchor: [16, 37],//22, 94],
-				    popupAnchor: [0, -40]//-3, -76]
+				    popupAnchor: [0, -40]//-3, -76]*/
 
-				    /* CO2
+				    // CO2
 				    iconSize: [53, 60], //38, 95],
 				    iconAnchor: [27, 57],//22, 94],
 				    popupAnchor: [0, -55]//-3, -76]
-				    */
+				    
 				});
 			};
 

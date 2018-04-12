@@ -518,69 +518,73 @@ function getCommunitySettings(){
 			if(type != "people"){
 				str+="<div class='titleCommunity text-"+typeObj[typeObj[type].sameAs].color+"'><i class='fa fa-"+typeObj[typeObj[type].sameAs].icon+"'></i> My "+type+"</div>";
 				$.each(array, function(e, value){
-					var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl + value.profilThumbImageUrl : assetPath + "/images/thumb/default_"+defaultImg+".png";
-					var id = (typeof value._id != "undefined" && typeof value._id.$id != "undefined") ? value._id.$id : id;
-					str+='<div class="col-xs-12 padding-5 notification-label-communtiy">'+
-							'<label class="col-md-6 col-sm-4 col-xs-4 elipsis"><img src='+profilThumbImageUrl+' height="30" width="30"/> <b>'+value.name+'</b></label>'+
-							'<div class="col-md-3 col-sm-4 col-xs-4">'+
-								'<div class="dropdown no-padding col-xs-12 margin-bottom-20">'+
-			          				'<a data-toggle="dropdown" class="btn btn-default col-md-12 col-sm-12 col-xs-12 dropdown-settings" href="javascript:;">'+
-			          					'<i class="fa fa-bell"></i> <span class="hidden-xs">Notifs : </span><span class="changeValueDrop">By default</span> <i class="fa fa-caret-down" style="font-size:inherit;"></i>'+
-			          				'</a>'+
-	          						'<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">'+
-		          						'<li>'+
-		              						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="desactivated" data-type="'+type+'" data-id="'+id+'">'+
-		              							'Desactivated'+
-		              						'</a>'+
-		            					'</li>'+
-		            					'<li>'+
-		              						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="low" data-type="'+type+'" data-id="'+id+'">'+
-		              							'Low'+
-		              						'</a>'+
-		            					'</li>'+
-		            					'<li>'+
-		              						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="default" data-type="'+type+'" data-id="'+id+'">'+
-		              							'By default'+
-		              						'</a>'+
-		            					'</li>'+
-		            					'<li>'+
-		              						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="high" data-type="'+type+'" data-id="'+id+'">'+
-		              							'High'+
-		              						'</a>'+
-		            					'</li>'+
-									'</ul>'+
-				        		'</div>'+
-				        	'</div>'+
-				        	'<div class="col-md-3 col-sm-4 col-xs-4">'+
-								'<div class="dropdown no-padding col-xs-12 margin-bottom-20">'+
-			          				'<a data-toggle="dropdown" class="btn btn-default col-md-12 col-sm-12 col-xs-12 dropdown-settings" href="javascript:;">'+
-			          					'<i class="fa fa-envelope"></i> <span class="hidden-xs">Emails : </span><span class="changeValueDrop">By default</span> <i class="fa fa-caret-down" style="font-size:inherit;"></i>'+
-			          				'</a>'+
-	          						'<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">'+
-		          						'<li>'+
-		              						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="desactivated" data-type="'+type+'" data-id="'+id+'">'+
-		              								'Desactivated'+
-		              						'</a>'+
-		            					'</li>'+
-		            					'<li>'+
-		              						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="low" data-type="'+type+'" data-id="'+id+'">'+
-		              							'Low'+
-		              						'</a>'+
-		            					'</li>'+
-		            					'<li>'+
-		              						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="default" data-type="'+type+'" data-id="'+id+'">'+
-		              							'By default'+
-		              						'</a>'+
-		            					'</li>'+
-		            					'<li>'+
-		              						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="high" data-type="'+type+'" data-id="'+id+'">'+
-		              							'High'+
-		              						'</a>'+
-		            					'</li>'+
-									'</ul>'+
-				        		'</div>'+
-				        	'</div>'+
-						'</div>';
+					if(typeof value.isFollowed == "undefined" && typeof value.toBeValidated == "undefined"){
+						var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl + value.profilThumbImageUrl : assetPath + "/images/thumb/default_"+defaultImg+".png";
+						var id = (typeof value._id != "undefined" && typeof value._id.$id != "undefined") ? value._id.$id : id;
+						var setNotif = (typeof value.notifications != "undefined") ? tradLabel[value.notifications] : tradLabel["default"];
+						var setMails = (typeof value.mails != "undefined") ? tradLabel[value.mails] : tradLabel["default"];
+						str+='<div class="col-xs-12 padding-5 notification-label-communtiy">'+
+								'<label class="col-md-6 col-sm-4 col-xs-4 elipsis"><img src='+profilThumbImageUrl+' height="30" width="30"/> <b>'+value.name+'</b></label>'+
+								'<div class="col-md-3 col-sm-4 col-xs-4">'+
+									'<div class="dropdown no-padding col-xs-12 margin-bottom-20">'+
+				          				'<a data-toggle="dropdown" class="btn btn-default col-md-12 col-sm-12 col-xs-12 dropdown-settings" href="javascript:;">'+
+				          					'<i class="fa fa-bell"></i> <span class="hidden-xs">Notifs : </span><span class="changeValueDrop">'+setNotif+'</span> <i class="fa fa-caret-down" style="font-size:inherit;"></i>'+
+				          				'</a>'+
+		          						'<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">'+
+			          						'<li>'+
+			              						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="desactivated" data-type="'+type+'" data-id="'+id+'">'+
+			              							'Desactivated'+
+			              						'</a>'+
+			            					'</li>'+
+			            					'<li>'+
+			              						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="low" data-type="'+type+'" data-id="'+id+'">'+
+			              							'Low'+
+			              						'</a>'+
+			            					'</li>'+
+			            					'<li>'+
+			              						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="default" data-type="'+type+'" data-id="'+id+'">'+
+			              							'By default'+
+			              						'</a>'+
+			            					'</li>'+
+			            					'<li>'+
+			              						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="high" data-type="'+type+'" data-id="'+id+'">'+
+			              							'High'+
+			              						'</a>'+
+			            					'</li>'+
+										'</ul>'+
+					        		'</div>'+
+					        	'</div>'+
+					        	'<div class="col-md-3 col-sm-4 col-xs-4">'+
+									'<div class="dropdown no-padding col-xs-12 margin-bottom-20">'+
+				          				'<a data-toggle="dropdown" class="btn btn-default col-md-12 col-sm-12 col-xs-12 dropdown-settings" href="javascript:;">'+
+				          					'<i class="fa fa-envelope"></i> <span class="hidden-xs">Emails : </span><span class="changeValueDrop">'+setMails+'</span> <i class="fa fa-caret-down" style="font-size:inherit;"></i>'+
+				          				'</a>'+
+		          						'<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">'+
+			          						'<li>'+
+			              						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="desactivated" data-type="'+type+'" data-id="'+id+'">'+
+			              								'Desactivated'+
+			              						'</a>'+
+			            					'</li>'+
+			            					'<li>'+
+			              						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="low" data-type="'+type+'" data-id="'+id+'">'+
+			              							'Low'+
+			              						'</a>'+
+			            					'</li>'+
+			            					'<li>'+
+			              						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="default" data-type="'+type+'" data-id="'+id+'">'+
+			              							'By default'+
+			              						'</a>'+
+			            					'</li>'+
+			            					'<li>'+
+			              						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="high" data-type="'+type+'" data-id="'+id+'">'+
+			              							'High'+
+			              						'</a>'+
+			            					'</li>'+
+										'</ul>'+
+					        		'</div>'+
+					        	'</div>'+
+							'</div>';
+					}
 				});
 				str+="</div>";
 			}

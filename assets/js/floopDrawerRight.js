@@ -279,7 +279,8 @@ function addFloopEntity(entityId, entityType, entityValue){
 	//Exception with citoyens collection which is managed like people in display
 	if(entityType == "citoyens") entityType = "people";
 
-	floopContacts[entityType].push(entityValue);
+	floopContacts[entityType][entityId]=entityValue;
+	//floopContacts[entityType].push(entityValue);
 
 	var type = getFloopContactTypes(entityType);
 	//mylog.log("getFloopContactTypes", entityType, type);
@@ -325,11 +326,13 @@ function changeNameFloopEntity(entityId, entityType, entityName){
 	$('#floopItem-'+type.name+'-'+entityId).find(".name-contact").text(entityName);
 }
 function removeFromMyContacts(entityId, entityType){
-	$.each(floopContacts[entityType], function(e, v){
+	if(typeof floopContacts[entityType][entityId] != "undefined")
+		delete floopContacts[entityType][entityId];
+	/*$.each(floopContacts[entityType], function(e, v){
 		if(notNull(v) && typeof v._id != "undefined" && v._id.$id==entityId){
 			floopContacts[entityType].splice(e, 1);
 		}
-	});
+	});*/
 }
 function showHideOldElements(type) {
 	$(".oldFloopDrawer"+type).toggle("slow");

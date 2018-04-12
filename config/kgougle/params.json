@@ -18,8 +18,12 @@
 
       "pages" : 
       {
-      	"#app.index":
-                  {"redirect":"web"},
+      	"#app.index": {
+                  "redirect": {
+                        "logged":"search",
+                        "unlogged":"welcome"
+                  }
+            },
       	
             "#welcome": {
                   "inMenu" : false, 

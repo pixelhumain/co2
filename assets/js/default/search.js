@@ -404,7 +404,8 @@ var searchEngine = {
             poi : { indexMin : 0, indexMax : 30, waiting : 30 },
             news : { indexMin : 0, indexMax : 30, waiting : 30 },
             places : { indexMin : 0, indexMax : 30, waiting : 30 },
-            ressources : { indexMin : 0, indexMax : 30, waiting : 30 }
+            ressources : { indexMin : 0, indexMax : 30, waiting : 30},
+            cities : { indexMin : 0, indexMax : 30, waiting : 30 }
         };
         initTypeSearch("all");
         searchEngine.allResults={};

@@ -191,7 +191,7 @@
 			<img class="img-circle" id="menu-thumb-profil" 
 	         width="30" height="30" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
 			<a href="#page.type.citoyens.id.<?php echo $proposal["creator"]; ?>" class="lbh lbl-author-coop elipsis">
-				<?php echo $author["username"]; ?>zrerzerz rz erz erz erze </a><?php if($myId == $proposal["creator"]){ ?>
+				<?php echo $author["username"]; ?></a><?php if($myId == $proposal["creator"]){ ?>
 			<?php } ?>
 		</label>
 	<?php } ?>
@@ -550,7 +550,8 @@
 								  "proposal"=>@$proposal,
 								  "auth"=>$auth)); ?>
 
-<script type="text/javascript">
+<script type="text/javascript"> 
+	var contextProposal = <?php echo json_encode($proposal); ?>;
 	var parentTypeElement = "<?php echo $proposal['parentType']; ?>";
 	var parentIdElement = "<?php echo $proposal['parentId']; ?>";
 	var idParentProposal = "<?php echo $proposal['_id']; ?>";
@@ -561,6 +562,9 @@
 
 	jQuery(document).ready(function() {
 		uiCoop.initUIProposal();
+		$(".newsActivityStream"+idParentProposal).html(directory.coopPanelHtml(contextProposal));
+		if(typeof initUiCoopDirectory != 'undefined')
+			initUiCoopDirectory();
 	});
 
 </script>

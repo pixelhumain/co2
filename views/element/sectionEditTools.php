@@ -184,7 +184,15 @@
 			    	<h5><?php echo $sec["title"]; ?></h5>
 				   	<?php 
 				   		$path = $sec["folder"]."/";
-				   		$path = ".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3);
+				   		//$p = PH::notlocalServer() ? "." : "";
+				   		//$path = $p.".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3);
+				   		//$path = Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path;
+
+				   		$path = PH::notlocalServer() ? 
+				   				".".Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path :
+				   				".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3);
+
+				   		//echo $path;
 				   		if(file_exists ( $path )){
 				          $files = glob($path.'*.{jpg,jpeg,png}', GLOB_BRACE);
 				        }
@@ -226,7 +234,10 @@
     var idEl = "<?php echo $id; ?>";
     var currentIdSection = "";
     var onepageEdition = <?php echo @$element["onepageEdition"] ? json_encode(@$element["onepageEdition"]) : "{}" ?>;
-    var urlImgBg = "<?php echo substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/', 3); ?>";
+    
+    var urlImgBg = "<?php echo PH::notlocalServer() ? 
+				   				".".Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path :
+				   				".".substr(Yii::app()->theme->baseUrl.'/assets/img/background-onepage/'.$path, 3); ?>";
 
 	jQuery(document).ready(function() { 
 
@@ -410,11 +421,11 @@
 		$(".btn-create-section").click(function(){
 			var section = $(this).data("section-before");
 
-			var num = 1; var tmpNum = 1;
+			var num = 1; var tmpNum = 0;
 			$.each($(".free-section"), function(){ 
 				var tmpNum = $(this).attr("id");
 				tmpNum = parseInt(tmpNum.substr(tmpNum.length-1, 1));
-				if(tmpNum > num) num = tmpNum +1;
+				if(tmpNum >= num) num = tmpNum +1;
 			});
 			$("#btn-save-new-section-"+section).data("new-section-key", "free-section-"+num); 
 			$("#btn-save-new-section-"+section).attr("data-new-section-key", "free-section-"+num); 

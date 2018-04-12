@@ -699,6 +699,7 @@ class CommunecterController extends Controller
       $this->pageTitle = (isset($page["pageTitle"])) ? $page["pageTitle"] : $this->pageTitle;
       if(!empty(Yii::app()->session["userId"]))
         $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
+      
       if( $_SERVER['SERVER_NAME'] == "127.0.0.1" || $_SERVER['SERVER_NAME'] == "localhost" )
         CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
     }

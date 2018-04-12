@@ -5,8 +5,9 @@ function initDateHeaderPage(params){
 }
 
 function pushListRoles(links){
+	
 	//Members
-	if(typeof links.members != "undefined"){
+	if( typeof links.members != "undefined" ){
 		$.each(links.members, function(e,v){
 			if(typeof v.roles != "undefined"){
 				$.each(v.roles, function(i,data){
@@ -17,6 +18,7 @@ function pushListRoles(links){
 			}
 		});
 	}
+
 	//Contributors
 	if(typeof links.contributors != "undefined"){
 		$.each(links.contributors, function(e,v){
@@ -29,6 +31,7 @@ function pushListRoles(links){
 			}
 		});
 	}
+
 	//Attendees
 	if(typeof links.attendees != "undefined"){
 		$.each(links.attendees, function(e,v){

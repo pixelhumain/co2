@@ -326,17 +326,120 @@
 	  						$loadChat = "";
 		  			}
 		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
-	  	  ?>
-	  	  
-			  <button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?>, contextData )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
+
+		  			if( $type != Person::COLLECTION )
+	  				{
+			  		?>
+			  			<div class="btn-group " id="paramsMenu">
+							<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<button type="button" class="btn btn-default bold">
+										<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+							  			<i class="fa fa-comments"></i> <span class="hidden-xs hidden-sm"><?php echo Yii::t("cooperation", "Chat"); ?>
+							  			<?php }else{ ?>
+							  			<i class="fa fa-chevron-down"></i>
+							  			<?php } ?>
+							  			</span>
+							  		</button> 
+							  		<ul class="dropdown-menu arrow_box menu-params">
+
+						  			<?php
+						  			if( $hasRC && @$element["tools"]["chat"] )
+						  			{ 
+							  			if( @$element["tools"]["chat"]["int"] )
+			  							{
+			  								?>
+								  				<li class="text-left bold padding-5">
+									               	Interne
+									            </li>
+								  			<?php
+								  			foreach (@$element["tools"]["chat"]["int"] as $key => $chat) 
+								  			{ ?>
+								  				<li class="text-left">
+									               	<a href="" class="btn-open-chatEl bg-white" data-name-el="<?php echo $element["name"]; ?>" data-username="<?php echo Yii::app()->session['user']['name']; ?>" data-slug="<?php echo $chat["name"]; ?>" data-type-el="<?php echo $type; ?>"  data-open="<?php echo ( strpos ( $chat["url"] , "/channel/") === false ) ? "false" : "true"; ?>"  data-hasRC="true" data-id="<?php echo (string)$element["_id"]; ?>">
+									                    <i class="fa fa-comments"></i> <?php echo $chat["name"]; ?> 
+									                    <?php if( strpos ( $chat["url"] , "/channel/") === false ) 
+									                    		echo "<i class='fa fa-lock'></i>"; ?>
+									                </a>
+									            </li>
+								  			<?php
+								  			} 
+								  			?>
+								  			<script type="text/javascript">
+								  				$(".btn-open-chatEl").click( function(){
+											    	var nameElo = $(this).data("name-el");
+											    	var idEl = $(this).data("id");
+											    	var usernameEl = $(this).data("username");
+											    	var slugEl = $(this).data("slug");
+											    	var typeEl = dyFInputs.get($(this).data("type-el")).col;
+											    	var openEl = $(this).data("open");
+											    	var hasRCEl = ( $(this).data("hasRC") ) ? true : false;
+											    	alert(nameElo +" | "+typeEl +" | "+openEl +" | "+hasRCEl);
+											    	var ctxData = {
+											    		name : nameElo,
+											    		type : typeEl,
+											    		id : idEl
+											    	}
+											    	if(typeEl == "citoyens")
+											    		ctxData.username = usernameEl;
+											    	else if(slugEl)
+											    		ctxData.slug = slugEl;
+											    	rcObj.loadChat(nameElo ,typeEl ,openEl ,hasRCEl, ctxData );
+											    } );
+								  			</script>
+								  			<?php
+								  		} 
+
+								  		if( @$element["tools"]["chat"]["ext"] )
+			  							{
+			  								?>
+								  				<li class="text-left bold padding-5">
+									               	Externe
+									            </li>
+								  			<?php
+								  			foreach ($element["tools"]["chat"]["ext"] as $key => $chat) 
+								  			{ ?>
+								  				<li class="text-left">
+									               	<a href="<?php echo $chat["url"]; ?>" target="_blank" class="bg-white">
+									                    <i class="fa fa-comments"></i> <?php echo $chat["name"]; ?> <i class="fa fa-external-link"></i>
+									                </a>
+									            </li>
+								  			<?php
+								  			}
+							  			} ?>
+
+							  			<li class="text-left text-red">
+							  			<br>
+							               	<a href="javascript:dyFObj.openForm('chat','sub')" class="">
+							                    <i class="fa fa-plus-circle text-red"></i> <?php echo Yii::t("common","New Channel") ?>
+							                </a>
+							            </li>
+
+			  			<?php
+			  			} else {
+		  	    		?>
+					  	  	<li class="text-left text-red">
+								  <a href="javascript:;" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?>, contextData )" class=" <?php echo $chatColor;?>" id="open-rocketChat">
+								  		<i class="fa fa-plus-circle text-red"></i> <?php echo Yii::t("common","New Channel") ?>
+								  </a>
+							</li>
+
+			  			<?php } ?>
+			  			
+						        </ul>
+						    </li>
+						</ul>
+					</div>    
+
+				<?php } else { ?>
+
+				<button type="button" onclick="javascript:rcObj.loadChat('<?php echo $loadChat;?>','<?php echo $type?>',<?php echo $canEdit;?>,<?php echo $hasRC;?>, contextData )" class="btn btn-default bold hidden-xs <?php echo $chatColor;?>" 
 			  		  id="open-rocketChat" style="border-right:0px!important;">
 			  		<i class="fa fa-comments elChatNotifs"></i> <?php echo Yii::t("cooperation", "Chat"); 
 			  		?>
-			  		
-			  </button>
+				</button>
 
-		  <?php //} ?>
-		  
+				<?php } ?>
 		  <?php } ?>
 
 

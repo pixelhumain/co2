@@ -96,12 +96,21 @@ class DefaultController extends CommunecterController {
 
   public function actionDirectory() 
   {
+
     $this->renderPartial("directory");
   }
-  public function actionDirectoryjs() 
-  {
-    $this->renderPartial("directoryjs");
-  }
+	public function actionDirectoryjs(){
+
+		// if( Yii::app()->session["theme"] != "CO2" && 
+		// 	!empty(Yii::app()->params["overWrite"]) && 
+		// 	!empty(Yii::app()->params["overWrite"]["views"]["directoryjs"])){
+		// 	$this->renderPartial(Yii::app()->session["theme"].".views.".Yii::app()->params["overWrite"]["views"]["directoryjs"]);
+		// }else{
+			$this->renderPartial("directoryjs");
+		// }
+
+		
+	}
 
   public function actionLang() 
   {

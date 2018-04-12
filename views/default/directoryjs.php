@@ -561,14 +561,14 @@
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
-        <div class="col-md-10 col-sm-9 col-xs-12 pull-right">
-          <div class="no-padding col-xs-12" id="dropdown_search"></div>
-          <div class="no-padding col-xs-12 text-left footerSearchContainer"></div>
-          <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
-          <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
-          <?php } ?>
-        <?php } ?>
-        </div>
+		<div class="col-md-10 col-sm-9 col-xs-12 pull-right">
+			<div class="no-padding col-xs-12" id="dropdown_search"></div>
+			<div class="no-padding col-xs-12 text-left footerSearchContainer"></div>
+			<?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
+				<!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
+			<?php } ?>
+			<?php } ?>
+		</div>
   </div>
 
 

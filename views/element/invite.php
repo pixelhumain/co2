@@ -119,7 +119,7 @@
 				</div>
 			</div>
 			<div class="row " id="divSearchInvite">
-				<div id="step1" class="modal-body col-xs-6" >
+				<div id="step1-search" class="modal-body col-xs-6" >
 					<div class="form-group">
 						<input type="text" class="form-control text-left" placeholder="Un nom, un e-mail ..." autocomplete = "off" id="inviteSearch" name="inviteSearch" value="">
 						<div class="col-xs-12" id="dropdown-search-invite" style="max-height: 400px; overflow: auto;"></div>
@@ -162,6 +162,11 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<div id="step1-import">
+					<div class="col-xs-12">
+						<label for="fileEmail" > Fichier (CSV) : <input type="file" id="fileEmail" name="fileEmail" accept=".csv"> </label>
+						</div><br/><hr/><br/>
 				</div>
 				<div id="step2" class="modal-body col-xs-6" >
 					<div class="form-group">
@@ -221,13 +226,37 @@
 		mylog.log("members", members);
 		bindInvite();
 
+		$("#step1-import").hide();
 		$("#step2").hide();
 		$("#form-invite").hide();
 		$("#divResult").hide();
 
 	});
 
+	function fadeInView(inView){
+		mylog.log("fadeInView", inView);
+		$("#invite-modal-element .modal-footer").addClass("hidden");
+		$("#invite-modal-element #listEmailGrid").html("");
+		if(inView == "step1-search") {
+			$("#step1-search").hide();
+			$("#step1-import").show();
+
+		} else if(inView == "step1-import") {
+			$("#step1-import").hide();
+			$("#step1-search").show();
+		}
+	}
+
 	function bindInvite(){
+
+		$("#modal-invite #menuImportFile").click(function() {
+			fadeInView("step1-import");
+		});
+
+		$("#modal-invite #menuInviteSomeone").click(function() {
+			fadeInView("step1-search");
+		});
+
 		$('#modal-invite #inviteSearch').keyup(function(e){
 			var search = $('#modal-invite #inviteSearch').val();
 			mylog.log("#modal-invite #inviteSearch", search);
@@ -269,6 +298,12 @@
 				Object.keys(listInvite.citoyens).length > 0 || 
 				Object.keys(listInvite.invites).length > 0 ) {
 				mylog.log("#modal-invite #btnValider here");
+
+
+				$( ".divRoles" ).each(function(key, value) {
+					mylog.log("divRoles", $(this).data("id"), $(this).data("type"));
+					listInvite[$(this).data("type")][$(this).data("id")]["roles"] = $("#tagsRoles"+$(this).data("id")).val().split(",");
+				});
 
 				var params = {
 					parentId : parentId,
@@ -430,7 +465,7 @@
 					'</div>';
 			$.each(contactsList.citoyens, function(key, value){
 				mylog.log("contactsList.citoyens key, value", key, value);
-				str += htmlListInvite(key, value, invite, "citoyens");
+				str += htmlListInvite(key, value, invite, "citoyens", invite);
 			});
 
 			listNotExits = false;
@@ -439,7 +474,7 @@
 		if(notNull(contactsList.invites) && Object.keys(contactsList.invites).length ){
 			$.each(contactsList.invites, function(key, value){
 				mylog.log("contactsList.invites key, value", key, value);
-				str += htmlListInvite(key, value, invite, "citoyens");
+				str += htmlListInvite(key, value, invite, "citoyens", invite);
 			});
 			listNotExits = false;
 		}
@@ -450,7 +485,7 @@
 					'</div>';
 			$.each(contactsList.organizations, function(key, value){
 				mylog.log("contactsList.organizations key, value", key, value);
-				str += htmlListInvite(key, value, invite, "organizations");
+				str += htmlListInvite(key, value, invite, "organizations", invite);
 			});
 			listNotExits = false;
 		}
@@ -458,7 +493,7 @@
 		mylog.log("showElementInvite", dropdown);
 		$("#modal-invite "+dropdown).html(str);
 		$("#modal-invite "+dropdown).show();
-
+		$('.tagsRoles').select2({tags:rolesList});
 		if(listNotExits)
 			newInvitation();
 		else
@@ -467,9 +502,12 @@
 		showListInvite();
 	}
 
-	function htmlListInvite(id, elem, invite, type){
+	function htmlListInvite(id, elem, invite, type, role=false){
 		//( typeof elem.id != "undefined" ? elem.id : elem.email )
-		mylog.log("htmlListInvite", elem, invite);
+		mylog.log("htmlListInvite", id, elem, invite, type, role);
+
+		var inMyContact = inMyContacts(type,id);
+
 		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl+'/'+ elem.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
 		var str = "<div class='col-xs-12'>";
 			var classStr = " ";
@@ -483,7 +521,7 @@
 						'data-toggle="tooltip" data-placement="top" title="Remove" >'+
 						'<i class="fa fa-remove"></i>'+
 						'</button>';
-			}else{
+			} else {
 				classStr = " add-invite";
 			}
 
@@ -496,6 +534,13 @@
 					" data-type='"+type+"' >";
 				str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35"> ';
 				str += '<span class="text-dark text-bold">' + elem.name + '</span>';
+				if(inMyContact == true)
+					str += '<br/><span class="text-dark text-bold follows"> Vous suivez déjà cette personnes </span>';
+				if(role == true){
+					str += '<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+id+'" data-type="'+type+'">'+
+								'<input id="tagsRoles'+id+'" class="tagsRoles" type="text" data-type="select2" name="roles" placeholder="Add a role" value="" style="width:100%;">'+
+							'</div>';	
+				}
 			str += "</div>";
 		str += "</div>";
 		return str ;

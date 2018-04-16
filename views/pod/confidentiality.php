@@ -136,7 +136,7 @@
 			
 			<div class="modal-footer">
 				<button type="button" class="lbh btn btn-success btn-confidentialitySettings" data-dismiss="modal" aria-label="Close" data-hash="#page.type.<?php echo $type ?>.id.<?php echo $element['_id'] ;?>">
-				<i class="fa fa-save"></i> <?php echo Yii::t("common","Save") ;?>
+				<i class="fa fa-save"></i> <?php echo Yii::t("common","Close") ;?>
 				</button>
 			</div>
 		</div>

@@ -414,7 +414,7 @@ var dataHelper = {
 	},
 
 	activateMarkdown : function (elem) { 
-		mylog.log("activateMarkdown", elem);
+		//mylog.log("activateMarkdown", elem);
 
 		markdownParams = {
 			savable:false,

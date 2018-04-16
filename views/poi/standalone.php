@@ -18,7 +18,7 @@
 		poiAlone["typePoi"] = poiAlone.type;
 		poiAlone["type"] = "poi";
 		poiAlone["typeSig"] = "poi";
-		
+		mylog.log("standalone poiAlone", poiAlone);
 		poiAlone["id"] = poiAlone['_id']['$id'];
 		var html = directory.preview(poiAlone);
 	  	$("#poi").html(html);

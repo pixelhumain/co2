@@ -243,6 +243,7 @@ var formInMap = {
 
 		$('[name="newElement_street"]').keyup(function(){ 
 			formInMap.showWarningGeo( ( ( $('[name="newElement_street"]').val().length > 0 ) ? true : false ) );
+			formInMap.NE_street = $('[name="newElement_street"]').val().trim();
 		});
 
 
@@ -555,7 +556,7 @@ var formInMap = {
 		mylog.log("backToForm 2");
 		formInMap.actived = false ;
 
-		mylog.log("backToForm 3", formInMap.updateLocality);
+		mylog.log("backToForm 3", formInMap.updateLocality, formInMap.NE_street);
 		if(formInMap.updateLocality == false ){
 			mylog.log("backToForm 6", $('#street_sumery_value').html());
 			$("#form-street").val($('#street_sumery_value').html());
@@ -574,7 +575,7 @@ var formInMap = {
 				(typeof noShowAjaxModal == "undefined" || noShowAjaxModal == false))
 				$('#ajax-modal').modal("show");
 		}else{
-			mylog.log("backToForm 5");
+			mylog.log("backToForm 5", formInMap.NE_street);
 			formInMap.updateLocality = false;
 			if(typeof cancel == "undefined" || cancel == false)
 				formInMap.updateLocalityElement();
@@ -586,9 +587,9 @@ var formInMap = {
 	},
 
 	updateLocalityElement : function(){
-		mylog.log("updateLocalityElement");
+		mylog.log("updateLocalityElement", formInMap.NE_street);
 		var locality = formInMap.createLocalityObj(true);
-
+		mylog.log("updateLocalityElement locality", locality);
 		if(formInMap.addressesIndex)
 			locality["addressesIndex"] = formInMap.addressesIndex ;
 		
@@ -751,7 +752,7 @@ var formInMap = {
 	},
 
 	createLocalityObj : function(withUnikey){
-		mylog.log("createLocalityObj");
+		mylog.log("createLocalityObj", formInMap);
 		
 		var locality = {
 			address : {

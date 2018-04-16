@@ -1489,6 +1489,10 @@ La vie en santé;Santé;;
 		echo $tpl;
 	}
 
+	public function actionPdfTest(){
+		Pdf::createPdf();
+	}
+
 
 	public function actionListcountries(){
 		$res = Zone::getListCountry(true);

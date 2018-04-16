@@ -362,7 +362,7 @@ function addCoordinates(commonObj, obj, providerName){
 var markerListEntity = null;
 function addResultsInForm(commonGeoObj, countryCode){
 	//success
-	mylog.log("success callGeoWebService");
+	mylog.log("addResultsInForm success callGeoWebService", commonGeoObj, countryCode);
 	//mylog.dir(objs);
 	var res = commonGeoObj; //getCommonGeoObject(objs, providerName);
 	mylog.dir(res);

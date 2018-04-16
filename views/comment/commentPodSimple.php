@@ -160,6 +160,11 @@
 					if(@$comment["argval"] == "up") $classArgument = "bg-green-comment";
 					if(@$comment["argval"] == "down") $classArgument = "bg-red-comment";
 					if(@$comment["argval"] == "") $classArgument = "bg-white-comment";
+					//var_dump($comment["author"]);
+					$slug = Slug::getByTypeAndId(Person::COLLECTION, "$comment["author"]["id"]");
+					if(@$slug == null){
+						$slug = "page.type.".Person::COLLECTION.".id.".$comment["author"]["id"];
+					}else{ $slug = "@".$slug["name"]; }
 		?>
 					<div class="col-xs-12 no-padding margin-top-5 item-comment <?php echo $hiddenClass.' '.$classArgument; ?>" 
 						 id="item-comment-<?php echo $comment["_id"]; ?>">
@@ -169,7 +174,9 @@
 					
 						<span class="pull-left content-comment">						
 							<span class="text-black pull-left">
-								<span class="text-dark pull-left"><strong><?php echo $comment["author"]["name"]; ?></strong></span> 
+								<a href="#<?php echo @$slug; ?>" class="text-dark pull-left">
+									<strong><?php echo $comment["author"]["name"]; ?></strong>
+								</a> 
 								<?php if(@$comment["rating"]){ ?>
 									<div class="br-wrapper br-theme-fontawesome-stars pull-left margin-left-10">
                 						<select id="ratingComments<?php echo $comment["_id"]; ?>" class="ratingComments">

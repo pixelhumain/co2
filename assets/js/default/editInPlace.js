@@ -474,16 +474,23 @@ function bindAboutPodElement() {
 			}else if(contextData.type == typeObj.project.col ){
 				if(notEmpty(contextData.avancement))
 					dataUpdate.avancement = contextData.avancement;
-			}else if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
-				if(notEmpty(contextData.email)) 
+			}
+
+			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
+				mylog.log("test email", contextData, contextData.email);
+				if(notEmpty(contextData.email)) {
+					mylog.log("test email2", contextData, contextData.email);
 					dataUpdate.email = contextData.email;
+				}
 				if(notEmpty(contextData.fixe))
 					dataUpdate.fixe = contextData.fixe;
 				if(notEmpty(contextData.mobile))
 					dataUpdate.mobile = contextData.mobile;
 				if(notEmpty(contextData.fax))
 					dataUpdate.fax = contextData.fax;
-			}else if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
+			}
+			
+			if(contextData.type != typeObj.poi.col && notEmpty(contextData.url)) 
 				dataUpdate.url = contextData.url;
 
 			if(notEmpty(contextData.parentId)) 

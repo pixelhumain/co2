@@ -146,7 +146,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		</div>
 		<div class="col-xs-12 padding-5 notification-label">
 			<label><i class="fa fa-check"></i> Confirmation to be part of an organization, a project or an event</label>
-			<input id="" type="checkbox" data-off-text=" " data-on-text=" " data-sub="confim" checked="false" class="BSswitch">
+			<input id="" type="checkbox" data-off-text=" " data-on-text=" " data-sub="confirm" checked="false" class="BSswitch">
 		</div>
 		<div class="col-xs-12 padding-5 notification-label">
 			<label><i class="fa fa-rss"></i> You have a new followers</label>
@@ -162,7 +162,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 		</div>
 		<div class="col-xs-12 padding-5 notification-label">
 			<label><i class="fa fa-thumbs-up"></i> Activity on one of your news (Comment/Like/Unlike)</label>
-			<input id="" type="checkbox" data-off-text=" " data-on-text=" " data-sub="activityStream" checked="false" class="BSswitch">
+			<input id="" type="checkbox" data-off-text=" " data-on-text=" " data-sub="comment,like,unlike" checked="false" class="BSswitch">
 		</div>
 		<!--<div class="col-xs-12 padding-5 notification-label">
 			<label>Someone comments one of your news or answers to your comment</label>
@@ -228,179 +228,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 	<div class="show-block col-xs-12 getCommunitySettings">
 	</div>
 </div>
-
-<!--<table>
-	<th>
-		<tr>
-			<td></td><td colspan="2">Personal notifcations</td><td colspan="2">Network notifications</td><td colspan="2">Communected notifications</td>
-		</tr>
-		<tr>
-			<td></td><td>Notifs</td><td>Mail</td><td>Notifs</td><td>Mail</td><td>Notifs</td><td>Mail</td>
-		</tr>
-		<tr id="news">
-			<th class="labelNotifications">Actions on news (new one, comment, like, dislike)</th>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-		</tr>
-		<tr id="comments">
-			<th class="labelNotifications">Comments (answer, like, dislike)</th>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-		</tr>
-		<tr id="elements">
-			<th class="labelNotifications">New element (orga, project, event, poi)</th>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-		</tr>
-		<tr id="needs">
-			<th class="labelNotifications">Needs published</th>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-		</tr>
-		<tr id="room">
-			<th class="labelNotifications">Discuss, survey, action (new room, new comment)</th>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-		</tr>
-		<tr id="survey">
-			<th class="labelNotifications">Votes (new vote, alert before the end of votes, vote's result)</th>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="personal">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1" disabled>
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="network">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="notification" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-			<td>
-				<input class="hide input-settings" name="mail" data-type="public">
-				<input type="checkbox" name="my-checkbox" data-type="notification" data-size="mini" data-label-width="1" data-handle-width="1">
-			</td>
-		</tr>
-	</th>
-</table>-->
 <script type="text/javascript">
 /*defaultNotificationsSettings={
 	"notification":{

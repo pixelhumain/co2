@@ -161,7 +161,7 @@
 					if(@$comment["argval"] == "down") $classArgument = "bg-red-comment";
 					if(@$comment["argval"] == "") $classArgument = "bg-white-comment";
 					//var_dump($comment["author"]);
-					$slug = Slug::getByTypeAndId(Person::COLLECTION, "$comment["author"]["id"]");
+					$slug = Slug::getByTypeAndId(Person::COLLECTION, $comment["author"]["id"]);
 					if(@$slug == null){
 						$slug = "page.type.".Person::COLLECTION.".id.".$comment["author"]["id"];
 					}else{ $slug = "@".$slug["name"]; }

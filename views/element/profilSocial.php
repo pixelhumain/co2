@@ -141,11 +141,11 @@
 	margin-top:7px;
 	font-size: 13px;
 }
-
+/*
 #central-container #content-results-profil button.openCoopPanelHtml .hidden-xs,
 #central-container button.switchDirectoryView{
 	display: none;
-}
+}*/
 
 
 

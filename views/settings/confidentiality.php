@@ -1,5 +1,7 @@
+<?php if(!@$modal){ ?>
 <div class="modal fade" role="dialog" id="modal-confidentiality">
 	<div class="modal-dialog">
+	<?php } ?>
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -140,9 +142,10 @@
 				</button>
 			</div>
 		</div>
+<?php if(!@$modal){ ?>
 	</div>
 </div>
-
+<?php } ?>
 <script type="text/javascript">
 var seePreferences = '<?php echo (@$element["seePreferences"] == true) ? "true" : "false"; ?>';		
 

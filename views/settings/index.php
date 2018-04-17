@@ -247,6 +247,8 @@ function navInSettings(page){
 	simpleScroll(0);
 	showLoader('#container-settings-view');
 	urlToSend="settings/"+page;
+	if(page=="confidentiality")
+		urlToSend+="/type/citoyens/id/"+userId;
 	//if(notNull(dir) && dir !="")
 	//	urlToSend+="dir/"+dir+"/";
 	ajaxPost('#container-settings-view' ,baseUrl+'/'+moduleId+"/"+urlToSend,

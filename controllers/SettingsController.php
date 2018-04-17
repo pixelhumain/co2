@@ -21,16 +21,14 @@ class SettingsController extends CommunecterController {
 	        //'preferences'     	=> 'citizenToolKit.controllers.pod.preferencesAction',
 	    );
 	}
-	public function actionCircuit(){
-    	echo $this->renderPartial("circuit", array(), true);
+	public function actionNotificationsAccount(){
+    	echo $this->renderPartial("notificationsAccount", array(), true);
  	}
- 	public function actionIndex($page=null){
-
-      	//$url=(!empty($dir)) ? $dir."/".$page : $page;
-     	$url="index";
-     	if(!empty($page))
-     		$url=$page;
-     	echo $this->renderPartial($url, null,true);
+ 	public function actionNotificationsCommunity(){
+    	echo $this->renderPartial("notificationsCommunity", array(), true);
+ 	}
+ 	public function actionIndex(){
+     	echo $this->renderPartial("index", null,true);
 	}
 }
 ?>

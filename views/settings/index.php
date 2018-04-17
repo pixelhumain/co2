@@ -159,17 +159,17 @@
 <div id="menu-left" class="col-md-3 col-sm-2 col-xs-12 shadow2">
   	<ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
 		<li class="col-xs-12 no-padding">
-			<a href="javascript:" class="link-docs-menu down-menu" data-page="notification-explain">
+			<a href="javascript:" class="link-docs-menu down-menu" data-page="notificationsAccount">
 				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Notifications"); ?>
 			</a>
 			<ul class="subMenu col-xs-12 no-padding">
 				<li class="col-xs-12 no-padding">
-					<a href="javascript:;" class="link-docs-menu" data-page="notification-account">
+					<a href="javascript:;" class="link-docs-menu" data-page="notificationsAccount">
 						<?php echo Yii::t("common","My account"); ?>
 					</a>
 				</li>
 				<li class="col-xs-12 no-padding">
-					<a href="javascript:;" class="link-docs-menu" data-page="notification-community">
+					<a href="javascript:;" class="link-docs-menu" data-page="notificationsCommunity">
 						<?php echo Yii::t("docs","My community"); ?>
 					</a>
 				</li>
@@ -195,7 +195,7 @@ jQuery(document).ready(function() {
 	if(page != "")
 		initSettings(page);
 	else
-		initSettings("notification-account");
+		initSettings("notificationsAccount");
 	$("#close-settings").off().on("click",function(){
 		$("#modal-settings").hide(300);
 		onchangeClick=false;
@@ -237,16 +237,16 @@ jQuery(document).ready(function() {
 });
 function initSettings(page){
 	navInSettings(page);
-	$(".link-docs-menu[data-type='"+page+"']").addClass("active");
-	if(!$(".link-docs-menu[data-type='"+page+"']").hasClass("down-menu"))
-		$(".link-docs-menu[data-type='"+page+"']").parents().eq(2).find(".down-menu").addClass("active").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
+	$(".link-docs-menu[data-page='"+page+"']").addClass("active");
+	if(!$(".link-docs-menu[data-page='"+page+"']").hasClass("down-menu"))
+		$(".link-docs-menu[data-page='"+page+"']").parents().eq(2).find(".down-menu").addClass("active").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
 	else
-		$(".link-docs-menu[data-type='"+page+"']").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
+		$(".link-docs-menu[data-page='"+page+"']").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
 }
 function navInSettings(page){
 	simpleScroll(0);
 	showLoader('#container-settings-view');
-	urlToSend="settings/index/page/"+page;
+	urlToSend="settings/"+page;
 	//if(notNull(dir) && dir !="")
 	//	urlToSend+="dir/"+dir+"/";
 	ajaxPost('#container-settings-view' ,baseUrl+'/'+moduleId+"/"+urlToSend,

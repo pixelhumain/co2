@@ -191,6 +191,7 @@
 </div>
 <script type="text/javascript">
 var page="<?php echo @$page ?>";
+var initUrlSettings=urlBackHistory;
 jQuery(document).ready(function() {
 	if(page != "")
 		initSettings(page);
@@ -198,8 +199,12 @@ jQuery(document).ready(function() {
 		initSettings("notificationsAccount");
 	$("#close-settings").off().on("click",function(){
 		$("#modal-settings").hide(300);
-		onchangeClick=false;
-		location.hash=urlBackHistory;
+		if(initUrlSettings.indexOf("#settings") >= 0)
+			urlCtrl.loadByHash("#search");
+		else{
+			onchangeClick=false;
+			location.hash=initUrlSettings;
+		}
 	});
 	$(".link-docs-menu").off().on("click",function(){
 		if($(this).hasClass("down-menu")){

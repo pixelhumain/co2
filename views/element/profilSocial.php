@@ -535,7 +535,8 @@
 				                </a>
 				            </li>
 				            <li class="text-left">
-				               	<a href="javascript:;" id="btn-preferences-notifications" class="bg-white">
+				            	<!--id="btn-preferences-notifications"-->
+				               	<a href="#settings" class="lbh bg-white">
 				                    <i class="fa fa-check"></i> <?php echo Yii::t("common", "Notifications preferences"); ?>
 				                </a>
 				            </li>

@@ -35,8 +35,11 @@ class SettingsController extends CommunecterController {
  	public function actionNotificationsCommunity(){
     	echo $this->renderPartial("notificationsCommunity", array(), true);
  	}
- 	public function actionIndex(){
-     	echo $this->renderPartial("index", null,true);
+ 	public function actionIndex($page=null){
+ 		$params=array(
+ 			"page"=>@$page
+ 			);
+     	echo $this->renderPartial("index", $params,true);
 	}
 }
 ?>

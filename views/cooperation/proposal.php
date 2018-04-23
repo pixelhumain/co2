@@ -6,6 +6,11 @@
 	$hasVote = @$proposal["votes"] ? Cooperation::userHasVoted($myId, $proposal["votes"]) : false; 
 	$voteStarted = isset($proposal["votes"]);
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $proposal["parentType"], $proposal["parentId"]);
+
+	//authorisation for survey
+	if($proposal["parentType"] == Person::COLLECTION){
+		$auth = true;
+	}
 	
 	if(@$proposal["idParentRoom"])
 	$parentRoom = Room::getById($proposal["idParentRoom"]);

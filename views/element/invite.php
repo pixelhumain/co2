@@ -374,9 +374,10 @@
 							if(value.result == true){
 								str += "<li class='li-dropdown-scope'>";
 									str +="<div class='btn-scroll-type' >";
-										str +="<a href="" class='btn-scroll-type' >";
-										str += '<span class="text-dark text-bold">' + value.parent.name + ' : </span>';
-										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
+										str +='<a href="'baseUrl+'/'+moduleId+'/#@'+value.slug+'" class="btn-scroll-type" >';
+											str += '<span class="text-dark text-bold">' + value.parent.name + ' : </span>';
+											str += '<span class="text-dark text-bold">' + value.msg + '</span>';
+										str += "</a>";
 									str += "</div>";
 								str += "</li>";
 							}else{

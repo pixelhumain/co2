@@ -24,7 +24,8 @@ class SettingsController extends CommunecterController {
  	public function actionConfidentiality($type=null,$id=null){
  		$element=Element::getByTypeAndId($type, $id);
  		$params=array(  "element" => @$element, 
-			"type" => Person::COLLECTION, 
+			"type" => $type,
+			"id" => $id, 
 			"edit" => true,
 			"controller" => Person::CONTROLLER,
 			"openEdition" => false,

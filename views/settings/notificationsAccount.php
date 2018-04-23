@@ -23,6 +23,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 
 ?>
 <div id="notifications-settings" class="contain-section-params col-xs-12">
+	<div class="settings-header">
+		<h4 class="title"><i class="fa fa-bell"></i> <?php echo Yii::t("settings", "Settings of notifications system linked to your user account") ?></h4>
+	</div>
 	<div class="open-block col-xs-12 no-padding">
 		<a href="javascript:;" class="btn-show-block col-xs-12">
 			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGOS/CO2/logo-min.png" width="25" height="20"/> <span>on communecter</span>

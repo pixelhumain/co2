@@ -36,7 +36,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 		margin-bottom: none !important;
 	}
 	#community-settings{
-		margin-top: 80px !important;
+		margin-top: 133px !important;
 	}
 	.btn-scroll-type, #btnSettingsInfos{
 		font-size: 18px;
@@ -67,6 +67,15 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 
 </style>
 <div id="community-settings" class="contain-section-params col-xs-12 no-padding">
+<div class="settingsHeader bg-white no-padding">
+ 	<div class="settings-header">
+		<h4 class="title"><i class="fa fa-bell"></i> <?php echo Yii::t("settings", "Settings of notifications system linked to your user account") ?></h4>
+	</div>
+	<div id="settingsScrollByType" class="pull-left"></div>
+		<a href="javascript:;" id="btnSettingsInfos" class="text-dark pull-right margin-right-20"><i class="fa fa-info-circle"></i> <span class="hidden-xs"> All infos</span></a>
+		<input type="text" id="search-in-settings" class="form-control" placeholder="searchnamepostalcity">
+	</div>
+	<div id="community-settings-list"></div>
 </div>
 <div class="modal fade" role="dialog" id="modalExplainSettings" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">

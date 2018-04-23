@@ -4,6 +4,27 @@ var tradLabel={
 	"low" : "Low",
 	"high" : "High",
 }
+var settings = {
+	bindEventsConfidentiality : function(contextId, contextType){
+		$(".confidentialitySettings").click(function(){
+	    	param = new Object;
+	    	param.type = $(this).attr("type");
+	    	param.value = $(this).attr("value");
+	    	param.typeEntity = contextType;
+	    	param.idEntity = contextId;
+			$.ajax({
+		        type: "POST",
+		        url: baseUrl+"/"+moduleId+"/element/updatesettings",
+		        data: param,
+		       	dataType: "json",
+		    	success: function(data){
+			    	toastr.success(data.msg);
+			    }
+			});
+		});
+	}
+}
+
 function bindEventsSettings(){
 	//$('.toggle-btn').bootstrapToggle();
 	$(".BSswitch").bootstrapSwitch();
@@ -98,7 +119,7 @@ function savePreferencesNotification(settingsName, settingsValue, parentType, pa
 }
 function getCommunitySettings(){
 	var scrollContent = "";
-	var str = getHeaderCommunitySettings(); 
+	var str = "";//getHeaderCommunitySettings(); 
 	if(typeof myContacts != "undefined"){
 		$.each(myContacts, function(type, array){
 			if(type != "people"){
@@ -202,7 +223,7 @@ function getCommunitySettings(){
 				str+="</div>";
 			}
 		});
-		$("#community-settings").html(str);
+		$("#community-settings-list").html(str);
 		$("#settingsScrollByType").html(scrollContent);
 		settingsCommunityEvents();
 	}

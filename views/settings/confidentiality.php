@@ -1,10 +1,13 @@
+
 <?php if(!@$modal){ ?>
 <div class="modal fade" role="dialog" id="modal-confidentiality">
 	<div class="modal-dialog">
-	<?php } ?>
 		<div class="modal-content">
+			<?php } ?>
 			<div class="modal-header">
+			<?php if(!@$modal){ ?>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<?php } ?>	
 				<?php if($type==Person::COLLECTION)
 					$titleParams=Yii::t("common","Confidentiality of your personal informations");
 				else
@@ -141,14 +144,16 @@
 				<i class="fa fa-save"></i> <?php echo Yii::t("common","Save") ;?>
 				</button>
 			</div>
+		<?php if(!@$modal){ ?>
 		</div>
-<?php if(!@$modal){ ?>
 	</div>
 </div>
 <?php } ?>
 <script type="text/javascript">
 var seePreferences = '<?php echo (@$element["seePreferences"] == true) ? "true" : "false"; ?>';		
-
+var preferences = <?php echo json_encode(@$element["preferences"]) ?>;
+var contextId='<?php echo @$id ?>';
+var contextType='<?php echo @$type ?>';
 jQuery(document).ready(function() {
 	bindButtonConfidentiality();
 });

@@ -198,9 +198,7 @@
 					<div class="form-group">
 						<div class="col-xs-12">
 							<h4> Résultat </h4>
-							<ul class="dropdown-menu col-xs-10" id="dropdown-result" style="">
-								<li class="li-dropdown-scope"></li>
-							</ul>
+							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<button id="btnValider" >
@@ -246,6 +244,7 @@
 
 	function fadeInView(inView){
 		mylog.log("fadeInView", inView);
+		$("#divResult").hide();
 		if(inView == "step1-search") {
 			$("#step1-search").show();
 			$("#step1-import").hide();
@@ -375,6 +374,7 @@
 							if(value.result == true){
 								str += "<li class='li-dropdown-scope'>";
 									str +="<div class='btn-scroll-type' >";
+										str +="<a href="" class='btn-scroll-type' >";
 										str += '<span class="text-dark text-bold">' + value.parent.name + ' : </span>';
 										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
 									str += "</div>";
@@ -586,7 +586,10 @@
 				str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35"> ';
 				str += '<span class="text-dark text-bold">' + elem.name + '</span>';
 				if(inMyContact == true)
-					str += '<br/><span class="text-dark text-bold follows"> Vous suivez déjà cette personnes </span>';
+					str += ' <span class="text-dark text-bold text-green follows tooltips"> '+
+								'<i class="fa fa-link" data-toggle="tooltip" data-placement="top" title="'+trad.follows+'" alt="" data-original-title="'+trad.follows+'"></i>'+
+							'</span>';
+				
 				if(invite == true && parentType == "organizations"){
 					str += '<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+id+'" data-type="'+type+'">'+
 								'<input id="tagsRoles'+id+'" class="tagsRoles" type="text" data-type="select2" name="roles" placeholder="Add a role" value="" style="width:100%;">'+

@@ -2,7 +2,7 @@
 	"title" : "app",
 	"metaImg" : "/assets/img/LOGOS/BCH/logo.png",
 	"metaDesc" : "Bienvenue chez l'habitant",
-
+	"onepageKey" : [ "co", "net" ],
 	"pages" : {
 		"#app.index": {
 			"redirect": {

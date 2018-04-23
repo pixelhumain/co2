@@ -598,11 +598,17 @@ class CommunecterController extends Controller
     "pdf" => array(
       "create"        => array('href' => "ph/co2/pdf/create")
     ),
-    "sso" => array(
-      "test"        => array("href" => "ph/sso/co/test", "module" => "sso"),
+    "connect" => array(
+      "test"        => array("href" => "ph/sso/co/test", "module" => "connect"),
     ),
     "ressources" => array(
       "co"        => array("href" => "ph/ressources/co", "module" => "ressources"),
+    ),
+    "chat" => array(
+        "default"        => array (
+          "msg" => array("href" => "ph/chat/default/msg", "module" => "chat"),
+          "list" => array("href" => "ph/chat/default/list", "module" => "chat"),
+        )
     ),
   );
 
@@ -633,7 +639,9 @@ class CommunecterController extends Controller
     if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
 
-    if( Yii::app()->controller->id != "test")
+    if( in_array( $this->module->id, array("chat", "ressources", "classifieds" ) ) )
+      $page = $this->pages[$this->module->id][Yii::app()->controller->id][Yii::app()->controller->action->id];
+    else if( Yii::app()->controller->id != "test")
       $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
     $pagesWithoutLogin = array(
                             //Login Page

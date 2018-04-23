@@ -329,8 +329,8 @@
 						<i class="fa fa-hashtag"></i> <?php echo Yii::t("common","Gamification"); ?> :
 					</span>
 					<?php 	
-								echo Gamification::calcPoints( Yii::app()->session["userId"] ).Yii::t("common","pts , based on Links and Posts popularity");
-							 ?>	
+						echo Gamification::calcPoints( $type,(string)$element["_id"] ).Yii::t("common","pts , based on Links and Posts popularity");
+					?>	
 				</div>
 			</div>
 	</div>

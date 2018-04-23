@@ -194,6 +194,7 @@ class RocketchatController extends CommunecterController {
 	 	
 	}
 
+
 	public function actionInvite($name,$type="",$id=null,$roomType=null,$test=null) {
 		$group = null;
 		$group = RocketChat::invite ($type."_".$name,$roomType, Yii::app()->session['user']['username']);

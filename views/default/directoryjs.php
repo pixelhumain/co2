@@ -11,114 +11,6 @@
   <style>
 
 
-.favElBtn, .favAllBtn{
-  padding: 5px 8px;
-  font-weight: 300;
-  margin-bottom:5px;
-}
-#searchBarTextJS{
-  margin-bottom: 15px;
-}
-.btn-open-filliaire{
-  font-weight: 700;
-  text-transform: uppercase;
-}
-#col-btn-type-directory hr{
-  border-top: 1px solid #f5f1f1;
-  width: 70%;
-  float: right;
-}
-#col-btn-type-directory .btn-directory-type,
-#sub-menu-left .btn-select-type-anc{
-  /*margin-bottom:5px;*/
-  width:100%;
-  text-align: right;
-  line-height: 20px;
-  vertical-align: text-bottom;
-  /*font-weight: 700;*/
-  color: grey;
-  text-transform: uppercase;
-  background-color: transparent;
-}
-.btn-directory-type{
-  padding-right: 15px !important;
-  border-radius: 0px;
-  border: 0px;
-}
-.btn-directory-type:focus{
-  outline: inherit !important;
-}
-.btn-directory-type:hover, .btn-directory-type.active{
-  /*padding-right: 10px !important;*/
-  margin-right:-3px!important;
-  box-shadow: none !important;
-  font-weight: bold !important;
-}
-.btn-directory-type.active{
-  border-right: 3px solid;
-}
-.btn-directory-type .label-filter{
-  max-width: 50%;
-  font-size: 13px;
-  vertical-align: middle;
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-.open-type-filter{
-  display:none;
-}
-@media (max-width: 768px) {
-  .open-type-filter{
-    display: block;
-    position: absolute;
-    right: -33px;
-    height: 50px;
-    width: 50px;
-    border: 1px solid #dadada;
-    border-radius: 100%;
-    text-align: right;
-    padding-right: 8px;
-    z-index: -1;
-    font-size: 20px;
-  }
-  #col-btn-type-directory .btn-directory-type, #sub-menu-left .btn-select-type-anc{
-    background-color: white;
-  }
-  #col-btn-type-directory, #sub-menu-left{
-    position: fixed;
-    width: 56%;
-    left: -56%;
-    background-color: white;
-    /*top: 0px;*/
-    top: 214px; 
-    z-index: 300;
-    padding: 0px;
-    -webkit-box-shadow: 0px 2px 6px -1px rgba(0,0,0,.2);
-    box-shadow: 0px 2px 6px -1px rgba(0,0,0,.2);
-  }
-
-  #sub-menu-left.subsub .btn {
-    width: 100% !important;
-    /*background-color: white !important;*/
-    margin: 0px !important;
-    border-radius: 0px;
-  }
-
-  #col-btn-type-directory.affix, #sub-menu-left.affix{
-    top: 130px;
-  }
-}
-
-  @media (min-width: 769px) {
-  #col-btn-type-directory, #sub-menu-left {
-    left:inherit !important;
-  }
-
-  #col-btn-type-directory.affix, #sub-menu-left.affix{
-    top: 130px;
-    left: 5% !important;
-  }
-}
-
 /* ANNONCES MENU*/
 <?php 
   $btnAnc = array("blue"    =>array("color1"=>"#4285f4", 
@@ -170,51 +62,6 @@
 }
 
 
-#sub-menu-left.subsub .btn{
-  width:95%;    
-  text-align: right;
-  background-color: white;
-    border-color: white;
-  color:#4285f4;
-}
-#sub-menu-left.subsub{
- /* min-width: 180px;*/
-}
-
-.btn-menu-left-add{
-  background-color: transparent !important;
-    border-color: transparent !important;
-}
-
-#photoAddNews{
-  text-align: left;
-}
-
-.tagstags, .form-actions{
-  /*display: none!important;*/
-}
-.count-badge-filter{
-    /*position: absolute;
-    right: 10px;*/
-    line-height: 15px;
-    padding-left: 10px;
-    font-size: 10px;
-}
-
-@media (max-width: 768px) {
-  .btn-select-type-anc.col-xs-5{
-    width:48%!important;
-  }
-}
-
-  @media screen and (min-width: 768px) and (max-width: 1024px) {
-    .btn-select-type-anc.col-xs-5{
-    font-size:0.8em;
-  }
-}
-.headerSearchContainer{
-  min-height: 30px;
-}  
 </style>
  
 <div class="container-result-search col-md-12 col-sm-12 col-xs-12 no-padding">
@@ -304,7 +151,7 @@
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
           <div class="no-padding col-md-10 col-sm-9 col-xs-12 text-left pull-right headerSearchContainer"></div>
           <div id="col-btn-type-directory" class="col-sm-3 col-md-2 col-xs-12 text-right no-padding margin-top-20">
-            <button class="open-type-filter tooltips" data-toggle="tooltip" data-placement="right" data-title="<?php echo Yii::t("common","Open filtering by type") ?>"><i class="fa fa-chevron-right"></i></button>
+            <button class="open-type-filter" title="<?php echo Yii::t("common","Open filtering by type") ?>"><i class="fa fa-chevron-right"></i></button>
             <!--<button class="btn text-white bg-dark btn-open-filliaire">
                 <i class="fa fa-th"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","Themes") ?></span>
@@ -455,7 +302,9 @@
                 <i class="fa fa-search"></i> 
                 <span class="hidden-xs"><?php echo Yii::t("common","All") ?></span>
             </button><hr class="hidden-xs">-->
-            <button class="open-type-filter tooltips" data-toggle="tooltip" data-placement="right" data-title="<?php echo Yii::t("common","Open filtering by type") ?>"><i class="fa fa-chevron-right"></i></button>
+            <button class="open-type-filter" title="<?php echo Yii::t("common","Open filtering by type") ?>">
+              <i class="fa fa-chevron-right"></i>
+            </button>
             
             <?php $categories = Event::$types; 
                   foreach ($categories as $key => $cat) {

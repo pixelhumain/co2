@@ -99,6 +99,7 @@ var trad = {
 	"administrator" : "<?php echo Yii::t("common","Administrator") ?>",
 	"invitingToAdmin" : "<?php echo Yii::t("common","Invited to administrate") ?>",
 	"waitingValidation" : "<?php echo Yii::t("common","Waiting for validation") ?>",
+	"waitWeFetch" : "<?php echo Yii::t("common","Please wait while we fetch the information.") ?>",
 	"Member" : "<?php echo Yii::t("common","Member") ?>",
 	"justCitizen" : "<?php echo Yii::t("common","Just a citizen wanting to give visibility to it :)") ?>",
 	"showcalendar" : "<?php echo Yii::t("common","Show calendar") ?>",

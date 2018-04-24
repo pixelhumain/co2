@@ -410,7 +410,7 @@
 											"markerPlace" 		: { ico : "map-marker", color : "red" 	},
 											"me" 				: { ico : "map-marker", color : "blue" 	},
 
-											"poi" 				: { ico : "info-circle", color : "dark" 	},
+											"poi" 				: { ico : "map-marker", color : "green-poi" 	},
 											"poi.video" 		: { ico : "video-camera", color : "dark" 	},
 											"poi.interop.wiki" 	: { ico : "folder-open", color : "yellow" 	},
 											"poi.interop.datagouv" 	: { ico : "folder-open", color : "yellow" 	},

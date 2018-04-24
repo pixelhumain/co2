@@ -133,7 +133,7 @@
 							<div class="modal-body text-center">
 								<h2 class="text-green">
 									<i class="fa fa-plus-circle padding-bottom-10"></i>
-									<span class="font-light"> Inviter quelqu'un</span>
+									<span class="font-light"> <?php echo Yii::t("person","Invite someone"); ?></span>
 								</h2>
 
 								<div class="row margin-bottom-10">
@@ -187,7 +187,7 @@
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<button id="btnValider" >
-								<i class="fa fa-check"> </i>Valider 
+								<i class="fa fa-check"> </i><?php echo Yii::t("person","Submit"); ?> 
 							</button>
 						</div>
 					</div>
@@ -197,12 +197,12 @@
 				<div id="stepResult" class="modal-body col-xs-12" >
 					<div class="form-group">
 						<div class="col-xs-12">
-							<h4> Résultat </h4>
+							<h4> <?php echo Yii::t("common", "Results") ;?> </h4>
 							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<button id="btnValider" >
-								<i class="fa fa-check"> </i>Valider 
+								<i class="fa fa-check"> </i><?php echo Yii::t("person","Submit"); ?> 
 							</button>
 						</div>
 					</div>
@@ -334,7 +334,7 @@
 				$('#modal-invite #inviteName').val("");
 				$("#modal-invite #form-invite").hide();
 			}else{
-				toastr.error("Deja la ma gueule");
+				toastr.error("Déjà dans la liste");
 			}
 
 			showElementInvite(listInvite, true);
@@ -374,10 +374,8 @@
 							if(value.result == true){
 								str += "<li class='li-dropdown-scope'>";
 									str +="<div class='btn-scroll-type' >";
-										str +='<a href="'+baseUrl+'/'+moduleId+'/#@'+value.slug+'" class="btn-scroll-type" >';
 											str += '<span class="text-dark text-bold">' + value.parent.name + ' : </span>';
 											str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-										str += "</a>";
 									str += "</div>";
 								str += "</li>";
 							}else{
@@ -425,7 +423,7 @@
 						profilThumbImageUrl : profilThumbImageUrl
 					} ;
 				}else{
-					toastr.error("Deja la ma gueule");
+					toastr.error("Déjà dans la liste");
 				}
 			}else if(type == "organizations"){
 				if(typeof listInvite.organizations[id] == "undefined"){
@@ -434,7 +432,7 @@
 						profilThumbImageUrl : profilThumbImageUrl
 					} ;
 				}else{
-					toastr.error("Deja la ma gueule");
+					toastr.error("Déjà dans la liste");
 				}
 			}
 

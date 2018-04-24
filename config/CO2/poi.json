@@ -24,12 +24,8 @@
         "openScene"     : { "label": "Open mic","key":"openScene","icon":"bullhorn"},
         "stand"         : { "label": "Stand","key":"stand","icon":"map-marker"},
         "parking"       : { "label": "Parking","key":"parking","icon":"car"},
-        "other"           : { "label":"Other","key":"other","icon":"map-marker"},
-        //private poi 
-        // travelSpot : 
-        // note : 
-        // event :
-        // todo
+        "other"           : { "label":"Other","key":"other","icon":"map-marker"}
+
     },
     "filters":{
         "TiersLieux" : 
@@ -55,5 +51,6 @@
                  "Divers"
             ]
         }
-    }
+    },
+    "todo" : ["private poi", "travelSpot", "note", "event", "todo"]
 }

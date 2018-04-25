@@ -113,6 +113,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-	bindEventsSettings();
+	settings.bindEventsSettings();
 });
 </script>

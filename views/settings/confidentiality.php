@@ -163,8 +163,8 @@ jQuery(document).ready(function() {
 });
 
 
-function bindButtonConfidentiality(){
-	/*$.each(nameFields, function(e, v){
+/*function bindButtonConfidentiality(){
+	$.each(nameFields, function(e, v){
 		fieldPreferences[v]=true;
 	});
 	//To checked private or public
@@ -185,7 +185,7 @@ function bindButtonConfidentiality(){
 			$('.btn-group-'+typePrefB+' > button[value="true"]').addClass('active');	
 		else
 			$('.btn-group-'+typePrefB+' > button[value="false"]').addClass('active');
-	});*/
+	});
 	<?php
 		//Params Checked
 		//$typePreferences = array("privateFields", "publicFields");
@@ -214,5 +214,5 @@ function bindButtonConfidentiality(){
 				echo "$('.btn-group-$typePrefB > button[value=\'false\']').addClass('active');";
 		}	*/
 	?>
-}
+}*/
 </script>

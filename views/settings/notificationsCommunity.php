@@ -73,9 +73,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 	</div>
 	<div id="settingsScrollByType" class="pull-left"></div>
 		<a href="javascript:;" id="btnSettingsInfos" class="text-dark pull-right margin-right-20"><i class="fa fa-info-circle"></i> <span class="hidden-xs"> All infos</span></a>
-		<input type="text" id="search-in-settings" class="form-control" placeholder="searchnamepostalcity">
-	</div>
-	<div id="community-settings-list"></div>
+	<input type="text" id="search-in-settings" class="form-control" placeholder="<?php echo Yii::t("common","Search name, slug, postal code, city ...") ?>">
+</div>
+<div id="community-settings-list"></div>
 </div>
 <div class="modal fade" role="dialog" id="modalExplainSettings" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -110,6 +110,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
-	getCommunitySettings();
+	settings.getCommunitySettings("notifications");
 });
 </script>

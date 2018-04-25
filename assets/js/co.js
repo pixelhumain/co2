@@ -1122,7 +1122,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 				if(mapEnd)
 					showMap(true);
 
-				
+				if(userId!="")
 					addBtnSwitch();
 				
 

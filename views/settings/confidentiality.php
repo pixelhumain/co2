@@ -154,18 +154,43 @@ var seePreferences = '<?php echo (@$element["seePreferences"] == true) ? "true" 
 var preferences = <?php echo json_encode(@$element["preferences"]) ?>;
 var contextId='<?php echo @$id ?>';
 var contextType='<?php echo @$type ?>';
+var typePreferences=["privateFields", "publicFields"];
+var nameFields=["email", "locality", "phone", "directory", "birthDate"];
+var fieldPreferences={};
 jQuery(document).ready(function() {
-	bindButtonConfidentiality();
+	settings.bindButtonConfidentiality(preferences);
+	settings.bindEventsConfidentiality(contextId, contextType);
 });
 
 
 function bindButtonConfidentiality(){
-		
+	/*$.each(nameFields, function(e, v){
+		fieldPreferences[v]=true;
+	});
+	//To checked private or public
+	$.each(typePreferences, function(e, typePref){
+		$.each(fieldPreferences, function(field, hidden){
+			if(typeof preferences[typePref] != "undefined" && $.inArray(field, preferences[typePref])>-1){
+				$('.btn-group-$field > button[value="'+typePref.replace("Fields", "")+'"]').addClass('active');
+				fieldPreferences[field]=false;		
+			}
+		});
+	});
+	//To checked if there are hidden
+	$.each(fieldPreferences, function(field, hidden){
+		if(hidden) $('.btn-group-$field > button[value="hide"]').addClass('active');
+	});
+	$.each(typePreferencesBool, function(field, typePrefB){
+		if(typeof preferences[$typePrefB] != "undefined" && preferences[typePrefB] == true)
+			$('.btn-group-'+typePrefB+' > button[value="true"]').addClass('active');	
+		else
+			$('.btn-group-'+typePrefB+' > button[value="false"]').addClass('active');
+	});*/
 	<?php
 		//Params Checked
-		$typePreferences = array("privateFields", "publicFields");
-		$nameFields = array("email", "locality", "phone", "directory", "birthDate");
-		foreach ($nameFields as $key => $value) {
+		//$typePreferences = array("privateFields", "publicFields");
+		//$nameFields = array("email", "locality", "phone", "directory", "birthDate");
+		/*foreach ($nameFields as $key => $value) {
 			$fieldPreferences[$value] = true;
 		}
 		$typePreferencesBool = array("isOpenData", "isOpenEdition");
@@ -178,7 +203,7 @@ function bindButtonConfidentiality(){
 				}
 			}
 		}
-		//To checked if there are hidden
+		
 		foreach ($fieldPreferences as $field => $hidden) {
 			if($hidden) echo "$('.btn-group-$field > button[value=\'hide\']').addClass('active');";
 		}
@@ -187,7 +212,7 @@ function bindButtonConfidentiality(){
 				echo "$('.btn-group-$typePrefB > button[value=\'true\']').addClass('active');";	
 			else
 				echo "$('.btn-group-$typePrefB > button[value=\'false\']').addClass('active');";
-		}	
+		}	*/
 	?>
 }
 </script>

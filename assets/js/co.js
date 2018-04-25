@@ -2034,6 +2034,7 @@ function shadowOnHeader() {
     if (y > 0) {  $('.main-top-menu').addClass('shadow'); }////NOTIFICATIONS}
     else { $('.main-top-menu').removeClass('shadow'); }
 }
+
 function getMediaFromUrlContent(className, appendClassName,nbParent, typeExtract){
     //user clicks previous thumbail
     lastUrl = "";
@@ -2332,6 +2333,33 @@ var processUrl = {
 	            console.log("check url exists error");
 	        }
 	    });
+	},
+	extractUrl : function(inputClass, url,callback) { 
+
+		$(inputClass+" span.help-block").html(trad.waitWeFetch+" <i class='fa fa-spin fa-refresh'></i>");
+	
+		$.ajax({
+			url: baseUrl+'/'+moduleId+"/news/extractprocess",
+			data: { 'url' : url },
+			type: 'post',
+			dataType: 'json',
+			success: function(data){  
+				$(inputClass+" span.help-block").html('');
+				if (typeof callback == "function") 
+					callback(data);
+				return data;
+			},
+			error:function(xhr, status, error){
+				toastr.info("<span class='letter-red'><i class='fa fa-ban'></i> URL INNACCESSIBLE</span>");
+				$(inputClass+" span.help-block").html('');
+			},
+			statusCode:{
+				404: function(){
+					toastr.info("<span class='letter-red'><i class='fa fa-ban'></i> 404 : URL INTROUVABLE OU INACCESSIBLE</span>");
+					$(inputClass+" span.help-block").html('');
+				}
+			}
+		})
 	},
 	refUrl: function(url){
 	    if(!processUrl.isValidURL(url)){

@@ -133,7 +133,7 @@
 							<div class="modal-body text-center">
 								<h2 class="text-green">
 									<i class="fa fa-plus-circle padding-bottom-10"></i>
-									<span class="font-light"> Inviter quelqu'un</span>
+									<span class="font-light"> <?php echo Yii::t("person","Invite someone"); ?></span>
 								</h2>
 
 								<div class="row margin-bottom-10">
@@ -187,7 +187,7 @@
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<button id="btnValider" >
-								<i class="fa fa-check"> </i>Valider 
+								<i class="fa fa-check"> </i><?php echo Yii::t("person","Submit"); ?> 
 							</button>
 						</div>
 					</div>
@@ -197,14 +197,12 @@
 				<div id="stepResult" class="modal-body col-xs-12" >
 					<div class="form-group">
 						<div class="col-xs-12">
-							<h4> Résultat </h4>
-							<ul class="dropdown-menu col-xs-10" id="dropdown-result" style="">
-								<li class="li-dropdown-scope"></li>
-							</ul>
+							<h4> <?php echo Yii::t("common", "Results") ;?> </h4>
+							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<button id="btnValider" >
-								<i class="fa fa-check"> </i>Valider 
+								<i class="fa fa-check"> </i><?php echo Yii::t("person","Submit"); ?> 
 							</button>
 						</div>
 					</div>
@@ -246,6 +244,7 @@
 
 	function fadeInView(inView){
 		mylog.log("fadeInView", inView);
+		$("#divResult").hide();
 		if(inView == "step1-search") {
 			$("#step1-search").show();
 			$("#step1-import").hide();
@@ -335,7 +334,7 @@
 				$('#modal-invite #inviteName').val("");
 				$("#modal-invite #form-invite").hide();
 			}else{
-				toastr.error("Deja la ma gueule");
+				toastr.error("Déjà dans la liste");
 			}
 
 			showElementInvite(listInvite, true);
@@ -375,8 +374,8 @@
 							if(value.result == true){
 								str += "<li class='li-dropdown-scope'>";
 									str +="<div class='btn-scroll-type' >";
-										str += '<span class="text-dark text-bold">' + value.parent.name + ' : </span>';
-										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
+											str += '<span class="text-dark text-bold">' + value.parent.name + ' : </span>';
+											str += '<span class="text-dark text-bold">' + value.msg + '</span>';
 									str += "</div>";
 								str += "</li>";
 							}else{
@@ -424,7 +423,7 @@
 						profilThumbImageUrl : profilThumbImageUrl
 					} ;
 				}else{
-					toastr.error("Deja la ma gueule");
+					toastr.error("Déjà dans la liste");
 				}
 			}else if(type == "organizations"){
 				if(typeof listInvite.organizations[id] == "undefined"){
@@ -433,7 +432,7 @@
 						profilThumbImageUrl : profilThumbImageUrl
 					} ;
 				}else{
-					toastr.error("Deja la ma gueule");
+					toastr.error("Déjà dans la liste");
 				}
 			}
 
@@ -586,7 +585,10 @@
 				str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35"> ';
 				str += '<span class="text-dark text-bold">' + elem.name + '</span>';
 				if(inMyContact == true)
-					str += '<br/><span class="text-dark text-bold follows"> Vous suivez déjà cette personnes </span>';
+					str += ' <span class="text-dark text-bold text-green follows tooltips"> '+
+								'<i class="fa fa-link" data-toggle="tooltip" data-placement="top" title="'+trad.follows+'" alt="" data-original-title="'+trad.follows+'"></i>'+
+							'</span>';
+				
 				if(invite == true && parentType == "organizations"){
 					str += '<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+id+'" data-type="'+type+'">'+
 								'<input id="tagsRoles'+id+'" class="tagsRoles" type="text" data-type="select2" name="roles" placeholder="Add a role" value="" style="width:100%;">'+

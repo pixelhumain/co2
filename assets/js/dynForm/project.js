@@ -42,12 +42,12 @@ dynForm = {
 		            location : dyFInputs.location,
 		            tags :dyFInputs.tags(),
 		            shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
-		            formshowers : {
+		            /*formshowers : {
 		            	label : tradDynForm["indetails"],
 		                inputType : "custom",
 		                html:"<a class='btn btn-default  text-dark w100p' href='javascript:;' onclick='$(\".descriptionwysiwyg,.urltext\").slideToggle();activateSummernote(\"#ajaxFormModal #description\");'><i class='fa fa-plus'></i> "+tradDynForm["optiondescrurl"]+"</a>",
-		            },
-		            url : dyFInputs.inputUrlOptionnel(),
+		            },*/
+		            url : dyFInputs.inputUrl(),
 		            "preferences[publicFields]" : dyFInputs.inputHidden([]),
 		            "preferences[privateFields]" : dyFInputs.inputHidden([]),
 		            "preferences[isOpenData]" : dyFInputs.inputHidden(true),

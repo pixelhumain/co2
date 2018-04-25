@@ -72,7 +72,7 @@ dynForm = {
                 html:"",
             },
             sectionBtn :{
-                label : tradDynForm.hichkindofp+" ? ",
+                label : tradDynForm.whichkindofpoi+" ? ",
 	            inputType : "tagList",
                 placeholder : "Choisir un type",
                 list : poi.sections,

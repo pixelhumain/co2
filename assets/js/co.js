@@ -658,6 +658,22 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 	}
 }		
 
+function loadSettings(hash){
+	$("#modal-settings").show();
+	var url = "settings/index";
+	if(hash.indexOf("page") >= 0){
+		hashT=hash.split(".");
+		url += "/page/"+hashT[2];
+		if(hash.indexOf("to") >= 0){
+			url += "/to/"+hashT[4];
+		}
+	}
+	showLoader('#modal-settings');
+	ajaxPost('#modal-settings', baseUrl+'/'+moduleId+'/'+url, 
+		null,
+		function(){},"html");
+}
+
 var CoAllReadyLoad = false;
 var urlCtrl = {
 	afterLoad : null,
@@ -955,6 +971,15 @@ var urlCtrl = {
 			else
 	       		showPanel(panelName,null,title);
 	       	
+	    }  else if( hash.indexOf("#settings") >= 0 ){
+	    	if(userId == "" )
+	    		$('#modalLogin').modal("show");
+	    	else{
+	        	loadSettings(hash);
+	        	setTimeout(function(){ $(".progressTop").val(100)}, 10);
+ 				$(".progressTop").fadeOut(200);
+	    	}
+	       	
 	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
@@ -1097,7 +1122,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 				if(mapEnd)
 					showMap(true);
 
-				
+				if(userId!="")
 					addBtnSwitch();
 				
 
@@ -2009,6 +2034,7 @@ function shadowOnHeader() {
     if (y > 0) {  $('.main-top-menu').addClass('shadow'); }////NOTIFICATIONS}
     else { $('.main-top-menu').removeClass('shadow'); }
 }
+
 function getMediaFromUrlContent(className, appendClassName,nbParent, typeExtract){
     //user clicks previous thumbail
     lastUrl = "";
@@ -2307,6 +2333,33 @@ var processUrl = {
 	            console.log("check url exists error");
 	        }
 	    });
+	},
+	extractUrl : function(inputClass, url,callback) { 
+
+		$(inputClass+" span.help-block").html(trad.waitWeFetch+" <i class='fa fa-spin fa-refresh'></i>");
+	
+		$.ajax({
+			url: baseUrl+'/'+moduleId+"/news/extractprocess",
+			data: { 'url' : url },
+			type: 'post',
+			dataType: 'json',
+			success: function(data){  
+				$(inputClass+" span.help-block").html('');
+				if (typeof callback == "function") 
+					callback(data);
+				return data;
+			},
+			error:function(xhr, status, error){
+				toastr.info("<span class='letter-red'><i class='fa fa-ban'></i> URL INNACCESSIBLE</span>");
+				$(inputClass+" span.help-block").html('');
+			},
+			statusCode:{
+				404: function(){
+					toastr.info("<span class='letter-red'><i class='fa fa-ban'></i> 404 : URL INTROUVABLE OU INACCESSIBLE</span>");
+					$(inputClass+" span.help-block").html('');
+				}
+			}
+		})
 	},
 	refUrl: function(url){
 	    if(!processUrl.isValidURL(url)){

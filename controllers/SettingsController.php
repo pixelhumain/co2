@@ -14,23 +14,33 @@ class SettingsController extends CommunecterController {
 	public function actions()
 	{
 	    return array(
-	        'slideragenda'      => 'citizenToolKit.controllers.pod.SliderAgendaAction',
-	        'photovideo'     	=> 'citizenToolKit.controllers.pod.PhotoVideoAction',
-	        'fileupload'     	=> 'citizenToolKit.controllers.pod.FileUploadAction',
-	        'activitylist'     	=> 'citizenToolKit.controllers.pod.ActivityListAction',
+	        //'confidentiality'     	=> 'citizenToolKit.controllers.settings.ConfidentialityAction',
 	        //'preferences'     	=> 'citizenToolKit.controllers.pod.preferencesAction',
 	    );
 	}
-	public function actionCircuit(){
-    	echo $this->renderPartial("circuit", array(), true);
+	public function actionNotificationsAccount(){
+    	echo $this->renderPartial("notificationsAccount", array(), true);
+ 	}
+ 	public function actionConfidentiality($type=null,$id=null){
+ 		$element=Element::getByTypeAndId($type, $id);
+ 		$params=array(  "element" => @$element, 
+			"type" => $type,
+			"id" => $id, 
+			"edit" => true,
+			"controller" => Person::CONTROLLER,
+			"openEdition" => false,
+			"modal"=>true
+		);
+    	echo $this->renderPartial("confidentiality", $params, true);
+ 	}
+ 	public function actionNotificationsCommunity(){
+    	echo $this->renderPartial("notificationsCommunity", array(), true);
  	}
  	public function actionIndex($page=null){
-
-      	//$url=(!empty($dir)) ? $dir."/".$page : $page;
-     	$url="index";
-     	if(!empty($page))
-     		$url=$page;
-     	echo $this->renderPartial($url, null,true);
+ 		$params=array(
+ 			"page"=>@$page
+ 			);
+     	echo $this->renderPartial("index", $params,true);
 	}
 }
 ?>

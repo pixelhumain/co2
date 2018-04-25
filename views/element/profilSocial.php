@@ -141,11 +141,11 @@
 	margin-top:7px;
 	font-size: 13px;
 }
-
+/*
 #central-container #content-results-profil button.openCoopPanelHtml .hidden-xs,
 #central-container button.switchDirectoryView{
 	display: none;
-}
+}*/
 
 
 
@@ -535,7 +535,8 @@
 				                </a>
 				            </li>
 				            <li class="text-left">
-				               	<a href="javascript:;" id="btn-preferences-notifications" class="bg-white">
+				            	<!--id="btn-preferences-notifications"-->
+				               	<a href="#settings" class="lbh bg-white">
 				                    <i class="fa fa-check"></i> <?php echo Yii::t("common", "Notifications preferences"); ?>
 				                </a>
 				            </li>

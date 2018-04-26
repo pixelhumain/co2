@@ -1,3 +1,13 @@
+<?php $cssAnsScriptFilesModule = array(
+    '/js/default/settings.js'
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
+$cssAnsScriptFiles = array(
+     '/assets/css/default/settings.css',
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl); 
+?>
 <style type="text/css">
 	#menu-left{
 		position: fixed;

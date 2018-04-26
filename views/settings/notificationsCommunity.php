@@ -10,17 +10,15 @@ $cssAnsScriptFilesTheme = array(
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 
 $cssAnsScriptFiles = array(
-     '/assets/css/default/settings.css',
+      '/assets/vendor/bootstrap/js/bootstrap.min.js',
+        '/assets/vendor/bootstrap/css/bootstrap.min.css',
+               
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl); 
 
     
-$cssAnsScriptFilesModule = array(
-    '/js/default/settings.js',
-);
-HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
-
+	
 ?>
 <style>
 	.settingsHeader{

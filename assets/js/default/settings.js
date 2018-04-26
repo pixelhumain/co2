@@ -5,13 +5,15 @@ var tradLabel={
 	"high" : "High",
 }
 var settings = {
-	bindEventsConfidentiality : function(contextId, contextType){
+	bindEventsConfidentiality : function(contextId, contextType){ 		
 		$(".confidentialitySettings").off().on("click",function(){
 	    	param = new Object;
 	    	param.type = $(this).attr("type");
 	    	param.value = $(this).attr("value");
 	    	param.typeEntity = contextType;
 	    	param.idEntity = contextId;
+			$(".btn-group-"+param.type+" .btn").removeClass("active");
+			$(this).addClass("active");
 			$.ajax({
 		        type: "POST",
 		        url: baseUrl+"/"+moduleId+"/element/updatesettings",
@@ -24,6 +26,7 @@ var settings = {
 		});
 	},
 	bindButtonConfidentiality : function(preferences){
+		var fieldPreferences={};
 		$.each(nameFields, function(e, v){
 			fieldPreferences[v]=true;
 		});
@@ -31,17 +34,17 @@ var settings = {
 		$.each(typePreferences, function(e, typePref){
 			$.each(fieldPreferences, function(field, hidden){
 				if(typeof preferences[typePref] != "undefined" && $.inArray(field, preferences[typePref])>-1){
-					$('.btn-group-$field > button[value="'+typePref.replace("Fields", "")+'"]').addClass('active');
+					$('.btn-group-'+field+' > button[value="'+typePref.replace("Fields", "")+'"]').addClass('active');
 					fieldPreferences[field]=false;		
 				}
 			});
 		});
 		//To checked if there are hidden
 		$.each(fieldPreferences, function(field, hidden){
-			if(hidden) $('.btn-group-$field > button[value="hide"]').addClass('active');
+			if(hidden) $('.btn-group-'+field+' > button[value="hide"]').addClass('active');
 		});
 		$.each(typePreferencesBool, function(field, typePrefB){
-			if(typeof preferences[$typePrefB] != "undefined" && preferences[typePrefB] == true)
+			if(typeof preferences[typePrefB] != "undefined" && preferences[typePrefB] == true)
 				$('.btn-group-'+typePrefB+' > button[value="true"]').addClass('active');	
 			else
 				$('.btn-group-'+typePrefB+' > button[value="false"]').addClass('active');

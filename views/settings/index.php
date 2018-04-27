@@ -185,15 +185,27 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 				</li>
 			</ul>
 		</li>
-		<li class="col-xs-12 no-padding">
+		<!--<li class="col-xs-12 no-padding">
 			<a href="javascript:;" class="link-docs-menu down-menu" data-type="contribute">
 				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Chat settings"); ?>
 			</a>
-		</li>
+		</li>-->
 		<li class="col-xs-12 no-padding">
 			<a href="javascript:" class="link-docs-menu down-menu" data-page="confidentiality">
 				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Confidentiality"); ?>
 			</a>
+			<ul class="subMenu col-xs-12 no-padding">
+				<li class="col-xs-12 no-padding">
+					<a href="javascript:;" class="link-docs-menu" data-page="confidentiality">
+						<?php echo Yii::t("common","My account"); ?>
+					</a>
+				</li>
+				<li class="col-xs-12 no-padding">
+					<a href="javascript:;" class="link-docs-menu" data-page="confidentialityCommunity">
+						<?php echo Yii::t("docs","My community"); ?>
+					</a>
+				</li>
+			</ul>
 		</li>
 	</ul>
 </div>
@@ -203,6 +215,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 var page="<?php echo @$page ?>";
 var initUrlSettings=urlBackHistory;
 jQuery(document).ready(function() {
+	//hide basic loader on searching view 
+	$.unblockUI();
 	if(page != "")
 		initSettings(page);
 	else

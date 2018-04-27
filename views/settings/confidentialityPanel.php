@@ -1,17 +1,17 @@
 
-<?php if(!@$modal){ ?>
+<?php if(@$modal && $modal!==false){ ?>
 <div class="modal fade" role="dialog" id="modal-confidentiality">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<?php } ?>
 			<div class="modal-header">
-			<?php if(!@$modal){ ?>
+			<?php if(@$modal && $modal!==false){ ?>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<?php } ?>	
 				<?php if($type==Person::COLLECTION)
 					$titleParams=Yii::t("common","Confidentiality of your personal informations");
 				else
-					$titleParams=Yii::t("common","Settings {what}", array("{what}"=>Yii::t("common","of the ".Element::getControlerByCollection($type))));
+					$titleParams=Yii::t("common","Settings {what}", array("{what}"=>Yii::t("common","of the ".Element::getControlerByCollection($type))." ".$element["name"]));
 				?>
 				<h4 class="modal-title"><i class="fa fa-cog"></i> <?php echo $titleParams ?></h4>
 			</div>
@@ -141,10 +141,10 @@
 			
 			<div class="modal-footer">
 				<button type="button" class="lbh btn btn-success btn-confidentialitySettings" data-dismiss="modal" aria-label="Close" data-hash="#page.type.<?php echo $type ?>.id.<?php echo $element['_id'] ;?>">
-				<i class="fa fa-save"></i> <?php echo Yii::t("common","Save") ;?>
+				<i class="fa fa-times"></i> <?php echo Yii::t("common","Close") ;?>
 				</button>
 			</div>
-		<?php if(!@$modal){ ?>
+		<?php if(@$modal && $modal!==false){ ?>
 		</div>
 	</div>
 </div>

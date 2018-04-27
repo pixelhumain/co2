@@ -53,7 +53,7 @@ var settings = {
 	bindEventsSettings : function(){
 		$(".BSswitch").bootstrapSwitch();
 	   	$(".BSswitch").on("switchChange.bootstrapSwitch", function (event, state) {
-	    	savePreferencesNotification("notifications",state, "citoyens", userId, $(this).data("sub"));
+	    	settings.savePreferencesNotification("notifications",state, "citoyens", userId, $(this).data("sub"));
 	    });
 	   	$(".btn-show-block").click(function(){
 	   		$(".show-block").hide(700);
@@ -65,6 +65,16 @@ var settings = {
 
 	   	});
 	},
+	initNotificationsAccount: function(preferences){
+		if(typeof preferences.notifications != "undefined"){
+			$.each(preferences.notifications, function(e, v){
+				$(".BSswitch[data-sub='"+e+"'").removeAttr("checked");
+			});
+		}
+		if(typeof preferences.mails != "undefined"){
+			$("#mails-settings .changeValueDrop").text(tradLabel[preferences.mails]);
+		}
+	},
 	settingsCommunityEvents : function(){
 		$(".settingsCommunity").off().on("click", function() {
 			settings.savePreferencesNotification($(this).data("settings"),$(this).data("value"), $(this).data("type"), $(this).data("id"));
@@ -73,7 +83,7 @@ var settings = {
 		$("#community-settings #search-in-settings").keyup(function(){
 			settings.filterSettingsCommunity($(this).val());
 		});
-
+		
 		//parcourt tous les types de contacts
 		$.each(["organizations", "projects", "events"], function(key, type){ 
 			//initialise le scoll automatique de la liste de contact
@@ -88,7 +98,7 @@ var settings = {
 	},
 	//recherche text par nom, cp, city, slug
 	filterSettingsCommunity: function(searchVal){
-		console.log("filtercommunity-settings(searchVal)", searchVal);
+		//console.log("filtercommunity-settings(searchVal)", searchVal);
 		//masque/affiche tous les contacts présents dans la liste
 		if(searchVal != "")	$("#community-settings .notification-label-communtiy").hide();
 		else				$("#community-settings .notification-label-communtiy").show();
@@ -151,7 +161,7 @@ var settings = {
 				str += 			'<h4 class="text-'+typeObj[typeObj[type].sameAs].color+'">'+
 									'<i class="fa fa-'+typeObj[typeObj[type].sameAs].icon+'"></i> <span class="">'+trad['my'+type]+"</span>";
 									if (type == "events" || type == "projects") {
-				str += 					'<button onclick="showHideOldElements(\''+type+'\')" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+typeObj[typeObj[type].sameAs].color+'" data-placement="left" data-original-title="'+trad["showhideold"+type]+'">'+
+				str += 					'<button onclick="settings.showHideOldElements(\''+type+'\')" class="tooltips btn btn-default btn-sm pull-right btn_shortcut_add text-'+typeObj[typeObj[type].sameAs].color+'" data-placement="left" data-original-title="'+trad["showhideold"+type]+'">'+
 											'<i class="fa fa-history"></i>'+
 										'</button>';		
 									}
@@ -159,7 +169,9 @@ var settings = {
 							'</div>';
 								
 					$.each(array, function(e, value){
-						if(typeof value.isFollowed == "undefined" && typeof value.toBeValidated == "undefined"){
+						if(typeof value.isFollowed == "undefined" 
+							&& typeof value.toBeValidated == "undefined" 
+							&& (typeSet!="confidentiality" || (typeof value.isAdmin != "undefined" && typeof value.isAdminPending == "undefined"))){
 							var oldElement = isOldElement(value);
 							var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl + value.profilThumbImageUrl : assetPath + "/images/thumb/default_"+defaultImg+".png";
 							var id = (typeof value._id != "undefined" && typeof value._id.$id != "undefined") ? value._id.$id : id;
@@ -182,6 +194,8 @@ var settings = {
 									'</div>';
 								if(typeSet=="notifications")
 									str+=settings.getToolbarSettingsNotifications(setNotif, setMails, type, id);
+								else if(typeSet=="confidentiality")
+									str+=settings.getToolbarSettingsConfidentiality(type,id);
 							str+='</div>';
 						}
 					});
@@ -253,6 +267,22 @@ var settings = {
         		'</div>'+
         	'</div>';
 		return html;
+	},
+	getToolbarSettingsConfidentiality: function(type, id){
+		html='<div class="col-md-6 col-sm-6 col-xs-6">'+
+				
+      				'<a class="btn btn-default col-md-12 col-sm-12 col-xs-12 dropdown-settings" href="javascript:;" onclick="settings.showPanelConfidentiality(\''+type+'\',\''+id+'\',true)">'+
+      					'<i class="fa fa-cogs"></i> settings'+
+      				'</a>'+
+						
+        	'</div>';
+		return html;
+	},
+	showPanelConfidentiality: function(type, id, modal){
+		ajaxPost('#modalConfidentialityCommunity' ,baseUrl+'/'+moduleId+"/settings/confidentiality/type/"+type+"/id/"+id+"/modal/true",
+			 null,function(){
+			 	$("#modal-confidentiality").modal("show");
+			 },"html");
 	}
 }
 

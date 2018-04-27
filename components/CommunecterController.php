@@ -387,7 +387,8 @@ class CommunecterController extends Controller
       "index" => array("href" => "/ph/co2/settings/index", "public" => true),
       "notificationsaccount" => array("href" => "/ph/co2/settings/notificationsaccount"),
       "notificationscommunity" => array("href" => "/ph/co2/settings/notificationscommunity"),
-      "confidentiality" => array("href" => "/ph/co2/settings/confidentiality")
+      "confidentiality" => array("href" => "/ph/co2/settings/confidentiality"),
+      "confidentialitycommunity" => array("href" => "/ph/co2/settings/confidentialitycommunity"),
     ),
     "bookmark" => array(
       "delete"        => array("href" => "ph/communecter/bookmark/delete"),

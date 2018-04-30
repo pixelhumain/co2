@@ -32,7 +32,7 @@
 [X] Mergin all branches - Terla / Territorial / Lieux 2.0 / Dev / Master
 [ ] Preferences
 
-
+[ ] Check on prod Db if data users.preferences.publicFields is well an array for user and not an object 
 
 
 ---------------------------------------

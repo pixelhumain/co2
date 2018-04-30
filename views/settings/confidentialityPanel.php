@@ -1,17 +1,17 @@
 
-<?php if(!@$modal){ ?>
+<?php if(@$modal && $modal!==false){ ?>
 <div class="modal fade" role="dialog" id="modal-confidentiality">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<?php } ?>
 			<div class="modal-header">
-			<?php if(!@$modal){ ?>
+			<?php if(@$modal && $modal!==false){ ?>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<?php } ?>	
 				<?php if($type==Person::COLLECTION)
 					$titleParams=Yii::t("common","Confidentiality of your personal informations");
 				else
-					$titleParams=Yii::t("common","Settings {what}", array("{what}"=>Yii::t("common","of the ".Element::getControlerByCollection($type))));
+					$titleParams=Yii::t("common","Settings {what}", array("{what}"=>Yii::t("common","of the ".Element::getControlerByCollection($type))." ".$element["name"]));
 				?>
 				<h4 class="modal-title"><i class="fa fa-cog"></i> <?php echo $titleParams ?></h4>
 			</div>
@@ -141,10 +141,10 @@
 			
 			<div class="modal-footer">
 				<button type="button" class="lbh btn btn-success btn-confidentialitySettings" data-dismiss="modal" aria-label="Close" data-hash="#page.type.<?php echo $type ?>.id.<?php echo $element['_id'] ;?>">
-				<i class="fa fa-save"></i> <?php echo Yii::t("common","Save") ;?>
+				<i class="fa fa-times"></i> <?php echo Yii::t("common","Close") ;?>
 				</button>
 			</div>
-		<?php if(!@$modal){ ?>
+		<?php if(@$modal && $modal!==false){ ?>
 		</div>
 	</div>
 </div>
@@ -154,40 +154,12 @@ var seePreferences = '<?php echo (@$element["seePreferences"] == true) ? "true" 
 var preferences = <?php echo json_encode(@$element["preferences"]) ?>;
 var contextId='<?php echo @$id ?>';
 var contextType='<?php echo @$type ?>';
+var typePreferences=["privateFields", "publicFields"];
+var nameFields=["email", "locality", "phone", "directory", "birthDate"];
+var typePreferencesBool = ["isOpenData", "isOpenEdition"];
+console.log("preferences",preferences);
 jQuery(document).ready(function() {
-	bindButtonConfidentiality();
+	settings.bindButtonConfidentiality(preferences);
+	settings.bindEventsConfidentiality(contextId, contextType);
 });
-
-
-function bindButtonConfidentiality(){
-		
-	<?php
-		//Params Checked
-		$typePreferences = array("privateFields", "publicFields");
-		$nameFields = array("email", "locality", "phone", "directory", "birthDate");
-		foreach ($nameFields as $key => $value) {
-			$fieldPreferences[$value] = true;
-		}
-		$typePreferencesBool = array("isOpenData", "isOpenEdition");
-		//To checked private or public
-		foreach($typePreferences as $typePref){
-			foreach ($fieldPreferences as $field => $hidden) {
-				if(isset($element["preferences"][$typePref]) && in_array($field, $element["preferences"][$typePref])){
-					echo "$('.btn-group-$field > button[value=\'".str_replace("Fields", "", $typePref)."\']').addClass('active');";
-					$fieldPreferences[$field] = false;
-				}
-			}
-		}
-		//To checked if there are hidden
-		foreach ($fieldPreferences as $field => $hidden) {
-			if($hidden) echo "$('.btn-group-$field > button[value=\'hide\']').addClass('active');";
-		}
-		foreach ($typePreferencesBool as $field => $typePrefB) {
-			if(isset($element["preferences"][$typePrefB]) && $element["preferences"][$typePrefB] == true)
-				echo "$('.btn-group-$typePrefB > button[value=\'true\']').addClass('active');";	
-			else
-				echo "$('.btn-group-$typePrefB > button[value=\'false\']').addClass('active');";
-		}	
-	?>
-}
 </script>

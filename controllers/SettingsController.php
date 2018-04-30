@@ -19,19 +19,25 @@ class SettingsController extends CommunecterController {
 	    );
 	}
 	public function actionNotificationsAccount(){
-    	echo $this->renderPartial("notificationsAccount", array(), true);
+		$element=Element::getElementSimpleById(Yii::app()->session["userId"], Person::COLLECTION, null, array("preferences"));
+    	echo $this->renderPartial("notificationsAccount", array("preferences"=>$element["preferences"]), true);
  	}
- 	public function actionConfidentiality($type=null,$id=null){
- 		$element=Element::getByTypeAndId($type, $id);
+ 	public function actionConfidentiality($type=null,$id=null, $modal=false){
+ 		$element=Element::getElementSimpleById($id, $type, null, array("preferences","name"));
  		$params=array(  "element" => @$element, 
 			"type" => $type,
 			"id" => $id, 
 			"edit" => true,
-			"controller" => Person::CONTROLLER,
 			"openEdition" => false,
-			"modal"=>true
+			"modal"=>$modal
 		);
-    	echo $this->renderPartial("confidentiality", $params, true);
+    	echo $this->renderPartial("confidentialityPanel", $params, true);
+ 	}
+ 	/*public function actionConfidentialityAccount(){
+    	echo $this->renderPartial("confidentialityAccount", array(), true);
+ 	}*/
+ 	public function actionConfidentialityCommunity(){
+    	echo $this->renderPartial("confidentialityCommunity", array(), true);
  	}
  	public function actionNotificationsCommunity(){
     	echo $this->renderPartial("notificationsCommunity", array(), true);

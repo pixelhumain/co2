@@ -112,7 +112,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
     </div>
 </div>
 <script type="text/javascript">
+var preferences=<?php echo json_encode(@$preferences) ?>;
 jQuery(document).ready(function() {
-	bindEventsSettings();
+	settings.initNotificationsAccount(preferences);
+	settings.bindEventsSettings();
 });
 </script>

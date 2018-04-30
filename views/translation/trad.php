@@ -500,9 +500,9 @@ var trad = {
 };
 
 var tradDynForm = {
-	"weWereUnableToReadYourFile" : <?php echo Yii::t("invite","We were unable to read your file."); ?>,
-	"youMustUseACSVFormat" : <?php echo Yii::t("invite","You must use a CSV format"); ?>,
-	"alreadyInTheList" : <?php echo Yii::t("invite","Already in the list"); ?>
+	"weWereUnableToReadYourFile" : "<?php echo Yii::t("invite","We were unable to read your file."); ?>",
+	"youMustUseACSVFormat" : "<?php echo Yii::t("invite","You must use a CSV format"); ?>",
+	"alreadyInTheList" : "<?php echo Yii::t("invite","Already in the list"); ?>",
 	"Name of filter" : "<?php echo Yii::t("form","Name of filter") ?>",
 	"Tags link a filter" : "<?php echo Yii::t("form","Tags link a filter") ?>",
 	"Filters category" : "<?php echo Yii::t("form","Filters category") ?>",

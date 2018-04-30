@@ -63,14 +63,16 @@
 
 </style>
 
-<div class="portfolio-modal modal fade" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="<?php if(empty($search) || $search == false){ ?> portfolio-modal modal fade <?php } ?>" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-content padding-top-15">
+		<?php if(empty($search) || $search == false){ ?>
 		<div class="close-modal" data-dismiss="modal">
 			<div class="lr">
 				<div class="rl">
 				</div>
 			</div>
 		</div>
+		<?php } ?>
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -216,7 +218,7 @@
 <script type="text/javascript">
 	var parentType = "<?php echo $parentType; ?>";
 	var parentId = "<?php echo $parentId; ?>";
-	var members = <?php echo json_encode( $members ); ?>;
+	// var members = <?php //echo json_encode( $members ); ?>;
 	var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.sponsor, tradCategory.organizor, tradCategory.president, tradCategory.director, tradCategory.speaker, tradCategory.intervener];
 	var contactTypes = {
 			citoyens : { color: "yellow", icon:"user", label:"People" },
@@ -232,7 +234,7 @@
 	};
 
 	jQuery(document).ready(function() {
-		mylog.log("members", members);
+		// mylog.log("members", members);
 		bindInvite();
 
 		$("#step1-import").hide();

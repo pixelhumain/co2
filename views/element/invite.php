@@ -63,14 +63,16 @@
 
 </style>
 
-<div class="portfolio-modal modal fade" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="<?php if(empty($search) || $search == false){ ?> portfolio-modal modal fade <?php } ?>" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-content padding-top-15">
+		<?php if(empty($search) || $search == false){ ?>
 		<div class="close-modal" data-dismiss="modal">
 			<div class="lr">
 				<div class="rl">
 				</div>
 			</div>
 		</div>
+		<?php } ?>
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -157,21 +159,21 @@
 										<i class="fa fa-align-justify fa-2x"></i>
 									</div>
 									<div class="col-md-9">
-										<textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4" placeholder="Message personnaliser"></textarea>
+										<textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4" placeholder="<?php echo Yii::t("invite","Custom message"); ?> "></textarea>
 									</div>
 								</div>
 
 							</div>
 							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 								<hr>
-								<button class="btn btn-primary" id="btnInviteNew" ><i class="fa fa-add"></i> Ajouter à la liste</button>
+								<button class="btn btn-primary" id="btnInviteNew" ><i class="fa fa-add"></i> <?php echo Yii::t("invite","Add to the list"); ?> </button>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div id="step1-import" class="modal-body col-xs-6">
 					<div class="form-group">
-						<label for="fileEmail" > Fichier (CSV) : <input type="file" id="fileEmail" name="fileEmail" accept=".csv"> </label>
+						<label for="fileEmail" > <?php echo Yii::t("invite","Files (CSV)"); ?> : <input type="file" id="fileEmail" name="fileEmail" accept=".csv"> </label>
 					</div>
 				</div>
 				<div id="step1-mycontacts" class="modal-body col-xs-6" >
@@ -182,7 +184,7 @@
 				<div id="step2" class="modal-body col-xs-6" >
 					<div class="form-group">
 						<div class="col-xs-12">
-							<h4> Liste des personnes a invités</h4>
+							<h4> <?php echo Yii::t("invite","List of persons invited"); ?></h4>
 							<div class="col-xs-12" id="dropdown-invite" style="max-height: 400px; overflow: auto;"></div>
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
@@ -216,7 +218,7 @@
 <script type="text/javascript">
 	var parentType = "<?php echo $parentType; ?>";
 	var parentId = "<?php echo $parentId; ?>";
-	var members = <?php echo json_encode( $members ); ?>;
+	// var members = <?php //echo json_encode( $members ); ?>;
 	var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.sponsor, tradCategory.organizor, tradCategory.president, tradCategory.director, tradCategory.speaker, tradCategory.intervener];
 	var contactTypes = {
 			citoyens : { color: "yellow", icon:"user", label:"People" },
@@ -232,7 +234,7 @@
 	};
 
 	jQuery(document).ready(function() {
-		mylog.log("members", members);
+		// mylog.log("members", members);
 		bindInvite();
 
 		$("#step1-import").hide();
@@ -287,7 +289,7 @@
 			var ext = $("#modal-invite input#fileEmail").val().split(".").pop().toLowerCase();
 			mylog.log("ext", ext);
 			if($.inArray(ext, ["csv"]) == -1) {
-				toastr.error("Vous devez utiliser un format CSV");
+				toastr.error(tradDynForm.youMustUseACSVFormat);
 				return false;
 			} 
 
@@ -301,7 +303,7 @@
 				};
 				reader.readAsText(e.target.files.item(0));
 			}else{
-				toastr.error("Nous n'avons pas réussie à lire votre fichier.");
+				toastr.error(tradDynForm.weWereUnableToReadYourFile);
 			}
 			return false;
 		});
@@ -334,7 +336,7 @@
 				$('#modal-invite #inviteName').val("");
 				$("#modal-invite #form-invite").hide();
 			}else{
-				toastr.error("Déjà dans la liste");
+				toastr.error(tradDynForm.alreadyInTheList);
 			}
 
 			showElementInvite(listInvite, true);
@@ -423,7 +425,7 @@
 						profilThumbImageUrl : profilThumbImageUrl
 					} ;
 				}else{
-					toastr.error("Déjà dans la liste");
+					toastr.error(tradDynForm.alreadyInTheList);
 				}
 			}else if(type == "organizations"){
 				if(typeof listInvite.organizations[id] == "undefined"){
@@ -432,7 +434,7 @@
 						profilThumbImageUrl : profilThumbImageUrl
 					} ;
 				}else{
-					toastr.error("Déjà dans la liste");
+					toastr.error(tradDynForm.alreadyInTheList);
 				}
 			}
 

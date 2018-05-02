@@ -1,11 +1,4 @@
 <?php 
-	
-	$cssAnsScriptFilesModule = array(
-		'/js/cooperation/uiCoop.js',
-	);
-	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
-
-	HtmlHelper::registerCssAndScriptsFiles( array('/css/cooperation.css'), Yii::app()->theme->baseUrl. '/assets');
 
 	$isAdmin = Authorisation::isElementAdmin(@$parentId, @$parentType, Yii::app()->session['userId']);
 

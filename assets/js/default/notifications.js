@@ -1,7 +1,7 @@
 var notifications = null;
 var maxNotifTimstamp = 0;
-
-function bindNotifEvents(element){ console.log("bindNotifEvents");
+var indexMinNotif=0;
+function bindNotifEvents(element, event, elementType, elementId ){ console.log("bindNotifEvents");
 	$(".notifList"+element+" a.notif").off().on("click",function (e) 
 	{
 		markAsRead( $(this).data("id") );
@@ -33,7 +33,15 @@ function bindNotifEvents(element){ console.log("bindNotifEvents");
 		$(this).find(".removeBtn").show();
 	}).mouseleave(function(){
 		$(this).find(".removeBtn").hide();
-	})
+	});
+	$('.pageslide-list').off().on('scroll', function() {
+	        if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+	           	alert();
+	            indexMinNotif=indexMinNotif+15;
+	            getAjaxNotification(element, true, elementType, elementId);
+        	}
+    	});
+	
 }
 function updateNotification(action, element, id)
 { 
@@ -139,13 +147,18 @@ function refreshNotifications(elementId,elementType,element,event)
 		var event=event;
 	else
 		var event=null;
+	indexMinNotif=0;
+	getAjaxNotification(element, event, elementType, elementId);
+}
+function getAjaxNotification(element, event, elementType, elementId, refresh){
 	$.ajax({
-        type: "GET",
-        url: baseUrl+"/"+moduleId+"/notification/getnotifications/type/"+elementType+"/id/"+elementId+"?ts="+maxNotifTimstamp
+        type: "POST",
+        url: baseUrl+"/"+moduleId+"/notification/getnotifications/type/"+elementType+"/id/"+elementId+"?ts="+maxNotifTimstamp,
+        data:{ indexMin: indexMinNotif}
     })
     .done(function (data) { mylog.log("REFRESH NOTIF : "); mylog.dir(data);
-        if (data) {       
-        	buildNotifications(data.notif, element,event);
+        if (data) {
+        	buildNotifications(data.notif, element, event, elementType, elementId);
         	if(data.coop > 0){
         		$(".btn-dashboard-dda").show();
         		$(".coopNotifs").html(data.coop).show(100);
@@ -183,7 +196,7 @@ function refreshNotifications(elementId,elementType,element,event)
     });
 
 }*/
-function buildNotifications(list, element, event)
+function buildNotifications(list, element, event, elementType, elementId)
 {	mylog.log("buildNotifications");
 	mylog.log(list);
 	//element="";
@@ -272,7 +285,7 @@ function buildNotifications(list, element, event)
 		}
 		setTimeout( function(){
 	    	notifCount(false, element);
-	    	bindNotifEvents(element);
+	    	bindNotifEvents(element, event, elementType, elementId);
 	    	//bindLBHLinks();
 	    }, 800);
 		//bindNotifEvents();

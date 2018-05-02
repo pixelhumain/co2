@@ -102,7 +102,6 @@ function showNotif(show){
     	$('#notificationPanelSearch').show("fast");
     	markAllAsSeen(false,"");
     	refreshNotifications(userId,"citoyens","","menuTop");
-
     }
 	else 	 $('#notificationPanelSearch').hide("fast");
 

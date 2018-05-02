@@ -413,6 +413,8 @@ function bindAboutPodElement() {
 
 			if(contextData.type == typeObj.event.col)
 				listParent =  ["events"] ;
+			else if(contextData.type == typeObj.project.col)
+				listParent =  ["organizations", "projects"] ;
 
 			if(contextData.type == typeObj.event.col || contextData.type == typeObj.project.col){
 				form.dynForm.jsonSchema.properties.parentId = {

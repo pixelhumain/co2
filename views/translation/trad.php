@@ -285,6 +285,7 @@ var trad = {
 	"Please specify a name" : "<?php echo Yii::t("common", "Please specify a name") ?>",
 	"Please specify a email" : "<?php echo Yii::t("common", "Please specify a email") ?>",
 	"noMoreNotifs":"<?php echo Yii::t("common","No more notifications for the moment") ?>",
+	"noNotifs":"<?php echo Yii::t("common","You have no notifications for the moment") ?>",
 	"iscomposedof":"<?php echo Yii::t("common","is composed of") ?>",
 	"subevent":"<?php echo Yii::t("common","subevent") ?>",
 	"subevents":"<?php echo Yii::t("common","subevents") ?>",

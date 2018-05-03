@@ -1,6 +1,28 @@
 var notifications = null;
-var maxNotifTimstamp = 0;
+var maxNotifTimestamp = 0;
 var indexMinNotif=0;
+var endLoadingNotifs=false;
+function showNotif(show){
+	if(typeof show == "undefined"){
+		if($("#notificationPanelSearch").css("display") == "none") show = true; 
+    	else show = false;
+    }
+
+    if(show){
+    	endLoadingNotifs=false;
+    	$('#notificationPanelSearch').show("fast");
+    	markAllAsSeen(false,"");
+    	refreshNotifications(userId,"citoyens","");
+    }
+	else 	 $('#notificationPanelSearch').hide("fast");
+
+	
+	$("#dropdown-user").removeClass("open");
+    $("#dropdown-dda").removeClass("open");
+    
+    showFloopDrawer(false);
+}
+
 function bindNotifEvents(element, event, elementType, elementId ){ console.log("bindNotifEvents");
 	$(".notifList"+element+" a.notif").off().on("click",function (e) 
 	{
@@ -28,19 +50,29 @@ function bindNotifEvents(element, event, elementType, elementId ){ console.log("
             //notifCount();
         }, 200);
 	});
+
 	$('.tooltips').tooltip();
+
 	$(".notifList"+element+" li").mouseenter(function(){
 		$(this).find(".removeBtn").show();
 	}).mouseleave(function(){
 		$(this).find(".removeBtn").hide();
 	});
+
 	$('.pageslide-list').off().on('scroll', function() {
-	        if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-	           	alert();
-	            indexMinNotif=indexMinNotif+15;
-	            getAjaxNotification(element, true, elementType, elementId);
-        	}
-    	});
+        if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight && !endLoadingNotifs) {
+            indexMinNotif=indexMinNotif+15;
+            getAjaxNotification(element, "scroll", elementType, elementId);
+    	}
+    });
+    $(".btn-reload-notif").off().on("click", function(){
+    	$(this).find("i").addClass("fa-spin");
+    	$(".notifList"+$(this).data("element")).html("<li class='col-xs-12 loadingProcessIndicators text-center'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading+"</li>");
+    	indexMinNotif=0;
+    	maxNotifTimestamp=0;
+        getAjaxNotification($(this).data("element"), null, $(this).data("type"), $(this).data("id"));
+        $(this).find("i").removeClass("fa-spin");
+    });
 	
 }
 function updateNotification(action, element, id)
@@ -68,7 +100,7 @@ function updateNotification(action, element, id)
         if ( data && data.result ) {
         	if(action=="seen"){  
         		$(".notifList"+element+" li.notifLi").addClass("seen");
-        		notifCount();
+        		notifCount(0);
         	}else{           
         		if(all)
         			$(".notifList"+element+" li.notifLi").addClass("read");
@@ -110,7 +142,7 @@ function removeNotification(id)
         } else {
             toastr.error("no notifications found ");
         }
-        notifCount();
+        //notifCount();
     });
 }
 
@@ -124,41 +156,47 @@ function removeAllNotifications()
     })
     .done( function (data) {
     	mylog.dir(data);
-        if ( data && data.result ) {    
-	        refreshNotifications(userId,"citoyens","","menuTop");   
-        	//$(".notifList li.notifLi").remove();
-        	//mylog.log("notifications cleared ",data);
-        	//$(".sb-toggle-right").trigger("click");
+        if ( data && data.result ) {  
+        	$(".notifList"+element).html("<li class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-ban'></i> "+trad.noNotifs+"</li>");  
         } else {
             toastr.error("no notifications found ");
         }
-        notifCount();
+        //notifCount();
     });
 	
 }
 
-function refreshNotifications(elementId,elementType,element,event)
+function refreshNotifications(elementId,elementType,element)
 {
 	//ajax get Notifications
-	$(".pageslide-list.header .btn-primary i.fa-refresh").addClass("fa-spin");
-	mylog.log("refreshNotifications", maxNotifTimstamp);
-	var element = element;
-	if(typeof event != "undefined" && event)
+	//$(".pageslide-list.header .btn-primary i.fa-refresh").addClass("fa-spin");
+	//mylog.log("refreshNotifications", maxNotifTimestamp);
+	//var element = element;
+	/*if(typeof event != "undefined" && event)
 		var event=event;
 	else
-		var event=null;
-	indexMinNotif=0;
+		var event=null;*/
+	//indexMinNotif=0;
+	event=(maxNotifTimestamp!=0) ? "refresh" : null;
 	getAjaxNotification(element, event, elementType, elementId);
 }
-function getAjaxNotification(element, event, elementType, elementId, refresh){
+function getAjaxNotification(element, event, elementType, elementId){
+
+	if(notNull(event) && event=="refresh"){
+		param={refreshTimestamp: maxNotifTimestamp};
+	}else{
+		param={indexMin: indexMinNotif};
+	}
 	$.ajax({
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/notification/getnotifications/type/"+elementType+"/id/"+elementId+"?ts="+maxNotifTimstamp,
-        data:{ indexMin: indexMinNotif}
+        url: baseUrl+"/"+moduleId+"/notification/getnotifications/type/"+elementType+"/id/"+elementId,
+        data: param
     })
     .done(function (data) { mylog.log("REFRESH NOTIF : "); mylog.dir(data);
         if (data) {
         	buildNotifications(data.notif, element, event, elementType, elementId);
+        	if(typeof data.countNotif != "undefined")
+        		notifCount(data.countNotif, element);
         	if(data.coop > 0){
         		$(".btn-dashboard-dda").show();
         		$(".coopNotifs").html(data.coop).show(100);
@@ -176,38 +214,12 @@ function getAjaxNotification(element, event, elementType, elementId, refresh){
         $(".pageslide-list.header .btn-primary i.fa-refresh").removeClass("fa-spin");
     });
 }
-/*function markAllNotificationsAsSeen()
-{
-	$.ajax({
-        type: "POST",
-        data:{"action":"seen","all":true}
-        url: baseUrl+"/"+moduleId+"/notification/update"
-    })
-    .done(function (data) { //mylog.log("REFRESH NOTIF : "); mylog.dir(data);
-        if (data) {       
-        	countNotif(true);
-        } else {
-            //toastr.error("no notifications found ");
-        }
-        $(".pageslide-list.header .btn-primary i.fa-refresh").removeClass("fa-spin");
-    }).fail(function(){
-    	toastr.error("error notifications");
-        $(".pageslide-list.header .btn-primary i.fa-refresh").removeClass("fa-spin");
-    });
-
-}*/
 function buildNotifications(list, element, event, elementType, elementId)
-{	mylog.log("buildNotifications");
-	mylog.log(list);
-	//element="";
-//	if(isPodView)
-//		element="Element";
-//	mylog.info("buildNotifications"+element+"()");
-	mylog.log(typeof list);
-	if(event==null)
-		$(".notifList"+element).html("");
-	else
-		notifHtml="";
+{	
+	notifHtml="";
+	var countCurrentNotif= Object.keys(list).length;
+	if(event!="refresh")
+		$(".loadingProcessIndicators").remove();
 	if(typeof list != "undefined" && typeof list == "object"){
 		$.each( list , function( notifKey , notifObj )
 		{
@@ -219,23 +231,9 @@ function buildNotifications(list, element, event, elementType, elementId)
 				url=url[1];	
 			}
 			url = "#"+url.replace(/\//g, ".");
-			//var moment = require('moment');
 			momentNotif=notifObj.timeAgo;
-			/*moment.lang('fr');
-			if(typeof notifObj.updated != "undefined")
-				momentNotif=moment(new Date( parseInt(notifObj.updated.sec)*1000 )).fromNow();
-			else if(typeof notifObj.created != "undefined")
-				momentNotif=moment(new Date( parseInt(notifObj.created.sec)*1000 )).fromNow();
-			else
-				momentNotif="";*/ 
-			//if(typeof notifObj.timestamp != "undefined")
-			//	momentNotif=moment(new Date( parseInt(notifObj.timestamp.sec)*1000 )).fromNow();
 			var icon = (typeof notifObj.notify != "undefined") ? notifObj.notify.icon : "fa-bell";
 			var displayName = (typeof notifObj.notify != "undefined") ? notifObj.notify.displayName : "Undefined notification";
-			//console.log(notifObj);
-			//console.log(userId);
-			//console.log(notifObj.notify);
-			//console.log(notifObj.notify.id[userId]);
 			var isSeen = (typeof notifObj.notify.id[userId] != "undefined" && typeof notifObj.notify.id[userId].isUnseen != "undefined") ? "" : "seen";
 			var isRead = (typeof notifObj.notify.id[userId] != "undefined" && typeof notifObj.notify.id[userId].isUnread != "undefined") ? "" : "read";
 
@@ -245,13 +243,13 @@ function buildNotifications(list, element, event, elementType, elementId)
 			var notifObjId = (typeof notifObj.object != "undefined" && typeof notifObj.object.id != "undefined") ? 
 								notifObj.object.id : "";
 
-			str = "<li class='notifLi notif_"+notifKey+" "+isSeen+" "+isRead+" ";
-					if(event==null)
+			str = "<li class='notifLi notif_"+notifKey+" "+isSeen+" "+isRead+" hide'>"+
+					/*if(event==null)
 						str+="hide";
 					else
 						str+="enable";
-				str+="'>"+
-					"<a href='javascript:;' class='notif col-md-12 col-sm-12 col-xs-12 no-padding' "+
+				str+="'>"+*/
+					"<a href='javascript:;' class='notif col-xs-12 no-padding' "+
 						"data-objtype='"+notifObjType+"' data-objid='"+notifObjId+"' data-id='"+notifKey+"' data-href='"+ url +"'>"+
 						"<div class='content-icon col-md-1 col-sm-1 col-xs-1 no-padding'>"+
 							"<span class='label bg-dark pull-left'>"+
@@ -270,25 +268,47 @@ function buildNotifications(list, element, event, elementType, elementId)
 							'<i class="fa fa-remove"></i>'+
 						"</a>" + 
 				  "</li>";
-			if(event==null){
-				$(".notifList"+element).append(str);
-				$(".notif_"+notifKey).removeClass('hide').addClass("animated bounceInRight enable col-md-12 col-sm-12 col-xs-12");
-			}else{
+			//if(event==null){
+			//	$(".notifList"+element).append(str);
+			
+			//}else{
 				notifHtml+=str;
-			}
-			if( notifObj.timestamp > maxNotifTimstamp )
-				maxNotifTimstamp = notifObj.timestamp;
+			//}
+			if( notifObj.timestamp > maxNotifTimestamp )
+				maxNotifTimestamp = notifObj.timestamp;
 		});
-		if(event != null){
-			$(".notifList"+element).html(notifHtml);
-			$(".notifLi").addClass("col-md-12 col-sm-12 col-xs-12");
-		}
 		setTimeout( function(){
-	    	notifCount(false, element);
+	    	//notifCount(false, element);
 	    	bindNotifEvents(element, event, elementType, elementId);
 	    	//bindLBHLinks();
 	    }, 800);
-		//bindNotifEvents();
+	    //Usecase of the first load of notification
+	    /*if(event == null){
+			$(".notifList"+element).html(notifHtml);
+			$(".notifLi").addClass("col-md-12 col-sm-12 col-xs-12");
+		}*/
+		// Initialization of notifications
+		if(event==null){
+			$(".notifList"+element).html(notifHtml);
+		}else if(event=="refresh"){
+			$(".notifList"+element).prepend(notifHtml);
+	    	indexMinNotif=indexMinNotif+countCurrentNotif;
+		}else if(event=="scroll"){
+			$(".notifList"+element).append(notifHtml);
+		}
+		$(".notifList"+element+" li.notifLi").not(".enable").removeClass('hide').addClass("animated bounceInRight enable col-md-12 col-sm-12 col-xs-12");
+		// Add loader or indication if event is different then refresh notifications
+	    if(event!="refresh"){
+		    if(countCurrentNotif< 15){
+		    	$(".notifList"+element).append("<li class='col-xs-12 text-center'><i class='fa fa-ban'></i> "+trad.noMoreNotifs+"</li>");
+		    	endLoadingNotifs=true;	
+		    }else{
+		    	if(countCurrentNotif==0 && indexMinNotif==0)
+					$(".notifList"+element).html("<li class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-ban'></i> "+trad.noNotifs+"</li>");
+		    	else
+		    		$(".notifList"+element).append("<li class='col-xs-12 loadingProcessIndicators text-center'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading+"</li>");
+		    }
+		}
 	}
 }
 
@@ -296,26 +316,13 @@ function notifCount(upNotifUnseen, element)
 { 	var countNotif = $(".notifList"+element+" li.enable").length;
 	var countNotifSeen = $(".notifList"+element+" li.seen").length;
 	var countNotifUnseen = countNotif-countNotifSeen;
-	if(upNotifUnseen)
-		countNotifUnseen=0;
-	mylog.log(" !!!! notifCount", countNotif, "element :",element);
-	mylog.log(" !!!! notifCount upNotifUnseen", upNotifUnseen, "countNotif ", countNotif, "countNotifSeen ", countNotifSeen);
-	
-
-	mylog.log(" !! ", ".notifList"+element+" li.enable");
-
-	$(".notifCount").html( countNotif );
-	mylog.log(".notifCount).html(", countNotif);
-
-	if(countNotif == 0)
-		$(".notifList"+element).html("<li class='col-md-12 col-sm-12 col-xs-12'><i class='fa fa-ban'></i> "+trad["noMoreNotifs"]+"</li>");
-	//if(element==""){
-
-
-		mylog.log("if( countNotifUnseen", countNotifUnseen, " > 0");
-		if( countNotifUnseen > 0)
+	//if(upNotifUnseen)
+	//	countNotifUnseen=0;
+	//$(".notifCount").html( countNotif );
+	//	mylog.log("if( countNotifUnseen", countNotifUnseen, " > 0");
+		if( upNotifUnseen > 0)
 		{
-		    $(".notifications-count"+element).html(countNotifUnseen);
+		    $(".notifications-count"+element).html(upNotifUnseen);
 			$('.notifications-count'+element).removeClass('hide');
 			$('.notifications-count'+element).addClass('animated bounceIn');
 			$('.notifications-count'+element).addClass('badge-success');

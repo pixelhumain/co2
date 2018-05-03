@@ -37,8 +37,7 @@ function checkPoll(){
 	//returning multple server checks in a unique ajax call
 	if(userId){
 		_checkLoggued();
-		if(typeof refreshNotifications != "undefined")
-		refreshNotifications(userId,"citoyens","");
+		if(typeof refreshNotifications != "undefined") refreshNotifications(userId,"citoyens","");
 	}
 	
 	//according to the loaded page 
@@ -3640,6 +3639,13 @@ function initKInterface(params){ console.log("initKInterface");
         showFloopDrawer(false);
     });
 
+    // 2 events for notifications
+    $('.btn-menu-notif').off().click(function(){
+      	showNotif();
+    });
+	$("#notificationPanelSearch").mouseleave(function(){
+		showNotif(false);
+	});
 
     $(".btn-show-mainmenu").click(function(){
         showFloopDrawer(false);
@@ -4089,10 +4095,3 @@ var co = {
 	city : function () { smallMenu.open("<h1> DashBoard City </h1>"); } ,
 	*/
 }	
-
-$(document).ready(function() { 
-	setTimeout( function () { checkPoll() }, 10000);
-	document.onkeyup = keyboardNav.checkKeycode;
-	if(notNull(userId) && userId!="") 
-		bindRightClicks();
-});

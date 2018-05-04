@@ -144,12 +144,15 @@
 	</div>
 </div>
 <script type="text/javascript">
+	docSlider=<?php echo $i; ?>;
 	jQuery(document).ready(function() {
-	$("#myCarousel").carousel();
-	// Enable Carousel Indicators
-$("ol.carousel-indicators > li").click(function(){
-    $("#myCarousel").carousel($(this).data("slide-to"));
-});
+		if(docSlider>0){
+			$("#myCarousel").carousel();
+			// Enable Carousel Indicators
+			$("ol.carousel-indicators > li").click(function(){
+			    $("#myCarousel").carousel($(this).data("slide-to"));
+			});
+		}
 	});
 </script>
 <?php } ?>

@@ -86,10 +86,7 @@
 	/*#btn-my-co{
 		margin-top: 15px;
 	}
-
-    #newsstream{
-        min-height:500px;
-    }*/
+    */
 
     #newsstream .loader,
     #noMoreNews{

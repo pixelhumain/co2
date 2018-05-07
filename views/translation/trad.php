@@ -496,6 +496,8 @@ var trad = {
 	"removeFromMyFavoritesPlaces":"<?php echo Yii::t("common","Remove from my favorites places") ?>",
 	"addZoneToNew":"<?php echo Yii::t("common","Add zone to news") ?>",
 	"addToMyFavoritesPlaces":"<?php echo Yii::t("common","Add to my favorites places") ?>",
+
+	"showmap" :"<?php echo Yii::t("common","Show map") ?>",
 };
 
 var tradDynForm = {

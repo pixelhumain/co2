@@ -762,7 +762,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	
 	$.each(data, function(key, val){ 
 		mylog.log("rolesShox",key, val);
-		if(typeof key != "undefined" && (typeof(params.id) != "undefined" || typeof(params["_id"]) !== "undefined")) n++; 
+		if(typeof key != "undefined" && (typeof val.id != "undefined" || typeof val["_id"] != "undefined")) n++; 
 		if(typeof val.rolesLink != "undefined"){
 			mylog.log(val.rolesLink);
 			$.each(val.rolesLink, function(i,v){

@@ -407,8 +407,8 @@ function connectPerson(connectUserId, callback)
 
 
 
-function disconnectTo(parentType,parentId,childId,childType,connectType, callback, linkOption) {
-	var messageBox = trad["removeconnection"+connectType];
+function disconnectTo(parentType,parentId,childId,childType,connectType, callback, linkOption, msg) { 
+	var messageBox = (notNull(msg)) ? msg : trad["removeconnection"+connectType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,
@@ -4036,10 +4036,3 @@ var co = {
 	city : function () { smallMenu.open("<h1> DashBoard City </h1>"); } ,
 	*/
 }	
-
-$(document).ready(function() { 
-	setTimeout( function () { checkPoll() }, 10000);
-	document.onkeyup = keyboardNav.checkKeycode;
-	if(notNull(userId) && userId!="") 
-		bindRightClicks();
-});

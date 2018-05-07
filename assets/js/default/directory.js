@@ -1067,7 +1067,7 @@ var directory = {
     mylog.log("lightPanel", params);
     
     str = "";
-    str += "<div class='col-xs-12 searchEntity entityLight no-padding'  id='entity"+params.id+"'>";
+    str += "<div class='col-xs-12 searchEntity entityLight no-padding "+params.elRolesList+"'  id='entity"+params.id+"'>";
     
     str += "<div class='entityLeft pull-left text-right padding-10 hidden-xs'>";
       if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined" /*&& location.hash != "#agenda"*/){

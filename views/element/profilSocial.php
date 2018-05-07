@@ -767,7 +767,6 @@
 
 <?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
-		'/js/cooperation/uiCoop.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 ?>

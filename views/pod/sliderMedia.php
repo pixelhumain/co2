@@ -65,11 +65,12 @@
 <?php 
 			$i=0;
 			if(!empty($medias)){
-			foreach ($medias as $data){ ?>
+			foreach ($medias as $data){
+				if(@$data["content"]["image"] && @$data["content"]["videoLink"]){ ?>
 				 <li><img src="<?php echo $data["content"]["image"] ?>" alt=""><span class="text-white text-center"><i class="fa fa-2x fa-play-circle-o"></i></span></li>
 	   
 		<?php $i++;
-		 } } ?>
+		 } } }?>
 		 <?php 
 		 	if(!empty($images)){
 			foreach ($images as $data){ ?>
@@ -88,11 +89,13 @@
 		<?php 
 			$i=0;
 			if(!empty($medias)){
-			foreach ($medias as $data){ ?>
+			foreach ($medias as $data){ 
+				if(@$data["content"]["image"] && @$data["content"]["videoLink"]){ 
+				?>
 				 <li data-target="#myCarousel" data-slide-to="<?php echo $i; ?>" class="<?php if($i==0) echo "active"; ?>"><img src="<?php echo $data["content"]["image"] ?>" alt=""><span class="text-white text-center"><i class="fa fa-2x fa-play-circle-o"></i></span></li>
 	   
 		<?php $i++;
-		 } } ?>
+		 } } } ?>
 		 <?php 
 		 	if(!empty($images)){
 			foreach ($images as $data){ ?>
@@ -109,12 +112,13 @@
 		<?php 
 			$i=0;
 			if(!empty($medias)){
-			foreach ($medias as $data){ ?>
+			foreach ($medias as $data){
+				if(@$data["content"]["image"] && @$data["content"]["videoLink"]){ ?>
 				 <div class="item <?php if($i==0) echo "active"; ?>">
 			      <iframe width="100%" height="400" src="<?php echo @$data["content"]["videoLink"] ?>" frameborder="0" allowfullscreen></iframe>
 			    </div>
 		<?php $i++;
-		 } } ?>
+		 } } } ?>
 		 <?php 
 		 	if(!empty($images)){
 			foreach ($images as $data){ ?>

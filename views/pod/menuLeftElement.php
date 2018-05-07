@@ -46,7 +46,36 @@
 	}
 ?>
 
-<ul id="subsubMenuLeft">
+
+<?php if(@Yii::app()->session["userId"] && @Yii::app()->session["userId"] != (string)$element["_id"]){ ?>
+	<style>
+		.boxBtnLink{
+			background-color: #454444;
+			border-radius: 5px;
+			margin-top:7px;
+		}
+		.boxBtnLink a.menu-linksBtn,
+		.boxBtnLink .nav.navbar-nav,
+		.boxBtnLink .dropdown {
+			width: 100%;
+		}
+		.boxBtnLink a.menu-linksBtn {
+			padding:10px;
+		}
+	</style>
+	<div class="pull-left col-xs-12 no-padding margin-bottom-15 shadow2 boxBtnLink">
+        	<?php $this->renderPartial('../element/linksMenu', 
+    			array("linksBtn"=>$linksBtn,
+    					"elementId"=>(string)$element["_id"],
+    					"elementType"=>$type,
+    					"elementName"=> $element["name"],
+    					"openEdition" => $openEdition) 
+    			); 
+    		?>
+	</div>
+<?php } ?>
+
+<ul id="subsubMenuLeft" class="pull-left">
 	
 <?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
 		<li class="visible-xs">

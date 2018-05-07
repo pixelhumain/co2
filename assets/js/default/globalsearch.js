@@ -460,7 +460,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
               str += '</div>';
 
            	if(countData==0 && searchTypeGS == "cities"){
-                str="<div class='text-center col-md-12 col-sm-12 col-xs-12'>"+
+                str="<div class='text-center col-md-12 col-sm-12 col-xs-12 padding-10'>"+
                       '<label class="text-dark italic"><i class="fa fa-ban"></i> '+trad.nocityfoundfor+' "'+search+'"</label><br/>'+
                       '<span class="info letter-blue"><i class="fa fa-info-circle"></i> '+trad.explainnofoundcity+'</span><br/>'+
                       '<button class="btn btn-blue bg-blue text-white main-btn-create" '+

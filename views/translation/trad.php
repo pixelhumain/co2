@@ -494,7 +494,7 @@ var trad = {
 	"You did not vote" : "<?php echo Yii::t("cooperation", "You did not vote") ?>",
 	"You voted for this answer" : "<?php echo Yii::t("cooperation", "You voted for this answer") ?>",
 	"removeFromMyFavoritesPlaces":"<?php echo Yii::t("common","Remove from my favorites places") ?>",
-	"addZoneToNew":"<?php echo Yii::t("common","Add zone to new") ?>",
+	"addZoneToNew":"<?php echo Yii::t("common","Add zone to news") ?>",
 	"addToMyFavoritesPlaces":"<?php echo Yii::t("common","Add to my favorites places") ?>",
 };
 

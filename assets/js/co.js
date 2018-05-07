@@ -407,8 +407,8 @@ function connectPerson(connectUserId, callback)
 
 
 
-function disconnectTo(parentType,parentId,childId,childType,connectType, callback, linkOption) {
-	var messageBox = trad["removeconnection"+connectType];
+function disconnectTo(parentType,parentId,childId,childType,connectType, callback, linkOption, msg) { 
+	var messageBox = (notNull(msg)) ? msg : trad["removeconnection"+connectType];
 	$(".disconnectBtnIcon").removeClass("fa-unlink").addClass("fa-spinner fa-spin");
 	var formData = {
 		"childId" : childId,

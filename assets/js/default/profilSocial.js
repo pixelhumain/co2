@@ -745,12 +745,12 @@ function loadGraph(){
 		$("#listRoles").show(300);
         $("#listRoles").html("<i class='fa fa-filter'></i> "+trad.sortbyrole+": ");
         $("#listRoles").append("<a class='btn btn-link btn-sm letter-blue favElBtn favAllBtn' "+
-            "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer\",1)'>"+
+            "href='javascript:directory.toggleEmptyParentSection(\".favSection\",null,\".searchEntityContainer, .entityLight\",1)'>"+
             " <i class='fa fa-refresh'></i> <b>"+trad["seeall"]+"</b></a>");
         	$.each( roles,function(k,o){
                 $("#listRoles").append("<a class='btn btn-link btn-sm favElBtn letter-blue "+slugify(k)+"Btn' "+
                                 "data-tag='"+slugify(k)+"' "+
-                                "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer\",1)'>"+
+                                "href='javascript:directory.toggleEmptyParentSection(\".favSection\",\"."+slugify(k)+"\",\".searchEntityContainer, .entityLight\",1)'>"+
                                   k+" <span class='badge'>"+o.count+"</span>"+
                             "</a>");
         	});

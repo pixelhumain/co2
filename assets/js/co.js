@@ -4036,10 +4036,3 @@ var co = {
 	city : function () { smallMenu.open("<h1> DashBoard City </h1>"); } ,
 	*/
 }	
-
-$(document).ready(function() { 
-	setTimeout( function () { checkPoll() }, 10000);
-	document.onkeyup = keyboardNav.checkKeycode;
-	if(notNull(userId) && userId!="") 
-		bindRightClicks();
-});

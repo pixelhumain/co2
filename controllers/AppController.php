@@ -313,6 +313,9 @@ class AppController extends CommunecterController {
             $element = Survey::getById($id);
         }
 
+        if(!empty($element["status"]) && $element["status"] == "deleted")
+             $this->redirect( Yii::app()->createUrl($controller->module->id) );
+
         if(@$element["parentId"] && @$element["parentType"] && 
             $element["parentId"] != "dontKnow" && $element["parentType"] != "dontKnow")
             $element['parent'] = Element::getSimpleByTypeAndId( $element["parentType"], $element["parentId"]);

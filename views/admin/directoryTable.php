@@ -323,7 +323,7 @@ function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 				status.push({"key":"toBeValidated","label":"To be validated"});
 				actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 validateThisBtn"><i class="fa fa-ban text-red"></i> Validate '+type+'</a> </li>';
 			}
-			actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 deleteThisBtn"><i class="fa fa-trash text-red"></i>Delete</a> </li>';
+			actions += '<li><a href="javascript:;" data-id="'+id+'" data-type="'+type+'" class="margin-right-5 deleteThisBtn"><i class="fa fa-trash text-red"></i>Delete!</a> </li>';
 			//TODO
 			
 			// else if( type == "<?php echo Organization::COLLECTION ?>" ) {
@@ -644,6 +644,34 @@ function bindAdminBtnEvents(){
 		$(".deleteThisBtn").off().on("click",function () 
 		{
 			mylog.log("deleteThisBtn click");
+			var id = $(this).data("id");
+			var type = $(this).data("type");
+
+			var url = baseUrl+"/"+moduleId+"/element/delete/id/"+id+"/type/"+type;
+		    mylog.log("deleteElement", url);
+			// var param = new Object;
+			// param.reason = $("#reason").val();
+			// $.ajax({
+		 //        type: "POST",
+		 //        url: url,
+		 //        data: param,
+		 //       	dataType: "json",
+		 //    	success: function(data){
+			//     	if(data.result){
+			// 			toastr.success(data.msg);
+			// 			console.log("Retour de delete : "+data.status);
+			// 			if (data.status == "deleted") 
+			// 				urlCtrl.loadByHash("#search");
+			// 			else 
+			// 				urlCtrl.loadByHash("#page.type."+type+".id."+id);
+			//     	}else{
+			//     		toastr.error(data.msg);
+			//     	}
+			//     },
+			//     error: function(data){
+			//     	toastr.error("Something went really bad ! Please contact the administrator.");
+			//     }
+			// });
 	        /*$(this).empty().html('<i class="fa fa-spinner fa-spin"></i>');
 	        var btnClick = $(this);
 	        var id = $(this).data("id");

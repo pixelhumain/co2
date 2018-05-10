@@ -685,11 +685,11 @@ function toggleFilters(what){
  	scopeHtml ='<div id="scopes-news-form" class="no-padding">'+
  			'<div id="news-scope-search" class="col-md-12 col-sm-12 col-xs-12 no-padding">'+
 	 			'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.addplacestyournews+'</label><br>'+
-	 			'<div class="bg-white" style="height:26px;">'+
+	 			'<div class="bg-white padding-10">'+
 	            '<div id="input-sec-search" class="hidden-xs col-xs-12 col-md-4 col-sm-4 col-lg-4">'+
 	                '<div class="input-group shadow-input-header">'+
 	                      '<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
-	                      '<input type="text" class="form-control input-global-search" id="searchOnCityNews" autocomplete="off" style="height: 25px;border-radius: 0px;" placeholder="'+trad.searchcity+' ...">'+
+	                      '<input type="text" class="form-control input-global-search" id="searchOnCityNews" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
 	                '</div>'+
 	                '<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
 	                '</div>'+

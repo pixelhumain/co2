@@ -191,6 +191,31 @@ class DatamigrationController extends CommunecterController {
 		}
 	}
 	/* 
+	* update type french instead of key
+	*/
+	public function actionUpdateTypeRessources(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+		  $ress=PHDB::find(Ressource::COLLECTION);
+		  $i=0;
+		  foreach($ress as $key => $data){
+			  $label="";
+			  if(@$data["type"]=="compétence")
+			  		$label="competence";
+			  else if(@$data["type"]=="matériel")
+			  	$label="material";
+			  if($label!=""){
+				  		echo '=>Ressoruce id : '.$key."<br/>last type : ".$data["type"]."///// New type : ".$label."<br/>";
+				  		PHDB::update(Ressource::COLLECTION,
+							array("_id" => $data["_id"]) , 
+							array('$set' => array("type" => $label))			
+						);
+				  		$i++;
+			 		}
+			}
+			echo "nombre de ressource updaté type to clé////////////// ".$i;
+		}
+	}
+	/* 
 	* Scope public in news not well formated (ancient news)
 	*	Condition: if not from communevent
 	*	News uploadNewsImage

@@ -86,10 +86,7 @@
 	/*#btn-my-co{
 		margin-top: 15px;
 	}
-
-    #newsstream{
-        min-height:500px;
-    }*/
+    */
 
     #newsstream .loader,
     #noMoreNews{
@@ -230,7 +227,7 @@ jQuery(document).ready(function() {
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
-        if(e.keyCode == 13){
+        if(e.keyCode == 13 || $(this).val() == ""){
             startNewsSearch(true); 
             KScrollTo("#content-social");
         }
@@ -242,7 +239,7 @@ jQuery(document).ready(function() {
     $("#second-search-bar").keyup(function(e){
         $("#main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
-        if(e.keyCode == 13){            
+        if(e.keyCode == 13 || $(this).val() == ""){            
             startNewsSearch(true);
             KScrollTo("#content-social");
          }

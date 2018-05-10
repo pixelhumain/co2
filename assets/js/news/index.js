@@ -714,7 +714,7 @@ function toggleFilters(what){
 						"data-original-title='Remove'>"+
 							"<i class='fa fa-times-circle'></i>"+
 						"</span>";
-			    	scopeHtml += "<div class='scope-order text-red' data-level='"+value.level+"''>"+
+			    	scopeHtml += "<div class='scope-order text-red' data-level='"+value.level+"'>"+
 			    				btnScopeAction+
 			    				"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
 									"class='item-scope-checker item-scope-input' "+
@@ -756,7 +756,7 @@ function bindScopesNewsEvent(news){
 
 	mylog.log("bindScopesNewsEvent", news);
 
-	$(".manageMultiscopes").off().on("click", function(){
+	$(".manageMultiscopes, #news-scopes-container .item-scope-checker").off().on("click", function(){
 		mylog.log("manageMultiscopes");
 		addScope=$(this).data("add");
 		scopeValue=$(this).data("scope-value");
@@ -766,8 +766,10 @@ function bindScopesNewsEvent(news){
 			newScope=myScopes[myScopes.typeNews][key];
 			newScope.active=true;
 			newsScopes[key] = newScope;
-			$(this).attr("data-add",false).attr("data-original-title","Remove");
-			$(this).find("i").removeClass("fa-plus-circle").addClass("fa-times-circle");
+			//$(this).attr("data-add",false).attr("data-original-title","Remove");
+			$("span[data-scope-key='"+key+"']").attr("data-add",false).attr("data-original-title","Remove");
+			//$(this).find("i").removeClass("fa-plus-circle").addClass("fa-times-circle");
+			$(this).parent().find(".manageMultiscopes i").removeClass("fa-plus-circle").addClass("fa-times-circle");
 			pushHtml=$(this).parent().get();
 			$(this).parent().remove();
 			mylog.log("manageMultiscopes pushHtml", pushHtml);

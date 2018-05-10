@@ -13,7 +13,7 @@ function initSearchInterface(){
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
-        if(e.keyCode == 13){
+        if(e.keyCode == 13 || $(this).val() == "" ){
             searchPage=0;
             search.value = $(this).val();
             pageCount=true;
@@ -34,7 +34,7 @@ function initSearchInterface(){
     $("#second-search-bar").keyup(function(e){
         $("#main-search-bar").val($(this).val());
         //$("#input-search-map").val($(this).val());
-        if(e.keyCode == 13){
+        if(e.keyCode == 13 || $(this).val() == ""){
             //initTypeSearch(typeInit);
             scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
             simpleScroll(scrollH);

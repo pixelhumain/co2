@@ -291,7 +291,7 @@
       $textForm = Yii::t("common","Post a message in the wall of").
                   " <b>".$contextName."</b>";
     else
-      $textForm = Yii::t("common","Write a private message to")." ".$contextName;
+      $textForm = Yii::t("common","Write a private message to")." <b>".$contextName."</b>";
   }
   else if((isset($type) && $type == Person::COLLECTION) || (isset($parent) && !@$type)){
     if((@$isLive && $isLive==true) || !@Yii::app()->session["userId"] || (Yii::app()->session["userId"] !=$contextParentId)){
@@ -313,7 +313,7 @@
       }else{
         $headerName= "Journal de : ".$contextName;
         $topTitle = $headerName;
-        $textForm = Yii::t("common","Write a private message to")." ".$contextName;
+        $textForm = Yii::t("common","Write a private message to")." <b>".$contextName."</b>";
       }
     }
     else{
@@ -342,7 +342,7 @@
      $textForm = Yii::t("common","Post a message in the wall of").
                   " <b>".$contextName."</b>";
     else
-      $textForm = Yii::t("common","Write a private message to")." ".$contextName;
+      $textForm = Yii::t("common","Write a private message to")." <b>".$contextName."</b>";
   }else if( isset($type) && $type == Event::COLLECTION && isset($parent) ){
     $contextName = $parent["name"];
     $contextIcon = "calendar";
@@ -369,7 +369,7 @@
     //$iconBegin= "globe";
     $headerName= "Actualités de ".$city["name"];
     $topTitle = ""; //$headerName;
-    $textForm = Yii::t("common","Write a idea, a message in the city wall of")." ".$contextName;
+    $textForm = Yii::t("common","Write a idea, a message in the city wall of")." <b>".$contextName."</b>";
 
   }
   /*else if( isset($type) && $type == "pixels"){

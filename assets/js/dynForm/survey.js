@@ -101,6 +101,16 @@ dynForm = {
 				$("#ajaxFormModal .multiChoicecheckboxSimple #multiChoice").remove();
 
 				$("#ajaxFormModal .locationBtn").html("<i class='fa fa-home'></i> Sélectionner une commune");
+
+				
+			    if(typeof data == "undefined" || data == null){
+			    	mylog.warn("--------------- CLEAN addmultifield");
+			    	$(".addmultifield").val("");
+			    }
+				//if(typeof data != "undefined"){
+					console.log("data dyn survey", data);
+					//$(".addmultifield"+optKey).val(optVal);
+				//}
 				//getScopeNewsHtml("#ajaxFormModal .infoScopecustom");
 				//myScopes.type = "communexion";
 				//$("#ajaxFormModal .infoScopecustom").html(constructScopesHtml(false));

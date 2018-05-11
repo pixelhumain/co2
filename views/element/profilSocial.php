@@ -217,18 +217,6 @@
 									  "openEdition" => $openEdition) ); 
 		?>
 
-			<?php if(@Yii::app()->session["userId"]){ ?>
-			<div class="blockUsername">
-                	<?php $this->renderPartial('../element/linksMenu', 
-            			array("linksBtn"=>$linksBtn,
-            					"elementId"=>(string)$element["_id"],
-            					"elementType"=>$type,
-            					"elementName"=> $element["name"],
-            					"openEdition" => $openEdition) 
-            			); 
-            		?>
-			</div>
-			<?php } ?>
 		</div>
     </section>
     
@@ -685,7 +673,7 @@
     ?>
 
 	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 
-			style="margin-top:40px;">  		
+			style="margin-top:40px;padding: 5px;">  		
 	    <?php $params = array(  "element" => @$element, 
                                 "type" => @$type, 
                                 "edit" => @$edit,
@@ -693,6 +681,7 @@
                                 "countNotifElement"=>@$countNotifElement,
                                 "invitedMe" => @$invitedMe,
                                 "openEdition" => $openEdition,
+                                "linksBtn" => $linksBtn
                                 );
 
 	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
@@ -805,7 +794,7 @@
 
 
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-10 no-padding central-section pull-right">
-		
+
 		<?php    
 			$marginCentral="";
 			$classDescH="hidden"; 
@@ -817,7 +806,7 @@
 			if($typeItem != Person::COLLECTION){ 
 		?>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:30px;">
-				<span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
+				<!-- <span id="desc-event" class="margin-top-10 <?php echo $classDescH; ?>">
 					<b><i class="fa fa-angle-down"></i> 
 					<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","Main description") ?></b>
 					<hr>
@@ -826,15 +815,17 @@
 									@$element["description"] : 
 									"<span class='label label-info'> ".Yii::t("common","No description registred")."</span>"; ?>
 					</span>
-				</span>
+				</span> -->
 			</div>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
-				<button class="btn btn-link btn-xs pull-right" id="btn-hide-desc">
+			<!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs">
+				
+	    		<button class="btn btn-link btn-xs pull-right" id="btn-hide-desc">
 					<?php echo $classBtnDescH; ?>
 				</button>
+				
 				<br>
 				<hr>
-			</div>
+			</div> -->
 		<?php }else{ $marginCentral="50"; } ?>
 
 		<!-- Permet de faire le convertion en HTML -->
@@ -898,7 +889,6 @@
 
 <?php	$cssAnsScriptFilesModule = array(
 		'/js/default/profilSocial.js',
-		'/js/cooperation/uiCoop.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 ?>

@@ -32,14 +32,12 @@ $cssAnsScriptFilesModule = array(
   '/js/news/newsHtml.js',
   '/js/menus/multi_tags_scopes.js',
   '/js/cooperation/uiModeration.js',
-  '/js/cooperation/uiCoop.js',
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
 
 $cssAnsScriptFilesModule = array(
   '/css/news/newsSV.css',
-  '/css/cooperation.css',
 //  '/js/comments.js',
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->theme->baseUrl."/assets");

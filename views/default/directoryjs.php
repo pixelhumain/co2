@@ -25,7 +25,7 @@
 }
 #col-btn-type-directory hr{
   border-top: 1px solid #f5f1f1;
-  width: 70%;
+  width: 95%;
   float: right;
 }
 #col-btn-type-directory .btn-directory-type,

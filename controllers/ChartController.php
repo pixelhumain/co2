@@ -15,11 +15,11 @@ class ChartController extends CommunecterController {
   	public function actions()
 	{
 	    return array(
-	        'index'       		=> 'citizenToolKit.controllers.chart.IndexAction',
-	        'header'       		=> 'citizenToolKit.controllers.chart.HeaderAction',
-			'addchartsv'       => 'citizenToolKit.controllers.chart.AddChartSvAction',
-			'editchart'       => 'citizenToolKit.controllers.chart.EditChartAction',
-			'get'       => 'citizenToolKit.controllers.chart.GetJsonAction',
+	        'index'       => 'citizenToolKit.controllers.chart.IndexAction',
+	        'header'      => 'citizenToolKit.controllers.chart.HeaderAction',
+			'addchartsv'  => 'citizenToolKit.controllers.chart.AddChartSvAction',
+			'editchart'   => 'citizenToolKit.controllers.chart.EditChartAction',
+			'get'         => 'citizenToolKit.controllers.chart.GetJsonAction'
 	    );
 	}
 }

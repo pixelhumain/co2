@@ -444,7 +444,7 @@ function updateNews(idNews, newText, type){
 }
 
 function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommentId*/){
-	getMediaFromUrlContent(idTextArea,"#results",1);
+	processUrl.getMediaFromUrlContent(idTextArea,"#results",1);
 	if($("#form-news-update #results").html!="") $("#form-news-update #results").show();
 	mentionsInit.get(idTextArea);
 	$(".removeMediaUrl").click(function(){

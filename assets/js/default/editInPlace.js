@@ -425,8 +425,7 @@ function bindAboutPodElement() {
 	            	init : function(){ 
 	            		mylog.log("init ParentId");
 		            	$("#ajaxFormModal #parentId").off().on("change",function(){
-
-		            		var selected = $(':selected', this);
+							var selected = $(':selected', this);
 		            		mylog.log("change ParentId", selected, selected.data('type'));
 	    					$("#ajaxFormModal #parentType").val(selected.data('type'));
 		            	});

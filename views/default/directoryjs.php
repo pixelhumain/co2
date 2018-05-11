@@ -25,7 +25,7 @@
 }
 #col-btn-type-directory hr{
   border-top: 1px solid #f5f1f1;
-  width: 70%;
+  width: 95%;
   float: right;
 }
 #col-btn-type-directory .btn-directory-type,
@@ -562,7 +562,11 @@
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
         <div class="col-md-10 col-sm-9 col-xs-12 pull-right">
-          <div class="no-padding col-xs-12" id="dropdown_search"></div>
+          <div class="no-padding col-xs-12" id="dropdown_search">
+            <div class='col-md-12 col-sm-12 text-center search-loader text-dark'>
+                <i class='fa fa-spin fa-circle-o-notch'></i> <?php echo Yii::t("common","Currently researching") ?> ...
+            </div>
+          </div>
           <div class="no-padding col-xs-12 text-left footerSearchContainer"></div>
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
           <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->

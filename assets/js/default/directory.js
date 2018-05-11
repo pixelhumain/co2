@@ -1118,6 +1118,11 @@ var directory = {
 
       if(typeof params.section != "undefined"){
         str += "<div class='entityType'>" + tradCategory[params.section];
+
+        if(typeof params.category != "undefined") {
+          labelType = ( typeof tradCategory[params.category] != "undefined" ) ? tradCategory[params.category] : params.category+" :: to Trad" ;
+          str += " > " + labelType;
+        }
         if(typeof params.subtype != "undefined") {
           subTypeLab = ( typeof tradCategory[params.subtype] != "undefined" ) ? tradCategory[params.subtype] : params.subtype+" :: to Trad" ;
           str += " > " + subTypeLab;
@@ -1343,9 +1348,10 @@ var directory = {
       str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
  
     if($.inArray(params.type, ["poi","classified","ressources"])>=0 && typeof params.category != "undefined"){
-      str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
+      str += "<div class='entityType col-xs-12 no-padding'><span class='uppercase bold pull-left'>" + tradCategory[params.section] + " </span><span class='pull-left'>";
+      if(typeof params.category != "undefined") str += " > " + tradCategory[params.category];
       if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
-      str += "</div>";
+      str += "</span></div>";
     }
     if(notEmpty(params.typeEvent))
       str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.typeEvent] + "</span></div>";  
@@ -1830,10 +1836,12 @@ var directory = {
             str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
          
             if(typeof params.category != "undefined"){
-              str += "<div class='entityType'><span class='uppercase bold'>" + tradCategory[params.section] + "</span> > " + tradCategory[params.category];
+              str += "<div class='entityType col-xs-12 no-padding'><span class='uppercase bold pull-left'>" + tradCategory[params.section] + "</span><span class='pull-left'>";
+              if(typeof params.category != "undefined") str += " > " + tradCategory[params.category];
               if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
-              str += "</div>";
+              str += "</span></div>";
             }
+              
 
             var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
             str += "<a  href='"+params.hash+"' class='entityName text-dark lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>"+

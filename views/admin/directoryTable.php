@@ -646,9 +646,44 @@ function bindAdminBtnEvents(){
 			mylog.log("deleteThisBtn click");
 			var id = $(this).data("id");
 			var type = $(this).data("type");
-
 			var url = baseUrl+"/"+moduleId+"/element/delete/id/"+id+"/type/"+type;
-		    mylog.log("deleteElement", url);
+			bootbox.confirm("confirm please !!",
+        	function(result) 
+        	{
+				if (!result) {
+					btnClick.empty().html('<i class="fa fa-thumbs-down"></i>');
+					return;
+				} else {
+
+					
+					
+
+					
+				    mylog.log("deleteElement", url);
+
+				 	var param = new Object;
+					// param.reason = $("#reason").val();
+					$.ajax({
+				        type: "POST",
+				        url: url,
+				        data: param,
+				       	dataType: "json",
+				    	success: function(data){
+					    	if(data.result){
+								toastr.success(data.msg);
+								console.log("Retour de delete : "+data.status);
+								urlCtrl.loadByHash(location.hash);
+					    	}else{
+					    		toastr.error(data.msg);
+					    	}
+					    },
+					    error: function(data){
+					    	toastr.error("Something went really bad ! Please contact the administrator.");
+					    }
+					});
+				}
+			});
+
 			// var param = new Object;
 			// param.reason = $("#reason").val();
 			// $.ajax({

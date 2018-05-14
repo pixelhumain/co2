@@ -2158,7 +2158,7 @@ var directory = {
 		
 		str = '';
 		str += '<a href="javascript:" class="col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity" ';
-			str += 'data-scope-value="' + params._id.$id  + '"' + 
+			str += 'data-scope-value="' + params.key  + '"' + 
 					'data-scope-name="' + params.name + '"' +
 					'data-scope-level="'+levelSearchCity+'"' +
 					'data-scope-type="'+typeSearchCity+'"' +
@@ -2235,7 +2235,7 @@ var directory = {
 
 		str = '';
 		str += '<a href="javascript:" class="col-md-12 col-sm-12 col-xs-12 no-padding communecterSearch item-globalscope-checker searchEntity" ';
-			str += 'data-scope-value="' + params._id.$id  + '" ' + 
+			str += 'data-scope-value="' + params.key  + '" ' + 
 					'data-scope-name="' + params.name + '" ' +
 					'data-scope-level="'+levelSearchCity+'" ' +
 					'data-scope-type="'+typeSearchCity+'" ' +

@@ -1589,4 +1589,31 @@ La vie en santé;Santé;;
 		echo $i." importé <br/>";
 		echo $v." dynform <br/>";
 	}
+
+	public function actionTestRegex(){
+
+		$address = array("addressLocality" => "Girmont-Val d'Ajol",
+			"addressCountry" => "FR",
+			"postalCode" => "88340");
+
+		$regexCity = Search::accentToRegex(strtolower($address["addressLocality"]));
+        //var_dump($regexCity); exit;
+		$where = array('$or'=> 
+					array(  
+						array("name" => new MongoRegex("/^".$regexCity."/i")),
+						array("alternateName" => new MongoRegex("/^".$regexCity."/i")),
+						array("postalCodes.name" => new MongoRegex("/^".$regexCity."/i"))
+					) );
+		$where = array('$and' => array($where, array("country" => strtoupper($address["addressCountry"])) ) );
+
+		if( !empty($address["postalCode"]) ){
+			$where = array('$and' => array($where, array("postalCodes.postalCode" => $address["postalCode"]) ) );
+		}
+        $fields = array("name", "geo", "country", "level1", "level1Name","level2", "level2Name","level3", "level3Name","level4", "level4Name", "osmID", "postalCode", "insee");
+
+
+        //Rest::json($where);exit;
+		$city = PHDB::findOne(City::COLLECTION, $where, $fields);
+		Rest::json($city);exit;
+	}
 }

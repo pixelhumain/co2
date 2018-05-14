@@ -1,31 +1,50 @@
 function initSearchInterface(){
     
-  /*  $("#main-search-bar").keyup(function(e){
-        $("#second-search-bar").val($(this).val());
-        $("#input-search-map").val($(this).val());
-        if(e.keyCode == 13){
-            initTypeSearch(typeInit);
-            startSearch(0, indexStepInit, searchCallback);
-            $(".btn-directory-type").removeClass("active");
-            KScrollTo("#content-social");
-        }
-    });*/
+    if(searchObject.text != "") $("#main-search-bar, #second-search-bar").val(searchObject.text);
+    $(".theme-header-filter").off().on("click",function(){
+            if(!$("#filter-thematic-menu").is(":visible") || $(this).hasClass("toogle-filter"))
+                $("#filter-thematic-menu").toggle();
+    });
+    
+    $("#filters-container-menu .theme-header-filter, #filters-container-menu .scope-header-filter").click(function(){
+        simpleScroll(0, 500);
+    });
+
+    $(".scope-header-filter").off().on("click",function(){
+        $("#searchOnCity").trigger("click");
+    });
+    
+    $(".btn-select-filliaire").off().on("click",function(){
+        mylog.log(".btn-select-filliaire");
+        var fKey = $(this).data("fkey");
+        myMultiTags = {};
+        searchObject.text="";
+        $.each(filliaireCategories[fKey]["tags"], function(key, tag){
+            tag=(typeof tradTags[tag] != "undefined") ? tradTags[tag] : tag;
+            searchObject.text+="#"+tag+" ";
+        });
+        $("#filter-thematic-menu").hide();
+        $("#main-search-bar, #second-search-bar").val(searchObject.text);
+        mylog.log("myMultiTags", myMultiTags);
+        
+        searchObject.page=0;
+        pageCount=true;
+        searchObject.count=true;
+        if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+        
+        startSearch(0, indexStepInit, searchCallback);
+    });
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == "" ){
-            searchPage=0;
-            search.value = $(this).val();
+            searchObject.page=0;
+            searchObject.text = $(this).val();
             pageCount=true;
-            search.count=true;
-            if(search.app=="territorial") searchEngine.initTerritorialSearch();
-            //if(typeof search.value == "undefined")
+            searchObject.count=true;
+            if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
             startSearch(0, indexStepInit, searchCallback);
-           // else
-             //   autoCompleteSearch(search.value, null, null, null, null);
-            //pageCount=false;
-            //KScrollTo("#dropdown_search");
-         }
+        }
     });
     $("#main-search-bar").change(function(){
         $("#second-search-bar").val($(this).val());
@@ -39,14 +58,14 @@ function initSearchInterface(){
             scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
             simpleScroll(scrollH);
             searchPage=0;
-            search.value = $(this).val();
-            search.count=true;
+            searchObject.text = $(this).val();
+            searchObject.count=true;
             pageCount=true;
-            if(search.app=="territorial") searchEngine.initTerritorialSearch();
-            //if(typeof search.value == "undefined")
+            if(searchObject.initType=="territorial") searchAllEngine.initSearch();
+            //if(typeof searchObject.text == "undefined")
             startSearch(0, indexStepInit, searchCallback);
             //else
-             //   autoCompleteSearch(search.value, null, null, null, null);
+             //   autoCompleteSearch(searchObject.text, null, null, null, null);
             $(".btn-directory-type").removeClass("active");
             //KScrollTo("#content-social");
          }
@@ -69,19 +88,19 @@ function initSearchInterface(){
         if(e.keyCode == 13){
             if(typeInit == "all") initTypeSearch("allSig");
             else initTypeSearch(typeInit);
-            search.value = $(this).val();
-            search.count=true;
+            searchObject.text = $(this).val();
+            searchObject.count=true;
             pageCount=true;
-            if(search.app=="territorial") searchEngine.initTerritorialSearch();
+            if(searchObject.app=="territorial") searchAllEngine.initSearch();
             startSearch(0, indexStepInit, searchCallback);
             $(".btn-directory-type").removeClass("active");
          }
     });
 
-    $("#menu-map-btn-start-search, #menu-btn-start-search, #main-search-bar-addon").off().click(function(){
+    $("#menu-map-btn-start-search, #menu-btn-start-search, #main-search-bar-addon").off().on("click",function(){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
-        search.value=$("#main-search-bar").val();
+        searchObject.text=$("#main-search-bar").val();
         console.log("typeInit", typeInit);
         if(typeInit == "all") initTypeSearch("allSig");
         else initTypeSearch(typeInit);
@@ -90,7 +109,7 @@ function initSearchInterface(){
     });
 
 
-    $(".main-btn-create").click(function(){
+    $(".main-btn-create").off().on("click",function(){
         currentKFormType = $(this).data("ktype");
         var type = $(this).data("type");
 
@@ -178,12 +197,13 @@ function bindLeftMenuFilters () {
         searchType = [ typeInit ];
         indexStepInit = 100;
         pageCount=true;
-        search.count=true;
+        searchObject.count=true;
         
         if( $(this).hasClass( "active" ) )
         {
             sectionKey = null;
-            $('#searchTags').val("");
+            //searchObject.tags=[];
+            if(typeof searchObject.section != "undefined") delete searchObject.section;
             $('.classifiedSection').remove();
             $(".label-category,.resultTypes").html("");
         } 
@@ -203,6 +223,8 @@ function bindLeftMenuFilters () {
                 $("#section-price").hide();
                 $("#priceMin").val("");
                 $("#priceMax").val("");
+                delete searchObject.priceMin;
+                delete searchObject.priceMax;
                 KScrollTo("#container-scope-filter");
             }
 
@@ -223,16 +245,17 @@ function bindLeftMenuFilters () {
                 bindLeftMenuFilters ();
                 classified.currentLeftFilters = null;
             }
-            if( $(this).data("key") == "all" ) sectionKey = "";
-            $('#searchTags').val( sectionKey );
+            if( $(this).data("key") == "all" ) delete searchObject.section;//sectionKey = "";
+            searchObject.section =  sectionKey;
             //alert("section : " + $('#searchTags').val());
         }
 
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
         
-
-        if(sectionKey)
+        if(typeof searchObject.searchSType != "undefined") delete searchObject.searchSType;
+        if(typeof searchObject.subType != "undefined") delete searchObject.subType;
+        if(typeof searchObject.section != "undefined")
             $(this).addClass("active");
 
         startSearch(0, indexStepInit, searchCallback); 
@@ -251,14 +274,16 @@ function bindLeftMenuFilters () {
         //alert(".btn-select-category-1");
         searchType = [ typeInit ];
         var searchTxt = "";
-        var section = $('#searchTags').val();
+        //var section = searchObject.tags.join(",");//$('#searchTags').val();
         var classType = $(this).data("keycat");
         console.log("bindLeftMenuFilters sectionKey", sectionKey);
         // Event for count in DB
         pageCount=true;
-        search.count=true;
+        searchObject.count=true;
+        if(typeof searchObject.subType != "undefined") delete searchObject.subType;
         if( $(this).hasClass( "active" ) ){
-            searchTxt = sectionKey;
+            if(typeof searchObject.searchSType != "undefined") delete searchObject.searchSType;
+            //searchObject.tags=[sectionKey];//searchTxt = sectionKey;
             $(this).removeClass( "active" );
             $(".keycat-"+classType).addClass("hidden"); 
         }else{
@@ -267,20 +292,20 @@ function bindLeftMenuFilters () {
 
             $(".keycat").addClass("hidden");
             $(".keycat-"+classType).removeClass("hidden");  
-
-            if(typeof sectionKey != "undefined" && typeof sectionKey != null)
-                searchTxt = sectionKey+",";
-            
-            searchTxt += classType; 
+            searchObject.searchSType=classType;
+            //if(typeof sectionKey != "undefined" && typeof sectionKey != null)
+            //    searchObject.tags=[sectionKey];//searchTxt = sectionKey+",";
+            //searchObject.tags.push(classType);
+            //searchTxt += classType; 
         }
 
-        $('#searchTags').val(searchTxt);
+        //$('#searchTags').val(searchTxt);
         //alert("section : " + $('#searchTags').val());
         startSearch(0, indexStepInit, searchCallback);  
     });
 
-    $(".btn-select-category-services").off().on("click", function(){ //alert("onclick");
-        var tags = "";
+    $(".btn-select-category-services").off().on("click", function(){ alert("onclick");
+        searchObject.tags=[];//tags = "";
         var keycat = $(this).data("keycat");
         if( $(this).hasClass( "active" ) ){
             $(".btn-select-category-services[data-keycat='"+keycat+"']").removeClass( "active" );
@@ -295,42 +320,48 @@ function bindLeftMenuFilters () {
         $.each($("#page .btn-select-category-services"), function (key, value){
             console.log("checked ?", $(this).val());
             if($(this).hasClass( "active" )){
-                if(tags!="") tags+=",";
-                tags+=$(this).data("keycat");
+                //if(tags!="") tags+=",";
+                searchObject.tags.push($(this).data("keycat"));//tags+=$(this).data("keycat");
             }
         });
-        $('#searchTags').val(tags);
+        //$('#searchTags').val(tags);
         startSearch(0, indexStepInit, searchCallback); 
     });
 
     $(".keycat").off().on("click", function(){
-        searchType = [ typeInit ];
+        searchObject.types = [ typeInit ];
+        //searchObject.tags=[];
         var searchTxt = "";
         var classType = $(this).data("categ");
         var classSubType = $(this).data("keycat");
         // Event for count in DB
         pageCount=true;
-        search.count=true;
+        searchObject.count=true;
         if( $(this).hasClass( "active" ) ){
-            if(typeof sectionKey != "undefined" && typeof sectionKey != null)
-                searchTxt = sectionKey+","+classType;
-            else
-                searchTxt = classType;
+            //searchObject.tags.push(classType);
+            //if(typeof sectionKey != "undefined" && typeof sectionKey != null)
+            //    searchObject.tags.push(sectionKey);//searchTxt = sectionKey+","+classType;
+            if(typeof searchObject.subType != "undefined") delete searchObject.subType;
+            //else
+                //searchTxt = classType;
             $(this).removeClass( "active" );
         }else{
             $(".keycat").removeClass("active");
             $(this).addClass("active");
-            
-            if(typeof sectionKey != "undefined" && typeof sectionKey != null)
-                searchTxt = sectionKey+","+classType+","+classSubType;
-            else
-                searchTxt = classType+","+classSubType;
+            searchObject.subType=classSubType;
+            searchObject.searchSType=classType;
+            //searchObject.tags.push(classType, classSubType);
+            //if(typeof sectionKey != "undefined" && typeof sectionKey != null)
+            //    searchObject.tags.push(sectionKey);
+                //searchTxt = sectionKey+","+classType+","+classSubType;
+            //else
+              //  searchTxt = classType+","+classSubType;
         }
 
-        $('#searchTags').val( searchTxt );
+        //$('#searchTags').val( searchTxt );
         //alert("section : " + $('#searchTags').val());
         KScrollTo("#container-scope-filter");
-        startSearch(0, indexStepInit, searchCallback);  
+        startSearch(0, searchObject.indexStep, searchCallback);  
     });
 
     $("#btn-create-classified").off().on("click", function(){
@@ -351,38 +382,12 @@ END CLASSIFIED
 /* ----------------------------
         SEARCH ENGINE
 -------------------------------*/
-var searchEngine = {
+var searchAllEngine = {
     injectData : {},
     allResults : {},
     searchCount: {},
-//jQuery(document).ready(function() {
-    //setTitle("Espace administrateur : Répertoire","cog");
-    //initTypeSearch("all");
-   // initInjectData();
-    //initTerritorialSearch();
-   // startSearch(0, indexStepInit, searchCallback);
-  //startSearch(0, 30, null);   
-    //initKInterface();
-    //initSearchInterface();
-    //initViewTable(results);
-    /*if(openingFilter != "")
-        $('.filter'+openingFilter).trigger("click");
-    $(window).bind("scroll",function(){  
-      mylog.log("test scroll", scrollEnd, loadingData);
-      if(!loadingData && !scrollEnd && !isMapEnd){
-        var heightWindow = $("html").height() - $("body").height();
-        if( $(this).scrollTop() >= heightWindow - 800){
-          startSearch(10, 30, null);
-      }
-    }
-  });
-  loadingData = false;*/ 
-        
-   // initPageTable(results.count.citoyens);
-
-//}); 
     initInjectData: function(){
-        searchEngine.injectData={
+        searchAllEngine.injectData={
             organizations : 0,
             projects : 0,
             events : 0,
@@ -394,8 +399,9 @@ var searchEngine = {
             ressources : 0
         };
     },
-    initTerritorialSearch: function (){ console.log("initTerritorialSearch");
-        search.ranges={
+    initSearch: function (){ 
+        //Search on all
+        searchObject.ranges={
             organizations : { indexMin : 0, indexMax : 30, waiting : 30 },
             projects : { indexMin : 0, indexMax : 30, waiting : 30 },
             events : { indexMin : 0, indexMax : 30, waiting : 30 },
@@ -408,53 +414,51 @@ var searchEngine = {
             cities : { indexMin : 0, indexMax : 30, waiting : 30 }
         };
         initTypeSearch("all");
-        searchEngine.allResults={};
-        search.app="territorial";
+        searchAllEngine.allResults={};
+        if(typeof searchObject.page != "undefined") delete searchObject.page;
         pageCount=false;
         scrollEnd=false;
         $(window).bind("scroll",function(){  
             mylog.log("test scroll", scrollEnd, loadingData);
-            if(!loadingData && !scrollEnd && !isMapEnd && search.app=="territorial"){
+            if(!loadingData && !scrollEnd && !isMapEnd && typeof searchObject.ranges != "undefined"){
                 var heightWindow = $("html").height();// - $("body").height();
                 if( $(this).scrollTop() >= heightWindow - 1200)
                     startSearch(10, 30, null);
             }
-        });
-          //check search.value Or locality filtering to add persons in the research
-        //initTypeSearch("all");
+        });;
     },
     prepareAllSearch: function(data){
         sorting=[];
-        searchType=[];
+        searchObject.types=[];
         $i=0;
         resToShow={};
-        searchEngine.initInjectData();
+        searchAllEngine.initInjectData();
         $.each(data, function(e,v){
-            searchEngine.allResults[e]=v;
+            searchAllEngine.allResults[e]=v;
         });
-        $.each(searchEngine.allResults, function(e,v ){
-            if (searchType.indexOf(v.type) == -1)
-                searchType.push(v.type);
+        $.each(searchAllEngine.allResults, function(e,v ){
+            if (searchObject.types.indexOf(v.type) == -1)
+                searchObject.types.push(v.type);
             sorting.push(v.sorting);
         });
         sorting.sort().reverse();
         sorting=sorting.splice(0,30);
         $.each(sorting, function(e, v){
-            $.each(searchEngine.allResults, function(key, value){
+            $.each(searchAllEngine.allResults, function(key, value){
               if(v==value.sorting){
                 resToShow[key]=value;
-                searchEngine.injectData[value.type]++;
-                delete searchEngine.allResults[key];
+                searchAllEngine.injectData[value.type]++;
+                delete searchAllEngine.allResults[key];
                 $i++;
               }
             });
         });
-        $.each(searchEngine.injectData, function (type, v){ console.log("search range", type);
+        $.each(searchAllEngine.injectData, function (type, v){ console.log("search range", type);
             if(v==0)
               removeSearchType(type);
             else{
-              search.ranges[type].indexMin=search.ranges[type].indexMax;
-              search.ranges[type].indexMax=search.ranges[type].indexMin+v;
+              searchObject.ranges[type].indexMin=searchObject.ranges[type].indexMax;
+              searchObject.ranges[type].indexMax=searchObject.ranges[type].indexMin+v;
             }
           });
         return resToShow;

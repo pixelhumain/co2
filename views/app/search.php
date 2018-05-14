@@ -147,8 +147,8 @@ var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 var pageCount=false;
-search.count=true;
-
+searchObject.count=true;
+searchObject.initType=typeInit;
 
 <?php if(@$type=="events"){ ?>
   var STARTDATE = new Date();
@@ -170,9 +170,7 @@ jQuery(document).ready(function() {
     initCountType();
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
-    //if( type=="ressources" )search.app = "ressources";
-    var appUrl = (typeof search.app != "undefined") ? "&app="+search.app : "";
-	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl+appUrl,function(){ 
+	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
@@ -180,8 +178,8 @@ jQuery(document).ready(function() {
                 typeD="all";
                 $(".btn-directory-type").removeClass("active");
             }else{*/
-                if(search.app != "agenda")
-                    search.app="search";
+                //if(search.app != "agenda")
+                //    search.app="search";
                 $(".btn-directory-type").removeClass("active");
                 $(this).addClass("active");
             /*}*/
@@ -189,28 +187,26 @@ jQuery(document).ready(function() {
             simpleScroll(scrollH);
            
             if(typeD == "events"){
-                var typeEvent = $(this).data("type-event");
-                searchSType = typeEvent;
-                // search.app="agenda";
+                if($(this).hasClass("active")){
+                    $(this).removeClass("active");    
+                    delete searchObject.searchSType;
+                }else{
+                    var typeEvent = $(this).data("type-event");
+                    searchObject.searchSType = typeEvent;
+                }
             }
             initTypeSearch(typeD);
             if(typeD=="all"){
-                searchEngine.initInjectData();
-                searchEngine.initTerritorialSearch();
+                searchAllEngine.initInjectData();
+                searchAllEngine.initSearch();
             }
-                //else{
-               // initKInterface({"affixTop":200});
-            //}
-            //mylog.log("search.php",searchType);
-            //setHeaderDirectory(typeD);
             loadingData = false;
             pageCount=true;
-            if(Object.keys(search.countType).length>1) search.count=false; 
-            else search.count=true;
+            if(Object.keys(searchObject.countType).length>1) searchObject.count=false; 
+            else searchObject.count=true;
             pageEvent=false;
-            search.type=searchType;
+            searchObject.type=searchType;
             startSearch(0, indexStepInit, searchCallback);
-           // KScrollTo("#content-social");
         });
 
         // $(".btn-open-filliaire").click(function(){
@@ -236,8 +232,8 @@ jQuery(document).ready(function() {
         });*/
 
         if(type=="all"){
-            //searchEngine.initInjectData();
-            searchEngine.initTerritorialSearch();
+            //searchAllEngine.initInjectData();
+            searchAllEngine.initSearch();
         }
 
         loadingData = false; 

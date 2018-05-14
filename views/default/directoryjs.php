@@ -120,8 +120,6 @@
         </div>    
         
         <?php 
-//echo "<h1>".$typeSelected."</h1>" ;
-//echo "<h1>".$_GET["app"]."</h1>" ;
         if($typeSelected == "place"){ ?>
         <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
@@ -575,8 +573,8 @@ jQuery(document).ready(function() {
       var fKey = $(this).data("fkey");
       //myMultiTags = {};
       $.each(filliaireCategories[fKey]["tags"], function(key, tag){
-        search.value="#"+tag;
-         $("#main-search-bar, #second-search-bar").val(search.value);
+        searchObject.text="#"+tag;
+         $("#main-search-bar, #second-search-bar").val(searchObject.text);
      //   addTagToMultitag(tag);
       });
       search

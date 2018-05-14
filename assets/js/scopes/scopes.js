@@ -89,7 +89,7 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 				.appendTo(appendDom); // append again to the list
 	if(newsAction) bindScopesNewsEvent();
 	else{
-		search.count=true;
+		searchObject.count=true;
 		startSearch(0, indexStepInit);
 		bindScopesInputEvent();
 	}
@@ -111,10 +111,43 @@ function getCommunexionLabel(){
 		$("#communexion-news-btn, #communexion-btn").hide();
 	}
 };
+function getUrlSearchLocality(urlGet){
+	var urlScopeCity = [];
+	var urlScopeCp = [];
+	var urlScopeZone = [];
+	var urlMyScope = "";
+	var searchingOnLoc=myScopes[myScopes.type];
+	if(notNull(searchingOnLoc)){
+		$.each(searchingOnLoc, function(key, value){
+			mylog.log("getMultiScopeForSearch value.active", value.active);
+			if(value.active == true){
+				if(value.type == "cities"){
+					keyScope=(typeof value.postalCode == "undefined") ? value.id : value.id+"cp"+value.postalCode;
+					keyScope+=(typeof value.allCP == "undefined" && value.allCP) ? "allPostalCode" : "";
+					urlScopeCity.push(keyScope);
+				}
+				else if (value.type == "cp")
+					urlScopeCp.push(value.id);
+				else if (value.type.indexOf("level") >= 0)
+					urlScopeZone.push(value.id);
+			}
+		});
+		if(urlScopeCity.length > 0) urlMyScope+="&cities="+urlScopeCity.join(",");
+		if(urlScopeZone.length > 0) urlMyScope+="&zones="+urlScopeZone.join(",");
+		if(urlScopeCp.length > 0) urlMyScope+="&cp="+urlScopeCp.join(",");
+		if(urlMyScope != ""){
+			urlMyScope="scopeType="+myScopes.type+urlMyScope;
+			urlGet += (urlGet != "") ? "&"+urlMyScope : urlMyScope  
+		}	
+	}
+//	mylog.log("getMultiScopeForSearch search", res);
+	return urlGet;
+}
 function getSearchLocalityObject(){ 
 	var res = {};
 	var searchingOnLoc=myScopes[myScopes.type];
 	if(notNull(searchingOnLoc)){
+		//compareMyScopeAndUrlGet()
 		$.each(searchingOnLoc, function(key, value){
 			mylog.log("getMultiScopeForSearch value.active", value.active);
 			if(value.active == true){
@@ -230,8 +263,8 @@ function bindScopesInputEvent(news){
 					.appendTo("#filter-scopes-menu .scopes-container");
 		}
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
-		if(search.app=="territorial") searchEngine.initTerritorialSearch();
-		search.count=true;
+		if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+		searchObject.count=true;
 		startSearch(0, indexStepInit);
 		bindScopesInputEvent();
 	});
@@ -244,7 +277,7 @@ function bindScopesInputEvent(news){
 		scopeActiveScope(key);
 		if(myScopes.type!="open")
 			localStorage.setItem("myScopes",JSON.stringify(myScopes));
-		search.count=true;
+		searchObject.count=true;
 		if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
 			startNewsSearch(true)
 		} else if (location.hash.indexOf("#interoperability") >= 0) {
@@ -252,8 +285,8 @@ function bindScopesInputEvent(news){
 			startSearchInterop(0,30);
 		}
 		else{
-			if(search.app=="territorial") searchEngine.initTerritorialSearch();
-				startSearch(0, indexStepInit); 
+			if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+			startSearch(0, indexStepInit); 
 		}
 	});
 
@@ -271,7 +304,7 @@ function bindScopesInputEvent(news){
 			myScopes.typeNews="open";
 
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
-		if(search.app=="territorial") searchEngine.initTerritorialSearch();
+		if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
 		mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
 
 

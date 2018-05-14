@@ -412,7 +412,7 @@ var Login = function() {
 				var params = { 
 				   "name" : $('.form-register #registerName').val(),
 				   "username" :$(".form-register #username").val(),
-				   "email" : $(".form-register #email3").val().toLowerCase(),
+				   "email" : $(".form-register #email3").val(),
                    "pwd" : $(".form-register #password3").val(),
                    "app" : moduleId, //"$this->module->id"
                    "pendingUserId" : pendingUserId,

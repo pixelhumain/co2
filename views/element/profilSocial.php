@@ -169,7 +169,7 @@
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header" 
     	<?php if (!@$element["profilBannereUrl"] || (@$element["profilBannereUrl"] && empty($element["profilBannereUrl"]))){ ?> 
-    		style="background-color: rgba(0,0,0,0.5);"
+    		style=" background: url('<?php echo Yii::app()->theme->baseUrl. '/assets/img/background-onepage/connexion-lines.jpg';?>') center bottom;"
     	<?php } ?>>
         <div id="topPosKScroll"></div>
     	<?php if(@$edit==true && false) { ?>

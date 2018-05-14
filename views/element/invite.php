@@ -83,7 +83,7 @@
 								if($parentType == Person::COLLECTION)
 									echo Yii::t("invite","Search or invite your contacts");
 								else
-									echo Yii::t("invite","Invite members");
+									echo Yii::t("common","Invite members");
 							?>
 						</span>
 						<br>
@@ -97,7 +97,7 @@
 							<a href="javascript:" class="" id="menuInviteSomeone">
 								<div id="titleInviteSomeone" class='radius-10 padding-10 text-yellow text-dark'>
 									<i class="fa fa-search fa-2x"></i> 
-									<?php echo Yii::t("invite","Search"); ?> 
+									<?php echo Yii::t("common","Search"); ?> 
 								</div>
 							</a>
 						</li>
@@ -189,7 +189,7 @@
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<button id="btnValider" >
-								<i class="fa fa-check"> </i><?php echo Yii::t("person","Submit"); ?> 
+								<i class="fa fa-check"> </i><?php echo Yii::t("common","Invite"); ?> 
 							</button>
 						</div>
 					</div>
@@ -201,11 +201,6 @@
 						<div class="col-xs-12">
 							<h4> <?php echo Yii::t("common", "Results") ;?> </h4>
 							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
-						</div>
-						<div class="col-xs-12" style="margin-top: 10px;">
-							<button id="btnValider" >
-								<i class="fa fa-check"> </i><?php echo Yii::t("person","Submit"); ?> 
-							</button>
 						</div>
 					</div>
 				</div>
@@ -219,7 +214,7 @@
 	var parentType = "<?php echo $parentType; ?>";
 	var parentId = "<?php echo $parentId; ?>";
 	// var members = <?php //echo json_encode( $members ); ?>;
-	var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.sponsor, tradCategory.organizor, tradCategory.president, tradCategory.director, tradCategory.speaker, tradCategory.intervener];
+	
 	var contactTypes = {
 			citoyens : { color: "yellow", icon:"user", label:"People" },
 			organizations :	{ color: "green", icon:"group", label:"Organizations" } 
@@ -237,28 +232,29 @@
 		// mylog.log("members", members);
 		bindInvite();
 
-		$("#step1-import").hide();
-		$("#step2").hide();
-		$("#form-invite").hide();
-		$("#divResult").hide();
+		$("#modal-invite #step1-import").hide();
+		$("#modal-invite #step2").hide();
+		//alert("form-invite");
+		$("#modal-invite #form-invite").hide();
+		$("#modal-invite #divResult").hide();
 
 	});
 
 	function fadeInView(inView){
 		mylog.log("fadeInView", inView);
-		$("#divResult").hide();
+		$("#modal-invite #divResult").hide();
 		if(inView == "step1-search") {
-			$("#step1-search").show();
-			$("#step1-import").hide();
-			$("#step1-mycontacts").hide();
+			$("#modal-invite #step1-search").show();
+			$("#modal-invite #step1-import").hide();
+			$("#modal-invite #step1-mycontacts").hide();
 		} else if(inView == "step1-import") {
-			$("#step1-search").hide();
-			$("#step1-import").show();
-			$("#step1-mycontacts").hide();
+			$("#modal-invite #step1-search").hide();
+			$("#modal-invite #step1-import").show();
+			$("#modal-invite #step1-mycontacts").hide();
 		} else if(inView == "step1-mycontacts") {
-			$("#step1-search").hide();
-			$("#step1-import").hide();
-			$("#step1-mycontacts").show();
+			$("#modal-invite #step1-search").hide();
+			$("#modal-invite #step1-import").hide();
+			$("#modal-invite #step1-mycontacts").show();
 		}
 	}
 
@@ -391,8 +387,8 @@
 						});
 
 						$("#modal-invite #dropdown-result").html(str);
-						$("#divSearchInvite").hide();
-						$("#divResult").show();
+						$("#modal-invite #divSearchInvite").hide();
+						$("#modal-invite #divResult").show();
 						$("#modal-invite #dropdown-result").show();
 						
 				 	}
@@ -404,9 +400,9 @@
 
 	function showListInvite(){
 		if(Object.keys(listInvite.organizations).length > 0 || Object.keys(listInvite.citoyens).length > 0|| Object.keys(listInvite.invites).length > 0 ){
-			$("#step2").show();
+			$("#modal-invite #step2").show();
 		}else{
-			$("#step2").hide();
+			$("#modal-invite #step2").hide();
 		}
 	}
 
@@ -545,7 +541,7 @@
 		mylog.log("showElementInvite", dropdown);
 		$("#modal-invite "+dropdown).html(str);
 		$("#modal-invite "+dropdown).show();
-		$('.tagsRoles').select2({tags:rolesList});
+		$('#modal-invite .tagsRoles').select2({tags:rolesList});
 		if(listNotExits)
 			newInvitation();
 		else

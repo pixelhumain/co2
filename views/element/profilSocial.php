@@ -868,23 +868,6 @@
 					"controller" => $controller,
 					"openEdition" => $openEdition,
 				) );
-
-	//if( $type != Person::COLLECTION)
-		// $this->renderPartial('../element/addMembersFromMyContacts',
-		// 		array(	"type"=>$type, 
-		// 				"parentId" => (string)$element['_id'], 
-		// 				"members" => @$members));
-
-		// $this->renderPartial('../element/inviteOld',
-		// 		array(	"type"=>$type, 
-		// 				"parentId" => (string)$element['_id'], 
-		// 				"members" => @$members));
-
-		$this->renderPartial('../element/invite',
-				array(	"parentType"=>$type, 
-						"parentId" => (string)$element['_id'], 
-						"members" => @$members));
-
 ?>
 
 <?php	$cssAnsScriptFilesModule = array(
@@ -957,7 +940,7 @@
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		getContextDataLinks();
-		if(typeof contextData.links != "undefined" && rolesList != "undefined")
+		if(typeof contextData.links != "undefined" && typeof rolesList != "undefined")
 			pushListRoles(contextData.links);
 		
 		//Sig.showMapElements(Sig.map, mapElements);

@@ -313,7 +313,8 @@ class AppController extends CommunecterController {
             $element = Survey::getById($id);
         }
 
-        if(!empty($element["status"]) && $element["status"] == "deleted")
+        if( (!empty($element["status"]) && $element["status"] == "deleted") ||  
+            (!empty($element["tobeactivated"]) && $element["tobeactivated"] == true) )
              $this->redirect( Yii::app()->createUrl($controller->module->id) );
 
         if(@$element["parentId"] && @$element["parentType"] && 

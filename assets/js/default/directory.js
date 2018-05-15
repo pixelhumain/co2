@@ -1063,11 +1063,14 @@ var directory = {
       }
     }
 
+    var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
+    var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
     
     mylog.log("lightPanel", params);
     
     str = "";
-    str += "<div class='col-xs-12 searchEntity entityLight no-padding "+params.elRolesList+"'  id='entity"+params.id+"'>";
+    str += "<div class='col-xs-12 searchEntity entityLight no-padding "+params.elRolesList+" "+grayscale+" tooltips'  data-toggle='tooltip' data-placement='left' data-original-title='"+tipIsInviting+"' "+
+            "id='entity"+params.id+"'>";
     
     str += "<div class='entityLeft pull-left text-right padding-10 hidden-xs'>";
       if(typeof params.hash != "undefined" && typeof params.imgProfil != "undefined" /*&& location.hash != "#agenda"*/){
@@ -1230,10 +1233,17 @@ var directory = {
     //  ELEMENT DIRECTORY PANEL
     // ********************************
   elementPanelHtml : function(params){
-		if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
+		//if(directory.dirLog) mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
 
-		mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList);
+		mylog.log("----------- elementPanelHtml",params.type,params.name,params.elTagsList, params);
 		str = "";
+
+    // if(notNull(params.tobeactivated) && params.tobeactivated == true){
+    //   params.isInviting = true ;
+    //   //params.hash = "javascript:;";
+    // }
+
+
 		var grayscale = ( ( notNull(params.isInviting) && params.isInviting == true) ? "grayscale" : "" ) ;
 		var tipIsInviting = ( ( notNull(params.isInviting) && params.isInviting == true) ? trad["Wait for confirmation"] : "" ) ;
 		var classType=params.type;
@@ -1273,10 +1283,15 @@ var directory = {
         str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
 
     }else{*/
-      timeAction= /*(params.type=="events") ? trad.created :*/ trad.actif;
-      if(params.updated != null )
-        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
-    //}
+      if( params.tobeactivated == true ){
+        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["Wait for confirmation"]+" </span></div>";
+      }else{
+        timeAction= /*(params.type=="events") ? trad.created :*/ trad.actif;
+        if(params.updated != null )
+          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
+      //}
+      }
+      
 
     
 
@@ -1316,7 +1331,7 @@ var directory = {
 
 		var iconFaReply ="";// notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
 		str += "<a  href='"+params.hash+"' class='"+params.size+" entityName bold text-dark add2fav "+linkAction+"'>"+
-					iconFaReply + params.name + 
+					iconFaReply + params.name +
 				"</a>";  
 		
 		if(typeof(params.statusLink)!="undefined"){
@@ -3207,7 +3222,10 @@ var directory = {
                   thisRoles += "</small>";
                   params.rolesLbl = thisRoles;
                 }
-                params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null; 
+                params.updated   = notEmpty(params.updatedLbl) ? params.updatedLbl : null;
+                if(notNull(params.tobeactivated) && params.tobeactivated == true){
+                  params.isInviting = true ;
+                }
                     
                     if(directory.dirLog) mylog.log("template principal",params,params.type, itemType);
                     

@@ -11,6 +11,13 @@
   <style>
 
 
+.grayscale{
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+}
+
+
 .favElBtn, .favAllBtn{
   padding: 5px 8px;
   font-weight: 300;

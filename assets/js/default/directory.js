@@ -182,7 +182,7 @@ function constructSearchObjectAndGetParams(){
     getStatus+="priceMax="+searchObject.priceMax;
   }else if(typeof searchObject.priceMax != "undefined")
     delete searchObject.priceMax;
-  if(typeof $("#devise").val() != "undefined" &&$("#devise").val()!=""){ 
+  if(typeof $("#devise").val() != "undefined" && $("#devise").val()!="" && $("#devise").val()!="€"){ 
     searchObject.devise=$("#devise").val();
     searchConstruct.devise = searchObject.devise;
     getStatus+=(getStatus!="") ? "&":"";
@@ -1884,7 +1884,10 @@ var directory = {
               str +=    "<a href='"+params.hash+"' class='lbh-preview-element add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
-
+            var iconFaReply = "";//notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+            str += "<a  href='"+params.hash+"' class='entityName text-dark lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>"+
+                      iconFaReply + params.name + 
+                   "</a>";  
             str += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share pull-right'"+
                               " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
                               "<i class='fa fa-share'></i> Partager</button>";
@@ -1901,14 +1904,6 @@ var directory = {
               if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
               str += "</span></div>";
             }
-              
-
-            var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='entityName text-dark lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>"+
-                      iconFaReply + params.name + 
-                   "</a>";  
-       
-            
             
             if(typeof params.description != "undefined" && params.description != "")
             str += "<div class='entityDescription'>" + params.description + "</div>";

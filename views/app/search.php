@@ -180,8 +180,7 @@ jQuery(document).ready(function() {
             }else{*/
                 //if(search.app != "agenda")
                 //    search.app="search";
-                $(".btn-directory-type").removeClass("active");
-                $(this).addClass("active");
+                
             /*}*/
             scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
             simpleScroll(scrollH);
@@ -191,9 +190,14 @@ jQuery(document).ready(function() {
                     $(this).removeClass("active");    
                     delete searchObject.searchSType;
                 }else{
+                    $(".btn-directory-type").removeClass("active");
+                    $(this).addClass("active");
                     var typeEvent = $(this).data("type-event");
                     searchObject.searchSType = typeEvent;
                 }
+            }else{
+                $(".btn-directory-type").removeClass("active");
+                $(this).addClass("active");
             }
             initTypeSearch(typeD);
             if(typeD=="all"){

@@ -255,8 +255,7 @@ function bindLeftMenuFilters () {
                 classified.currentLeftFilters = null;
             }
             if( $(this).data("key") == "all" ) delete searchObject.section;//sectionKey = "";
-            searchObject.section =  sectionKey;
-            //alert("section : " + $('#searchTags').val());
+            else searchObject.section =  sectionKey;
         }
 
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
@@ -294,7 +293,7 @@ function bindLeftMenuFilters () {
             if(typeof searchObject.searchSType != "undefined") delete searchObject.searchSType;
             //searchObject.tags=[sectionKey];//searchTxt = sectionKey;
             $(this).removeClass( "active" );
-            $(".keycat-"+classType).addClass("hidden"); 
+            $(".keycat-"+classType).addClass("hidden").removeClass("active"); 
         }else{
             $(".btn-select-category-1").removeClass("active");
             $(this).addClass("active");
@@ -401,7 +400,6 @@ function initSearchObject(){
             var temp = parts[i].split("=");
             $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
         }
-        console.log("geeeeeeeeet", $_GET);
         if(Object.keys($_GET).length > 0){
             $.each($_GET, function(e,v){
                 if(e=="scopeType") initScopesResearch.key=v; else searchObject[e]=v;
@@ -409,7 +407,7 @@ function initSearchObject(){
                 if(searchObject.initType!= "all" && e=="types") delete searchObject[e];
                 else if (e=="types"){searchObject[e]=[v]; delete searchObject.ranges;}
                 if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
-                if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
+                if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1){alert(); delete searchObject[e];}
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  
                 if($.inArray(searchObject.initType, ["all", "events"])>-1 && $.inArray(e,["section","subType"]) > -1) delete searchObject[e];
                 if($.inArray(e,["cities","zones","cp"]) > -1) $.each(v.split(","), function(i, j){ initScopesResearch.ids.push(j) }); 

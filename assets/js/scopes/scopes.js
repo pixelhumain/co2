@@ -177,6 +177,9 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 				myScopes[initScopeResearch.key][e].active=($.inArray(keyActive, initScopeResearch.ids) > -1)  ? true : false;
 			});
 		}
+		$(".scopes-container").html(constructScopesHtml());
+		if($.inArray(myScopes.type, ["multiscopes", "communexion"]) > -1)
+			$("#"+myScopes.type+"-btn").addClass("active");
 	}
 }
 function setOpenBreadCrum(params){

@@ -618,7 +618,6 @@ var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
 var classified = <?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
 
 jQuery(document).ready(function() {
-  initSearchObject();
   initKInterface({"affixTop":200});
 	currentTypeSearchSend = "search";
   $("#col-btn-type-directory .btn-directory-type").each(function(){

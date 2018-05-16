@@ -55,7 +55,7 @@ function initSearchInterface(){
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == ""){
             //initTypeSearch(typeInit);
-            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
+            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 0;
             simpleScroll(scrollH);
             searchPage=0;
             searchObject.text = $(this).val();
@@ -97,13 +97,22 @@ function initSearchInterface(){
          }
     });
 
-    $("#menu-map-btn-start-search, #menu-btn-start-search, #main-search-bar-addon").off().on("click",function(){
-        $("#second-search-bar").val($("#input-search-map").val());
-        $("#main-search-bar").val($("#input-search-map").val());
-        searchObject.text=$("#main-search-bar").val();
-        console.log("typeInit", typeInit);
-        if(typeInit == "all") initTypeSearch("allSig");
-        else initTypeSearch(typeInit);
+    $("#menu-map-btn-start-search, .menu-btn-start-search, #main-search-bar-addon").off().on("click", function(){
+        scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 0;
+        simpleScroll(scrollH);
+        if($(this).hasClass("menu-btn-start-search"))
+            searchObject.text=$("#second-search-bar").val();
+        else if ($(this).hasClass("input-group-addon"))   
+            searchObject.text=$("#main-search-bar").val();
+        else
+            searchObject.text=$("#input-search-map").val();
+        $("#second-search-bar, #main-search-bar, #input-search-map").val(searchObject.text);
+        searchPage=0;
+        searchObject.count=true;
+        pageCount=true;
+        if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+        //if(typeInit == "all") initTypeSearch("allSig");
+        //else initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
         $(".btn-directory-type").removeClass("active");
     });
@@ -246,8 +255,7 @@ function bindLeftMenuFilters () {
                 classified.currentLeftFilters = null;
             }
             if( $(this).data("key") == "all" ) delete searchObject.section;//sectionKey = "";
-            searchObject.section =  sectionKey;
-            //alert("section : " + $('#searchTags').val());
+            else searchObject.section =  sectionKey;
         }
 
         $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
@@ -285,7 +293,7 @@ function bindLeftMenuFilters () {
             if(typeof searchObject.searchSType != "undefined") delete searchObject.searchSType;
             //searchObject.tags=[sectionKey];//searchTxt = sectionKey;
             $(this).removeClass( "active" );
-            $(".keycat-"+classType).addClass("hidden"); 
+            $(".keycat-"+classType).addClass("hidden").removeClass("active"); 
         }else{
             $(".btn-select-category-1").removeClass("active");
             $(this).addClass("active");
@@ -384,7 +392,6 @@ END CLASSIFIED
 -------------------------------*/
 function initSearchObject(){
     if(location.hash.indexOf("?") > -1){
-        alert();
         getParamsUrls=location.hash.split("?");
         var parts = getParamsUrls[1].split("&");
         var $_GET = {};
@@ -393,13 +400,12 @@ function initSearchObject(){
             var temp = parts[i].split("=");
             $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
         }
-        console.log("geeeeeeeeet", $_GET);
         if(Object.keys($_GET).length > 0){
             $.each($_GET, function(e,v){
                 if(e=="scopeType") initScopesResearch.key=v; else searchObject[e]=v;
                 // Check on types on search app
                 if(searchObject.initType!= "all" && e=="types") delete searchObject[e];
-                else if (e=="types"){alert(searchObject.initType); delete searchObject.ranges;}
+                else if (e=="types"){searchObject[e]=[v]; delete searchObject.ranges;}
                 if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
                 if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  

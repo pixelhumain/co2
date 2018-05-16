@@ -185,30 +185,33 @@ function setOpenBreadCrum(params){
 		zones=params.zones.split(",");
 		setOpenScope.zones=[];
 		$.each(zones, function(e,v){
-			setOpenScope.zones.push[v];
+			setOpenScope.zones.push(v);
 		});
 	}
 	if(typeof params.cities != "undefined"){
 		cities=params.cities.split(",");
 		setOpenScope.cities=[];
 		$.each(cities, function(e,v){
-			setOpenScope.cities.push[v];
+			setOpenScope.cities.push(v);
 		});
 	}
 	if(typeof params.cp != "undefined"){
 		cp=params.cp.split(",");
 		setOpenScope.cp=[];
 		$.each(cp, function(e,v){
-			setOpenScope.cp.push[v];
+			setOpenScope.cp.push(v);
 		});
 	}
+
+	mylog.log("setOpenScope", setOpenScope);
 	$.ajax({
 		type: "POST",
 		url: baseUrl+"/"+moduleId+"/zone/getscopebyids",
-		data: {"scopes" : setOpenScope},
+		data: setOpenScope,
 		dataType: "json",
 		success: function(data){
-			myScopes.open=data;
+			mylog.log("data", data);
+			myScopes.open=data.scopes;
 		},
 		error: function(error){
 			toastr.error("waswrong")

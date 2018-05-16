@@ -17,7 +17,7 @@ class ZoneController extends CommunecterController {
 	public function actions()
 	{
 	    return array(
-	        'getscopebyids'       			=> 'citizenToolKit.controllers.city.GetScopeByIdsAction',
+	        'getscopebyids'       			=> 'citizenToolKit.controllers.zone.GetScopeByIdsAction',
 	    );
 	}
 }

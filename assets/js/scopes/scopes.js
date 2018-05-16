@@ -54,11 +54,10 @@ function constructScopesHtml(news){
 			}
 		}
 
-    	html += "<div class='scope-order "+disabled+" text-red' data-level='"+value.level+"'>"+
+    	html += "<div class='scope-order "+disabled+" text-red' data-level='"+value.level+"''>"+
     				btnScopeAction+
     				"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
 						"class='item-scope-checker item-scope-input' "+
-						"data-add='true' "+
 						'data-scope-key="'+key+'" '+
 						'data-scope-value="'+value.id+'" '+
 						'data-scope-name="'+name+'" '+
@@ -150,6 +149,7 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 	if(typeof myScopes[initScopeResearch.key] != "undefined"){
 		$.each(initScopeResearch.ids,function(e,v){
 			if(v.indexOf("cp") > 0){
+				tab=v.split("cp");
 				if(typeof myScopes[initScopeResearch.key][tab[0]+"cities"+tab[1]] == "undefined"  )
 						inMyScope=false;
 			}else if(v.indexOf("allPostalCode") > 0){
@@ -202,7 +202,7 @@ function setOpenBreadCrum(params){
 			setOpenScope.cp.push[v];
 		});
 	}
-	/*$.ajax({
+	$.ajax({
 		type: "POST",
 		url: baseUrl+"/"+moduleId+"/cities/getobjectbyids",
 		data: {"scopes" : setOpenScope},
@@ -214,7 +214,7 @@ function setOpenBreadCrum(params){
 			toastr.error("waswrong")
 			mylog.log();
 		}
-	});*/
+	});
 	myScopes.type="open";
 }
 function getSearchLocalityObject(){ 
@@ -295,7 +295,7 @@ function bindSearchCity(){
 
 function bindScopesInputEvent(news){
 	mylog.log("bindScopesInputEvent");
-	$(".manageMultiscopes, #news-scopes-container .item-scope-checker").off().on("click", function(){
+	$(".manageMultiscopes").off().on("click", function(){
 		mylog.log("manageMultiscopes");
 		addScope=$(this).data("add");
 		scopeValue=$(this).data("scope-value");
@@ -321,16 +321,16 @@ function bindScopesInputEvent(news){
 		mylog.log("#multisopes-btn, #communexion-btn");
 		if($(this).hasClass("active")){
 			$(this).removeClass("active");
-			//$(this).find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
+			$(this).find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
 			myScopes.type="open";
 			myScopes.open={};
 			$(".scopes-container").html("");
 		}else{
 			$(".btn-menu-scopes").removeClass("active");
-			//$(".btn-menu-scopes").find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
+			$(".btn-menu-scopes").find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
 			$(this).addClass("active");
 			myScopes.type=$(this).data("type");
-			//$(this).find("i.fa-angle-down").removeClass("fa-angle-down").addClass("fa-angle-up");
+			$(this).find("i.fa-angle-down").removeClass("fa-angle-down").addClass("fa-angle-up");
 			$(".scopes-container").html(constructScopesHtml());
 			if(myScopes.type=="communexion")
 				$("#filter-scopes-menu .scopes-container .scope-order").sort(sortSpan) // sort elements
@@ -546,7 +546,7 @@ function scopeObject(values){
 	}
 	communexionObj[objToPush.id+objToPush.type] = objToPush;
 	mylog.log("scopeObject communexionObj", communexionObj);
-	mylog.log("scopeObject allcp", values.cityName, values);
+
 	if(notNull(values.allCP) && values.allCP == false){
 		objToPush={
 			id:values.city,

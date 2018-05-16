@@ -305,8 +305,7 @@ function showResultInCalendar(mapElements){
     }
 
     $(".calendar").html($(".responsive-calendar-init").html());
-
-    var aujourdhui = startWinDATE; //new Date();
+    var aujourdhui =(searchObject.startDate != "undefined") ? new Date(searchObject.startDate*1000) : startWinDATE; //new Date();
     //console.log("aujourdhui", aujourdhui);
     var  month = (aujourdhui.getMonth()+1).toString();
     if(aujourdhui.getMonth() < 10) month = "0" + month;

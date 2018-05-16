@@ -5,7 +5,20 @@ function initSearchInterface(){
             if(!$("#filter-thematic-menu").is(":visible") || $(this).hasClass("toogle-filter"))
                 $("#filter-thematic-menu").toggle();
     });
-    
+    $(".btn-menu-to-app").off().on("click", function(){
+        alert();
+        $.each(searchObject, function(e,v){
+            if($.inArray(e,["startDate","endDate", "searchSType", "section", "subType","priceMin", "priceMax", "devise"]) > -1)
+                delete searchObject[e];
+            searchObject.page=0,
+            searchObject.indexMin=0,
+            searchObject.indexStep=30,
+            searchObject.count=true,
+            searchObject.initType="",
+            searchObject.types=[],
+            searchObject.countType=[];
+        });
+    });
     $("#filters-container-menu .theme-header-filter, #filters-container-menu .scope-header-filter").click(function(){
         simpleScroll(0, 500);
     });
@@ -410,13 +423,34 @@ function initSearchObject(){
                 if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  
                 if($.inArray(searchObject.initType, ["all", "events"])>-1 && $.inArray(e,["section","subType"]) > -1) delete searchObject[e];
-                if($.inArray(e,["cities","zones","cp"]) > -1) $.each(v.split(","), function(i, j){ initScopesResearch.ids.push(j) }); 
+                if($.inArray(e,["cities","zones","cp"]) > -1) $.each(v.split(","), function(i, j){ initScopesResearch.ids.push(j) });
+                if(typeof searchObject[e] != "undefined")
+                    activeFiltersInterface(e, v, searchObject.initType); 
             }); 
             console.log("searchafter",searchObject);
             if(initScopesResearch.key!="" && initScopesResearch.ids.length > 0)
                 checkMyScopeObject(initScopesResearch, $_GET);
-
         }
+    }
+}
+function activeFiltersInterface(filter,value){
+    if(filter=="section"){
+        $(".btn-select-type-anc[data-key='"+value+"']").addClass("active");
+    }
+    if(filter=="searchSType"){
+        if(searchObject.initType=="events")
+            $(".btn-directory-type[data-type-event='"+value+"']").addClass("active");
+        else{
+            $(".btn-select-category-1[data-keycat='"+value+"']").addClass("active");
+            $(".keycat[data-categ='"+value+"']").removeClass("hidden");
+        }
+    }
+    if(filter=="subType"){
+        $(".keycat[data-keycat='"+value+"'][data-categ='"+searchObject.searchSType+"']").addClass("active");
+    }
+    if(filter=="types"){
+        $(".btn-directory-type").removeClass("active");
+        $(".btn-directory-type[data-type='"+value+"']").addClass("active");
     }
 }
 var searchAllEngine = {

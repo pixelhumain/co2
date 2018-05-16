@@ -203,7 +203,7 @@ function setOpenBreadCrum(params){
 	}
 	$.ajax({
 		type: "POST",
-		url: baseUrl+"/"+moduleId+"/zonos/getscopebyids",
+		url: baseUrl+"/"+moduleId+"/zone/getscopebyids",
 		data: {"scopes" : setOpenScope},
 		dataType: "json",
 		success: function(data){

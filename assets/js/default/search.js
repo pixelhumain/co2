@@ -384,7 +384,6 @@ END CLASSIFIED
 -------------------------------*/
 function initSearchObject(){
     if(location.hash.indexOf("?") > -1){
-        alert();
         getParamsUrls=location.hash.split("?");
         var parts = getParamsUrls[1].split("&");
         var $_GET = {};
@@ -399,7 +398,7 @@ function initSearchObject(){
                 if(e=="scopeType") initScopesResearch.key=v; else searchObject[e]=v;
                 // Check on types on search app
                 if(searchObject.initType!= "all" && e=="types") delete searchObject[e];
-                else if (e=="types"){alert(searchObject.initType); delete searchObject.ranges;}
+                else if (e=="types"){searchObject[e]=[v]; delete searchObject.ranges;}
                 if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
                 if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  

@@ -238,6 +238,7 @@ jQuery(document).ready(function() {
 
         loadingData = false; 
         initTypeSearch(type);
+        initSearchObject();
         startSearch(null, null, searchCallback);
         initSearchInterface();
 

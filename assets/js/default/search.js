@@ -55,7 +55,7 @@ function initSearchInterface(){
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == ""){
             //initTypeSearch(typeInit);
-            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
+            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 0;
             simpleScroll(scrollH);
             searchPage=0;
             searchObject.text = $(this).val();
@@ -97,13 +97,22 @@ function initSearchInterface(){
          }
     });
 
-    $("#menu-map-btn-start-search, #menu-btn-start-search, #main-search-bar-addon").off().on("click",function(){
-        $("#second-search-bar").val($("#input-search-map").val());
-        $("#main-search-bar").val($("#input-search-map").val());
-        searchObject.text=$("#main-search-bar").val();
-        console.log("typeInit", typeInit);
-        if(typeInit == "all") initTypeSearch("allSig");
-        else initTypeSearch(typeInit);
+    $("#menu-map-btn-start-search, .menu-btn-start-search, #main-search-bar-addon").off().on("click", function(){
+        scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 0;
+        simpleScroll(scrollH);
+        if($(this).hasClass("menu-btn-start-search"))
+            search.value=$("#second-search-bar").val();
+        else if ($(this).hasClass("input-group-addon"))   
+            search.value=$("#main-search-bar").val();
+        else
+            search.value=$("#input-search-map").val();
+        $("#second-search-bar, #main-search-bar, #input-search-map").val(search.value);
+        searchPage=0;
+        search.count=true;
+        pageCount=true;
+        if(search.app=="territorial") searchEngine.initTerritorialSearch();
+        //if(typeInit == "all") initTypeSearch("allSig");
+        //else initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);
         $(".btn-directory-type").removeClass("active");
     });

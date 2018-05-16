@@ -160,6 +160,9 @@ class CommunecterController extends Controller
       "sitemap"                 => array("href" => "/ph/co2/default/sitemap"),
       "img"                 => array("href" => "/ph/co2/default/img"),
     ),
+    "zone"=> array(
+      "getscopebyids"               => array("href" => "/ph/co2/zone/getscopebyids", "public" => true),
+    ),
     "city"=> array(
       "index"               => array("href" => "/ph/co2/city/index", "public" => true),
       "detail"              => array("href" => "/ph/co2/city/detail", "public" => true),

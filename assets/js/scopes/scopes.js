@@ -201,9 +201,9 @@ function setOpenBreadCrum(params){
 			setOpenScope.cp.push[v];
 		});
 	}
-	/*$.ajax({
+	$.ajax({
 		type: "POST",
-		url: baseUrl+"/"+moduleId+"/cities/getobjectbyids",
+		url: baseUrl+"/"+moduleId+"/zonos/getscopebyids",
 		data: {"scopes" : setOpenScope},
 		dataType: "json",
 		success: function(data){
@@ -213,7 +213,7 @@ function setOpenBreadCrum(params){
 			toastr.error("waswrong")
 			mylog.log();
 		}
-	});*/
+	});
 	myScopes.type="open";
 }
 function getSearchLocalityObject(){ 

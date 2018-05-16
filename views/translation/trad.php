@@ -740,6 +740,18 @@ var tradDynForm = {
     "addNewChannel"  : "<?php echo Yii::t("common","Add a new channel") ?>",
     "publicChannelExplain" : "Public channels can be searched and random people can join",
     "privateChannelExplain" : "Private channels can only be viewed by it's members",
+
+    "addNewTool"  : "<?php echo Yii::t("common","Add a new tool") ?>",
+    "chat" : "<?php echo Yii::t("common","Chat") ?>",
+	"wiki" : "<?php echo Yii::t("common","Wiki") ?>",
+	"dda" : "<?php echo Yii::t("common","Decision tool") ?>",
+	"budgettool" :"<?php echo Yii::t("common","Budget tool") ?>",
+	"drive" : "<?php echo Yii::t("common","Cloud Drive") ?>",
+	"Pad" : "<?php echo Yii::t("common","Editor Pad") ?>",
+	"repository" :"<?php echo Yii::t("common","Code repository") ?>",
+	"calendar" :"<?php echo Yii::t("common","Calendar") ?>",
+	"rss" :"<?php echo Yii::t("common","RSS") ?>",
+	"other" : "<?php echo Yii::t("common","Other") ?>",
 };
 
 var tradCategory = {

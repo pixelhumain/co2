@@ -235,14 +235,14 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 						str += "</a>";
 					}else{
 						o.input = input;
-	         	 		mylog.log("Here",o);
+	         	 		mylog.log("Here",o, typeof o.postalCode);
 
 	         	 		
 						if(type == "city"){
 							var valuesScopes = {
 								city : o._id.$id,
 								cityName : o.name,
-								postalCode : o.postalCode,
+								postalCode : (typeof o.postalCode == "undefined" ? "" : o.postalCode),
 								country : o.country,
 								allCP : o.allCP,
 								uniqueCp : o.uniqueCp,
@@ -271,7 +271,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 								valuesScopes.level2Name = o.level2Name ;
 							}
 
-		         	 		myScopes.search[valuesScopes.city] = valuesScopes;
+							valuesScopes.type = o.type;
+							valuesScopes.key = valuesScopes.city+valuesScopes.type+valuesScopes.postalCode ;
+							o.key = valuesScopes.key;
+		         	 		myScopes.search[valuesScopes.key] = valuesScopes;
 							str += directory.cityPanelHtml(o);
 						}
 						else if(type == "zone"){
@@ -327,8 +330,9 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 								valuesScopes.level2Name = o.level2Name ;
 								subTitle +=  (subTitle == "" ? "" : ", ") +  o.level2Name ;
 							}
-
-							myScopes.search[valuesScopes.id] = valuesScopes;
+							//objToPush.id+objToPush.type+objToPush.postalCode
+							valuesScopes.key = valuesScopes.id+valuesScopes.type ;
+							myScopes.search[valuesScopes.key] = valuesScopes;
 							str += directory.zonePanelHtml(o);
 						}
 				// 	var valuesScopes = {};
@@ -385,8 +389,8 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 				// 	}
 						
 
-				// 	if( notEmpty( o.nameCity ) ){
-				// 		valuesScopes.name = o.nameCity ;
+				// 	if( notEmpty( o.cityName ) ){
+				// 		valuesScopes.name = o.cityName ;
 				// 	}
 
 				// 	if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){

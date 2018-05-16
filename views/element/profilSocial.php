@@ -88,6 +88,12 @@
 	}
 <?php } ?>
 
+.grayscale{
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+}
+
 #ajax-modal .modal-content,
 #formContact .modal-content{
 	/*background-color: rgba(0,0,0,0.6);*/

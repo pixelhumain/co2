@@ -440,7 +440,7 @@ function scopeObject(values){
 	}
 	communexionObj[objToPush.id+objToPush.type] = objToPush;
 	mylog.log("scopeObject communexionObj", communexionObj);
-
+	mylog.log("scopeObject allcp", values.cityName, values);
 	if(notNull(values.allCP) && values.allCP == false){
 		objToPush={
 			id:values.city,

@@ -101,16 +101,16 @@ function initSearchInterface(){
         scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 0;
         simpleScroll(scrollH);
         if($(this).hasClass("menu-btn-start-search"))
-            search.value=$("#second-search-bar").val();
+            searchObject.text=$("#second-search-bar").val();
         else if ($(this).hasClass("input-group-addon"))   
-            search.value=$("#main-search-bar").val();
+            searchObject.text=$("#main-search-bar").val();
         else
-            search.value=$("#input-search-map").val();
-        $("#second-search-bar, #main-search-bar, #input-search-map").val(search.value);
+            searchObject.text=$("#input-search-map").val();
+        $("#second-search-bar, #main-search-bar, #input-search-map").val(searchObject.text);
         searchPage=0;
-        search.count=true;
+        searchObject.count=true;
         pageCount=true;
-        if(search.app=="territorial") searchEngine.initTerritorialSearch();
+        if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
         //if(typeInit == "all") initTypeSearch("allSig");
         //else initTypeSearch(typeInit);
         startSearch(0, indexStepInit, searchCallback);

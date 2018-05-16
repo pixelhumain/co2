@@ -384,6 +384,7 @@ END CLASSIFIED
 -------------------------------*/
 function initSearchObject(){
     if(location.hash.indexOf("?") > -1){
+        alert();
         getParamsUrls=location.hash.split("?");
         var parts = getParamsUrls[1].split("&");
         var $_GET = {};
@@ -392,18 +393,23 @@ function initSearchObject(){
             var temp = parts[i].split("=");
             $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
         }
+        console.log("geeeeeeeeet", $_GET);
         if(Object.keys($_GET).length > 0){
             $.each($_GET, function(e,v){
                 if(e=="scopeType") initScopesResearch.key=v; else searchObject[e]=v;
+                // Check on types on search app
                 if(searchObject.initType!= "all" && e=="types") delete searchObject[e];
+                else if (e=="types"){alert(searchObject.initType); delete searchObject.ranges;}
                 if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
                 if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  
                 if($.inArray(searchObject.initType, ["all", "events"])>-1 && $.inArray(e,["section","subType"]) > -1) delete searchObject[e];
                 if($.inArray(e,["cities","zones","cp"]) > -1) $.each(v.split(","), function(i, j){ initScopesResearch.ids.push(j) }); 
             }); 
+            console.log("searchafter",searchObject);
             if(initScopesResearch.key!="" && initScopesResearch.ids.length > 0)
                 checkMyScopeObject(initScopesResearch, $_GET);
+
         }
     }
 }

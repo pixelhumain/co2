@@ -149,12 +149,8 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 	if(typeof myScopes[initScopeResearch.key] != "undefined"){
 		$.each(initScopeResearch.ids,function(e,v){
 			if(v.indexOf("cp") > 0){
-				tab=v.split("cp");
-				alert("oui");
-				if(typeof myScopes[initScopeResearch.key][tab[0]+"cities"+tab[1]] == "undefined"  ){
-						alert();
+				if(typeof myScopes[initScopeResearch.key][tab[0]+"cities"+tab[1]] == "undefined"  )
 						inMyScope=false;
-					}
 			}else if(v.indexOf("allPostalCode") > 0){
 				tab=v.split("allPostalCode");
 				if(typeof myScopes[initScopeResearch.key][tab[0]] == "undefined" 
@@ -186,22 +182,38 @@ function setOpenBreadCrum(params){
 	setOpenScope={};
 	if(typeof params.zones != "undefined"){
 		zones=params.zones.split(",");
+		setOpenScope.zones=[];
 		$.each(zones, function(e,v){
-
+			setOpenScope.zones.push[v];
 		});
 	}
 	if(typeof params.cities != "undefined"){
 		cities=params.cities.split(",");
+		setOpenScope.cities=[];
 		$.each(cities, function(e,v){
-			
+			setOpenScope.cities.push[v];
 		});
 	}
 	if(typeof params.cp != "undefined"){
 		cp=params.cp.split(",");
+		setOpenScope.cp=[];
 		$.each(cp, function(e,v){
-			
+			setOpenScope.cp.push[v];
 		});
 	}
+	/*$.ajax({
+		type: "POST",
+		url: baseUrl+"/"+moduleId+"/cities/getobjectbyids",
+		data: {"scopes" : setOpenScope},
+		dataType: "json",
+		success: function(data){
+			myScopes.open=data;
+		},
+		error: function(error){
+			toastr.error("waswrong")
+			mylog.log();
+		}
+	});*/
 	myScopes.type="open";
 }
 function getSearchLocalityObject(){ 

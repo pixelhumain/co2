@@ -159,7 +159,7 @@ jQuery(document).ready(function() {
 });
 
 function initForm(){ console.log("initForm initForm");
-  getMediaFromUrlContent(".get_url_input",".results",1);
+  processUrl.getMediaFromUrlContent(".get_url_input",".results",1);
   
  // setTimeout(function(){
    // $("#btn-submit-form").on("click",function(e){

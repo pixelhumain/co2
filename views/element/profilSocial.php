@@ -88,6 +88,12 @@
 	}
 <?php } ?>
 
+.grayscale{
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+}
+
 #ajax-modal .modal-content,
 #formContact .modal-content{
 	/*background-color: rgba(0,0,0,0.6);*/
@@ -169,7 +175,7 @@
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header" 
     	<?php if (!@$element["profilBannereUrl"] || (@$element["profilBannereUrl"] && empty($element["profilBannereUrl"]))){ ?> 
-    		style="background-color: rgba(0,0,0,0.5);"
+    		style=" background: url('<?php echo Yii::app()->theme->baseUrl. '/assets/img/background-onepage/connexion-lines.jpg';?>') center bottom;"
     	<?php } ?>>
         <div id="topPosKScroll"></div>
     	<?php if(@$edit==true && false) { ?>
@@ -430,6 +436,20 @@
 				<?php } ?>
 		  <?php } ?>
 
+			
+		  <?php if(@Yii::app()->session["userId"])
+		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION || $type == Event::COLLECTION ){ ?>
+		  
+		  <span class="dropdown" id="dropdown-apps">
+	            <button type="button" class="dropdown-toggle btn btn-default bold hidden-xs letter-turq" 
+	            		id="open-co-tools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" style="border-right:0px!important;">
+				  		<i class="fa fa-th"></i> <?php echo Yii::t("cooperation", "CO.tools"); ?>
+				</button>
+	            <div class="dropdown-menu arrow_box" aria-labelledby="open-co-tools">
+	                <a class="dropdown-item padding-5 text-center col-xs-6" href="javascript:;" onclick="dyFObj.openForm('cotools')" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-plus-circle fa-2x"></i><br/><?php echo Yii::t("common","Add a tool") ?></a>
+	            </div>
+	        </span>
+		  <?php } ?>
 
 		  <?php if(@Yii::app()->session["userId"])
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
@@ -854,23 +874,6 @@
 					"controller" => $controller,
 					"openEdition" => $openEdition,
 				) );
-
-	//if( $type != Person::COLLECTION)
-		// $this->renderPartial('../element/addMembersFromMyContacts',
-		// 		array(	"type"=>$type, 
-		// 				"parentId" => (string)$element['_id'], 
-		// 				"members" => @$members));
-
-		// $this->renderPartial('../element/inviteOld',
-		// 		array(	"type"=>$type, 
-		// 				"parentId" => (string)$element['_id'], 
-		// 				"members" => @$members));
-
-		$this->renderPartial('../element/invite',
-				array(	"parentType"=>$type, 
-						"parentId" => (string)$element['_id'], 
-						"members" => @$members));
-
 ?>
 
 <?php	$cssAnsScriptFilesModule = array(
@@ -943,7 +946,7 @@
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		getContextDataLinks();
-		if(typeof contextData.links != "undefined" && rolesList != "undefined")
+		if(typeof contextData.links != "undefined" && typeof rolesList != "undefined")
 			pushListRoles(contextData.links);
 		
 		//Sig.showMapElements(Sig.map, mapElements);

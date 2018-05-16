@@ -149,6 +149,7 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 	if(typeof myScopes[initScopeResearch.key] != "undefined"){
 		$.each(initScopeResearch.ids,function(e,v){
 			if(v.indexOf("cp") > 0){
+				tab=v.split("cp");
 				if(typeof myScopes[initScopeResearch.key][tab[0]+"cities"+tab[1]] == "undefined"  )
 						inMyScope=false;
 			}else if(v.indexOf("allPostalCode") > 0){

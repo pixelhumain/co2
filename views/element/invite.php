@@ -83,7 +83,7 @@
 								if($parentType == Person::COLLECTION)
 									echo Yii::t("invite","Search or invite your contacts");
 								else
-									echo Yii::t("invite","Invite members");
+									echo Yii::t("common","Invite members");
 							?>
 						</span>
 						<br>
@@ -97,7 +97,7 @@
 							<a href="javascript:" class="" id="menuInviteSomeone">
 								<div id="titleInviteSomeone" class='radius-10 padding-10 text-yellow text-dark'>
 									<i class="fa fa-search fa-2x"></i> 
-									<?php echo Yii::t("invite","Search"); ?> 
+									<?php echo Yii::t("common","Search"); ?> 
 								</div>
 							</a>
 						</li>
@@ -131,7 +131,8 @@
 					<div class="form-group">
 						<input type="text" class="form-control text-left" placeholder="Un nom, un e-mail ..." autocomplete = "off" id="inviteSearch" name="inviteSearch" value="">
 						<div class="col-xs-12" id="dropdown-search-invite" style="max-height: 400px; overflow: auto;"></div>
-						<div class="col-xs-12" id="form-invite" style="padding:5px">
+						<form id="form-invite" class="box-login col-xs-12" style="padding:5px">
+						<!-- <div class="col-xs-12" id="form-invite" style="padding:5px"> -->
 							<div class="modal-body text-center">
 								<h2 class="text-green">
 									<i class="fa fa-plus-circle padding-bottom-10"></i>
@@ -164,11 +165,12 @@
 								</div>
 
 							</div>
+							<div class="errorHandler alert alert-danger"></div>
 							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 								<hr>
 								<button class="btn btn-primary" id="btnInviteNew" ><i class="fa fa-add"></i> <?php echo Yii::t("invite","Add to the list"); ?> </button>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 				<div id="step1-import" class="modal-body col-xs-6">
@@ -189,7 +191,7 @@
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<button id="btnValider" >
-								<i class="fa fa-check"> </i><?php echo Yii::t("person","Submit"); ?> 
+								<i class="fa fa-check"> </i><?php echo Yii::t("common","Invite"); ?> 
 							</button>
 						</div>
 					</div>
@@ -201,11 +203,6 @@
 						<div class="col-xs-12">
 							<h4> <?php echo Yii::t("common", "Results") ;?> </h4>
 							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
-						</div>
-						<div class="col-xs-12" style="margin-top: 10px;">
-							<button id="btnValider" >
-								<i class="fa fa-check"> </i><?php echo Yii::t("person","Submit"); ?> 
-							</button>
 						</div>
 					</div>
 				</div>
@@ -219,7 +216,7 @@
 	var parentType = "<?php echo $parentType; ?>";
 	var parentId = "<?php echo $parentId; ?>";
 	// var members = <?php //echo json_encode( $members ); ?>;
-	var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.sponsor, tradCategory.organizor, tradCategory.president, tradCategory.director, tradCategory.speaker, tradCategory.intervener];
+	
 	var contactTypes = {
 			citoyens : { color: "yellow", icon:"user", label:"People" },
 			organizations :	{ color: "green", icon:"group", label:"Organizations" } 
@@ -235,31 +232,48 @@
 
 	jQuery(document).ready(function() {
 		// mylog.log("members", members);
+		initInvite();
 		bindInvite();
-
-		$("#step1-import").hide();
-		$("#step2").hide();
-		$("#form-invite").hide();
-		$("#divResult").hide();
-
+		fadeInView("step1-search");
 	});
 
 	function fadeInView(inView){
 		mylog.log("fadeInView", inView);
-		$("#divResult").hide();
+		initInvite();
 		if(inView == "step1-search") {
-			$("#step1-search").show();
-			$("#step1-import").hide();
-			$("#step1-mycontacts").hide();
+			$("#modal-invite #divSearchInvite").show();
+			$("#modal-invite #step1-search").show();
 		} else if(inView == "step1-import") {
-			$("#step1-search").hide();
-			$("#step1-import").show();
-			$("#step1-mycontacts").hide();
+			$("#modal-invite #divSearchInvite").show();
+			$("#modal-invite #step1-import").show();
 		} else if(inView == "step1-mycontacts") {
-			$("#step1-search").hide();
-			$("#step1-import").hide();
-			$("#step1-mycontacts").show();
+			$("#modal-invite #divSearchInvite").show();
+			$("#modal-invite #step1-mycontacts").show();
+		}else if(inView == "result"){
+			$("#modal-invite #divResult").show();
+			$("#modal-invite #dropdown-result").show();
 		}
+	}
+
+	function initInvite(){
+		$("#modal-invite #divSearchInvite").hide();
+		$("#modal-invite #divResult").hide();
+		$("#modal-invite #step1-search").hide();
+		$("#modal-invite #step1-import").hide();
+		$("#modal-invite #step1-mycontacts").hide();
+		$("#modal-invite #step2").hide();
+		$("#modal-invite #form-invite").hide();
+
+		$("#modal-invite #dropdown-invite").html("");
+		$("#modal-invite #dropdown-search-invite").html("");
+		$("#modal-invite #dropdown-result").html("");
+
+		$("#modal-invite #inviteSearch").val("");
+		$("#modal-invite #inviteName").val("");
+		$("#modal-invite #inviteEmail").val("");
+
+		$("#modal-invite .errorHandler").hide();
+		
 	}
 
 	function bindInvite(){
@@ -321,26 +335,52 @@
 		});
 
 		$('#modal-invite #btnInviteNew').click(function(e){
+			var form = $('#form-invite');
+			var loginBtn = null;
+			form.submit(function(e){ e.preventDefault() });
 
-			var mail = $('#modal-invite #inviteEmail').val();
-			var msg = $('#modal-invite #inviteText').val();
-			var name = $('#modal-invite #inviteName').val();
+			var errorHandler = $('.errorHandler', form);
 
-			if(typeof listInvite.invites[mail] == "undefined"){
-				listInvite.invites[mail] = {
-					name : name,
-					msg : msg
-				} ;
-				$('#modal-invite #inviteEmail').val("");
-				$('#modal-invite #inviteText').val("");
-				$('#modal-invite #inviteName').val("");
-				$("#modal-invite #form-invite").hide();
-			}else{
-				toastr.error(tradDynForm.alreadyInTheList);
-			}
+			form.validate({
+				rules : {
+					inviteEmail : {
+						minlength : 2,
+						required : true,
+						email: true
+					},
+					inviteName : {
+						minlength : 2,
+						required : true,
+					},
+					inviteText : {
+						maxlength : 500,
+					}
+				},
+				submitHandler : function(form) {
+					errorHandler.hide();
+					var mail = $('#modal-invite #inviteEmail').val();
+					var msg = $('#modal-invite #inviteText').val();
+					var name = $('#modal-invite #inviteName').val();
 
-			showElementInvite(listInvite, true);
-			bindRemove();
+					if(typeof listInvite.invites[mail] == "undefined"){
+						listInvite.invites[mail] = {
+							name : name,
+							msg : msg
+						} ;
+						$('#modal-invite #inviteEmail').val("");
+						$('#modal-invite #inviteText').val("");
+						$('#modal-invite #inviteName').val("");
+						$("#modal-invite #form-invite").hide();
+					} else {
+						toastr.error(tradDynForm.alreadyInTheList);
+					}
+
+					showElementInvite(listInvite, true);
+					bindRemove();
+				} 
+			});
+			
+			
 		});
 
 		$('#modal-invite #btnValider').click(function(e){
@@ -351,10 +391,10 @@
 				mylog.log("#modal-invite #btnValider here");
 
 
-				$( ".divRoles" ).each(function(key, value) {
-					mylog.log("divRoles", $(this).data("id"), $(this).data("type"));
-					listInvite[$(this).data("type")][$(this).data("id")]["roles"] = $("#tagsRoles"+$(this).data("id")).val().split(",");
-				});
+				// $( ".divRoles" ).each(function(key, value) {
+				// 	mylog.log("divRoles", $(this).data("id"), $(this).data("type"));
+				// 	listInvite[$(this).data("type")][$(this).data("id")]["roles"] = $("#tagsRoles"+$(this).data("id")).val().split(",");
+				// });
 
 				var params = {
 					parentId : parentId,
@@ -390,11 +430,8 @@
 							}
 						});
 
+						fadeInView("result");
 						$("#modal-invite #dropdown-result").html(str);
-						$("#divSearchInvite").hide();
-						$("#divResult").show();
-						$("#modal-invite #dropdown-result").show();
-						
 				 	}
 				});
 				
@@ -402,12 +439,25 @@
 		});
 	}
 
+	
+
 	function showListInvite(){
 		if(Object.keys(listInvite.organizations).length > 0 || Object.keys(listInvite.citoyens).length > 0|| Object.keys(listInvite.invites).length > 0 ){
-			$("#step2").show();
+			$("#modal-invite #step2").show();
 		}else{
-			$("#step2").hide();
+			$("#modal-invite #step2").hide();
 		}
+	}
+
+	function bindRoles(){
+		$('.tagsRoles').change(function(e) {
+			var tag = $(this).val().split(",");
+			var parent = $(this).parent() ;
+			var id = parent.data("id");
+			var type = parent.data("type");
+			mylog.log("ID : ", id, type, tag);
+			listInvite[type][id]["roles"] = tag;
+		});
 	}
 
 	function bindAdd(){
@@ -418,28 +468,37 @@
 			var name = $(this).data("name");
 			var profilThumbImageUrl = $(this).data("profilThumbImageUrl");
 			mylog.log(".add-invite", id, type, name, profilThumbImageUrl);
-			if(type == "citoyens"){
-				if(typeof listInvite.citoyens[id] == "undefined"){
-					listInvite.citoyens[id] = { 
-						name : name,
-						profilThumbImageUrl : profilThumbImageUrl
-					} ;
-				}else{
-					toastr.error(tradDynForm.alreadyInTheList);
-				}
-			}else if(type == "organizations"){
-				if(typeof listInvite.organizations[id] == "undefined"){
-					listInvite.organizations[id] = { 
-						name : name,
-						profilThumbImageUrl : profilThumbImageUrl
-					} ;
-				}else{
-					toastr.error(tradDynForm.alreadyInTheList);
-				}
-			}
 
-			showElementInvite(listInvite, true);
-			bindRemove();
+			inMyC = false ;
+			if(parentType == "citoyens")
+				inMyC = inMyContacts(type,id)
+
+			if(inMyC == false){
+				if(type == "citoyens"){
+					if(typeof listInvite.citoyens[id] == "undefined"){
+						listInvite.citoyens[id] = { 
+							name : name,
+							profilThumbImageUrl : profilThumbImageUrl
+						} ;
+					}else{
+						toastr.error(tradDynForm.alreadyInTheList);
+					}
+				}else if(type == "organizations"){
+					if(typeof listInvite.organizations[id] == "undefined"){
+						listInvite.organizations[id] = { 
+							name : name,
+							profilThumbImageUrl : profilThumbImageUrl
+						} ;
+					}else{
+						toastr.error(tradDynForm.alreadyInTheList);
+					}
+				}
+				showElementInvite(listInvite, true);
+				bindRemove();
+			}else{
+				toastr.error("In My Contacts");
+			}
+			
 		});
 	}
 
@@ -504,6 +563,7 @@
 		mylog.log("showElementInvite length", Object.keys(contactsList.citoyens).length);
 		//var dropdown = "#dropdown-search-invite";
 		var listNotExits = true;
+		var addRoles = {};
 		if(invite == true){
 			var str = "";
 			dropdown = "#dropdown-invite";
@@ -518,6 +578,12 @@
 			$.each(contactsList.citoyens, function(key, value){
 				mylog.log("contactsList.citoyens key, value", key, value);
 				str += htmlListInvite(key, value, invite, "citoyens", invite);
+
+				if(typeof value.roles != "undefined" || typeof value.roles == null){
+					var tagRolesList = [] ;
+					$.each(value.roles, function(i,k) { tagRolesList.push( {id:k,text:k} ); });
+					addRoles[key] = tagRolesList;
+				}
 			});
 
 			listNotExits = false;
@@ -544,8 +610,19 @@
 
 		mylog.log("showElementInvite", dropdown);
 		$("#modal-invite "+dropdown).html(str);
+
+		$('#modal-invite .tagsRoles').select2({tags:rolesList});
+
+		mylog.log("addRoles", addRoles);
+		$.each(addRoles, function(key, value){
+			$('#tagsRoles'+key).select2("data",value);
+		});
+		
+		bindRoles();
+
 		$("#modal-invite "+dropdown).show();
-		$('.tagsRoles').select2({tags:rolesList});
+
+
 		if(listNotExits)
 			newInvitation();
 		else
@@ -560,7 +637,7 @@
 
 		var inMyContact = inMyContacts(type,id);
 
-		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl+'/'+ elem.profilThumbImageUrl : assetPath + "/images/news/profile_default_l.png";
+		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl+'/'+ elem.profilThumbImageUrl : "";
 		var str = "<div class='col-xs-12'>";
 			var classStr = " ";
 			if(invite == true){
@@ -568,7 +645,7 @@
 						'id="'+id+'Remove" '+
 						'name="'+id+'Remove" '+
 						'data-toggle="tooltip" data-placement="top" '+
-						'data-type="citoyens" ' +
+						'data-type="'+type+'" ' +
 						'data-id="'+id+'" ' + 
 						'data-toggle="tooltip" data-placement="top" title="Remove" >'+
 						'<i class="fa fa-remove"></i>'+
@@ -584,14 +661,22 @@
 					" data-name='"+elem.name+"' "+
 					" data-profilThumbImageUrl='"+profilThumbImageUrl+"' "+
 					" data-type='"+type+"' >";
-				str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35"> ';
+				if(profilThumbImageUrl != "")
+					str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35"> ';
+				else {
+					if(type == "citoyens")
+						str += '<i class="fa fa-user "></i> ';
+					else if(type == "organizations")
+						str += '<i class="fa fa-users "></i> ';
+				}
+
 				str += '<span class="text-dark text-bold">' + elem.name + '</span>';
 				if(inMyContact == true)
 					str += ' <span class="text-dark text-bold text-green follows tooltips"> '+
 								'<i class="fa fa-link" data-toggle="tooltip" data-placement="top" title="'+trad.follows+'" alt="" data-original-title="'+trad.follows+'"></i>'+
 							'</span>';
 				
-				if(invite == true && parentType == "organizations"){
+				if(invite == true && parentType != "citoyens"){
 					str += '<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+id+'" data-type="'+type+'">'+
 								'<input id="tagsRoles'+id+'" class="tagsRoles" type="text" data-type="select2" name="roles" placeholder="Add a role" value="" style="width:100%;">'+
 							'</div>';	

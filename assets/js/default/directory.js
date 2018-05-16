@@ -148,13 +148,11 @@ function constructSearchObjectAndGetParams(){
     getStatus+=(getStatus!="") ? "&":"";
     getStatus+="startDate="+searchObject.startDate;
     searchConstruct.startDate = searchObject.startDate;
-          mylog.log("HERE DATE STARTDATE", searchObject.startDate, moment(searchObject.startDate).local().format("DD/MM/YYYY"));
   }
   if(typeof searchObject.endDate != "undefined"){
     getStatus+=(getStatus!="") ? "&":"";
     getStatus+="endDate="+searchObject.endDate;
     searchConstruct.endDate = searchObject.endDate;
-        mylog.log("HERE DATE ENDDATE", searchObject.endDate, moment(searchObject.endDate).local().format("DD/MM/YYYY"));
   }
   if(typeof searchObject.indexMin != "undefined" && notNull(searchObject.indexMin)){
     searchConstruct.indexMin=searchObject.indexMin;

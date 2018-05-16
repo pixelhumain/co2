@@ -125,9 +125,9 @@ function constructSearchObjectAndGetParams(){
     getStatus+=(getStatus!="") ? "&":"";
     getStatus+="tags="+searchObject.tags.join(",");
   }
-  if(typeof searchObject.page != "undefined"){
+  if(typeof searchObject.page != "undefined" && searchObject.page>0){
     getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="page="+searchObject.page;
+    getStatus+="page="+searchObject.page++;
   }
   if(typeof searchObject.searchSType != "undefined"){
     getStatus+=(getStatus!="") ? "&":"";
@@ -167,21 +167,22 @@ function constructSearchObjectAndGetParams(){
     searchConstruct.ranges=searchObject.ranges;
   if(typeof searchObject.countType != "undefined")
     searchConstruct.countType=searchObject.countType;
-  if($("#priceMin").val()!=""){
+
+  if(typeof $("#priceMin").val() != "undefined" && $("#priceMin").val()!=""){
     searchObject.priceMin=$("#priceMin").val();
     searchConstruct.priceMin = searchObject.priceMin; 
     getStatus+=(getStatus!="") ? "&":"";
     getStatus+="priceMin="+searchObject.priceMin;
   }else if(typeof searchObject.priceMin != "undefined")
     delete searchObject.priceMin;
-  if($("#priceMax").val()!=""){
+  if(typeof $("#priceMax").val() != "undefined" && $("#priceMax").val()!=""){
     searchObject.priceMax=$("#priceMax").val();
     searchConstruct.priceMax = searchObject.priceMax;
     getStatus+=(getStatus!="") ? "&":"";
     getStatus+="priceMax="+searchObject.priceMax;
   }else if(typeof searchObject.priceMax != "undefined")
     delete searchObject.priceMax;
-  if($("#devise").val()!=""){ 
+  if(typeof $("#devise").val() != "undefined" &&$("#devise").val()!=""){ 
     searchObject.devise=$("#devise").val();
     searchConstruct.devise = searchObject.devise;
     getStatus+=(getStatus!="") ? "&":"";

@@ -143,6 +143,67 @@ function getUrlSearchLocality(urlGet){
 //	mylog.log("getMultiScopeForSearch search", res);
 	return urlGet;
 }
+function checkMyScopeObject(initScopeResearch, paramsGet){
+	inMyScope=true;
+	console.log("initScope",initScopeResearch, "Myscopes", myScopes);
+	if(typeof myScopes[initScopeResearch.key] != "undefined"){
+		$.each(initScopeResearch.ids,function(e,v){
+			if(v.indexOf("cp") > 0){
+				tab=v.split("cp");
+				alert("oui");
+				if(typeof myScopes[initScopeResearch.key][tab[0]+"cities"+tab[1]] == "undefined"  ){
+						alert();
+						inMyScope=false;
+					}
+			}else if(v.indexOf("allPostalCode") > 0){
+				tab=v.split("allPostalCode");
+				if(typeof myScopes[initScopeResearch.key][tab[0]] == "undefined" 
+					|| typeof myScopes[initScopeResearch.key][tab[0]].allCP == "undefined" 
+					|| !myScopes[initScopeResearch.key][tab[0]].allCP )
+					inMyScope=false;
+			}else if(typeof myScopes[initScopeResearch.key][v] == "undefined")
+				inMyScope=false;
+		});
+		if(!inMyScope){
+			setOpenBreadCrum(paramsGet);
+		}else{
+			myScopes.type=initScopeResearch.key
+			$.each(myScopes[initScopeResearch.key], function(e, v){
+				keyActive=e;
+				if(e.indexOf("cities") > 0)
+					keyActive=e.replace("cities","");
+				if(typeof v.allCP != "undefined" && v.allCP)
+					keyActive=e+"allPostalCode";
+				if(v.type=="cities" && v.postalCode != "undefined"){
+					keyActive=v.id+"cp"+v.postalCode;
+				}
+				myScopes[initScopeResearch.key][e].active=($.inArray(keyActive, initScopeResearch.ids) > -1)  ? true : false;
+			});
+		}
+	}
+}
+function setOpenBreadCrum(params){
+	setOpenScope={};
+	if(typeof params.zones != "undefined"){
+		zones=params.zones.split(",");
+		$.each(zones, function(e,v){
+
+		});
+	}
+	if(typeof params.cities != "undefined"){
+		cities=params.cities.split(",");
+		$.each(cities, function(e,v){
+			
+		});
+	}
+	if(typeof params.cp != "undefined"){
+		cp=params.cp.split(",");
+		$.each(cp, function(e,v){
+			
+		});
+	}
+	myScopes.type="open";
+}
 function getSearchLocalityObject(){ 
 	var res = {};
 	var searchingOnLoc=myScopes[myScopes.type];

@@ -148,7 +148,9 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		toogleNotif(false);
 	});
-
+	$("#btnHeaderEditInfos").click(function(){
+		$("#btn-start-detail").trigger("click");
+	});
 	$("#btn-start-detail").click(function(){
 		responsiveMenuLeft();
 		location.hash=hashUrlPage+".view.detail";

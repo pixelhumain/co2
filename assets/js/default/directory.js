@@ -1166,8 +1166,10 @@ var directory = {
  
       if(typeof params.shortDescription != "undefined" && params.shortDescription != "" && params.shortDescription != null)
         str += "<br><span class='description'>"+params.shortDescription+"</span>";
-      else if(typeof params.description != "undefined" && params.description != "" && params.description != null)
-        str += "<br><span class='description'>"+params.description+"</span>";
+      else if(typeof params.description != "undefined" && params.description != "" && params.description != null){
+        str += "<br><span class='description'>"+
+          ( (params.description.length > 140) ? params.description.substring(0,140)+"..." : params.description )+"</span>";
+      }
 
       if(typeof params.tagsLbl != "undefined")
         str += "<div class='tagsContainer'>"+params.tagsLbl+"</div>";

@@ -206,6 +206,7 @@ jQuery(document).ready(function() {
             }
             loadingData = false;
             pageCount=true;
+            searchObject.page=0;
             if(Object.keys(searchObject.countType).length>1) searchObject.count=false; 
             else searchObject.count=true;
             pageEvent=false;
@@ -243,14 +244,14 @@ jQuery(document).ready(function() {
         loadingData = false; 
         initTypeSearch(type);
         initSearchObject();
-        startSearch(null, null, searchCallback);
+        startSearch(searchObject.indexMin, null, searchCallback);
         initSearchInterface();
 
     },"html");
 
     initSearchInterface(); //themes/co2/assets/js/default/search.js
-
-    calculateAgendaWindow(0);
+    if(page=="agenda")
+        calculateAgendaWindow(0);
 
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){

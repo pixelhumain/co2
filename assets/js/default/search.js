@@ -5,20 +5,6 @@ function initSearchInterface(){
             if(!$("#filter-thematic-menu").is(":visible") || $(this).hasClass("toogle-filter"))
                 $("#filter-thematic-menu").toggle();
     });
-    $(".btn-menu-to-app").off().on("click", function(){
-        alert();
-        $.each(searchObject, function(e,v){
-            if($.inArray(e,["startDate","endDate", "searchSType", "section", "subType","priceMin", "priceMax", "devise"]) > -1)
-                delete searchObject[e];
-            searchObject.page=0,
-            searchObject.indexMin=0,
-            searchObject.indexStep=30,
-            searchObject.count=true,
-            searchObject.initType="",
-            searchObject.types=[],
-            searchObject.countType=[];
-        });
-    });
     $("#filters-container-menu .theme-header-filter, #filters-container-menu .scope-header-filter").click(function(){
         simpleScroll(0, 500);
     });
@@ -451,6 +437,13 @@ function activeFiltersInterface(filter,value){
     if(filter=="types"){
         $(".btn-directory-type").removeClass("active");
         $(".btn-directory-type[data-type='"+value+"']").addClass("active");
+    }
+    if(filter=="page"){
+        searchObject.page=(Number(value)-1);
+        searchObject.indexMin=searchObject.indexStep*searchObject.page;
+
+        if(searchObject.initType != "all" || (typeof searchObject.types != "undefined" && searchObject.types.length == 1 ))
+            pageCount=true;
     }
 }
 var searchAllEngine = {

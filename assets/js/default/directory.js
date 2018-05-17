@@ -42,7 +42,6 @@ function startSearch(indexMin, indexMax, callBack){
       showIsLoading(true);
 
       mylog.log("startSearch", searchObject.indexMin, indexMax, searchObject.indexStep, searchObject.types);
-      
       searchObject.indexMin = (typeof indexMin == "undefined") ? 0 : indexMin;
       //if(typeof indexMax == "undefined") indexMax = indexStep;
 
@@ -127,7 +126,7 @@ function constructSearchObjectAndGetParams(){
   }
   if(typeof searchObject.page != "undefined" && searchObject.page>0){
     getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="page="+searchObject.page++;
+    getStatus+="page="+(searchObject.page+1);
   }
   if(typeof searchObject.searchSType != "undefined"){
     getStatus+=(getStatus!="") ? "&":"";
@@ -328,6 +327,11 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                     //on scroll pour afficher le premier résultat de la dernière recherche
                     //$(".my-main-container").animate({"scrollTop" : heightContainer}, 1700);
                     //$(".my-main-container").scrollTop(heightContainer);
+                    if($(".search-loader").length) $(".search-loader").remove();
+                    if($(".pageTable").html()=="" && (searchObject.initType!= "all" || searchObject.types.length==1)){
+                      typeElement=(searchObject.types=="persons") ? "citoyens" : searchObject.types;
+                      initPageTable(searchCount[typeElement]);
+                    }
 
                 //si on est sur une première recherche
                 }else{
@@ -343,7 +347,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                       else if(!$("#content-social .calendar").is(":visible"))
                         $("#content-social .calendar").show(700);
                     }
-                    if(typeof pageCount != "undefined" && pageCount){
+                    if(searchObject.initType!= "all" || searchObject.types.length==1){
                       typeElement=(searchObject.types=="persons") ? "citoyens" : searchObject.types;
                       initPageTable(searchCount[typeElement]);
                     }
@@ -418,7 +422,7 @@ function initPageTable(number){
     $('.pageTable').pagination({
           items: numberPage,
           itemOnPage: 15,
-          currentPage: 1,
+          currentPage: (searchObject.page+1),
           hrefTextPrefix:"?page=",
           cssStyle: 'light-theme',
           prevText: '<i class="fa fa-chevron-left"></i> ' + trad["previous"],
@@ -3003,7 +3007,6 @@ var directory = {
       footerStr = '';
       // GET PAGINATION STRUCTURE
       if(typeof searchObject.ranges == "undefined"){
-        if(typeof pageCount != "undefined" && pageCount)
           footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
         if(userId != ""){
           if(typeof searchObject.ranges == "undefined"){

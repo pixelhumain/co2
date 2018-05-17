@@ -1616,4 +1616,16 @@ La vie en santé;Santé;;
 		$city = PHDB::findOne(City::COLLECTION, $where, $fields);
 		Rest::json($city);exit;
 	}
+
+	public function actionTestRegex2(){
+
+		$str = "Girmont-Val d'Ajol";
+		$str = "côté";
+		$res = $str ;
+
+		$res = preg_replace('/&(.)[^;]+;/', $str, $res);
+
+		$a = array($str => $res);
+		Rest::json($a);exit;
+	}
 }

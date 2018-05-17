@@ -12,6 +12,7 @@
 
 <script type="text/javascript">
 var contextMapNetwork = [];
+var currentKFormType = "";
 var indexStepInit = 100;
 var searchPrefTag = null ;
 var indexStep = indexStepInit;
@@ -60,6 +61,7 @@ jQuery(document).ready(function() {
 	var timeoutSearch = setTimeout(function(){ }, 100);
 	setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
 	mylog.log("indexStepInit", indexStepInit);
+	bindButtonOpenForm();
 	startSearchSimply(0, indexStepInit);
 });
 

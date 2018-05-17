@@ -362,6 +362,7 @@
 											"address" 			: "MARKER",
 
 											"classified" 		: "classified-marker-default",
+											"classifieds" 		: "classified-marker-default",
 											"ressources" 		: "ressources-marker-default",
 											"ressource" 		: "ressources-marker-default",
 											"service" 			: "services/medical",

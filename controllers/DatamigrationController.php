@@ -3634,6 +3634,43 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		echo $nbelement." elements mis a jours";
 		
 	}
+	public function actionRemoveMarkerPathRessourcesClassified(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbRessources = 0 ;
+			$nbClass=0;
+			$ressources = PHDB::find( Ressource::COLLECTION);
+			
+			foreach ($ressources as $key => $value) {
+				// if(!empty($value["name"]))
+				// 	echo $key." : ".$value["name"]."<br/>";
+				if (@$value["profilMarkerImageUrl"]){
+					$res = PHDB::update(Ressource::COLLECTION, 
+				  		array("_id"=>new MongoId($key)),
+	                	array('$unset' => array("profilMarkerImageUrl" => "" ))
+	            	);
+	            	$nbRessources++;
+	            }
+			}	
+			$class = PHDB::find( Classified::COLLECTION);
+			
+			foreach ($class as $key => $value) {
+				// if(!empty($value["name"]))
+				// 	echo $key." : ".$value["name"]."<br/>";
+				if (@$value["profilMarkerImageUrl"]){
+					$res = PHDB::update(Classified::COLLECTION, 
+				  		array("_id"=>new MongoId($key)),
+	                	array('$unset' => array("profilMarkerImageUrl" => "" ))
+	            	);
+	            	$nbClass++;
+	            }
+			}	
+			echo $nbClass. " miss à pjour";
+			echo $nbRessources." yepa";
+		}else
+			echo "salut toi !!!!!";
+		
+	}
 
 
 	public function actionIrisUpdateInter(){

@@ -158,29 +158,45 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 					|| typeof myScopes[initScopeResearch.key][tab[0]].allCP == "undefined" 
 					|| !myScopes[initScopeResearch.key][tab[0]].allCP )
 					inMyScope=false;
-			}else if(typeof myScopes[initScopeResearch.key][v] == "undefined")
-				inMyScope=false;
+			}else{
+				inside=false;
+				$.each(myScopes[initScopeResearch.key], function(key, value){
+					if(value.id==v)
+						inside=true;
+				});
+				inMyScope=inside;
+			}
 		});
 		if(!inMyScope){
 			setOpenBreadCrum(paramsGet);
 		}else{
-			myScopes.type=initScopeResearch.key
+			myScopes.type=initScopeResearch.key;
 			$.each(myScopes[initScopeResearch.key], function(e, v){
-				keyActive=e;
+				var keyActive="";
 				if(e.indexOf("cities") > 0)
 					keyActive=e.replace("cities","");
-				if(typeof v.allCP != "undefined" && v.allCP)
-					keyActive=e+"allPostalCode";
-				if(v.type=="cities" && v.postalCode != "undefined"){
+				//if(typeof v.allCP != "undefined" && v.allCP)
+				//	keyActive=e+"allPostalCode";
+				if(v.type=="cities" && typeof v.postalCode != "undefined"){
 					keyActive=v.id+"cp"+v.postalCode;
 				}
+				if(v.type.indexOf("level") > -1){
+					t=e.split("level");
+					keyActive=t[0];
+				}
+				if(v.type=="cp")
+					keyActive=v.id;
+				alert(keyActive);
 				myScopes[initScopeResearch.key][e].active=($.inArray(keyActive, initScopeResearch.ids) > -1)  ? true : false;
 			});
 		}
-		$(".scopes-container").html(constructScopesHtml());
-		if($.inArray(myScopes.type, ["multiscopes", "communexion"]) > -1)
-			$("#"+myScopes.type+"-btn").addClass("active");
 	}
+	alert("ici");
+	if(Object.keys(myScopes[myScopes.type]).length > 0)
+		$(".scopes-container").html(constructScopesHtml());
+	bindScopesInputEvent();
+	if($.inArray(myScopes.type, ["multiscopes", "communexion"]) > -1)
+		$("#"+myScopes.type+"-btn").addClass("active");
 }
 function setOpenBreadCrum(params){
 	setOpenScope={};

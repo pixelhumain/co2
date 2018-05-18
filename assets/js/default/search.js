@@ -389,6 +389,108 @@ END CLASSIFIED
 /* ----------------------------
         SEARCH ENGINE
 -------------------------------*/
+function constructSearchObjectAndGetParams(){
+  onchangeClick=false;
+  getStatus="";//location.hash+"?";
+  var searchConstruct={};
+  if(searchObject.text != ""){
+    searchConstruct.name=searchObject.text;
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="text="+searchObject.text;
+  }
+  if(typeof searchObject.types != "undefined" && searchObject.types.length==1 && searchObject.initType=="all"){
+    searchConstruct.searchType=searchObject.types;
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="types="+searchObject.types.join(",");
+  }else{
+    searchConstruct.searchType=searchObject.types;
+  }
+  if(searchObject.tags != ""){
+    searchConstruct.searchTags=searchObject.tags;
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="tags="+searchObject.tags.join(",");
+  }
+  if(typeof searchObject.page != "undefined" && searchObject.page>0){
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="page="+(searchObject.page+1);
+  }
+  if(typeof searchObject.searchSType != "undefined"){
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="searchSType="+searchObject.searchSType;
+    searchConstruct.searchSType = searchObject.searchSType;
+  }
+  if(typeof searchObject.section != "undefined"){
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="section="+searchObject.section;
+    searchConstruct.section = searchObject.section;
+  }
+  if(typeof searchObject.subType != "undefined"){
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="subType="+searchObject.subType;
+    searchConstruct.subType = searchObject.subType;
+  }
+  if(typeof searchObject.startDate != "undefined"){
+    if(searchObject.text==""){
+      getStatus+=(getStatus!="") ? "&":"";
+      getStatus+="startDate="+searchObject.startDate;
+      searchConstruct.startDate = searchObject.startDate;
+      $(".calendar").show(700);
+    }else
+      $(".calendar").hide(700);
+  }
+  if(typeof searchObject.endDate != "undefined"){
+    if(searchObject.text==""){
+      getStatus+=(getStatus!="") ? "&":"";
+      getStatus+="endDate="+searchObject.endDate;
+      searchConstruct.endDate = searchObject.endDate;
+    }
+  }
+  if(typeof searchObject.indexMin != "undefined" && notNull(searchObject.indexMin)){
+    searchConstruct.indexMin=searchObject.indexMin;
+  }
+  if(typeof searchObject.initType != "undefined")
+    searchConstruct.initType=searchObject.initType;
+  if(typeof searchObject.count != "undefined" && searchObject.count)
+    searchConstruct.count=searchObject.count;
+  if(typeof searchObject.ranges != "undefined")
+    searchConstruct.ranges=searchObject.ranges;
+  if(typeof searchObject.countType != "undefined")
+    searchConstruct.countType=searchObject.countType;
+
+  if(typeof $("#priceMin").val() != "undefined" && $("#priceMin").val()!=""){
+    searchObject.priceMin=$("#priceMin").val();
+    searchConstruct.priceMin = searchObject.priceMin; 
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="priceMin="+searchObject.priceMin;
+  }else if(typeof searchObject.priceMin != "undefined")
+    delete searchObject.priceMin;
+  if(typeof $("#priceMax").val() != "undefined" && $("#priceMax").val()!=""){
+    searchObject.priceMax=$("#priceMax").val();
+    searchConstruct.priceMax = searchObject.priceMax;
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="priceMax="+searchObject.priceMax;
+  }else if(typeof searchObject.priceMax != "undefined")
+    delete searchObject.priceMax;
+  if(typeof $("#devise").val() != "undefined" && $("#devise").val()!="" && $("#devise").val()!="€"){ 
+    searchObject.devise=$("#devise").val();
+    searchConstruct.devise = searchObject.devise;
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="devise="+searchObject.devise;
+  }else if(typeof searchObject.devise != "undefined")
+    delete searchObject.devise;
+
+  // Locality
+  getStatus=getUrlSearchLocality(getStatus);
+  searchConstruct.locality = getSearchLocalityObject();
+  //Construct url with all necessar params
+  hashT=location.hash.split("?");
+  if(getStatus != "")
+    location.hash=hashT[0].substring(0)+"?"+getStatus;
+  else
+    location.hash=hashT[0];
+
+  return searchConstruct;
+}
 function initSearchObject(){
     if(location.hash.indexOf("?") > -1){
         getParamsUrls=location.hash.split("?");

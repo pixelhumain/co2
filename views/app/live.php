@@ -14,6 +14,7 @@
 		'/js/news/autosize.js',
 		'/js/news/newsHtml.js',
 		'/js/default/live.js',
+        '/js/default/search.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -214,6 +215,7 @@ jQuery(document).ready(function() {
 	
     
     searchPage = true;
+    initSearchObject();
 	startNewsSearch(true);
 
 	$(".titleNowEvents .btnhidden").hide();
@@ -246,11 +248,12 @@ jQuery(document).ready(function() {
         searchObject.count=true;
         if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
         
-        startSearch(0, indexStepInit, searchCallback);
+        startNewsSearch(0, indexStepInit, searchCallback);
     });
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
+        searchObject.text=$(this).val();
         if(e.keyCode == 13 || $(this).val() == ""){
             startNewsSearch(true); 
             KScrollTo("#content-social");
@@ -263,6 +266,7 @@ jQuery(document).ready(function() {
     $("#second-search-bar").keyup(function(e){
         $("#main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
+        searchObject.text=$(this).val();
         if(e.keyCode == 13 || $(this).val() == ""){            
             startNewsSearch(true);
             KScrollTo("#content-social");
@@ -272,6 +276,7 @@ jQuery(document).ready(function() {
     $("#input-search-map").keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
+        searchObject.text=$(this).val();
         if(e.keyCode == 13){
             startNewsSearch(true);
          }

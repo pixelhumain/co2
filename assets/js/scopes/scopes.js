@@ -186,7 +186,6 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 				}
 				if(v.type=="cp")
 					keyActive=v.id;
-				alert(keyActive);
 				myScopes[initScopeResearch.key][e].active=($.inArray(keyActive, initScopeResearch.ids) > -1)  ? true : false;
 			});
 		}

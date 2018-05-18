@@ -144,14 +144,20 @@ function constructSearchObjectAndGetParams(){
     searchConstruct.subType = searchObject.subType;
   }
   if(typeof searchObject.startDate != "undefined"){
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="startDate="+searchObject.startDate;
-    searchConstruct.startDate = searchObject.startDate;
+    if(searchObject.text==""){
+      getStatus+=(getStatus!="") ? "&":"";
+      getStatus+="startDate="+searchObject.startDate;
+      searchConstruct.startDate = searchObject.startDate;
+      $(".calendar").show(700);
+    }else
+      $(".calendar").hide(700);
   }
   if(typeof searchObject.endDate != "undefined"){
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="endDate="+searchObject.endDate;
-    searchConstruct.endDate = searchObject.endDate;
+    if(searchObject.text==""){
+      getStatus+=(getStatus!="") ? "&":"";
+      getStatus+="endDate="+searchObject.endDate;
+      searchConstruct.endDate = searchObject.endDate;
+    }
   }
   if(typeof searchObject.indexMin != "undefined" && notNull(searchObject.indexMin)){
     searchConstruct.indexMin=searchObject.indexMin;
@@ -202,21 +208,6 @@ function constructSearchObjectAndGetParams(){
 function autoCompleteSearch(indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
    var data=constructSearchObjectAndGetParams();    
-   /* var data = {
-      "name" : searchObject.text, 
-      "locality" : searchObject.locality,
-      "searchType" : searchObject.types, 
-      "searchTag" : searchObject.tags, //($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
-      //"searchPage":searchObject.page,
-      //"initType":searchObject.initType,
-    };*/
-    
-    /*if(typeof searchObject.searchSType != "undefined")
-      data.searchSType = searchObject.searchSType;
-    if(typeof searchObject.section != "undefined")
-      data.section = searchObject.section;
-    if(typeof searchObject.subType != "undefined")
-      data.subType = searchObject.subType;*/
 
     //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
     /*if(searchObject.initType=="events" && searchObject.text==""){

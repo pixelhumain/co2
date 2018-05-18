@@ -191,7 +191,9 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 			});
 		}
 	}
-	alert("ici");
+	appendScopeBreadcrum();
+}
+function appendScopeBreadcrum(){
 	if(Object.keys(myScopes[myScopes.type]).length > 0)
 		$(".scopes-container").html(constructScopesHtml());
 	bindScopesInputEvent();

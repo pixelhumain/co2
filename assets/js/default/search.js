@@ -417,7 +417,8 @@ function initSearchObject(){
             if(initScopesResearch.key!="" && initScopesResearch.ids.length > 0)
                 checkMyScopeObject(initScopesResearch, $_GET);
         }
-    }
+    }else
+        appendScopeBreadcrum();
 }
 function activeFiltersInterface(filter,value){
     if(filter=="section"){

@@ -162,9 +162,9 @@ var scrollEnd = false;
 //allSearchType = ["persons", "NGO", "LocalBusiness", "projects", "Group"];
 
 var currentKFormType = "";
-
+alert();
 jQuery(document).ready(function() {
-
+    
     setTitle(titlePage, "", titlePage);
     
     initCountType();

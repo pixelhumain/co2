@@ -129,20 +129,10 @@ class AppController extends CommunecterController {
 	}
 
 
-    /*public function actionSearch($type=null){
-        CO2Stat::incNbLoad("co2-search");   
-        $params = array("type" => @$type );
-        echo $this->renderPartial("search", $params, true);
-    }*/
     public function actionSearch($type=null){
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => "all" /*Organization::COLLECTION*/, "app"=>"search" );
         echo $this->renderPartial("search", $params, true);
-    }
-    public function actionTerritorial($type=null){
-        CO2Stat::incNbLoad("co2-search");   
-        $params = array("type" => @$type );
-        echo $this->renderPartial("territorial", $params, true);
     }
     public function actionSocial($type=null){
         CO2Stat::incNbLoad("co2-search");   
@@ -311,6 +301,10 @@ class AppController extends CommunecterController {
         else if($type == Survey::COLLECTION){
             $element = Survey::getById($id);
         }
+
+        if( (!empty($element["status"]) && $element["status"] == "deleted") ||  
+            (!empty($element["tobeactivated"]) && $element["tobeactivated"] == true) )
+             $this->redirect( Yii::app()->createUrl($controller->module->id) );
 
         if(@$element["parentId"] && @$element["parentType"] && 
             $element["parentId"] != "dontKnow" && $element["parentType"] != "dontKnow")

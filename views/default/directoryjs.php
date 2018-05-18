@@ -11,6 +11,121 @@
   <style>
 
 
+.grayscale{
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+}
+
+
+.favElBtn, .favAllBtn{
+  padding: 5px 8px;
+  font-weight: 300;
+  margin-bottom:5px;
+}
+#searchBarTextJS{
+  margin-bottom: 15px;
+}
+.btn-open-filliaire{
+  font-weight: 700;
+  text-transform: uppercase;
+}
+#col-btn-type-directory hr{
+  border-top: 1px solid #f5f1f1;
+  width: 95%;
+  float: right;
+}
+#col-btn-type-directory .btn-directory-type,
+#sub-menu-left .btn-select-type-anc{
+  /*margin-bottom:5px;*/
+  width:100%;
+  text-align: right;
+  line-height: 20px;
+  vertical-align: text-bottom;
+  /*font-weight: 700;*/
+  color: grey;
+  text-transform: uppercase;
+  background-color: transparent;
+}
+.btn-directory-type{
+  padding-right: 15px !important;
+  border-radius: 0px;
+  border: 0px;
+}
+.btn-directory-type:focus{
+  outline: inherit !important;
+}
+.btn-directory-type:hover, .btn-directory-type.active{
+  /*padding-right: 10px !important;*/
+  margin-right:-3px!important;
+  box-shadow: none !important;
+  font-weight: bold !important;
+}
+.btn-directory-type.active{
+  border-right: 3px solid;
+}
+.btn-directory-type .label-filter{
+  max-width: 50%;
+  font-size: 13px;
+  vertical-align: middle;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.open-type-filter{
+  display:none;
+}
+@media (max-width: 768px) {
+  .open-type-filter{
+    display: block;
+    position: absolute;
+    right: -33px;
+    height: 50px;
+    width: 50px;
+    border: 1px solid #dadada;
+    border-radius: 100%;
+    text-align: right;
+    padding-right: 8px;
+    z-index: -1;
+    font-size: 20px;
+  }
+  #col-btn-type-directory .btn-directory-type, #sub-menu-left .btn-select-type-anc{
+    background-color: white;
+  }
+  #col-btn-type-directory, #sub-menu-left{
+    position: fixed;
+    width: 56%;
+    left: -56%;
+    background-color: white;
+    /*top: 0px;*/
+    top: 214px; 
+    z-index: 300;
+    padding: 0px;
+    -webkit-box-shadow: 0px 2px 6px -1px rgba(0,0,0,.2);
+    box-shadow: 0px 2px 6px -1px rgba(0,0,0,.2);
+  }
+
+  #sub-menu-left.subsub .btn {
+    width: 100% !important;
+    /*background-color: white !important;*/
+    margin: 0px !important;
+    border-radius: 0px;
+  }
+
+  #col-btn-type-directory.affix, #sub-menu-left.affix{
+    top: 130px;
+  }
+}
+
+  @media (min-width: 769px) {
+  #col-btn-type-directory, #sub-menu-left {
+    left:inherit !important;
+  }
+
+  #col-btn-type-directory.affix, #sub-menu-left.affix{
+    top: 130px;
+    left: 5% !important;
+  }
+}
+
 /* ANNONCES MENU*/
 <?php 
   $btnAnc = array("blue"    =>array("color1"=>"#4285f4", 
@@ -120,8 +235,6 @@
         </div>    
         
         <?php 
-//echo "<h1>".$typeSelected."</h1>" ;
-//echo "<h1>".$_GET["app"]."</h1>" ;
         if($typeSelected == "place"){ ?>
         <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
@@ -424,13 +537,6 @@
         </div>
   </div>
 
-
-
-
-
-
-
-<?php //$this->renderPartial(@$path."first_step_directory"); ?> 
 <?php $city = (@$_GET['lockCityKey'] ? City::getByUnikey($_GET['lockCityKey']) : null);
 
       if($city == null && @$_GET['insee'])
@@ -458,9 +564,6 @@ function setHeaderDirectory(type){
   $(".subtitle-search").html( '<span class="text-'+params.color+'">'+
                                 '<i class="fa fa-angle-down"></i> <i class="fa fa-'+params.icon+'"></i> '+
                                 params.name+
-                              //  " <i class='fa fa-angle-right'></i> "+
-                              // "<a href='javascript:directory.showFilters()' class='btn btn-default btn-sm'> "+
-                              //  "<i class='fa fa-search'></i> Recherche avancée</a>"+
                               '</span>' );
 
   $(".lbl-info-search .lbl-info").addClass("hidden");
@@ -532,7 +635,6 @@ jQuery(document).ready(function() {
     }
   });
   searchType = (typeSelected == null) ? [ "persons" ] : [ typeSelected ];
-  //allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","places","ressources" ];
 	topMenuActivated = true;
 	hideScrollTop = true; 
   loadingData = false;
@@ -541,14 +643,8 @@ jQuery(document).ready(function() {
   var timeoutSearch = setTimeout(function(){ }, 100);
   
   setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
-
-	//setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
 	
   $('.tooltips').tooltip();
-
-  //setHeaderDirectory(typeSelected);  
-
-  //showTagsScopesMin("#scopeListContainer");
 
   // if(lockCityKey != null){
   //   lockScopeOnCityKey(lockCityKey, cityNameLocked);
@@ -560,36 +656,6 @@ jQuery(document).ready(function() {
   <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ ?>
       $("#sub-menu-filliaire").addClass("hidden");
   <?php } ?>
-
-  // $(".btn-open-filliaire").click(function(){
-  //     if($("#sub-menu-filliaire").hasClass("hidden"))
-  //       $("#sub-menu-filliaire").removeClass("hidden");
-  //     else{
-  //       $("#sub-menu-filliaire").addClass("hidden");
-  //       resetMyTags();
-  //     }
-  // });
-
-  /*$(".btn-select-filliaire").click(function(){
-      mylog.log(".btn-select-filliaire");
-      var fKey = $(this).data("fkey");
-      //myMultiTags = {};
-      $.each(filliaireCategories[fKey]["tags"], function(key, tag){
-        search.value="#"+tag;
-         $("#main-search-bar, #second-search-bar").val(search.value);
-     //   addTagToMultitag(tag);
-      });
-      search
-      mylog.log("myMultiTags", myMultiTags);
-      
-      startSearch(0, indexStepInit, searchCallback);
-      KScrollTo("#content-social");
-      //bindCommunexionScopeEvents();
-      //KScrollTo("#before-section-result");
-  });*/
-  
-  /*  $(".searchIcon").removeClass("fa-search").addClass("fa-file-text-o");
-  $(".searchIcon").attr("title","Mode Recherche ciblé (ne concerne que cette page)");*/
   $('.tooltips').tooltip();
   searchPage = true;
 

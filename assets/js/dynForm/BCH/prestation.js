@@ -12,6 +12,7 @@ dynForm = {
 					currentKFormType = "organization";
 				}else{
 					$("#ajaxFormModal .typeselect").addClass("hidden");
+					$("#ajaxFormModal #type").val(currentKFormType);
 				}
 	    		//console.log("onLoads Sub currentKFormType", currentKFormType, contextData, contextData.id);
                 var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;

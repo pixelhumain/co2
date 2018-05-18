@@ -136,8 +136,6 @@
 
 <?php $this->renderPartial($layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.pageCreate', array()); ?>
 <?php $this->renderPartial($layoutPath.'footer.'.Yii::app()->params["CO2DomainName"], array()); ?>
-<?php //$this->renderPartial($layoutPath.'footer', array("subdomain"=>$page)); ?>
-
 
 
 <script type="text/javascript" >
@@ -147,8 +145,8 @@ var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 var pageCount=false;
-search.count=true;
-
+searchObject.count=true;
+searchObject.initType=typeInit;
 
 <?php if(@$type=="events"){ ?>
   var STARTDATE = new Date();
@@ -157,9 +155,6 @@ search.count=true;
   var agendaWinMonth = 0;
 <?php } ?>
 var scrollEnd = false;
-//var TPL = "kgougle";
-
-//allSearchType = ["persons", "NGO", "LocalBusiness", "projects", "Group"];
 
 var currentKFormType = "";
 alert();
@@ -170,52 +165,41 @@ jQuery(document).ready(function() {
     initCountType();
     var typeUrl = "?nopreload=true";
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
-    //if( type=="ressources" )search.app = "ressources";
-    var appUrl = (typeof search.app != "undefined") ? "&app="+search.app : "";
-	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl+appUrl,function(){ 
+	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
         $(".btn-directory-type").click(function(){
             var typeD = $(this).data("type");
-            /*if($(this).hasClass("active")){
-                typeD="all";
-                $(".btn-directory-type").removeClass("active");
-            }else{*/
-                if(search.app != "agenda")
-                    search.app="search";
-                $(".btn-directory-type").removeClass("active");
-                $(this).addClass("active");
-            /*}*/
             scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
             simpleScroll(scrollH);
            
             if(typeD == "events"){
-                var typeEvent = $(this).data("type-event");
-                searchSType = typeEvent;
-                // search.app="agenda";
+                if($(this).hasClass("active")){
+                    $(this).removeClass("active");    
+                    delete searchObject.searchSType;
+                }else{
+                    $(".btn-directory-type").removeClass("active");
+                    $(this).addClass("active");
+                    var typeEvent = $(this).data("type-event");
+                    searchObject.searchSType = typeEvent;
+                }
+            }else{
+                $(".btn-directory-type").removeClass("active");
+                $(this).addClass("active");
             }
             initTypeSearch(typeD);
             if(typeD=="all"){
-                searchEngine.initInjectData();
-                searchEngine.initTerritorialSearch();
+                searchAllEngine.initInjectData();
+                searchAllEngine.initSearch();
             }
-                //else{
-               // initKInterface({"affixTop":200});
-            //}
-            //mylog.log("search.php",searchType);
-            //setHeaderDirectory(typeD);
             loadingData = false;
             pageCount=true;
-            if(Object.keys(search.countType).length>1) search.count=false; 
-            else search.count=true;
+            searchObject.page=0;
+            if(Object.keys(searchObject.countType).length>1) searchObject.count=false; 
+            else searchObject.count=true;
             pageEvent=false;
-            search.type=searchType;
+            searchObject.type=searchType;
             startSearch(0, indexStepInit, searchCallback);
-           // KScrollTo("#content-social");
         });
-
-        // $(".btn-open-filliaire").click(function(){
-        //     KScrollTo("#content-social");
-        // });
          
          //anny double section filter directory
         <?php if(@$type == "classified" || @$type == "ressources" || @$type == "place"  ){ ?>
@@ -224,32 +208,19 @@ jQuery(document).ready(function() {
 
         bindLeftMenuFilters();
 
-        //console.log("init Scroll");
-        /*$(window).bind("scroll",function(){  
-            mylog.log("test scroll", scrollEnd);
-            if(!loadingData && !scrollEnd && !isMapEnd){
-                  var heightWindow = $("html").height() - $("body").height();
-                  if( $(this).scrollTop() >= heightWindow - 400){
-                    startSearch(currentIndexMin+indexStep, currentIndexMax+indexStep, searchCallback);
-                  }
-            }
-        });*/
-
-        if(type=="all"){
-            //searchEngine.initInjectData();
-            searchEngine.initTerritorialSearch();
-        }
+        if(type=="all") searchAllEngine.initSearch();
 
         loadingData = false; 
         initTypeSearch(type);
-        startSearch(null, null, searchCallback);
+        initSearchObject();
+        startSearch(searchObject.indexMin, null, searchCallback);
         initSearchInterface();
 
     },"html");
 
-    initSearchInterface(); //themes/co2/assets/js/default/search.js
-
-    calculateAgendaWindow(0);
+    initSearchInterface(); 
+    if(page=="agenda")
+        calculateAgendaWindow(0);
 
     if(page == "annonces" || page == "agenda" || page == "power"){
         setTimeout(function(){
@@ -269,8 +240,6 @@ AGENDA
 
 var calendarInit = false;
 function showResultInCalendar(mapElements){
-    //mylog.dir(mapElements);
-
     var events = new Array();
     var fstDate = "";
     console.log("data mapElements", mapElements);
@@ -304,34 +273,17 @@ function showResultInCalendar(mapElements){
     }
 
     $(".calendar").html($(".responsive-calendar-init").html());
-
-    var aujourdhui = startWinDATE; //new Date();
-    //console.log("aujourdhui", aujourdhui);
+    var aujourdhui =(searchObject.startDate != "undefined") ? new Date(searchObject.startDate*1000) : startWinDATE; //new Date();
     var  month = (aujourdhui.getMonth()+1).toString();
     if(aujourdhui.getMonth() < 10) month = "0" + month;
     var date = aujourdhui.getFullYear().toString() + "-" + month;
 
-    //console.log("data events", events, "time", date);
     $(".responsive-calendar").responsiveCalendar({
           time: date,
           events: events
         });
 
     $(".responsive-calendar").show();
-
-
-    /*$("#btn-month-next").click(function(){
-        agendaWinMonth++;
-        calculateAgendaWindow(agendaWinMonth);
-        startSearch(0, indexStep, searchCallback);
-    });
-    $("#btn-month-before").click(function(){
-        agendaWinMonth--;
-        calculateAgendaWindow(agendaWinMonth);
-        startSearch(0, indexStep, searchCallback);
-    });*/
-
-
     calendarInit = true;
 }
 

@@ -3216,7 +3216,7 @@ var co = {
 					$("#openModal div.modal-content").css("text-align","left");
 					lazyLoad( baseUrl+"/plugins/jsonview/jquery.jsonview.js", 
 							  baseUrl+"/plugins/jsonview/jquery.jsonview.css", function() { 
-							  	alert();
+							  	//alert();
 						getAjax('', url, function(data){ 
 							urlT = url.split('/');
 							title = url+"<br/>"+urlT[8];

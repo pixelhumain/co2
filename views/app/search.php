@@ -14,7 +14,7 @@
     $cssAnsScriptFilesModule = array(
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
-//    '/js/default/directory.js',
+//'/js/default/directory.js',
     '/js/news/index.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
@@ -157,7 +157,7 @@ searchObject.initType=typeInit;
 var scrollEnd = false;
 
 var currentKFormType = "";
-alert();
+
 jQuery(document).ready(function() {
     
     setTitle(titlePage, "", titlePage);

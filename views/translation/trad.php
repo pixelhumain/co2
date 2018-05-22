@@ -736,12 +736,13 @@ var tradDynForm = {
 
 	"selectcitytosharesurvey" : "<?php echo Yii::t("form", "Select a city to share your survey with everybody in town !") ?>",
 	//chat
-	"internal" : "<?php echo Yii::t("category","Chat inside CO") ?>",
-    "external" : "<?php echo Yii::t("category","Chat outside CO") ?>",
+	"typeOfChat" : "<?php echo Yii::t("category","Type of Chat ?") ?>",
+	"publicOrPrivate" : "<?php echo Yii::t("category","public or private ?") ?>",
+	
     "channelName"  : "<?php echo Yii::t("category","Channel Name") ?>",
     "addNewChannel"  : "<?php echo Yii::t("common","Add a new channel") ?>",
-    "publicChannelExplain" : "Public channels can be searched and random people can join",
-    "privateChannelExplain" : "Private channels can only be viewed by it's members",
+    "publicChannelExplain" : "<?php echo Yii::t("category","Public channels can be searched and random people can join") ?>",
+    "privateChannelExplain" : "<?php echo Yii::t("category","Private channels can only be viewed by it's members") ?>",
 
     "addNewTool"  : "<?php echo Yii::t("common","Add a new tool") ?>",
     "chat" : "<?php echo Yii::t("common","Chat") ?>",
@@ -758,6 +759,12 @@ var tradDynForm = {
 
 var tradCategory = {
 	
+	//Chat dynform 
+	"internal" : "<?php echo Yii::t("category","Chat inside CO") ?>",
+    "external" : "<?php echo Yii::t("category","Chat outside CO") ?>",
+    "public" : "<?php echo Yii::t("category","Public") ?>",
+    "private" : "<?php echo Yii::t("category","Private") ?>",
+
 	"Resource" : "<?php echo Yii::t("category", "Resource") ?>",
 	"Digital" : "<?php echo Yii::t("category", "Digital") ?>",
 	"Physical" : "<?php echo Yii::t("category", "Physical") ?>",

@@ -471,7 +471,7 @@ function constructSearchObjectAndGetParams(){
     getStatus+="priceMax="+searchObject.priceMax;
   }else if(typeof searchObject.priceMax != "undefined")
     delete searchObject.priceMax;
-  if(typeof $("#devise").val() != "undefined" && $("#devise").val()!="" && $("#devise").val()!="€"){ 
+  if(typeof $("#devise").val() != "undefined" && $("#devise").val()!="" && $("#devise").val()!="all"){ 
     searchObject.devise=$("#devise").val();
     searchConstruct.devise = searchObject.devise;
     getStatus+=(getStatus!="") ? "&":"";
@@ -507,7 +507,7 @@ function initSearchObject(){
                 // Check on types on search app
                 if(searchObject.initType!= "all" && e=="types") delete searchObject[e];
                 else if (e=="types"){searchObject[e]=[v]; delete searchObject.ranges;}
-                if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
+                if(searchObject.initType!="classified" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
                 if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  
                 if($.inArray(searchObject.initType, ["all", "events"])>-1 && $.inArray(e,["section","subType"]) > -1) delete searchObject[e];
@@ -541,6 +541,10 @@ function activeFiltersInterface(filter,value){
         $(".btn-directory-type").removeClass("active");
         $(".btn-directory-type[data-type='"+value+"']").addClass("active");
     }
+    if(filter=="priceMin" || filter=="priceMax")
+        $("#section-price #"+filter).val(value);
+    if(filter=="devise")
+        $('#section-price #devise option[value="'+value+'"]').attr("selected",true)
     if(filter=="page"){
         searchObject.page=(Number(value)-1);
         searchObject.indexMin=searchObject.indexStep*searchObject.page;

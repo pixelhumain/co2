@@ -129,7 +129,7 @@
 			<div class="row " id="divSearchInvite">
 				<div id="step1-search" class="modal-body col-xs-6" >
 					<div class="form-group">
-						<input type="text" class="form-control text-left" placeholder="Un nom, un e-mail ..." autocomplete = "off" id="inviteSearch" name="inviteSearch" value="">
+						<input type="text" class="form-control text-left" placeholder='<?php echo Yii::t("invite", "A name, an e-mail..."); ?>' autocomplete = "off" id="inviteSearch" name="inviteSearch" value="">
 						<div class="col-xs-12" id="dropdown-search-invite" style="max-height: 400px; overflow: auto;"></div>
 						<form id="form-invite" class="box-login col-xs-12" style="padding:5px">
 						<!-- <div class="col-xs-12" id="form-invite" style="padding:5px"> -->

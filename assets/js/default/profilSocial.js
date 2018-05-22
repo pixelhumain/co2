@@ -773,7 +773,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	
 	$.each(data, function(key, val){ 
 		mylog.log("rolesShox",key, val);
-		if(typeof key != "undefined" && (typeof val.id != "undefined" || typeof val["_id"] != "undefined")) n++; 
+		if(typeof key != "undefined" && ( (typeof val.id != "undefined" || typeof val["_id"] != "undefined") || contextType == "contacts") ) n++; 
 		if(typeof val.rolesLink != "undefined"){
 			mylog.log(val.rolesLink);
 			$.each(val.rolesLink, function(i,v){
@@ -856,6 +856,9 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}
 		communityStr+="</div>"; 
 	}
+
+	mylog.log("communityStr", n, communityStr);
+
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 		

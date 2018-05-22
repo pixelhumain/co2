@@ -51,6 +51,7 @@ var trad = {
 	"noresultmatch":"<?php echo Yii::t("common","No result match in your search") ?>",
 	"nomoreresultmatch":"<?php echo Yii::t("common","No more results match in your search") ?>",
 	"nocityfoundfor":"<?php echo Yii::t("common","No city found for") ?>",
+	"youdontfindcityyouwantfor":"<?php echo Yii::t("common","You don't find the city you want for") ?>",
 	"explainnofoundcity":"<?php echo Yii::t("common", "Perhaps, this city has no data at this time") ?>",
 	"sharesomething":"<?php echo Yii::t("common","Share something") ?>",
 	"connectyou":"<?php echo Yii::t("common","Connect you") ?>",

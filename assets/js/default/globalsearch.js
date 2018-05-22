@@ -455,7 +455,15 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                               
               }); //end each
 
-              //ajout du footer   
+              //ajout du footer
+              str+="<div class='text-center col-md-12 col-sm-12 col-xs-12 padding-10'>"+
+                      '<label class="text-dark italic"><i class="fa fa-ban"></i> '+trad.youdontfindcityyouwantfor+' "'+search+'"</label><br/>'+
+                      '<span class="info letter-blue"><i class="fa fa-info-circle"></i> '+trad.explainnofoundcity+'</span><br/>'+
+                      '<button class="btn btn-blue bg-blue text-white main-btn-create" '+
+                        'data-target="#dash-create-modal" data-toggle="modal">'+
+                          '<i class="fa fa-plus-circle"></i> '+trad.createpage+
+                      '</button>'+
+                    "</div>";   
               str += '<div class="text-center" id="footerDropdownGS">';
               str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
               str += '<a href="#search" class="btn btn-default btn-sm lbh" id="btnShowMoreResultGS">'+

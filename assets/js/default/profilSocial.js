@@ -209,6 +209,15 @@ function bindButtonMenu(){
 				jsonSchema : {
 					title : trad["Change password"],
 					icon : "fa-key",
+					onLoads : {
+				    	//pour creer un subevnt depuis un event existant
+				    	onload : function(){
+				    		//dyFInputs.setHeader("bg-green");
+
+				    		$("#ajax-modal .modal-header").addClass("bg-dark");
+			                $("#ajax-modal .infocustom p").addClass("text-dark");
+			    	   	}
+			    	},
 					afterSave : function(data){
 						dyFObj.closeForm();
 					},

@@ -247,6 +247,18 @@
             "placeholderMainSearch" : "Rechercher des données venus d'ailleurs ..."
         },
 
+        "#interop": {
+            "inMenu" : true, 
+            "useHeader" : true, 
+            "open" : true, 
+            "subdomain" : "interop", 
+            "subdomainName" : "interop",
+            "hash" : "#app.interop",
+            "icon" : "database", 
+            "mainTitle" : "Module d'intéropérabilité",
+            "placeholderMainSearch" : "Rechercher des données venus d'ailleurs ..."
+        },
+
 		"#rooms": {
 			"inMenu" : false, 
 			"useHeader" : false,

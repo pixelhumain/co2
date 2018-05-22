@@ -195,22 +195,22 @@ $this->renderPartial($layoutPath.'header',
 
 </style>
 
-<div class="input-group col-md-6 col-md-offset-3" id="main-input-group" style="margin-bottom:15px;">
-    <input class="form-control" id="main-search-bar" placeholder="<?php echo Yii::t("common", "Search a page ...");?>" type="text">
+<!-- <div class="input-group col-md-6 col-md-offset-3" id="main-input-group" style="margin-bottom:15px;">
+    <input class="form-control" id="main-search-bar" placeholder="<?php //echo Yii::t("common", "Search a page ...");?>" type="text">
     <span class="input-group-addon bg-white" id="main-search-bar-addon">
         <i class="fa fa-search"></i>
     </span>
-</div>
+</div> -->
 
-<div style='text-align:center;'>
+<!-- <div style='text-align:center;'>
     <button class="btn btn-default" id="main-btn-start-search-interop">
         <i class="fa fa-search"></i> Lancer la recherche
     </button>
-</div>
+</div> -->
 
-    <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
-        <?php $this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
-    </div>
+    <!-- <div id="container-scope-filter"  class="col-md-10 col-sm-10 col-xs-12 padding-5">
+        <?php //$this->renderPartial($layoutPath.'breadcrum_communexion', array("type"=>@$type)); ?>
+    </div> -->
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden text-center subsub" id="sub-menu-filliaire">
 <?php $filliaireCategories = CO2::getContextList("filliaireCategories"); 
@@ -437,8 +437,20 @@ $this->renderPartial($layoutPath.'header',
         var all_interop_url = [];
         var url_interop = "";
 
-        var city_id = getCityId();
-        var type_zone = getTypeZone();
+        //var city_id = getCityId();
+       // var type_zone = getTypeZone();
+
+
+        if( notNull(myScopes.type) && notNull(myScopes[myScopes.type]) ) {
+            mylog.log("here", myScopes.type);
+            $.each(myScopes[myScopes.type],function(e,v){
+                if(myScopes[myScopes.type][e].active == true){
+                    // scopeActive[e] = myScopes[myScopes.type][e] ;
+                    city_id = myScopes[myScopes.type][e].id ;
+                    type_zone = myScopes[myScopes.type][e].type ;
+                }
+            });
+        }
 
         var city_data = getCityDataById(city_id, type_zone);
 
@@ -533,7 +545,7 @@ $this->renderPartial($layoutPath.'header',
     }
 
     function startSearchInterop(indexMin, indexMax) {
-
+        mylog.log("startSearchInterop", indexMin, indexMax);
         if (typeof(typeD) == "undefined") {
             typeD = "wikidata";
         }
@@ -543,29 +555,11 @@ $this->renderPartial($layoutPath.'header',
 		text_search_name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
 
 	    currentIndexMin = indexMin;
-	    currentIndexMax = indexMax;
-
-	    if(name.length>=3 || name.length == 0)
-	    {
-	      var locality = "";
-	      if( communexionActivated )
-	      {
-	  	    if(typeof(cityInseeCommunexion) != "undefined")
-	        {
-    			if(levelCommunexion == 1) locality = cpCommunexion;
-    			if(levelCommunexion == 2) locality = inseeCommunexion;
-    		}else{
-    			if(levelCommunexion == 1) locality = inseeCommunexion;
-    			if(levelCommunexion == 2) locality = cpCommunexion;
-    		}
-	        //if(levelCommunexion == 3) locality = cpCommunexion.substr(0, 2);
-	        if(levelCommunexion == 3) locality = inseeCommunexion;
-	        if(levelCommunexion == 4) locality = inseeCommunexion;
-	        if(levelCommunexion == 5) locality = "";
-	      } 
-	    }  
+	    currentIndexMax = indexMax;  
 
         var url_interop = getUrlForInteropResearch();
+        mylog.log("startSearchInterop", url_interop);
+
         if (all_interop_url.length > 0 ) {
             all_interop_data = [];
             $.each(all_interop_url,function(index, value) {
@@ -578,7 +572,7 @@ $this->renderPartial($layoutPath.'header',
 
     function getInteropResults(url_interop) {
 
-    	mylog.log("nouvelle url à passer dans l'auto complete : ", url_interop);
+    	mylog.log("getInteropResults : ", url_interop);
 
 	    loadingData = true;
 	    
@@ -601,7 +595,8 @@ $this->renderPartial($layoutPath.'header',
 	        url: url_interop,
 	        dataType: "json",
 	        error: function (data){
-	            mylog.log("error autocomplete INTEROP search"); mylog.dir(data);     
+	            mylog.log("error autocomplete INTEROP search"); 
+                mylog.dir(data);     
 	            //signal que le chargement est terminé
 	            loadingData = false;  
                 // $('#dropdown_search').append("<br/><div><h1>Something went wrong during this research ... </h1></div>");   
@@ -665,12 +660,14 @@ $this->renderPartial($layoutPath.'header',
 	                                "<i class='fa fa-"+params.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+params.name+"</span>"+
 	                              "</span> ";
 	                    });//console.log("myMultiTags", myMultiTags);
-	                    $.each(myMultiTags, function(key, val){
-	                        var params = headerParams[val];
-	                        str += "<span class='text-dark hidden-xs pull-right'>"+
-	                                "#"+key+
-	                              "</span> ";
-	                    });
+
+                        
+	                    // $.each(myMultiTags, function(key, val){
+	                    //     var params = headerParams[val];
+	                    //     str += "<span class='text-dark hidden-xs pull-right'>"+
+	                    //             "#"+key+
+	                    //           "</span> ";
+	                    // });
 	                }
 	                str += "</small>";
 	                str += "</h4>";

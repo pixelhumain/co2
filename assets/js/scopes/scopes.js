@@ -456,3 +456,18 @@ function scopeObject(values){
 	mylog.log("scopeObject communexionObj", communexionObj);
 	return communexionObj;
 }
+
+
+function getScopeActive(){
+	mylog.log("getScopeActive");
+	var scopeActive = {};
+	if( notNull(myScopes.type) && notNull(myScopes[myScopes.type]) ) {
+		mylog.log("here", myScopes.type);
+		$.each(myScopes[myScopes.type],function(e,v){
+			if(myScopes[myScopes.type][e].active == true)
+				scopeActive[e] = myScopes[myScopes.type][e] ;
+		});
+	}
+	mylog.log("getScopeActive scopeActive", scopeActive);
+	return scopeActive;
+}

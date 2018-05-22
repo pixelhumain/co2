@@ -234,7 +234,9 @@ function setOpenBreadCrum(params){
 		dataType: "json",
 		success: function(data){
 			mylog.log("data", data);
+			myScopes.type="open";
 			myScopes.open=data.scopes;
+			localStorage.setItem("myScopes",JSON.stringify(myScopes));
 		},
 		error: function(error){
 			toastr.error("waswrong")

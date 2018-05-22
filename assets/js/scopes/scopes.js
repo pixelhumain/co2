@@ -72,6 +72,9 @@ function constructScopesHtml(news){
 					"</span>"+
 				"</div>";
 	});	
+	if(myScopes.type=="open"){
+		html+="<button class='btn btn-danger text-white margin-left-10 padding-5' onclick='clearOpenScope();'><i class='fa fa-refresh'></i> <span class='hidden-xs'>"+trad.delete+"</span></button>";
+	}
 	return html;
 }
 
@@ -315,7 +318,14 @@ function bindSearchCity(){
 		}
 	});
 }
-
+function clearOpenScope(){
+	myScopes.open={};
+	localStorage.setItem("myScopes",JSON.stringify(myScopes));
+	if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+	$(".scopes-container").html("");
+	searchObject.count=true;
+	startSearch(0, indexStepInit);
+}
 function bindScopesInputEvent(news){
 	mylog.log("bindScopesInputEvent");
 	$(".manageMultiscopes").off().on("click", function(){
@@ -372,8 +382,8 @@ function bindScopesInputEvent(news){
 		typeSearch=$(this).data("btn-type");
 		key=$(this).data("scope-key");
 		scopeActiveScope(key);
-		if(myScopes.type!="open")
-			localStorage.setItem("myScopes",JSON.stringify(myScopes));
+		//if(myScopes.type!="open")
+		localStorage.setItem("myScopes",JSON.stringify(myScopes));
 		searchObject.count=true;
 		if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
 			startNewsSearch(true)

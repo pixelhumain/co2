@@ -163,7 +163,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
               results=data.results;
               //Get count object
               if(typeof data.count != "undefined")
-                searchCount=data.count;
+                searchAllEngine.searchCount=data.count;
 
               if(searchObject.indexMin==0 || (typeof searchObject.count != "undefined" && searchObject.count)){
               //Prepare footer and header of directory 
@@ -220,7 +220,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                     if($(".search-loader").length) $(".search-loader").remove();
                     if($(".pageTable").html()=="" && (searchObject.initType!= "all" || searchObject.types.length==1)){
                       typeElement=(searchObject.types=="persons") ? "citoyens" : searchObject.types;
-                      initPageTable(searchCount[typeElement]);
+                      initPageTable(searchAllEngine.searchCount[typeElement]);
                     }
 
                 //si on est sur une première recherche
@@ -239,7 +239,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                     }
                     if(searchObject.initType!= "all" || searchObject.types.length==1){
                       typeElement=(searchObject.types=="persons") ? "citoyens" : searchObject.types;
-                      initPageTable(searchCount[typeElement]);
+                      initPageTable(searchAllEngine.searchCount[typeElement]);
                     }
 
                     pageEvent=false;
@@ -336,7 +336,7 @@ function initPageTable(number){
   }
   function refreshCountBadge(count){
     //console.log("aquuuui",count);
-    $.each(searchCount, function(e,v){
+    $.each(searchAllEngine.searchCount, function(e,v){
       $("#count"+e).text(v);
     });
     /*if(searchObject.text!=""){
@@ -2815,13 +2815,13 @@ var directory = {
       if((typeof searchObject.count != "undefined" && searchObject.count) || searchObject.indexMin==0 ){          
           countHeader=0;
           if(searchObject.countType.length > 1 && typeof searchObject.ranges != "undefined"){
-            $.each(searchCount, function(e, v){
+            $.each(searchAllEngine.searchCount, function(e, v){
               countHeader+=v;
             });
             //posClass="right"
           }else{
             typeCount = (searchObject.types[0]=="persons") ? "citoyens" : searchObject.types[0];
-            countHeader=searchCount[typeCount];
+            countHeader=searchAllEngine.searchCount[typeCount];
            // posClass=(typeCount == "classified") ? "left" : "right";
           }
           //headerStr="<div class='col-md-2 col-sm-3 hidden-xs'>";

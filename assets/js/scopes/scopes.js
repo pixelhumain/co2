@@ -90,6 +90,7 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 	$(appendDom).html(constructScopesHtml(newsAction));
 	$(appendDom+" .scope-order").sort(sortSpan) // sort elements
 				.appendTo(appendDom); // append again to the list
+	localStorage.setItem("myScopes",JSON.stringify(myScopes));
 	if(newsAction) bindScopesNewsEvent();
 	else{
 		searchObject.count=true;
@@ -164,7 +165,7 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 			}else{
 				inside=false;
 				$.each(myScopes[initScopeResearch.key], function(key, value){
-					if(value.id==v)
+					if(value.id==v || value.id.indexOf(v)>-1)
 						inside=true;
 				});
 				inMyScope=inside;
@@ -178,8 +179,6 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 				var keyActive="";
 				if(e.indexOf("cities") > 0)
 					keyActive=e.replace("cities","");
-				//if(typeof v.allCP != "undefined" && v.allCP)
-				//	keyActive=e+"allPostalCode";
 				if(v.type=="cities" && typeof v.postalCode != "undefined"){
 					keyActive=v.id+"cp"+v.postalCode;
 				}
@@ -193,7 +192,7 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 			});
 			appendScopeBreadcrum();
 		}
-	}else if(Object.keys(myScopes[myScopes.type]).length > 0
+	}else if(Object.keys(myScopes[myScopes.type]).length > 0)
 		appendScopeBreadcrum();	
 }
 function appendScopeBreadcrum(){

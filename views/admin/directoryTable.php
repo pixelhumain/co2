@@ -165,8 +165,8 @@ var icons = {
 	poi : "fa-map-marker",
 	news : "fa-newspaper-o"
 };
-var search={
-	value:null,
+var searchAdmin={
+	text:null,
 	page:"",
 	type:initType[0]
 };
@@ -180,14 +180,14 @@ jQuery(document).ready(function() {
         //$("#second-search-bar").val($("#input-search-map").val());
         //$("#main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
-            search.page=0;
-            search.value = $(this).val();
-            if(search.value=="")
-            	search.value=true;
+            searchAdmin.page=0;
+            searchAdmin.text = $(this).val();
+            if(searchAdmin.text=="")
+            	searchAdmin.text=true;
             startAdminSearch(true);
             // Init of search for count
-            if(search.value===true)
-            	search.value=null;
+            if(searchAdmin.text===true)
+            	searchAdmin.text=null;
          }
     });
     initPageTable(results.count.citoyens);
@@ -209,7 +209,7 @@ function initPageTable(number){
         onPageClick: function (page, evt) {
             // some code
             //alert(page);
-            search.page=(page-1);
+            searchAdmin.page=(page-1);
             startAdminSearch();
         }
     });
@@ -246,7 +246,7 @@ function startAdminSearch(initPage){
     $.ajax({ 
         type: "POST",
         url: baseUrl+"/"+moduleId+"/admin/directory/tpl/json",
-        data: search,
+        data: searchAdmin,
         dataType: "json",
         success:function(data) { 
 	          initViewTable(data.results);
@@ -255,7 +255,7 @@ function startAdminSearch(initPage){
 	          	refreshCountBadge(data.results.count);
 	          console.log(data.results);
 	          if(initPage)
-	          	initPageTable(data.results.count[search.type]);
+	          	initPageTable(data.results.count[searchAdmin.type]);
         },
         error:function(xhr, status, error){
             $("#searchResults").html("erreur");
@@ -474,8 +474,8 @@ function resetDirectoryTable()
 function applyStateFilter(str)
 {
 	//mylog.log("applyStateFilter",str);
-	search.type=str;
-	search.page=0;
+	searchAdmin.type=str;
+	searchAdmin.page=0;
 	$(".btncountsearch").removeClass("active");
 	$(".filter"+str).addClass("active");
 	startAdminSearch(true);

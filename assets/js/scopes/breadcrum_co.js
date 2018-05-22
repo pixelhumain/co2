@@ -1,3 +1,5 @@
+// TODO BOUBOULE -- DOUCMENT DEPRECATED
+
 /*function scopeActive(scopeValue){
     mylog.log("scopeActive", scopeValue);
     if(myScopes.multiscopes[scopeValue].active){

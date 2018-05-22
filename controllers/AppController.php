@@ -129,20 +129,10 @@ class AppController extends CommunecterController {
 	}
 
 
-    /*public function actionSearch($type=null){
-        CO2Stat::incNbLoad("co2-search");   
-        $params = array("type" => @$type );
-        echo $this->renderPartial("search", $params, true);
-    }*/
     public function actionSearch($type=null){
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => "all" /*Organization::COLLECTION*/, "app"=>"search" );
         echo $this->renderPartial("search", $params, true);
-    }
-    public function actionTerritorial($type=null){
-        CO2Stat::incNbLoad("co2-search");   
-        $params = array("type" => @$type );
-        echo $this->renderPartial("territorial", $params, true);
     }
     public function actionSocial($type=null){
         CO2Stat::incNbLoad("co2-search");   

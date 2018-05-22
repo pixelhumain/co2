@@ -1606,6 +1606,22 @@ function  bindLBHLinks() {
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    urlCtrl.loadByHash( h );
 	});
+	$(".lbh-menu-app").unbind("click").on("click",function(e){
+		e.preventDefault();
+		 $.each(searchObject, function(key,v){
+            if($.inArray(key,["startDate","endDate", "searchSType", "section", "subType","priceMin", "priceMax", "devise"]) > -1){
+                delete searchObject[key];
+            }
+        });
+		searchObject.page=0,
+		searchObject.indexMin=0,
+		searchObject.indexStep=30,
+		searchObject.count=true,
+		searchObject.initType="",
+		searchObject.types=[],
+		searchObject.countType=[];
+		urlCtrl.loadByHash($(this).data("hash"));
+	})
 	//open any url in a modal window
 	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();

@@ -437,7 +437,7 @@
 		  <?php } ?>
 
 			
-		  <?php if(@Yii::app()->session["userId"])
+		  <?php /*if(@Yii::app()->session["userId"])
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION || $type == Event::COLLECTION ){ ?>
 		  
 		  <span class="dropdown" id="dropdown-apps">
@@ -449,7 +449,7 @@
 	                <a class="dropdown-item padding-5 text-center col-xs-6" href="javascript:;" onclick="dyFObj.openForm('cotools')" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-plus-circle fa-2x"></i><br/><?php echo Yii::t("common","Add a tool") ?></a>
 	            </div>
 	        </span>
-		  <?php } ?>
+		  <?php } */?>
 
 		  <?php if(@Yii::app()->session["userId"])
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>

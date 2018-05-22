@@ -191,9 +191,10 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 					keyActive=v.id;
 				myScopes[initScopeResearch.key][e].active=($.inArray(keyActive, initScopeResearch.ids) > -1)  ? true : false;
 			});
+			appendScopeBreadcrum();
 		}
-	}
-	appendScopeBreadcrum();
+	}else if(Object.keys(myScopes[myScopes.type]).length > 0
+		appendScopeBreadcrum();	
 }
 function appendScopeBreadcrum(){
 	if(Object.keys(myScopes[myScopes.type]).length > 0)
@@ -237,6 +238,7 @@ function setOpenBreadCrum(params){
 			myScopes.type="open";
 			myScopes.open=data.scopes;
 			localStorage.setItem("myScopes",JSON.stringify(myScopes));
+			appendScopeBreadcrum();
 		},
 		error: function(error){
 			toastr.error("waswrong")

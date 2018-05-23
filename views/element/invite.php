@@ -77,7 +77,6 @@
 }
 
 </style>
-
 <div class="<?php if(empty($search) || $search == false){ ?> portfolio-modal modal fade <?php } ?>" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-content padding-top-15">
 		<?php if(empty($search) || $search == false){ ?>
@@ -234,6 +233,7 @@
 <script type="text/javascript">
 	var parentType = "<?php echo $parentType; ?>";
 	var parentId = "<?php echo $parentId; ?>";
+	var parentLinks = <?php echo json_encode(@$parentLinks); ?>;
 	// var members = <?php //echo json_encode( $members ); ?>;
 	var contactTypes = {
 			citoyens : { color: "yellow", icon:"user", label:"People" },
@@ -560,6 +560,29 @@
 		});
 	}
 
+	function inMyLinks(type,id){
+		var inMyC = false ;
+		if(parentType == "citoyens")
+			inMyC = inMyContacts(type,id) ;
+		else{
+			var typeLink = "members";
+			if(parentType == "events")
+				typeLink = "attendees";
+			else if(parentType == "projects")
+				typeLink = "contributors";
+
+
+			if(	notNull(parentLinks) && 
+				notNull(parentLinks[typeLink]) && 
+				notNull(parentLinks[typeLink][id]) && 
+				notNull(parentLinks[typeLink][id].type) &&
+				parentLinks[typeLink][id].type == type  )
+				inMyC = true ;
+		}
+
+		return inMyC;
+	}
+
 	function bindAdd(){
 		$('#modal-invite .add-invite').click(function(e){
 
@@ -569,9 +592,10 @@
 			var profilThumbImageUrl = $(this).data("profilThumbImageUrl");
 			mylog.log(".add-invite", id, type, name, profilThumbImageUrl);
 
-			inMyC = false ;
-			if(parentType == "citoyens")
-				inMyC = inMyContacts(type,id)
+			var inMyC = inMyLinks(type,id);
+			// if(parentType == "citoyens")
+			// 	inMyC = inMyContacts(type,id) ;
+
 
 			if(inMyC == false){
 				if(type == "citoyens"){

@@ -75,7 +75,7 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchObject.types = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classified","ressources"/*,"cities"*/];
+        searchObject.types = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classifieds","ressources"/*,"cities"*/];
         if(searchObject.text != "" || Object.keys(getSearchLocalityObject()).length > 0) 
           searchObject.types.push("persons");
     }else if(typeInit == "allSig"){
@@ -89,9 +89,9 @@ function initTypeSearch(typeInit){
 }
 function initCountType(){
   if(searchObject.initType=="all")
-    searchObject.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", /*"news",*/ "classified","ressources"];
+    searchObject.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", /*"news",*/ "classifieds","ressources"];
   else if(searchObject.initType=="ressources") searchObject.countType=["ressources"];
-  else if(searchObject.initType=="classified") searchObject.countType=["classified"];
+  else if(searchObject.initType=="classifieds") searchObject.countType=["classifieds"];
   else if(searchObject.initType=="events") searchObject.countType=["events"];
 }
 
@@ -957,7 +957,7 @@ var directory = {
     // ********************************
   lightPanelHtml : function(params){
     mylog.log("lightPanelHtml", params);
-    var linkAction = ( $.inArray(params.type, ["poi","classified","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
+    var linkAction = ( $.inArray(params.type, ["poi","classifieds","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
     //linkAction = "lbh-preview-element";
     
     console.log("linkAction", linkAction);
@@ -1085,7 +1085,7 @@ var directory = {
       // if(typeof params.endDate != "undefined")
       //   str += "<small class='letter-light'>"+params.endDate+"</small>";
       
-      if(typeof params.updatedLbl != "undefined" && (params.type == "events" ||  params.type == "classified"))
+      if(typeof params.updatedLbl != "undefined" && (params.type == "events" ||  params.type == "classifieds"))
         str += "<small class='letter-light bold'><i class='fa fa-clock-o'></i> "+params.updatedLbl+"</small>";
       
       if(typeof(params.statusLink)!="undefined"){
@@ -1117,7 +1117,7 @@ var directory = {
         });
       }
 
-      var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classified"])>=0 )  ? false : true;
+      var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classifieds"])>=0 )  ? false : true;
       if(typeof params.edit  != "undefined" && notNull(params.edit))
         str += this.getAdminToolBar(params);
 
@@ -1233,7 +1233,7 @@ var directory = {
     
 
 
-    var linkAction = ( $.inArray(params.type, ["poi","classified","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
+    var linkAction = ( $.inArray(params.type, ["poi","classifieds","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
     
 		//var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
 		// if(typeof params.size == "undefined" || params.size == "max")
@@ -1299,7 +1299,7 @@ var directory = {
     if(typeof params.price != "undefined" && params.price != "")
       str += "<div class='entityPrice text-azure'><i class='fa fa-money'></i> " + params.price + " " + devise + "</div>";
  
-    if($.inArray(params.type, ["poi","classified","ressources"])>=0 && typeof params.category != "undefined"){
+    if($.inArray(params.type, ["poi","classifieds","ressources"])>=0 && typeof params.category != "undefined"){
       str += "<div class='entityType col-xs-12 no-padding'><span class='uppercase bold pull-left'>" + tradCategory[params.section] + " </span><span class='pull-left'>";
       if(typeof params.category != "undefined") str += " > " + tradCategory[params.category];
       if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
@@ -1749,7 +1749,7 @@ var directory = {
           isFollowed=false;
           if(typeof params.isFollowed != "undefined" ) isFollowed=true;
            var tip = 'Garder en favoris';
-            str += "<a href='javascript:collection.add2fav(\"classified\",\""+params.id+"\")' class='dirStar star_classified_"+params.id+" btn btn-default btn-sm btn-add-to-directory bg-white tooltips'" + 
+            str += "<a href='javascript:collection.add2fav(\"classifieds\",\""+params.id+"\")' class='dirStar star_classified_"+params.id+" btn btn-default btn-sm btn-add-to-directory bg-white tooltips'" + 
                   'data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
                   " data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"'>"+
                     "<i class='fa fa star fa-star-o'></i>"+ //fa-bookmark fa-rotate-270
@@ -2799,7 +2799,7 @@ var directory = {
           if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
              subData="data-ktype='"+addType+"' ";
              typeForm="organization";
-          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classified")
+          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds")
             typeForm=typeObj[typeObj[addType].sameAs].ctrl;
           btn+='<button class="btn bg-white margin-left-5 btn-add pull-right text-'+headerParams[addType].color+' '+
             'data-type="'+typeForm+'" '+
@@ -2915,7 +2915,7 @@ var directory = {
               if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
                  subData="data-ktype='"+addType+"' ";
                  typeForm="organization";
-              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classified" && typeForm != "cities")
+              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "cities")
                 typeForm=typeObj[typeObj[addType].sameAs].ctrl;
               btn='<button class="btn main-btn-create text-'+headerParams[addType].color+' tooltips" padding-5 no-margin '+
                 'data-type="'+typeForm+'" '+
@@ -3002,8 +3002,8 @@ var directory = {
                     if(typeof edit != "undefined" && edit != false)
                       params.edit = edit;
                     
-                    if ( params.type && typeof typeObj.classified != "undefined" && $.inArray(params.type, typeObj.classified.subTypes )>=0  ) {
-                      itemType = "classified";
+                    if ( params.type && typeof typeObj.classifieds != "undefined" && $.inArray(params.type, typeObj.classifieds.subTypes )>=0  ) {
+                      itemType = "classifieds";
                     } else if(typeof( typeObj[itemType] ) == "undefined") {
                       itemType="poi";
                     }
@@ -3027,9 +3027,9 @@ var directory = {
                         params.parentIcon = "fa-"+parentObj.icon;
                         params.parentColor = parentObj.color;
                     }
-                    if((typeof searchObject.countType != "undefined" && searchObject.countType.length==1) && params.type == "classified" && typeof params.category != "undefined" && typeof classified != "undefined"){
-                      params.ico = typeof classified.filters[params.category] != "undefined" ?
-                                   "fa-" + classified.filters[params.category]["icon"] : "bullhorn";
+                    if((typeof searchObject.countType != "undefined" && searchObject.countType.length==1) && params.type == "classifieds" && typeof params.category != "undefined" && typeof classifieds != "undefined"){
+                      params.ico = typeof classifieds.filters[params.category] != "undefined" ?
+                                   "fa-" + classifieds.filters[params.category]["icon"] : "bullhorn";
                     }
 
                     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
@@ -3170,7 +3170,7 @@ var directory = {
                       mylog.log("template principal",params,params.type, itemType);
 
 
-                      if((typeof directory.viewMode != "undefined" && directory.viewMode=="list" && !notNull(viewMode))  && $.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classified"] )>=0) 
+                      if((typeof directory.viewMode != "undefined" && directory.viewMode=="list" && !notNull(viewMode))  && $.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classifieds"] )>=0) 
                        str += directory.lightPanelHtml(params);  
                       else{ 
                         if(params.type == "cities")
@@ -3191,7 +3191,7 @@ var directory = {
                         //else if($.inArray(params.type, ["surveys","actionRooms","vote","actions","discuss"])>=0 ) 
                         //    str += directory.roomsPanelHtml(params,itemType);  
                       
-                        else if(params.type == "classified"){
+                        else if(params.type == "classifieds"){
                           if(typeof searchObject.countType != "undefined" && searchObject.countType.length > 1)
                             str += directory.elementPanelHtml(params);  
                           else
@@ -3419,37 +3419,71 @@ var directory = {
         //$("#btn-open-tags").append("("+$(".favElBtn").length+")");
     },
     
-    sectionFilter : function (list, dest, what, type ) { 
+    sectionFilter : function (objJson, dest, what, type ) { 
       mylog.log("sectionFilter",list,what,dest);
 
-        if( type == "btn" )
-          str = '<label class="col-xs-12 text-left control-label no-padding" for="typeBtn"><i class="fa fa-chevron-down"></i> '+what.title+' </label>'
-        else
-          str = '<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
-                '<i class="fa fa-'+what.icon+'"></i> </h4><hr>';
+        //if( type == "btn" )
+          //str = '<label class="col-xs-12 text-left control-label no-padding" for="typeBtn"><i class="fa fa-chevron-down"></i> '+what.title+' </label>'
+        //else
+          //str = '<h4 class="margin-top-5 padding-bottom-10 letter-azure label-category" id="title-sub-menu-category">'+
+        //        '<i class="fa fa-'+what.icon+'"></i> </h4><hr>';
         
-        $(dest).html(str);
-        $.each( list,function(k,o){
-            if( type == "btn" ){
-              str = '<div class="col-md-4 padding-5 typeBtnC '+k+'">'+
-                      '<a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" '+
-                          'data-key="'+k+'" href="javascript:;">'+
-                        '<i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+
-                      '</a>'+
-                    '</div>'
-            }
-            else 
-              str = '<button class="btn btn-default text-dark margin-bottom-5 btn-select-category-1 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
-                    '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[k]+'</button><br>';
-            if( o.subcat && type != "btn" )
-            {
-              $.each( o.subcat ,function(i,oT){
-                  str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
-                          '<i class="fa fa-angle-right"></i> '+tradCategory[oT]+'</button><br class="hidden">';
-              });
-            }
-            $(dest).append(str);
-        });
+        //$(dest).html(str);
+        if(typeof objJson.sources != "undefined"){
+          str="";
+          $("#sub-menu-left .sourcesInterrop").show(800);
+          $.each(objJson.sources, function(e,v){
+            str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-source" '+
+                  'data-source="'+v.label+'" data-key="'+v.key+'">'+
+                    '<img src="'+baseUrl+v.path+'" width="30" height="30"/>'+ 
+                    v.label+
+              '</button>';
+          });
+          $("#sub-menu-left .sourcesInterrop .list").html(str).show(800);
+        }else{
+          $("#sub-menu-left .sourcesInterrop").hide(800);
+        }
+        if(typeof objJson.sections != "undefined"){
+          str="";
+          $.each(objJson.sections, function(e,v){
+            str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" '+
+                  'data-section-anc="'+v.label+'" data-key="'+v.key+'" '+ 
+                  'data-section="classifieds">'+
+                    '<i class="fa fa-'+v.icon+' hidden-xs"></i>'+ 
+                    tradCategory[e]+
+              '</button>';
+          });
+          $("#sub-menu-left .sectionsFilters .list").html(str);
+        }
+        if(typeof objJson.filters != "undefined"){
+            str="";
+            $.each( objJson.filters,function(k,o){
+                if( type == "btn" ){
+                  str += '<div class="col-md-4 padding-5 typeBtnC '+k+'">'+
+                          '<a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" '+
+                              'data-key="'+k+'" href="javascript:;">'+
+                            '<i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[o.label]+
+                          '</a>'+
+                        '</div>'
+                }
+                else 
+                  str += '<button class="btn btn-default text-dark margin-bottom-5 btn-select-type-anc elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                        '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[o.label]+'</button><br>';
+                if(typeof o.subcat != "undefined" && type != "btn" )
+                {
+                  $.each( o.subcat ,function(i,oT){
+                      str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
+                              '<i class="fa fa-angle-right"></i> '+tradCategory[oT.label]+'</button><br class="hidden">';
+                  });
+                }else if(typeof list.subcat != "undefined"){
+                  $.each( list.subcat ,function(i,oT){
+                      str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
+                              '<i class="fa fa-angle-right"></i> '+tradCategory[oT.label]+'</button><br class="hidden">';
+                  });
+                }
+                $("#sub-menu-left .subsub .list").html(str);
+            });
+        }
     },
     showFilters : function () { 
       if($("#listTags").hasClass("hide")){

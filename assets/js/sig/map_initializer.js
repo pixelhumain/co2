@@ -361,7 +361,7 @@
 
 											"address" 			: "MARKER",
 
-											"classified" 		: "classified-marker-default",
+											"classifieds" 		: "classified-marker-default",
 											"ressources" 		: "ressources-marker-default",
 											"ressource" 		: "ressources-marker-default",
 											"service" 			: "services/medical",
@@ -674,7 +674,7 @@
 			"news"   : "Actualités",
 			"News"   : "Actualités",
 			"NEWS"   : "Actualités",
-
+			"classifieds"   : "Annonces",
 			"classified"   : "Annonces",
 			"poi"   : "Points d'intérêt",
 			"city"   : "Commune",

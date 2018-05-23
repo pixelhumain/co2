@@ -736,7 +736,7 @@ var urlCtrl = {
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
-	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
+	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classifieds"/*"entry","vote" ,"action" ,"rooms" */],
 	map : function (hash) {
 		if(typeof hash == "undefined") return { hash : "#",
 												type : "",
@@ -3112,9 +3112,9 @@ function test(params, itemType){
         params.parentIcon = "fa-"+parentObj.icon;
         params.parentColor = parentObj.color;
     }
-    if(params.type == "classified" && typeof params.category != "undefined"){
-      params.ico = typeof classified.filters[params.category] != "undefined" ?
-                   "fa-" + classified.filters[params.category]["icon"] : "";
+    if(params.type == "classifieds" && typeof params.category != "undefined"){
+      params.ico = typeof classifieds.filters[params.category] != "undefined" ?
+                   "fa-" + classifieds.filters[params.category]["icon"] : "";
     }
 
     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";

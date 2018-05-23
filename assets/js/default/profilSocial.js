@@ -406,7 +406,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 
 	else if(dataName == "collections")	{ html += elementName+" "+trad.hasgot+" "+countData+" <b>"+trad["collection"+s]+"</b>"; }
 	else if(dataName == "poi")			{ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
-	else if(dataName == "classified")	{ html += countData+" <b>"+trad["classified"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "classifieds")	{ html += countData+" <b>"+trad["classified"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
 	else if(dataName == "ressources")	{ html += countData+" <b>ressource"+s+"</b> "+trad['createdby'+s]+" " + elementName; }
 
 	else if(dataName == "needs")	{ html += countData+" <b>"+trad[need+s]+"</b> "+trad.of+" " + elementName; }

@@ -315,7 +315,7 @@
 				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
 			<li><hr></li>
 			<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classified" data-icon="bullhorn">
+				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classifieds" data-icon="bullhorn">
 					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
 				</a>
 			</li>

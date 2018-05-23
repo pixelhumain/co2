@@ -18,7 +18,7 @@
 			}else if(typeof(data.typeSig) != "undefined" && data.typeSig == "address"){
 				return this.getPopupAddress(data);
 			}else if(typeof(data.typeSig) != "undefined" && 
-				(data.typeSig == "classified" || data.typeSig == "ressources" )){
+				(data.typeSig == "classifieds" || data.typeSig == "ressources" )){
 				return this.getPopupClassified(data);
 			}else{
 				return this.getPopupSimple(data);

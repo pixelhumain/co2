@@ -359,10 +359,10 @@
 
             <hr class="hidden-xs no-margin">-->
             
-            <button class="btn border-blue btn-directory-type padding-10" data-type="classified">
+            <button class="btn border-blue btn-directory-type padding-10" data-type="classifieds">
                 <i class="fa fa-bullhorn"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Classified") ?></span>
-                <span class="count-badge-filter" id="countclassified"></span>
+                <span class="count-badge-filter" id="countclassifieds"></span>
             </button><br class="hidden-xs">
             
             <button class="btn border-blue btn-directory-type padding-10" data-type="ressources">
@@ -431,12 +431,12 @@
               <?php } ?>
           </div>
 
-        <?php } else if ($typeSelected == "classified" || $typeSelected == "ressources" ){ 
+        <?php } else if ($typeSelected == "classifieds" || $typeSelected == "ressources" ){ 
           if(Yii::app()->params["CO2DomainName"] != "terla"){
 
-            $dmod = ($typeSelected == "classified") ? "classifieds" : "ressources";
-            $categories = CO2::getModuleContextList($dmod,"categories");
-            $this->renderPartial($dmod.".views.co.categories", array( "typeSelected" => $typeSelected,"categories" => $categories ));
+           // $dmod = ($typeSelected == "classified") ? "classifieds" : "ressources";
+            $categories = CO2::getModuleContextList($typeSelected,"categories");
+            $this->renderPartial("eco.views.co.categories", array( "typeSelected" => $typeSelected,"categories" => $categories ));
           } else { 
 
           $service = CO2::getContextList("service");
@@ -512,14 +512,14 @@
         <?php } ?>
 
         <?php  
-          if($typeSelected != "classified" && Yii::app()->params["CO2DomainName"] == "terla"){ 
+          if($typeSelected != "classifieds" && Yii::app()->params["CO2DomainName"] == "terla"){ 
             $this->renderPartial("../default/panels/filterMenu", 
                   array("typeSelected"=>$typeSelected,
                         ));
           } 
         ?>
         <?php $col = ( !in_array($typeSelected, 
-                       array("classified","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 9; ?>
+                       array("classifieds","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 9; ?>
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
@@ -605,7 +605,7 @@ var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" 
 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
 
-var classified = <?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
+//var classifieds = modules.classifieds; //<?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
 
 jQuery(document).ready(function() {
   initKInterface({"affixTop":200});

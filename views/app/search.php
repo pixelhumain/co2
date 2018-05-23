@@ -30,7 +30,7 @@
     if(!@$type){  $type = "all"; }
 
     if(@$type=="events")    { $page = "agenda";     $maxImg = 7; }
-    if(@$type=="classified"){ $page = "annonces";   $maxImg = 1; }
+    if(@$type=="classifieds"){ $page = "annonces";   $maxImg = 1; }
     if(@$type=="vote")      { $page = "power";      $maxImg = 1; }
     if(@$type=="place")     { $page = "place";      $maxImg = 1; }
     if(@$type=="ressources") { $page = "ressources"; }
@@ -142,6 +142,8 @@
 
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
+if(typeInit=="classified")
+    typeInit="classified";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 var pageCount=false;
@@ -202,8 +204,8 @@ jQuery(document).ready(function() {
         });
          
          //anny double section filter directory
-        <?php if(@$type == "classified" || @$type == "ressources" || @$type == "place"  ){ ?>
-            initClassifiedInterface();
+        <?php if(@$type == "classifieds" || @$type == "ressources" || @$type == "place"  ){ ?>
+            //initClassifiedInterface();
         <?php } ?>
 
         bindLeftMenuFilters();

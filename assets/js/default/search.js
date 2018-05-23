@@ -191,7 +191,7 @@ var sectionKey;
 var classType = "";
 var classSubType = "";
 function initClassifiedInterface(){ return;
-    classified.currentLeftFilters = null;
+    classifieds.currentLeftFilters = null;
     $('#menu-section-'+typeInit).removeClass("hidden");
     $("#btn-create-classified").click(function(){
          dyFObj.openForm('classified');
@@ -199,8 +199,62 @@ function initClassifiedInterface(){ return;
 }
 
 function bindLeftMenuFilters () { 
-
-    $(".btn-select-type-anc").off().on("click", function()
+    $(".btn-select-type-anc").off().on("click", function(){
+        searchType = [ typeInit ];
+        indexStepInit = 100;
+        pageCount=true;
+        searchObject.count=true;
+        typeClass = $(this).data("type-anc");
+        typeKey = $(this).data("key");    
+        if( typeKey == "goods" || typeKey == "jobs" || typenKey == "all"){
+            $("#section-price").show(200);
+            setTimeout(function(){
+                KScrollTo("#container-scope-filter");
+            }, 400);
+        }
+        else {
+            $("#section-price").hide();
+            $("#priceMin").val("");
+            $("#priceMax").val("");
+            delete searchObject.priceMin;
+            delete searchObject.priceMax;
+            KScrollTo("#container-scope-filter");
+        }
+        if(typeof searchObject.category != "undefined") delete searchObject.category;
+        if(typeof searchObject.subType != "undefined") delete searchObject.subType;
+        if(typeof searchObject.section != "undefined") delete searchObject.section;
+        if(typeof searchObject.searchSType != "undefined")
+            $(this).addClass("active");
+        if( $(this).hasClass( "active" ) )
+        {
+            sectionKey = null;
+            //searchObject.tags=[];
+            if(typeof searchObject.searchSType != "undefined") delete searchObject.searchSType;
+            $('.classifiedSection').remove();
+            $(".label-category, .resultTypes").html("");
+        } 
+        else 
+        {
+            if( jsonHelper.notNull("classifieds."+typeKey+".sections."+typeKey+".filters") ){
+                //alert('build left menu'+classified.sections[sectionKey].filters);
+                classifieds.currentLeftFilters = classifieds[searchObject.searchStype].sections[sectionKey].filters;
+                var filters = classifieds[typeKey]; 
+                var what = { title : classifieds[typeKey], 
+                             icon : classifieds[typeKey] }
+                directory.sectionFilter( filters, ".classifiedFilters",what);
+                bindLeftMenuFilters ();
+            }
+            else if(classifieds.currentLeftFilters != null) {
+                var what = { title : classifieds[searchObject.searchStype].sections[sectionKey].label, 
+                             icon : classifieds.sections[sectionKey].icon }
+                directory.sectionFilter( classifieds, "#menuLeft",what);
+                bindLeftMenuFilters ();
+                classifieds.currentLeftFilters = null;
+            }
+        }
+            
+    });
+    $(".btn-select-section").off().on("click", function()
     {    
         searchType = [ typeInit ];
         indexStepInit = 100;
@@ -220,44 +274,11 @@ function bindLeftMenuFilters () {
             section = $(this).data("type-anc");
             sectionKey = $(this).data("key");
             //alert("section : " + section);
-
-            if( sectionKey == "forsale" || sectionKey == "forrent" || sectionKey == "job" || sectionKey == "all"){
-                $("#section-price").show(200);
-                setTimeout(function(){
-                    KScrollTo("#container-scope-filter");
-                }, 400);
-            }
-            else {
-                $("#section-price").hide();
-                $("#priceMin").val("");
-                $("#priceMax").val("");
-                delete searchObject.priceMin;
-                delete searchObject.priceMax;
-                KScrollTo("#container-scope-filter");
-            }
-
-            if( jsonHelper.notNull("classified.sections."+sectionKey+".filters") ){
-                //alert('build left menu'+classified.sections[sectionKey].filters);
-                classified.currentLeftFilters = classified.sections[sectionKey].filters;
-                var filters = classified[ classified.currentLeftFilters ]; 
-                var what = { title : classified.sections[sectionKey].label, 
-                             icon : classified.sections[sectionKey].icon }
-                directory.sectionFilter( filters, ".classifiedFilters",what);
-                bindLeftMenuFilters ();
-            }
-            else if(classified.currentLeftFilters != null) {
-                //alert('rebuild original'); 
-                var what = { title : classified.sections[sectionKey].label, 
-                             icon : classified.sections[sectionKey].icon }
-                directory.sectionFilter( classified.filters, ".classifiedFilters",what);
-                bindLeftMenuFilters ();
-                classified.currentLeftFilters = null;
-            }
             if( $(this).data("key") == "all" ) delete searchObject.section;//sectionKey = "";
             else searchObject.section =  sectionKey;
         }
 
-        $(".btn-select-type-anc, .btn-select-category-1, .keycat").removeClass("active");
+        $(".btn-select-section, .btn-select-category, .keycat").removeClass("active");
         $(".keycat").addClass("hidden");
         
         if(typeof searchObject.searchSType != "undefined") delete searchObject.searchSType;
@@ -267,18 +288,17 @@ function bindLeftMenuFilters () {
 
         startSearch(0, indexStepInit, searchCallback); 
 
-        if(sectionKey && typeof classified.sections[sectionKey] != "undefined") {
-            var label = classified.sections[sectionKey]["labelFront"];
-            $(".label-category").html("<i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + tradCategory[label]);
+        if(sectionKey && typeof classifieds[searchObject.searchStype].sections[sectionKey] != "undefined") {
+            var label = classifieds[searchObject.searchStype].sections[sectionKey]["label"];
+            $(".label-category").html("<i class='fa fa-"+ classifieds[searchObject.searchStype].sections[sectionKey]["icon"] + "'></i> " + tradCategory[label]);
             $('.classifiedSection').remove();
-            $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classified.sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
-            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-"+classified.sections[sectionKey]["color"])
+            $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classifieds[searchObject.searchStype].sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
+            $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-azure");//+classifieds[searchObject.searchStype].sections[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
         }
     });
 
-    $(".btn-select-category-1").off().on("click", function(){ 
-        //alert(".btn-select-category-1");
+    $(".btn-select-category").off().on("click", function(){ 
         searchType = [ typeInit ];
         var searchTxt = "";
         //var section = searchObject.tags.join(",");//$('#searchTags').val();
@@ -289,28 +309,28 @@ function bindLeftMenuFilters () {
         searchObject.count=true;
         if(typeof searchObject.subType != "undefined") delete searchObject.subType;
         if( $(this).hasClass( "active" ) ){
-            if(typeof searchObject.searchSType != "undefined") delete searchObject.searchSType;
+            if(typeof searchObject.category != "undefined") delete searchObject.category;
             //searchObject.tags=[sectionKey];//searchTxt = sectionKey;
             $(this).removeClass( "active" );
             $(".keycat-"+classType).addClass("hidden").removeClass("active"); 
         }else{
-            $(".btn-select-category-1").removeClass("active");
+            $(".btn-select-category").removeClass("active");
             $(this).addClass("active");
 
             $(".keycat").addClass("hidden");
             $(".keycat-"+classType).removeClass("hidden");  
-            searchObject.searchSType=classType;
+            searchObject.category=classType;
             //if(typeof sectionKey != "undefined" && typeof sectionKey != null)
             //    searchObject.tags=[sectionKey];//searchTxt = sectionKey+",";
             //searchObject.tags.push(classType);
             //searchTxt += classType; 
         }
-
         //$('#searchTags').val(searchTxt);
         //alert("section : " + $('#searchTags').val());
         startSearch(0, indexStepInit, searchCallback);  
     });
 
+    /*TERLA FILTER TO MUTUALIZE 
     $(".btn-select-category-services").off().on("click", function(){ alert("onclick");
         searchObject.tags=[];//tags = "";
         var keycat = $(this).data("keycat");
@@ -333,11 +353,10 @@ function bindLeftMenuFilters () {
         });
         //$('#searchTags').val(tags);
         startSearch(0, indexStepInit, searchCallback); 
-    });
+    });*/
 
     $(".keycat").off().on("click", function(){
         searchObject.types = [ typeInit ];
-        //searchObject.tags=[];
         var searchTxt = "";
         var classType = $(this).data("categ");
         var classSubType = $(this).data("keycat");
@@ -345,28 +364,15 @@ function bindLeftMenuFilters () {
         pageCount=true;
         searchObject.count=true;
         if( $(this).hasClass( "active" ) ){
-            //searchObject.tags.push(classType);
-            //if(typeof sectionKey != "undefined" && typeof sectionKey != null)
-            //    searchObject.tags.push(sectionKey);//searchTxt = sectionKey+","+classType;
             if(typeof searchObject.subType != "undefined") delete searchObject.subType;
-            //else
-                //searchTxt = classType;
             $(this).removeClass( "active" );
         }else{
             $(".keycat").removeClass("active");
             $(this).addClass("active");
             searchObject.subType=classSubType;
-            searchObject.searchSType=classType;
-            //searchObject.tags.push(classType, classSubType);
-            //if(typeof sectionKey != "undefined" && typeof sectionKey != null)
-            //    searchObject.tags.push(sectionKey);
-                //searchTxt = sectionKey+","+classType+","+classSubType;
-            //else
-              //  searchTxt = classType+","+classSubType;
+            searchObject.category=classType;
         }
 
-        //$('#searchTags').val( searchTxt );
-        //alert("section : " + $('#searchTags').val());
         KScrollTo("#container-scope-filter");
         startSearch(0, searchObject.indexStep, searchCallback);  
     });
@@ -572,7 +578,7 @@ var searchAllEngine = {
             projects : { indexMin : 0, indexMax : 30, waiting : 30 },
             events : { indexMin : 0, indexMax : 30, waiting : 30 },
             citoyens : { indexMin : 0, indexMax : 30, waiting : 30 },
-            classified : { indexMin : 0, indexMax : 30, waiting : 30 },
+            classifieds : { indexMin : 0, indexMax : 30, waiting : 30 },
             poi : { indexMin : 0, indexMax : 30, waiting : 30 },
             news : { indexMin : 0, indexMax : 30, waiting : 30 },
             places : { indexMin : 0, indexMax : 30, waiting : 30 },

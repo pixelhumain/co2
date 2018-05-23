@@ -82,6 +82,10 @@
 							<?php
 								if($parentType == Person::COLLECTION)
 									echo Yii::t("invite","Search or invite your contacts");
+								else if ($parentType == Event::COLLECTION )
+									echo Yii::t("common","Invite people") ;			
+								else if ($parentType == Project::COLLECTION )
+									echo Yii::t("common",'Invite contributors') ;
 								else
 									echo Yii::t("common","Invite members");
 							?>
@@ -190,8 +194,8 @@
 							<div class="col-xs-12" id="dropdown-invite" style="max-height: 400px; overflow: auto;"></div>
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
-							<button id="btnValider" >
-								<i class="fa fa-check"> </i><?php echo Yii::t("common","Invite"); ?> 
+							<button id="btnValider" class="btn btn-success" >
+								<?php echo Yii::t("common","Invite"); ?> 
 							</button>
 						</div>
 					</div>
@@ -257,7 +261,7 @@
 				$("#modal-invite #dropdown-result").show();
 			}
 		} else {
-			toastr.error("Ajouter les users");
+			toastr.error(tradDynForm.pleaseValidateTheCurrentInvites);
 		}
 
 		
@@ -550,7 +554,7 @@
 				showElementInvite(listInvite, true);
 				bindRemove();
 			}else{
-				toastr.error("In My Contacts");
+				toastr.error(tradDynForm.thisPersonIsAlreadyOnYourContacts);
 			}
 			
 		});

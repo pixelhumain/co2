@@ -756,7 +756,7 @@ var tradDynForm = {
 	"rss" :"<?php echo Yii::t("common","RSS") ?>",
 	"other" : "<?php echo Yii::t("common","Other") ?>",
 	"pleaseValidateTheCurrentInvites" : "<?php echo Yii::t("invite","Please validate the current invites") ?>",
-	"This person is already on your contacts" : "<?php echo Yii::t("invite","This person is already on your contacts") ?>",
+	"thisPersonIsAlreadyOnYourContacts" : "<?php echo Yii::t("invite","This person is already on your contacts") ?>",
 };
 
 var tradCategory = {

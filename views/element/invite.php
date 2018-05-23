@@ -61,6 +61,21 @@
 	background-color:rgba(0, 0, 0, 0.04) !important;
 }
 
+
+.btn-is-admin{
+	text-decoration: line-through;
+	display:inline;
+}
+.divRoles{
+	margin:5px;
+}
+.btn-is-admin.isAdmin {
+	text-decoration: none;
+}
+.btn-is-admin.isAdmin a{
+	color:#5cb85c!important;
+}
+
 </style>
 
 <div class="<?php if(empty($search) || $search == false){ ?> portfolio-modal modal fade <?php } ?>" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
@@ -267,6 +282,14 @@
 		
 	}
 
+	function initListInvite(){
+		listInvite = { 
+			citoyens : {},
+			organizations : {},
+			invites : {},
+		};
+	}
+
 	function initInvite(){
 		$("#modal-invite #divSearchInvite").hide();
 		$("#modal-invite #divResult").hide();
@@ -283,6 +306,7 @@
 		$("#modal-invite #inviteSearch").val("");
 		$("#modal-invite #inviteName").val("");
 		$("#modal-invite #inviteEmail").val("");
+		$("#fileEmail").val("");
 
 		$("#modal-invite .errorHandler").hide();
 		
@@ -320,14 +344,15 @@
 			} 
 
 			if (e.target.files != undefined) {
+				initListInvite();
 				var reader = new FileReader();
 				mylog.log("reader", reader);
-
 				reader.onload = function(e) {
 					var csvval = e.target.result.split("\n");
 					checkAndGetMailsInvite(csvval);
 				};
 				reader.readAsText(e.target.files.item(0));
+
 			}else{
 				toastr.error(tradDynForm.weWereUnableToReadYourFile);
 			}
@@ -375,11 +400,16 @@
 					var name = $('#modal-invite #inviteName').val();
 
 					if(typeof listInvite.invites[mail] == "undefined"){
+						var keyUnique = keyUniqueByMail(mail);
 						listInvite.invites[keyUniqueByMail(mail)] = {
 							name : name,
 							mail : mail,
 							msg : msg
 						} ;
+
+						if(parentType != "citoyens")
+							listInvite.invites[keyUnique].isAdmin = "";
+
 						$('#modal-invite #inviteEmail').val("");
 						$('#modal-invite #inviteText').val("");
 						$('#modal-invite #inviteName').val("");
@@ -481,11 +511,7 @@
 							});
 						}
 						
-						listInvite = { 
-							citoyens : {},
-							organizations : {},
-							invites : {},
-						};
+						initListInvite();
 						fadeInView("result");
 						$("#modal-invite #dropdown-result").html(str);
 				 	}
@@ -516,6 +542,22 @@
 			mylog.log("ID : ", listInvite[type][id]);
 			listInvite[type][id]["roles"] = tag;
 		});
+
+		$(".btn-is-admin").click(function(){
+			mylog.log(".btn-is-admin");
+			var id = $(this).data("id");
+			var type = $(this).data("type-list");
+			mylog.log(".btn-is-admin : ", id, type);
+			if($(this).hasClass("isAdmin")){
+				$(this).removeClass("isAdmin");
+				listInvite[type][id].isAdmin = "";
+			}
+			else{
+				$(this).addClass("isAdmin");
+				listInvite[type][id].isAdmin = "admin";
+			}
+			
+		});
 	}
 
 	function bindAdd(){
@@ -538,6 +580,10 @@
 							name : name,
 							profilThumbImageUrl : profilThumbImageUrl
 						} ;
+
+						if(parentType != "citoyens")
+							listInvite.citoyens[id].isAdmin = "";
+
 					}else{
 						toastr.error(tradDynForm.alreadyInTheList);
 					}
@@ -744,6 +790,14 @@
 					str += ' <span class="text-dark text-bold text-green follows tooltips"> '+
 								'<i class="fa fa-link" data-toggle="tooltip" data-placement="top" title="'+trad.follows+'" alt="" data-original-title="'+trad.follows+'"></i>'+
 							'</span>';
+
+				if (invite == true && parentType != "citoyens" && type == "citoyens") {
+
+					var isAdmin = ( (typeof elem.isAdmin != "undefined" && elem.isAdmin == "admin") ? "isAdmin" : "" );
+					str += '<small id="isAdmin'+id+'" class="btn-is-admin pull-right text-grey margin-top-10 '+isAdmin+'" data-id="'+id+'" data-type="'+type+'" data-type-list="'+typeList+'" >'+
+								'<a href="javascript:">admin <i class="fa fa-user-secret"></i></a>'+
+							'</small>';
+				}
 				
 				if(invite == true && parentType != "citoyens"){
 					str += '<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+id+'" data-type="'+type+'" data-type-list="'+typeList+'" >'+
@@ -792,12 +846,19 @@
 							name : valueMails.name,
 							profilThumbImageUrl : valueMails.profilThumbImageUrl
 						} ;
+
+						if(parentType != "citoyens")
+							listInvite.citoyens[valueMails.id].isAdmin = "";
+
 					} else {
 						listInvite.invites[keyUniqueByMail(keyMails)] = {
 							name : keyMails,
 							email : keyMails,
 							msg : ""
 						} ;
+
+						if(parentType != "citoyens")
+							listInvite.invites[keyUniqueByMail(keyMails)].isAdmin = "";
 					}
 					
 				});
@@ -813,6 +874,7 @@
 			citoyens : {},
 			organizations : {}
 		} ;
+
 		$.each(myContacts.people, function(key, value){
 			mylog.log("myContacts.people", value);
 			listMyContacts.citoyens[value._id.$id] = { 

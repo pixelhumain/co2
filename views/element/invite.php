@@ -195,6 +195,7 @@
 					<div class="form-group">
 						<label for="fileEmail" > <?php echo Yii::t("invite","Files (CSV)"); ?> : <input type="file" id="fileEmail" name="fileEmail" accept=".csv"> </label>
 					</div>
+					<span id="errorFile" class="col-xs-12 text-red" ></span>
 				</div>
 				<div id="step1-mycontacts" class="modal-body col-xs-6" >
 					<div class="form-group">
@@ -298,10 +299,12 @@
 		$("#modal-invite #step1-mycontacts").hide();
 		$("#modal-invite #step2").hide();
 		$("#modal-invite #form-invite").hide();
+		$("#modal-invite #errorFile").hide();
 
 		$("#modal-invite #dropdown-invite").html("");
 		$("#modal-invite #dropdown-search-invite").html("");
 		$("#modal-invite #dropdown-result").html("");
+		$("#modal-invite #errorFile").html("");
 
 		$("#modal-invite #inviteSearch").val("");
 		$("#modal-invite #inviteName").val("");
@@ -309,6 +312,8 @@
 		$("#fileEmail").val("");
 
 		$("#modal-invite .errorHandler").hide();
+
+		
 		
 	}
 
@@ -809,7 +814,14 @@
 						str += '<i class="fa fa-users "></i> ';
 				}
 
-				str += '<span class="text-dark text-bold">' + elem.name + '</span>';
+				str += '<span class="text-dark text-bold">' + elem.name ; 
+				mylog.log("mailalal", typeList, elem.mail, (typeList == "invites" && typeof elem.mail != "undefined"));
+				if(typeList == "invites" && typeof elem.mail != "undefined"){
+					mylog.log("mailalal", typeList, elem.mail);
+					str += ' <'+ elem.mail +'> </span>';
+				}
+				str += '</span>';
+
 				if(inMyContact == true)
 					str += ' <span class="text-dark text-bold text-green follows tooltips"> '+
 								'<i class="fa fa-link" data-toggle="tooltip" data-placement="top" title="'+trad.follows+'" alt="" data-original-title="'+trad.follows+'"></i>'+
@@ -862,9 +874,12 @@
 			dataType: "json",
 			success: function(data){
 				mylog.log("getcontactsbymails data", data, data.length);
+				var regexMail = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+				var nbError = 0;
 				$.each(data, function(keyMails, valueMails){
 					mylog.log("keyMails valueMails", keyMails, valueMails, typeof valueMails);
 					
+  					
 					if(typeof valueMails == "object"){
 						listInvite.citoyens[valueMails.id] = { 
 							name : valueMails.name,
@@ -875,18 +890,29 @@
 							listInvite.citoyens[valueMails.id].isAdmin = "";
 
 					} else {
-						listInvite.invites[keyUniqueByMail(keyMails)] = {
-							name : keyMails,
-							email : keyMails,
-							msg : ""
-						} ;
+						if(regexMail.test(valueMails)){
+							listInvite.invites[keyUniqueByMail(keyMails)] = {
+								name : keyMails,
+								mail : keyMails,
+								msg : ""
+							} ;
 
-						if(parentType != "citoyens")
-							listInvite.invites[keyUniqueByMail(keyMails)].isAdmin = "";
+							if(parentType != "citoyens")
+								listInvite.invites[keyUniqueByMail(keyMails)].isAdmin = "";
+						} else {
+							nbError++;
+						}
+						
 					}
 					
 				});
 				showElementInvite(listInvite, true);
+				mylog.log("nbError", nbError);
+				if(nbError > 0){
+					$("#modal-invite #errorFile").html(nbError+ " mails ne sont pas valides");
+					$("#modal-invite #errorFile").show();
+				}
+
 				$.unblockUI();
 			}
 		});

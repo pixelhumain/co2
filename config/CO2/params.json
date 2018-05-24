@@ -4,7 +4,9 @@
     "metaImg" : "/assets/img/bg_pixeltree2.jpg",
 	"metaTitle" : "Réseau sociétal citoyen",
 	"metaDesc" : "Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.",
-    "devises" : {"€" : "€",
+    "devises" : {
+    			"all":"All",
+    			"€" : "€",
     			 "Ğ1" : "Ğ1",
                  "£" : "£",
                  "$" : "$",
@@ -51,19 +53,6 @@
 			"lblBtnCreate" : "Create something",
 			"colorBtnCreate" : "green"
 		},
-		"#territorial": {
-			"inMenu" : true, 
-			"useHeader" : true, 
-			"open" : false, 
-			"subdomain" : "territorial", 
-			"subdomainName" : "All",
-			"hash" : "#app.territorial",
-			"icon" : "territorial", 
-			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
-			"placeholderMainSearch" : "search a page ...",
-			"lblBtnCreate" : "Create a page",
-			"colorBtnCreate" : "green"
-		},
 
 		"#search": {
 			"inMenu" : true, 
@@ -76,7 +65,18 @@
 			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
 			"placeholderMainSearch" : "what are you looking for ?",
 			"lblBtnCreate" : "Create a page",
-			"colorBtnCreate" : "green"
+			"colorBtnCreate" : "green",
+			"initFilters":[
+				"text",
+				"tags",
+				"locality",
+				"types",
+				"countType",
+				"page",
+				"initType",
+				"count"
+			]
+
 		},
 
 		"#web":
@@ -111,7 +111,12 @@
 			"hash":"#app.live",
 			"icon" : "newspaper-o", 
 			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
-			"placeholderMainSearch" : "search in live ..."
+			"placeholderMainSearch" : "search in live ...",
+			"initFilters":[
+				"text",
+				"tags",
+				"locality"
+			]
 		},
 		      
 		"#agenda": {
@@ -125,7 +130,13 @@
 			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
 			"placeholderMainSearch" : "search an event ...",
 			"lblBtnCreate" : "Create an event",
-			"colorBtnCreate" : "orange"
+			"colorBtnCreate" : "orange",
+			"initFilters":[
+				"text",
+				"tags",
+				"locality",
+				"searchSType"
+			]
 		},
       
 		"#annonces": {
@@ -139,7 +150,18 @@
 			"mainTitle" : "Classified ads",
 			"placeholderMainSearch" : "search among classifieds ...",
 			"lblBtnCreate" : "Create a classified ad",
-			"colorBtnCreate" : "azure"
+			"colorBtnCreate" : "azure",
+			"initFilters":[
+				"text",
+				"tags",
+				"locality",
+				"searchSType",
+				"section",
+				"subType",
+				"devise",
+				"priceMin",
+				"priceMax"
+			]
 		},
 
 
@@ -181,7 +203,18 @@
 		    "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
 		    "placeholderMainSearch" : "Rechercher un ressource ...",
 		    "lblBtnCreate" : "Ajouter une ressource",
-		    "colorBtnCreate" : "purple"
+		    "colorBtnCreate" : "purple",
+		    "initFilters":[
+				"text",
+				"tags",
+				"locality",
+				"searchSType",
+				"section",
+				"subType",
+				"devise",
+				"priceMin",
+				"priceMax"
+			]
 		},
 
 		"#page": {

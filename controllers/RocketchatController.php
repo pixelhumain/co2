@@ -130,7 +130,7 @@ class RocketchatController extends CommunecterController {
 				$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
 	 									array(
 	 										'$set' => array("hasRC"=>true),
-	 										'$addToSet' => array( "tools.chat.int"=> $group  )));
+	 										'$addToSet' => array( "tools.chat.ext"=> $group  )));
 			}
 			else if($roomType == "channel"){
 				$path = "/channel/".$name;

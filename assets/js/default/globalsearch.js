@@ -235,14 +235,14 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 						str += "</a>";
 					}else{
 						o.input = input;
-	         	 		mylog.log("Here",o);
+	         	 		mylog.log("Here",o, typeof o.postalCode);
 
 	         	 		
 						if(type == "city"){
 							var valuesScopes = {
 								city : o._id.$id,
 								cityName : o.name,
-								postalCode : o.postalCode,
+								postalCode : (typeof o.postalCode == "undefined" ? "" : o.postalCode),
 								country : o.country,
 								allCP : o.allCP,
 								uniqueCp : o.uniqueCp,
@@ -271,7 +271,10 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 								valuesScopes.level2Name = o.level2Name ;
 							}
 
-		         	 		myScopes.search[valuesScopes.city] = valuesScopes;
+							valuesScopes.type = o.type;
+							valuesScopes.key = valuesScopes.city+valuesScopes.type+valuesScopes.postalCode ;
+							o.key = valuesScopes.key;
+		         	 		myScopes.search[valuesScopes.key] = valuesScopes;
 							str += directory.cityPanelHtml(o);
 						}
 						else if(type == "zone"){
@@ -327,8 +330,9 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 								valuesScopes.level2Name = o.level2Name ;
 								subTitle +=  (subTitle == "" ? "" : ", ") +  o.level2Name ;
 							}
-
-							myScopes.search[valuesScopes.id] = valuesScopes;
+							//objToPush.id+objToPush.type+objToPush.postalCode
+							valuesScopes.key = valuesScopes.id+valuesScopes.type ;
+							myScopes.search[valuesScopes.key] = valuesScopes;
 							str += directory.zonePanelHtml(o);
 						}
 				// 	var valuesScopes = {};
@@ -385,8 +389,8 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 				// 	}
 						
 
-				// 	if( notEmpty( o.nameCity ) ){
-				// 		valuesScopes.name = o.nameCity ;
+				// 	if( notEmpty( o.cityName ) ){
+				// 		valuesScopes.name = o.cityName ;
 				// 	}
 
 				// 	if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
@@ -451,7 +455,15 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
                               
               }); //end each
 
-              //ajout du footer   
+              //ajout du footer
+              str+="<div class='text-center col-md-12 col-sm-12 col-xs-12 padding-10'>"+
+                      '<label class="text-dark italic"><i class="fa fa-ban"></i> '+trad.youdontfindcityyouwantfor+' "'+search+'"</label><br/>'+
+                      '<span class="info letter-blue"><i class="fa fa-info-circle"></i> '+trad.explainnofoundcity+'</span><br/>'+
+                      '<button class="btn btn-blue bg-blue text-white main-btn-create" '+
+                        'data-target="#dash-create-modal" data-toggle="modal">'+
+                          '<i class="fa fa-plus-circle"></i> '+trad.createpage+
+                      '</button>'+
+                    "</div>";   
               str += '<div class="text-center" id="footerDropdownGS">';
               str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
               str += '<a href="#search" class="btn btn-default btn-sm lbh" id="btnShowMoreResultGS">'+

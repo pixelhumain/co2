@@ -1606,6 +1606,22 @@ function  bindLBHLinks() {
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    urlCtrl.loadByHash( h );
 	});
+	$(".lbh-menu-app").unbind("click").on("click",function(e){
+		e.preventDefault();
+		 $.each(searchObject, function(key,v){
+            if($.inArray(key,["startDate","endDate", "searchSType", "section", "subType","priceMin", "priceMax", "devise"]) > -1){
+                delete searchObject[key];
+            }
+        });
+		searchObject.page=0,
+		searchObject.indexMin=0,
+		searchObject.indexStep=30,
+		searchObject.count=true,
+		searchObject.initType="",
+		searchObject.types=[],
+		searchObject.countType=[];
+		urlCtrl.loadByHash($(this).data("hash"));
+	})
 	//open any url in a modal window
 	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();
@@ -2890,9 +2906,9 @@ function bindButtonOpenForm(){
 	//window select open form type (selectCreate)
 	$(".btn-open-form").off().on("click",function(){
         var typeForm = $(this).data("form-type");
-        mylog.log("test", $(this).data("form-subtype")),
+        mylog.log("test", $(this).data("form-subtype"));
         currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-
+        //mylog.log("contextData", contextData, contextData.type, contextData.id );
         //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
         if(contextData && contextData.type && contextData.id )
             dyFObj.openForm(typeForm,"sub");

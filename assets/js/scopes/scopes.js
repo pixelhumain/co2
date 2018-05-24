@@ -54,11 +54,10 @@ function constructScopesHtml(news){
 			}
 		}
 
-    	html += "<div class='scope-order "+disabled+" text-red' data-level='"+value.level+"'>"+
+    	html += "<div class='scope-order "+disabled+" text-red' data-level='"+value.level+"''>"+
     				btnScopeAction+
     				"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
 						"class='item-scope-checker item-scope-input' "+
-						"data-add='true' "+
 						'data-scope-key="'+key+'" '+
 						'data-scope-value="'+value.id+'" '+
 						'data-scope-name="'+name+'" '+
@@ -73,6 +72,9 @@ function constructScopesHtml(news){
 					"</span>"+
 				"</div>";
 	});	
+	if(myScopes.type=="open"){
+		html+="<button class='btn btn-danger text-white margin-left-10 padding-5' onclick='clearOpenScope();'><i class='fa fa-refresh'></i> <span class='hidden-xs'>"+trad.delete+"</span></button>";
+	}
 	return html;
 }
 
@@ -88,9 +90,10 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 	$(appendDom).html(constructScopesHtml(newsAction));
 	$(appendDom+" .scope-order").sort(sortSpan) // sort elements
 				.appendTo(appendDom); // append again to the list
+	localStorage.setItem("myScopes",JSON.stringify(myScopes));
 	if(newsAction) bindScopesNewsEvent();
 	else{
-		search.count=true;
+		searchObject.count=true;
 		startSearch(0, indexStepInit);
 		bindScopesInputEvent();
 	}
@@ -112,10 +115,142 @@ function getCommunexionLabel(){
 		$("#communexion-news-btn, #communexion-btn").hide();
 	}
 };
+function getUrlSearchLocality(urlGet){
+	var urlScopeCity = [];
+	var urlScopeCp = [];
+	var urlScopeZone = [];
+	var urlMyScope = "";
+	var searchingOnLoc=myScopes[myScopes.type];
+	if(notNull(searchingOnLoc)){
+		$.each(searchingOnLoc, function(key, value){
+			mylog.log("getMultiScopeForSearch value.active", value.active);
+			if(value.active == true){
+				if(value.type == "cities"){
+					keyScope=(typeof value.postalCode == "undefined") ? value.id : value.id+"cp"+value.postalCode;
+					keyScope+=(typeof value.allCP == "undefined" && value.allCP) ? "allPostalCode" : "";
+					urlScopeCity.push(keyScope);
+				}
+				else if (value.type == "cp")
+					urlScopeCp.push(value.id);
+				else if (value.type.indexOf("level") >= 0)
+					urlScopeZone.push(value.id);
+			}
+		});
+		if(urlScopeCity.length > 0) urlMyScope+="&cities="+urlScopeCity.join(",");
+		if(urlScopeZone.length > 0) urlMyScope+="&zones="+urlScopeZone.join(",");
+		if(urlScopeCp.length > 0) urlMyScope+="&cp="+urlScopeCp.join(",");
+		if(urlMyScope != ""){
+			urlMyScope="scopeType="+myScopes.type+urlMyScope;
+			urlGet += (urlGet != "") ? "&"+urlMyScope : urlMyScope  
+		}	
+	}
+//	mylog.log("getMultiScopeForSearch search", res);
+	return urlGet;
+}
+function checkMyScopeObject(initScopeResearch, paramsGet){
+	inMyScope=true;
+	console.log("initScope",initScopeResearch, "Myscopes", myScopes);
+	if(typeof myScopes[initScopeResearch.key] != "undefined"){
+		$.each(initScopeResearch.ids,function(e,v){
+			if(v.indexOf("cp") > 0){
+				tab=v.split("cp");
+				if(typeof myScopes[initScopeResearch.key][tab[0]+"cities"+tab[1]] == "undefined"  )
+						inMyScope=false;
+			}else if(v.indexOf("allPostalCode") > 0){
+				tab=v.split("allPostalCode");
+				if(typeof myScopes[initScopeResearch.key][tab[0]] == "undefined" 
+					|| typeof myScopes[initScopeResearch.key][tab[0]].allCP == "undefined" 
+					|| !myScopes[initScopeResearch.key][tab[0]].allCP )
+					inMyScope=false;
+			}else{
+				inside=false;
+				$.each(myScopes[initScopeResearch.key], function(key, value){
+					if(value.id==v || value.id.indexOf(v)>-1)
+						inside=true;
+				});
+				inMyScope=inside;
+			}
+		});
+		if(!inMyScope){
+			setOpenBreadCrum(paramsGet);
+		}else{
+			myScopes.type=initScopeResearch.key;
+			$.each(myScopes[initScopeResearch.key], function(e, v){
+				var keyActive="";
+				if(e.indexOf("cities") > 0)
+					keyActive=e.replace("cities","");
+				if(v.type=="cities" && typeof v.postalCode != "undefined"){
+					keyActive=v.id+"cp"+v.postalCode;
+				}
+				if(v.type.indexOf("level") > -1){
+					t=e.split("level");
+					keyActive=t[0];
+				}
+				if(v.type=="cp")
+					keyActive=v.id;
+				myScopes[initScopeResearch.key][e].active=($.inArray(keyActive, initScopeResearch.ids) > -1)  ? true : false;
+			});
+			appendScopeBreadcrum();
+		}
+	}else if(Object.keys(myScopes[myScopes.type]).length > 0)
+		appendScopeBreadcrum();	
+}
+function appendScopeBreadcrum(){
+	if(Object.keys(myScopes[myScopes.type]).length > 0)
+		$(".scopes-container").html(constructScopesHtml());
+	bindScopesInputEvent();
+	if($.inArray(myScopes.type, ["multiscopes", "communexion"]) > -1)
+		$("#"+myScopes.type+"-btn").addClass("active");
+}
+function setOpenBreadCrum(params){
+	setOpenScope={};
+	if(typeof params.zones != "undefined"){
+		zones=params.zones.split(",");
+		setOpenScope.zones=[];
+		$.each(zones, function(e,v){
+			setOpenScope.zones.push(v);
+		});
+	}
+	if(typeof params.cities != "undefined"){
+		cities=params.cities.split(",");
+		setOpenScope.cities=[];
+		$.each(cities, function(e,v){
+			setOpenScope.cities.push(v);
+		});
+	}
+	if(typeof params.cp != "undefined"){
+		cp=params.cp.split(",");
+		setOpenScope.cp=[];
+		$.each(cp, function(e,v){
+			setOpenScope.cp.push(v);
+		});
+	}
+
+	mylog.log("setOpenScope", setOpenScope);
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"/"+moduleId+"/zone/getscopebyids",
+		data: setOpenScope,
+		dataType: "json",
+		success: function(data){
+			mylog.log("data", data);
+			myScopes.type="open";
+			myScopes.open=data.scopes;
+			localStorage.setItem("myScopes",JSON.stringify(myScopes));
+			appendScopeBreadcrum();
+		},
+		error: function(error){
+			toastr.error("waswrong")
+			mylog.log();
+		}
+	});
+	myScopes.type="open";
+}
 function getSearchLocalityObject(){ 
 	var res = {};
 	var searchingOnLoc=myScopes[myScopes.type];
 	if(notNull(searchingOnLoc)){
+		//compareMyScopeAndUrlGet()
 		$.each(searchingOnLoc, function(key, value){
 			mylog.log("getMultiScopeForSearch value.active", value.active);
 			if(value.active == true){
@@ -186,10 +321,17 @@ function bindSearchCity(){
 		}
 	});
 }
-
+function clearOpenScope(){
+	myScopes.open={};
+	localStorage.setItem("myScopes",JSON.stringify(myScopes));
+	if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+	$(".scopes-container").html("");
+	searchObject.count=true;
+	startSearch(0, indexStepInit);
+}
 function bindScopesInputEvent(news){
 	mylog.log("bindScopesInputEvent");
-	$(".manageMultiscopes, #news-scopes-container .item-scope-checker").off().on("click", function(){
+	$(".manageMultiscopes").off().on("click", function(){
 		mylog.log("manageMultiscopes");
 		addScope=$(this).data("add");
 		scopeValue=$(this).data("scope-value");
@@ -215,24 +357,24 @@ function bindScopesInputEvent(news){
 		mylog.log("#multisopes-btn, #communexion-btn");
 		if($(this).hasClass("active")){
 			$(this).removeClass("active");
-			//$(this).find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
+			$(this).find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
 			myScopes.type="open";
 			myScopes.open={};
 			$(".scopes-container").html("");
 		}else{
 			$(".btn-menu-scopes").removeClass("active");
-			//$(".btn-menu-scopes").find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
+			$(".btn-menu-scopes").find("i.fa-angle-up").removeClass("fa-angle-up").addClass("fa-angle-down");
 			$(this).addClass("active");
 			myScopes.type=$(this).data("type");
-			//$(this).find("i.fa-angle-down").removeClass("fa-angle-down").addClass("fa-angle-up");
+			$(this).find("i.fa-angle-down").removeClass("fa-angle-down").addClass("fa-angle-up");
 			$(".scopes-container").html(constructScopesHtml());
 			if(myScopes.type=="communexion")
 				$("#filter-scopes-menu .scopes-container .scope-order").sort(sortSpan) // sort elements
 					.appendTo("#filter-scopes-menu .scopes-container");
 		}
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
-		if(search.app=="territorial") searchEngine.initTerritorialSearch();
-		search.count=true;
+		if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+		searchObject.count=true;
 		startSearch(0, indexStepInit);
 		bindScopesInputEvent();
 	});
@@ -243,9 +385,9 @@ function bindScopesInputEvent(news){
 		typeSearch=$(this).data("btn-type");
 		key=$(this).data("scope-key");
 		scopeActiveScope(key);
-		if(myScopes.type!="open")
-			localStorage.setItem("myScopes",JSON.stringify(myScopes));
-		search.count=true;
+		//if(myScopes.type!="open")
+		localStorage.setItem("myScopes",JSON.stringify(myScopes));
+		searchObject.count=true;
 		if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
 			startNewsSearch(true)
 		} else if (location.hash.indexOf("#interoperability") >= 0) {
@@ -253,8 +395,8 @@ function bindScopesInputEvent(news){
 			startSearchInterop(0,30);
 		}
 		else{
-			if(search.app=="territorial") searchEngine.initTerritorialSearch();
-				startSearch(0, indexStepInit); 
+			if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+			startSearch(0, indexStepInit); 
 		}
 	});
 
@@ -272,7 +414,7 @@ function bindScopesInputEvent(news){
 			myScopes.typeNews="open";
 
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
-		if(search.app=="territorial") searchEngine.initTerritorialSearch();
+		if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
 		mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
 
 

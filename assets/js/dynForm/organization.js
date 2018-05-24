@@ -6,16 +6,28 @@ dynForm = {
 	    onLoads : {
 	    	//pour creer un subevnt depuis un event existant
 	    	onload : function(){
-	    		dyFInputs.setHeader("bg-green");
+	    		//dyFInputs.setHeader("bg-green");
+
+	    		if(typeof currentKFormType != "undefined" && typeObj[currentKFormType] && typeObj[currentKFormType].color){
+                	//alert("dyn" + typeObj[currentKFormType].color);
+                    $("#ajax-modal .modal-header").addClass("bg-"+typeObj[currentKFormType].color);
+                    $("#ajax-modal .infocustom p").addClass("text-"+typeObj[currentKFormType].color);
+                }else{
+                	$("#ajax-modal .modal-header").addClass("bg-green");
+                    $("#ajax-modal .infocustom p").addClass("text-green");
+                }
     	   	},
 	    	sub : function(){
+				
 				
 				if(typeof currentKFormType == "undefined" || currentKFormType == "" || 
 				  currentKFormType == "null" || currentKFormType == null){
 					currentKFormType = "organization";
 				}else{
 					$("#ajaxFormModal .typeselect").addClass("hidden");
+					$("#ajaxFormModal #type").val(currentKFormType);
 				}
+				mylog.log("currentKFormType", currentKFormType);
 	    		//console.log("onLoads Sub currentKFormType", currentKFormType, contextData, contextData.id);
                 var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
                 var typeIcon = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? typeObj[currentKFormType].icon : elementObj.dynForm.jsonSchema.icon;
@@ -27,14 +39,7 @@ dynForm = {
                 $("#ajax-modal .modal-header").removeClass("bg-dark bg-red bg-purple bg-green bg-green-poi bg-orange bg-turq bg-yellow bg-url");
 				$("#ajax-modal .infocustom p").removeClass("text-dark text-red text-purple text-green text-green-poi text-orange text-turq text-yellow text-url");
 
-                if(typeof currentKFormType != "undefined" && typeObj[currentKFormType] && typeObj[currentKFormType].color){
-                	//alert("dyn" + typeObj[currentKFormType].color);
-                    $("#ajax-modal .modal-header").addClass("bg-"+typeObj[currentKFormType].color);
-                    $("#ajax-modal .infocustom p").addClass("text-"+typeObj[currentKFormType].color);
-                }else{
-                	$("#ajax-modal .modal-header").addClass("bg-dark");
-                    $("#ajax-modal .infocustom p").addClass("text-dark");
-                }
+                
 
 	    		if(contextData && contextData.type && contextData.id ){
 	    			//console.log("HERE WE ARE");
@@ -53,6 +58,7 @@ dynForm = {
 	    		 														userConnected.name+
 	    		 														"</span></small>" );
     			}
+    			mylog.log("currentKFormType", currentKFormType);
 	    	},
 	    },
 	    beforeBuild : function(){

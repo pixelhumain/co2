@@ -51,6 +51,8 @@ var trad = {
 	"noresultmatch":"<?php echo Yii::t("common","No result match in your search") ?>",
 	"nomoreresultmatch":"<?php echo Yii::t("common","No more results match in your search") ?>",
 	"nocityfoundfor":"<?php echo Yii::t("common","No city found for") ?>",
+	"youdontfindcityyouwantfor":"<?php echo Yii::t("common","You don't find the city you want for") ?>",
+	"clear":"<?php echo Yii::t("common","Remove") ?>",
 	"explainnofoundcity":"<?php echo Yii::t("common", "Perhaps, this city has no data at this time") ?>",
 	"sharesomething":"<?php echo Yii::t("common","Share something") ?>",
 	"connectyou":"<?php echo Yii::t("common","Connect you") ?>",
@@ -734,12 +736,13 @@ var tradDynForm = {
 
 	"selectcitytosharesurvey" : "<?php echo Yii::t("form", "Select a city to share your survey with everybody in town !") ?>",
 	//chat
-	"internal" : "<?php echo Yii::t("category","Chat inside CO") ?>",
-    "external" : "<?php echo Yii::t("category","Chat outside CO") ?>",
+	"typeOfChat" : "<?php echo Yii::t("category","Type of Chat ?") ?>",
+	"publicOrPrivate" : "<?php echo Yii::t("category","public or private ?") ?>",
+	
     "channelName"  : "<?php echo Yii::t("category","Channel Name") ?>",
     "addNewChannel"  : "<?php echo Yii::t("common","Add a new channel") ?>",
-    "publicChannelExplain" : "Public channels can be searched and random people can join",
-    "privateChannelExplain" : "Private channels can only be viewed by it's members",
+    "publicChannelExplain" : "<?php echo Yii::t("category","Public channels can be searched and random people can join") ?>",
+    "privateChannelExplain" : "<?php echo Yii::t("category","Private channels can only be viewed by it's members") ?>",
 
     "addNewTool"  : "<?php echo Yii::t("common","Add a new tool") ?>",
     "chat" : "<?php echo Yii::t("common","Chat") ?>",
@@ -752,10 +755,18 @@ var tradDynForm = {
 	"calendar" :"<?php echo Yii::t("common","Calendar") ?>",
 	"rss" :"<?php echo Yii::t("common","RSS") ?>",
 	"other" : "<?php echo Yii::t("common","Other") ?>",
+	"pleaseValidateTheCurrentInvites" : "<?php echo Yii::t("invite","Please validate the current invites") ?>",
+	"thisPersonIsAlreadyOnYourContacts" : "<?php echo Yii::t("invite","This person is already on your contacts") ?>",
 };
 
 var tradCategory = {
 	
+	//Chat dynform 
+	"internal" : "<?php echo Yii::t("category","Chat inside CO") ?>",
+    "external" : "<?php echo Yii::t("category","Chat outside CO") ?>",
+    "public" : "<?php echo Yii::t("category","Public") ?>",
+    "private" : "<?php echo Yii::t("category","Private") ?>",
+
 	"Resource" : "<?php echo Yii::t("category", "Resource") ?>",
 	"Digital" : "<?php echo Yii::t("category", "Digital") ?>",
 	"Physical" : "<?php echo Yii::t("category", "Physical") ?>",

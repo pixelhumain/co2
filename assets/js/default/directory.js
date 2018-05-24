@@ -3450,7 +3450,7 @@ var directory = {
                   'data-section-anc="'+v.label+'" data-key="'+v.key+'" '+ 
                   'data-section="classifieds">'+
                     '<i class="fa fa-'+v.icon+' hidden-xs"></i> '+ 
-                    tradCategory[e]+
+                    tradCategory[v.labelFront]+
               '</button>';
           });
           $("#sub-menu-left .sectionsFilters .list").html(str);
@@ -3462,23 +3462,24 @@ var directory = {
                   str += '<div class="col-md-4 padding-5 typeBtnC '+k+'">'+
                           '<a class="btn tagListEl btn-select-category elipsis typeBtn '+k+'Btn " data-tag="'+k+'" '+
                               'data-key="'+k+'" href="javascript:;">'+
-                            '<i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[o.label]+
+                            '<i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+
                           '</a>'+
                         '</div>'
                 }
                 else 
                   str += '<button class="btn btn-default text-dark btn-select-category margin-bottom-5 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
-                        '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[o.label]+'</button><br>';
+                        '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[k]+'</button><br>';
                 if(typeof o.subcat != "undefined" && type != "btn" )
                 {
                   $.each( o.subcat ,function(i,oT){
-                      str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
-                              '<i class="fa fa-angle-right"></i> '+tradCategory[oT.label]+'</button><br class="hidden">';
+                      str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                              '<i class="fa fa-angle-right"></i> '+tradCategory[i]+'</button><br class="hidden">';
                   });
-                }else if(typeof list.subcat != "undefined"){
-                  $.each( list.subcat ,function(i,oT){
-                      str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT+'">'+
-                              '<i class="fa fa-angle-right"></i> '+tradCategory[oT.label]+'</button><br class="hidden">';
+                }else if(typeof objJson.subcat != "undefined"){
+                  $.each( objJson.subcat ,function(i,oT){
+                      icon=(typeof oT.icon != "undefined") ? oT.icon : "angle-right";
+                      str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 elipsis hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                              '<i class="fa fa-'+icon+'"></i> '+tradCategory[i]+'</button><br class="hidden">';
                   });
                 }
                 $("#sub-menu-left .subsub .list").html(str);

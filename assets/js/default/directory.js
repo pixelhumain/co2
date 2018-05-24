@@ -3420,7 +3420,7 @@ var directory = {
     },
     
     sectionFilter : function (objJson, dest, what, type ) { 
-      mylog.log("sectionFilter",list,what,dest);
+      mylog.log("sectionFilter",objJson,what,dest);
 
         //if( type == "btn" )
           //str = '<label class="col-xs-12 text-left control-label no-padding" for="typeBtn"><i class="fa fa-chevron-down"></i> '+what.title+' </label>'
@@ -3431,25 +3431,25 @@ var directory = {
         //$(dest).html(str);
         if(typeof objJson.sources != "undefined"){
           str="";
-          $("#sub-menu-left .sourcesInterrop").show(800);
+          $(".sourcesInterrop").show(800);
           $.each(objJson.sources, function(e,v){
             str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-source" '+
                   'data-source="'+v.label+'" data-key="'+v.key+'">'+
-                    '<img src="'+baseUrl+v.path+'" width="30" height="30"/>'+ 
+                    '<img src="'+parentModuleUrl+v.path+'" width="15" height="15" class="margin-right-5"/>'+ 
                     v.label+
               '</button>';
           });
-          $("#sub-menu-left .sourcesInterrop .list").html(str).show(800);
+          $(".sourcesInterrop .list").html(str).show(800);
         }else{
-          $("#sub-menu-left .sourcesInterrop").hide(800);
+          $(".sourcesInterrop").hide(800);
         }
         if(typeof objJson.sections != "undefined"){
           str="";
           $.each(objJson.sections, function(e,v){
-            str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-type-anc" '+
+            str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-section" '+
                   'data-section-anc="'+v.label+'" data-key="'+v.key+'" '+ 
                   'data-section="classifieds">'+
-                    '<i class="fa fa-'+v.icon+' hidden-xs"></i>'+ 
+                    '<i class="fa fa-'+v.icon+' hidden-xs"></i> '+ 
                     tradCategory[e]+
               '</button>';
           });
@@ -3460,14 +3460,14 @@ var directory = {
             $.each( objJson.filters,function(k,o){
                 if( type == "btn" ){
                   str += '<div class="col-md-4 padding-5 typeBtnC '+k+'">'+
-                          '<a class="btn tagListEl btn-select-type-anc elipsis typeBtn '+k+'Btn " data-tag="'+k+'" '+
+                          '<a class="btn tagListEl btn-select-category elipsis typeBtn '+k+'Btn " data-tag="'+k+'" '+
                               'data-key="'+k+'" href="javascript:;">'+
                             '<i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[o.label]+
                           '</a>'+
                         '</div>'
                 }
                 else 
-                  str += '<button class="btn btn-default text-dark margin-bottom-5 btn-select-type-anc elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                  str += '<button class="btn btn-default text-dark btn-select-category margin-bottom-5 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
                         '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[o.label]+'</button><br>';
                 if(typeof o.subcat != "undefined" && type != "btn" )
                 {

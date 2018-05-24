@@ -206,7 +206,7 @@ function bindLeftMenuFilters () {
         searchObject.count=true;
         typeClass = $(this).data("type-anc");
         typeKey = $(this).data("key");    
-        if( typeKey == "goods" || typeKey == "jobs" || typenKey == "all"){
+        if( typeKey == "goods" || typeKey == "jobs" || typeKey == "all"){
             $("#section-price").show(200);
             setTimeout(function(){
                 KScrollTo("#container-scope-filter");
@@ -227,7 +227,7 @@ function bindLeftMenuFilters () {
             $(this).addClass("active");
         if( $(this).hasClass( "active" ) )
         {
-            sectionKey = null;
+            typeKey = null;
             //searchObject.tags=[];
             if(typeof searchObject.searchSType != "undefined") delete searchObject.searchSType;
             $('.classifiedSection').remove();
@@ -235,19 +235,19 @@ function bindLeftMenuFilters () {
         } 
         else 
         {
-            if( jsonHelper.notNull("classifieds."+typeKey+".sections."+typeKey+".filters") ){
+            if( jsonHelper.notNull("classifieds."+typeKey) ){
                 //alert('build left menu'+classified.sections[sectionKey].filters);
-                classifieds.currentLeftFilters = classifieds[searchObject.searchStype].sections[sectionKey].filters;
-                var filters = classifieds[typeKey]; 
-                var what = { title : classifieds[typeKey], 
-                             icon : classifieds[typeKey] }
+                classifieds.currentLeftFilters = classifieds[typeKey].categories;
+                var filters = classifieds[typeKey].categories; 
+                var what = { title : filters.label, 
+                             icon : filters.icon }
                 directory.sectionFilter( filters, ".classifiedFilters",what);
                 bindLeftMenuFilters ();
             }
             else if(classifieds.currentLeftFilters != null) {
-                var what = { title : classifieds[searchObject.searchStype].sections[sectionKey].label, 
-                             icon : classifieds.sections[sectionKey].icon }
-                directory.sectionFilter( classifieds, "#menuLeft",what);
+                var what = { title : classifieds.currentLeftFilters.label, 
+                             icon : classifieds.currentLeftFilters.icon }
+                directory.sectionFilter( classifieds.currentLeftFilters, "#menuLeft",what);
                 bindLeftMenuFilters ();
                 classifieds.currentLeftFilters = null;
             }

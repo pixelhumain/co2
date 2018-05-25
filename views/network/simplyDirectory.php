@@ -771,7 +771,11 @@ function getAjaxFiche(url, breadcrumLevel){
 	pageView=false;
 	if(urlHash.indexOf("page") >= 0){
 		mylog.log("here");
-		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+		if(urlHash.indexOf("#@") != -1)
+			url= "/app/"+urlHash.replace( "#@","" ).replace( /\./g,"/" );
+		else
+			url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
+
 				mylog.log("url", url);
 				$("#repertory").hide( 700 );
 				$(".main-menu-left").hide( 700 );
@@ -792,14 +796,18 @@ function getAjaxFiche(url, breadcrumLevel){
 						$("#breadcrum").append($html);
 					}
 				},"html");
-	}
-	else if( 	urlHash.indexOf("default.view") < 0 &&
+	} else if( 	urlHash.indexOf("default.view") < 0 &&
 				urlHash.indexOf("news") < 0 &&
 				urlHash.indexOf("network") < 0 && 
 				urlHash.indexOf("invite") < 0 ){
 		mylog.log("here2");
 		pageView=true;
-		var urlSplit=urlHash.replace( "#","" ).split(".");
+		var urlSplit = "";
+		if(urlHash.indexOf("#@") != -1)
+			urlSplit=urlHash.replace( "#@","" ).split(".");
+		else
+			urlSplit=urlHash.replace( "#","" ).split(".");
+		mylog.log("urlSplit", urlSplit);
 		if(typeof urlSplit == "string")
 			slug=urlSplit;
 		else

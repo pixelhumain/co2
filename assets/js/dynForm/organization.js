@@ -75,6 +75,7 @@ dynForm = {
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else { 
+		    	mylog.log("here");
 	          dyFObj.closeForm(); 
 	          urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }

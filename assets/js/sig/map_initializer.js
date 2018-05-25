@@ -361,9 +361,10 @@
 
 											"address" 			: "MARKER",
 
+											"classified" 		: "classified-marker-default",
 											"classifieds" 		: "classified-marker-default",
-											"ressources" 		: "ressources-marker-default",
-											"ressource" 		: "ressources-marker-default",
+											"ressources" 		: "ressource-marker-default",
+											"ressource" 		: "ressource-marker-default",
 											"service" 			: "services/medical",
 											"product" 			: "services/medical",
 											"products" 			: "services/shopping",

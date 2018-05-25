@@ -72,6 +72,9 @@ function constructScopesHtml(news){
 					"</span>"+
 				"</div>";
 	});	
+	if(myScopes.type=="open"){
+		html+="<button class='btn btn-danger text-white margin-left-10 padding-5' onclick='clearOpenScope();'><i class='fa fa-refresh'></i> <span class='hidden-xs'>"+trad.delete+"</span></button>";
+	}
 	return html;
 }
 
@@ -87,6 +90,7 @@ function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, va
 	$(appendDom).html(constructScopesHtml(newsAction));
 	$(appendDom+" .scope-order").sort(sortSpan) // sort elements
 				.appendTo(appendDom); // append again to the list
+	localStorage.setItem("myScopes",JSON.stringify(myScopes));
 	if(newsAction) bindScopesNewsEvent();
 	else{
 		searchObject.count=true;
@@ -161,7 +165,7 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 			}else{
 				inside=false;
 				$.each(myScopes[initScopeResearch.key], function(key, value){
-					if(value.id==v)
+					if(value.id==v || value.id.indexOf(v)>-1)
 						inside=true;
 				});
 				inMyScope=inside;
@@ -175,8 +179,6 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 				var keyActive="";
 				if(e.indexOf("cities") > 0)
 					keyActive=e.replace("cities","");
-				//if(typeof v.allCP != "undefined" && v.allCP)
-				//	keyActive=e+"allPostalCode";
 				if(v.type=="cities" && typeof v.postalCode != "undefined"){
 					keyActive=v.id+"cp"+v.postalCode;
 				}
@@ -188,9 +190,10 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 					keyActive=v.id;
 				myScopes[initScopeResearch.key][e].active=($.inArray(keyActive, initScopeResearch.ids) > -1)  ? true : false;
 			});
+			appendScopeBreadcrum();
 		}
-	}
-	appendScopeBreadcrum();
+	}else if(Object.keys(myScopes[myScopes.type]).length > 0)
+		appendScopeBreadcrum();	
 }
 function appendScopeBreadcrum(){
 	if(Object.keys(myScopes[myScopes.type]).length > 0)
@@ -231,7 +234,10 @@ function setOpenBreadCrum(params){
 		dataType: "json",
 		success: function(data){
 			mylog.log("data", data);
+			myScopes.type="open";
 			myScopes.open=data.scopes;
+			localStorage.setItem("myScopes",JSON.stringify(myScopes));
+			appendScopeBreadcrum();
 		},
 		error: function(error){
 			toastr.error("waswrong")
@@ -315,7 +321,14 @@ function bindSearchCity(){
 		}
 	});
 }
-
+function clearOpenScope(){
+	myScopes.open={};
+	localStorage.setItem("myScopes",JSON.stringify(myScopes));
+	if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+	$(".scopes-container").html("");
+	searchObject.count=true;
+	startSearch(0, indexStepInit);
+}
 function bindScopesInputEvent(news){
 	mylog.log("bindScopesInputEvent");
 	$(".manageMultiscopes").off().on("click", function(){
@@ -372,8 +385,8 @@ function bindScopesInputEvent(news){
 		typeSearch=$(this).data("btn-type");
 		key=$(this).data("scope-key");
 		scopeActiveScope(key);
-		if(myScopes.type!="open")
-			localStorage.setItem("myScopes",JSON.stringify(myScopes));
+		//if(myScopes.type!="open")
+		localStorage.setItem("myScopes",JSON.stringify(myScopes));
 		searchObject.count=true;
 		if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
 			startNewsSearch(true)

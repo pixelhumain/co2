@@ -437,7 +437,7 @@
 		  <?php } ?>
 
 			
-		  <?php /* if(@Yii::app()->session["userId"])
+		  <?php /*if(@Yii::app()->session["userId"])
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION || $type == Event::COLLECTION ){ ?>
 		  
 		  <span class="dropdown" id="dropdown-apps">

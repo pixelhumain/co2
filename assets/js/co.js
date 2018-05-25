@@ -2824,7 +2824,7 @@ function bindButtonOpenForm(){
         var typeForm = $(this).data("form-type");
         mylog.log("test", $(this).data("form-subtype"));
         currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-        mylog.log("contextData", contextData, contextData.type, contextData.id );
+        //mylog.log("contextData", contextData, contextData.type, contextData.id );
         //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
         if(contextData && contextData.type && contextData.id )
             dyFObj.openForm(typeForm,"sub");

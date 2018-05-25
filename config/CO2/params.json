@@ -4,7 +4,9 @@
     "metaImg" : "/assets/img/bg_pixeltree2.jpg",
 	"metaTitle" : "Réseau sociétal citoyen",
 	"metaDesc" : "Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.",
-    "devises" : {"€" : "€",
+    "devises" : {
+    			"all":"All",
+    			"€" : "€",
     			 "Ğ1" : "Ğ1",
                  "£" : "£",
                  "$" : "$",

@@ -151,7 +151,9 @@ function bindButtonMenu(){
 		responsiveMenuLeft();
 		toogleNotif(false);
 	});
-
+	$("#btnHeaderEditInfos").click(function(){
+		$("#btn-start-detail").trigger("click");
+	});
 	$("#btn-start-detail").click(function(){
 		responsiveMenuLeft();
 		location.hash=hashUrlPage+".view.detail";
@@ -210,6 +212,15 @@ function bindButtonMenu(){
 				jsonSchema : {
 					title : trad["Change password"],
 					icon : "fa-key",
+					onLoads : {
+				    	//pour creer un subevnt depuis un event existant
+				    	onload : function(){
+				    		//dyFInputs.setHeader("bg-green");
+
+				    		$("#ajax-modal .modal-header").addClass("bg-dark");
+			                $("#ajax-modal .infocustom p").addClass("text-dark");
+			    	   	}
+			    	},
 					afterSave : function(data){
 						dyFObj.closeForm();
 					},
@@ -765,7 +776,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	
 	$.each(data, function(key, val){ 
 		mylog.log("rolesShox",key, val);
-		if(typeof key != "undefined" && (typeof val.id != "undefined" || typeof val["_id"] != "undefined")) n++; 
+		if(typeof key != "undefined" && ( (typeof val.id != "undefined" || typeof val["_id"] != "undefined") || contextType == "contacts") ) n++; 
 		if(typeof val.rolesLink != "undefined"){
 			mylog.log(val.rolesLink);
 			$.each(val.rolesLink, function(i,v){
@@ -848,6 +859,9 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}
 		communityStr+="</div>"; 
 	}
+
+	mylog.log("communityStr", n, communityStr);
+
 	if(n>0){
 		var thisTitle = getLabelTitleDir(dataName, dataIcon, parseInt(n), n);
 		

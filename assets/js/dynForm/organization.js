@@ -13,12 +13,13 @@ dynForm = {
                     $("#ajax-modal .modal-header").addClass("bg-"+typeObj[currentKFormType].color);
                     $("#ajax-modal .infocustom p").addClass("text-"+typeObj[currentKFormType].color);
                 }else{
-                	$("#ajax-modal .modal-header").addClass("bg-dark");
-                    $("#ajax-modal .infocustom p").addClass("text-dark");
+                	$("#ajax-modal .modal-header").addClass("bg-green");
+                    $("#ajax-modal .infocustom p").addClass("text-green");
                 }
     	   	},
 	    	sub : function(){
-				mylog.log("currentKFormType", currentKFormType);
+				
+				
 				if(typeof currentKFormType == "undefined" || currentKFormType == "" || 
 				  currentKFormType == "null" || currentKFormType == null){
 					currentKFormType = "organization";
@@ -26,6 +27,7 @@ dynForm = {
 					$("#ajaxFormModal .typeselect").addClass("hidden");
 					$("#ajaxFormModal #type").val(currentKFormType);
 				}
+				mylog.log("currentKFormType", currentKFormType);
 	    		//console.log("onLoads Sub currentKFormType", currentKFormType, contextData, contextData.id);
                 var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
                 var typeIcon = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? typeObj[currentKFormType].icon : elementObj.dynForm.jsonSchema.icon;
@@ -73,6 +75,7 @@ dynForm = {
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else { 
+		    	mylog.log("here");
 	          dyFObj.closeForm(); 
 	          urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }

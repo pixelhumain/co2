@@ -284,9 +284,9 @@
             "inMenu" : true, 
             "useHeader" : true, 
             "open" : true, 
-            "subdomain" : "interop", 
+            "subdomain" : "interop.co", 
             "subdomainName" : "interop",
-            "hash" : "#app.interop",
+            "hash" : "#app.interop.co",
             "icon" : "database", 
             "mainTitle" : "Module d'intéropérabilité",
             "placeholderMainSearch" : "Rechercher des données venus d'ailleurs ..."

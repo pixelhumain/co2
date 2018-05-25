@@ -3433,30 +3433,32 @@ var directory = {
           str="";
           $(".sourcesInterrop").show(800);
           $.each(objJson.sources, function(e,v){
-            str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-source" '+
+            str+='<button class="btn btn-default col-md-3 col-sm-3 col-xs-12 padding-10 bold text-dark elipsis btn-select-source" '+
                   'data-source="'+v.label+'" data-key="'+v.key+'">'+
                     '<img src="'+parentModuleUrl+v.path+'" width="15" height="15" class="margin-right-5"/>'+ 
                     v.label+
               '</button>';
           });
-          $(".sourcesInterrop .list").html(str).show(800);
+          $(".dropdown-sources").show();
+          $(".dropdown-sources .dropdown-menu").html(str);
         }else{
-          $(".sourcesInterrop").hide(800);
+          $(".dropdown-sources").hide(800);
         }
         if(typeof objJson.sections != "undefined"){
           str="";
           $.each(objJson.sections, function(e,v){
-            str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold text-dark elipsis btn-select-section" '+
+            str+='<button class="btn btn-default col-xs-12 padding-10 bold text-dark elipsis btn-select-section" '+
                   'data-section-anc="'+v.label+'" data-key="'+v.key+'" '+ 
                   'data-section="classifieds">'+
                     '<i class="fa fa-'+v.icon+' hidden-xs"></i> '+ 
                     tradCategory[v.labelFront]+
               '</button>';
           });
-          $("#sub-menu-left .sectionsFilters .list").html(str);
+          $(".dropdown-section .dropdown-menu").html(str);
         }
         if(typeof objJson.filters != "undefined"){
             str="";
+            subStr="";
             $.each( objJson.filters,function(k,o){
                 if( type == "btn" ){
                   str += '<div class="col-md-4 padding-5 typeBtnC '+k+'">'+
@@ -3467,22 +3469,23 @@ var directory = {
                         '</div>'
                 }
                 else 
-                  str += '<button class="btn btn-default text-dark btn-select-category margin-bottom-5 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                  str += '<button class="btn btn-default col-xs-12 text-dark btn-select-category margin-bottom-5 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
                         '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[k]+'</button><br>';
                 if(typeof o.subcat != "undefined" && type != "btn" )
                 {
                   $.each( o.subcat ,function(i,oT){
-                      str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                      subStr += '<button class="btn btn-default col-xs-12 text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
                               '<i class="fa fa-angle-right"></i> '+tradCategory[i]+'</button><br class="hidden">';
                   });
                 }else if(typeof objJson.subcat != "undefined"){
                   $.each( objJson.subcat ,function(i,oT){
                       icon=(typeof oT.icon != "undefined") ? oT.icon : "angle-right";
-                      str += '<button class="btn btn-default text-dark margin-bottom-5 margin-left-15 elipsis hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                      subStr += '<button class="btn btn-default text-dark col-xs-12 margin-bottom-5 margin-left-15 elipsis hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
                               '<i class="fa fa-'+icon+'"></i> '+tradCategory[i]+'</button><br class="hidden">';
                   });
                 }
-                $("#sub-menu-left .subsub .list").html(str);
+                $(".dropdown-category .dropdown-menu").html(str);
+                $(".dropdown-subType .dropdown-menu").html(subStr);
             });
         }
     },

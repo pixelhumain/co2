@@ -2850,7 +2850,13 @@ function initKInterface(params){ console.log("initKInterface");
       resizeInterface();
     });
 	resizeInterface();
-	
+	$(window).bind("scroll",function(){  
+        if( $(this).scrollTop() > 10)
+        	$("#filter-scopes-menu, #filters-nav").hide();
+        else
+        	$("#filter-scopes-menu, #filters-nav").show();
+
+     });
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
         var $anchor = $(this);
@@ -2955,7 +2961,7 @@ function initKInterface(params){ console.log("initKInterface");
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];
     }
     console.log("affixTop", affixTop);
-    if(affixTop > 0){
+    /*if(affixTop > 0){
       // Offset for Main Navigation
       $("#affix-sub-menu").affix({
           offset: {
@@ -2971,13 +2977,13 @@ function initKInterface(params){ console.log("initKInterface");
           offset: {
               top: affixTop
           }
-      });*/
+      });
       $('#mainNav').affix({
           offset: {
               top: affixTop
           }
       });
-    }
+    }*/
 
 
     $(".logo-menutop.hidden-top, .menu-btn-start-search, #input-sec-search").attr("style", "");

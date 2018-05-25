@@ -523,7 +523,7 @@
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
 
-        <div class="col-md-10 col-sm-9 col-xs-12 pull-right">
+        <div class="col-md-10 col-sm-10 col-sm-offset-1 col-md-offset-1 col-xs-12">
           <div class="no-padding col-xs-12" id="dropdown_search">
             <div class='col-md-12 col-sm-12 text-center search-loader text-dark'>
                 <i class='fa fa-spin fa-circle-o-notch'></i> <?php echo Yii::t("common","Currently researching") ?> ...

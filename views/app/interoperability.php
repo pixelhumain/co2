@@ -249,7 +249,7 @@ $this->renderPartial($layoutPath.'header',
             <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo-wikidata.png'> 
             <span class="hidden-xs">Wikidata</span>
         </button><br class="hidden-xs">
-        <button id="btn-datagouv" class="btn text-red btn-directory-type" data-type="datagouv">
+        <!-- <button id="btn-datagouv" class="btn text-red btn-directory-type" data-type="datagouv">
             <img width=30 src='<?php echo $this->module->assetsUrl; ?>/images/logos/data-gouv-logo.png'> 
             <span class="hidden-xs">DataGouv</span>
         </button><br class="hidden-xs">
@@ -260,16 +260,16 @@ $this->renderPartial($layoutPath.'header',
         <button id="btn-ods" class="btn text-blue btn-directory-type" data-type="ods">
             <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/opendata-soft-logo.png'> 
             <span class="hidden-xs">ODS : Base Sirene</span>
-        </button><br class="hidden-xs">
-        <button id="btn-ods" class="btn text-yellow btn-directory-type" data-type="datanova">
+        </button><br class="hidden-xs"> -->
+        <!-- <button id="btn-ods" class="btn text-yellow btn-directory-type" data-type="datanova">
             <img width=70 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo-laposte.png'> 
             <span class="hidden-xs">La poste</span>
-        </button><br class="hidden-xs">
+        </button><br class="hidden-xs"> -->
         <button id="btn-pole-emploi" class="btn text-blue btn-directory-type" data-type="pole_emploi">
             <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_pole_emploi.png'> 
             <span class="hidden-xs">Pôle emploi</span>
         </button><br class="hidden-xs">
-        <hr class="hidden-xs">
+        <!-- <hr class="hidden-xs">
         <button id="btn-eco-doct" class="btn text-blue btn-directory-type" data-type="eco_doct">
             <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_open_data_educ.jpg'> 
             <span class="hidden-xs">Ecoles doct</span>
@@ -285,7 +285,7 @@ $this->renderPartial($layoutPath.'header',
         <button id="btn-etab-recherche" class="btn text-blue btn-directory-type" data-type="etab_recherche">
             <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_open_data_educ.jpg'> 
             <span class="hidden-xs">Etab. recherche</span>
-        </button><br class="hidden-xs">
+        </button><br class="hidden-xs"> -->
         <hr class="hidden-xs">
     </div> 
     <div id="dropdown_search" class="col-md-8 col-sm-8 col-xs-10 padding-10"></div>

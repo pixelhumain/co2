@@ -47,7 +47,8 @@
     $this->renderPartial($layoutPath.'header', 
                             array(  "layoutPath"=>$layoutPath ,
                                     "page" => $page,
-                                    "type" => @$type) ); 
+                                    "type" => @$type,
+                                    "dontShowMenu"=> (!@$dontShowMenu) ? true : false ) ); 
 
 
     $randImg = rand(1, $maxImg);

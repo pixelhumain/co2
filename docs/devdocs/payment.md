@@ -8,4 +8,12 @@
         + renders views/with_js
 
 - pay/done : executes the payment when CC validated
-    + 
+
+
+## files 
+- payment.md
+- shoppingCart.php
+- PayController.php 
+- with_js.php 
+- 
+

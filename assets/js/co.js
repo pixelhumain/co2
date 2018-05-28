@@ -862,7 +862,7 @@ var urlCtrl = {
 					return false;
 				} else {
 					mylog.warn("PRIVATE SECTION LOGIN FIRST",hash);
-					showPanel( "box-login" );
+					Login.openLogin();
 					resetUnlogguedTopBar();
 					res = true;
 				}
@@ -945,7 +945,7 @@ var urlCtrl = {
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
 	        if(panelName == "box-login"){
-				$('#modalLogin').modal("show");
+				Login.openLogin();
 				$.unblockUI();
 	        }
 			else if(panelName == "box-register"){
@@ -1037,6 +1037,7 @@ function showPanel(box,callback)
 		callback();
 	}
 }
+
 
 /* ****************
 Generic ajax panel loading process 
@@ -1188,7 +1189,7 @@ function checkIsLoggued(uId){
 		setTitle("Section Sécuriser", "user-secret");
 
 		backUrl = location.hash;
-		showPanel( "box-login" );
+		Login.openLogin();
     	
     	resetUnlogguedTopBar();
 	}else 
@@ -3254,7 +3255,7 @@ var co = {
 	},
 	nect : function () { 
 		if(!userId)
-			$('#modalLogin').modal("show");
+			Login.openLogin();
 		else 
 			toastr.success("allready Loggued in!!");	},
 	tribute : function () { 

@@ -487,15 +487,60 @@ var Login = function() {
 		});
 	};
 	return {
+		loaded : false,
 		//main function to initiate template pages
-		init : function() { console.log("init after register");
-			addCustomValidators();
-			runBoxToShow();
-			runSetDefaultValidation();
-			runLoginValidator();
-			runForgotValidator();
-			runEmailValidationValidator();
-			runRegisterValidator();
+		init : function() { 
+			
+			console.log("init after register");
+			var ListPath = [		
+				//tka todo : should be loaded on demand
+				'/plugins/jquery.dynForm.js',
+				'/plugins/jquery-validation/dist/jquery.validate.min.js',
+				'/plugins/jQuery-Knob/js/jquery.knob.js',
+				'/plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js',
+				'/plugins/jquery.dynSurvey/jquery.dynSurvey.js',
+
+				'/plugins/select2/select2.min.js' , 
+				'/plugins/moment/min/moment.min.js' ,
+				'/plugins/moment/min/moment-with-locales.min.js',
+
+				// '/plugins/bootbox/bootbox.min.js' , 
+				// '/plugins/blockUI/jquery.blockUI.js' , 
+
+				'/plugins/bootstrap-fileupload/bootstrap-fileupload.min.js' , 
+				'/plugins/bootstrap-fileupload/bootstrap-fileupload.min.css',
+				'/plugins/jquery-cookieDirective/jquery.cookiesdirective.js' , 
+				'/plugins/ladda-bootstrap/dist/spin.min.js' , 
+				'/plugins/ladda-bootstrap/dist/ladda.min.js' , 
+				'/plugins/ladda-bootstrap/dist/ladda.min.css',
+				'/plugins/ladda-bootstrap/dist/ladda-themeless.min.css',
+				'/plugins/animate.css/animate.min.css'
+			];
+
+			lazyLoadMany( ListPath, 
+				function() { 
+					if(countLazyLoad == ListPath.length){
+						alert("List Loaded play callback");
+						addCustomValidators();
+						runBoxToShow();
+						runSetDefaultValidation();
+						runLoginValidator();
+						runForgotValidator();
+						runEmailValidationValidator();
+						runRegisterValidator();
+						
+						Login.loaded = true;
+					}
+			});
+			
+		},
+		openLogin : function() { 
+
+			if(!Login.loaded)
+				Login.init();
+			else 
+				$('#modalLogin').modal("show");
+			//$('#modalRegister').modal("show");
 		}
 	};
 }();

@@ -507,8 +507,11 @@
 							</a>
 						</li>
 
-						<?php if ( Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && 
-										!@$deletePending && !empty(Yii::app()->session["userId"])) { ?>
+						<?php if ( Authorisation::canDeleteElement( (String)$element["_id"], $type, Yii::app()->session["userId"]) && 
+									!@$deletePending && 
+									!empty(Yii::app()->session["userId"]) &&
+									$type !=Person::COLLECTION
+								) { ?>
 					  			<li class="text-left">
 									<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
 										<i class="fa fa-trash"></i> 

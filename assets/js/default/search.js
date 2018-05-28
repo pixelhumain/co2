@@ -642,15 +642,17 @@ function showFiltersInterface(){
     if(searchObject.initType=="classifieds"){
         $(".dropdown-section, .dropdown-types, .dropdown-category, .dropdown-subType, .dropdown-price").show();
         str="";
-        $.each(modules.classifieds, function(e,v){
-            str+='<div class="col-md-4 col-sm-4 col-xs-6 no-padding">'+
-                    '<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold elipsis btn-select-type-anc" '+
-                    'data-type-anc="'+tradCategory[v.categories.labelFront]+'" data-key="'+e+'" '+
-                    'data-type="classifieds">'+
-                        '<i class="fa fa-'+v.categories.icon+'"></i> '+
-                        tradCategory[v.categories.labelFront]+
-                    '</button>'+
-                '</div>';
+        $.each(["classifieds","ressources","jobs"], function(key,entry){
+            //$.each(modules[entry].categories, function(e,v){
+                str+='<div class="col-md-4 col-sm-4 col-xs-6 no-padding">'+
+                        '<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold elipsis btn-select-type-anc" '+
+                        'data-type-anc="'+tradCategory[modules[entry].categories.labelFront]+'" data-key="'+entry+'" '+
+                        'data-type="classifieds">'+
+                            '<i class="fa fa-'+modules[entry].categories.icon+'"></i> '+
+                            tradCategory[modules[entry].categories.labelFront]+
+                        '</button>'+
+                    '</div>';
+            //});
         });
         $(".dropdown-types .dropdown-menu").html(str);
         bindLeftMenuFilters();

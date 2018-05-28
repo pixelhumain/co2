@@ -272,7 +272,7 @@ class AppController extends CommunecterController {
     }
 
     public function actionAnnonces(){ 
-        $this->redirect( Yii::app()->createUrl("/eco/co/market") );
+        $this->redirect( Yii::app()->createUrl("/eco") );
     }
 
     public function actionHelp(){ 

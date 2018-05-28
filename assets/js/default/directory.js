@@ -3030,7 +3030,7 @@ var directory = {
                         params.parentColor = parentObj.color;
                     }
                     if((typeof searchObject.countType != "undefined" && searchObject.countType.length==1) && params.type == "classifieds" && typeof params.category != "undefined" && typeof classifieds != "undefined"){
-                      params.ico = typeof classifieds.filters[params.category] != "undefined" ?
+                      params.ico = (typeof classifieds.filters != "undefined" && typeof classifieds.filters[params.category] != "undefined") ?
                                    "fa-" + classifieds.filters[params.category]["icon"] : "bullhorn";
                     }
 

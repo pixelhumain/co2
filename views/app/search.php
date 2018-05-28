@@ -142,14 +142,11 @@
 
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
-if(typeInit=="classified")
-    typeInit="classified";
 var page = "<?php echo @$page; ?>";
 var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
 var pageCount=false;
 searchObject.count=true;
 searchObject.initType=typeInit;
-
 <?php if(@$type=="events"){ ?>
   var STARTDATE = new Date();
   var ENDDATE = new Date();
@@ -169,49 +166,10 @@ jQuery(document).ready(function() {
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
-        $(".btn-directory-type").click(function(){
-            var typeD = $(this).data("type");
-            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
-            simpleScroll(scrollH);
-           
-            if(typeD == "events"){
-                if($(this).hasClass("active")){
-                    $(this).removeClass("active");    
-                    delete searchObject.searchSType;
-                }else{
-                    $(".btn-directory-type").removeClass("active");
-                    $(this).addClass("active");
-                    var typeEvent = $(this).data("type-event");
-                    searchObject.searchSType = typeEvent;
-                }
-            }else{
-                $(".btn-directory-type").removeClass("active");
-                $(this).addClass("active");
-            }
-            initTypeSearch(typeD);
-            if(typeD=="all"){
-                searchAllEngine.initInjectData();
-                searchAllEngine.initSearch();
-            }
-            loadingData = false;
-            pageCount=true;
-            searchObject.page=0;
-            if(Object.keys(searchObject.countType).length>1) searchObject.count=false; 
-            else searchObject.count=true;
-            pageEvent=false;
-            searchObject.type=searchType;
-            startSearch(0, indexStepInit, searchCallback);
-        });
+       
          
          //anny double section filter directory
-        <?php if(@$type == "classifieds" || @$type == "ressources" || @$type == "place"  ){ ?>
-            //initClassifiedInterface();
-        <?php } ?>
-
-        bindLeftMenuFilters();
-
         if(type=="all") searchAllEngine.initSearch();
-
         loadingData = false; 
         initTypeSearch(type);
         initSearchObject();

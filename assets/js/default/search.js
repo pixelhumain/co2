@@ -80,7 +80,7 @@ function initSearchInterface(){
             KScrollTo("#content-social");
          }
     });*/
-
+     
     $("#input-search-map").off().keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
@@ -199,6 +199,42 @@ function initClassifiedInterface(){ return;
 }
 
 function bindLeftMenuFilters () { 
+    $(".btn-directory-type").click(function(){
+        var typeD = $(this).data("type");
+        scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
+        //simpleScroll(scrollH);
+       
+        if(typeD == "events"){
+            if($(this).hasClass("active")){
+                $(this).removeClass("active");    
+                delete searchObject.searchSType;
+                $(".dropdown-types .dropdown-toggle").removeClass("active").html("Type <i class='fa fa-angle-down'></i>");
+            }else{
+                $(".btn-directory-type").removeClass("active");
+                $(this).addClass("active");
+                var typeEvent = $(this).data("type-event");
+                 $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[typeEvent]+" <i class='fa fa-angle-down'></i>");
+                searchObject.searchSType = typeEvent;
+            }
+        }else{
+            $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[typeD]+" <i class='fa fa-angle-down'></i>");
+            $(".btn-directory-type").removeClass("active");
+            $(this).addClass("active");
+        }
+        initTypeSearch(typeD);
+        if(typeD=="all"){
+            searchAllEngine.initInjectData();
+            searchAllEngine.initSearch();
+        }
+        loadingData = false;
+        pageCount=true;
+        searchObject.page=0;
+        if(Object.keys(searchObject.countType).length>1) searchObject.count=false; 
+        else searchObject.count=true;
+        pageEvent=false;
+        searchObject.type=searchType;
+        startSearch(0, indexStepInit, searchCallback);
+    });
     $(".btn-select-type-anc").off().on("click", function(){
         searchType = [ typeInit ];
         indexStepInit = 100;
@@ -207,19 +243,23 @@ function bindLeftMenuFilters () {
         typeClass = $(this).data("type-anc");
         typeKey = $(this).data("key");    
         if( typeKey == "goods" || typeKey == "jobs" || typeKey == "all"){
-            $("#section-price").show(200);
+            $(".dropdown-price").show(200);
             setTimeout(function(){
                 KScrollTo("#container-scope-filter");
             }, 400);
         }
         else {
-            $("#section-price").hide();
+            $(".dropdown-price").hide();
             $("#priceMin").val("");
             $("#priceMax").val("");
             delete searchObject.priceMin;
             delete searchObject.priceMax;
             KScrollTo("#container-scope-filter");
         }
+        $(".dropdown-section .dropdown-toggle").html("Sections <i class='fa fa-angle-down'></i>");
+        $(".dropdown-category .dropdown-toggle").html("Category <i class='fa fa-angle-down'></i>");
+        $(".dropdown-subType .dropdown-toggle").html("Subcategory <i class='fa fa-angle-down'></i>");
+        $(".dropdown-section .dropdown-toggle, .dropdown-category .dropdown-toggle, .dropdown-subType .dropdown-toggle").removeClass("active");
         if( $(this).hasClass( "active" ) )
         {
             typeKey = null;
@@ -227,9 +267,14 @@ function bindLeftMenuFilters () {
             if(typeof searchObject.searchSType != "undefined") delete searchObject.searchSType;
             $('.classifiedSection').remove();
             $(".label-category, .resultTypes").html("");
+            $(".dropdown-types .dropdown-toggle").removeClass("active").html("Type <i class='fa fa-angle-down'></i>");
+            $(".dropdown-section .dropdown-toggle, .dropdown-category .dropdown-toggle, .dropdown-subType .dropdown-toggle").hide(700);
+            
         } 
         else 
         {
+            $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[typeKey]+" <i class='fa fa-angle-down'></i>");
+            $(".dropdown-section .dropdown-toggle, .dropdown-category .dropdown-toggle, .dropdown-subType .dropdown-toggle").show();
             searchObject.searchSType=typeKey;
             if( jsonHelper.notNull("classifieds."+typeKey) ){
                 //alert('build left menu'+classified.sections[sectionKey].filters);
@@ -263,7 +308,9 @@ function bindLeftMenuFilters () {
         indexStepInit = 100;
         pageCount=true;
         searchObject.count=true;
-        
+        $(".dropdown-category .dropdown-toggle").html("Category <i class='fa fa-angle-down'></i>");
+        $(".dropdown-subType .dropdown-toggle").html("Subcategory <i class='fa fa-angle-down'></i>");
+        $(".dropdown-category .dropdown-toggle, .dropdown-subType .dropdown-toggle").removeClass("active")
         if( $(this).hasClass( "active" ) )
         {
             sectionKey = null;
@@ -271,12 +318,13 @@ function bindLeftMenuFilters () {
             if(typeof searchObject.section != "undefined") delete searchObject.section;
             $('.classifiedSection').remove();
             $(".label-category, .resultTypes").html("");
+            $(".dropdown-section .dropdown-toggle").removeClass("active").html("Sections <i class='fa fa-angle-down'></i>");
         } 
         else 
         {
             section = $(this).data("type-anc");
             sectionKey = $(this).data("key");
-            //alert("section : " + section);
+            $(".dropdown-section .dropdown-toggle").addClass("active").html(tradCategory[sectionKey]+" <i class='fa fa-angle-down'></i>");
             if( $(this).data("key") == "all" ) delete searchObject.section;//sectionKey = "";
             else searchObject.section =  sectionKey;
         }
@@ -290,11 +338,11 @@ function bindLeftMenuFilters () {
 
         startSearch(0, indexStepInit, searchCallback); 
 
-        if(sectionKey && typeof classifieds[searchObject.searchStype].sections[sectionKey] != "undefined") {
-            var label = classifieds[searchObject.searchStype].sections[sectionKey]["label"];
-            $(".label-category").html("<i class='fa fa-"+ classifieds[searchObject.searchStype].sections[sectionKey]["icon"] + "'></i> " + tradCategory[label]);
+        if(sectionKey && typeof classifieds[searchObject.searchSType].categories.sections[sectionKey] != "undefined") {
+            var label = classifieds[searchObject.searchSType].categories.sections[sectionKey]["label"];
+            $(".label-category").html("<i class='fa fa-"+ classifieds[searchObject.searchSType].categories.sections[sectionKey]["icon"] + "'></i> " + tradCategory[label]);
             $('.classifiedSection').remove();
-            $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classifieds[searchObject.searchStype].sections[sectionKey]["icon"] + "'></i> " + classified.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
+            $(".resultTypes").append( "<span class='classifiedSection text-azure text-bold hidden-xs pull-right'><i class='fa fa-"+ classifieds[searchObject.searchSType].categories.sections[sectionKey]["icon"] + "'></i> " + classifieds[searchObject.searchSType].categories.sections[sectionKey]["label"]+'<i class="fa fa-times text-red resetFilters"></i></span>');
             $(".label-category").removeClass("letter-blue letter-red letter-green letter-yellow").addClass("letter-azure");//+classifieds[searchObject.searchStype].sections[sectionKey]["color"])
             $(".fa-title-list").removeClass("hidden");
         }
@@ -310,11 +358,13 @@ function bindLeftMenuFilters () {
         pageCount=true;
         searchObject.count=true;
         if(typeof searchObject.subType != "undefined") delete searchObject.subType;
+        $(".dropdown-subType .dropdown-toggle").removeClass("active").html("Subcategory <i class='fa fa-angle-down'></i>");
         if( $(this).hasClass( "active" ) ){
             if(typeof searchObject.category != "undefined") delete searchObject.category;
             //searchObject.tags=[sectionKey];//searchTxt = sectionKey;
             $(this).removeClass( "active" );
             $(".keycat-"+classType).addClass("hidden").removeClass("active"); 
+            $(".dropdown-category .dropdown-toggle").removeClass("active").html("Category <i class='fa fa-angle-down'></i>");
         }else{
             $(".btn-select-category").removeClass("active");
             $(this).addClass("active");
@@ -322,13 +372,8 @@ function bindLeftMenuFilters () {
             $(".keycat").addClass("hidden");
             $(".keycat-"+classType).removeClass("hidden");  
             searchObject.category=classType;
-            //if(typeof sectionKey != "undefined" && typeof sectionKey != null)
-            //    searchObject.tags=[sectionKey];//searchTxt = sectionKey+",";
-            //searchObject.tags.push(classType);
-            //searchTxt += classType; 
+            $(".dropdown-category .dropdown-toggle").addClass("active").html(tradCategory[classType]+" <i class='fa fa-angle-down'></i>");
         }
-        //$('#searchTags').val(searchTxt);
-        //alert("section : " + $('#searchTags').val());
         startSearch(0, indexStepInit, searchCallback);  
     });
 
@@ -367,10 +412,12 @@ function bindLeftMenuFilters () {
         searchObject.count=true;
         if( $(this).hasClass( "active" ) ){
             if(typeof searchObject.subType != "undefined") delete searchObject.subType;
+            $(".dropdown-subType .dropdown-toggle").removeClass("active").html("Subcategory <i class='fa fa-angle-down'></i>");
             $(this).removeClass( "active" );
         }else{
             $(".keycat").removeClass("active");
             $(this).addClass("active");
+            $(".dropdown-subType .dropdown-toggle").addClass("active").html(tradCategory[classSubType]+" <i class='fa fa-angle-down'></i>");
             searchObject.subType=classSubType;
             searchObject.category=classType;
         }
@@ -378,7 +425,38 @@ function bindLeftMenuFilters () {
         KScrollTo("#container-scope-filter");
         startSearch(0, searchObject.indexStep, searchCallback);  
     });
-
+    $('.dropdown-menu[aria-labelledby="dropdownPrice"]').on('click', function(event){
+        // The event won't be propagated up to the document NODE and 
+        // therefore delegated events won't be fired
+        event.stopPropagation();
+    });
+    $(".btn-price-filter").off().on("click",function(){
+        if($(this).data("key")=="reset"){
+            $(".dropdown-price .dropdown-toggle").removeClass("active").html("Price <i class='fa fa-angle-down'></i>");
+            if(typeof searchObject.priceMin != "undefined") delete searchObject.priceMin;
+            if(typeof searchObject.priceMax != "undefined") delete searchObject.priceMax;
+            if(typeof searchObject.devise != "undefined") delete searchObject.devise;
+            $("#priceMin, #priceMax, $devise").val("");
+        }else{
+            if(typeof $("#priceMin").val() != "undefined" && $("#priceMin").val()!="")
+                searchObject.priceMin=$("#priceMin").val();
+            else if(typeof searchObject.priceMin != "undefined")
+                delete searchObject.priceMin;
+            if(typeof $("#priceMax").val() != "undefined" && $("#priceMax").val()!="")
+                searchObject.priceMax=$("#priceMax").val();
+            else if(typeof searchObject.priceMax != "undefined")
+                delete searchObject.priceMax;
+            if(typeof $("#devise").val() != "undefined" && $("#devise").val()!="" && $("#devise").val()!="all")
+                searchObject.devise=$("#devise").val();
+            else if(typeof searchObject.devise != "undefined")
+                delete searchObject.devise;
+            activePriceFilter();
+        }
+        $(".dropdown-price").removeClass("open");
+        pageCount=true;
+        searchObject.count=true;
+        startSearch(0, searchObject.indexStep, searchCallback);
+    });
     $("#btn-create-classified").off().on("click", function(){
          dyFObj.openForm('classified');
     });
@@ -441,6 +519,21 @@ function constructSearchObjectAndGetParams(){
     getStatus+="subType="+searchObject.subType;
     searchConstruct.subType = searchObject.subType;
   }
+  if(typeof searchObject.priceMin != "undefined"){
+    searchConstruct.priceMin = searchObject.priceMin; 
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="priceMin="+searchObject.priceMin;
+  }
+  if(typeof searchObject.priceMax != "undefined"){
+    searchConstruct.priceMax = searchObject.priceMax;
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="priceMax="+searchObject.priceMax;
+  }
+  if(typeof searchObject.devise != "undefined"){ 
+    searchConstruct.devise = searchObject.devise;
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="devise="+searchObject.devise;
+  }
   if(typeof searchObject.startDate != "undefined"){
     if(searchObject.text==""){
       getStatus+=(getStatus!="") ? "&":"";
@@ -469,28 +562,6 @@ function constructSearchObjectAndGetParams(){
   if(typeof searchObject.countType != "undefined")
     searchConstruct.countType=searchObject.countType;
 
-  if(typeof $("#priceMin").val() != "undefined" && $("#priceMin").val()!=""){
-    searchObject.priceMin=$("#priceMin").val();
-    searchConstruct.priceMin = searchObject.priceMin; 
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="priceMin="+searchObject.priceMin;
-  }else if(typeof searchObject.priceMin != "undefined")
-    delete searchObject.priceMin;
-  if(typeof $("#priceMax").val() != "undefined" && $("#priceMax").val()!=""){
-    searchObject.priceMax=$("#priceMax").val();
-    searchConstruct.priceMax = searchObject.priceMax;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="priceMax="+searchObject.priceMax;
-  }else if(typeof searchObject.priceMax != "undefined")
-    delete searchObject.priceMax;
-  if(typeof $("#devise").val() != "undefined" && $("#devise").val()!="" && $("#devise").val()!="all"){ 
-    searchObject.devise=$("#devise").val();
-    searchConstruct.devise = searchObject.devise;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="devise="+searchObject.devise;
-  }else if(typeof searchObject.devise != "undefined")
-    delete searchObject.devise;
-
   // Locality
   getStatus=getUrlSearchLocality(getStatus);
   searchConstruct.locality = getSearchLocalityObject();
@@ -504,6 +575,7 @@ function constructSearchObjectAndGetParams(){
   return searchConstruct;
 }
 function initSearchObject(){
+    showFiltersInterface();
     if(location.hash.indexOf("?") > -1){
         getParamsUrls=location.hash.split("?");
         var parts = getParamsUrls[1].split("&");
@@ -513,7 +585,6 @@ function initSearchObject(){
             var temp = parts[i].split("=");
             $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
         }
-        showFiltersInterface();
         if(Object.keys($_GET).length > 0){
             $.each($_GET, function(e,v){
                 if(e=="scopeType") initScopesResearch.key=v; else searchObject[e]=v;
@@ -534,16 +605,62 @@ function initSearchObject(){
         }
     }else
         appendScopeBreadcrum();
+    if(typeof searchObject.priceMin != "undefined")
+        activePriceFilter();
 }
-function showFiltersInterface(){
-    
+function activePriceFilter(){
+    str="";
+    if(typeof searchObject.priceMin != "undefined")
+        str+=(typeof searchObject.priceMax != "undefined") ?  searchObject.priceMin+" - " : "Sup. à "+searchObject.priceMin;
+    if(typeof searchObject.priceMax != "undefined")
+        str+=(typeof searchObject.priceMin != "undefined") ?  searchObject.priceMax : "Inf. à "+searchObject.priceMax;
+    if(typeof searchObject.devise != "undefined")
+        str+= " "+searchObject.devise;
+    $(".dropdown-price .dropdown-toggle").addClass("active").html(str+" <i class='fa fa-angle-down'></i>");
+}
+function initCategoriesApp(){
+    str='';
+    $.each(categoriesFilters, function(e,v){
+        dataType="data-type-event='"+e+"' data-type='events'";
+        countBadge="";
+        if(searchObject.initType=="all"){
+            dataType="data-type='"+e+"'";
+            countBadge='<span class="count-badge-filter" id="count'+e+'"></span>';
+        }
+        textColor= (typeof v.color != "undefined") ? "text-"+v.color : "";
+        icon = (typeof v.icon != "undefined") ? "<i class='fa fa-"+v.icon+"'></i> " : "";
+        str+='<button class="btn btn-directory-type padding-10 '+textColor+'" '+dataType+'>'+
+                icon+ 
+                '<span class="elipsis label-filter">'+tradCategory[e]+'</span>'+
+                countBadge+
+            '</button><br class="hidden-xs">';
+    });
+    $(".dropdown-types .dropdown-menu").html(str);
+    bindLeftMenuFilters();
+}
+function showFiltersInterface(){ 
     if(searchObject.initType=="classifieds"){
         $(".dropdown-section, .dropdown-types, .dropdown-category, .dropdown-subType, .dropdown-price").show();
+        str="";
+        $.each(modules.classifieds, function(e,v){
+            str+='<div class="col-md-4 col-sm-4 col-xs-6 no-padding">'+
+                    '<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold elipsis btn-select-type-anc" '+
+                    'data-type-anc="'+tradCategory[v.categories.labelFront]+'" data-key="'+e+'" '+
+                    'data-type="classifieds">'+
+                        '<i class="fa fa-'+v.categories.icon+'"></i> '+
+                        tradCategory[v.categories.labelFront]+
+                    '</button>'+
+                '</div>';
+        });
+        $(".dropdown-types .dropdown-menu").html(str);
+        bindLeftMenuFilters();
     }else if(searchObject.initType=="events"){
-        $(".dropdown-section, .dropdown-category, .dropdown-subType, .dropdown-price").hide();
+        initCategoriesApp();
+        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-subType, .dropdown-price").hide();
         $(".dropdown-types").show();
     }else if(searchObject.initType=="all"){
-        $(".dropdown-section, .dropdown-category, .dropdown-subType, .dropdown-price").hide();
+        initCategoriesApp();
+        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-subType, .dropdown-price").hide();
         $(".dropdown-types").show();
     }else if(searchObject.initType=="live"){
         $(".dropdown-section, .dropdown-types, .dropdown-category, .dropdown-subType, .dropdown-price").hide();
@@ -566,6 +683,7 @@ function activeFiltersInterface(filter,value){
     if(filter=="category"){
         $(".dropdown-category .dropdown-toggle").addClass("active").html(tradCategory[value]+" <i class='fa fa-angle-down'></i>");
         $(".keycat[data-keycat='"+value+"'][data-categ='"+searchObject.searchSType+"']").addClass("active");
+        $(".dropdown-subType .dropdown-toggle").show();
     }
     if(filter=="subType"){
         $(".dropdown-subType .dropdown-toggle").addClass("active").html(tradCategory[value]+" <i class='fa fa-angle-down'></i>");
@@ -576,8 +694,9 @@ function activeFiltersInterface(filter,value){
         $(".btn-directory-type").removeClass("active");
         $(".btn-directory-type[data-type='"+value+"']").addClass("active");
     }
-    if(filter=="priceMin" || filter=="priceMax")
+    if(filter=="priceMin" || filter=="priceMax"){
         $("#section-price #"+filter).val(value);
+    }
     if(filter=="devise")
         $('#section-price #devise option[value="'+value+'"]').attr("selected",true)
     if(filter=="page"){

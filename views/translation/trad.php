@@ -826,7 +826,9 @@ var tradCategory = {
 	
 	"other"          : "<?php echo Yii::t("category", "Other") ?>",
 
-
+	"onlynews"          : "<?php echo Yii::t("category", "Only posts") ?>",
+	"activityCommunecter" : "<?php echo Yii::t("category", "Activity of communecters") ?>",
+	"surveys"          : "<?php echo Yii::t("category", "Surveys") ?>",
 
 	"contest" :"<?php echo Yii::t("category","Contest") ?>",
 	"festival" :"<?php echo Yii::t("category","Festival") ?>",

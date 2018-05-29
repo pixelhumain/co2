@@ -16,7 +16,8 @@
     //donc normalement pas besoin de faire de IF ici
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "page") ); 
+                                "page" => "page",
+                                "dontShowMenu"=>true) ); 
 ?>
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">

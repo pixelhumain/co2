@@ -10,6 +10,7 @@ dynForm = {
 
 	    		if(typeof currentKFormType != "undefined" && typeObj[currentKFormType] && typeObj[currentKFormType].color){
                 	//alert("dyn" + typeObj[currentKFormType].color);
+                	mylog.log("currentKFormType", currentKFormType, typeObj[currentKFormType], typeObj[currentKFormType].color);
                     $("#ajax-modal .modal-header").addClass("bg-"+typeObj[currentKFormType].color);
                     $("#ajax-modal .infocustom p").addClass("text-"+typeObj[currentKFormType].color);
                 }else{

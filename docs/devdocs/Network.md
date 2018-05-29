@@ -42,3 +42,11 @@ filtre.tags :Utilité
 ### A Renommer
 
 displayCommunexion -> signup ou login
+
+
+
+# Test a faire sur les networks
+
+- https://www.communecter.org/network/default/index/?src=https://gist.githubusercontent.com/SimonSarazin/a1ec515294dd8f633fcf22ff11e7dc9a/raw/b9dfed22bbb3b4faa11d85e8248a2e93cb6a01b5/Beuvrages
+    + [ ] Vérifier que les liens fonctions
+    + [ ] Vérifier que les filtres

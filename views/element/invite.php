@@ -917,7 +917,7 @@
 			success: function(data){
 				mylog.log("getcontactsbymails data", data, data.length);
 				var regexMail = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-				regexMail.test("zfezsqsqfezf@yahoo.fr");
+				
 				var nbError = 0;
 				$.each(data, function(keyMails, valueMails){
 					mylog.log("keyMails valueMails", keyMails, valueMails, typeof valueMails);

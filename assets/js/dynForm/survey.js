@@ -233,8 +233,8 @@ dynForm = {
             //idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
             status: dyFInputs.inputHidden( "amendable" ),
             //canModify: dyFInputs.inputHidden( true ),
-            parentId : dyFInputs.inputHidden(contextData.id),
-            parentType : dyFInputs.inputHidden(contextData.type),
+            parentId : dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden(),
             //organizer : dyFInputs.inputHidden("currentUser"),
             //type : dyFInputs.inputHidden("entry")
                         

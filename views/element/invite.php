@@ -546,14 +546,15 @@
 							$.each(data.citoyens, function(key, value){
 								if(value.result){
 									mylog.log("contactsList.invites key, value", key, value);
+									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
 									str += "<li class='li-dropdown-invite-results col-xs-12'>";
 										str+="<div class='success pull-left text-green'><i class='fa fa-check'></i></div>";
 										str +="<div class='btn-scroll-type pull-left col-xs-10' >";
-										var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+value.newElementType+".png";		
-											bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";
+										var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+newElementType+".png";		
+											bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
 											str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> ';
 											str += '<span class="text-dark text-bold margin-left-5">'+
-													'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" class="lbh">'+ value.newElement.name + '</a>'+
+													'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" class="lbh">'+newElement.name + '</a>'+
 												'</span><br/>';
 											str += '<span class="text-dark text-bold margin-left-5 text-green msg-back">' + value.msg + '</span>';
 										str += "</div>";
@@ -566,14 +567,15 @@
 							$.each(data.invites, function(key, value){
 								if(value.result){
 									mylog.log("contactsList.invites key, value", key, value);
+									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
 									str += "<li class='li-dropdown-invite-results col-xs-12'>";
 										str+="<div class='success pull-left text-green'><i class='fa fa-check'></i></div>";
 										str +="<div class='btn-scroll-type pull-left col-xs-10' >";
-										var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+value.newElementType+".png";		
-											bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";
+										var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+newElementType+".png";		
+											bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
 											str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> ';
 											str += '<span class="text-dark text-bold margin-left-5">'+
-													'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" class="lbh">'+ value.newElement.name + '</a>'+
+													'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" class="lbh">'+ newElement.name + '</a>'+
 												'</span><br/>';
 											str += '<span class="text-dark text-bold text-green margin-left-5 msg-back">'+
 														'<i class="fa fa-arrow-right"></i> Message send to join the communecter</br>'+

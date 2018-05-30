@@ -75,7 +75,7 @@
 .btn-is-admin.isAdmin a{
 	color:#5cb85c!important;
 }
-.listInviteElement .thumb-send-to{
+.listInviteElement .thumb-send-to, .li-dropdown-invite-results .thumb-send-to{
 	width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -93,6 +93,20 @@
  	padding: 3px 8px;
     border-radius: 3px;
     margin-top: 19px;
+ }
+ .li-dropdown-invite-results{
+ 	list-style: none;
+ }
+ .li-dropdown-invite-results .success, .li-dropdown-invite-results .error{
+ 	border-radius:100%; 
+    height: 40px;
+    line-height: 40px;
+    font-size: 25px;
+    width: 40px;
+    color: white;
+ }
+.li-dropdown-invite-results .msg-back{
+ 	font-style: italic;
  }
 </style>
 <div class="<?php if(empty($search) || $search == false){ ?> portfolio-modal modal fade <?php } ?>" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
@@ -115,12 +129,13 @@
 								if($parentType == Person::COLLECTION)
 									echo Yii::t("invite","Search or invite your contacts");
 								else if ($parentType == Event::COLLECTION )
-									echo Yii::t("common","Invite people") ;			
+									echo Yii::t("common","Invite people on") ;			
 								else if ($parentType == Project::COLLECTION )
-									echo Yii::t("common",'Invite contributors') ;
+									echo Yii::t("common",'Invite contributors on') ;
 								else
-									echo Yii::t("common","Invite members");
+									echo Yii::t("common","Invite members on");
 							?>
+							<br/><span class="name-parent bold"></span>
 						</span>
 						<br>
 					</h3>
@@ -253,8 +268,11 @@
 				<div id="stepResult" class="modal-body col-xs-12" >
 					<div class="form-group">
 						<div class="col-xs-12">
-							<h4> <?php echo Yii::t("common", "Results") ;?> </h4>
+							<h4> <?php echo Yii::t("common", "Result of invitations sent") ;?> </h4>
 							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
+							<?php if($parentType != Person::COLLECTION){ ?>
+								<button class="btn btn-success margin-top-20 col-xs-12 link-to-community"><i class="fa fa-users"></i> <?php echo Yii::t("invite","See the community") ?></button>
+							<?php } ?>
 						</div>
 					</div>
 				</div>
@@ -284,6 +302,8 @@
 
 	jQuery(document).ready(function() {
 		// mylog.log("members", members);
+		if(parentType != "citoyens")
+			$("#title-invite .name-parent").text(contextData.name);
 		initInvite();
 		bindInvite();
 		fadeInView("step1-search");
@@ -359,7 +379,10 @@
 			fadeInView("step1-mycontacts");
 			myContactsToListInvites();
 		});
-
+		$(".link-to-community").click(function(){
+			$(".close-modal").trigger("click");
+			$(".load-data-community").trigger("click");
+		});
 		$("#modal-invite #typeOther").change(function(e) {
 			mylog.log("typeOther");
 			initInvite();
@@ -521,36 +544,65 @@
 						var str = "";
 						if(typeof data.citoyens != "undefined"){
 							$.each(data.citoyens, function(key, value){
-								mylog.log("contactsList.invites key, value", key, value);
-								str += "<li class='li-dropdown-scope'>";
-									str +="<div class='btn-scroll-type' >";
-										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-									str += "</div>";
-								str += "</li>";
+								if(value.result){
+									mylog.log("contactsList.invites key, value", key, value);
+									str += "<li class='li-dropdown-invite-results col-xs-12'>";
+										str+="<div class='success pull-left text-green'><i class='fa fa-check'></i></div>";
+										str +="<div class='btn-scroll-type pull-left col-xs-10' >";
+										var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+value.newElementType+".png";		
+											bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";
+											str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> ';
+											str += '<span class="text-dark text-bold margin-left-5">'+
+													'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" class="lbh">'+ value.newElement.name + '</a>'+
+												'</span><br/>';
+											str += '<span class="text-dark text-bold margin-left-5 text-green msg-back">' + value.msg + '</span>';
+										str += "</div>";
+									str += "</li>";
+								}
 							});
 						}
 
 						if(typeof data.invites != "undefined"){
 							$.each(data.invites, function(key, value){
-								mylog.log("contactsList.invites key, value", key, value);
-								str += "<li class='li-dropdown-scope'>";
-									str +="<div class='btn-scroll-type' >";
-										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-									str += "</div>";
-								str += "</li>";
-								
+								if(value.result){
+									mylog.log("contactsList.invites key, value", key, value);
+									str += "<li class='li-dropdown-invite-results col-xs-12'>";
+										str+="<div class='success pull-left text-green'><i class='fa fa-check'></i></div>";
+										str +="<div class='btn-scroll-type pull-left col-xs-10' >";
+										var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+value.newElementType+".png";		
+											bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";
+											str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> ';
+											str += '<span class="text-dark text-bold margin-left-5">'+
+													'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" class="lbh">'+ value.newElement.name + '</a>'+
+												'</span><br/>';
+											str += '<span class="text-dark text-bold text-green margin-left-5 msg-back">'+
+														'<i class="fa fa-arrow-right"></i> Message send to join the communecter</br>'+
+														'<i class="fa fa-arrow-right"></i> '+value.msg +
+													'</span>';
+										str += "</div>";
+									str += "</li>";
+								}
+															
 							});
 						}
 
 						if(typeof data.organizations != "undefined"){
 							$.each(data.organizations, function(key, value){
-								mylog.log("contactsList.invites key, value", key, value);
-								str += "<li class='li-dropdown-scope'>";
-									str +="<div class='btn-scroll-type' >";
-										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-									str += "</div>";
-								str += "</li>";
-								
+								if(value.result){
+									mylog.log("contactsList.invites key, value", key, value);
+									str += "<li class='li-dropdown-invite-results col-xs-12'>";
+										str+="<div class='success pull-left text-green'><i class='fa fa-check'></i></div>";
+										str +="<div class='btn-scroll-type pull-left col-xs-10' >";
+										var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+value.newElementType+".png";		
+											bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";
+											str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> ';
+											str += '<span class="text-dark text-bold margin-left-5">'+
+													'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" class="lbh">'+ value.newElement.name + '</a>'+
+												'</span><br/>';
+											str += '<span class="text-dark text-bold text-green msg-back margin-left-5">' + value.msg + '</span>';
+										str += "</div>";
+									str += "</li>";
+								}
 							});
 						}
 						
@@ -652,6 +704,7 @@
 							listInvite.citoyens[id].isAdmin = "";
 
 					}else{
+						//tradMsg=(parentType!="citoyens") ? tradDynForm[alreadyInTheList+parentType] : tradDynForm[alreadyInTheList];
 						toastr.error(tradDynForm.alreadyInTheList);
 					}
 				}else if(type == "organizations"){
@@ -661,13 +714,15 @@
 							profilThumbImageUrl : profilThumbImageUrl
 						} ;
 					}else{
+						//tradMsg=(parentType!="citoyens") ? tradDynForm[alreadyInTheList+parentType] : tradDynForm[alreadyInTheList];
 						toastr.error(tradDynForm.alreadyInTheList);
 					}
 				}
 				showElementInvite(listInvite, true);
 				bindRemove();
 			}else{
-				toastr.error(tradDynForm.thisPersonIsAlreadyOnYourContacts);
+				tradMsg=(parentType!="citoyens") ? tradDynForm["alreadyInTheList"+parentType] : tradDynForm.thisPersonIsAlreadyOnYourContacts;
+				toastr.error(tradMsg);
 			}
 			
 		});
@@ -740,7 +795,7 @@
 			var str = "";
 			dropdown = "#dropdown-invite";
 		}else if(!searchInContactsList){
-			var str = "<div class='col-xs-12 no-padding'><div class='btn-scroll-type not-find-inside no-padding'><a href='javascript:;' onclick='newInvitation()' >Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</a></div></div>";
+			var str = "<div class='col-xs-12 no-padding'><div class='btn-scroll-type not-find-inside padding-20'><a href='javascript:;' onclick='newInvitation()' class='col-xs-12 text-center' >Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</a></div></div>";
 		}
 		
 		if(notNull(contactsList.citoyens) && Object.keys(contactsList.citoyens).length ){
@@ -843,16 +898,15 @@
 					'data-type-list="'+typeList+'" ' +
 					" data-type='"+type+"' >";
 				bgThumb=(type=="citoyens") ? "yellow" : "green";
-				if(profilThumbImageUrl != "")
 					str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+'" height="35" width="35"> ';
-				else {
+				/*else {
 					if(type == "citoyens")
 						str += '<i class="fa fa-user "></i> ';
 					else if(type == "organizations")
 						str += '<i class="fa fa-users "></i> ';
-				}
-
-				str += '<span class="text-dark text-bold name-invite col-xs-9 elipsis">' + elem.name ; 
+				}*/
+				marginName= (!inMyContact) ? "margin-top-15" : "";
+				str += '<span class="text-dark text-bold name-invite col-xs-9 elipsis '+marginName+'">' + elem.name ; 
 				mylog.log("mailalal", typeList, elem.mail, (typeList == "invites" && typeof elem.mail != "undefined"));
 				if(typeList == "invites" && typeof elem.mail != "undefined"){
 					mylog.log("mailalal", typeList, elem.mail);
@@ -860,7 +914,7 @@
 				}
 				str += '</span>';
 
-				if(inMyContact == true && !searchInContactsList && parentType=="citoyens")
+				if(inMyContact == true && parentType=="citoyens")
 					str += ' <span class="text-bold col-xs-9 follows tooltips"> '+
 								'<i class="fa fa-link" data-toggle="tooltip" data-placement="top" title="'+trad.follows+'" alt="" data-original-title="'+trad.follows+'"></i> In my contacts'+
 							'</span>';

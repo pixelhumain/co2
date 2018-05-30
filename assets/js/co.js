@@ -966,40 +966,43 @@ var urlCtrl = {
 	    } 
 
 		else if(hash.length>2  || hash.indexOf("#@") >= 0){
-			hashT = (hash.indexOf("#@") >= 0) ? hash.replace( "#@","" ) : hash.replace( "#","" );
-			hashT=hashT.split(".");
-			if(typeof hashT == "string")
-				slug=hashT;
-			else
-				slug=hashT[0];
-
-			$.ajax({
-	  			type: "POST",
-	  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
-	  			dataType: "json",
-	  			success: function(data){
-			  		if(data.result){
-			  			viewPage="";			  			
-			  			if(hashT.length > 1){
-			  				hashT.shift();
-			  				viewPage="/"+hashT.join("/");
-			  			}
-
-			  			var key = hashT[0];
-			  			var get = "";
-			  			//console.log("load key indexOf", key, key.indexOf("?"));
-						if(key.indexOf("?")>-1){
-							get = key.substr(key.indexOf("?"), key.length);
-							key = key.substr(0, key.indexOf("?"), key.length);
-							//console.log("load key", key);
-						}
-			  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
-			  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
-			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get);
-			  		}else
-			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
-	 			},
-			});
+			splitHref=(hash.indexOf("?") >= 0) ? hash.split("?") : [hash]; 
+		    if(splitHref[0] > 2 || splitHref[0].indexOf("#@") >= 0){ 
+		        hashT = (splitHref[0].indexOf("#@") >= 0) ? splitHref[0].replace( "#@","" ) : splitHref[0].replace( "#","" ); 
+		        hashT=hashT.split("."); 
+		        if(typeof hashT == "string") 
+		          slug=hashT; 
+		        else 
+		          slug=hashT[0]; 
+		        $.ajax({ 
+		            type: "POST", 
+		            url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug, 
+		            dataType: "json", 
+		            success: function(data){ 
+		              if(data.result){ 
+		                viewPage="";               
+		                if(hashT.length > 1){ 
+		                  hashT.shift(); 
+		                  viewPage="/"+hashT.join("/"); 
+		                } 
+		 
+		                var key = hashT[0]; 
+		                var get = ""; 
+		                //console.log("load key indexOf", key, key.indexOf("?")); 
+		              if(key.indexOf("?")>-1){ 
+		                get = key.substr(key.indexOf("?"), key.length); 
+		                key = key.substr(0, key.indexOf("?"), key.length); 
+		                //console.log("load key", key); 
+		              } 
+		                //console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"]))); 
+		                if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key; 
+		                showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get); 
+		              }else 
+		                showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
+		               } 
+		        }); 
+		    }else 
+		        showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 		}
 	    else if ( moduleId != activeModuleId) {
 	    	//alert( ctrlId +"/"+ actionId );

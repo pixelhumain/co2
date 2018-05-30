@@ -504,57 +504,35 @@
 						if(typeof data.citoyens != "undefined"){
 							$.each(data.citoyens, function(key, value){
 								mylog.log("contactsList.invites key, value", key, value);
-								if(value.result == true){
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-												str += '<span class="text-dark text-bold">' + value.newElement.name + ' a été invité-e </span>';
-										str += "</div>";
-									str += "</li>";
-								}else{
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-											str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-										str += "</div>";
-									str += "</li>";
-								}
+								str += "<li class='li-dropdown-scope'>";
+									str +="<div class='btn-scroll-type' >";
+										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
+									str += "</div>";
+								str += "</li>";
 							});
 						}
 
 						if(typeof data.invites != "undefined"){
 							$.each(data.invites, function(key, value){
 								mylog.log("contactsList.invites key, value", key, value);
-								if(value.result == true){
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-												str += '<span class="text-dark text-bold">' + value.newElement.name + ' a été invité-e </span>';
-										str += "</div>";
-									str += "</li>";
-								}else{
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-											str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-										str += "</div>";
-									str += "</li>";
-								}
+								str += "<li class='li-dropdown-scope'>";
+									str +="<div class='btn-scroll-type' >";
+										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
+									str += "</div>";
+								str += "</li>";
+								
 							});
 						}
 
 						if(typeof data.organizations != "undefined"){
 							$.each(data.organizations, function(key, value){
 								mylog.log("contactsList.invites key, value", key, value);
-								if(value.result == true){
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-												str += '<span class="text-dark text-bold">' + value.newElement.name + ' a été invité-e </span>';
-										str += "</div>";
-									str += "</li>";
-								}else{
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-											str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-										str += "</div>";
-									str += "</li>";
-								}
+								str += "<li class='li-dropdown-scope'>";
+									str +="<div class='btn-scroll-type' >";
+										str += '<span class="text-dark text-bold">' + value.msg + '</span>';
+									str += "</div>";
+								str += "</li>";
+								
 							});
 						}
 						

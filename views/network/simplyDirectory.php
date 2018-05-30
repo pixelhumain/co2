@@ -752,7 +752,7 @@ function breadcrumGuide(level, url){
 }
 
 function getAjaxFiche(url, breadcrumLevel){
-	mylog.log("getAjaxFiche Network", url, breadcrumLevel);
+	mylog.log("getAjaxFiche Network", url, breadcrumLevel, isMapEnd);
 	$("#ficheInfoDetail").empty();
 	if(location.hash == ""){
 		history.pushState(null, "New Title", '?src='+networkParams+url);

@@ -75,9 +75,11 @@ dynForm = {
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else { 
-		    	mylog.log("here");
-	          dyFObj.closeForm(); 
-	          urlCtrl.loadByHash( uploadObj.gotoUrl );
+		    	mylog.log("here", isMapEnd);
+		    	if(typeof networkJson != "undefined")
+					isMapEnd = true;
+				dyFObj.closeForm();
+				urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    },
 	    properties : {

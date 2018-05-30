@@ -688,7 +688,7 @@
 		tabObject = [];
 
 		var searchMode = "personOnly";
-		if(parentType == "organizations"){
+		if(parentType != "citoyens" && parentType != "person"){
 			searchMode = "mixte";
 		}
 

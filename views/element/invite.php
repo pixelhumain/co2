@@ -547,6 +547,7 @@
 								if(value.result){
 									mylog.log("contactsList.invites key, value", key, value);
 									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
+									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
 									str += "<li class='li-dropdown-invite-results col-xs-12'>";
 										str+="<div class='success pull-left text-green'><i class='fa fa-check'></i></div>";
 										str +="<div class='btn-scroll-type pull-left col-xs-10' >";
@@ -568,6 +569,7 @@
 								if(value.result){
 									mylog.log("contactsList.invites key, value", key, value);
 									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
+									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
 									str += "<li class='li-dropdown-invite-results col-xs-12'>";
 										str+="<div class='success pull-left text-green'><i class='fa fa-check'></i></div>";
 										str +="<div class='btn-scroll-type pull-left col-xs-10' >";

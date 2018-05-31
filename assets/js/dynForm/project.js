@@ -40,6 +40,7 @@ dynForm = {
 		            parentId : dyFInputs.inputHidden(),
 		            image : dyFInputs.image(),
 		            location : dyFInputs.location,
+		            email : dyFInputs.text(),
 		            tags :dyFInputs.tags(),
 		            shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
 		            /*formshowers : {

@@ -6,25 +6,25 @@ dynForm = {
 	    onLoads : {
 	    	
 	    	sub : function(){
-	    	
+	    		dyFInputs.setSub("bg-azure");
 	    	},
 	    	onload : function(data){ 		
 	    		if(typeof currentRoomId == "undefined") var currentRoomId = "";
 
-	            console.log("init input hidden parentdata : ", contextData.id, contextData.type, currentRoomId);
-	            $("#ajaxFormModal #parentId").val(contextData.id);
-	            $("#ajaxFormModal #parentType").val(contextData.type);
+	    		pid = (contextData && contextData.id) ? contextData.id : userId;
+	    		ptype = (contextData && contextData.type) ? contextData.type : "citoyens";
+	            console.log("init input hidden parentdata : ", pid, ptype, currentRoomId);
+	            $("#ajaxFormModal #parentId").val( pid );
+	            $("#ajaxFormModal #parentType").val( ptype );
 	            //$("#ajaxFormModal #idParentRoom").val(currentRoomId);
 				
 	    		dataHelper.activateMarkdown("#ajaxFormModal #description");
 	    		//dataHelper.activateMarkdown("#ajaxFormModal #arguments");
 
-				console.log("checkcheck0", data, typeof data, contextData);
+				console.log("checkcheck0", data, typeof data);
 
 				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 						  					  .addClass("bg-turq");
-
-    		 	console.log("dynFormProposal", contextData);
     		 	
 
             	$("#ajax-modal #ajaxFormModal .titletext label").html("<i class='fa fa-chevron-down'></i> "+tradDynForm.surveyname);

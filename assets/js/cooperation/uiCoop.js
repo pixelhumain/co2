@@ -66,7 +66,9 @@ var uiCoop = {
 			var status = $(this).data("status");
 			var dataId = $(this).data("dataid");
 			//mylog.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
-			uiCoop.getCoopData(contextData.type, contextData.id, type, status, dataId);
+			pid = (contextData && contextData.id) ? contextData.id : userId;
+	    	ptype = (contextData && contextData.type) ? contextData.type : "citoyens";
+			uiCoop.getCoopData(ptype, pid, type, status, dataId);
 		});
 	},
 	initBtnLoadDataPreview : function(){
@@ -319,7 +321,9 @@ var uiCoop = {
 		ajaxPost("", url, params,
 			function (proposalRes){
 				console.log("success save vote", proposalRes);
-				uiCoop.getCoopData(contextData.type, contextData.id, "room", null, idParentRoom, 
+				pid = (contextData && contextData.id) ? contextData.id : userId;
+	    		ptype = (contextData && contextData.type) ? contextData.type : "citoyens";
+				uiCoop.getCoopData(ptype, pid, "room", null, idParentRoom, 
 					function(){
 						toastr.success(trad["Your vote has been save with success"]);
 						

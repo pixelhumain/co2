@@ -14,7 +14,7 @@
     $cssAnsScriptFilesModule = array(
     '/js/default/responsive-calendar.js',
     '/js/default/search.js',
-//    '/js/default/directory.js',
+//'/js/default/directory.js',
     '/js/news/index.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl());
@@ -30,7 +30,7 @@
     if(!@$type){  $type = "all"; }
 
     if(@$type=="events")    { $page = "agenda";     $maxImg = 7; }
-    if(@$type=="classified"){ $page = "annonces";   $maxImg = 1; }
+    if(@$type=="classifieds"){ $page = "annonces";   $maxImg = 1; }
     if(@$type=="vote")      { $page = "power";      $maxImg = 1; }
     if(@$type=="place")     { $page = "place";      $maxImg = 1; }
     if(@$type=="ressources") { $page = "ressources"; }
@@ -47,7 +47,8 @@
     $this->renderPartial($layoutPath.'header', 
                             array(  "layoutPath"=>$layoutPath ,
                                     "page" => $page,
-                                    "type" => @$type) ); 
+                                    "type" => @$type,
+                                    "dontShowMenu"=> (!@$dontShowMenu) ? true : false ) ); 
 
 
     $randImg = rand(1, $maxImg);
@@ -147,7 +148,6 @@ var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdom
 var pageCount=false;
 searchObject.count=true;
 searchObject.initType=typeInit;
-
 <?php if(@$type=="events"){ ?>
   var STARTDATE = new Date();
   var ENDDATE = new Date();
@@ -159,7 +159,7 @@ var scrollEnd = false;
 var currentKFormType = "";
 
 jQuery(document).ready(function() {
-
+    
     setTitle(titlePage, "", titlePage);
     
     initCountType();
@@ -167,49 +167,10 @@ jQuery(document).ready(function() {
     if(type!='') typeUrl = "?type="+type+"&nopreload=true";
 	getAjax('#page' ,baseUrl+'/'+moduleId+"/default/directoryjs"+typeUrl,function(){ 
 
-        $(".btn-directory-type").click(function(){
-            var typeD = $(this).data("type");
-            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
-            simpleScroll(scrollH);
-           
-            if(typeD == "events"){
-                if($(this).hasClass("active")){
-                    $(this).removeClass("active");    
-                    delete searchObject.searchSType;
-                }else{
-                    $(".btn-directory-type").removeClass("active");
-                    $(this).addClass("active");
-                    var typeEvent = $(this).data("type-event");
-                    searchObject.searchSType = typeEvent;
-                }
-            }else{
-                $(".btn-directory-type").removeClass("active");
-                $(this).addClass("active");
-            }
-            initTypeSearch(typeD);
-            if(typeD=="all"){
-                searchAllEngine.initInjectData();
-                searchAllEngine.initSearch();
-            }
-            loadingData = false;
-            pageCount=true;
-            searchObject.page=0;
-            if(Object.keys(searchObject.countType).length>1) searchObject.count=false; 
-            else searchObject.count=true;
-            pageEvent=false;
-            searchObject.type=searchType;
-            startSearch(0, indexStepInit, searchCallback);
-        });
+       
          
          //anny double section filter directory
-        <?php if(@$type == "classified" || @$type == "ressources" || @$type == "place"  ){ ?>
-            initClassifiedInterface();
-        <?php } ?>
-
-        bindLeftMenuFilters();
-
         if(type=="all") searchAllEngine.initSearch();
-
         loadingData = false; 
         initTypeSearch(type);
         initSearchObject();

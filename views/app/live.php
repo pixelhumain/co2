@@ -34,7 +34,8 @@
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "type" => @$type,
-                                "page" => $page
+                                "page" => $page,
+                                "dontShowMenu"=>true,
                                 //"explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") 
                                 )); 
     $randImg = rand(1, 2);
@@ -180,7 +181,7 @@ var allNewsType = ["news"];//, "idea", "question", "announce", "information"];
 //					};
 
 //var page = "<?php echo $page; ?>";
-
+searchObject.initType="news";
 <?php if(Yii::app()->params["CO2DomainName"] == "kgougle") $page = "freedom"; ?>
 var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
 
@@ -230,25 +231,44 @@ jQuery(document).ready(function() {
             if(!$("#filter-thematic-menu").is(":visible") || $(this).hasClass("toogle-filter"))
                 $("#filter-thematic-menu").toggle();
     });
+    $(".btn-news-type-filters").off().on("click", function(){
+        keyType=$(this).data("key");
+        searchObject.types= (keyType!="all") ? keyType : [];            
+        startNewsSearch(true);
+        KScrollTo("#content-social");
+    });
     $(".btn-select-filliaire").off().on("click",function(){
         mylog.log(".btn-select-filliaire");
         var fKey = $(this).data("fkey");
         myMultiTags = {};
-        searchObject.text="";
+        //searchObject.text="";
+        tagsArray=[];
         $.each(filliaireCategories[fKey]["tags"], function(key, tag){
             tag=(typeof tradTags[tag] != "undefined") ? tradTags[tag] : tag;
-            searchObject.text+="#"+tag+" ";
+            tagsArray.push(tag);
+            //searchObject.text+="#"+tag+" ";
         });
-        $("#filter-thematic-menu").hide();
-        $("#main-search-bar, #second-search-bar").val(searchObject.text);
-        mylog.log("myMultiTags", myMultiTags);
+        $('#tagsFilterInput').val(tagsArray).trigger("change");
+        //$("#filter-thematic-menu").hide();
+        //$("#main-search-bar, #second-search-bar").val(searchObject.text);
+        //mylog.log("myMultiTags", myMultiTags);
         
-        searchObject.page=0;
+        /*searchObject.page=0;
         pageCount=true;
         searchObject.count=true;
         if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
         
-        startNewsSearch(0, indexStepInit, searchCallback);
+        startSearch(0, indexStepInit, searchCallback);*/
+    });
+    $(".btn-tags-start-search").off().on("click", function(){
+        searchObject.tags=($('#tagsFilterInput').val()!="") ? $('#tagsFilterInput').val().split(",") : [];
+        searchObject.page=0;
+        pageCount=true;
+        searchObject.count=true;
+        if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+        $(".dropdown-tags").removeClass("open");
+        activeTagsFilter();
+        startNewsSearch(true);
     });
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
@@ -281,8 +301,8 @@ jQuery(document).ready(function() {
             startNewsSearch(true);
          }
     });
-
-    $("#main-btn-start-search, #main-search-bar-addon, .menu-btn-start-search").click(function(){
+    /*, .menu-btn-start-search*/
+    $("#main-btn-start-search, #main-search-bar-addon").click(function(){
         startNewsSearch(true);
     });
     $(".subModuleTitle .btn-refresh").click(function(){
@@ -290,7 +310,12 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val("");
         startNewsSearch(true);
     });
-
+    $('.dropdown-menu[aria-labelledby="dropdownTags"]').on('click', function(event){
+        // The event won't be propagated up to the document NODE and 
+        // therefore delegated events won't be fired
+        event.stopPropagation();
+    });
+    
     setTitle(titlePage, "stack-exchange", titlePage);
     //KScrollTo(".main-btn-scopes");
 });

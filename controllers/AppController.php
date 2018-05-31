@@ -272,7 +272,7 @@ class AppController extends CommunecterController {
     }
 
     public function actionAnnonces(){ 
-        $this->redirect( Yii::app()->createUrl("/classifieds/co/market") );
+        $this->redirect( Yii::app()->createUrl("/eco") );
     }
 
     public function actionHelp(){ 
@@ -333,8 +333,8 @@ class AppController extends CommunecterController {
 
         if(@$_POST["preview"] == true){
             $params["preview"]=$_POST["preview"]; 
-            if($type == "classified") $this->renderPartial('classifieds.views.co.preview', $params );
-            else if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
+            if($type == "classifieds") $this->renderPartial('eco.views.co.preview', $params );
+           // else if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
             else if($type == "poi") $this->renderPartial('../poi/preview', $params ); 
             else echo $this->renderPartial("page", $params, true);
         }else{

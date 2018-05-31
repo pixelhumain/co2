@@ -87,10 +87,13 @@ class CO2 {
     	return $list;
     }
 
-    public static function getModuleContextList($mod, $contextName){
+    public static function getModuleContextList($mod, $contextName, $path=null){
         $domainName = @$domainName ? $domainName : Yii::app()->params["CO2DomainName"];
         
-        $layoutPath ="../../modules/".$mod."/assets/js/".$contextName.".json";
+        $layoutPath ="../../modules/".$mod."/assets/js/";
+        if(@$path)
+            $layoutPath.=$path."/";
+        $layoutPath.=$contextName.".json";
         $str = file_get_contents($layoutPath);
 
         $list = json_decode($str, true);

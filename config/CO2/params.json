@@ -59,7 +59,7 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "search", 
-			"subdomainName" : "Search",
+			"subdomainName" : "All",
 			"hash" : "#app.search",
 			"icon" : "search", 
 			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
@@ -107,7 +107,7 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "live", 
-			"subdomainName" : "En live",
+			"subdomainName" : "News feed",
 			"hash":"#app.live",
 			"icon" : "newspaper-o", 
 			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
@@ -124,7 +124,7 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "agenda", 
-			"subdomainName" : "Agenda",
+			"subdomainName" : "Events",
 			"hash":"#app.agenda",
 			"icon" : "calendar", 
 			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
@@ -144,8 +144,9 @@
 			"useHeader" : true, 
 			"open" : true, 
 			"subdomain" : "annonces", 
-			"subdomainName" : "Market place",
-			"hash" : "#app.annonces",
+			"subdomainName" : "classifieds",
+			"hash" : "#eco",
+			"module":"eco",
 			"icon" : "bullhorn", 
 			"mainTitle" : "Classified ads",
 			"placeholderMainSearch" : "search among classifieds ...",
@@ -192,30 +193,7 @@
 			"emptyContextData" : false
 		},
 
-		"#ressources":
-		    {"inMenu" : true, 
-		    "useHeader" : true, 
-		    "open" : true, 
-		    "subdomain" : "ressource", 
-		    "subdomainName" : "Sharing",
-		    "hash" : "#app.help",
-		    "icon" : "cubes", 
-		    "mainTitle" : "Moteur de Ressource <span class='text-red'>territoriales</span>",
-		    "placeholderMainSearch" : "Rechercher un ressource ...",
-		    "lblBtnCreate" : "Ajouter une ressource",
-		    "colorBtnCreate" : "purple",
-		    "initFilters":[
-				"text",
-				"tags",
-				"locality",
-				"searchSType",
-				"section",
-				"subType",
-				"devise",
-				"priceMin",
-				"priceMax"
-			]
-		},
+	
 
 		"#page": {
 			"inMenu" : false, 

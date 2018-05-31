@@ -675,7 +675,7 @@
 			"news"   : "Actualités",
 			"News"   : "Actualités",
 			"NEWS"   : "Actualités",
-
+			"classifieds"   : "Annonces",
 			"classified"   : "Annonces",
 			"poi"   : "Points d'intérêt",
 			"city"   : "Commune",

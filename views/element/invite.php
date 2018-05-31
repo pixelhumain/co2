@@ -108,6 +108,7 @@
 .li-dropdown-invite-results .msg-back{
  	font-style: italic;
  }
+
 </style>
 <div class="<?php if(empty($search) || $search == false){ ?> portfolio-modal modal fade <?php } ?>" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-content padding-top-15">

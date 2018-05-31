@@ -2,6 +2,9 @@
 	.dropdown_searchListNW{
 		min-height: 100%;
 	}
+	.sub-menu-social{
+	 	margin-top: -30px;
+	 }
 </style>
 
 <div class="col-md-12 no-padding" id="repertory" style="background-color: white">

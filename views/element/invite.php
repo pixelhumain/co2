@@ -841,6 +841,12 @@
 			$.each(contactsList.organizations, function(key, value){
 				mylog.log("contactsList.organizations key, value", key, value);
 				str += htmlListInvite(key, value, invite, "organizations", searchInContactsList);
+
+				if(typeof value.roles != "undefined" || typeof value.roles == null){
+					var tagRolesList = [] ;
+					$.each(value.roles, function(i,k) { tagRolesList.push( {id:k,text:k} ); });
+					addRoles[key] = tagRolesList;
+				}
 			});
 			listNotExits = false;
 		}

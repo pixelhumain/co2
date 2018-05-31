@@ -501,6 +501,8 @@ var trad = {
 	"addToMyFavoritesPlaces":"<?php echo Yii::t("common","Add to my favorites places") ?>",
 
 	"showmap" :"<?php echo Yii::t("common","Show map") ?>",
+	"invitationsenttojoinco":"<?php echo Yii::t("invite","Email successfully sent to join communecter.org") ?>",
+	"notfoundlaunchinvite":"<?php echo Yii::t("invite","Not found ? Launch an invitation to join your network") ?>",
 };
 
 var tradDynForm = {

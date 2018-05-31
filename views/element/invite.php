@@ -269,7 +269,7 @@
 				<div id="stepResult" class="modal-body col-xs-12" >
 					<div class="form-group">
 						<div class="col-xs-12">
-							<h4> <?php echo Yii::t("common", "Result of invitations sent") ;?> </h4>
+							<h4> <?php echo Yii::t("invite", "Result of invitations sent") ;?> </h4>
 							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
 							<?php if($parentType != Person::COLLECTION){ ?>
 								<button class="btn btn-success margin-top-20 col-xs-12 link-to-community"><i class="fa fa-users"></i> <?php echo Yii::t("invite","See the community") ?></button>
@@ -289,8 +289,8 @@
 	var parentLinks = <?php echo json_encode(@$parentLinks); ?>;
 	// var members = <?php //echo json_encode( $members ); ?>;
 	var contactTypes = {
-			citoyens : { color: "yellow", icon:"user", label:"People" },
-			organizations :	{ color: "green", icon:"group", label:"Organizations" } 
+			citoyens : { color: "yellow", icon:"user", label: trad.People },
+			organizations :	{ color: "green", icon:"group", label: trad.Organizations } 
 		};
 
 	var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $parentType, @Yii::app()->session["userId"]) ?>";
@@ -422,7 +422,7 @@
 		$("#modal-invite #fileEmail").change(function(e) {
 			mylog.log("fileEmail");
 			$.blockUI({
-				message : '<span class="homestead"><i class="fa fa-spin fa-circle-o-noch"></i> Merci de patienter ...</span>'
+				message : '<span class="homestead"><i class="fa fa-spin fa-circle-o-noch"></i> '+trad.currentlyloading+'...</span>'
 			});
 			//$("#listEmailGrid").html("");
 			var ext = $("#modal-invite input#fileEmail").val().split(".").pop().toLowerCase();
@@ -581,7 +581,7 @@
 													'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" class="lbh">'+ newElement.name + '</a>'+
 												'</span><br/>';
 											str += '<span class="text-dark text-bold text-green margin-left-5 msg-back">'+
-														'<i class="fa fa-arrow-right"></i> Message send to join the communecter</br>'+
+														'<i class="fa fa-arrow-right"></i> '+trad.invitationsenttojoinco+'</br>'+
 														'<i class="fa fa-arrow-right"></i> '+value.msg +
 													'</span>';
 										str += "</div>";
@@ -796,13 +796,12 @@
 		var listNotExits = true;
 		var addRoles = {};
 		var searchInContactsList=(dropdown=="#dropdown-mycontacts-invite") ? true : false;
+		var str = "";
 		if(invite == true){
-			var str = "";
 			dropdown = "#dropdown-invite";
 		}else if(!searchInContactsList){
-			var str = "<div class='col-xs-12 no-padding'><div class='btn-scroll-type not-find-inside padding-20'><a href='javascript:;' onclick='newInvitation()' class='col-xs-12 text-center' >Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</a></div></div>";
+			var str = "<div class='col-xs-12 no-padding'><div class='btn-scroll-type col-xs-12 not-find-inside padding-20'><a href='javascript:;' onclick='newInvitation()' class='col-xs-12 text-center'>"+trad.notfoundlaunchinvite+" !</a></div></div>";
 		}
-		
 		if(notNull(contactsList.citoyens) && Object.keys(contactsList.citoyens).length ){
 			str += '<div class="col-xs-12 no-padding">'+
 						'<h5 class="padding-10 text-'+contactTypes.citoyens.color+'"><i class="fa fa-'+contactTypes.citoyens.icon+'"></i> '+contactTypes.citoyens.label+'<hr></h5>'+			
@@ -893,7 +892,7 @@
 						'data-type="'+type+'" ' +
 						'data-type-list="'+typeList+'" ' +
 						'data-id="'+id+'" ' + 
-						'data-toggle="tooltip" data-placement="bottom" title="Remove" >'+
+						'data-toggle="tooltip" data-placement="bottom" title="'+trad.clear+'" >'+
 						'<i class="fa fa-remove"></i>'+
 						'</button></div>';
 			} else {
@@ -940,7 +939,7 @@
 				
 				if(invite == true && parentType != "citoyens"){
 					str += '<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+id+'" data-type="'+type+'" data-type-list="'+typeList+'" >'+
-								'<input id="tagsRoles'+id+'" class="tagsRoles" type="text" data-type="select2" name="roles" placeholder="Add a role" value="" style="width:100%;">'+
+								'<input id="tagsRoles'+id+'" class="tagsRoles" type="text" data-type="select2" name="roles" placeholder="'+tradDynForm.addroles+'" style="width:100%;">'+
 							'</div>';	
 				}
 			str += "</div>";

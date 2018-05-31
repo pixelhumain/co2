@@ -391,6 +391,7 @@ function initPanelLibrary(){
 				//}
 		});
 		if(contentKey=="bookmarks"){
+			mylog.log("tagsListFilter", tagsListFilter);
 			tagsFilter(tagsListFilter);
 		}
 		if(j>0){
@@ -576,6 +577,7 @@ function initMenuLibrary(){
 }
 function tagsFilter(tags){
 	$.each(tags,function(oTag,oT){
+		mylog.log("")
         if( notEmpty( oTag ) ){
           //directory.multiTagsT.push(oTag);
           //mylog.log(oTag);

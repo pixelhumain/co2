@@ -15,44 +15,27 @@ class TestController extends CommunecterController {
 
   public function actionMsg() {
     
-    $langs = array("en","fr","de","es") ;
+    $langs = array("de","es", "it") ;
     $files = array("activityList","category","chart","comment","common","cooperation","docs","document","event","form","home","import","jobs","KCFinderWidget","loader","login","mail","need","news","notification","openData","organization","person","project","rooms","survey","translate" );
-    echo "<h1>Missing in folder 'de'</h1>";
-    foreach ($files as $key => $value) {
-    	echo "<h3 style='color:red'>file : ".$value.".php</h3>";
-    	try {
-    		$fr = include ( "./protected/messages/fr/".$value.".php");
-	    	//$es = include ( "./protected/messages/es/".$value.".php");
-	    	$de = include ( "./protected/messages/de/".$value.".php");
-	    	foreach ($fr as $k => $v) {
-	    		//echo $k.":".$v."<br/>";
-	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
-	    		if(!@$de[$k]) echo '<span>"'.htmlspecialchars($k).'" => "",</span> <br/>';
-	    	}	
-    	} catch (Exception $e) {
-    		echo $value."file unfound <br/>";
-    	}
-    	
-    }
-    echo "<h1>Missing in folder 'es'</h1>";
-    foreach ($files as $key => $value) {
-    	echo "<h3>file : ".$value."</h3>";
-    	try {
-    		$fr = include ( "./protected/messages/fr/".$value.".php");
-	    	$es = include ( "./protected/messages/es/".$value.".php");
-	    	//$de = include ( "./protected/messages/de/".$value.".php");
-	    	foreach ($fr as $k => $v) {
-	    		//echo $k.":".$v."<br/>";
-	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
-	    		if(!@$es[$k])echo '<span>"'.$k.'" => "",</span> <br/>';
-	    	}	
-    	} catch (Exception $e) {
-    		echo $value."file unfound <br/>";
-    	}
-    	
-    }
-    
-
+    foreach ($langs as $langKey) {
+	    echo "<h1>Missing in folder '".$langKey."'</h1>";
+	    foreach ($files as $key => $value) {
+	    	echo "<h3 style='color:red'>file : ".$value.".php</h3>";
+	    	try {
+	    		$fr = include ( "./protected/messages/fr/".$value.".php");
+		    	//$es = include ( "./protected/messages/es/".$value.".php");
+		    	$otherLang = include ( "./protected/messages/".$langKey."/".$value.".php");
+		    	foreach ($fr as $k => $v) {
+		    		//echo $k.":".$v."<br/>";
+		    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
+		    		if(!@$otherLang[$k]) echo '<span>"'.htmlspecialchars($k).'" => "",</span> <br/>';
+		    	}	
+	    	} catch (Exception $e) {
+	    		echo $value."file unfound <br/>";
+	    	}
+	    	
+	    }
+	} 
   }
 
   public function actionMango() {

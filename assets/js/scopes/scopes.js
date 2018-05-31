@@ -427,10 +427,7 @@ function bindScopesInputEvent(news){
 		if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
 		mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
 
-
-
-
-		mylog.log("globalscope-checker values",  myScopes.search[$(this).data("scope-value")]);
+		mylog.log("globalscope-checker values", myScopes.search, $(this).data("scope-value"), myScopes.search[$(this).data("scope-value")]);
 		changeCommunexionScope(	$(this).data("scope-value"), $(this).data("scope-name"), 
 								$(this).data("scope-type"), $(this).data("scope-level"),
 								myScopes.search[$(this).data("scope-value")],  notSearch, testCo, $(this).data("append-container")) ;

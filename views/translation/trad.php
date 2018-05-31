@@ -501,12 +501,17 @@ var trad = {
 	"addToMyFavoritesPlaces":"<?php echo Yii::t("common","Add to my favorites places") ?>",
 
 	"showmap" :"<?php echo Yii::t("common","Show map") ?>",
+	"invitationsenttojoinco":"<?php echo Yii::t("invite","Email successfully sent to join communecter.org") ?>",
+	"notfoundlaunchinvite":"<?php echo Yii::t("invite","Not found ? Launch an invitation to join your network") ?>",
 };
 
 var tradDynForm = {
 	"weWereUnableToReadYourFile" : "<?php echo Yii::t("invite","We were unable to read your file."); ?>",
 	"youMustUseACSVFormat" : "<?php echo Yii::t("invite","You must use a CSV format"); ?>",
 	"alreadyInTheList" : "<?php echo Yii::t("invite","Already in the list"); ?>",
+	"alreadyInTheListorganizations": "<?php echo Yii::t("invite","Already member of the organization"); ?>",
+	"alreadyInTheListprojects": "<?php echo Yii::t("invite","Already contributor of the project"); ?>",
+	"alreadyInTheListevents": "<?php echo Yii::t("invite","Already attendee of the event"); ?>",
 	"Name of filter" : "<?php echo Yii::t("form","Name of filter") ?>",
 	"Tags link a filter" : "<?php echo Yii::t("form","Tags link a filter") ?>",
 	"Filters category" : "<?php echo Yii::t("form","Filters category") ?>",

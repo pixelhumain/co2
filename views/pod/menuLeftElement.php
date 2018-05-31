@@ -224,7 +224,7 @@
 		 	$connectCommunity=@Element::$connectTypes[$type];
 		?>
 		<li class="">
-			<a href="javascript:" class="ssmla capitalize load-data-directory" 
+			<a href="javascript:" class="ssmla capitalize load-data-directory load-data-community" 
 				data-type-dir="<?php echo @$connectCommunity; ?>" data-icon="users">
 				<i class="fa fa-users"></i> <?php echo Yii::t("common","Community"); ?>
 			</a>

@@ -321,7 +321,7 @@
 		  			}
 		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
 
-		  			if( $type != Person::COLLECTION )
+		  			if( Yii::app()->params['rocketchatMultiEnabled'] && $type != Person::COLLECTION )
 	  				{
 			  		?>
 			  			<div class="btn-group " id="paramsMenu">

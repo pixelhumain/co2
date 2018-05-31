@@ -119,14 +119,7 @@
 								</div>
 							</a>
 						</li>
-						<li role="presentation">
-							<a href="javascript:" class="" id="menuImportFile">
-								<div id="titleImportFile" class='radius-10 padding-10 text-grey text-dark'>
-									<i class="fa fa-upload fa-2x"></i> 
-									<?php echo Yii::t("invite","Import a file"); ?> 
-								</div>
-							</a>
-						</li>
+						
 						<?php
 						if($parentType != Person::COLLECTION){
 						?>
@@ -141,6 +134,15 @@
 						<?php
 						}
 						?>
+						<li role="presentation">
+							<a href="javascript:" class="" id="menuImportFile">
+								<div id="titleImportFile" class='radius-10 padding-10 text-grey text-dark'>
+									<i class="fa fa-pencil fa-2x"></i> 
+									<?php echo Yii::t("invite","Others");
+									//echo Yii::t("invite","Import a file"); ?> 
+								</div>
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -191,10 +193,24 @@
 						</form>
 					</div>
 				</div>
-				<div id="step1-import" class="modal-body col-xs-6">
-					<div class="form-group">
+				<div id="step1-other" class="modal-body col-xs-6">
+					<div class="form-group col-xs-12">
+						<select id="typeOther" name="typeOther">
+							<option value="-1"><?php echo Yii::t("common","Choose"); ?></option>
+							<option value="import"><?php echo Yii::t("invite","Import a file"); ?></option>
+							<option value="text"><?php echo Yii::t("invite","Write"); ?></option>
+						</select>
+					</div>
+					<div class="form-group col-xs-12" id="step-import">
 						<label for="fileEmail" > <?php echo Yii::t("invite","Files (CSV)"); ?> : <input type="file" id="fileEmail" name="fileEmail" accept=".csv"> </label>
 					</div>
+					<div class="form-group col-xs-12" id="step-text" >
+						<textarea id="textarea-invite" rows="10" cols="50"></textarea></br>
+						<button id="btnValiderTextarea" class="btn btn-success" >
+							<?php echo Yii::t("invite","Check"); ?> 
+						</button>
+					</div>
+					<span id="errorFile" class="col-xs-12 text-red" ></span>
 				</div>
 				<div id="step1-mycontacts" class="modal-body col-xs-6" >
 					<div class="form-group">
@@ -265,9 +281,9 @@
 			if(inView == "step1-search") {
 				$("#modal-invite #divSearchInvite").show();
 				$("#modal-invite #step1-search").show();
-			} else if(inView == "step1-import") {
+			} else if(inView == "step1-other") {
 				$("#modal-invite #divSearchInvite").show();
-				$("#modal-invite #step1-import").show();
+				$("#modal-invite #step1-other").show();
 			} else if(inView == "step1-mycontacts") {
 				$("#modal-invite #divSearchInvite").show();
 				$("#modal-invite #step1-mycontacts").show();
@@ -294,14 +310,18 @@
 		$("#modal-invite #divSearchInvite").hide();
 		$("#modal-invite #divResult").hide();
 		$("#modal-invite #step1-search").hide();
-		$("#modal-invite #step1-import").hide();
+		$("#modal-invite #step1-other").hide();
 		$("#modal-invite #step1-mycontacts").hide();
 		$("#modal-invite #step2").hide();
 		$("#modal-invite #form-invite").hide();
+		$("#modal-invite #errorFile").hide();
+		$("#modal-invite #step-import").hide();
+		$("#modal-invite #step-text").hide();
 
 		$("#modal-invite #dropdown-invite").html("");
 		$("#modal-invite #dropdown-search-invite").html("");
 		$("#modal-invite #dropdown-result").html("");
+		$("#modal-invite #errorFile").html("");
 
 		$("#modal-invite #inviteSearch").val("");
 		$("#modal-invite #inviteName").val("");
@@ -309,6 +329,8 @@
 		$("#fileEmail").val("");
 
 		$("#modal-invite .errorHandler").hide();
+
+		
 		
 	}
 
@@ -320,10 +342,35 @@
 			myContactsToListInvites();
 		});
 
+		$("#modal-invite #typeOther").change(function(e) {
+			mylog.log("typeOther");
+			initInvite();
+			fadeInView("step1-other");
+			if( $(this).val() == "import" ){
+				$("#modal-invite #step-import").show();
+				$("#modal-invite #step-text").hide();
+			} else if( $(this).val() == "text" ){
+				$("#modal-invite #step-import").hide();
+				$("#modal-invite #step-text").show();
+			} else {
+				$("#modal-invite #step-import").hide();
+				$("#modal-invite #step-text").hide();
+			}
+		});
+
+		$("#modal-invite #btnValiderTextarea").click(function() {
+			var textarea = $("#modal-invite #textarea-invite").val();
+			var mailsArray = [] ;
+			if(textarea.indexOf("<") > -1)
+				textarea = textarea.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi).join(';');
+			mailsArray = textarea.split(/[\s\n;,]+/);
+			checkAndGetMailsInvite(mailsArray);
+		});
+
 
 		$("#modal-invite #menuImportFile").click(function() {
 			mylog.log("menuImportFile");
-			fadeInView("step1-import");
+			fadeInView("step1-other");
 		});
 
 		$("#modal-invite #menuInviteSomeone").click(function() {
@@ -809,7 +856,14 @@
 						str += '<i class="fa fa-users "></i> ';
 				}
 
-				str += '<span class="text-dark text-bold">' + elem.name + '</span>';
+				str += '<span class="text-dark text-bold">' + elem.name ; 
+				mylog.log("mailalal", typeList, elem.mail, (typeList == "invites" && typeof elem.mail != "undefined"));
+				if(typeList == "invites" && typeof elem.mail != "undefined"){
+					mylog.log("mailalal", typeList, elem.mail);
+					str += ' <'+ elem.mail +'> </span>';
+				}
+				str += '</span>';
+
 				if(inMyContact == true)
 					str += ' <span class="text-dark text-bold text-green follows tooltips"> '+
 								'<i class="fa fa-link" data-toggle="tooltip" data-placement="top" title="'+trad.follows+'" alt="" data-original-title="'+trad.follows+'"></i>'+
@@ -862,9 +916,13 @@
 			dataType: "json",
 			success: function(data){
 				mylog.log("getcontactsbymails data", data, data.length);
+				var regexMail = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+				regexMail.test("zfezsqsqfezf@yahoo.fr");
+				var nbError = 0;
 				$.each(data, function(keyMails, valueMails){
 					mylog.log("keyMails valueMails", keyMails, valueMails, typeof valueMails);
 					
+  					
 					if(typeof valueMails == "object"){
 						listInvite.citoyens[valueMails.id] = { 
 							name : valueMails.name,
@@ -875,18 +933,31 @@
 							listInvite.citoyens[valueMails.id].isAdmin = "";
 
 					} else {
-						listInvite.invites[keyUniqueByMail(keyMails)] = {
-							name : keyMails,
-							email : keyMails,
-							msg : ""
-						} ;
+						mylog.log("regexMail", keyMails, regexMail.test(keyMails))
+						if(regexMail.test(keyMails)){
+							listInvite.invites[keyUniqueByMail(keyMails)] = {
+								name : keyMails,
+								mail : keyMails,
+								msg : ""
+							} ;
 
-						if(parentType != "citoyens")
-							listInvite.invites[keyUniqueByMail(keyMails)].isAdmin = "";
+							if(parentType != "citoyens")
+								listInvite.invites[keyUniqueByMail(keyMails)].isAdmin = "";
+						} else {
+							nbError++;
+						}
+						
 					}
 					
 				});
 				showElementInvite(listInvite, true);
+				bindRemove();
+				mylog.log("nbError", nbError);
+				if(nbError > 0){
+					$("#modal-invite #errorFile").html(nbError+ " mails ne sont pas valides");
+					$("#modal-invite #errorFile").show();
+				}
+
 				$.unblockUI();
 			}
 		});

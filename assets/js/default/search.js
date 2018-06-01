@@ -231,7 +231,10 @@ function bindLeftMenuFilters () {
                 searchObject.searchSType = typeEvent;
             }
         }else{
-            $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[typeD]+" <i class='fa fa-angle-down'></i>");
+            if(keyType=="all")
+                $(".dropdown-types .dropdown-toggle").removeClass("active").html("Type <i class='fa fa-angle-down'></i>");
+            else
+                $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[typeD]+" <i class='fa fa-angle-down'></i>");
             $(".btn-directory-type").removeClass("active");
             $(this).addClass("active");
         }
@@ -618,6 +621,10 @@ function initSearchObject(){
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  
                 if($.inArray(searchObject.initType, ["all", "events"])>-1 && $.inArray(e,["section","subType"]) > -1) delete searchObject[e];
                 if($.inArray(e,["cities","zones","cp"]) > -1) $.each(v.split(","), function(i, j){ initScopesResearch.ids.push(j) });
+                if(e=="tags"){
+                    searchObject.tags=[];
+                    $.each(v.split(","), function(i, j){searchObject.tags.push(j) });
+                } 
                 if(typeof searchObject[e] != "undefined")
                     activeFiltersInterface(e, v, searchObject.initType); 
             }); 
@@ -705,8 +712,8 @@ function showFiltersInterface(){
         $.each([{"key":"all", "label":"all", "icon":"newspaper-o"},{"key":"news", "label":"onlynews", "icon":"rss"},{"key":"activityStream","label":"activityCommunecter", "icon":"map-marker"},{"key":"surveys", "label":"surveys", "icon":"gavel"}], function(key,entry){
             //$.each(modules[entry].categories, function(e,v){
                 str+='<div class="col-xs-12 no-padding">'+
-                        '<button class="btn btn-default bold elipsis btn-news-type-filters" '+
-                        'data-type-anc="'+entry.key+'" data-key="'+entry.key+'" '+
+                        '<button class="btn btn-default bold elipsis btn-news-type-filters col-xs-12" '+
+                        'data-type-anc="'+entry.key+'" data-key="'+entry.key+'" data-label="'+entry.label+'" '+
                         'data-type="news">'+
                             '<i class="fa fa-'+entry.icon+'"></i> '+
                             tradCategory[entry.label]+
@@ -734,6 +741,7 @@ function activeFiltersInterface(filter,value){
         }
     }
     if(filter=="tags"){
+        $('#tagsFilterInput').val(searchObject.tags).trigger("change");
         countTags=0;
         labelTags="";
         $.each(searchObject.tags, function(e, v){

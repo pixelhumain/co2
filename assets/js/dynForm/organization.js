@@ -10,42 +10,41 @@ dynForm = {
 
 	    		if(typeof currentKFormType != "undefined" && typeObj[currentKFormType] && typeObj[currentKFormType].color){
                 	//alert("dyn" + typeObj[currentKFormType].color);
+                	mylog.log("currentKFormType", currentKFormType, typeObj[currentKFormType], typeObj[currentKFormType].color);
                     $("#ajax-modal .modal-header").addClass("bg-"+typeObj[currentKFormType].color);
                     $("#ajax-modal .infocustom p").addClass("text-"+typeObj[currentKFormType].color);
                 }else{
+                	//alert("dyn on load" );
                 	$("#ajax-modal .modal-header").addClass("bg-green");
                     $("#ajax-modal .infocustom p").addClass("text-green");
                 }
     	   	},
 	    	sub : function(){
 				
-				
 				if(typeof currentKFormType == "undefined" || currentKFormType == "" || 
 				  currentKFormType == "null" || currentKFormType == null){
 					currentKFormType = "organization";
 				}else{
+					//alert(currentKFormType)
 					$("#ajaxFormModal .typeselect").addClass("hidden");
 					$("#ajaxFormModal #type").val(currentKFormType);
 				}
+
 				mylog.log("currentKFormType", currentKFormType);
 	    		//console.log("onLoads Sub currentKFormType", currentKFormType, contextData, contextData.id);
-                var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
-                var typeIcon = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? typeObj[currentKFormType].icon : elementObj.dynForm.jsonSchema.icon;
+	            var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
+	            var typeIcon = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? typeObj[currentKFormType].icon : elementObj.dynForm.jsonSchema.icon;
 	            
 
-                $("#ajax-modal-modal-title").html(
-                        "<i class='fa fa-"+typeIcon+"'></i> "+typeName);
-                
-                $("#ajax-modal .modal-header").removeClass("bg-dark bg-red bg-purple bg-green bg-green-poi bg-orange bg-turq bg-yellow bg-url");
-				$("#ajax-modal .infocustom p").removeClass("text-dark text-red text-purple text-green text-green-poi text-orange text-turq text-yellow text-url");
-
-                
+	            $("#ajax-modal-modal-title").html( "<i class='fa fa-"+typeIcon+"'></i> "+typeName );
+	            
+				$("#ajax-modal .modal-header").removeClass("bg-dark bg-red bg-purple bg-green bg-green-poi bg-orange bg-turq bg-yellow bg-url bg-azure").addClass("bg-"+typeObj[currentKFormType].color);
+				$("#ajax-modal .infocustom p").removeClass("text-dark text-red text-purple text-green text-green-poi text-orange text-turq text-yellow text-url text-azure").addClass("text-"+typeObj[currentKFormType].color);
 
 	    		if(contextData && contextData.type && contextData.id ){
-	    			//console.log("HERE WE ARE");
-    				$('#ajaxFormModal #parentId').val(contextData.id);
+	    			console.log("HERE WE ARE");
+					$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
-
 	    		 	$("#ajax-modal-modal-title").append(
 	    		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+
 	    		 														contextData.name+
@@ -57,8 +56,9 @@ dynForm = {
 	    		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+
 	    		 														userConnected.name+
 	    		 														"</span></small>" );
-    			}
-    			mylog.log("currentKFormType", currentKFormType);
+				}
+				mylog.log("currentKFormType", currentKFormType);
+
 	    	},
 	    },
 	    beforeBuild : function(){
@@ -75,8 +75,11 @@ dynForm = {
 			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
 		    else { 
-	          dyFObj.closeForm(); 
-	          urlCtrl.loadByHash( uploadObj.gotoUrl );
+		    	mylog.log("here", isMapEnd);
+		    	if(typeof networkJson != "undefined")
+					isMapEnd = true;
+				dyFObj.closeForm();
+				urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    },
 	    properties : {

@@ -3,16 +3,10 @@ function constructScopesHtml(news){
 	html="";
 
 	var typeScope = (news == true) ? myScopes.typeNews : myScopes.type;
-
 	$.each(myScopes[typeScope], function(key, value){
 		mylog.log("constructScopesHtml each", key, value);
 		var disabled = (value.active == false && !news) ? "disabled" : "";
 		var btnType = (typeScope=="multiscopes") ? "multiscope" : "communexion";
-		// if(news != true)
-		// 	var btnType = (myScopes.type=="multiscopes") ? "multiscope" : "communexion";
-		// else
-		// 	var btnType = (myScopes.typeNews=="multiscopes") ? "multiscope" : "communexion";
-
 		if(typeof value.name == "undefined") value.name = value.id;
 		if(news){
 			btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
@@ -75,9 +69,24 @@ function constructScopesHtml(news){
 	if(myScopes.type=="open"){
 		html+="<button class='btn btn-danger text-white margin-left-10 padding-5' onclick='clearOpenScope();'><i class='fa fa-refresh'></i> <span class='hidden-xs'>"+trad.delete+"</span></button>";
 	}
+	//appendHeaderFilterActive(labelHeader, countActive);
 	return html;
 }
-
+function appendHeaderFilterActive(title, count){
+	var labelHeader = "where ?"
+	var countActive = 0;
+	$.each(myScopes[myScopes.type], function(key, value){
+		if(typeof value.name == "undefined") value.name = value.id;
+		if(value.active){
+			if(countActive==0) labelHeader="";
+			countActive++;
+			if(countActive <= 2)
+				labelHeader+= (labelHeader!="") ? ", "+value.name : value.name;
+		}
+	});
+	var incrStr = (countActive > 2) ? " +"+(countActive-2): ""; 
+	$(".menu-btn-scope-filter .header-label-scope").html(labelHeader+incrStr);
+} 
 function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
 	mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);
 	mylog.log("changeCommunexionScope appendDom", appendDom);
@@ -259,6 +268,7 @@ function getSearchLocalityObject(){
 			}
 		});
 	}
+	appendHeaderFilterActive();
 //	mylog.log("getMultiScopeForSearch search", res);
 	return res; 
 
@@ -417,13 +427,11 @@ function bindScopesInputEvent(news){
 		if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
 		mylog.log("globalscope-checker",  $(this).data("scope-name"), $(this).data("scope-type"));
 
-
-
-
-		mylog.log("globalscope-checker values",  myScopes.search[$(this).data("scope-value")]);
+		mylog.log("globalscope-checker values", myScopes.search, $(this).data("scope-value"), myScopes.search[$(this).data("scope-value")]);
 		changeCommunexionScope(	$(this).data("scope-value"), $(this).data("scope-name"), 
 								$(this).data("scope-type"), $(this).data("scope-level"),
 								myScopes.search[$(this).data("scope-value")],  notSearch, testCo, $(this).data("append-container")) ;
+
 	});
 }
 

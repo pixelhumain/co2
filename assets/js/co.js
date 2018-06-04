@@ -736,7 +736,7 @@ var urlCtrl = {
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
-	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
+	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classifieds"/*"entry","vote" ,"action" ,"rooms" */],
 	map : function (hash) {
 		if(typeof hash == "undefined") return { hash : "#",
 												type : "",
@@ -862,7 +862,7 @@ var urlCtrl = {
 					return false;
 				} else {
 					mylog.warn("PRIVATE SECTION LOGIN FIRST",hash);
-					showPanel( "box-login" );
+					Login.openLogin();
 					resetUnlogguedTopBar();
 					res = true;
 				}
@@ -945,7 +945,7 @@ var urlCtrl = {
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
 	        if(panelName == "box-login"){
-				$('#modalLogin').modal("show");
+				Login.openLogin();
 				$.unblockUI();
 	        }
 			else if(panelName == "box-register"){
@@ -966,40 +966,43 @@ var urlCtrl = {
 	    } 
 
 		else if(hash.length>2  || hash.indexOf("#@") >= 0){
-			hashT = (hash.indexOf("#@") >= 0) ? hash.replace( "#@","" ) : hash.replace( "#","" );
-			hashT=hashT.split(".");
-			if(typeof hashT == "string")
-				slug=hashT;
-			else
-				slug=hashT[0];
+			splitHref=(hash.indexOf("?") >= 0) ? hash.split("?") : [hash];
+			if(splitHref[0] > 2 || splitHref[0].indexOf("#@") >= 0){
+				hashT = (splitHref[0].indexOf("#@") >= 0) ? splitHref[0].replace( "#@","" ) : splitHref[0].replace( "#","" );
+				hashT=hashT.split(".");
+				if(typeof hashT == "string")
+					slug=hashT;
+				else
+					slug=hashT[0];
+				$.ajax({
+		  			type: "POST",
+		  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+		  			dataType: "json",
+		  			success: function(data){
+				  		if(data.result){
+				  			viewPage="";			  			
+				  			if(hashT.length > 1){
+				  				hashT.shift();
+				  				viewPage="/"+hashT.join("/");
+				  			}
 
-			$.ajax({
-	  			type: "POST",
-	  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
-	  			dataType: "json",
-	  			success: function(data){
-			  		if(data.result){
-			  			viewPage="";			  			
-			  			if(hashT.length > 1){
-			  				hashT.shift();
-			  				viewPage="/"+hashT.join("/");
-			  			}
-
-			  			var key = hashT[0];
-			  			var get = "";
-			  			//console.log("load key indexOf", key, key.indexOf("?"));
-						if(key.indexOf("?")>-1){
-							get = key.substr(key.indexOf("?"), key.length);
-							key = key.substr(0, key.indexOf("?"), key.length);
-							//console.log("load key", key);
-						}
-			  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
-			  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
-			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get);
-			  		}else
-			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
-	 			},
-			});
+				  			var key = hashT[0];
+				  			var get = "";
+				  			//console.log("load key indexOf", key, key.indexOf("?"));
+							if(key.indexOf("?")>-1){
+								get = key.substr(key.indexOf("?"), key.length);
+								key = key.substr(0, key.indexOf("?"), key.length);
+								//console.log("load key", key);
+							}
+				  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
+				  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
+				  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get);
+				  		}else
+				  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
+		 			}
+				});
+			}else
+				showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 		}
 	    else if ( moduleId != activeModuleId) {
 	    	//alert( ctrlId +"/"+ actionId );
@@ -1037,6 +1040,7 @@ function showPanel(box,callback)
 		callback();
 	}
 }
+
 
 /* ****************
 Generic ajax panel loading process 
@@ -1188,7 +1192,7 @@ function checkIsLoggued(uId){
 		setTitle("Section Sécuriser", "user-secret");
 
 		backUrl = location.hash;
-		showPanel( "box-login" );
+		Login.openLogin();
     	
     	resetUnlogguedTopBar();
 	}else 
@@ -1894,90 +1898,6 @@ function fillContactFields(id){
 	$("#name").val(name);
 }
 var cotmp = {};
-function globalSearch(searchValue,types,contact){
-	
-	searchType = (types) ? types : ["organizations", "projects", "events"/*, "needs"*/, "citoyens"];
-
-	var data = { 	 
-		"name" : searchValue,
-		// "locality" : "", a otpimiser en utilisant la localité 
-		"searchType" : searchType,
-		"indexMin" : 0,
-		"indexMax" : 50
-	};
-	$("#listSameName").html("<i class='fa fa-spin fa-circle-o-notch'></i> Vérification d'existence");
-	$("#similarLink").show();
-	$("#btn-submit-form").html('<i class="fa  fa-spinner fa-spin"></i>').prop("disabled",true);
-	$.ajax({
-      type: "POST",
-          url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
-          data: data,
-          dataType: "json",
-          error: function (data){
-             mylog.log("error"); mylog.dir(data);
-             $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
-          },
-          success: function(data){
-          	mylog.log("globalSearch", data);
-            var str = "";
- 			var compt = 0;
- 			var msg = "Verifiez si cet élément n'existe pas déjà";
- 			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
- 			cotmp = {};
- 			$.each(data.results, function(id, elem) {
-  				mylog.log("similarlink globalautocomplete", elem);
-  				city = "";
-				postalCode = "";
-				var htmlIco ="<i class='fa fa-users'></i>";
-				if(elem.type){
-					typeIco = elem.type;
-					htmlIco ="<i class='fa fa-"+dyFInputs.get(elem.type).icon +"'></i>";
-				}
-				where = "";
-				if (elem.address != null) {
-					city = (elem.address.addressLocality) ? elem.address.addressLocality : "";
-					postalCode = (elem.address.postalCode) ? elem.address.postalCode : "";
-					if( notEmpty( city ) && notEmpty( postalCode ) )
-					where = ' ('+postalCode+" "+city+")";
-				}
-				//var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
-				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
-					htmlIco= "<img width='25' height='25' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
-				}
-				
-				if(contact == true){
-					cotmp[id] = {id:id, name : elem.name};
-					str += 	"<div class='col-xs-12 padding-10'>"+
-								"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='btn btn-xs btn-default w50p' >"+
-									htmlIco + " " + elem.name + "</br>" + where +
-								"</a>" +
-							"</div>";
-					msg = "Verifiez si le contact est dans Communecter";
-				}else{
-					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger col-xs-12 w50p text-left padding-5 margin-5' style='height:42px' >"+
-							"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
-						"</a>";
-				}
-				//str += directory.lightPanelHtml(elem);  
-				
-				compt++;
-
-
-  			});
-			
-			if (compt > 0) {
-				$("#listSameName").html("<div class='col-sm-12 light-border text-red'> <i class='fa fa-eye'></i> "+msg+" : </div>"+str);
-				$("#listSameName").show();
-			} else {
-				$("#listSameName").html("<span class='txt-green'><i class='fa fa-thumbs-up text-green'></i> Aucun élément avec ce nom.</span>");
-
-			}
-
-
-			
-          }
- 	});
-}
 
 /*function checkUsername(username){
 	
@@ -2934,7 +2854,20 @@ function initKInterface(params){ console.log("initKInterface");
       resizeInterface();
     });
 	resizeInterface();
-	
+	$(window).bind("scroll",function(){ 
+		if($(this).scrollTop()<=10)
+			infScroll=true;
+        if( $(this).scrollTop() > 10 && infScroll && !headerScaling){
+        	$("#filter-scopes-menu, #filters-nav, #text-search-menu").hide(200);
+        	$(".menu-btn-scope-filter").removeClass("active");
+        	headerHeightPos(true);
+        	headerScaling=false;
+        	infScroll=false;
+        }
+        //else
+        //	$("#filter-scopes-menu, #filters-nav").show();
+
+    });
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
         var $anchor = $(this);
@@ -2985,15 +2918,27 @@ function initKInterface(params){ console.log("initKInterface");
         showFloopDrawer(false);
         showNotif(false);
         $("#dropdown-user").addClass("open");
-        $("#dropdown-dda").removeClass("open");
+        $("#dropdown-dda, .dropdownApps-menuTop").removeClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
-    
+    $("#dropdownApps").click(function(){
+		showFloopDrawer(false);
+        showNotif(false);
+        $("#dropdown-user, #dropdown-dda").removeClass("open");
+        $(".dropdownApps-menuTop").addClass("open");
+        
+    });
+    $(".dropdownApps-menuTop").mouseleave(function(){ //alert("dropdown-user mouseleave");
+    	setTimeout(function(){ 
+    		if(!$(".dropdownApps-menuTop").is(":hover"))
+    			$(".dropdownApps-menuTop").removeClass("open");
+    	}, 200);
+    });
     $(".btn-dashboard-dda").click(function(){
         showFloopDrawer(false);
         showNotif(false);
         dashboard.loadDashboardDDA();
-        $("#dropdown-user").removeClass("open");
+        $("#dropdown-user, .dropdownApps-menuTop").removeClass("open");
         $("#dropdown-dda").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
@@ -3039,7 +2984,7 @@ function initKInterface(params){ console.log("initKInterface");
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];
     }
     console.log("affixTop", affixTop);
-    if(affixTop > 0){
+    /*if(affixTop > 0){
       // Offset for Main Navigation
       $("#affix-sub-menu").affix({
           offset: {
@@ -3055,13 +3000,13 @@ function initKInterface(params){ console.log("initKInterface");
           offset: {
               top: affixTop
           }
-      });*/
+      });
       $('#mainNav').affix({
           offset: {
               top: affixTop
           }
       });
-    }
+    }*/
 
 
     $(".logo-menutop.hidden-top, .menu-btn-start-search, #input-sec-search").attr("style", "");
@@ -3196,9 +3141,9 @@ function test(params, itemType){
         params.parentIcon = "fa-"+parentObj.icon;
         params.parentColor = parentObj.color;
     }
-    if(params.type == "classified" && typeof params.category != "undefined"){
-      params.ico = typeof classified.filters[params.category] != "undefined" ?
-                   "fa-" + classified.filters[params.category]["icon"] : "";
+    if(params.type == "classifieds" && typeof params.category != "undefined"){
+      params.ico = typeof classifieds.filters[params.category] != "undefined" ?
+                   "fa-" + classifieds.filters[params.category]["icon"] : "";
     }
 
     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
@@ -3300,7 +3245,7 @@ var co = {
 					$("#openModal div.modal-content").css("text-align","left");
 					lazyLoad( baseUrl+"/plugins/jsonview/jquery.jsonview.js", 
 							  baseUrl+"/plugins/jsonview/jquery.jsonview.css", function() { 
-							  	alert();
+							  	//alert();
 						getAjax('', url, function(data){ 
 							urlT = url.split('/');
 							title = url+"<br/>"+urlT[8];
@@ -3332,7 +3277,7 @@ var co = {
 	},
 	nect : function () { 
 		if(!userId)
-			$('#modalLogin').modal("show");
+			Login.openLogin();
 		else 
 			toastr.success("allready Loggued in!!");	},
 	tribute : function () { 

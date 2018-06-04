@@ -397,9 +397,9 @@ function bindAboutPodElement() {
 			}
 
 			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
-
-			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
+			if($.inArray(contextData.type, [typeObj.organization.col, typeObj.person.col, typeObj.project.col, typeObj.event.col]) > -1 )
 				form.dynForm.jsonSchema.properties.email = dyFInputs.text();
+			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText(tradDynForm["fix"],tradDynForm["enterfixnumber"]);
 				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText(tradDynForm["mobile"],tradDynForm["entermobilenumber"]);
 				form.dynForm.jsonSchema.properties.fax= dyFInputs.inputText(tradDynForm["fax"],tradDynForm["enterfaxnumber"]);
@@ -477,7 +477,7 @@ function bindAboutPodElement() {
 					dataUpdate.avancement = contextData.avancement;
 			}
 
-			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
+			if($.inArray(contextData.type, [typeObj.organization.col, typeObj.person.col, typeObj.project.col, typeObj.event.col]) > -1 ){
 				mylog.log("test email", contextData, contextData.email);
 				if(notEmpty(contextData.email)) {
 					mylog.log("test email2", contextData, contextData.email);
@@ -1111,8 +1111,6 @@ function bindAboutPodElement() {
 			valCD = val;
 			if(val == "type" && collection == typeObj.organization.col)
 				valCD = "typeOrga";
-			else if(val == "type" && collection == typeObj.event.col)
-				valCD = "typeEvent";
 			else if(val == "type" && collection == typeObj.event.col)
 				valCD = "typeEvent";
 

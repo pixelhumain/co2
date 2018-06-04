@@ -278,12 +278,15 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 							str += directory.cityPanelHtml(o);
 						}
 						else if(type == "zone"){
+
+
 							valuesScopes = {
 								id : o._id.$id,
 								name : o.name,
 								country : o.countryCode,
 								level : o.level
 							}
+							mylog.log("valuesScopes",valuesScopes);
 
 							if(o.level.indexOf("1") >= 0){
 								typeSearchCity="level1";
@@ -332,7 +335,11 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 							}
 							//objToPush.id+objToPush.type+objToPush.postalCode
 							valuesScopes.key = valuesScopes.id+valuesScopes.type ;
+							mylog.log("valuesScopes.key", valuesScopes.key, valuesScopes);
 							myScopes.search[valuesScopes.key] = valuesScopes;
+
+							mylog.log("myScopes.search", myScopes.search);
+							o.key = valuesScopes.key;
 							str += directory.zonePanelHtml(o);
 						}
 				// 	var valuesScopes = {};

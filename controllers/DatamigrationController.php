@@ -669,7 +669,7 @@ class DatamigrationController extends CommunecterController {
 			  	//print_r($data);
 			  	//echo "----------------------------------------<br/><br/>";
 			  	array_push($allClassifieds, $data);
-				echo json_encode($data);
+				// echo json_encode($data);
 			}
 			//echo "<br/><br/><br/><hr><hr/><h1>JSON CLASSIFIEDS GENERATE</h1><br/><br/><br/>";
 			//echo json_encode($allClassifieds);

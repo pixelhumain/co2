@@ -26,7 +26,7 @@ Migration des ressources dans classified et refactor sur les "classified" qui de
     ***Affecte les anciens "type" à l'entrée "category"
     ***Remplace le chemin des urls d'images par le chemin correspondant à la collection "classifieds" => "upload/communecter/classifieds/" 
   **2-2 - Extraire le json affichés et le mettre dans dans un fichier json 
-  **2-3 - Renommer les champs section - category - subtype avec les bonnes clés 
+  **2-3 - Renommer les champs section : "category" en "subtype" avec les bonnes clés 
           - Type "classifieds" se référer à eco/assets/js/classifieds/categories.json
           - Type "ressources" se référer à eco/assets/js/ressources/categories.json
           - Type "jobs" se référer à eco/assets/js/jobs/categories.json

@@ -235,7 +235,7 @@ jQuery(document).ready(function() {
         keyType=$(this).data("key");
         searchObject.types= (keyType!="all") ? keyType : []; 
         if(keyType=="all")
-            $(".dropdown-types .dropdown-toggle").removeClass("active").html("Type <i class='fa fa-angle-down'></i>");
+            $(".dropdown-types .dropdown-toggle").removeClass("active").html(trad.type+" <i class='fa fa-angle-down'></i>");
         else    
             $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[$(this).data("label")]+" <i class='fa fa-angle-down'></i>");       
         startNewsSearch(true);

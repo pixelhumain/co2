@@ -3019,7 +3019,8 @@ var directory = {
 
                     if(typeof params.typeOrga != "undefined")
                       typeIco = params.typeOrga;
-
+                    if(typeof params.typeClassified != "undefined")
+                      typeIco = params.typeClassified;
                     var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
                     params.ico =  "fa-"+obj.icon;
                     params.color = obj.color;
@@ -3029,9 +3030,10 @@ var directory = {
                         params.parentIcon = "fa-"+parentObj.icon;
                         params.parentColor = parentObj.color;
                     }
-                    if((typeof searchObject.countType != "undefined" && searchObject.countType.length==1) && params.type == "classifieds" && typeof params.category != "undefined" && typeof classifieds != "undefined"){
-                      params.ico = (typeof classifieds.filters != "undefined" && typeof classifieds.filters[params.category] != "undefined") ?
-                                   "fa-" + classifieds.filters[params.category]["icon"] : "bullhorn";
+                    if((typeof searchObject.countType != "undefined" && searchObject.countType.length==1) && params.type == "classifieds" && typeof params.category != "undefined" && typeof modules[params.typeClassified] != "undefined"){
+                      getIcoInModules=modules[params.typeClassified].categories;
+                      params.ico = (typeof getIcoInModules.filters != "undefined" && typeof getIcoInModules.filters[params.category] != "undefined") ?
+                                   "fa-" + getIcoInModules.filters[params.category]["icon"] : "bullhorn";
                     }
 
                     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";

@@ -290,7 +290,7 @@ function bindLeftMenuFilters () {
         } 
         else 
         {
-            $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[typeKey]+" <i class='fa fa-angle-down'></i>");
+            $(".dropdown-types .dropdown-toggle").addClass("active").html(typeClass+" <i class='fa fa-angle-down'></i>");
             $(".dropdown-section, .dropdown-category, .dropdown-subType").show();
             searchObject.searchSType=typeKey;
             if( jsonHelper.notNull("modules."+typeKey) ){
@@ -385,7 +385,6 @@ function bindLeftMenuFilters () {
         }else{
             $(".btn-select-category").removeClass("active");
             $(this).addClass("active");
-
             $(".keycat").addClass("hidden");
             $(".keycat-"+classType).removeClass("hidden");  
             searchObject.category=classType;
@@ -529,7 +528,7 @@ function constructSearchObjectAndGetParams(){
   if(typeof searchObject.category != "undefined"){
     getStatus+=(getStatus!="") ? "&":"";
     getStatus+="category="+searchObject.category;
-    searchConstruct.subType = searchObject.category;
+    searchConstruct.category = searchObject.category;
   }
   if(typeof searchObject.subType != "undefined"){
     getStatus+=(getStatus!="") ? "&":"";
@@ -616,10 +615,10 @@ function initSearchObject(){
                 // Check on types on search app
                 if(searchObject.initType!= "all" && e=="types") delete searchObject[e];
                 else if (e=="types"){searchObject[e]=[v]; delete searchObject.ranges;}
-                if(searchObject.initType!="classified" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
+                if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
                 if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  
-                if($.inArray(searchObject.initType, ["all", "events"])>-1 && $.inArray(e,["section","subType"]) > -1) delete searchObject[e];
+                if($.inArray(searchObject.initType, ["all", "events"])>-1 && $.inArray(e,["section","category","subType"]) > -1) delete searchObject[e];
                 if($.inArray(e,["cities","zones","cp"]) > -1) $.each(v.split(","), function(i, j){ initScopesResearch.ids.push(j) });
                 if(e=="tags"){
                     searchObject.tags=[];
@@ -634,26 +633,37 @@ function initSearchObject(){
         }
     }else
         appendScopeBreadcrum();
-    if(typeof searchObject.priceMin != "undefined")
-        activePriceFilter();
+    if(searchObject.initType=="classifieds") 
+        activeClassifiedFilters();
 }
-function activePriceFilter(){
-    str="";
-    if(typeof searchObject.priceMin != "undefined")
-        str+=(typeof searchObject.priceMax != "undefined") ?  searchObject.priceMin+" - " : "Sup. à "+searchObject.priceMin;
-    if(typeof searchObject.priceMax != "undefined")
-        str+=(typeof searchObject.priceMin != "undefined") ?  searchObject.priceMax : "Inf. à "+searchObject.priceMax;
-    if(typeof searchObject.devise != "undefined")
-        str+= " "+searchObject.devise;
-    $(".dropdown-price .dropdown-toggle").addClass("active").html(str+" <i class='fa fa-angle-down'></i>");
+function activeClassifiedFilters(){
+    if(typeof searchObject.priceMin != "undefined"){
+        str="";
+        if(typeof searchObject.priceMin != "undefined")
+            str+=(typeof searchObject.priceMax != "undefined") ?  searchObject.priceMin+" - " : "Sup. à "+searchObject.priceMin;
+        if(typeof searchObject.priceMax != "undefined")
+            str+=(typeof searchObject.priceMin != "undefined") ?  searchObject.priceMax : "Inf. à "+searchObject.priceMax;
+        if(typeof searchObject.devise != "undefined")
+            str+= " "+searchObject.devise;
+        $(".dropdown-price .dropdown-toggle").addClass("active").html(str+" <i class='fa fa-angle-down'></i>");
+    }
+    if(typeof searchObject.searchSType =="undefined")
+        $(".dropdown-section, .dropdown-category, .dropdown-subType").hide();
+    else if(typeof searchObject.category =="undefined")
+        $(".dropdown-subType").hide();
+
 }
 function activeTagsFilter(){
     countTags=0;
     labelTags="";
     $.each(searchObject.tags, function(e, v){
-        countTags++;
-        if(countTags <=2)
-            labelTags+= (labelTags!="") ? ", "+v : v; 
+        if(v!=""){
+            countTags++;
+            if(countTags <=2)
+                labelTags+= (labelTags!="") ? ", "+v : v;
+        }else{
+            searchObject.tags.splice(e,1);
+        } 
     });
     labelEnd=(countTags>2) ? labelTags+ " +"+(countTags-2) : labelTags;
     if(labelEnd!="")

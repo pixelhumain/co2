@@ -891,6 +891,7 @@ var tradCategory = {
 	"ressources":"<?php echo Yii::t("category","Voluntary & help") ?>",
 	"voluntary":"<?php echo Yii::t("category","Voluntary & help") ?>",
 	"salesrents":"<?php echo Yii::t("category","Sales & rents") ?>",
+	"Sharing":"<?php echo Yii::t("common","Sharing") ?>",
 	"helping":"<?php echo Yii::t("category","Jobs offers") ?>",
 	"Share":"<?php echo Yii::t("category","Share") ?>", 
     "To share":"<?php echo Yii::t("category","To share") ?>",

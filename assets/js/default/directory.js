@@ -3033,7 +3033,7 @@ var directory = {
                     if((typeof searchObject.countType != "undefined" && searchObject.countType.length==1) && params.type == "classifieds" && typeof params.category != "undefined" && typeof modules[params.typeClassified] != "undefined"){
                       getIcoInModules=modules[params.typeClassified].categories;
                       params.ico = (typeof getIcoInModules.filters != "undefined" && typeof getIcoInModules.filters[params.category] != "undefined") ?
-                                   "fa-" + getIcoInModules.filters[params.category]["icon"] : "bullhorn";
+                                   "fa-" + getIcoInModules.filters[params.category]["icon"] : "fa-bullhorn";
                     }
 
                     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
@@ -3465,8 +3465,8 @@ var directory = {
             subStr="";
             $.each( objJson.filters,function(k,o){
                 if( type == "btn" ){
-                  str += '<div class="col-md-4 padding-5 typeBtnC '+k+'">'+
-                          '<a class="btn tagListEl btn-select-category elipsis typeBtn '+k+'Btn " data-tag="'+k+'" '+
+                  str += '<div class="col-md-4 padding-5 categoryBtnC '+k+'">'+
+                          '<a class="btn tagListEl btn-select-category elipsis categoryBtn '+k+'Btn " data-tag="'+k+'" '+
                               'data-key="'+k+'" href="javascript:;">'+
                             '<i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+
                           '</a>'+

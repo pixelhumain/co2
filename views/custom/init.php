@@ -20,9 +20,9 @@ if( @$_GET["city"] || Yii::app()->session['custom'] ){
 
 custom.id = "<?php echo Yii::app()->session['custom']['id'] ?>";
 custom.type = "<?php echo Yii::app()->session['custom']['type'] ?>";
-custom.logo = modules.eco.url+"<?php echo Yii::app()->session['custom']['logo'] ?>";
 
-<?php if(Yii::app()->session['custom']["bannerTpl"]){ ?>
+<?php if(Yii::app()->session['custom']["logo"]){ ?>
+    custom.logo = modules.eco.url+"<?php echo Yii::app()->session['custom']['logo'] ?>";
     $(".logo-menutop").attr({'src':custom.logo});
 <?php } 
     }

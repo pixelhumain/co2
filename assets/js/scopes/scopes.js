@@ -73,7 +73,7 @@ function constructScopesHtml(news){
 	return html;
 }
 function appendHeaderFilterActive(title, count){
-	var labelHeader = "where ?"
+	var labelHeader = trad.where+" ?"
 	var countActive = 0;
 	$.each(myScopes[myScopes.type], function(key, value){
 		if(typeof value.name == "undefined") value.name = value.id;

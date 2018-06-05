@@ -3033,7 +3033,8 @@ var directory = {
 
                     if(typeof params.typeOrga != "undefined")
                       typeIco = params.typeOrga;
-
+                    if(typeof params.typeClassified != "undefined")
+                      typeIco = params.typeClassified;
                     var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
                     params.ico =  "fa-"+obj.icon;
                     params.color = obj.color;
@@ -3043,9 +3044,10 @@ var directory = {
                         params.parentIcon = "fa-"+parentObj.icon;
                         params.parentColor = parentObj.color;
                     }
-                    if((typeof searchObject.countType != "undefined" && searchObject.countType.length==1) && params.type == "classifieds" && typeof params.category != "undefined" && typeof classifieds != "undefined"){
-                      params.ico = (typeof classifieds.filters != "undefined" && typeof classifieds.filters[params.category] != "undefined") ?
-                                   "fa-" + classifieds.filters[params.category]["icon"] : "bullhorn";
+                    if((typeof searchObject.countType != "undefined" && searchObject.countType.length==1) && params.type == "classifieds" && typeof params.category != "undefined" && typeof modules[params.typeClassified] != "undefined"){
+                      getIcoInModules=modules[params.typeClassified].categories;
+                      params.ico = (typeof getIcoInModules.filters != "undefined" && typeof getIcoInModules.filters[params.category] != "undefined") ?
+                                   "fa-" + getIcoInModules.filters[params.category]["icon"] : "fa-bullhorn";
                     }
 
                     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
@@ -3477,8 +3479,8 @@ var directory = {
             subStr="";
             $.each( objJson.filters,function(k,o){
                 if( type == "btn" ){
-                  str += '<div class="col-md-4 padding-5 typeBtnC '+k+'">'+
-                          '<a class="btn tagListEl btn-select-category elipsis typeBtn '+k+'Btn " data-tag="'+k+'" '+
+                  str += '<div class="col-md-4 padding-5 categoryBtnC '+k+'">'+
+                          '<a class="btn tagListEl btn-select-category elipsis categoryBtn '+k+'Btn " data-tag="'+k+'" '+
                               'data-key="'+k+'" href="javascript:;">'+
                             '<i class="fa fa-'+o.icon+'"></i> <br>'+tradCategory[k]+
                           '</a>'+

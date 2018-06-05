@@ -1012,6 +1012,9 @@ var urlCtrl = {
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 	    mylog.log("END loadByHash hash:", hash);
 	    location.hash = hash;
+
+	    
+
 	    /*if(typeof back == "function"){
 	    	alert("back");
 	    	back();
@@ -1113,6 +1116,10 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	        		urlCtrl.afterLoad();
 	        		urlCtrl.afterLoad = null;
 	        	}
+
+	        	if( custom && custom.logo )
+	    			$(".logo-menutop").attr( {'src':custom.logo} ); 	
+
 
 	        	/*if(debug){
 	        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 

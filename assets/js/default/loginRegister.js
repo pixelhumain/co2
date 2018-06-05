@@ -124,6 +124,7 @@ var Login = function() {
 		    	  url: baseUrl+"/"+moduleId+"/person/authenticate",
 		    	  data: params,
 		    	  success: function(data){ 
+		    	  	alert("dyFObj.openForm"+data.result);
 		    		  if(data.result){
 		    		  	
 		    		  	if($("#remember").prop("checked")){
@@ -134,7 +135,7 @@ var Login = function() {
 			    		  	$.cookie("remember", $("#remember").prop("checked"), { expires: 180, path : "/" });
 			    		}
 
-		    		  	//alert("dyFObj.openForm"+dyFObj.openFormAfterLogin.type);
+		    		  	
 		    		  	var url = requestedUrl;
 		    		  	//mylog.warn(url,", has #"+url.indexOf("#"),"count / : ",url.split("/").length - 1 );
 		    		  	if(data.goto != null){
@@ -531,7 +532,8 @@ var Login = function() {
 						runRegisterValidator();
 						
 						Login.loaded = true;
-						//alert("List Loaded play callback");
+
+						$('#modalLogin').modal("show");
 					}
 			});
 			

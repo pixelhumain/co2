@@ -281,7 +281,7 @@ class AppController extends CommunecterController {
 
     public function actionInterop(){
         //echo "Hello there "; echo Yii::app()->createUrl("/interop/co/index"); exit; 
-        $this->redirect( Yii::app()->createUrl("/interop/default/index") );
+        $this->redirect( Yii::app()->createUrl("/interop") );
     }
 
     public function actionPage($type, $id, $view=null, $mode=null, $dir=null){

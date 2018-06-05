@@ -2857,7 +2857,7 @@ function initKInterface(params){ console.log("initKInterface");
 	$(window).bind("scroll",function(){ 
 		if($(this).scrollTop()<=10)
 			infScroll=true;
-        if( $(this).scrollTop() > 10 && infScroll && !headerScaling){
+        if( $(this).scrollTop() > 10 && !headerScaling && typeof infScroll != "undefined" && infScroll){
         	$("#filter-scopes-menu, #filters-nav, #text-search-menu").hide(200);
         	$(".menu-btn-scope-filter").removeClass("active");
         	headerHeightPos(true);

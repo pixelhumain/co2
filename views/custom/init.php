@@ -4,11 +4,14 @@
 
 if( @$_GET["city"] || Yii::app()->session['custom'] ){ 
     
-    if( $city["custom"] && !@Yii::app()->session['custom']){
+    if( !@Yii::app()->session['custom'])
+    {
         $city = City::getById( $_GET["city"] );
-        Yii::app()->session['custom'] = array("id"   => (string) $city["_id"],
-                                              "type" => City::COLLECTION );
-        Yii::app()->session['custom'] = array_merge(Yii::app()->session['custom'],$city["custom"]);
+        if(@$city["custom"]){
+            Yii::app()->session['custom'] = array("id"   => (string) $city["_id"],
+                                                  "type" => City::COLLECTION );
+            Yii::app()->session['custom'] = array_merge(Yii::app()->session['custom'],$city["custom"]);
+        }
     }
 
     if( @Yii::app()->session['custom'] )

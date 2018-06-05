@@ -531,7 +531,7 @@ var Login = function() {
 						runRegisterValidator();
 						
 						Login.loaded = true;
-						alert("List Loaded play callback");
+						//alert("List Loaded play callback");
 					}
 			});
 			

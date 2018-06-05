@@ -124,7 +124,7 @@ var Login = function() {
 		    	  url: baseUrl+"/"+moduleId+"/person/authenticate",
 		    	  data: params,
 		    	  success: function(data){ 
-		    	  	alert("dyFObj.openForm"+data.result);
+		    	  	//alert("dyFObj.openForm"+data.result);
 		    		  if(data.result){
 		    		  	
 		    		  	if($("#remember").prop("checked")){

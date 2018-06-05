@@ -519,8 +519,9 @@ var Login = function() {
 
 			lazyLoadMany( ListPath, 
 				function() { 
+					//console.log("lazyLoadMany count",countLazyLoad,ListPath.length);
 					if(countLazyLoad == ListPath.length){
-						alert("List Loaded play callback");
+						//alert("List Loaded play callback");
 						addCustomValidators();
 						runBoxToShow();
 						runSetDefaultValidation();
@@ -530,12 +531,12 @@ var Login = function() {
 						runRegisterValidator();
 						
 						Login.loaded = true;
+						alert("List Loaded play callback");
 					}
 			});
 			
 		},
 		openLogin : function() { 
-
 			if(!Login.loaded)
 				Login.init();
 			else 

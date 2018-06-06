@@ -86,6 +86,8 @@ function appendHeaderFilterActive(title, count){
 	});
 	var incrStr = (countActive > 2) ? " +"+(countActive-2): ""; 
 	$(".menu-btn-scope-filter .header-label-scope").html(labelHeader+incrStr);
+
+	(countActive > 0) ? $(".menu-btn-scope-filter").addClass("active") : $(".menu-btn-scope-filter").removeClass("active");
 } 
 function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
 	mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);

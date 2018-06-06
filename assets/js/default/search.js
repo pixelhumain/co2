@@ -311,6 +311,22 @@ function bindLeftMenuFilters () {
             }*/
         }
         $(".btn-select-type-anc, .btn-select-section, .btn-select-category, .keycat").removeClass("active");
+        //if(bindEcoSource())
+           //bindEcoSource();
+        $(".btn-select-source").click(function(){
+            if( typeof interop == "undefined" ){
+                lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
+                    if( typeof interopObj == "undefined" )
+                        lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
+                            mylog.log("interop", interop, interopObj);
+                            interopObj.poleEmploi.startSearch();
+                        } );
+                });
+            }else{
+                interopObj.poleEmploi.startSearch();
+            }
+        });
+
         $(".keycat").addClass("hidden");
         if(typeof searchObject.section != "undefined") delete searchObject.section;
         if(typeof searchObject.category != "undefined") delete searchObject.category;

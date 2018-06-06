@@ -578,6 +578,11 @@ function constructSearchObjectAndGetParams(){
   if(typeof searchObject.countType != "undefined")
     searchConstruct.countType=searchObject.countType;
 
+  // if(typeof custom != "undefined"){
+  //   getStatus+=(getStatus!="") ? "&":"";
+  //   getStatus+="cityxx="+custom.id;
+  // }
+
   // Locality
   getStatus=getUrlSearchLocality(getStatus);
   searchConstruct.locality = getSearchLocalityObject();

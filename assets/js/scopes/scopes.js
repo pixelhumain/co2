@@ -205,7 +205,8 @@ function checkMyScopeObject(initScopeResearch, paramsGet){
 		appendScopeBreadcrum();	
 }
 function appendScopeBreadcrum(){
-	if(Object.keys(myScopes[myScopes.type]).length > 0)
+	console.log(myScopes,myScopes.type);
+	if( Object.keys(myScopes[myScopes.type]).length > 0)
 		$(".scopes-container").html(constructScopesHtml());
 	bindScopesInputEvent();
 	if($.inArray(myScopes.type, ["multiscopes", "communexion"]) > -1)

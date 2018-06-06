@@ -16,7 +16,8 @@
     //donc normalement pas besoin de faire de IF ici
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "page") ); 
+                                "page" => "page",
+                                "dontShowMenu"=>true) ); 
 ?>
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
@@ -172,7 +173,7 @@ function initPageInterface(){
     $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
         if(e.keyCode == 13){
-            search.value=$(this).val();
+            searchObject.text=$(this).val();
             myScopes.type="open";
             myScopes.open={};
             urlCtrl.loadByHash("#search");

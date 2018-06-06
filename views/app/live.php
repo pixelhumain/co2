@@ -14,6 +14,7 @@
 		'/js/news/autosize.js',
 		'/js/news/newsHtml.js',
 		'/js/default/live.js',
+        '/js/default/search.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
@@ -33,7 +34,8 @@
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath ,
                                 "type" => @$type,
-                                "page" => $page
+                                "page" => $page,
+                                "dontShowMenu"=>true,
                                 //"explain"=> "Live public : retrouvez tous les messages publics selon vos lieux favoris") 
                                 )); 
     $randImg = rand(1, 2);
@@ -168,35 +170,35 @@
 
 
 var indexStepInit = 5;
-var searchType = ["organizations", "projects", "events", "needs", "proposals"];
+//var searchType = ["organizations", "projects", "events", "needs", "proposals"];
 var allNewsType = ["news"];//, "idea", "question", "announce", "information"];
 
-var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
+//var liveTypeName = { "news":"<i class='fa fa-rss'></i> Les messages",
 					 //"idea":"<i class='fa fa-info-circle'></i> Les idées",
 					 //"question":"<i class='fa fa-question-circle'></i> Les questions",
 					 //"announce":"<i class='fa fa-ticket'></i> Les annonces",
 					 //"information":"<i class='fa fa-newspaper-o'></i> Les informations"
-					};
+//					};
 
-var page = "<?php echo $page; ?>";
-
+//var page = "<?php echo $page; ?>";
+searchObject.initType="news";
 <?php if(Yii::app()->params["CO2DomainName"] == "kgougle") $page = "freedom"; ?>
 var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
 
 var scrollEnd = false;
-<?php if(@$type && !empty($type)){ ?>
+/*<?php if(@$type && !empty($type)){ ?>
 	searchType = ["<?php echo $type; ?>"];
 <?php }else{ ?>
 	searchType = $.merge(allNewsType, searchType);
-<?php } ?>
+<?php } ?>*/
 
 var loadContent = '<?php echo @$_GET["content"]; ?>';
 var dataNewsSearch = {};
 var	dateLimit=0;
 
-var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
+//var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 
-var contextData = <?php echo json_encode( Element::getElementForJS(@$parent, Person::COLLECTION) ); ?>; 
+//var contextData = <?php echo json_encode( Element::getElementForJS(@$parent, Person::COLLECTION) ); ?>; 
 
 //var scrollEnd = false;
 jQuery(document).ready(function() {
@@ -214,6 +216,7 @@ jQuery(document).ready(function() {
 	
     
     searchPage = true;
+    initSearchObject();
 	startNewsSearch(true);
 
 	$(".titleNowEvents .btnhidden").hide();
@@ -224,9 +227,57 @@ jQuery(document).ready(function() {
     
     Sig.restartMap(Sig.map);
 
+    $(".theme-header-filter").off().on("click",function(){
+            if(!$("#filter-thematic-menu").is(":visible") || $(this).hasClass("toogle-filter"))
+                $("#filter-thematic-menu").toggle();
+    });
+    $(".btn-news-type-filters").off().on("click", function(){
+        keyType=$(this).data("key");
+        searchObject.types= (keyType!="all") ? keyType : []; 
+        if(keyType=="all")
+            $(".dropdown-types .dropdown-toggle").removeClass("active").html(trad.type+" <i class='fa fa-angle-down'></i>");
+        else    
+            $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[$(this).data("label")]+" <i class='fa fa-angle-down'></i>");       
+        startNewsSearch(true);
+        KScrollTo("#content-social");
+    });
+    $(".btn-select-filliaire").off().on("click",function(){
+        mylog.log(".btn-select-filliaire");
+        var fKey = $(this).data("fkey");
+        myMultiTags = {};
+        //searchObject.text="";
+        tagsArray=[];
+        $.each(filliaireCategories[fKey]["tags"], function(key, tag){
+            tag=(typeof tradTags[tag] != "undefined") ? tradTags[tag] : tag;
+            tagsArray.push(tag);
+            //searchObject.text+="#"+tag+" ";
+        });
+        $('#tagsFilterInput').val(tagsArray).trigger("change");
+        //$("#filter-thematic-menu").hide();
+        //$("#main-search-bar, #second-search-bar").val(searchObject.text);
+        //mylog.log("myMultiTags", myMultiTags);
+        
+        /*searchObject.page=0;
+        pageCount=true;
+        searchObject.count=true;
+        if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+        
+        startSearch(0, indexStepInit, searchCallback);*/
+    });
+    $(".btn-tags-start-search").off().on("click", function(){
+        searchObject.tags=($('#tagsFilterInput').val()!="") ? $('#tagsFilterInput').val().split(",") : [];
+        searchObject.page=0;
+        pageCount=true;
+        searchObject.count=true;
+        if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+        $(".dropdown-tags").removeClass("open");
+        activeTagsFilter();
+        startNewsSearch(true);
+    });
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
+        searchObject.text=$(this).val();
         if(e.keyCode == 13 || $(this).val() == ""){
             startNewsSearch(true); 
             KScrollTo("#content-social");
@@ -239,6 +290,7 @@ jQuery(document).ready(function() {
     $("#second-search-bar").keyup(function(e){
         $("#main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
+        searchObject.text=$(this).val();
         if(e.keyCode == 13 || $(this).val() == ""){            
             startNewsSearch(true);
             KScrollTo("#content-social");
@@ -248,12 +300,13 @@ jQuery(document).ready(function() {
     $("#input-search-map").keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());
         $("#main-search-bar").val($("#input-search-map").val());
+        searchObject.text=$(this).val();
         if(e.keyCode == 13){
             startNewsSearch(true);
          }
     });
-
-    $("#main-btn-start-search, #main-search-bar-addon, .menu-btn-start-search").click(function(){
+    /*, .menu-btn-start-search*/
+    $("#main-btn-start-search, #main-search-bar-addon").click(function(){
         startNewsSearch(true);
     });
     $(".subModuleTitle .btn-refresh").click(function(){
@@ -261,7 +314,12 @@ jQuery(document).ready(function() {
         $("#second-search-bar").val("");
         startNewsSearch(true);
     });
-
+    $('.dropdown-menu[aria-labelledby="dropdownTags"]').on('click', function(event){
+        // The event won't be propagated up to the document NODE and 
+        // therefore delegated events won't be fired
+        event.stopPropagation();
+    });
+    
     setTitle(titlePage, "stack-exchange", titlePage);
     //KScrollTo(".main-btn-scopes");
 });

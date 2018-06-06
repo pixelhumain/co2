@@ -10,7 +10,16 @@
       </div>
       <div class="modal-body text-dark">
         <p>
-        	<?php echo Yii::t('common',"Are you sure you want to delete this element ? </br> The element will be deleted : it will not be referenced in all their projects or events. But these last ones will not be deleted. <span class=\"text-red\">Warning:</span> this action can be cancelled only by an administrator") ;?>
+
+        	<?php 
+
+        		if($id == Yii::app()->session["userId"] && $type == Person::COLLECTION){
+        			echo "Si vous supprimer votre comptes, toutes vos informations personnelles et vos messages seront supprimer";
+        		} else {
+        			echo Yii::t('common',"Are you sure you want to delete this element ? </br> The element will be deleted : it will not be referenced in all their projects or events. But these last ones will not be deleted. <span class=\"text-red\">Warning:</span> this action can be cancelled only by an administrator") ;
+        		}
+
+        	?>	
         </p>
         <br>
         	<?php echo Yii::t('common','You can add bellow the reason why you want to delete this element :') ;?>

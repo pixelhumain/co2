@@ -101,21 +101,29 @@
 					$inviteLink = "people";
 					$inviteText =  Yii::t("common",'Invite people') ;
 					$modalTarget = "#invite-modal-element";
-
 				}
+
+				$urlLink = "#element.invite.type.".$type.".id.".(string)$element["_id"] ;
 				$modalTarget = "#modal-invite";
 				$whereConnect="";
 				if($type!=Person::COLLECTION)
 					$whereConnect='to the '.Element::getControlerByCollection($type);
-				if( @$inviteLink && @$inviteText ){?>
+				
+				if( @$inviteLink && @$inviteText ){ ?>
 					<li class="">
-						<a href="javascript:;" class="tooltips ssmla text-red" 
+						<a 	href="<?php echo $urlLink ; ?>" 
+							class="tooltips ssmla lbhp text-red"
+							data-placement="bottom" 
+							data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" > 
+					        <i class="fa fa-user-plus "></i><?php echo $inviteText ?>
+					    </a>
+						<!-- <a href="javascript:;" class="tooltips ssmla text-red" 
 						data-placement="bottom" 
-						data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" 
+						data-original-title="<?php //echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" 
 						data-toggle="modal" 
-						data-target="<?php echo $modalTarget ?>">
-							<i class="fa fa-user-plus "></i> <?php echo $inviteText ?>
-						</a>
+						data-target="<?php //echo $modalTarget ?>">
+							<i class="fa fa-user-plus "></i> <?php // echo $inviteText ?>
+						</a> -->
 					</li>
 					<li><hr></li>
 		<?php 	}
@@ -216,7 +224,7 @@
 		 	$connectCommunity=@Element::$connectTypes[$type];
 		?>
 		<li class="">
-			<a href="javascript:" class="ssmla capitalize load-data-directory" 
+			<a href="javascript:" class="ssmla capitalize load-data-directory load-data-community" 
 				data-type-dir="<?php echo @$connectCommunity; ?>" data-icon="users">
 				<i class="fa fa-users"></i> <?php echo Yii::t("common","Community"); ?>
 			</a>
@@ -307,7 +315,7 @@
 				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
 			<li><hr></li>
 			<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classified" data-icon="bullhorn">
+				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classifieds" data-icon="bullhorn">
 					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
 				</a>
 			</li>

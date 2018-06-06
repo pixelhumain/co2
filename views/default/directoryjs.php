@@ -11,6 +11,121 @@
   <style>
 
 
+.grayscale{
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+}
+
+
+.favElBtn, .favAllBtn{
+  padding: 5px 8px;
+  font-weight: 300;
+  margin-bottom:5px;
+}
+#searchBarTextJS{
+  margin-bottom: 15px;
+}
+.btn-open-filliaire{
+  font-weight: 700;
+  text-transform: uppercase;
+}
+#col-btn-type-directory hr{
+  border-top: 1px solid #f5f1f1;
+  width: 95%;
+  float: right;
+}
+#col-btn-type-directory .btn-directory-type,
+#sub-menu-left .btn-select-type-anc{
+  /*margin-bottom:5px;*/
+  width:100%;
+  text-align: right;
+  line-height: 20px;
+  vertical-align: text-bottom;
+  /*font-weight: 700;*/
+  color: grey;
+  text-transform: uppercase;
+  background-color: transparent;
+}
+.btn-directory-type{
+  padding-right: 15px !important;
+  border-radius: 0px;
+  border: 0px;
+}
+.btn-directory-type:focus{
+  outline: inherit !important;
+}
+.btn-directory-type:hover, .btn-directory-type.active{
+  /*padding-right: 10px !important;*/
+  margin-right:-3px!important;
+  box-shadow: none !important;
+  font-weight: bold !important;
+}
+.btn-directory-type.active{
+  border-right: 3px solid;
+}
+.btn-directory-type .label-filter{
+  max-width: 50%;
+  font-size: 13px;
+  vertical-align: middle;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.open-type-filter{
+  display:none;
+}
+@media (max-width: 768px) {
+  .open-type-filter{
+    display: block;
+    position: absolute;
+    right: -33px;
+    height: 50px;
+    width: 50px;
+    border: 1px solid #dadada;
+    border-radius: 100%;
+    text-align: right;
+    padding-right: 8px;
+    z-index: -1;
+    font-size: 20px;
+  }
+  #col-btn-type-directory .btn-directory-type, #sub-menu-left .btn-select-type-anc{
+    background-color: white;
+  }
+  #col-btn-type-directory, #sub-menu-left{
+    position: fixed;
+    width: 56%;
+    left: -56%;
+    background-color: white;
+    /*top: 0px;*/
+    top: 214px; 
+    z-index: 300;
+    padding: 0px;
+    -webkit-box-shadow: 0px 2px 6px -1px rgba(0,0,0,.2);
+    box-shadow: 0px 2px 6px -1px rgba(0,0,0,.2);
+  }
+
+  #sub-menu-left.subsub .btn {
+    width: 100% !important;
+    /*background-color: white !important;*/
+    margin: 0px !important;
+    border-radius: 0px;
+  }
+
+  #col-btn-type-directory.affix, #sub-menu-left.affix{
+    top: 130px;
+  }
+}
+
+  @media (min-width: 769px) {
+  #col-btn-type-directory, #sub-menu-left {
+    left:inherit !important;
+  }
+
+  #col-btn-type-directory.affix, #sub-menu-left.affix{
+    top: 130px;
+    left: 5% !important;
+  }
+}
+
 /* ANNONCES MENU*/
 <?php 
   $btnAnc = array("blue"    =>array("color1"=>"#4285f4", 
@@ -120,8 +235,6 @@
         </div>    
         
         <?php 
-//echo "<h1>".$typeSelected."</h1>" ;
-//echo "<h1>".$_GET["app"]."</h1>" ;
         if($typeSelected == "place"){ ?>
         <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center subsub" id="menu-section-place">
           <!-- <button class="btn margin-bottom-5 margin-left-5 btn-select-type-anc letter-<?php echo @$section["color"]; ?>" 
@@ -146,7 +259,7 @@
         </div>-->
         <?php } ?>
 
-        <?php if($typeSelected == "all" ){ ?>   
+        <?php /* if($typeSelected == "all" ){ ?>   
           
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
           <div class="no-padding col-md-10 col-sm-9 col-xs-12 text-left pull-right headerSearchContainer"></div>
@@ -246,10 +359,10 @@
 
             <hr class="hidden-xs no-margin">-->
             
-            <button class="btn border-blue btn-directory-type padding-10" data-type="classified">
+            <button class="btn border-blue btn-directory-type padding-10" data-type="classifieds">
                 <i class="fa fa-bullhorn"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Classified") ?></span>
-                <span class="count-badge-filter" id="countclassified"></span>
+                <span class="count-badge-filter" id="countclassifieds"></span>
             </button><br class="hidden-xs">
             
             <button class="btn border-blue btn-directory-type padding-10" data-type="ressources">
@@ -261,7 +374,7 @@
             <hr class="hidden-sm hidden-md hidden-lg no-margin" data-type="ressources">
           </div>
         <?php } ?>
-        <?php } else if ( $typeSelected == "vote" ){?>
+        <?php } else */ if ( $typeSelected == "vote" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
             <button class="btn text-white bg-dark btn-open-filliaire">
@@ -290,7 +403,7 @@
             </button>
           </div>
 
-        <?php } else if ( $typeSelected == "events" ){?>
+        <?php /*} else if ( $typeSelected == "events" ){?>
           <style type="text/css">
             header{
               padding-bottom:15px;
@@ -318,12 +431,12 @@
               <?php } ?>
           </div>
 
-        <?php } else if ($typeSelected == "classified" || $typeSelected == "ressources" ){ 
+        <?php */ } else if ($typeSelected == "classifieds" || $typeSelected == "ressources" ){ 
           if(Yii::app()->params["CO2DomainName"] != "terla"){
 
-            $dmod = ($typeSelected == "classified") ? "classifieds" : "ressources";
-            $categories = CO2::getModuleContextList($dmod,"categories");
-            $this->renderPartial($dmod.".views.co.categories", array( "typeSelected" => $typeSelected,"categories" => $categories ));
+           // $dmod = ($typeSelected == "classified") ? "classifieds" : "ressources";
+            $categories = CO2::getModuleContextList($typeSelected,"categories");
+            $this->renderPartial("eco.views.co.categories", array( "typeSelected" => $typeSelected,"categories" => $categories ));
           } else { 
 
           $service = CO2::getContextList("service");
@@ -399,38 +512,30 @@
         <?php } ?>
 
         <?php  
-          if($typeSelected != "classified" && Yii::app()->params["CO2DomainName"] == "terla"){ 
+          if($typeSelected != "classifieds" && Yii::app()->params["CO2DomainName"] == "terla"){ 
             $this->renderPartial("../default/panels/filterMenu", 
                   array("typeSelected"=>$typeSelected,
                         ));
           } 
         ?>
         <?php $col = ( !in_array($typeSelected, 
-                       array("classified","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 9; ?>
+                       array("classifieds","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 9; ?>
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
-
-        <div class="col-md-10 col-sm-9 col-xs-12 pull-right">
-          <div class="no-padding col-xs-12" id="dropdown_search">
-            <div class='col-md-12 col-sm-12 text-center search-loader text-dark'>
-                <i class='fa fa-spin fa-circle-o-notch'></i> <?php echo Yii::t("common","Currently researching") ?> ...
-            </div>
-          </div>
-          <div class="no-padding col-xs-12 text-left footerSearchContainer"></div>
-          <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
-          <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
+          <?php if($typeSelected != "classifieds"){ ?>
+          <div class="no-padding col-md-10 col-sm-10 col-xs-12 text-left col-sm-offset-1 col-md-offset-1 headerSearchContainer"></div>
           <?php } ?>
+          <div class="col-md-10 col-sm-10 col-sm-offset-1 col-md-offset-1 col-xs-12">
+            <div class="no-padding col-xs-12" id="dropdown_search">
+              <div class='col-md-12 col-sm-12 text-center search-loader text-dark'>
+                  <i class='fa fa-spin fa-circle-o-notch'></i> <?php echo Yii::t("common","Currently researching") ?> ...
+              </div>
+            </div>
+          <div class="no-padding col-xs-12 text-left footerSearchContainer"></div>
         <?php } ?>
         </div>
   </div>
 
-
-
-
-
-
-
-<?php //$this->renderPartial(@$path."first_step_directory"); ?> 
 <?php $city = (@$_GET['lockCityKey'] ? City::getByUnikey($_GET['lockCityKey']) : null);
 
       if($city == null && @$_GET['insee'])
@@ -448,7 +553,27 @@ if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined
     headerParams[k] = v;
   });
 }
-
+var categoriesFilters ={};
+if(searchObject.initType=="events") categoriesFilters=<?php echo json_encode(Event::$types) ?>;
+if(searchObject.initType=="all"){
+  categoriesFilters={
+    "all":{"key":"all", "label":"All", "icon":"search", "color":"dark"},
+    "persons" : { "key": "persons", "icon":"user", "label":"people","color":"yellow"}, 
+    "NGO" : { "key": "NGO", "icon":"group", "label":"NGOs","color":"green-k"}, 
+    "LocalBusiness" : { "key": "LocalBusiness", "icon":"industry", "label":"LocalBusiness","color":"azure"}, 
+    "Group" : { "key": "Group", "icon":"circle-o", "label":"Groups","color":"turq"}, 
+    "GovernmentOrganization" : { "key": "GovernmentOrganization", "icon":"university", "label":"services publics","color":"red"},
+    "projects" : { "key": "projects", "icon":"lightbulb-o", "label":"projects","color":"purple"}, 
+    "events" : { "key": "events", "icon":"calendar", "label":"events","color":"orange"}, 
+    "poi" : { "key": "poi", "icon":"map-marker", "label":"points of interest","color":"green-poi"}, 
+    //"place" : { "key": "place", "icon":"map-marker", "label":"points of interest","color":"brown"},
+    //"places" : { "key": "places", "icon":"map-marker", "label":"Places","color":"brown"}, 
+    "classifieds" : { "key": "classified", "icon":"bullhorn", "label":"classifieds","color":"azure"}, 
+     
+    //"ressources" : { "key": "ressources", "icon":"cubes", "label":"Ressource","color":"vine"} 
+    //"services" : { "key": "services", "icon":"sun-o", "label":"services","color":"orange"}, "circuits" : { "key": "circuits", "icon":"ravelry", "label":"circuits","color":"orange"},
+  };
+}
 function setHeaderDirectory(type){
  
   var params = new Array();
@@ -458,9 +583,6 @@ function setHeaderDirectory(type){
   $(".subtitle-search").html( '<span class="text-'+params.color+'">'+
                                 '<i class="fa fa-angle-down"></i> <i class="fa fa-'+params.icon+'"></i> '+
                                 params.name+
-                              //  " <i class='fa fa-angle-right'></i> "+
-                              // "<a href='javascript:directory.showFilters()' class='btn btn-default btn-sm'> "+
-                              //  "<i class='fa fa-search'></i> Recherche avancée</a>"+
                               '</span>' );
 
   $(".lbl-info-search .lbl-info").addClass("hidden");
@@ -502,7 +624,7 @@ var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" 
 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
 
-var classified = <?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
+//var classifieds = modules.classifieds; //<?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
 
 jQuery(document).ready(function() {
   initKInterface({"affixTop":200});
@@ -532,7 +654,6 @@ jQuery(document).ready(function() {
     }
   });
   searchType = (typeSelected == null) ? [ "persons" ] : [ typeSelected ];
-  //allSearchType = [ "persons", "organizations", "projects", "events", "events", "vote", "cities","poi","places","ressources" ];
 	topMenuActivated = true;
 	hideScrollTop = true; 
   loadingData = false;
@@ -541,14 +662,8 @@ jQuery(document).ready(function() {
   var timeoutSearch = setTimeout(function(){ }, 100);
   
   setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
-
-	//setTitle("<span id='main-title-menu'>Moteur de recherche</span>","search","Moteur de recherche");
 	
   $('.tooltips').tooltip();
-
-  //setHeaderDirectory(typeSelected);  
-
-  //showTagsScopesMin("#scopeListContainer");
 
   // if(lockCityKey != null){
   //   lockScopeOnCityKey(lockCityKey, cityNameLocked);
@@ -560,36 +675,6 @@ jQuery(document).ready(function() {
   <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ ?>
       $("#sub-menu-filliaire").addClass("hidden");
   <?php } ?>
-
-  // $(".btn-open-filliaire").click(function(){
-  //     if($("#sub-menu-filliaire").hasClass("hidden"))
-  //       $("#sub-menu-filliaire").removeClass("hidden");
-  //     else{
-  //       $("#sub-menu-filliaire").addClass("hidden");
-  //       resetMyTags();
-  //     }
-  // });
-
-  /*$(".btn-select-filliaire").click(function(){
-      mylog.log(".btn-select-filliaire");
-      var fKey = $(this).data("fkey");
-      //myMultiTags = {};
-      $.each(filliaireCategories[fKey]["tags"], function(key, tag){
-        search.value="#"+tag;
-         $("#main-search-bar, #second-search-bar").val(search.value);
-     //   addTagToMultitag(tag);
-      });
-      search
-      mylog.log("myMultiTags", myMultiTags);
-      
-      startSearch(0, indexStepInit, searchCallback);
-      KScrollTo("#content-social");
-      //bindCommunexionScopeEvents();
-      //KScrollTo("#before-section-result");
-  });*/
-  
-  /*  $(".searchIcon").removeClass("fa-search").addClass("fa-file-text-o");
-  $(".searchIcon").attr("title","Mode Recherche ciblé (ne concerne que cette page)");*/
   $('.tooltips').tooltip();
   searchPage = true;
 

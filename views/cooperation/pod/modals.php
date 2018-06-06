@@ -52,6 +52,54 @@
 
 
 
+<!-- ************ MAIN MODAL CO-SPACE ********************** -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modalTools">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close margin-5 padding-10" data-dismiss="modal" id="btn-close-coop"
+            aria-label="Close"><i class="fa fa-times"></i>
+        </button>
+
+        <?php 
+            if( isset( Yii::app()->session['userId']) ){
+              $me = Element::getByTypeAndId("citoyens", Yii::app()->session['userId']);
+              $profilThumbImageUrl = Element::getImgProfil($me, "profilThumbImageUrl", $this->module->assetsUrl);
+              //$countNotifElement = ActivityStream::countUnseenNotifications(Yii::app()->session["userId"], Person::COLLECTION, Yii::app()->session["userId"]);
+        ?> 
+         <!-- #page.type.citoyens.id.<?php echo Yii::app()->session['userId']; ?> -->
+        <a  href="#page.type.citoyens.id.<?php echo Yii::app()->session['userId']; ?>"
+            class="menu-name-profil lbh text-dark pull-right shadow2" 
+            data-toggle="dropdown">
+                <small class="hidden-xs hidden-sm margin-left-10 bold" id="menu-name-profil">
+                    <?php echo @$me["name"] ? $me["name"] : @$me["username"]; ?>
+                </small> 
+                <img class="img-circle" id="menu-thumb-profil" 
+                     width="40" height="40" src="<?php echo $profilThumbImageUrl; ?>" alt="image" >
+        </a>
+        <?php } ?>
+  
+          
+        <div class="modal-title" id="modalText">
+          <img class="pull-left margin-right-15" src="<?php echo $thumbAuthor; ?>" height=52 width=52 style="">
+      <!-- <h4 class="pull-left margin-top-15"><i class="fa fa-connectdevelop"></i> Espace coopératif</h4> -->
+           <div class="pastille-type-element bg-<?php echo $iconColor; ?> pull-left" style="margin-top:14px;"></div>
+           <h4 class="pull-left margin-top-15">
+            <?php echo @$element["name"]; ?>
+          </h4>         
+        </div>
+      </div>
+      
+       <div class="modal-body col-lg-12 col-md-12 col-sm-12 padding-15">
+        <ul id="menuCoop" class="menuCoop col-lg-2 col-md-3 col-sm-3">
+        </ul>
+        <div id="main-coop-container" class="col-lg-10 col-md-9 col-sm-9"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <!-- ************ MODAL HELP COOP ********************** -->
 <div class="modal fade" tabindex="-1" role="dialog" id="modalHelpCOOP">
   <div class="modal-dialog modal-lg">

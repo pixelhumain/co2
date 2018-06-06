@@ -129,20 +129,10 @@ class AppController extends CommunecterController {
 	}
 
 
-    /*public function actionSearch($type=null){
-        CO2Stat::incNbLoad("co2-search");   
-        $params = array("type" => @$type );
-        echo $this->renderPartial("search", $params, true);
-    }*/
     public function actionSearch($type=null){
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => "all" /*Organization::COLLECTION*/, "app"=>"search" );
         echo $this->renderPartial("search", $params, true);
-    }
-    public function actionTerritorial($type=null){
-        CO2Stat::incNbLoad("co2-search");   
-        $params = array("type" => @$type );
-        echo $this->renderPartial("territorial", $params, true);
     }
     public function actionSocial($type=null){
         CO2Stat::incNbLoad("co2-search");   
@@ -282,7 +272,7 @@ class AppController extends CommunecterController {
     }
 
     public function actionAnnonces(){ 
-        $this->redirect( Yii::app()->createUrl("/classifieds/co/market") );
+        $this->redirect( Yii::app()->createUrl("/eco") );
     }
 
     public function actionHelp(){ 
@@ -312,6 +302,10 @@ class AppController extends CommunecterController {
             $element = Survey::getById($id);
         }
 
+        if( (!empty($element["status"]) && $element["status"] == "deleted") ||  
+            (!empty($element["tobeactivated"]) && $element["tobeactivated"] == true) )
+             $this->redirect( Yii::app()->createUrl($controller->module->id) );
+
         if(@$element["parentId"] && @$element["parentType"] && 
             $element["parentId"] != "dontKnow" && $element["parentType"] != "dontKnow")
             $element['parent'] = Element::getSimpleByTypeAndId( $element["parentType"], $element["parentId"]);
@@ -339,8 +333,8 @@ class AppController extends CommunecterController {
 
         if(@$_POST["preview"] == true){
             $params["preview"]=$_POST["preview"]; 
-            if($type == "classified") $this->renderPartial('classifieds.views.co.preview', $params );
-            else if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
+            if($type == "classifieds") $this->renderPartial('eco.views.co.preview', $params );
+           // else if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
             else if($type == "poi") $this->renderPartial('../poi/preview', $params ); 
             else echo $this->renderPartial("page", $params, true);
         }else{

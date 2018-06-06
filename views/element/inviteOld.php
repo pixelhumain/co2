@@ -219,8 +219,8 @@ var rolesList=[ tradCategory.financier, tradCategory.partner, tradCategory.spons
 jQuery(document).ready(function() {
 	bindInviteModal();
     runinviteFormValidation();
-    if(searchApp && search.value!= ""){
-    	$("#invite-modal-element #inviteSearch").val(search.value);
+    if(searchApp && searchObject.text!= ""){
+    	$("#invite-modal-element #inviteSearch").val(searchObject.text);
     	newInvitation();
     }
 });

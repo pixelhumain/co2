@@ -15,44 +15,27 @@ class TestController extends CommunecterController {
 
   public function actionMsg() {
     
-    $langs = array("en","fr","de","es") ;
+    $langs = array("de","es", "it") ;
     $files = array("activityList","category","chart","comment","common","cooperation","docs","document","event","form","home","import","jobs","KCFinderWidget","loader","login","mail","need","news","notification","openData","organization","person","project","rooms","survey","translate" );
-    echo "<h1>Missing in folder 'de'</h1>";
-    foreach ($files as $key => $value) {
-    	echo "<h3 style='color:red'>file : ".$value.".php</h3>";
-    	try {
-    		$fr = include ( "./protected/messages/fr/".$value.".php");
-	    	//$es = include ( "./protected/messages/es/".$value.".php");
-	    	$de = include ( "./protected/messages/de/".$value.".php");
-	    	foreach ($fr as $k => $v) {
-	    		//echo $k.":".$v."<br/>";
-	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
-	    		if(!@$de[$k]) echo '<span>"'.htmlspecialchars($k).'" => "",</span> <br/>';
-	    	}	
-    	} catch (Exception $e) {
-    		echo $value."file unfound <br/>";
-    	}
-    	
-    }
-    echo "<h1>Missing in folder 'es'</h1>";
-    foreach ($files as $key => $value) {
-    	echo "<h3>file : ".$value."</h3>";
-    	try {
-    		$fr = include ( "./protected/messages/fr/".$value.".php");
-	    	$es = include ( "./protected/messages/es/".$value.".php");
-	    	//$de = include ( "./protected/messages/de/".$value.".php");
-	    	foreach ($fr as $k => $v) {
-	    		//echo $k.":".$v."<br/>";
-	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
-	    		if(!@$es[$k])echo '<span>"'.$k.'" => "",</span> <br/>';
-	    	}	
-    	} catch (Exception $e) {
-    		echo $value."file unfound <br/>";
-    	}
-    	
-    }
-    
-
+    foreach ($langs as $langKey) {
+	    echo "<h1>Missing in folder '".$langKey."'</h1>";
+	    foreach ($files as $key => $value) {
+	    	echo "<h3 style='color:red'>file : ".$value.".php</h3>";
+	    	try {
+	    		$fr = include ( "./protected/messages/fr/".$value.".php");
+		    	//$es = include ( "./protected/messages/es/".$value.".php");
+		    	$otherLang = include ( "./protected/messages/".$langKey."/".$value.".php");
+		    	foreach ($fr as $k => $v) {
+		    		//echo $k.":".$v."<br/>";
+		    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
+		    		if(!@$otherLang[$k]) echo '<span>"'.htmlspecialchars($k).'" => "",</span> <br/>';
+		    	}	
+	    	} catch (Exception $e) {
+	    		echo $value."file unfound <br/>";
+	    	}
+	    	
+	    }
+	} 
   }
 
   public function actionMango() {
@@ -1592,5 +1575,44 @@ La vie en santé;Santé;;
 
 		echo $i." importé <br/>";
 		echo $v." dynform <br/>";
+	}
+
+	public function actionTestRegex(){
+
+		$address = array("addressLocality" => "Girmont-Val d'Ajol",
+			"addressCountry" => "FR",
+			"postalCode" => "88340");
+
+		$regexCity = Search::accentToRegex(strtolower($address["addressLocality"]));
+        //var_dump($regexCity); exit;
+		$where = array('$or'=> 
+					array(  
+						array("name" => new MongoRegex("/^".$regexCity."/i")),
+						array("alternateName" => new MongoRegex("/^".$regexCity."/i")),
+						array("postalCodes.name" => new MongoRegex("/^".$regexCity."/i"))
+					) );
+		$where = array('$and' => array($where, array("country" => strtoupper($address["addressCountry"])) ) );
+
+		if( !empty($address["postalCode"]) ){
+			$where = array('$and' => array($where, array("postalCodes.postalCode" => $address["postalCode"]) ) );
+		}
+        $fields = array("name", "geo", "country", "level1", "level1Name","level2", "level2Name","level3", "level3Name","level4", "level4Name", "osmID", "postalCode", "insee");
+
+
+        //Rest::json($where);exit;
+		$city = PHDB::findOne(City::COLLECTION, $where, $fields);
+		Rest::json($city);exit;
+	}
+
+	public function actionTestRegex2(){
+
+		$str = "Girmont-Val d'Ajol";
+		$str = "côté";
+		$res = $str ;
+
+		$res = preg_replace('/&(.)[^;]+;/', $str, $res);
+
+		$a = array($str => $res);
+		Rest::json($a);exit;
 	}
 }

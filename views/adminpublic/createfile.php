@@ -124,7 +124,7 @@ $this->renderPartial($layoutPath.'header',
 				?>
 				</select>
 			</div>
-			<div id="divFile" class="col-sm-12 col-xs-12">
+			<div id="divFile" class="col-sm-8 col-xs-12">
 				<div class="col-sm-2 col-xs-12">
 					<label for="fileImport"><?php echo Yii::t("common", "File (CSV, JSON)"); ?> : </label>
 				</div>
@@ -132,15 +132,13 @@ $this->renderPartial($layoutPath.'header',
 					<input type="file" id="fileImport" name="fileImport" accept=".csv,.json,.js,.geojson">
 				</div>
 			</div>
-			<div id="divUrl" class="col-sm-12 col-xs-12">
-				<div class="col-sm-4 col-xs-12">
-					<label for="textUrl"><?php echo Yii::t("common", "URL (JSON)"); ?> :</label>
-					<input type="text" id="textUrl" name="textUrl" value="">
-				</div>
-				<div class="col-sm-4 col-xs-12">
-					<label for="pathElement"><?php echo Yii::t("common", "Path Elements"); ?> :</label>
-					<input type="text" id="pathElement" name="pathElement" value="">
-				</div>
+			<div id="divUrl" class="col-sm-6 col-xs-12">
+				<label for="textUrl"><?php echo Yii::t("common", "URL (JSON)"); ?> :</label>
+				<input type="text" id="textUrl" name="textUrl" value="">
+			</div>
+			<div id="divPathElement" class="col-sm-4 col-xs-12">
+				<label for="pathElement"><?php echo Yii::t("common", "Path Elements"); ?> :</label>
+				<input type="text" id="pathElement" name="pathElement" value="">
 			</div>
 			<div id="divCsv" class="col-sm-12 col-xs-12">
 				<div class="col-sm-4 col-xs-12">
@@ -294,10 +292,10 @@ var nbFinal = 0 ;
 jQuery(document).ready(function() {
 
 	setTitle("CreateFile","circle");
-
 	$("#divFile").hide();
 	$("#divCsv").hide();
 	$("#divUrl").hide();
+	$("#divPathElement").hide();
 	$("#menu-step-mapping").hide();
 	$("#menu-step-visualisation").hide();
 	bindCreateFile();
@@ -311,15 +309,18 @@ function bindCreateFile(){
 		var typeSource = $("#selectTypeSource").val();
 		if(typeSource == "url"){
 			$("#divUrl").show();
+			$("#divPathElement").show();
 			$("#divCsv").hide();
 			$("#divFile").hide();
 		}	
 		else if(typeSource == "file"){
 			$("#divUrl").hide();
 			$("#divFile").show();
+			$("#divPathElement").hide();
 		}else{
 			$("#divUrl").hide();
 			$("#divFile").hide();
+			$("#divPathElement").hide();
 		}	
 	});
 
@@ -651,6 +652,7 @@ function bindUpdate(data){
 				}
 				else if(typeFile == "json" || typeFile == "js" || typeFile == "geojson") {
 					$("#divCsv").hide();
+					$("#divPathElement").show();
 					file.push(e.target.result);
 	  			}
 			};
@@ -662,14 +664,14 @@ function bindUpdate(data){
 
 function createStepTwo(data){
 
-	mylog.log("createStepTwo");
+	mylog.log("createStepTwo", data);
 	var chaineSelectCSVHidden = "" ;
 	if(data.typeFile == "csv"){
 		$("#nbFileMapping").html(file.length - 1 + " éléments");
 		$.each(file[0], function(key, value){
 			chaineSelectCSVHidden += '<option value="'+value+'">'+value+'</option>';
 		});
-	}else if(data.typeFile == "json"){
+	}else if(data.typeFile == "json" || data.typeFile == "geojson" || data.typeFile == "js"){
 		$("#nbFileMapping").html(data.nbElement  + " éléments");
 		$.each(data.arbre, function(key, value){
 			chaineSelectCSVHidden += '<option value="'+value+'">'+value+'</option>';

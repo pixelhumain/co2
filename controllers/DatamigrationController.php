@@ -454,6 +454,229 @@ class DatamigrationController extends CommunecterController {
 			}
 		}
 	}
+	
+	// Second refactor à faire sur communecter.org qui permet de netoyer les news sans scope
+ 	public function actionUpdateTypeInCollectionsLinkToClassifieds(){
+	  	if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+	  		echo "--------------------------------------------------------------------------------<br/>".
+	  			"---------------------------------------DOCUMENTS-------------------------------<br/>".
+	  			"--------------------------------------------------------------------------------<br/>";
+	  		
+	  		$documents=PHDB::find(Document::COLLECTION,array('$or'=>array(array("type"=>"classified"), array("type"=>"ressources"))));
+	  		$documentNb=0;
+	  		foreach ($documents as $key => $value) {
+	  			echo "Document modified :".$key."<br/>";
+	  			echo "type:".$value["type"]." devient classifieds<br/>";
+	  			$value["type"]="classifieds";
+	  			$value["folder"]=preg_replace("/ressources/", "classifieds", $value["folder"]);
+	  			$value["folder"]=preg_replace("/classified/", "classifieds", $value["folder"]);
+	  			echo "folder:".$value["folder"]."<br/>";
+	  			echo "---------------------------------------------------<br/>";
+	  			PHDB::update(Document::COLLECTION,
+					array("_id" => $value["_id"]) , 
+					array('$set' => array("type" => $value["type"], "folder"=>$value["folder"]))			
+				);
+				$documentNb++;
+	  		}
+	  		echo "Nombre de documents modifier : ".$documentNb."<br/><br/><br/>";
+	  		echo "--------------------------------------------------------------------------------<br/>".
+	  			"------------------------------------NOTIFS--------------------------------------<br/>".
+	  			"--------------------------------------------------------------------------------<br/>";
+	  		$activityStream=PHDB::find(ActivityStream::COLLECTION,array("type"=>"notifications",'$or'=>array(array("target.type"=>"classified"), array("target.type"=>"ressources"))));
+	  		$activityStreamNb=0;
+	  		foreach ($activityStream as $key => $value) {
+	  			echo "Notifs modified :".$key."<br/>";
+	  			echo "type:".$value["target"]["type"]." devient classifieds<br/>";
+	  			$targetType="classifieds";
+	  			$set=array("target.type"=>"classifieds");
+	  			if(@$value["notify"] && @$value["notify"]["url"]){
+		  			$url=preg_replace("/ressources/", "classifieds", $value["notify"]["url"]);
+		  			$url=preg_replace("/classified/", "classifieds", $value["notify"]["url"]);
+		  			echo "notify.url:".$url."<br/>";
+		  			$set["notify.url"]=$url;
+	  			}
+	  			print_r($set);
+	  			echo "---------------------------------------------------<br/>";
+	  			PHDB::update(ActivityStream::COLLECTION,
+					array("_id" => $value["_id"]) , 
+					array('$set' => $set)			
+				);
+				$activityStreamNb++;
+	  		}
+	  		echo "Nombre de notifications modifier : ".$activityStreamNb."<br/><br/><br/>";
+	  		echo "--------------------------------------------------------------------------------<br/>".
+	  			"---------------------------------COMMENTS------------------------------------------<br/>".
+	  			"--------------------------------------------------------------------------------<br/>";
+	  		$comments=PHDB::find(Comment::COLLECTION,array('$or'=>array(array("contextType"=>"classified"), array("contextType"=>"ressources"))));
+	  		$commentsNb=0;
+	  		foreach ($comments as $key => $value) {
+	  			echo "Comment modified :".$key."<br/>";
+	  			echo "contextType:".$value["contextType"]." devient classifieds<br/>";
+	  			//$targetType="classifieds";
+	  			$set=array("contextType"=>"classifieds");
+	  			print_r($set);
+	  			echo "---------------------------------------------------<br/>";
+	  			PHDB::update(Comment::COLLECTION,
+					array("_id" => $value["_id"]) , 
+					array('$set' => $set)			
+				);
+				$commentsNb++;
+	  		}
+	  		echo "Nombre de comments modifier : ".$commentsNb."<br/><br/><br/>";
+	  		echo "--------------------------------------------------------------------------------<br/>".
+	  			"---------------------------------NEWS------------------------------------------<br/>".
+	  			"--------------------------------------------------------------------------------<br/>";
+	  		$news=PHDB::find(News::COLLECTION,array('$or'=>array(array("object.type"=>"classified"), array("object.type"=>"ressources"))));
+	  		$newsNb=0;
+	  		foreach ($news as $key => $value) {
+	  			echo "News modified :".$key."<br/>";
+	  			echo "contextType:".$value["object"]["type"]." devient classifieds<br/>";
+	  			//$targetType="classifieds";
+	  			$set=array("object.type"=>"classifieds");
+	  			print_r($set);
+	  			echo "---------------------------------------------------<br/>";
+	  			PHDB::update(News::COLLECTION,
+					array("_id" => $value["_id"]) , 
+					array('$set' => $set)			
+				);
+				$newsNb++;
+	  		}
+	  		echo "Nombre de news modifier : ".$newsNb;
+		}else
+			echo "hi han dis l'ane";
+	}
+	// Refactor classifieds
+  	public function actionUpdateDateInDB(){
+	  	if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+		  	$classifieds=PHDB::find(Classified::COLLECTION);
+		  	foreach($classifieds as $key => $v){
+		  		PHDB::update(Classified::COLLECTION,
+					array("_id" => $v["_id"]) , 
+					array('$set' => array("modified"=>new MongoDate($v["modified"]["sec"])))			
+				);
+		  	}
+		}
+	}
+	// Refactor classifieds
+  	public function actionUpdateLineInDB(){
+	  	if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+		  	$classifieds=PHDB::find(Classified::COLLECTION);
+		  	foreach($classifieds as $key => $v){
+		  		if(is_array($v["updated"])){
+		  			PHDB::update(Classified::COLLECTION,
+					array("_id" => $v["_id"]) , 
+					array('$set' => array("updated"=> $v["updated"]["sec"]))			
+					);
+		  		}
+		  		/*PHDB::update(Classified::COLLECTION,
+					array("_id" => $v["_id"]) , 
+					array('$set' => array("updated"=> strtotime ($v["updated"]["sec"]), "created"=>strtotime ($v["created"]["sec"])))			
+				);*/
+		  	}
+		}
+	}
+	// Refactor classifieds
+  	public function actionUpdateClassifiedAndMergeRessources(){
+	  	if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+		  	$classifieds=PHDB::find(Classified::COLLECTION);
+		  	$allClassifieds=[];
+		  	foreach($classifieds as $key => $data){
+		  		$data["_id"]=array('$oid'=>(string)$data["_id"]);
+				if(@$data["section"]=="job"){
+					$data["subtype"]=strtolower($data["type"]);
+					$data["type"]="jobs";
+					$data["section"]="offer";
+					$data["category"]="joboffer";
+					if(@$data["profilImageUrl"]) $data["profilImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilImageUrl"]);
+					if(@$data["profilThumbImageUrl"]) $data["profilThumbImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilThumbImageUrl"]);
+					if(@$data["profilMarkerImageUrl"]) $data["profilMarkerImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMarkerImageUrl"]);
+					if(@$data["profilMediumImageUrl"]) $data["profilMediumImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMediumImageUrl"]);
+				  	//print_r($data);
+				  	//echo "----------------------------------------<br/><br/>";
+				  	array_push($allClassifieds, $data);
+				  	//PHDB::remove(News::COLLECTION, array("_id"=>new MongoId($key)));
+				} else if($data["section"]=="Vendre" || $data["section"]=="forsale"){
+					//echo "Classified type classifieds (for sale) :".$key."<br/><br/>";
+					$data["category"]=strtolower($data["type"]);
+					$data["type"]="classifieds";
+					$data["section"]="forsale";
+					$data["subtype"]=strtolower(@$data["subtype"]);
+					//print_r($data);
+					if(@$data["profilImageUrl"]) $data["profilImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilImageUrl"]);
+					if(@$data["profilThumbImageUrl"]) $data["profilThumbImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilThumbImageUrl"]);
+					if(@$data["profilMarkerImageUrl"]) $data["profilMarkerImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMarkerImageUrl"]);
+					if(@$data["profilMediumImageUrl"]) $data["profilMediumImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMediumImageUrl"]);
+					array_push($allClassifieds, $data);
+				  	//echo "----------------------------------------<br/><br/>";
+				}else if($data["section"]=="Louer" || $data["section"]=="forrent"){
+					//echo "Classified type classifieds (for rent) :".$key."<br/><br/>";
+					$data["category"]=strtolower($data["type"]);
+					$data["type"]="classifieds";
+					$data["section"]="forrent";
+					$data["subtype"]=strtolower(@$data["subtype"]);
+					//print_r($data);
+					if(@$data["profilImageUrl"]) $data["profilImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilImageUrl"]);
+					if(@$data["profilThumbImageUrl"]) $data["profilThumbImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilThumbImageUrl"]);
+					if(@$data["profilMarkerImageUrl"]) $data["profilMarkerImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMarkerImageUrl"]);
+					if(@$data["profilMediumImageUrl"]) $data["profilMediumImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMediumImageUrl"]);
+				  	
+					array_push($allClassifieds, $data);
+					//echo "----------------------------------------<br/><br/>";
+				}else if($data["section"]=="Donner" || $data["section"]=="donation" || $data["section"]=="Partager" || $data["section"]=="sharing"){
+					//echo "Classified type ressources (offer) :".$key."<br/><br/>";
+					$data["category"]="isToImplemant";
+					$data["subtype"]="isToImplemant";
+					$data["type"]="ressources";
+					$data["section"]="offer";
+					if(@$data["profilImageUrl"]) $data["profilImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilImageUrl"]);
+					if(@$data["profilThumbImageUrl"]) $data["profilThumbImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilThumbImageUrl"]);
+					if(@$data["profilMarkerImageUrl"]) $data["profilMarkerImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMarkerImageUrl"]);
+					if(@$data["profilMediumImageUrl"]) $data["profilMediumImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMediumImageUrl"]);
+				  	
+					if(@$data["devise"]) unset($data["devise"]);
+					//print_r($data);
+					array_push($allClassifieds, $data);
+					//echo "----------------------------------------<br/><br/>";
+				}else if($data["section"]=="lookingfor" || $data["section"]=="Besoin"){
+					//echo "Classified type ressources (need) :".$key."<br/><br/>";
+					$data["category"]="isToImplemant";
+					$data["subtype"]="isToImplemant";
+					$data["type"]="ressources";
+					$data["section"]="need";
+					if(@$data["devise"]) unset($data["devise"]);
+					//print_r($data);
+					if(@$data["profilImageUrl"]) $data["profilImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilImageUrl"]);
+					if(@$data["profilThumbImageUrl"]) $data["profilThumbImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilThumbImageUrl"]);
+					if(@$data["profilMarkerImageUrl"]) $data["profilMarkerImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMarkerImageUrl"]);
+					if(@$data["profilMediumImageUrl"]) $data["profilMediumImageUrl"]=preg_replace("/classified/", "classifieds", $data["profilMediumImageUrl"]);
+				  	
+					array_push($allClassifieds, $data);
+					//echo "----------------------------------------<br/><br/>";
+				}
+				echo json_encode($data);
+			}
+			$ressources=PHDB::find(Ressource::COLLECTION);
+			foreach($ressources as $key => $data){
+				$data["_id"]=array('$oid'=>(string)$data["_id"]);
+				//echo "Classified type ressources :".$key."<br/><br/>";
+				$data["category"]=$data["type"];
+				$data["type"]="ressources";
+				if(@$data["profilImageUrl"]) $data["profilImageUrl"]=preg_replace("/ressources/", "classifieds", $data["profilImageUrl"]);
+				if(@$data["profilThumbImageUrl"]) $data["profilThumbImageUrl"]=preg_replace("/ressources/", "classifieds", $data["profilThumbImageUrl"]);
+				if(@$data["profilMarkerImageUrl"]) $data["profilMarkerImageUrl"]=preg_replace("/ressources/", "classifieds", $data["profilMarkerImageUrl"]);
+				if(@$data["profilMediumImageUrl"]) $data["profilMediumImageUrl"]=preg_replace("/ressources/", "classifieds", $data["profilMediumImageUrl"]);
+				  	
+			  	//print_r($data);
+			  	//echo "----------------------------------------<br/><br/>";
+			  	array_push($allClassifieds, $data);
+				// echo json_encode($data);
+			}
+			//echo "<br/><br/><br/><hr><hr/><h1>JSON CLASSIFIEDS GENERATE</h1><br/><br/><br/>";
+			//echo json_encode($allClassifieds);
+		}else{
+			echo "hello l'artiste !! What's up baby ?";
+		}
+	}
    // Troisième refactor à faire sur communecter.org qui permet de netoyer les news sans target
    	
    	public function actionWashingNewsNoTarget(){
@@ -3632,6 +3855,43 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}	
 
 		echo $nbelement." elements mis a jours";
+		
+	}
+	public function actionRemoveMarkerPathRessourcesClassified(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			$nbRessources = 0 ;
+			$nbClass=0;
+			$ressources = PHDB::find( Ressource::COLLECTION);
+			
+			foreach ($ressources as $key => $value) {
+				// if(!empty($value["name"]))
+				// 	echo $key." : ".$value["name"]."<br/>";
+				if (@$value["profilMarkerImageUrl"]){
+					$res = PHDB::update(Ressource::COLLECTION, 
+				  		array("_id"=>new MongoId($key)),
+	                	array('$unset' => array("profilMarkerImageUrl" => "" ))
+	            	);
+	            	$nbRessources++;
+	            }
+			}	
+			$class = PHDB::find( Classified::COLLECTION);
+			
+			foreach ($class as $key => $value) {
+				// if(!empty($value["name"]))
+				// 	echo $key." : ".$value["name"]."<br/>";
+				if (@$value["profilMarkerImageUrl"]){
+					$res = PHDB::update(Classified::COLLECTION, 
+				  		array("_id"=>new MongoId($key)),
+	                	array('$unset' => array("profilMarkerImageUrl" => "" ))
+	            	);
+	            	$nbClass++;
+	            }
+			}	
+			echo $nbClass. " miss à pjour";
+			echo $nbRessources." yepa";
+		}else
+			echo "salut toi !!!!!";
 		
 	}
 

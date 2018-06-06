@@ -751,7 +751,7 @@ var urlCtrl = {
 		"#chatAction" : {title:'CHAT', icon : 'comments', action:function(){ rcObj.loadChat("","citoyens", true, true) }, removeAfterLoad : true },
 	},
 	shortVal : ["p","poi","s","o","e","pr","c","cl"/* "s","v","a", "r",*/],
-	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classified"/*"entry","vote" ,"action" ,"rooms" */],
+	shortKey : [ "citoyens","poi" ,"siteurl","organizations","events","projects" ,"cities" ,"classifieds"/*"entry","vote" ,"action" ,"rooms" */],
 	map : function (hash) {
 		if(typeof hash == "undefined") return { hash : "#",
 												type : "",
@@ -877,7 +877,7 @@ var urlCtrl = {
 					return false;
 				} else {
 					mylog.warn("PRIVATE SECTION LOGIN FIRST",hash);
-					showPanel( "box-login" );
+					Login.openLogin();
 					resetUnlogguedTopBar();
 					res = true;
 				}
@@ -960,7 +960,7 @@ var urlCtrl = {
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
 	        if(panelName == "box-login"){
-				$('#modalLogin').modal("show");
+				Login.openLogin();
 				$.unblockUI();
 	        }
 			else if(panelName == "box-register"){
@@ -990,40 +990,43 @@ var urlCtrl = {
 	    } 
 
 		else if(hash.length>2  || hash.indexOf("#@") >= 0){
-			hashT = (hash.indexOf("#@") >= 0) ? hash.replace( "#@","" ) : hash.replace( "#","" );
-			hashT=hashT.split(".");
-			if(typeof hashT == "string")
-				slug=hashT;
-			else
-				slug=hashT[0];
+			splitHref=(hash.indexOf("?") >= 0) ? hash.split("?") : [hash];
+			if(splitHref[0] > 2 || splitHref[0].indexOf("#@") >= 0){
+				hashT = (splitHref[0].indexOf("#@") >= 0) ? splitHref[0].replace( "#@","" ) : splitHref[0].replace( "#","" );
+				hashT=hashT.split(".");
+				if(typeof hashT == "string")
+					slug=hashT;
+				else
+					slug=hashT[0];
+				$.ajax({
+		  			type: "POST",
+		  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+		  			dataType: "json",
+		  			success: function(data){
+				  		if(data.result){
+				  			viewPage="";			  			
+				  			if(hashT.length > 1){
+				  				hashT.shift();
+				  				viewPage="/"+hashT.join("/");
+				  			}
 
-			$.ajax({
-	  			type: "POST",
-	  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
-	  			dataType: "json",
-	  			success: function(data){
-			  		if(data.result){
-			  			viewPage="";			  			
-			  			if(hashT.length > 1){
-			  				hashT.shift();
-			  				viewPage="/"+hashT.join("/");
-			  			}
-
-			  			var key = hashT[0];
-			  			var get = "";
-			  			//console.log("load key indexOf", key, key.indexOf("?"));
-						if(key.indexOf("?")>-1){
-							get = key.substr(key.indexOf("?"), key.length);
-							key = key.substr(0, key.indexOf("?"), key.length);
-							//console.log("load key", key);
-						}
-			  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
-			  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
-			  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get);
-			  		}else
-			  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
-	 			},
-			});
+				  			var key = hashT[0];
+				  			var get = "";
+				  			//console.log("load key indexOf", key, key.indexOf("?"));
+							if(key.indexOf("?")>-1){
+								get = key.substr(key.indexOf("?"), key.length);
+								key = key.substr(0, key.indexOf("?"), key.length);
+								//console.log("load key", key);
+							}
+				  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
+				  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
+				  			showAjaxPanel(baseUrl+'/'+ moduleId + '/app/page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get);
+				  		}else
+				  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
+		 			}
+				});
+			}else
+				showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 		}
 	    else if ( moduleId != activeModuleId) {
 	    	//alert( ctrlId +"/"+ actionId );
@@ -1033,6 +1036,9 @@ var urlCtrl = {
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 	    mylog.log("END loadByHash hash:", hash);
 	    location.hash = hash;
+
+	    
+
 	    /*if(typeof back == "function"){
 	    	alert("back");
 	    	back();
@@ -1061,6 +1067,7 @@ function showPanel(box,callback)
 		callback();
 	}
 }
+
 
 /* ****************
 Generic ajax panel loading process 
@@ -1133,6 +1140,10 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	        		urlCtrl.afterLoad();
 	        		urlCtrl.afterLoad = null;
 	        	}
+
+	        	if( custom && custom.logo )
+	    			$(".logo-menutop").attr( {'src':custom.logo} ); 	
+
 
 	        	/*if(debug){
 	        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
@@ -1212,7 +1223,7 @@ function checkIsLoggued(uId){
 		setTitle("Section Sécuriser", "user-secret");
 
 		backUrl = location.hash;
-		showPanel( "box-login" );
+		Login.openLogin();
     	
     	resetUnlogguedTopBar();
 	}else 
@@ -1630,6 +1641,22 @@ function  bindLBHLinks() {
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    urlCtrl.loadByHash( h );
 	});
+	$(".lbh-menu-app").unbind("click").on("click",function(e){
+		e.preventDefault();
+		 $.each(searchObject, function(key,v){
+            if($.inArray(key,["startDate","endDate", "searchSType", "section", "subType","priceMin", "priceMax", "devise"]) > -1){
+                delete searchObject[key];
+            }
+        });
+		searchObject.page=0,
+		searchObject.indexMin=0,
+		searchObject.indexStep=30,
+		searchObject.count=true,
+		searchObject.initType="",
+		searchObject.types=[],
+		searchObject.countType=[];
+		urlCtrl.loadByHash($(this).data("hash"));
+	})
 	//open any url in a modal window
 	$(".lbhp").unbind("click").on("click",function(e) {
 		e.preventDefault();
@@ -1902,90 +1929,6 @@ function fillContactFields(id){
 	$("#name").val(name);
 }
 var cotmp = {};
-function globalSearch(searchValue,types,contact){
-	
-	searchType = (types) ? types : ["organizations", "projects", "events"/*, "needs"*/, "citoyens"];
-
-	var data = { 	 
-		"name" : searchValue,
-		// "locality" : "", a otpimiser en utilisant la localité 
-		"searchType" : searchType,
-		"indexMin" : 0,
-		"indexMax" : 50
-	};
-	$("#listSameName").html("<i class='fa fa-spin fa-circle-o-notch'></i> Vérification d'existence");
-	$("#similarLink").show();
-	$("#btn-submit-form").html('<i class="fa  fa-spinner fa-spin"></i>').prop("disabled",true);
-	$.ajax({
-      type: "POST",
-          url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
-          data: data,
-          dataType: "json",
-          error: function (data){
-             mylog.log("error"); mylog.dir(data);
-             $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
-          },
-          success: function(data){
-          	mylog.log("globalSearch", data);
-            var str = "";
- 			var compt = 0;
- 			var msg = "Verifiez si cet élément n'existe pas déjà";
- 			$("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false);
- 			cotmp = {};
- 			$.each(data.results, function(id, elem) {
-  				mylog.log("similarlink globalautocomplete", elem);
-  				city = "";
-				postalCode = "";
-				var htmlIco ="<i class='fa fa-users'></i>";
-				if(elem.type){
-					typeIco = elem.type;
-					htmlIco ="<i class='fa fa-"+dyFInputs.get(elem.type).icon +"'></i>";
-				}
-				where = "";
-				if (elem.address != null) {
-					city = (elem.address.addressLocality) ? elem.address.addressLocality : "";
-					postalCode = (elem.address.postalCode) ? elem.address.postalCode : "";
-					if( notEmpty( city ) && notEmpty( postalCode ) )
-					where = ' ('+postalCode+" "+city+")";
-				}
-				//var htmlIco="<i class='fa fa-calendar fa-2x'></i>";
-				if("undefined" != typeof elem.profilImageUrl && elem.profilImageUrl != ""){
-					htmlIco= "<img width='25' height='25' alt='image' class='img-circle' src='"+baseUrl+elem.profilThumbImageUrl+"'/>";
-				}
-				
-				if(contact == true){
-					cotmp[id] = {id:id, name : elem.name};
-					str += 	"<div class='col-xs-12 padding-10'>"+
-								"<a href='javascript:;' onclick='fillContactFields( \""+id+"\" );' class='btn btn-xs btn-default w50p' >"+
-									htmlIco + " " + elem.name + "</br>" + where +
-								"</a>" +
-							"</div>";
-					msg = "Verifiez si le contact est dans Communecter";
-				}else{
-					str += 	"<a target='_blank' href='#page.type."+ elem.type +".id."+ id +"' class='btn btn-xs btn-danger col-xs-12 w50p text-left padding-5 margin-5' style='height:42px' >"+
-							"<span>"+ htmlIco +"</span> <span> " + elem.name+"</br>"+where+ "</span>"
-						"</a>";
-				}
-				//str += directory.lightPanelHtml(elem);  
-				
-				compt++;
-
-
-  			});
-			
-			if (compt > 0) {
-				$("#listSameName").html("<div class='col-sm-12 light-border text-red'> <i class='fa fa-eye'></i> "+msg+" : </div>"+str);
-				$("#listSameName").show();
-			} else {
-				$("#listSameName").html("<span class='txt-green'><i class='fa fa-thumbs-up text-green'></i> Aucun élément avec ce nom.</span>");
-
-			}
-
-
-			
-          }
- 	});
-}
 
 /*function checkUsername(username){
 	
@@ -2034,139 +1977,7 @@ function shadowOnHeader() {
     else { $('.main-top-menu').removeClass('shadow'); }
 }
 
-function getMediaFromUrlContent(className, appendClassName,nbParent, typeExtract){
-    //user clicks previous thumbail
-    lastUrl = "";
-    if(typeof typeExtract != "undefined")
-    	var typeExtract=typeExtract;
-    $("body").on("click","#thumb_prev", function(e){        
-        if(img_arr_pos>0) 
-        {
-            img_arr_pos--; //thmubnail array position decrement
-            
-            //replace with new thumbnail
-            $("#extracted_thumb").html('<img src="'+extracted_images[img_arr_pos]+'" width="100" height="100">'+selectThumb);
-            
-            //replace thmubnail position text
-            $("#total_imgs").html((img_arr_pos) +' of '+ total_images);
-        }
-    });
-    
-    //user clicks next thumbail
-    $("body").on("click","#thumb_next", function(e){        
-        if(img_arr_pos<total_images)
-        {
-            img_arr_pos++; //thmubnail array position increment
-            
-            //replace with new thumbnail
-            $("#extracted_thumb").html('<img src="'+extracted_images[img_arr_pos]+'" width="100" height="100">'+selectThumb);
-            
-            //replace thmubnail position text
-            $("#total_imgs").html((img_arr_pos) +' of '+ total_images);
-        }
-    }); 
-    var getUrl  = $(className); //url to extract from text field
-    var appendClassName = appendClassName;
-    getUrl.bind("input keyup",function(e) { //user types url in text field        
-        //url to match in the text field
-        var $this = $(this);
-        if($(appendClassName).html()==""){
-        if($this.parents().eq(nbParent).find(appendClassName).html()=="" || (e.which==32 || e.which==13)){
-        	//var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?")
-        	//var match_url=new RegExp("(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})");
-        	//var match_url=/\b(https?):\/\/([\-A-Z0-9. \-]+)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i
-	       // var match_url = /\b(https?|ftp):\/\/([\-A-Z0-9. \-]+?|www\\.)(\/[\-A-Z0-9+&@#\/%=~_|!:,.;\-]*)?(\?[A-Z0-9+&@#\/%=~_|!:,.;\-]*)?/i;
-	       // var match_url=new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
-	        //var match_url=/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-	        var match_url=/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 
-	        if (match_url.test(getUrl.val())) 
-	        {
-	        	extract_url=getUrl.val().match(match_url)[0];
-	        	extract_url=extract_url.replace(/[\n]/gi," ");
-	        	extract_url=extract_url.split(" ");
-	        	extract_url=extract_url[0];
-		        if(lastUrl != extract_url && processUrl.isLoading==false){
-		        	processUrl.isLoading=true;
-		        	var extracted_url = extract_url;
-	                $this.parents().eq(nbParent).find(".loading_indicator").show(); //show loading indicator image
-	                //ajax request to be sent to extract-process.php
-	                lastUrl=extracted_url;
-	                extracted_url_send=extracted_url;
-	                if(extracted_url_send.indexOf("http")<0)
-	                	extracted_url_send = "http://"+extracted_url;
-	                $.ajax({
-						url: baseUrl+'/'+moduleId+"/news/extractprocess",
-						data: {'url': extracted_url_send},
-						type: 'post',
-						dataType: 'json',
-						success: function(data){        
-			                mylog.log(data); 
-			                processUrl.isLoading=false;
-			                if(data.type=="activityStream"){
-			                  	content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>'+
-			                			 directory.showResultsDirectoryHtml(new Array(data.object), data.object.type)+
-			                			"<input type='hidden' class='type' value='activityStream'>"+
-										"<input type='hidden' class='objectId' value='"+data.object.id+"'>"+
-										"<input type='hidden' class='objectType' value='"+data.object.type+"'>";
-			                }else{
-			                	if(typeof typeExtract != "undefined" && typeExtract=="video"){
-			                		if(typeof data.content !="undefined" && typeof data.content.videoLink != "undefined")
-			                			content= processUrl.getMediaVideo(data,"save");
-			                		else 
-			                			content="<span class='text-red'><i>This url is not associate to a video</i></span>";
-			                	}else
-		                    		content = processUrl.getMediaCommonHtml(data,"save");
-			                }
-		                    //load results in the element
-		                    //return content;
-		                   //$("#results").html(content); 
-		                    $this.parents().eq(nbParent).find(appendClassName).html(content).slideDown();
-		                    //$this.parents().eq(nbParent).slideDown();
-		                    if($this.parent().find(".dynFormUrlsWarning").length > 0)
-			                   $this.parent().find(".dynFormUrlsWarning").remove(); 
-		                    
-		                    $(".removeMediaUrl").click(function(){
-			                    $trigger=$(this).parents().eq(1).find(className);
-							    $this.parents().eq(nbParent).find(appendClassName).empty().hide();
-							    $trigger.trigger("input");
-							});
-							//append received data into the element
-		                    //$("#results").slideDown(); //show results with slide down effect
-		                    $this.parents().eq(nbParent).find(".loading_indicator").hide(); //hide loading indicator image
-	                	},
-						error : function(){
-							$.unblockUI();
-							//toastr.error(trad["wrongwithurl"] + " !");
-							 processUrl.isLoading=false;
-							//content to be loaded in #results element
-							var content = '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-refresh"></i></a><h4><a href="'+extracted_url+'" target="_blank" class="lastUrl wrongUrl">'+extracted_url+'</a></h4>';
-		                    //load results in the element
-		                    $this.parents().eq(nbParent).find(appendClassName).hide();
-		                    $this.parents().eq(nbParent).find(appendClassName).html(content);
-		                    $this.parents().eq(nbParent).find(appendClassName).slideDown();
-		                    toastr.warning("L'url "+extracted_url+" ne pointe vers aucun site ou un problème est survenu à son extraction");
-		                    if ($("#ajaxFormModal").is(":visible") && $this.parent().find(".dynFormUrlsWarning").length <= 0)
-								$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
-		                    $(".removeMediaUrl").click(function(){
-			                    $trigger=$(this).parents().eq(1).find(className);
-							    $this.parents().eq(nbParent).find(appendClassName).empty().hide();
-							    $trigger.trigger("input");
-							});
-
-		                    //$("#results").html(content); //append received data into the element
-		                    //$("#results").slideDown(); //show results with slide down effect
-		                    $this.parents().eq(nbParent).find(".loading_indicator").hide(); //hide loading indicator image
-						}	
-	                });
-				}
-        	} else if ($("#ajaxFormModal").is(":visible") && $this.parent().find(".dynFormUrlsWarning").length <= 0){
-				//$this.parent().append( "<span class='text-red dynFormUrlsWarning'>* Ceci n'est pas un url valide.</span>" );         	
-        	}
-        }
-    }
-    }); 
-}
 
 function myContactLabel (type,id) { 
 	if(typeof myContacts != "undefined" && myContacts[type]){
@@ -2303,389 +2114,7 @@ function cityKeyPart(unikey, part){
 	if(part == "cp") return unikey.substr(e+1, len);
 	if(part == "country") return unikey.substr(e+1, len);
 }
-/* ***********************************
-			EXTRACTPROCCESS
-********************************** */
-var processUrl = {
-	isLoading:false,
-	checkUrlExists: function(url){
-	    url = url.trim();
-	    if(url.lastIndexOf("/") == url.lenght){
-	        url = url.substr(0, url.lenght-1);
-	        $("#form-url").val(url); 
-	    }
 
-	    $.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/app/checkurlexists",
-	        data: { url: url },
-	        dataType: "json",
-	        success: function(data){ console.log("checkUrlExists", data);
-	            if(data.status == "URL_EXISTS")
-	            urlExists = true;
-	            else
-	            urlExists = false;
-	            console.log("checkUrlExists", data);
-	            refUrl(url);
-	        },
-	        error: function(data){
-	            console.log("check url exists error");
-	        }
-	    });
-	},
-	extractUrl : function(inputClass, url,callback) { 
-
-		$(inputClass+" span.help-block").html(trad.waitWeFetch+" <i class='fa fa-spin fa-refresh'></i>");
-	
-		$.ajax({
-			url: baseUrl+'/'+moduleId+"/news/extractprocess",
-			data: { 'url' : url },
-			type: 'post',
-			dataType: 'json',
-			success: function(data){  
-				$(inputClass+" span.help-block").html('');
-				if (typeof callback == "function") 
-					callback(data);
-				return data;
-			},
-			error:function(xhr, status, error){
-				toastr.info("<span class='letter-red'><i class='fa fa-ban'></i> URL INNACCESSIBLE</span>");
-				$(inputClass+" span.help-block").html('');
-			},
-			statusCode:{
-				404: function(){
-					toastr.info("<span class='letter-red'><i class='fa fa-ban'></i> 404 : URL INTROUVABLE OU INACCESSIBLE</span>");
-					$(inputClass+" span.help-block").html('');
-				}
-			}
-		})
-	},
-	refUrl: function(url){
-	    if(!processUrl.isValidURL(url)){
-	        $("#status-ref").html("<span class='letter-red'><i class='fa fa-times'></i> cette url n'est pas valide.</span>");
-	        return;
-	    }
-		$("#status-ref").html("<span class='letter-blue'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</span>");
-		$("#refResult").addClass("hidden");
-		$("#send-ref").addClass("hidden");
-
-		urlValidated = "";
-
-	    $.ajax({ 
-	    	url: "//cors-anywhere.herokuapp.com/" + url, // 'http://google.fr', 
-	    	//crossOrigin: true,
-	    	timeout:10000,
-	        success:
-				function(data) {
-					
-				    var jq = $.parseHTML(data);
-				    
-				    var tempDom = $('<output>').append($.parseHTML(data));
-				    var title = $('title', tempDom).html();
-				    var stitle = "";
-
-				    if(stitle=="" || stitle=="undefined")
-				   		stitle = $('blockquote', tempDom).html();
-
-				   	//console.log("STITLE", stitle);
-
-					if(stitle=="" || stitle=="undefined")
-				   		stitle = $('h2', tempDom).html();
-
-					if(stitle=="" || stitle=="undefined")
-				   		stitle = $('h3', tempDom).html();
-
-					if(stitle=="" || stitle=="undefined")
-				   		stitle = $('blockquote', tempDom).html();
-
-					if(title=="" || title=="undefined")
-				   		title = stitle;
-
-	                var favicon = $("link[rel*='icon']", tempDom).attr("href");
-	                var hostname = (new URL(url)).origin;
-	                var faviconSrc = "";
-	                if(typeof favicon != "undefined"){
-	                    var faviconSrc = hostname+favicon;
-	                    if(favicon.indexOf("http")>=0) faviconSrc = favicon;
-	                }
-
-					var description = $(tempDom).find('meta[name=description]').attr("content");
-
-					var keywords = $(tempDom).find('meta[name=keywords]').attr("content");
-					//console.log("keywords", keywords);
-
-					var arrayKeywords = new Array();
-					if(typeof keywords != "undefined")
-						arrayKeywords = keywords.split(",");
-
-					//console.log("arrayKeywords", arrayKeywords);
-
-					//if(typeof arrayKeywords[0] != "undefined") $("#form-keywords1").val(arrayKeywords[0]); else $("#form-keywords1").val("");
-					//if(typeof arrayKeywords[1] != "undefined") $("#form-keywords2").val(arrayKeywords[1]); else $("#form-keywords2").val("");
-					//if(typeof arrayKeywords[2] != "undefined") $("#form-keywords3").val(arrayKeywords[2]); else $("#form-keywords3").val("");
-					//if(typeof arrayKeywords[3] != "undefined") $("#form-keywords4").val(arrayKeywords[3]); else $("#form-keywords4").val("");
-
-					if(description=="" || description=="undefined")
-				   		if(stitle=="" || stitle=="undefined")
-				   			description = stitle;
-				   	params = new Object;
-				   	params.title=title,
-				   	params.favicon=faviconSrc,
-				   	params.hostname=hostname,
-				   	params.description=description,
-				   	params.tags=arrayKeywords;
-					console.log(params);
-					/*$("#form-title").val(title);
-	                $("#form-favicon").val(faviconSrc);
-	                $("#form-description").val(description);*/
-					
-
-					//color
-					$("#ajaxFormModal #name").val(title);   	
-				   	//color	
-					$("#ajaxFormModal #description").val(description); 
-				   	//color
-				   	if(notEmpty(arrayKeywords))		
-						$("#ajaxFormModal #tags").select2("val",arrayKeywords);
-					/*if($("#form-keywords1").val() != "")   $("#lbl-keywords").removeClass("text-orange").addClass("letter-green");
-					else 								   $("#lbl-keywords").removeClass("letter-green").addClass("text-orange");
-				   		
-				   	$("#form-title").off().keyup(function(){
-				   		if($(this).val()!="")$("#lbl-title").removeClass("letter-red").addClass("letter-green");
-						else 				 $("#lbl-title").removeClass("letter-green").addClass("letter-red");
-						checkAllInfo();
-				   	});
-				   	$("#form-description").off().keyup(function(){
-				   		if($(this).val()!="")$("#lbl-description").removeClass("text-orange").addClass("letter-green");
-						else 				 $("#lbl-description").removeClass("letter-green").addClass("text-orange");
-						checkAllInfo();
-				   	});
-				   	$("#form-keywords1").off().keyup(function(){
-				   		if($(this).val()!="")$("#lbl-keywords").removeClass("text-orange").addClass("letter-green");
-						else 				 $("#lbl-keywords").removeClass("letter-green").addClass("text-orange");
-						checkAllInfo();
-				   	});
-
-				   	$("#status-ref").html("<span class='letter-green'><img src='"+faviconSrc+"' height=30 alt='x'> <i class='fa fa-check'></i> Nous avons trouvé votre page</span>");
-	    			$("#refResult").removeClass("hidden");
-				   
-				   	$("#lbl-url").removeClass("letter-red").addClass("letter-green");
-				   	urlValidated = url;
-
-				    $('<output>').remove();
-				    tempDom = "";
-
-				    checkAllInfo();*/	
-				    return params;		   
-				},
-			error:function(xhr, status, error){
-				$("#lbl-url").removeClass("letter-green").addClass("letter-red");
-				$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> URL INNACCESSIBLE</span>");
-			},
-			statusCode:{
-				404: function(){
-					$("#lbl-url").removeClass("letter-green").addClass("letter-red");
-					$("#status-ref").html("<span class='letter-red'><i class='fa fa-ban'></i> 404 : URL INTROUVABLE OU INACCESSIBLE</span>");
-				}
-			}
-		});
-	},
-	isValidURL:function(url) {
-  		var match_url = new RegExp("(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
-  		return match_url.test(url);
-	},
-	getMediaCommonHtml: function(data,action,id){
-		if(typeof(data.images)!="undefined"){
-			extracted_images = data.images;
-			total_images = parseInt(data.images.length);
-			img_arr_pos=1;
-	    }
-	    inputToSave="";
-	    if(typeof(data.content) !="undefined" && typeof(data.content.imageSize) != "undefined"){
-	        if (data.content.videoLink){
-	            extractClass="extracted_thumb";
-	            width="100%";
-	            height="100%";
-
-	            aVideo='<a href="javascript:;" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
-	            inputToSave+="<input type='hidden' class='video_link_value' value='"+data.content.videoLink+"'/>"+
-	            "<input type='hidden' class='media_type' value='video_link' />";   
-			}
-	        else{
-	            aVideo="";
-	            endAVideo="";
-	            if(data.content.imageSize =="large"){
-	                extractClass="extracted_thumb_large";
-	                width="100%";
-	                height="";
-	            }
-	            else{
-	                extractClass="extracted_thumb";
-	                width="100";
-	                height="100";
-	            }
-	            inputToSave+="<input type='hidden' class='media_type' value='img_link' />";
-			}
-			inputToSave+="<input type='hidden' class='size_img' value='"+data.content.imageSize+"'/>"
-	    }
-	    if (typeof(data.content) !="undefined" && typeof(data.content.image)!="undefined"){
-	        inc_image = '<div class="'+extractClass+'  col-xs-4 no-padding" id="extracted_thumb">'+aVideo;
-	        if(data.content.type=="img_link"){
-		        if(typeof(data.content.imageId) != "undefined"){
-			       inc_image += "<input type='hidden' id='deleteImageCommunevent"+id+"' value='"+data.content.imageId+"'/>";
-			       titleImg = "De l&apos;application communevent"; 
-			    }else
-			    	titleImg = "Image partagée"; 
-		        inc_image += "<a class='thumb-info' href='"+data.content.image+"' data-title='"+titleImg+"'  data-lightbox='allimgcontent'>";
-		    }
-	        inc_image +='<img src="'+data.content.image+'" width="'+width+'" height="'+height+'">';
-	        if(data.content.type=="img_link")
-	        	inc_image += '</a>';
-	        inc_image += '</div>';
-	        countThumbail="";
-	        inputToSave+="<input type='hidden' class='img_link' value='"+data.content.image+"'/>";
-	    }
-	    else {
-	        if(typeof(total_images)!="undefined" && total_images > 0){
-	            if(total_images > 1){
-	                selectThumb='<div class="thumb_sel"><span class="prev_thumb" id="thumb_prev">&nbsp;</span><span class="next_thumb" id="thumb_next">&nbsp;</span> </div>';
-	                countThumbail='<span class="small_text" id="total_imgs">'+img_arr_pos+' of '+total_images+'</span><span class="small_text">&nbsp;&nbsp;Choose a Thumbnail</span>';
-	            }
-	            else{
-	                selectThumb="";
-	                countThumbail="";
-	            }
-	            inc_image = '<div class="'+extractClass+'  col-xs-4" id="extracted_thumb">'+aVideo+'<img src="'+data.images[0]+'" width="'+width+'" height="'+height+'">'+selectThumb+'</div>';
-	      		inputToSave+="<input type='hidden' class='img_link' value='"+data.images[0]+"'/>";      
-	        }else{
-	            inc_image ='';
-	            countThumbail='';
-	        }
-	    }
-	    
-	    //content to be loaded in #results element
-		if(data.content==null)
-			data.content="";
-		if(typeof(data.url)!="undefined")
-			mediaUrl=data.url;
-		else if (typeof(data.content.url) !="undefined")
-			mediaUrl=data.content.url;
-		else
-			mediaUrl="";
-		if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
-			contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
-				'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
-				if(typeof(data.name) != "undefined" && data.name!=""){
-					contentMedia+='<h4>'+data.name+'</h4></a>';
-					inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
-				}
-				if(typeof(data.description) != "undefined" && data.description!=""){
-					contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
-					if(typeof(data.name) == "undefined" || data.name=="")
-						contentMedia+='</a>';
-					inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
-				}
-			contentMedia+='</div>';
-		}
-		else{
-			contentMedia="";
-		}
-		inputToSave+="<input type='hidden' class='url' value='"+mediaUrl+"'/>";
-		inputToSave+="<input type='hidden' class='type' value='url_content'/>"; 
-		content="";
-		if(action == "save")
-			content += '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>';
-	    content += '<div class="extracted_url padding-10">'+ inc_image +contentMedia+'</div>'+inputToSave;
-	    return content;
-	},
-	getMediaVideo:function(data,action){
-		if(typeof(data.images)!="undefined"){
-			extracted_images = data.images;
-			total_images = parseInt(data.images.length);
-			img_arr_pos=1;
-	    }
-	    inputToSave="";
-	    if(typeof(data.content) !="undefined" && typeof(data.content.imageSize) != "undefined"){
-	        if (data.content.videoLink){
-	            extractClass="extracted_thumb";
-	            width="100%";
-	            height="100%";
-
-	            aVideo='<a href="javascript:;" class="videoSignal text-white center" style="position:absolute;top:20%;left:40%;"><i class="fa fa-4x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
-	            inputToSave+="<input type='hidden' class='video_link_value' value='"+data.content.videoLink+"'/>"+
-	            "<input type='hidden' class='media_type' value='video_link' />";   
-			}
-	       	inputToSave+="<input type='hidden' class='size_img' value='"+data.content.imageSize+"'/>";
-	    }
-	    if (typeof(data.content) !="undefined" && typeof(data.content.image)!="undefined"){
-	        inc_image = '<div class="'+extractClass+'  col-xs-12 col-md-12 col-sm-12 no-padding" id="extracted_thumb">'+aVideo;
-	        /*if(data.content.type=="img_link"){
-		        if(typeof(data.content.imageId) != "undefined"){
-			       inc_image += "<input type='hidden' id='deleteImageCommunevent"+id+"' value='"+data.content.imageId+"'/>";
-			       titleImg = "De l&apos;application communevent"; 
-			    }else
-			    	titleImg = "Image partagée"; 
-		        inc_image += "<a class='thumb-info' href='"+data.content.image+"' data-title='"+titleImg+"'  data-lightbox='allimgcontent'>";
-		    }*/
-	        inc_image +='<img src="'+data.content.image+'" width="'+width+'" height="'+height+'">';
-	        if(data.content.type=="img_link")
-	        	inc_image += '</a>';
-	        inc_image += '</div>';
-	        countThumbail="";
-	        inputToSave+="<input type='hidden' class='img_link' value='"+data.content.image+"'/>";
-	    }
-	    else {
-	        if(typeof(total_images)!="undefined" && total_images > 0){
-	            if(total_images > 1){
-	                selectThumb='<div class="thumb_sel"><span class="prev_thumb" id="thumb_prev">&nbsp;</span><span class="next_thumb" id="thumb_next">&nbsp;</span> </div>';
-	                countThumbail='<span class="small_text" id="total_imgs">'+img_arr_pos+' of '+total_images+'</span><span class="small_text">&nbsp;&nbsp;Choose a Thumbnail</span>';
-	            }
-	            else{
-	                selectThumb="";
-	                countThumbail="";
-	            }
-	            inc_image = '<div class="'+extractClass+'  col-xs-12 col-sm-12 col-md-12" id="extracted_thumb">'+aVideo+'<img src="'+data.images[0]+'" width="'+width+'" height="'+height+'">'+selectThumb+'</div>';
-	      		inputToSave+="<input type='hidden' class='img_link' value='"+data.images[0]+"'/>";      
-	        }else{
-	            inc_image ='';
-	            countThumbail='';
-	        }
-	    }
-	    
-	    //content to be loaded in #results element
-		if(data.content==null)
-			data.content="";
-		if(typeof(data.url)!="undefined")
-			mediaUrl=data.url;
-		else if (typeof(data.content.url) !="undefined")
-			mediaUrl=data.content.url;
-		else
-			mediaUrl="";
-		/*if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
-			contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
-				'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
-				if(typeof(data.name) != "undefined" && data.name!=""){
-					contentMedia+='<h4>'+data.name+'</h4></a>';
-					inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
-				}
-				if(typeof(data.description) != "undefined" && data.description!=""){
-					contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
-					if(typeof(data.name) == "undefined" || data.name=="")
-						contentMedia+='</a>';
-					inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
-				}
-			contentMedia+='</div>';
-		}
-		else{
-			contentMedia="";
-		}*/
-		inputToSave+="<input type='hidden' class='url' value='"+mediaUrl+"'/>";
-		inputToSave+="<input type='hidden' class='type' value='url_content'/>"; 
-		content="";
-		content += '<div class="extracted_url padding-10">'+ inc_image +'</div>'+inputToSave;
-	    return content;
-	}
-}
 var list = {
 	initList : function(dataList, action, subType){
 		var viewList="";
@@ -3043,143 +2472,6 @@ var mentionsInit = {
 	}
 }
 
-
-
-var typeObj = {
-	themes:{ 
-		dynForm : {
-		    jsonSchema : {
-			    title : "Theme Switcher ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    properties : {
-			    	custom :{
-		            	inputType : "custom",
-		            	html : function() { 
-		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "ph dori", classes:"bg-dark", icon:"fa-bullseye", action : "javascript:window.location.href = moduleId+'?theme=ph-dori'"},
-			            		{ label : "notragora", classes:"bg-grey", icon:"fa-video-camera ", action : "javascript:window.location.href = moduleId+'?theme=notragora'"},
-			            		{ label : "C02", classes:"bg-red", icon:"fa-search", action : "javascript:window.location.href = moduleId+'?theme=CO2'"},
-			            		{ label : "network", classes:"bg-orange", icon:"fa-bars", action : "javascript:window.location.href = moduleId+'?theme=network'"},
-			            		
-		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-4 "} )+"</div>";
-		            	}
-		            }
-			    }
-			}
-		}	},
-	addElement:{ 
-		dynForm : {
-		    jsonSchema : {
-			    title : "Ajouter un élément ?",
-			    icon : "question-cirecle-o",
-			    noSubmitBtns : true,
-			    properties : {
-			    	custom :{
-		            	inputType : "custom",
-		            	html : function() { 
-		            		return "<div class='menuSmallMenu'>"+js_templates.loop( [ 
-			            		{ label : "event", classes:"col-xs-12 text-bold bg-"+typeObj["event"].color, icon:"fa-"+typeObj["event"].icon, action : "javascript:dyFObj.openForm('event')"},
-			            		{ label : "organization", classes:"col-xs-12 text-bold bg-"+typeObj["organization"].color, icon:"fa-"+typeObj["organization"].icon, action : "javascript:dyFObj.openForm('organization')"},
-			            		{ label : "project", classes:"col-xs-12 text-bold bg-"+typeObj["project"].color, icon:"fa-"+typeObj["project"].icon, action : "javascript:dyFObj.openForm('project')"},
-			            		{ label : "poi", classes:"col-xs-12 text-bold bg-"+typeObj["poi"].color, icon:"fa-"+typeObj["poi"].icon, action : "javascript:dyFObj.openForm('poi')"},
-			            		{ label : "entry", classes:"col-xs-12 text-bold bg-"+typeObj["entry"].color, icon:"fa-"+typeObj["entry"].icon, action : "javascript:dyFObj.openForm('entry')"},
-			            		{ label : "action", classes:"col-xs-12 text-bold bg-"+typeObj["actions"].color, icon:"fa-"+typeObj["actions"].icon, action : "javascript:dyFObj.openForm('action')"},
-			            		{ label : "classified", classes:"col-xs-12 text-bold bg-"+typeObj["classified"].color, icon:"fa-"+typeObj["classified"].icon, action : "javascript:dyFObj.openForm('classified')"},
-			            		{ label : "Documentation", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-book", action : "#default.view.page.index.dir.docs"},
-			            		{ label : "Signaler un bug", classes:"col-xs-12 text-white text-bold bg-red lbh", icon:"fa-bug", action : "#news.index.type.pixels"},
-		            		], "col_Link_Label_Count", { classes : "bg-red kickerBtn", parentClass : "col-xs-12 col-sm-6 "} )+"</div>";
-		            	}
-		            }
-			    }
-			}
-		}	},
-	addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
-	addFile:{ titleClass : "bg-dark", color : "bg-dark" },
-	person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",	},
-	persons : { sameAs:"person" },
-	people : { sameAs:"person" },
-	citoyen : { sameAs:"person" },
-	citoyens : { sameAs:"person" },
-	
-	poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
-		subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
-			   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
-			   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
-	
-	
-	siteurl:{ col:"siteurl",ctrl:"siteurl"},
-	organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
-	organizations : {sameAs:"organization"},
-	LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
-	NGO : {sameAs:"organization", color:"green", icon:"users"},
-	Association : {sameAs:"organization", color:"green", icon: "group"},
-	GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
-	Group : {	col:"organizations",color: "turq",icon: "circle-o"},
-	event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange", color:"orange",bgClass : "bgEvent"},
-	events : {sameAs:"event"},
-	project : {col:"projects",ctrl:"project",	icon : "lightbulb-o",color : "purple",titleClass : "bg-purple",	bgClass : "bgProject"},
-	projects : {sameAs:"project"},
-	city : {sameAs:"cities"},
-	cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
-	
-	entry : {	col:"surveys",	ctrl:"survey",	titleClass : "bg-dark",bgClass : "bgDDA",	icon : "gavel",	color : "azure", 
-		saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-	vote : {col:"actionRooms",ctrl:"survey"},
-	survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-	surveys : {sameAs:"survey"},
-	proposal : { col:"proposals", ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-	proposals : { sameAs : "proposal" },
-	resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
-	action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
-	actions : { sameAs : "action" },
-	actionRooms : {sameAs:"room"},
-	rooms : {sameAs:"room"},
-	room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-	discuss : {col:"actionRooms",ctrl:"room"},
-
-	contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
-		saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-	product:{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",	icon:"shopping-basket"},
-	products : {sameAs:"product"},
-	service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",	icon:"sun-o"},
-	services : {sameAs:"service"},
-	circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",	icon:"ravelry"},
-	circuits : {sameAs:"circuit"},
-	
-	url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",	},
-	bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
-	document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument",	},
-	default : {icon:"arrow-circle-right",color:"dark"},
-	//"video" : {icon:"video-camera",color:"dark"},
-	formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
-	news : { col : "news", ctrl:"news", titleClass : "bg-dark", color:"dark",	icon:"newspaper-o"},
-	//news : { col : "news" }, 
-	config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
-				sections : {
-			        network : { label: "Network Config",key:"network",icon:"map-marker"}
-			    }},
-	network : { col:"network",color:"azure",icon:"map-o",titleClass : "bg-turq"},
-	networks : {sameAs:"network"},
-	inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
-	addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
-				sections : {
-			        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
-			        organization : { label: trad.organization,key:"organization",icon:"group"},
-			        event : { label: trad.event,key:"event",icon:"calendar"},
-			        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
-			    }},
-	apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
-				sections : {
-			        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
-			        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
-			        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
-			        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
-			        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
-			        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
-			    }},
-	filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
-};
 
 var documents = {
 	objFile:{
@@ -3565,9 +2857,9 @@ function bindButtonOpenForm(){
 	//window select open form type (selectCreate)
 	$(".btn-open-form").off().on("click",function(){
         var typeForm = $(this).data("form-type");
-        mylog.log("test", $(this).data("form-subtype")),
+        mylog.log("test", $(this).data("form-subtype"));
         currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-
+        //mylog.log("contextData", contextData, contextData.type, contextData.id );
         //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
         if(contextData && contextData.type && contextData.id )
             dyFObj.openForm(typeForm,"sub");
@@ -3593,7 +2885,20 @@ function initKInterface(params){ console.log("initKInterface");
       resizeInterface();
     });
 	resizeInterface();
-	
+	$(window).bind("scroll",function(){ 
+		if($(this).scrollTop()<=10)
+			infScroll=true;
+        if( $(this).scrollTop() > 10 && infScroll && !headerScaling){
+        	$("#filter-scopes-menu, #filters-nav, #text-search-menu").hide(200);
+        	$(".menu-btn-scope-filter").removeClass("active");
+        	headerHeightPos(true);
+        	headerScaling=false;
+        	infScroll=false;
+        }
+        //else
+        //	$("#filter-scopes-menu, #filters-nav").show();
+
+    });
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
         var $anchor = $(this);
@@ -3651,15 +2956,27 @@ function initKInterface(params){ console.log("initKInterface");
         showFloopDrawer(false);
         showNotif(false);
         $("#dropdown-user").addClass("open");
-        $("#dropdown-dda").removeClass("open");
+        $("#dropdown-dda, .dropdownApps-menuTop").removeClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
-    
+    $("#dropdownApps").click(function(){
+		showFloopDrawer(false);
+        showNotif(false);
+        $("#dropdown-user, #dropdown-dda").removeClass("open");
+        $(".dropdownApps-menuTop").addClass("open");
+        
+    });
+    $(".dropdownApps-menuTop").mouseleave(function(){ //alert("dropdown-user mouseleave");
+    	setTimeout(function(){ 
+    		if(!$(".dropdownApps-menuTop").is(":hover"))
+    			$(".dropdownApps-menuTop").removeClass("open");
+    	}, 200);
+    });
     $(".btn-dashboard-dda").click(function(){
         showFloopDrawer(false);
         showNotif(false);
         dashboard.loadDashboardDDA();
-        $("#dropdown-user").removeClass("open");
+        $("#dropdown-user, .dropdownApps-menuTop").removeClass("open");
         $("#dropdown-dda").addClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
@@ -3705,7 +3022,7 @@ function initKInterface(params){ console.log("initKInterface");
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];
     }
     console.log("affixTop", affixTop);
-    if(affixTop > 0){
+    /*if(affixTop > 0){
       // Offset for Main Navigation
       $("#affix-sub-menu").affix({
           offset: {
@@ -3721,13 +3038,13 @@ function initKInterface(params){ console.log("initKInterface");
           offset: {
               top: affixTop
           }
-      });*/
+      });
       $('#mainNav').affix({
           offset: {
               top: affixTop
           }
       });
-    }
+    }*/
 
 
     $(".logo-menutop.hidden-top, .menu-btn-start-search, #input-sec-search").attr("style", "");
@@ -3862,9 +3179,9 @@ function test(params, itemType){
         params.parentIcon = "fa-"+parentObj.icon;
         params.parentColor = parentObj.color;
     }
-    if(params.type == "classified" && typeof params.category != "undefined"){
-      params.ico = typeof classified.filters[params.category] != "undefined" ?
-                   "fa-" + classified.filters[params.category]["icon"] : "";
+    if(params.type == "classifieds" && typeof params.category != "undefined"){
+      params.ico = typeof classifieds.filters[params.category] != "undefined" ?
+                   "fa-" + classifieds.filters[params.category]["icon"] : "";
     }
 
     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x bg-"+params.color+"'></i>";
@@ -3966,7 +3283,7 @@ var co = {
 					$("#openModal div.modal-content").css("text-align","left");
 					lazyLoad( baseUrl+"/plugins/jsonview/jquery.jsonview.js", 
 							  baseUrl+"/plugins/jsonview/jquery.jsonview.css", function() { 
-							  	alert();
+							  	//alert();
 						getAjax('', url, function(data){ 
 							urlT = url.split('/');
 							title = url+"<br/>"+urlT[8];
@@ -3998,7 +3315,7 @@ var co = {
 	},
 	nect : function () { 
 		if(!userId)
-			$('#modalLogin').modal("show");
+			Login.openLogin();
 		else 
 			toastr.success("allready Loggued in!!");	},
 	tribute : function () { 

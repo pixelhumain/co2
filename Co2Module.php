@@ -39,7 +39,8 @@ class Co2Module extends CWebModule {
 		$this->setImport(array(
 			'citizenToolKit.models.*',
 			'ressources.models.*',
-			'classifieds.models.*',
+			//'classifieds.models.*'
+			'eco.models.*',
 			'places.models.*',
 			'chat.models.*',
 			$this->id.'.models.*',

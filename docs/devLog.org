@@ -13,6 +13,35 @@
 ----------------------------------------------------
 
 ---------------------------------------
+---------- VERSION C0.30 (warrior flower) --------------
+---------------------------------------
+* Refactor de classifieds 
+Migration des ressources dans classified et refactor sur les "classified" qui deviennent des "classifieds"
+***** STEPS ********
+1* Créer une collection "classifieds" qui est la copie de la collection "classified"
+2* Générer un json de classified/ressources en classifieds unique et le remanier
+ **2-1 - Lancer l'url "/co2/datamigration/UpdateClassifiedAndMergeRessources"
+    ***Génere le json de classifieds
+    ***Affecte les bons les types de classifieds (ressources/classifieds/jobs)
+    ***Affecte les anciens "type" à l'entrée "category"
+    ***Remplace le chemin des urls d'images par le chemin correspondant à la collection "classifieds" => "upload/communecter/classifieds/" 
+  **2-2 - Extraire le json affichés et le mettre dans dans un fichier json 
+  **2-3 - Renommer les champs section : "category" en "subtype" avec les bonnes clés 
+          - Type "classifieds" se référer à eco/assets/js/classifieds/categories.json
+          - Type "ressources" se référer à eco/assets/js/ressources/categories.json
+          - Type "jobs" se référer à eco/assets/js/jobs/categories.json
+  **2-4 - Vider la collection classifieds en prod et import le nouveau json
+  **2-5 - Lancer les bash de dates
+    *** /co2/datamigration/UpdateDateInDB
+    *** /co2/datamigration/UpdateLineInDB
+3* Renomer et déplacer les images
+  - Renommer le dossier "upload/communecter/classified/" en "upload/communecter/classifieds/"
+  - Déplacer le contenu du dossier "upload/communecter/ressources/" dans "upload/communecter/classifieds/"
+4* Bash des object type dans documents, comments, notifications et news
+  =>lancer l'url "/co2/datamigration/UpdateTypeInCollectionsLinkToClassifieds"
+
+
+---------------------------------------
 ---------- VERSION C0.30 --------------
 ---------------------------------------
 [ ] New architecture of search engine

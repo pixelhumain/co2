@@ -88,6 +88,12 @@
 	}
 <?php } ?>
 
+.grayscale{
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+}
+
 #ajax-modal .modal-content,
 #formContact .modal-content{
 	/*background-color: rgba(0,0,0,0.6);*/
@@ -160,7 +166,7 @@
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
 
 	if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
-		$this->renderPartial('../element/confirmDeleteModal'); ?>
+		$this->renderPartial('../element/confirmDeleteModal', array("id" =>(String)$element["_id"], "type"=>$type)); ?>
 <?php 
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
@@ -169,7 +175,7 @@
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header" 
     	<?php if (!@$element["profilBannereUrl"] || (@$element["profilBannereUrl"] && empty($element["profilBannereUrl"]))){ ?> 
-    		style="background-color: rgba(0,0,0,0.5);"
+    		style=" background: url('<?php echo Yii::app()->theme->baseUrl. '/assets/img/background-onepage/connexion-lines.jpg';?>') center bottom;"
     	<?php } ?>>
         <div id="topPosKScroll"></div>
     	<?php if(@$edit==true && false) { ?>
@@ -315,7 +321,7 @@
 		  			}
 		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
 
-		  			if( $type != Person::COLLECTION )
+		  			if( Yii::app()->params['rocketchatMultiEnabled'] && $type != Person::COLLECTION )
 	  				{
 			  		?>
 			  			<div class="btn-group " id="paramsMenu">
@@ -430,6 +436,20 @@
 				<?php } ?>
 		  <?php } ?>
 
+			
+		  <?php /*if(@Yii::app()->session["userId"])
+		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION || $type == Event::COLLECTION ){ ?>
+		  
+		  <span class="dropdown" id="dropdown-apps">
+	            <button type="button" class="dropdown-toggle btn btn-default bold hidden-xs letter-turq" 
+	            		id="open-co-tools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" style="border-right:0px!important;">
+				  		<i class="fa fa-th"></i> <?php echo Yii::t("cooperation", "CO.tools"); ?>
+				</button>
+	            <div class="dropdown-menu arrow_box" aria-labelledby="open-co-tools">
+	                <a class="dropdown-item padding-5 text-center col-xs-6" href="javascript:;" onclick="dyFObj.openForm('cotools')" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-plus-circle fa-2x"></i><br/><?php echo Yii::t("common","Add a tool") ?></a>
+	            </div>
+	        </span>
+		  <?php } */?>
 
 		  <?php if(@Yii::app()->session["userId"])
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
@@ -552,19 +572,6 @@
 									</a>
 								</li>
 							<?php } ?>
-
-							<?php if ( Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && 
-										!@$deletePending && !empty(Yii::app()->session["userId"])) { ?>
-						  			<li class="text-left">
-						               	<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
-						                    <i class="fa fa-trash"></i> 
-						                    <?php echo Yii::t("common", "Delete {what}", 
-						                    					array("{what}"=> 
-						                    						Yii::t("common","this ".Element::getControlerByCollection($type)))); 
-						                    ?>
-						                </a>
-						            </li>
-				            <?php } ?>
 			            <?php } else { ?>
 			            	<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 
@@ -622,6 +629,26 @@
 								<i class='fa fa-print'></i> <?php echo Yii::t("home","Print out") ?>
 							</a>
 						</li>
+
+						<?php if ( Authorisation::canDeleteElement( (String)$element["_id"], $type, Yii::app()->session["userId"]) && 
+									!@$deletePending && 
+									!empty(Yii::app()->session["userId"]) &&
+									$type !=Person::COLLECTION
+								) { ?>
+					  			<li class="text-left">
+									<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
+										<i class="fa fa-trash"></i> 
+										<?php 
+											if($type == Person::COLLECTION && (String)$element["_id"] == Yii::app()->session["userId"])
+												echo "Supprimer mon compte";
+											else
+												echo Yii::t("common", "Delete {what}", 
+															array("{what}"=> 
+																Yii::t("common","this ".Element::getControlerByCollection($type)))); 
+										?>
+									</a>
+					            </li>
+			            <?php } ?>
 			  		</ul>
 		  		</li>
 		  	</ul>
@@ -630,7 +657,7 @@
 	  	<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
 			<div class="btn-group pull-right">
 			  	<button 	class='btn btn-default bold btn-share pull-right  letter-green' style="border:0px!important;"
-	                    	data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
+							data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
 	                    	data-isShared='false'>
 	                    	<i class='fa fa-share'></i> <span class="hidden-xs"><?php echo Yii::t("common","Share") ?></span>
 	          	</button>
@@ -860,23 +887,6 @@
 					"controller" => $controller,
 					"openEdition" => $openEdition,
 				) );
-
-	//if( $type != Person::COLLECTION)
-		// $this->renderPartial('../element/addMembersFromMyContacts',
-		// 		array(	"type"=>$type, 
-		// 				"parentId" => (string)$element['_id'], 
-		// 				"members" => @$members));
-
-		// $this->renderPartial('../element/inviteOld',
-		// 		array(	"type"=>$type, 
-		// 				"parentId" => (string)$element['_id'], 
-		// 				"members" => @$members));
-
-		$this->renderPartial('../element/invite',
-				array(	"parentType"=>$type, 
-						"parentId" => (string)$element['_id'], 
-						"members" => @$members));
-
 ?>
 
 <?php	$cssAnsScriptFilesModule = array(
@@ -949,7 +959,7 @@
 		KScrollTo("#topPosKScroll");
 		initDateHeaderPage(contextData);
 		getContextDataLinks();
-		if(typeof contextData.links != "undefined" && rolesList != "undefined")
+		if(typeof contextData.links != "undefined" && typeof rolesList != "undefined")
 			pushListRoles(contextData.links);
 		
 		//Sig.showMapElements(Sig.map, mapElements);

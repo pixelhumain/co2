@@ -111,25 +111,9 @@
  }
 
 </style>
-
-
-
-
 <div class="<?php if(empty($search) || $search == false){ ?> portfolio-modal modal fade <?php } ?>" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-content padding-top-15">
-		<?php 
-		$stop = true;
-		 
-		if($stop == true){
-
-
-
-			echo "Désolé cette page est en maintenances, merci de patienter <br/> L'équipe de Communecter";
-		}else{
-
-
-
-		if(empty($search) || $search == false){ ?>
+		<?php if(empty($search) || $search == false){ ?>
 		<div class="close-modal" data-dismiss="modal">
 			<div class="lr">
 				<div class="rl">
@@ -296,8 +280,6 @@
 				</div>
 			</div>
 		</div>
-
-	<?php } ?>
 	</div>
 </div>
 

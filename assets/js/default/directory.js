@@ -2811,7 +2811,7 @@ var directory = {
           if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
              subData="data-ktype='"+addType+"' ";
              typeForm="organization";
-          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds")
+          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "interop")
             typeForm=typeObj[typeObj[addType].sameAs].ctrl;
           btn+='<button class="btn bg-white margin-left-5 btn-add pull-right text-'+headerParams[addType].color+' '+
             'data-type="'+typeForm+'" '+
@@ -2912,6 +2912,7 @@ var directory = {
     footerHtml : function(){
       footerStr = '';
       // GET PAGINATION STRUCTURE
+      mylog.log("footerHtml", addType, typeForm);
       if(typeof searchObject.ranges == "undefined"){
           footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
         if(userId != ""){
@@ -2928,11 +2929,14 @@ var directory = {
               '</a>';
             }else{
               subData="";
+              mylog.log("addType", addType);
               if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
                  subData="data-ktype='"+addType+"' ";
                  typeForm="organization";
               }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "cities" && typeForm != "interop")
                 typeForm=typeObj[typeObj[addType].sameAs].ctrl;
+              
+              mylog.log("addType", addType);
               btn='<button class="btn main-btn-create text-'+headerParams[addType].color+' tooltips" padding-5 no-margin '+
                 'data-type="'+typeForm+'" '+
                 subData+

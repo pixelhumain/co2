@@ -825,8 +825,7 @@ var searchAllEngine = {
             ressources : 0
         };
     },
-    initSearch: function (){ 
-        //Search on all
+    initRanges: function(){
         searchObject.ranges={
             organizations : { indexMin : 0, indexMax : 30, waiting : 30 },
             projects : { indexMin : 0, indexMax : 30, waiting : 30 },
@@ -839,6 +838,10 @@ var searchAllEngine = {
             ressources : { indexMin : 0, indexMax : 30, waiting : 30},
             cities : { indexMin : 0, indexMax : 30, waiting : 30 }
         };
+    },
+    initSearch: function (){ 
+        //Search on all
+        searchAllEngine.initRanges();
         initTypeSearch("all");
         searchAllEngine.allResults={};
         if(typeof searchObject.page != "undefined") delete searchObject.page;

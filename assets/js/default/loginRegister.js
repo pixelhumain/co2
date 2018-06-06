@@ -532,8 +532,6 @@ var Login = function() {
 						runRegisterValidator();
 						
 						Login.loaded = true;
-
-						$('#modalLogin').modal("show");
 					}
 			});
 			

@@ -20,11 +20,13 @@
 		$labelAdmin="";
 		$option=null;
 		$linkValid=Link::IS_INVITING;
+		$msgRefuse=Yii::t("common","Are you sure to refuse this invitation");
 		if(@$invitedMe["isAdminInviting"]){
 			$verb="Administrate";
 			$option="isAdminInviting";
 			$labelAdmin=" to administrate";
 			$linkValid=Link::IS_ADMIN_INVITING;
+			$msgRefuse=Yii::t("common","Are you sure to refuse to administrate {what}", array("{what}"=>Yii::t("common"," this ".Element::getControlerByCollection($type))));
 		}
 		$labelInvitation=Yii::t("common", "{who} invited you".$labelAdmin, array("{who}"=>"<a href='#page.type.".Person::COLLECTION.".id.".$invitedMe["invitorId"]."' class='lbh'>".$invitedMe["invitorName"]."</a>"));
 		$tooltipAccept=$verb." this ".Element::getControlerByCollection($type);
@@ -38,7 +40,7 @@
 				'<a class="btn btn-xs tooltips btn-accept" href="javascript:;" onclick="validateConnection(\''.$type.'\',\''.(string)$element["_id"].'\', \''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.$linkValid.'\')" data-placement="bottom" data-original-title="'.Yii::t("common",$tooltipAccept).'">'.
 					'<i class="fa fa-check "></i> '.Yii::t("common",$inviteAccept).
 				'</a>'.
-				'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Element::$connectTypes[$type].'\',null,\''.$option.'\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
+				'<a class="btn btn-xs tooltips btn-refuse margin-left-5" href="javascript:;" onclick="disconnectTo(\''.$type.'\',\''.(string)$element["_id"].'\',\''.Yii::app()->session["userId"].'\',\''.Person::COLLECTION.'\',\''.Element::$connectTypes[$type].'\',null,\''.$option.'\',\''.$msgRefuse.'\')" data-placement="bottom" data-original-title="'.Yii::t("common","Not interested by the invitation").'">'.
 					'<i class="fa fa-remove"></i> '.Yii::t("common",$inviteRefuse).
 				'</a>'.
 			"</div>".
@@ -46,7 +48,36 @@
 	}
 ?>
 
-<ul id="subsubMenuLeft">
+
+<?php if(@Yii::app()->session["userId"] && @Yii::app()->session["userId"] != (string)$element["_id"]){ ?>
+	<style>
+		.boxBtnLink{
+			background-color: #454444;
+			border-radius: 5px;
+			margin-top:7px;
+		}
+		.boxBtnLink a.menu-linksBtn,
+		.boxBtnLink .nav.navbar-nav,
+		.boxBtnLink .dropdown {
+			width: 100%;
+		}
+		.boxBtnLink a.menu-linksBtn {
+			padding:10px;
+		}
+	</style>
+	<div class="pull-left col-xs-12 no-padding margin-bottom-15 shadow2 boxBtnLink">
+        	<?php $this->renderPartial('../element/linksMenu', 
+    			array("linksBtn"=>$linksBtn,
+    					"elementId"=>(string)$element["_id"],
+    					"elementType"=>$type,
+    					"elementName"=> $element["name"],
+    					"openEdition" => $openEdition) 
+    			); 
+    		?>
+	</div>
+<?php } ?>
+
+<ul id="subsubMenuLeft" class="pull-left">
 	
 <?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
 		<li class="visible-xs">

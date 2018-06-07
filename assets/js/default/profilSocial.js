@@ -195,6 +195,14 @@ function bindButtonMenu(){
 		loadNetworks();
 	});
 
+	$("#btn-start-curiculum").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.curiculum";
+		alert("bim");
+		//history.pushState(null, "New Title", hashUrlPage+".view.detail");
+		loadCuriculum();
+	});
+
 	$("#btn-hide-desc").click(function(){
 		if($("#desc-event").hasClass("hidden")){
 			$("#desc-event").removeClass("hidden");
@@ -662,6 +670,19 @@ function loadNetworks(){
 				function(data){
 					mylog.log("loadNetworks success", data, edit);
 					displayInTheContainer(data, "networks", "external-link", "networks",edit);
+				}
+	,"html");
+}
+
+function loadCuriculum(){
+	mylog.log("loadCuriculum");
+	showLoader('#central-container');
+	getAjax('', baseUrl+'/'+moduleId+'/element/getcuriculum/type/'+contextData.type+
+				'/id/'+contextData.id,
+				function(html){
+					mylog.log("loadCuriculum success", html);
+					$("#central-container").html(html);
+					//displayInTheContainer(data, "networks", "external-link", "networks",edit);
 				}
 	,"html");
 }

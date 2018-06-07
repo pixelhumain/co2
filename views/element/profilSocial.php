@@ -1011,8 +1011,12 @@
 				onchangeClick=false;
 				loadCoop(roomId, proposalId, resolutionId, actionId);
 			}
-			else if(sub=="networks")
+			else if(sub=="networks"){
 				loadNetworks();
+			}
+			else if(sub=="curiculum"){
+				loadCuriculum();
+			}
 			
 		} else
 			loadNewsStream(true);

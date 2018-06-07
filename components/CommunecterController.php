@@ -517,6 +517,7 @@ class CommunecterController extends Controller
       "detail"              => array("href" => "/ph/co2/element/detail", "public" => true),
       "getalllinks"         => array("href" => "/ph/co2/element/getalllinks"),
       "geturls"             => array("href" => "/ph/co2/element/geturls"),
+      "getcuriculum"        => array("href" => "/ph/co2/element/getcuriculum"),
       "getcontacts"         => array("href" => "/ph/co2/element/getcontacts"),
       "simply"              => array("href" => "/ph/co2/element/simply", "public" => true),
       "directory"           => array("href" => "/ph/co2/element/directory", "public" => true),

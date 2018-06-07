@@ -22,10 +22,9 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
-    // if(location.hash.indexOf("#interop") >=0){
-    //   interop.startSearch();
-
-    // }else{
+    if(location.hash.indexOf("interop") >=0){
+      interop.startSearch();
+    }else{
         if(searchObject.text.indexOf("co.") === 0 ){
           searchT = searchObject.text.split(".");
           if( searchT[1] && typeof co[ searchT[1] ] == "function" ){
@@ -59,7 +58,7 @@ function startSearch(indexMin, indexMax, callBack){
           
           autoCompleteSearch(indexMin, indexMax, callBack);
         }
-    //}
+    }
     
 }
 
@@ -2912,7 +2911,7 @@ var directory = {
     footerHtml : function(){
       footerStr = '';
       // GET PAGINATION STRUCTURE
-      mylog.log("footerHtml", addType, typeForm);
+     
       if(typeof searchObject.ranges == "undefined"){
           footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
         if(userId != ""){

@@ -198,7 +198,8 @@ function bindButtonMenu(){
 	$("#btn-start-curiculum").click(function(){
 		responsiveMenuLeft();
 		location.hash=hashUrlPage+".view.curiculum";
-		alert("bim");
+		toogleNotif(false);
+		KScrollTo("#profil_imgPreview");
 		//history.pushState(null, "New Title", hashUrlPage+".view.detail");
 		loadCuriculum();
 	});

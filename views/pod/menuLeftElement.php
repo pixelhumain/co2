@@ -337,7 +337,7 @@
 			<li><hr></li>
 			<li class="">
 				<a href="javascript:" class="ssmla" id="btn-start-curiculum">
-					<i class="fa fa-clipboard-list"></i> <?php echo Yii::t("common","My CV"); ?>
+					<i class="fa fa-clipboard"></i> <?php echo Yii::t("common","My CV"); ?>
 				</a>
 			</li>
 		<?php //} ?>

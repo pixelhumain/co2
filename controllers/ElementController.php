@@ -13,7 +13,7 @@ class ElementController extends CommunecterController {
     return parent::beforeAction($action);
   }
   public function actions()
-  {
+  { 
       return array(
           'updatefield' 				  => 'citizenToolKit.controllers.element.UpdateFieldAction',
           'updatefields' 				  => 'citizenToolKit.controllers.element.UpdateFieldsAction',
@@ -23,6 +23,7 @@ class ElementController extends CommunecterController {
           'detail'                => 'citizenToolKit.controllers.element.DetailAction',
           'getalllinks'           => 'citizenToolKit.controllers.element.GetAllLinksAction',
           'geturls'               => 'citizenToolKit.controllers.element.GetUrlsAction',
+          'getcuriculum'          => 'citizenToolKit.controllers.element.GetCuriculumAction',
           'getcontacts'           => 'citizenToolKit.controllers.element.GetContactsAction',
           'directory'             => 'citizenToolKit.controllers.element.DirectoryAction',
           'addmembers'            => 'citizenToolKit.controllers.element.AddMembersAction',

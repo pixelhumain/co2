@@ -513,6 +513,7 @@ var trad = {
 };
 
 var tradDynForm = {
+	"launchInvitations" : "<?php echo Yii::t("common","Launch invitations"); ?>",
 	"weWereUnableToReadYourFile" : "<?php echo Yii::t("invite","We were unable to read your file."); ?>",
 	"youMustUseACSVFormat" : "<?php echo Yii::t("invite","You must use a CSV format"); ?>",
 	"alreadyInTheList" : "<?php echo Yii::t("invite","Already in the list"); ?>",

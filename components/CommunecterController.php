@@ -5,7 +5,7 @@
  */
 class CommunecterController extends Controller
 {
-  public $version = "v0.2.7.2";
+  public $version = "v0.2.8.0";
   public $versionDate = "29/07/2016 19:12";
   public $title = "Communectez";
   public $subTitle = "se connecter à sa commune";
@@ -388,6 +388,7 @@ class CommunecterController extends Controller
     ),
     "bookmark" => array(
       "delete"        => array("href" => "ph/communecter/bookmark/delete"),
+      "sendmailnotif"        => array("href" => "ph/co2/bookmark/sendmailnotif"),
     ),
     "slug" => array(
       "check"        => array("href" => "ph/communecter/slug/check"),
@@ -518,6 +519,7 @@ class CommunecterController extends Controller
       "detail"              => array("href" => "/ph/co2/element/detail", "public" => true),
       "getalllinks"         => array("href" => "/ph/co2/element/getalllinks"),
       "geturls"             => array("href" => "/ph/co2/element/geturls"),
+      "getcuriculum"        => array("href" => "/ph/co2/element/getcuriculum"),
       "getcontacts"         => array("href" => "/ph/co2/element/getcontacts"),
       "simply"              => array("href" => "/ph/co2/element/simply", "public" => true),
       "directory"           => array("href" => "/ph/co2/element/directory", "public" => true),

@@ -332,6 +332,16 @@
 			</li>
 		<?php } ?>
 
+		<?php 	//if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				   // $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
+			<li><hr></li>
+			<li class="">
+				<a href="javascript:" class="ssmla" id="btn-start-curiculum">
+					<i class="fa fa-clipboard"></i> <?php echo Yii::t("common","My CV"); ?>
+				</a>
+			</li>
+		<?php //} ?>
+
 		<?php if( $type==Person::COLLECTION ){ ?>
 			<!--<li><hr></li>
 			<li class="">

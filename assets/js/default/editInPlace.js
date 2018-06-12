@@ -769,13 +769,13 @@ function bindAboutPodElement() {
 					}
 				}
 			};
-			var dataUpdate = {
-				block : "info",
-		        id : contextData.id,
-		        typeElement : contextData.type,
-		        slug : contextData.slug,	
-			};
-			dyFObj.openForm(form, "sub", dataUpdate);		
+		var dataUpdate = {
+			block : "info",
+	        id : contextData.id,
+	        typeElement : contextData.type,
+	        slug : contextData.slug,	
+		};
+		dyFObj.openForm(form, "sub", dataUpdate);		
 	}
 	function changeNetwork(id, idUrl, url, str){
 		mylog.log("changeNetwork", id, idUrl, url, str.length);

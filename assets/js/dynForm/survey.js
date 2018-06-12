@@ -135,17 +135,18 @@ dynForm = {
 	    	
 			$("#ajaxFormModal #voteDateEnd").val( moment(   $("#ajaxFormModal #voteDateEnd").val(), dateformat).format() );
         },
-	    afterSave : function(data){ console.log("after save survey", data);
-             dyFObj.closeForm();
-              if(typeof startNewsSearch != "undefined" && location.hash == "#live") 
+	    afterSave : function(data){ 
+	    	console.log("after save survey", data);
+            dyFObj.closeForm();
+            if(typeof startNewsSearch != "undefined" && location.hash == "#live") 
             	startNewsSearch(true);
-         	 else if(typeof loadNewsStream != "undefined") 
+         	else if(typeof loadNewsStream != "undefined") 
             	loadNewsStream(true);
-             else if(typeof initSectionNews != "undefined") {
+            else if(typeof initSectionNews != "undefined") {
             	$('#timeline-page').html("<div class='col-xs-12 text-center'><i class='fa fa-spin fa-circle-o-notch fa-2x'></i></div>");
             	setTimeout(function(){ initSectionNews(); }, 2000);
-           	 }
-             else
+           	}
+            else
              	urlCtrl.loadByHash(location.hash);
 	    },
 

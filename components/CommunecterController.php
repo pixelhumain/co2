@@ -115,6 +115,8 @@ class CommunecterController extends Controller
       "createfile" => array("href" => "/ph/co2/adminpublic/createfile"),
       "sourceadmin" => array("href" => "/ph/co2/adminpublic/sourceadmin"),
       "assigndata"    => array("href" => "/ph/co2/adminpublic/assigndata"),
+      "setmapping" => array("href" => "/ph/co2/adminpublic/setmapping/"),
+      "deletemapping" => array("href" => "/ph/co2/adminpublic/deletemapping/"),
       "getdatabyurl"   => array("href" => "/ph/co2/adminpublic/getdatabyurl"),
       "previewdata"    => array("href" => "/ph/co2/adminpublic/previewdata"),
       "interopproposed" => array("href" => "/ph/co2/adminpublic/interopproposed"),

@@ -498,6 +498,8 @@ var trad = {
 	"addToMyFavoritesPlaces":"<?php echo Yii::t("common","Add to my favorites places") ?>",
 
 	"showmap" :"<?php echo Yii::t("common","Show map") ?>",
+
+	"addmymapping" :"<?php echo Yii::t("import","add my mapping.") ?>",
 };
 
 var tradDynForm = {

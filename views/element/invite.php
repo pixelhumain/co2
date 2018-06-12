@@ -522,7 +522,8 @@
 				Object.keys(listInvite.citoyens).length > 0 || 
 				Object.keys(listInvite.invites).length > 0 ) {
 				mylog.log("#modal-invite #btnValider here");
-
+				$('#modal-invite #btnValider').prop("disabled", true);
+				$('#modal-invite #btnValider').html("<i class='fa fa-spin fa-circle-o-notch'></i> ");
 
 				// $( ".divRoles" ).each(function(key, value) {
 				// 	mylog.log("divRoles", $(this).data("id"), $(this).data("type"));
@@ -617,7 +618,8 @@
 								}
 							});
 						}
-						
+						$('#modal-invite #btnValider').prop("disabled", false);
+						$('#modal-invite #btnValider').html(tradDynForm.launchInvitations);
 						initListInvite();
 						fadeInView("result");
 						$("#modal-invite #dropdown-result").html(str);

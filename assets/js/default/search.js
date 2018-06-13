@@ -314,16 +314,26 @@ function bindLeftMenuFilters () {
         //if(bindEcoSource())
            //bindEcoSource();
         $(".btn-select-source").click(function(){
-            if( typeof interop == "undefined" ){
-                lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
-                    if( typeof interopObj == "undefined" )
-                        lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
-                            mylog.log("interop", interop, interopObj);
-                            interopObj.poleEmploi.startSearch();
-                        } );
-                });
+            var key = $(this).data("key");
+            $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
+            if(key == "co"){
+                delete searchObject.source;
+                startSearch(0, indexStepInit, searchCallback);
             }else{
-                interopObj.poleEmploi.startSearch();
+                searchObject.source = key;
+                if( typeof interop == "undefined" ){
+                    lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
+                        if( typeof interopObj == "undefined" ){
+                           lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
+                                interopObj[key].startSearch();
+                            } ); 
+                       }else{
+                            interopObj[key].startSearch(); 
+                       }
+                    });
+                } else {
+                    interopObj[key].startSearch();
+                }
             }
         });
 
@@ -581,6 +591,11 @@ function constructSearchObjectAndGetParams(){
       getStatus+="endDate="+searchObject.endDate;
       searchConstruct.endDate = searchObject.endDate;
     }
+  }
+  if(typeof searchObject.source != "undefined"){ 
+    searchConstruct.source = searchObject.source;
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="source="+searchObject.source;
   }
   if(typeof searchObject.indexMin != "undefined" && notNull(searchObject.indexMin)){
     searchConstruct.indexMin=searchObject.indexMin;

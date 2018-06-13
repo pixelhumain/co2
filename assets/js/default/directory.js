@@ -76,6 +76,7 @@ function addSearchType(type){
   }
 }
 function initTypeSearch(typeInit){
+  mylog.log("initTypeSearch", typeInit);
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
@@ -3450,18 +3451,24 @@ var directory = {
         //        '<i class="fa fa-'+what.icon+'"></i> </h4><hr>';
         
         //$(dest).html(str);
-        if(typeof objJson.sources != "undefined"){
-          str="";
-          $(".sourcesInterrop").show(800);
-          $.each(objJson.sources, function(e,v){
-            str+='<button class="btn btn-default col-md-3 col-sm-3 col-xs-12 padding-10 bold text-dark elipsis btn-select-source" '+
-                  'data-source="'+v.label+'" data-key="'+v.key+'">'+
-                    '<img src="'+parentModuleUrl+v.path+'" width="15" height="15" class="margin-right-5"/>'+ 
-                    v.label+
-              '</button>';
-          });
-          $(".dropdown-sources").show();
-          $(".dropdown-sources .dropdown-menu").html(str);
+		if(typeof objJson.sources != "undefined"){
+			str="";
+			$(".sourcesInterrop").show(800);
+			$.each(objJson.sources, function(e,v){
+				// str+='<button class="btn btn-default col-sm-3 col-xs-12 padding-10 bold text-dark elipsis btn-select-source" '+
+				// 	'data-source="'+v.label+'" data-key="'+v.key+'">'+
+				// 		'<span class="col-xs-2" ><img src="'+parentModuleUrl+v.path+'" width="15" height="15" class="margin-right-5"/></span>'+ 
+				// 		'<span class="" >'+v.label+"</span>"+
+				// 	'</button>';
+
+				str+='<button class="btn btn-default col-sm-3 col-xs-12 padding-10 bold text-dark elipsis btn-select-source" '+
+						'data-source="'+v.label+'" data-key="'+v.key+'" style="height: 60px;">'+
+							'<span class="col-xs-2" ><img src="'+parentModuleUrl+v.path+'" width="40" height="40" class=""/></span>'+ 
+							'<span class="col-xs-10 text-left" >'+v.label+"</span>"+
+						'</button>';
+	        });
+			$(".dropdown-sources").show();
+			$(".dropdown-sources .dropdown-menu").html(str);
         }else{
           $(".dropdown-sources").hide(800);
         }

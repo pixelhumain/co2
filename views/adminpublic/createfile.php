@@ -293,6 +293,7 @@ $this->renderPartial($layoutPath.'header',
 			<div class="col-sm-12 col-xs-12">
 				<div class="col-sm-6 col-xs-12">
 				<!--<i>(*) Champ obligatoire</i><br>-->
+				<i><?php echo Yii::t("import","Fields mandatory"); ?> (*)</i><br />
 					<label for="inputKey"><?php echo Yii::t("import","Key : "); ?></label>
 					<input class="" placeholder="<?php echo Yii::t("import","Key assigned to all data import"); ?>" id="inputKey" name="inputKey" value="">
 				</div>
@@ -409,7 +410,16 @@ var listSource = [];
 var ligneList = [];
 var mappingPrevious = $("#chooseMapping").html();
 var ifMappingDelete = false;
-var listeObligatoire = ['name','type','address.streetAddress','address.postalCode','address.addressLocality', 'address.addressCountry'];
+// var listeObligatoire = ["name","email","type","address.postalCode","address.addressLocality","address.codeInsee","address.streetAddress","address.addressCountry"];
+var listeObligatoire = {
+	name : "name",
+	type : "type",
+	postalCode : "postalCode",
+	addressLocality : "addressLocality",
+	streetAddress : "streetAddress",
+	addressCountry : "addressCountry"
+}
+
 
 jQuery(document).ready(function() {
 
@@ -932,17 +942,14 @@ function createStepTwo(data){
 
 //On fait de même pour le select côté communecter
 	chaineAttributesElt = "" ;
-	var i = 0;
 	$.each(data.attributesElt, function(key, value){
-		if(value == listeObligatoire[i])
-		{
+		var valueadd = value.replace("address.","");
+		if(value == listeObligatoire[value] || valueadd == listeObligatoire[valueadd]){
 			chaineAttributesElt += '<option name="optionAttributesElt" value="'+value+'">'+value+' (*) </option>';
 		}
-		else
-		{
+		else{
 			chaineAttributesElt += '<option name="optionAttributesElt" value="'+value+'">'+value+'</option>';
 		}
-		i++;
 	});
 
 	$("#selectAttributesElt").html(chaineAttributesElt); //Le select de la partie "Lien" côté Communecter

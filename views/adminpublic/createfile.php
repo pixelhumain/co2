@@ -405,11 +405,11 @@ var nameFile = "";
 var typeFile = "";
 var typeElement = "";
 var nbFinal = 0 ;
-var champObligatoire = ["name","type"];
 var listSource = [];
 var ligneList = [];
 var mappingPrevious = $("#chooseMapping").html();
 var ifMappingDelete = false;
+var listeObligatoire = ['name','type','address.streetAddress','address.postalCode','address.addressLocality', 'address.addressCountry'];
 
 jQuery(document).ready(function() {
 
@@ -593,7 +593,7 @@ $("#checkboxTest").bootstrapSwitch({
   		//var selectValueHeadCSV = $("#selectHeadCSV option:selected").text() ;
   		var selectSource = $("#selectSource option:selected").val() ;
   		//var selectSource = $("#selectSource").val() ;
-  		var selectAttributesElt = $("#selectAttributesElt option:selected").text() ;
+  		var selectAttributesElt = $("#selectAttributesElt option:selected").val() ;
 
 
 
@@ -911,7 +911,7 @@ function bindUpdate(data){
 }
 
 function createStepTwo(data){
- 
+
 //Gestion du select côté source
 	var chaineSelectCSVHidden = "" ;
 	if(data.typeFile == "csv"){ //Cas CSV
@@ -932,9 +932,17 @@ function createStepTwo(data){
 
 //On fait de même pour le select côté communecter
 	chaineAttributesElt = "" ;
+	var i = 0;
 	$.each(data.attributesElt, function(key, value){
-			chaineAttributesElt += '<option name="optionAttributesElt" value="' + value+'">'+value+'</option>';
-			//listElt[key] += value;
+		if(value == listeObligatoire[i])
+		{
+			chaineAttributesElt += '<option name="optionAttributesElt" value="'+value+'">'+value+' (*) </option>';
+		}
+		else
+		{
+			chaineAttributesElt += '<option name="optionAttributesElt" value="'+value+'">'+value+'</option>';
+		}
+		i++;
 	});
 
 	$("#selectAttributesElt").html(chaineAttributesElt); //Le select de la partie "Lien" côté Communecter

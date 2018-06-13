@@ -390,6 +390,7 @@ $this->renderPartial($layoutPath.'header',
 				</button>
 				<a href="javascript:;" class="btn btn-success col-sm-3 col-md-offset-2 lbh" onclick="location.hash='#admin.view.adddata';loadAdddata();" type="submit" id="btnBDD"><?php echo Yii::t("import", "Page add of datas"); ?></a>
 				<a href="javascript:;" class="btn btn-primary col-sm-3 col-md-offset-2" type="submit" id="btnImport"><?php echo Yii::t("import","Save"); ?></a>
+				<a href="javascript:;" class="btn btn-primary col-sm-3 col-md-offset-2" type="submit" id="btnError"><?php echo Yii::t("import","Save"); ?></a>
 			</div>
 		</div>
 
@@ -420,6 +421,8 @@ jQuery(document).ready(function() {
 	$("#menu-step-mapping").hide();
 	$("#menu-step-visualisation").hide();
 	$("#btnBDD").hide();
+	$("#btnImport").hide();
+	$("#btnError").hide();
 	bindCreateFile();
 	bindUpdate();
 	
@@ -660,8 +663,7 @@ $("#checkboxTest").bootstrapSwitch({
 
 
 	$("#btnImport").off().on('click', function(){
-		$("#btnImport").hide();
-		var btnImport = $("#btnImport").hide();
+		$("#btnImport").show();
 		verifImport(btnImport);	
 		if(notEmpty($('#jsonCities').val())){
 			var zip = new JSZip();
@@ -685,6 +687,7 @@ $("#checkboxTest").bootstrapSwitch({
   	});
 
   	$("#btnError").off().on('click', function(){
+  		$("#btnError").hide();
   		$("<a />", {
 		    "download": nameFile+"_NotStandardForCommunecter.json",
 		    "href" : "data:application/json," + encodeURIComponent($('#jsonError').val())
@@ -1246,35 +1249,16 @@ function stepThree(params){
 
 				$("#nbFileImport").html(jQuery.parseJSON(importD).length); //Convertis un String en Objet (chiffre)
 				$("#nbFileError").html(jQuery.parseJSON(errorD).length); //Convertis un String en Objet (chiffre)
-
-				$("#btnImport").hide();
-				$("#btnError").hide();
-
-				if(importD != "" && errorD == "")
+				
+				if(data.elements != "[]" && data.elementsWarnings == "[]")
 				{
 					$("#btnImport").show();
 				}
-				else if(errorD != "" )
+				else if (data.elementsWarnings != "[]")
 				{
 					$("#btnError").show();
 				}
-				//if(errorD.length() != 0){
 
-					if($("#checkboxTest").is(':checked')){ //Si on a coché Test on cache des élèments SAVE
-						$("#btnImport").show();
-						$("#btnError").hide();
-						$("#btnBDD").hide();
-					}else{
-						$("#btnImport").show(); //On affiche SAVE
-						$("#btnError").hide();
-						$("#btnBDD").hide();
-					}
-				/*else if(errorD.length() == 0)
-					{
-						$("#btnImport").hide();
-						$("#btnError").hide();
-						$("#btnBDD").hide();
-					}*/
 				//$("#verifBeforeImport").show();
 			}
 		}

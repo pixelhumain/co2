@@ -23,10 +23,10 @@ var translate = {"organizations":"Organisations",
 
 function startSearch(indexMin, indexMax, callBack){
 
-    if(search.value.indexOf("co.") === 0 ){
-      searchT = search.value.split(".");
+    if(searchObject.text.indexOf("co.") === 0 ){
+      searchT = searchObject.text.split(".");
       if( searchT[1] && typeof co[ searchT[1] ] == "function" ){
-        co[ searchT[1] ](search.value);
+        co[ searchT[1] ](searchObject.text);
         return;
       } else {
         co.mands();
@@ -38,54 +38,23 @@ function startSearch(indexMin, indexMax, callBack){
       mylog.log("startSearch directory.js", typeof callBack, callBack, loadingData);
       if(loadingData) return;
       
-      //console.log("startSearch directory.js gg", typeof callBack, callBack, loadingData);
       loadingData = true;
       showIsLoading(true);
 
-      //mylog.log("loadingData true");
-      indexStep = indexStepInit;
+      mylog.log("startSearch", searchObject.indexMin, indexMax, searchObject.indexStep, searchObject.types);
+      searchObject.indexMin = (typeof indexMin == "undefined") ? 0 : indexMin;
+      //if(typeof indexMax == "undefined") indexMax = indexStep;
 
-      mylog.log("startSearch", indexMin, indexMax, indexStep, searchType);
-      //var name=search.value;
-  	  //var name = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
-      
-      //if(name == "") name = ($('#second-search-bar').length>0) ? $('#second-search-bar').val() : "";
-      //if(name == "" && searchType.indexOf("cities") > -1) return;  
-
-      if(typeof indexMin == "undefined") indexMin = 0;
-      if(typeof indexMax == "undefined") indexMax = indexStep;
-
-      currentIndexMin = indexMin;
-      currentIndexMax = indexMax;
-      if(indexMin == 0 && indexMax == indexStep) {
+      //currentIndexMin = indexMin;
+      //currentIndexMax = indexMax;
+      //TODO BOUBOULE - Don't understand
+      /*if(indexMin == 0 && indexMax == indexStep) {
         totalData = 0;
-        mapElements = new Array(); 
+         mapElements = new Array(); 
       }
-      else{ if(scrollEnd) return; }
-      //if(name.length>=2 || name.length == 0)
-      //{
-       // var locality = "";
-        //if( communexionActivated ){
-    	   /* if(typeof(cityInseeCommunexion) != "undefined")
-          {
-      			if(levelCommunexion == 1) locality = cpCommunexion;
-      			if(levelCommunexion == 2) locality = inseeCommunexion;
-      		}else{
-      			if(levelCommunexion == 1) locality = inseeCommunexion;
-      			if(levelCommunexion == 2) locality = cpCommunexion;
-      		}
-          //if(levelCommunexion == 3) locality = cpCommunexion.substr(0, 2);
-          if(levelCommunexion == 3) locality = inseeCommunexion;
-          if(levelCommunexion == 4) locality = inseeCommunexion;
-          if(levelCommunexion == 5) locality = "";
-
-          mylog.log("Locality : ", locality);
-        //} 
-        mylog.log("locality",locality);*/
-        autoCompleteSearch(indexMin, indexMax, callBack);
-    //  } else{
-      //  toastr.info(trad["This request is too short !"]);
-      //}
+      else{ if(scrollEnd) return; }*/
+      
+      autoCompleteSearch(indexMin, indexMax, callBack);
     }
 }
 
@@ -106,34 +75,30 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchType = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classified","ressources"/*,"cities"*/];
-        if(search.value != "" || Object.keys(getSearchLocalityObject()).length > 0) 
-          searchType.push("persons");
-        //if( $('#main-search-bar').val() != "" ) searchType.push("cities");
-        indexStepInit = 30;
+        searchObject.types = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classified","ressources"/*,"cities"*/];
+        if(searchObject.text != "" || Object.keys(getSearchLocalityObject()).length > 0) 
+          searchObject.types.push("persons");
     }else if(typeInit == "allSig"){
-      searchType = ["persons", "organizations", "projects", "poi", "cities"];
-      indexStepInit = 50;
+      searchObject.types = ["persons", "organizations", "projects", "poi", "cities"];
+      searchObject.indexStep = 50;
     }
     else{
-      searchType = [ typeInit ];
-      indexStepInit = 30;
-      delete search.ranges;
-        //$(window).off("scroll");
+      searchObject.types = [ typeInit ];
+      delete searchObject.ranges;
     }
 }
 function initCountType(){
-  if(search.app=="search" || search.app=="territorial")
-    search.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", /*"news",*/ "classified","ressources"];
-  else if(search.app=="ressources") search.countType=["ressources"];
-  else if(search.app=="annonces") search.countType=["classified"];
-  else if(search.app=="agenda") search.countType=["events"];
+  if(searchObject.initType=="all")
+    searchObject.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", /*"news",*/ "classified","ressources"];
+  else if(searchObject.initType=="ressources") searchObject.countType=["ressources"];
+  else if(searchObject.initType=="classified") searchObject.countType=["classified"];
+  else if(searchObject.initType=="events") searchObject.countType=["events"];
 }
 
 function removeSearchType(type){
-  var index = searchType.indexOf(type);
-  if (index > -1 && searchType.length > 1) {
-    searchType.splice(index, 1);
+  var index = searchObject.types.indexOf(type);
+  if (index > -1 && searchObject.types.length > 1) {
+    searchObject.types.splice(index, 1);
     $(".search_"+type).removeClass("active"); //fa-check-circle-o");
     //$(".search_"+type).addClass("fa-circle-o");
   }
@@ -141,54 +106,22 @@ function removeSearchType(type){
 
 function autoCompleteSearch(indexMin, indexMax, callBack){
   mylog.log("START -------- autoCompleteSearch! ", typeof callBack, callBack);
-  //if(typeof myScopes != "undefined" )
-    //var searchLocality = getLocalityForSearch();
-    var searchLocality = getSearchLocalityObject();
-  //else
+   var data=constructSearchObjectAndGetParams();    
 
-    
-    var data = {
-      "name" : search.value, 
-      "locality" : searchLocality,//locality, 
-      "searchType" : searchType, 
-      "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
-      "searchPage":searchPage
-    };
-    if(notNull(indexMin) && notNull(indexMax)){
-      data.indexMin=indexMin;
-      data.indexMax=indexMax;
-    }
-    if(typeof search.app != "undefined")
-        data.app=search.app;
-    if(typeof search.count != "undefined" && search.count)
-      data.count=search.count;
-    if(typeof search.ranges != "undefined")
-      data.ranges=search.ranges;
-    if(typeof search.countType != "undefined")
-      data.countType=search.countType;
-    
     //mylog.log("DATE ***", searchType[0], STARTDATE, ENDDATE);
-    if(search.app=="agenda" && search.value==""){
-      if(typeof STARTDATE != "undefined" && typeof ENDDATE != "undefined"){
+    /*if(searchObject.initType=="events" && searchObject.text==""){
+      if(typeof searchObject.startDate != "undefined" && typeof searchOject.endDate != "undefined"){
         mylog.log("HEREintegrate AGENDA_WINDOW");
 
         mylog.log("HERE DATE STARTDATE", STARTDATE, moment(STARTDATE).local().format("DD/MM/YYYY"));
         mylog.log("HERE DATE ENDDATE", ENDDATE, moment(ENDDATE).local().format("DD/MM/YYYY"));
-        data.startDate = STARTDATE;
-        data.endDate = ENDDATE;
+        data.startDate = searchOject.startDate;
+        data.endDate = searchOject.endDate;
         mylog.log("HERE DATE **", "data", data) ;
       }
-    }
+    }*/
     
-    if($("#priceMin").val()!="") data.priceMin = $("#priceMin").val();
-    if($("#priceMax").val()!="") data.priceMax = $("#priceMax").val();
-    if($("#devise").val()!="") data.devise = $("#devise").val();
-
-    if(searchSType != "")
-      data.searchSType = searchSType;
-
-    searchSType = "";
-
+   
     loadingData = true;
     
     str = "<i class='fa fa-circle-o-notch fa-spin'></i>";
@@ -232,19 +165,19 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
               if(typeof data.count != "undefined")
                 searchCount=data.count;
 
-              if(indexMin==0 || (typeof search.count != "undefined" && search.count)){
+              if(searchObject.indexMin==0 || (typeof searchObject.count != "undefined" && searchObject.count)){
               //Prepare footer and header of directory 
-                $(".headerSearchContainer").html( directory.headerHtml(indexMin) );
+                $(".headerSearchContainer").html( directory.headerHtml(searchObject.indexMin) );
                 $(".footerSearchContainer").html( directory.footerHtml() );
               }
               str = "";
 
               // Algorithm when searching in multi collections (scroll algo by updated)
               
-              if(search.app=="territorial")
-                results=searchEngine.prepareAllSearch(results);
+              if(typeof searchObject.ranges != "undefined")
+                results=searchAllEngine.prepareAllSearch(results);
               //Add correct number to type filters
-              if(search.count)
+              if(searchObject.count)
                 refreshCountBadge();
               //parcours la liste des résultats de la recherche
               str += directory.showResultsDirectoryHtml(results);
@@ -284,28 +217,28 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                     //on scroll pour afficher le premier résultat de la dernière recherche
                     //$(".my-main-container").animate({"scrollTop" : heightContainer}, 1700);
                     //$(".my-main-container").scrollTop(heightContainer);
+                    if($(".search-loader").length) $(".search-loader").remove();
+                    if($(".pageTable").html()=="" && (searchObject.initType!= "all" || searchObject.types.length==1)){
+                      typeElement=(searchObject.types=="persons") ? "citoyens" : searchObject.types;
+                      initPageTable(searchCount[typeElement]);
+                    }
 
                 //si on est sur une première recherche
                 }else{
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").html(str);
-                    if(search.app =="territorial" && Object.keys(results).length < 30){
-                      //formAdd=directory
+                    if(searchObject.initType == "all" && Object.keys(results).length < 30){
                       str=directory.endOfResult();   
                       $("#dropdown_search").append(str);
-                      //  $("#dropdown_search").append(trad.nomoreresult);
                     }
-                   
-                    //alert();
-                    if(search.app=="agenda"){
-                      //alert();
-                      if(search.value != "")
+                    if(searchObject.initType=="agenda"){
+                      if(searchObject.text != "")
                         $("#content-social .calendar").hide(700);
                       else if(!$("#content-social .calendar").is(":visible"))
                         $("#content-social .calendar").show(700);
                     }
-                    if(typeof pageCount != "undefined" && pageCount){
-                      typeElement=(search.type=="persons") ? "citoyens" : search.type;
+                    if(searchObject.initType!= "all" || searchObject.types.length==1){
+                      typeElement=(searchObject.types=="persons") ? "citoyens" : searchObject.types;
                       initPageTable(searchCount[typeElement]);
                     }
 
@@ -324,7 +257,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                 $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
                 //active les link lbh
                 bindLBHLinks();
-                search.count=false;
+                searchObject.count=false;
                 $.unblockUI();
                 $("#map-loading-data").html("");
                 
@@ -350,13 +283,13 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
               scrollEnd = false;
             }*/
 
-            if(search.app == "agenda" && typeof showResultInCalendar != "undefined" && search.value=="")
+            if(searchObject.initType == "events" && typeof showResultInCalendar != "undefined" && searchObject.text=="")
               showResultInCalendar(results);
             
 
             if(mapElements.length==0) mapElements = results;
             else $.extend(mapElements, results);
-            if(location.hash == "#search" && search.type.length > 1)
+            if(location.hash == "#search" && searchObject.types.length > 1)
               directory.switcherViewer(mapElements);
             else
               directory.switcherViewer(results);
@@ -379,7 +312,7 @@ function initPageTable(number){
     $('.pageTable').pagination({
           items: numberPage,
           itemOnPage: 15,
-          currentPage: 1,
+          currentPage: (searchObject.page+1),
           hrefTextPrefix:"?page=",
           cssStyle: 'light-theme',
           prevText: '<i class="fa fa-chevron-left"></i> ' + trad["previous"],
@@ -393,13 +326,10 @@ function initPageTable(number){
             scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 81;
             simpleScroll(scrollH);
             pageCount=false;
-            searchPage=(page-1);
-            //search.page=searchPage;
+            searchObject.page=(page-1);
             scrollEnd=false;
-            indexStep=30;
-            indexMin=indexStep*searchPage;
+            indexMin=searchObject.indexStep*searchObject.page;
             pageEvent=true;
-            //autoCompleteSearch(search.value, null, null, null, null);
             startSearch(indexMin,indexStep);
           }
       });
@@ -409,7 +339,7 @@ function initPageTable(number){
     $.each(searchCount, function(e,v){
       $("#count"+e).text(v);
     });
-    /*if(search.value!=""){
+    /*if(searchObject.text!=""){
       countSocial=count.organizations+count.projects+count.places+count.citoyens+count.poi;
       if(typeof countSocial != 0)
         $(".count-badge-social").text(countSocial).show(700);
@@ -480,8 +410,8 @@ function initPageTable(number){
       //console.log("DATE **", "ENDDATE", ENDDATE, today) ;
       //ENDDATE = today.setDate(today.getDate() + 1);
 
-      STARTDATE = Math.floor(STARTDATE / 1000);
-      ENDDATE = Math.floor(ENDDATE / 1000);
+      searchObject.startDate = Math.floor(STARTDATE / 1000);
+      searchObject.endDate = Math.floor(ENDDATE / 1000);
 
      // console.log("DATE **", "startWinDATE", startWinDATE, "STARTDATE", STARTDATE, "ENDDATE", ENDDATE) ;
 
@@ -1112,8 +1042,15 @@ var directory = {
       //if(typeof params.hash != "undefined")
         //str += "<br><a href='"+params.hash+"."+onepageKey+"' class='lbh letter-green url elipsis'>"+params.hash+"."+onepageKey+"</a>";
       if(typeof params.hash != "undefined"){
-        echoLabel= (typeof params.slug !="undefined") ? "@"+params.slug : params.hash;
-        str += "<br><a href='"+params.hash+"' class='"+linkAction+" letter-green url elipsis'>"+echoLabel+"</a>";
+        var echoLabel= (typeof params.slug !="undefined") ? "@"+params.slug : params.hash;
+        if((typeof params.slug !="undefined" && params.slug != null) ){
+          var echoLabel= "https://www.co.tools/" + params.slug;
+          str += "<br><a href='"+baseUrl+"/onepage/co/index/slug/"+params.slug+"' class='letter-green url elipsis'>"+echoLabel+"</a>";
+        }else{
+          var echoLabel= params.hash;
+          str += "<br><a href='"+params.hash+"' class='"+linkAction+" letter-green url elipsis'>"+echoLabel+"</a>";
+
+        }
       }
 
       if(typeof params.url != "undefined" && params.url != null && params.url != "")
@@ -1841,7 +1778,10 @@ var directory = {
               str +=    "<a href='"+params.hash+"' class='lbh-preview-element add2fav' data-modalshow='"+params.id+"'>" + params.htmlIco + "</a>";
               str += "</div>";
             }
-
+            var iconFaReply = "";//notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
+            str += "<a  href='"+params.hash+"' class='entityName text-dark lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>"+
+                      iconFaReply + params.name + 
+                   "</a>";  
             str += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share pull-right'"+
                               " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
                               "<i class='fa fa-share'></i> Partager</button>";
@@ -1858,14 +1798,6 @@ var directory = {
               if(typeof params.subtype != "undefined") str += " > " + tradCategory[params.subtype];
               str += "</span></div>";
             }
-              
-
-            var iconFaReply = notEmpty(params.parent) ? "<i class='fa fa-reply fa-rotate-180'></i> " : "";
-            str += "<a  href='"+params.hash+"' class='entityName text-dark lbh-preview-element add2fav'  data-modalshow='"+params.id+"'>"+
-                      iconFaReply + params.name + 
-                   "</a>";  
-       
-            
             
             if(typeof params.description != "undefined" && params.description != "")
             str += "<div class='entityDescription'>" + params.description + "</div>";
@@ -2350,7 +2282,7 @@ var directory = {
           str += '<div class="searchEntity" id="entity'+params.id+'">';
 
 
-            if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && location.hash.indexOf("#page") < 0 && search.app != "territorial"){
+            if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && location.hash.indexOf("#page") < 0 && searchObject.initType != "all"){
               isFollowed=false;
 
               if(typeof params.isFollowed != "undefined" )
@@ -2810,7 +2742,7 @@ var directory = {
     },
     searchTypeHtml : function(){
       spanType="";
-      $.each( searchType, function(key, val){
+      $.each( searchObject.types, function(key, val){
             typeHeader = (val=="citoyens") ? "persons" : val;
             mylog.log("searchTypeHtml typeHeader", typeHeader, headerParams);
             var params = headerParams[typeHeader];
@@ -2825,7 +2757,7 @@ var directory = {
       $("#btnShowMoreResult").remove();
       scrollEnd=true;
       //msg specific for end search
-      match= (search.value != "") ? "match" : "";
+      match= (searchObject.text != "") ? "match" : "";
       msg= (notNull(noResult) && noResult) ? trad["noresult"+match] : trad["nomoreresult"+match];
       contributeMsg="<span class='italic'><small>"+trad.contributecommunecterslogan+"</small><br/></span>";
       if(userId !=""){
@@ -2879,18 +2811,18 @@ var directory = {
       }
       return btn;
     },
-    headerHtml : function(indexMin){
-      mylog.log("-----------headerHtml :",search.count);
+    headerHtml : function(){
+      mylog.log("-----------headerHtml :",searchObject.count);
       headerStr = '';
-      if((typeof search.count != "undefined" && search.count) || indexMin==0 ){          
+      if((typeof searchObject.count != "undefined" && searchObject.count) || searchObject.indexMin==0 ){          
           countHeader=0;
-          if(search.countType.length > 1 && typeof search.ranges != "undefined"){
+          if(searchObject.countType.length > 1 && typeof searchObject.ranges != "undefined"){
             $.each(searchCount, function(e, v){
               countHeader+=v;
             });
             //posClass="right"
           }else{
-            typeCount = (searchType[0]=="persons") ? "citoyens" : searchType[0];
+            typeCount = (searchObject.types[0]=="persons") ? "citoyens" : searchObject.types[0];
             countHeader=searchCount[typeCount];
            // posClass=(typeCount == "classified") ? "left" : "right";
           }
@@ -2966,12 +2898,11 @@ var directory = {
     footerHtml : function(){
       footerStr = '';
       // GET PAGINATION STRUCTURE
-      if(search.app != "territorial"){
-        if(typeof pageCount != "undefined" && pageCount)
+      if(typeof searchObject.ranges == "undefined"){
           footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
         if(userId != ""){
-          if(search.app=="search" && searchType[0] !="news"){
-            addType=searchType[0];
+          if(typeof searchObject.ranges == "undefined"){
+            addType=searchObject.types[0];
             typeForm =addType;
             if(addType=="persons"){
               btn='<a href="#element.invite" class="btn text-yellow lbhp tooltips padding-5 no-margin" '+
@@ -3098,7 +3029,7 @@ var directory = {
                         params.parentIcon = "fa-"+parentObj.icon;
                         params.parentColor = parentObj.color;
                     }
-                    if((typeof search.countType != "undefined" && search.countType.length==1) && params.type == "classified" && typeof params.category != "undefined" && typeof classified != "undefined"){
+                    if((typeof searchObject.countType != "undefined" && searchObject.countType.length==1) && params.type == "classified" && typeof params.category != "undefined" && typeof classified != "undefined"){
                       params.ico = typeof classified.filters[params.category] != "undefined" ?
                                    "fa-" + classified.filters[params.category]["icon"] : "bullhorn";
                     }
@@ -3251,7 +3182,7 @@ var directory = {
                           str += directory.elementPanelHtml(params);  
                       
                         else if(params.type == "events"){
-                          if(typeof search.countType != "undefined" && search.countType.length > 1)
+                          if(typeof searchObject.countType != "undefined" && searchObject.countType.length > 1)
                             str += directory.elementPanelHtml(params);
                           else
                             str += directory.eventPanelHtml(params);  
@@ -3263,7 +3194,7 @@ var directory = {
                         //    str += directory.roomsPanelHtml(params,itemType);  
                       
                         else if(params.type == "classified"){
-                          if(typeof search.countType != "undefined" && search.countType.length > 1)
+                          if(typeof searchObject.countType != "undefined" && searchObject.countType.length > 1)
                             str += directory.elementPanelHtml(params);  
                           else
                             str += directory.classifiedPanelHtml(params);
@@ -3636,7 +3567,8 @@ var directory = {
      //ex : #search:bretagneTelecom:all
   //#search:#fablab
   //#search:#fablab:all:map
-   searchByHash :function(hash) 
+  //TODO BOUBOULE : WHAT IS THAT ?
+/*   searchByHash :function(hash) 
   { 
     mylog.log("searchByHash *******************", hash);
     if($("#modalMainMenu").hasClass('in'))
@@ -3670,8 +3602,8 @@ var directory = {
 
     /*if( searchT.length > 3 && searchT[3] == "map" )
       mapEnd = true;
-    return mapEnd;*/
-  },  
+    return mapEnd;
+  },  */
   get_time_zone_offset : function( ) {
     var current_date = new Date();
     return -current_date.getTimezoneOffset() / 60;

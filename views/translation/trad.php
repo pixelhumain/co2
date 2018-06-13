@@ -51,6 +51,8 @@ var trad = {
 	"noresultmatch":"<?php echo Yii::t("common","No result match in your search") ?>",
 	"nomoreresultmatch":"<?php echo Yii::t("common","No more results match in your search") ?>",
 	"nocityfoundfor":"<?php echo Yii::t("common","No city found for") ?>",
+	"youdontfindcityyouwantfor":"<?php echo Yii::t("common","You don't find the city you want for") ?>",
+	"clear":"<?php echo Yii::t("common","Remove") ?>",
 	"explainnofoundcity":"<?php echo Yii::t("common", "Perhaps, this city has no data at this time") ?>",
 	"sharesomething":"<?php echo Yii::t("common","Share something") ?>",
 	"connectyou":"<?php echo Yii::t("common","Connect you") ?>",
@@ -99,6 +101,7 @@ var trad = {
 	"administrator" : "<?php echo Yii::t("common","Administrator") ?>",
 	"invitingToAdmin" : "<?php echo Yii::t("common","Invited to administrate") ?>",
 	"waitingValidation" : "<?php echo Yii::t("common","Waiting for validation") ?>",
+	"waitWeFetch" : "<?php echo Yii::t("common","Please wait while we fetch the information.") ?>",
 	"Member" : "<?php echo Yii::t("common","Member") ?>",
 	"justCitizen" : "<?php echo Yii::t("common","Just a citizen wanting to give visibility to it :)") ?>",
 	"showcalendar" : "<?php echo Yii::t("common","Show calendar") ?>",
@@ -503,6 +506,9 @@ var trad = {
 };
 
 var tradDynForm = {
+	"weWereUnableToReadYourFile" : "<?php echo Yii::t("invite","We were unable to read your file."); ?>",
+	"youMustUseACSVFormat" : "<?php echo Yii::t("invite","You must use a CSV format"); ?>",
+	"alreadyInTheList" : "<?php echo Yii::t("invite","Already in the list"); ?>",
 	"Name of filter" : "<?php echo Yii::t("form","Name of filter") ?>",
 	"Tags link a filter" : "<?php echo Yii::t("form","Tags link a filter") ?>",
 	"Filters category" : "<?php echo Yii::t("form","Filters category") ?>",
@@ -731,11 +737,38 @@ var tradDynForm = {
 	"answer" : "<?php echo Yii::t("form", "answer") ?>",
 
 	"selectcitytosharesurvey" : "<?php echo Yii::t("form", "Select a city to share your survey with everybody in town !") ?>",
+	//chat
+	"typeOfChat" : "<?php echo Yii::t("category","Type of Chat ?") ?>",
+	"publicOrPrivate" : "<?php echo Yii::t("category","public or private ?") ?>",
+	
+    "channelName"  : "<?php echo Yii::t("category","Channel Name") ?>",
+    "addNewChannel"  : "<?php echo Yii::t("common","Add a new channel") ?>",
+    "publicChannelExplain" : "<?php echo Yii::t("category","Public channels can be searched and random people can join") ?>",
+    "privateChannelExplain" : "<?php echo Yii::t("category","Private channels can only be viewed by it's members") ?>",
 
+    "addNewTool"  : "<?php echo Yii::t("common","Add a new tool") ?>",
+    "chat" : "<?php echo Yii::t("common","Chat") ?>",
+	"wiki" : "<?php echo Yii::t("common","Wiki") ?>",
+	"dda" : "<?php echo Yii::t("common","Decision tool") ?>",
+	"budgettool" :"<?php echo Yii::t("common","Budget tool") ?>",
+	"drive" : "<?php echo Yii::t("common","Cloud Drive") ?>",
+	"Pad" : "<?php echo Yii::t("common","Editor Pad") ?>",
+	"repository" :"<?php echo Yii::t("common","Code repository") ?>",
+	"calendar" :"<?php echo Yii::t("common","Calendar") ?>",
+	"rss" :"<?php echo Yii::t("common","RSS") ?>",
+	"other" : "<?php echo Yii::t("common","Other") ?>",
+	"pleaseValidateTheCurrentInvites" : "<?php echo Yii::t("invite","Please validate the current invites") ?>",
+	"thisPersonIsAlreadyOnYourContacts" : "<?php echo Yii::t("invite","This person is already on your contacts") ?>",
 };
 
 var tradCategory = {
 	
+	//Chat dynform 
+	"internal" : "<?php echo Yii::t("category","Chat inside CO") ?>",
+    "external" : "<?php echo Yii::t("category","Chat outside CO") ?>",
+    "public" : "<?php echo Yii::t("category","Public") ?>",
+    "private" : "<?php echo Yii::t("category","Private") ?>",
+
 	"Resource" : "<?php echo Yii::t("category", "Resource") ?>",
 	"Digital" : "<?php echo Yii::t("category", "Digital") ?>",
 	"Physical" : "<?php echo Yii::t("category", "Physical") ?>",

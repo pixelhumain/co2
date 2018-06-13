@@ -4,6 +4,7 @@ dynForm = {
 		icon : typeObj.filter.title,
 		debug:true,
 		save : function () { 
+			
 			mylog.log("formData success", formData);
 			//alert("filter save "+dyFObj.activeModal);
 			if( typeof typeObj.network.filter == "undefined" )

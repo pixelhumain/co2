@@ -55,7 +55,6 @@ jQuery(document).ready(function() {
 		showMapNetwork(false);
 
 	$("#right_tool_map").removeClass("hidden-sm").hide( 700 );
-
 	hideScrollTop = true;
 	checkScroll();
 	var timeoutSearch = setTimeout(function(){ }, 100);

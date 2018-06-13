@@ -852,8 +852,9 @@ function sendInvitation(){
 			var connectType = "";
 			var roles = "";
 			if (typeof $("#tagsRoles"+id).val() != "undefined" && $("#tagsRoles"+id).val() != ""){ 
-		        roles = $("#tagsRoles"+id).val().split(",");   
-		      } 
+		        roles = $("#tagsRoles"+id).val().split(",");
+		    }
+		     
 			if(addLinkSearchMode == "all") { contactPublicFound = listContact;
 			}else if(addLinkSearchMode=="contacts"){ contactPublicFound = myContactsMembers; }
 

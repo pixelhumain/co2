@@ -112,15 +112,16 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		thisType = "city";
 		urlCtrl = "/news/index/type/city/isLive/true";
 	}
-	var searchLocality = getSearchLocalityObject();
-	mylog.log("searchLocality", searchLocality);
-	var dataSearch = {
+	var dataSearch=constructSearchObjectAndGetParams();
+	//var searchLocality = getSearchLocalityObject();
+	//mylog.log("searchLocality", searchLocality);
+	/*var dataSearch = {
       //"name" : name, 
       "localities" : searchLocality,
       "searchType" : searchType, 
-      "textSearch" : $('#main-search-bar').val(),
+      "textSearch" : searchObject.text,
       "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
-    };
+    };*/
   var loading = "<div class='loader bold letter-blue shadow2 text-center'>"+
 					"<i class='fa fa-spin fa-circle-o-notch'></i> "+
 					"<span>"+trad.currentlyloading+" ...</span>" + 

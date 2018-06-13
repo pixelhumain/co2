@@ -162,6 +162,9 @@ class CommunecterController extends Controller
       "sitemap"                 => array("href" => "/ph/co2/default/sitemap"),
       "img"                 => array("href" => "/ph/co2/default/img"),
     ),
+    "zone"=> array(
+      "getscopebyids"               => array("href" => "/ph/co2/zone/getscopebyids", "public" => true),
+    ),
     "city"=> array(
       "index"               => array("href" => "/ph/co2/city/index", "public" => true),
       "detail"              => array("href" => "/ph/co2/city/detail", "public" => true),
@@ -600,11 +603,17 @@ class CommunecterController extends Controller
     "pdf" => array(
       "create"        => array('href' => "ph/co2/pdf/create")
     ),
-    "sso" => array(
-      "test"        => array("href" => "ph/sso/co/test", "module" => "sso"),
+    "connect" => array(
+      "test"        => array("href" => "ph/sso/co/test", "module" => "connect"),
     ),
     "ressources" => array(
       "co"        => array("href" => "ph/ressources/co", "module" => "ressources"),
+    ),
+    "chat" => array(
+        "default"        => array (
+          "msg" => array("href" => "ph/chat/default/msg", "module" => "chat"),
+          "list" => array("href" => "ph/chat/default/list", "module" => "chat"),
+        )
     ),
   );
 
@@ -635,7 +644,9 @@ class CommunecterController extends Controller
     if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
 
-    if( Yii::app()->controller->id != "test")
+    if( in_array( $this->module->id, array("chat", "ressources", "classifieds" ) ) )
+      $page = $this->pages[$this->module->id][Yii::app()->controller->id][Yii::app()->controller->action->id];
+    else if( Yii::app()->controller->id != "test")
       $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];
     $pagesWithoutLogin = array(
                             //Login Page
@@ -701,6 +712,7 @@ class CommunecterController extends Controller
       $this->pageTitle = (isset($page["pageTitle"])) ? $page["pageTitle"] : $this->pageTitle;
       if(!empty(Yii::app()->session["userId"]))
         $this->notifications = ActivityStream::getNotifications( array( "notify.id" => Yii::app()->session["userId"] ) );
+      
       if( $_SERVER['SERVER_NAME'] == "127.0.0.1" || $_SERVER['SERVER_NAME'] == "localhost" )
         CornerDev::addWorkLog("communecter",Yii::app()->session["userId"],Yii::app()->controller->id,Yii::app()->controller->action->id);
     }

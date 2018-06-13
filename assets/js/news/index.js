@@ -49,9 +49,9 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
 	    //contextParentType = "city";
     }	
 	//var tagSearch = $('#searchTags').val().split(',');
-	if($('#searchTags').length >= 0)
+	if($('#searchTags').length >= 1)
 		filter.tagSearch = $('#searchTags').val().split(',');
-    filter.textSearch=$('#main-search-bar').val();
+    filter.textSearch=$('#main-search-bar').length >= 1 ? $('#main-search-bar').val() : "";
 
     var thisParentId = "";
     if(contextParentType != "city") thisParentId = "/id/"+contextParentId;
@@ -68,7 +68,7 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
 	       	dataType: "json",
 	       	data: filter,
 	    	success: function(data){
-		    	mylog.log("LOAD NEWS BY AJAX");
+		    	mylog.log("LOAD NEWS BY AJAX", data);
 		    	//mylog.log(data.news);
 		    	if(data){
 					buildTimeLine (data.news, indexMin, indexMax);
@@ -444,7 +444,7 @@ function updateNews(idNews, newText, type){
 }
 
 function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommentId*/){
-	getMediaFromUrlContent(idTextArea,"#results",1);
+	processUrl.getMediaFromUrlContent(idTextArea,"#results",1);
 	if($("#form-news-update #results").html!="") $("#form-news-update #results").show();
 	mentionsInit.get(idTextArea);
 	$(".removeMediaUrl").click(function(){

@@ -129,20 +129,10 @@ class AppController extends CommunecterController {
 	}
 
 
-    /*public function actionSearch($type=null){
-        CO2Stat::incNbLoad("co2-search");   
-        $params = array("type" => @$type );
-        echo $this->renderPartial("search", $params, true);
-    }*/
     public function actionSearch($type=null){
         CO2Stat::incNbLoad("co2-search");   
         $params = array("type" => "all" /*Organization::COLLECTION*/, "app"=>"search" );
         echo $this->renderPartial("search", $params, true);
-    }
-    public function actionTerritorial($type=null){
-        CO2Stat::incNbLoad("co2-search");   
-        $params = array("type" => @$type );
-        echo $this->renderPartial("territorial", $params, true);
     }
     public function actionSocial($type=null){
         CO2Stat::incNbLoad("co2-search");   
@@ -291,7 +281,6 @@ class AppController extends CommunecterController {
 
     public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
-        //var_dump($view); exit;
             
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
             $type == Project::COLLECTION || $type == Organization::COLLECTION || 
@@ -333,13 +322,14 @@ class AppController extends CommunecterController {
                         "placeholderMainSearch" => "",
                         "element" => $element);
 
-        
+        //var_dump($element);exit;
         $params = Element::getInfoDetail($params, $element, $type, $id);
         
         //bloque l'édition de la page (même si on est l'admin)
         //visualisation utilisateur
         if(@$mode=="noedit"){ $params["edit"] = false; }
 
+        //var_dump($params);exit;
 
         if(@$_POST["preview"] == true){
             $params["preview"]=$_POST["preview"]; 

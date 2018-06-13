@@ -99,25 +99,44 @@ class RocketchatController extends CommunecterController {
 	// All actions are driven by the coAdmin user 
 	// creations and invites
 	// accessing Element > creates 
+		
+		//initial channels
 		// channels : http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas/type/test/roomType/channel/test/true
 		// groups : http://127.0.0.1/ph/co2/rocketchat/chat/name/openatlas/type/test/roomType/group/test/true
+		
+		//production url
 		//http://www.communecter.org/co2/rocketchat/chat/name/codev/type/organizations/roomType/group
-	public function actionChat($name,$type="",$id=null,$roomType=null) {
+
+		//local debug 
+		//external chat : http://127.0.0.1/ph/co2/rocketchat/chat/name/oppo/type/organizations/id/54edb794f6b95c3c2a000941/roomType/external
+		//internal Bug : http://127.0.0.1/ph/co2/rocketchat/chat/name/codevzz/type/organizations/roomType/group
+		//TODO : move to module http://www.communecter.org/chat/create/name/codev/type/organizations/roomType/group
+	public function actionChat($name,$type="",$id=null,$roomType=null,$url=null) {
 		$group = null;
 		if(Yii::app()->session["userId"])
 		{
+
 			/*if( $type == Person::COLLECTION ){
 				//id will contain the username
 				/*$roomType == "direct";
 				$path = "/direct/".$name;
 				$group = RocketChat::createDirect($id);*/
 				//$group = array("msg" => "all users are created on first login");
-			//} else*/
-			if($roomType == "channel"){
+			//} else */
+			
+			if($roomType == "external"){
+				//??? : should we check Authorisation::canEditItem
+				$group = array( "name" => $_POST["title"], "url" => urldecode($_POST["url"]) );
+				$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
+	 									array(
+	 										'$set' => array("hasRC"=>true),
+	 										'$addToSet' => array( "tools.chat.ext"=> $group  )));
+			}
+			else if($roomType == "channel"){
 				$path = "/channel/".$name;
 		 		$group = RocketChat::createGroup ($name,$roomType, Yii::app()->session['user']['username']); 
 			}
-			else{
+			else {
 				$path = "/group/".$name;
 				$group = null;
 				if(Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) || 
@@ -136,7 +155,11 @@ class RocketchatController extends CommunecterController {
 
 			if($group != null && @$group->create->channel->_id ) {
 		 		$result = PHDB::update( $type,  array("_id" => new MongoId($id)), 
-		 										array('$set' => array("hasRC"=>true) ));
+		 										array('$set' => array("hasRC"=>true), 
+		 											  '$addToSet' => array( "tools.chat.int" => array( "name" => $name , "url" => $path ) ) ));
+		 	}
+
+		 	if($group != null){
 		 		// TODO : notification or news
 				Notification::constructNotification(ActStr::VERB_ADD, 
 					array("id" => Yii::app()->session["userId"],"name"=> Yii::app()->session["user"]["name"]), 
@@ -171,6 +194,7 @@ class RocketchatController extends CommunecterController {
 	 	
 	}
 
+
 	public function actionInvite($name,$type="",$id=null,$roomType=null,$test=null) {
 		$group = null;
 		$group = RocketChat::invite ($type."_".$name,$roomType, Yii::app()->session['user']['username']);
@@ -185,6 +209,7 @@ class RocketchatController extends CommunecterController {
 
 	public function actionTest() {
 		
+		//TEST SUR CHAT LES COMMUNS
 	  	/*define('REST_API_ROOT', '/api/v1/');
 		define('ROCKET_CHAT_INSTANCE', "https://chat.lescommuns.org");
 
@@ -202,7 +227,13 @@ class RocketchatController extends CommunecterController {
 		echo ">>>> login admin<br/>";
 		$admin = new \RocketChat\User("oceatoon@gmail.com", "");*/
 		
-
+		// $result = PHDB::update( Person::COLLECTION ,  array("_id" => new MongoId(Yii::app()->session["userId"])), 
+		//  										array('$set' => array(
+		//  											"tools.chat"=>array("coco") ) ));
+		// exit;
+		if( $_SERVER['SERVER_NAME'] != "127.0.0.1" && $_SERVER['SERVER_NAME'] != "localhost" )
+			exit;
+		
 		define('REST_API_ROOT', '/api/v1/');
 		define('ROCKET_CHAT_INSTANCE', Yii::app()->params['rocketchatURL']);
 

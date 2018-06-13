@@ -87,6 +87,7 @@
 		</li>
 	<?php //if($type != Person::COLLECTION){
 		$modalTarget = "#modal-scope";
+
 				if ($type == Event::COLLECTION ){ 
 					$inviteLink = "people";
 					$inviteText =  Yii::t("common","Invite people") ;			
@@ -101,18 +102,28 @@
 					$inviteText =  Yii::t("common",'Invite people') ;
 					$modalTarget = "#invite-modal-element";
 				}
+
+				$urlLink = "#element.invite.type.".$type.".id.".(string)$element["_id"] ;
+				$modalTarget = "#modal-invite";
 				$whereConnect="";
 				if($type!=Person::COLLECTION)
 					$whereConnect='to the '.Element::getControlerByCollection($type);
-				if( @$inviteLink && @$inviteText ){?>
+				
+				if( @$inviteLink && @$inviteText ){ ?>
 					<li class="">
-						<a href="javascript:;" class="tooltips ssmla text-red" 
+						<a 	href="<?php echo $urlLink ; ?>" 
+							class="tooltips ssmla lbhp text-red"
+							data-placement="bottom" 
+							data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" > 
+					        <i class="fa fa-user-plus "></i><?php echo $inviteText ?>
+					    </a>
+						<!-- <a href="javascript:;" class="tooltips ssmla text-red" 
 						data-placement="bottom" 
-						data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" 
+						data-original-title="<?php //echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" 
 						data-toggle="modal" 
-						data-target="<?php echo $modalTarget ?>">
-							<i class="fa fa-user-plus "></i> <?php echo $inviteText ?>
-						</a>
+						data-target="<?php //echo $modalTarget ?>">
+							<i class="fa fa-user-plus "></i> <?php // echo $inviteText ?>
+						</a> -->
 					</li>
 					<li><hr></li>
 		<?php 	}

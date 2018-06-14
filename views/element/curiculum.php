@@ -20,7 +20,7 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 					  "computerSkills" => "Maîtrise des outils informatiques",
 					  "driverLicense" => "Permis de conduire",
 					  "vehicle" => "Véhicule",
-					  "lang" => "Langues",
+					  "languages" => "Langues",
 					  "motivation" => "Motivation",
 					  "url" => "url"
 					); ?>
@@ -59,20 +59,29 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 	});
 
 	function updateCVSkills() {
-		/*var type=type;
-		var canEdit=canEdit;
-		var hasRc=hasRc;*/
 		var form = {
 				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
 				timer : false,
 				dynForm : {
 					jsonSchema : {
-						title : tradDynForm.updateslug,// trad["Update network"],
+						title : trad.addCuriculum,// trad["Update network"],
 						icon : "fa-key",
 						onLoads : {
-							sub : function(){
-								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-											  				  .addClass("bg-dark");
+							sub : function(data){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url").addClass("bg-red");
+								console.log("DATA XXX", data);
+								if(typeof data.driverLicense != "undefined"){ 
+									if(data.driverLicense == "false"){
+										$("#ajaxFormModal #driverLicense").val("false");
+										$("#ajaxFormModal .driverLicensecheckboxSimple .btn-dyn-checkbox[data-checkval='false']").trigger( "click" );
+									}
+								}
+								if(typeof data.hasVehicle != "undefined"){ 
+									if(data.hasVehicle == "false"){
+										$("#ajaxFormModal #hasVehicle").val("false");
+										$("#ajaxFormModal .hasVehiclecheckboxSimple .btn-dyn-checkbox[data-checkval='false']").trigger( "click" );
+									}
+								}
 								//bindDesc("#ajaxFormModal");
 							}
 						},
@@ -104,15 +113,38 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 				                inputType : "custom",
 				                html:"<p class='text-"+typeObj["organization"].color+"'>"+
 				                		//"Faire connaître votre Organisation n'a jamais été aussi simple !<br>" +
-									    tradDynForm["infocreateorganization"]+" ...<hr>" +
+									    //tradDynForm["infocreateorganization"]+" ...<hr>" +
 									 "</p>",
 				            },
 					        block : dyFInputs.inputHidden(),
 							typeElement : dyFInputs.inputHidden(), 
 
-							competences : dyFInputs.tags(),
-				            motivation : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 500 }),
-					        url : dyFInputs.inputUrl()
+							mainQualification : dyFInputs.inputText("Votre diplôme principal"),
+
+							competences : dyFInputs.tags(new Array("test"), "",
+														"Vos compétences principales"),
+
+							languages : dyFInputs.tags(new Array("Français", "Anglais", "Espagnol", "Allemand", "Italien", "Russe", "Chinois", "Japonais"), "",
+														"Langues maîtrisées"),
+
+							driverLicense : dyFInputs.checkboxSimple("true", "driverLicense", 
+            										{ "onText" : trad.yes,
+            										  "offText": trad.no,
+            										  "onLabel" : "Oui, j'ai le permis",
+            										  "offLabel" : "Non, je n'ai pas le permis",
+            										  "labelText": "Permis de conduire ?"
+            										}),
+            				hasVehicle : dyFInputs.checkboxSimple("true", "hasVehicle", 
+            										{ "onText" : trad.yes,
+            										  "offText": trad.no,
+            										  "offLabel" : "Non, je n'ai pas de véhicule pour me déplacer",
+            										  "onLabel" : "Oui, j'ai un véhicule pour me déplacer",
+            										  "labelText": "Véhicule ?"
+            										}),	
+
+				            motivation : dyFInputs.textarea(tradDynForm["explainMotivation"], 
+				            								"...", { maxlength: 500 }),
+					        url : dyFInputs.inputUrl("Lien vers votre site web personnel ou professionnel")
 					    }
 					}
 				}
@@ -125,7 +157,7 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 
 		if(typeof contextData.curiculum != "undefined"){
 			if(typeof contextData.curiculum.skills != "undefined"){
-				var CVattrs = ["competences", "url", "motivation"];
+				var CVattrs = ["competences", "url", "mainQualification", "languages", "driverLicense", "hasVehicle", "motivation"];
 				$.each(CVattrs, function(key, value){ 
 					console.log("in detail", value, contextData.curiculum,  contextData.curiculum.skills[value])
 					if(typeof contextData.curiculum.skills[value] != "undefined"){

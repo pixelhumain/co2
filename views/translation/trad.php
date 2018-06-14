@@ -770,8 +770,12 @@ var tradDynForm = {
 	"other" : "<?php echo Yii::t("common","Other") ?>",
 	"pleaseValidateTheCurrentInvites" : "<?php echo Yii::t("invite","Please validate the current invites") ?>",
 	"thisPersonIsAlreadyOnYourContacts" : "<?php echo Yii::t("invite","This person is already on your contacts") ?>",
-	
 	"explainMotivation":"<?php echo Yii::t("curiculum","Your motivation") ?>",
+	"addname"          : "<?php echo Yii::t("common", "Add a name") ?>",
+	"nameofsearch": "<?php echo Yii::t("common", "Name of the research") ?>",
+	"searchtosave"       : "<?php echo Yii::t("common", "Search to save") ?>",
+	"bealertbymailofnewclassified" : "<?php echo Yii::t("common", "Do you want to receive a mail alert of new items") ?>",
+	"saveresearchandalert": "<?php echo Yii::t("common", "Save this research as favorites and be alert") ?>",
 };
 
 var tradCategory = {

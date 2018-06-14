@@ -388,6 +388,7 @@ class CommunecterController extends Controller
     ),
     "bookmark" => array(
       "delete"        => array("href" => "ph/communecter/bookmark/delete"),
+      "save"        => array("href" => "ph/communecter/bookmark/save"),
       "sendmailnotif"        => array("href" => "ph/co2/bookmark/sendmailnotif"),
     ),
     "slug" => array(

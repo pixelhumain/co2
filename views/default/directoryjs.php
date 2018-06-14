@@ -627,6 +627,7 @@ var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
 //var classifieds = modules.classifieds; //<?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
 
 jQuery(document).ready(function() {
+
   initKInterface({"affixTop":200});
 	currentTypeSearchSend = "search";
   $("#col-btn-type-directory .btn-directory-type").each(function(){
@@ -681,6 +682,7 @@ jQuery(document).ready(function() {
   <?php if(!@$_GET["nopreload"]){ ?>
     //initBtnScopeList();
     indexStepInit = 100;
+    
     startSearch(0, indexStepInit, searchCallback);
   <?php } ?>
 });

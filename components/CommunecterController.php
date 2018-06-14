@@ -190,6 +190,7 @@ class CommunecterController extends Controller
       'autocompletemultiscope'          => array("href" => "/ph/co2/city/autocompletemultiscope"),
       "save"               => array("href" => "/ph/co2/city/save", "public" => true),
       'getlevel'          => array("href" => "/ph/co2/city/getlevel"),
+      'getcitiesbyscope'          => array("href" => "/ph/co2/city/getcitiesbyscope"),
     ),
     "news"=> array(
       "index"   => array( "href" => "/ph/co2/news/index", "public" => true,'title' => "Fil d'actualités - N.E.W.S", "subTitle"=>"Nord.Est.West.Sud","pageTitle"=>"Fil d'actualités - N.E.W.S"),
@@ -590,6 +591,7 @@ class CommunecterController extends Controller
         "pushtypewikidata"    => array('href' => 'ph/co2/interoperability/pushtypewikidata',  "public" => true),
         "wikidata-put-description"    => array('href' => 'ph/co2/interoperability/wikidata-put-description',  "public" => true),
       ),
+      "interop"            => array('href' => "/ph/co2/app/interop",            "public" => true),
     ),
     "siteurl" => array(
       "incnbclick"        => array('href' => "ph/co2/siteurl/incnbclick")
@@ -609,6 +611,9 @@ class CommunecterController extends Controller
     ),
     "ressources" => array(
       "co"        => array("href" => "ph/ressources/co", "module" => "ressources"),
+    ),
+    "interop" => array(
+      "co"        => array("href" => "ph/interop/co/index", "module" => "interop"),
     ),
     "chat" => array(
         "default"        => array (
@@ -645,7 +650,7 @@ class CommunecterController extends Controller
     if( Yii::app()->controller->id == "adminpublic" && ( !Yii::app()->session[ "userIsAdmin" ] && !Yii::app()->session[ "userIsAdminPublic" ] ) )
       throw new CHttpException(403,Yii::t('error','Unauthorized Access.'));
 
-    if( in_array( $this->module->id, array("chat", "ressources", "classifieds" ) ) )
+    if( in_array( $this->module->id, array("chat", "ressources", "classifieds", "interop" ) ) )
       $page = $this->pages[$this->module->id][Yii::app()->controller->id][Yii::app()->controller->action->id];
     else if( Yii::app()->controller->id != "test")
       $page = $this->pages[Yii::app()->controller->id][Yii::app()->controller->action->id];

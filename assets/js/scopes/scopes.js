@@ -73,21 +73,22 @@ function constructScopesHtml(news){
 	return html;
 }
 function appendHeaderFilterActive(title, count){
+	mylog.log("appendHeaderFilterActive", title, count);
 	var labelHeader = trad.where+" ?"
-	var countActive = 0;
+	myScopes.countActive = 0;
 	$.each(myScopes[myScopes.type], function(key, value){
 		if(typeof value.name == "undefined") value.name = value.id;
 		if(value.active){
-			if(countActive==0) labelHeader="";
-			countActive++;
-			if(countActive <= 2)
+			if(myScopes.countActive==0) labelHeader="";
+			myScopes.countActive++;
+			if(myScopes.countActive <= 2)
 				labelHeader+= (labelHeader!="") ? ", "+value.name : value.name;
 		}
 	});
-	var incrStr = (countActive > 2) ? " +"+(countActive-2): ""; 
+	var incrStr = (myScopes.countActive > 2) ? " +"+(myScopes.countActive-2): ""; 
 	$(".menu-btn-scope-filter .header-label-scope").html(labelHeader+incrStr);
 
-	(countActive > 0) ? $(".menu-btn-scope-filter").addClass("active") : $(".menu-btn-scope-filter").removeClass("active");
+	(myScopes.countActive > 0) ? $(".menu-btn-scope-filter").addClass("active") : $(".menu-btn-scope-filter").removeClass("active");
 } 
 function changeCommunexionScope(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
 	mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);
@@ -272,7 +273,7 @@ function getSearchLocalityObject(){
 		});
 	}
 	appendHeaderFilterActive();
-//	mylog.log("getMultiScopeForSearch search", res);
+	mylog.log("getMultiScopeForSearch search", res);
 	return res; 
 
 }
@@ -608,4 +609,19 @@ function scopeObject(values){
 	}
 	mylog.log("scopeObject communexionObj", communexionObj);
 	return communexionObj;
+}
+
+
+function getScopeActive(){
+	mylog.log("getScopeActive");
+	var scopeActive = {};
+	if( notNull(myScopes.type) && notNull(myScopes[myScopes.type]) ) {
+		mylog.log("here", myScopes.type);
+		$.each(myScopes[myScopes.type],function(e,v){
+			if(myScopes[myScopes.type][e].active == true)
+				scopeActive[e] = myScopes[myScopes.type][e] ;
+		});
+	}
+	mylog.log("getScopeActive scopeActive", scopeActive);
+	return scopeActive;
 }

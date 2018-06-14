@@ -311,6 +311,32 @@ function bindLeftMenuFilters () {
             }*/
         }
         $(".btn-select-type-anc, .btn-select-section, .btn-select-category, .keycat").removeClass("active");
+        //if(bindEcoSource())
+           //bindEcoSource();
+        $(".btn-select-source").click(function(){
+            var key = $(this).data("key");
+            $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
+            if(key == "co"){
+                delete searchObject.source;
+                startSearch(0, indexStepInit, searchCallback);
+            }else{
+                searchObject.source = key;
+                if( typeof interop == "undefined" ){
+                    lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
+                        if( typeof interopObj == "undefined" ){
+                           lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
+                                interopObj[key].startSearch();
+                            } ); 
+                       }else{
+                            interopObj[key].startSearch(); 
+                       }
+                    });
+                } else {
+                    interopObj[key].startSearch();
+                }
+            }
+        });
+
         $(".keycat").addClass("hidden");
         if(typeof searchObject.section != "undefined") delete searchObject.section;
         if(typeof searchObject.category != "undefined") delete searchObject.category;
@@ -565,6 +591,11 @@ function constructSearchObjectAndGetParams(){
       searchConstruct.endDate = searchObject.endDate;
     }
   }
+  if(typeof searchObject.source != "undefined"){ 
+    searchConstruct.source = searchObject.source;
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="source="+searchObject.source;
+  }
   if(typeof searchObject.indexMin != "undefined" && notNull(searchObject.indexMin)){
     searchConstruct.indexMin=searchObject.indexMin;
   }
@@ -808,8 +839,7 @@ var searchAllEngine = {
             ressources : 0
         };
     },
-    initSearch: function (){ 
-        //Search on all
+    initRanges: function(){
         searchObject.ranges={
             organizations : { indexMin : 0, indexMax : 30, waiting : 30 },
             projects : { indexMin : 0, indexMax : 30, waiting : 30 },
@@ -822,6 +852,10 @@ var searchAllEngine = {
             ressources : { indexMin : 0, indexMax : 30, waiting : 30},
             cities : { indexMin : 0, indexMax : 30, waiting : 30 }
         };
+    },
+    initSearch: function (){ 
+        //Search on all
+        searchAllEngine.initRanges();
         initTypeSearch("all");
         searchAllEngine.allResults={};
         if(typeof searchObject.page != "undefined") delete searchObject.page;

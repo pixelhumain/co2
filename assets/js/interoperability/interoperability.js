@@ -577,19 +577,29 @@ function getScopeValue() {
 
 function getCityId() { 
     var city_id = "";
-    if ($.cookie().communexionActivated == true) {
-        city_id = myScopes.communexion.currentValue;
-    } else { 
-        $.each(myScopes.multiscopes, function(index, value) { 
-            if (value.active == true) {
-                if (value.type == "city") {
-                    city_id = index;
-                } else if (value.type == "cp") {
-                    city_data = getCityDataByInsee(value.name);
-                    city_id = city_data._id.$id
-                } else {
-                    city_id = index;
-                } 
+    // if ($.cookie().communexionActivated == true) {
+    //     city_id = myScopes.communexion.currentValue;
+    // } else { 
+    //     $.each(myScopes.multiscopes, function(index, value) { 
+    //         if (value.active == true) {
+    //             if (value.type == "city") {
+    //                 city_id = index;
+    //             } else if (value.type == "cp") {
+    //                 city_data = getCityDataByInsee(value.name);
+    //                 city_id = city_data._id.$id
+    //             } else {
+    //                 city_id = index;
+    //             } 
+    //         }
+    //     });
+    // }
+    
+    if( notNull(myScopes.type) && notNull(myScopes[myScopes.type]) ) {
+        mylog.log("here", myScopes.type);
+        $.each(myScopes[myScopes.type],function(e,v){
+            if(myScopes[myScopes.type][e].active == true){
+               // scopeActive[e] = myScopes[myScopes.type][e] ;
+                city_id = myScopes[myScopes.type][e].id ;
             }
         });
     }

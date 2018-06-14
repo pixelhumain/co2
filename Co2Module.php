@@ -43,6 +43,7 @@ class Co2Module extends CWebModule {
 			'eco.models.*',
 			'places.models.*',
 			'chat.models.*',
+			'interop.models.*',
 			$this->id.'.models.*',
 			$this->id.'.components.*',
 			$this->id.'.messages.*',

@@ -279,6 +279,11 @@ class AppController extends CommunecterController {
         $this->redirect( Yii::app()->createUrl("/ressources/co/ressources") );
     }
 
+    public function actionInterop(){
+        //echo "Hello there "; echo Yii::app()->createUrl("/interop/co/index"); exit; 
+        $this->redirect( Yii::app()->createUrl("/interop") );
+    }
+
     public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
             

@@ -22,40 +22,44 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
+    if(location.hash.indexOf("interop") >=0){
+      interop.startSearch();
+    }else{
+        if(searchObject.text.indexOf("co.") === 0 ){
+          searchT = searchObject.text.split(".");
+          if( searchT[1] && typeof co[ searchT[1] ] == "function" ){
+            co[ searchT[1] ](searchObject.text);
+            return;
+          } else {
+            co.mands();
+          }
+        }
+        if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
+          startNewsSearch(true);
+        else{
+          mylog.log("startSearch directory.js", typeof callBack, callBack, loadingData);
+          if(loadingData) return;
+          
+          loadingData = true;
+          showIsLoading(true);
 
-    if(searchObject.text.indexOf("co.") === 0 ){
-      searchT = searchObject.text.split(".");
-      if( searchT[1] && typeof co[ searchT[1] ] == "function" ){
-        co[ searchT[1] ](searchObject.text);
-        return;
-      } else {
-        co.mands();
-      }
+          mylog.log("startSearch", searchObject.indexMin, indexMax, searchObject.indexStep, searchObject.types);
+          searchObject.indexMin = (typeof indexMin == "undefined") ? 0 : indexMin;
+          //if(typeof indexMax == "undefined") indexMax = indexStep;
+
+          //currentIndexMin = indexMin;
+          //currentIndexMax = indexMax;
+          //TODO BOUBOULE - Don't understand
+          /*if(indexMin == 0 && indexMax == indexStep) {
+            totalData = 0;
+             mapElements = new Array(); 
+          }
+          else{ if(scrollEnd) return; }*/
+          
+          autoCompleteSearch(indexMin, indexMax, callBack);
+        }
     }
-    if(location.hash.indexOf("#live") >=0 || location.hash.indexOf("#freedom") >= 0)
-      startNewsSearch(true);
-    else{
-      mylog.log("startSearch directory.js", typeof callBack, callBack, loadingData);
-      if(loadingData) return;
-      
-      loadingData = true;
-      showIsLoading(true);
-
-      mylog.log("startSearch", searchObject.indexMin, indexMax, searchObject.indexStep, searchObject.types);
-      searchObject.indexMin = (typeof indexMin == "undefined") ? 0 : indexMin;
-      //if(typeof indexMax == "undefined") indexMax = indexStep;
-
-      //currentIndexMin = indexMin;
-      //currentIndexMax = indexMax;
-      //TODO BOUBOULE - Don't understand
-      /*if(indexMin == 0 && indexMax == indexStep) {
-        totalData = 0;
-         mapElements = new Array(); 
-      }
-      else{ if(scrollEnd) return; }*/
-      
-      autoCompleteSearch(indexMin, indexMax, callBack);
-    }
+    
 }
 
 
@@ -72,6 +76,7 @@ function addSearchType(type){
   }
 }
 function initTypeSearch(typeInit){
+  mylog.log("initTypeSearch", typeInit);
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
@@ -1323,20 +1328,24 @@ var directory = {
   	str += "</div>";
   	return str;
 	},
-
-    interopPanelHtml : function(params){
-      mylog.log("----------- interopPanelHtml",params, params.type,params.name, params.url);
+  interopPanelHtml : function(params){
+      mylog.log("----------- interopPanelHtml OLD",params, params.type,params.name, params.url);
 
       var interop_type = getTypeInteropData(params.source.key);
-      params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
+      mylog.log("interopPanelHtml", interop_type);
+      // TODO Revoir cette parti des hash ans TRANSLATE
+      //params.hash = getUrlForInteropDirectoryElements(interop_type, params.shortDescription, params.url);
+      params.hash = params.url;
       params.url = params.hash;
+
+
       params.color = getIconColorForInteropElements(interop_type);
       params.htmlIco = getImageIcoForInteropElements(interop_type);
       params.type = "poi.interop."+interop_type;
 
       if (typeof params.tags == "undefined") 
         params.tags = [];
-        params.tags.push(interop_type);
+      params.tags.push(interop_type);
 
       str = "";  
       str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" "+params.elRolesList+" '>";
@@ -1398,6 +1407,7 @@ var directory = {
       str += "</div>";
       return str;
     },
+    
 
 
     // ********************************
@@ -2801,7 +2811,7 @@ var directory = {
           if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
              subData="data-ktype='"+addType+"' ";
              typeForm="organization";
-          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds")
+          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "interop")
             typeForm=typeObj[typeObj[addType].sameAs].ctrl;
           btn+='<button class="btn bg-white margin-left-5 btn-add pull-right text-'+headerParams[addType].color+' '+
             'data-type="'+typeForm+'" '+
@@ -2816,14 +2826,18 @@ var directory = {
       headerStr = '';
       if((typeof searchObject.count != "undefined" && searchObject.count) || searchObject.indexMin==0 ){          
           countHeader=0;
+           mylog.log("-----------headerHtml countHeader:",countHeader);
           if(searchObject.countType.length > 1 && typeof searchObject.ranges != "undefined"){
             $.each(searchAllEngine.searchCount, function(e, v){
               countHeader+=v;
             });
+            mylog.log("-----------headerHtml countHeader2:",countHeader);
             //posClass="right"
-          }else{
+          } else {
             typeCount = (searchObject.types[0]=="persons") ? "citoyens" : searchObject.types[0];
-            countHeader=searchAllEngine.searchCount[typeCount];
+            if(typeof searchAllEngine.searchCount[typeCount] != "undefined")
+             countHeader=searchAllEngine.searchCount[typeCount];
+            mylog.log("-----------headerHtml countHeader3:",countHeader);
            // posClass=(typeCount == "classified") ? "left" : "right";
           }
           //headerStr="<div class='col-md-2 col-sm-3 hidden-xs'>";
@@ -2970,12 +2984,13 @@ var directory = {
     footerHtml : function(){
       footerStr = '';
       // GET PAGINATION STRUCTURE
+     
       if(typeof searchObject.ranges == "undefined"){
           footerStr += '<div class="pageTable col-md-12 col-sm-12 col-xs-12 text-center"></div>';
         if(userId != ""){
           if(typeof searchObject.ranges == "undefined"){
             addType=searchObject.types[0];
-            typeForm =addType;
+            typeForm = addType;
             if(addType=="persons"){
               btn='<a href="#element.invite" class="btn text-yellow lbhp tooltips padding-5 no-margin" '+
                   'data-toggle="tooltip" data-placement="top" '+ 
@@ -2986,11 +3001,14 @@ var directory = {
               '</a>';
             }else{
               subData="";
+              mylog.log("addType", addType);
               if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
                  subData="data-ktype='"+addType+"' ";
                  typeForm="organization";
-              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "cities")
+              }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "cities" && typeForm != "interop")
                 typeForm=typeObj[typeObj[addType].sameAs].ctrl;
+              
+              mylog.log("addType", addType);
               btn='<button class="btn main-btn-create text-'+headerParams[addType].color+' tooltips" padding-5 no-margin '+
                 'data-type="'+typeForm+'" '+
                 subData+
@@ -3505,18 +3523,24 @@ var directory = {
         //        '<i class="fa fa-'+what.icon+'"></i> </h4><hr>';
         
         //$(dest).html(str);
-        if(typeof objJson.sources != "undefined"){
-          str="";
-          $(".sourcesInterrop").show(800);
-          $.each(objJson.sources, function(e,v){
-            str+='<button class="btn btn-default col-md-3 col-sm-3 col-xs-12 padding-10 bold text-dark elipsis btn-select-source" '+
-                  'data-source="'+v.label+'" data-key="'+v.key+'">'+
-                    '<img src="'+parentModuleUrl+v.path+'" width="15" height="15" class="margin-right-5"/>'+ 
-                    v.label+
-              '</button>';
-          });
-          $(".dropdown-sources").show();
-          $(".dropdown-sources .dropdown-menu").html(str);
+		if(typeof objJson.sources != "undefined"){
+			str="";
+			$(".sourcesInterrop").show(800);
+			$.each(objJson.sources, function(e,v){
+				// str+='<button class="btn btn-default col-sm-3 col-xs-12 padding-10 bold text-dark elipsis btn-select-source" '+
+				// 	'data-source="'+v.label+'" data-key="'+v.key+'">'+
+				// 		'<span class="col-xs-2" ><img src="'+parentModuleUrl+v.path+'" width="15" height="15" class="margin-right-5"/></span>'+ 
+				// 		'<span class="" >'+v.label+"</span>"+
+				// 	'</button>';
+
+				str+='<button class="btn btn-default col-sm-3 col-xs-12 padding-10 bold text-dark elipsis btn-select-source" '+
+						'data-source="'+v.label+'" data-key="'+v.key+'" style="height: 60px;">'+
+							'<span class="col-xs-2" ><img src="'+parentModuleUrl+v.path+'" width="40" height="40" class=""/></span>'+ 
+							'<span class="col-xs-10 text-left" >'+v.label+"</span>"+
+						'</button>';
+	        });
+			$(".dropdown-sources").show();
+			$(".dropdown-sources .dropdown-menu").html(str);
         }else{
           $(".dropdown-sources").hide(800);
         }

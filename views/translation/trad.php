@@ -128,7 +128,7 @@ var trad = {
 	"addplaces":"<?php echo Yii::t("common","Add a new place") ?>",
 	"invitesomeone":"<?php echo Yii::t("common","Invite someone") ?>",
 	"addorganization" : "<?php echo Yii::t("common","Add an Organization") ?>",
-	"addOrganization" : "<?php echo Yii::t("common","Add an Organization") ?>",
+	"addCuriculum" : "<?php echo Yii::t("common","Fill in your CV") ?>",
 	"addLocalBusiness" : "<?php echo Yii::t("common","Add a company") ?>",
 	"addGovernmentOrganization" : "<?php echo Yii::t("common","Add a Governemental Organization") ?>",
 	"addAssociation" : "<?php echo Yii::t("common","Add an association") ?>",
@@ -770,12 +770,12 @@ var tradDynForm = {
 	"other" : "<?php echo Yii::t("common","Other") ?>",
 	"pleaseValidateTheCurrentInvites" : "<?php echo Yii::t("invite","Please validate the current invites") ?>",
 	"thisPersonIsAlreadyOnYourContacts" : "<?php echo Yii::t("invite","This person is already on your contacts") ?>",
+	"explainMotivation":"<?php echo Yii::t("curiculum","Your motivation") ?>",
 	"addname"          : "<?php echo Yii::t("common", "Add a name") ?>",
 	"nameofsearch": "<?php echo Yii::t("common", "Name of the research") ?>",
 	"searchtosave"       : "<?php echo Yii::t("common", "Search to save") ?>",
 	"bealertbymailofnewclassified" : "<?php echo Yii::t("common", "Do you want to receive a mail alert of new items") ?>",
 	"saveresearchandalert": "<?php echo Yii::t("common", "Save this research as favorites and be alert") ?>",
-	
 };
 
 var tradCategory = {
@@ -1156,6 +1156,7 @@ var tradCategory = {
 		"buildingtools":"<?php echo Yii::t("category","Building tools") ?>",
 		"gardeningtools":"<?php echo Yii::t("category","Gardening tools") ?>",
 		"medicalstuff":"<?php echo Yii::t("category","Medical stuff") ?>",
+
 };
 
 var tradTags = {

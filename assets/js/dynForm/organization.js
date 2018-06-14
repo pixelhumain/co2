@@ -100,6 +100,7 @@ dynForm = {
             								{ required : true } ),
             tags : dyFInputs.tags(),
             location : dyFInputs.location,
+            formLocality : dyFInputs.formLocality("My adresse", "My adresse", {}),
 	        image : dyFInputs.image(),
             email : dyFInputs.text(),
 	        shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),

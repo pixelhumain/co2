@@ -275,9 +275,9 @@ $this->renderPartial($layoutPath.'header',
 		    	<tbody class="directoryLines" id="bodyCreateMapping">
 			    	<tr id="LineAddMapping">
 		    			<td>
-		    				<input type="checkbox" id="checkSwitch" onclick="isCheckSwitch()" checked></input>
-		    				<input type="text" id="selectSourceTxt" class="col-sm-11">
-							 <select id="selectSource" class="col-sm-11">
+		    			<!--	<input type="checkbox" id="checkSwitch" onclick="isCheckSwitch()" checked></input>
+		    				<input type="text" id="selectSourceTxt" class="col-sm-11" placeholder="<?php echo Yii::t("import","Grap manually my mapping"); ?>">-->
+							 <select id="selectSource" class="col-sm-12">
 							</select>
 					
 		    			</td>
@@ -601,6 +601,7 @@ function bindCreateFile(){
   		//var selectValueHeadCSV = $("#selectHeadCSV option:selected").text() ;
   		var selectSource = $("#selectSource option:selected").val() ;
   		//var selectSource = $("#selectSource").val() ;
+  		var selectSourceTxt = $("#selectSourceTxt").val();
   		var selectAttributesElt = $("#selectAttributesElt option:selected").val() ;
 
 
@@ -615,6 +616,12 @@ function bindCreateFile(){
   			if($("#valueAttributeElt"+inc).text() == selectAttributesElt){
   				error = true;
   				msgError += "<?php echo Yii::t("import","You have already add this elements in the mapping column"); ?>"
+  			}
+
+  			if(selectSourceTxt == "" && $("#selectSourceTxt").is('checked'))
+  			{
+  				error = true;
+  				msgError += "Vous devrez saisir une valeur dans le champ source";
   			}
   			inc++;
   		}
@@ -641,7 +648,14 @@ function bindCreateFile(){
 	  			$("#selectAttributesElt").append(chaine);
   			}  			
 	  		ligne = '<tr id="lineMapping'+nbLigneMapping+'" class="lineMapping"> ';
-	  		ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + selectSource + '</td>';
+
+	  		//if($("#checkSwitch").is(':checked')){
+	  			ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + selectSource + '</td>';
+	  		/*}
+	  		else{
+	  		ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + selectSourceTxt + '</td>';
+	  		}*/
+
 	  		ligne =	 ligne + '<td id="valueAttributeElt'+nbLigneMapping+'">' + selectAttributesElt + '</td>';
 	  		ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSource +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
 	  		$("#nbLigneMapping").val(nbLigneMapping);
@@ -671,8 +685,8 @@ function bindCreateFile(){
 
 
 	$("#btnImport").off().on('click', function(){
-		$("#btnImport").show();
-		verifImport(btnImport);	
+		$("#btnImport").hide();
+		$("#btnBDD").show();
 		if(notEmpty($('#jsonCities').val())){
 			var zip = new JSZip();
 			zip.file(nameFile+"_StandardForCommunecter.json", $('#jsonImport').val());
@@ -706,13 +720,14 @@ function bindCreateFile(){
   	});
 
   	//Trouver un moyenne de mettre un data.
-  	$("#selectSource").off().on('click',function(){
+  	/*$("#selectSource").off().on('click',function(){
   		
   		 var vSelectSource = $("#selectSource option:selected").val();
   		 mylog.log(vSelectSource);
 
   		autoSelectAttributesElt(data,vSelectSource);
-  	});
+  	});*/
+}
 
 function preStep2(){
 	cleanVisualisation();

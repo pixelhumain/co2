@@ -2427,57 +2427,58 @@ var mentionsInit = {
 	get : function(domElement){
 		mentionsInput=[];
 		$(domElement).mentionsInput({
-		  onDataRequest:function (mode, query, callback) {
-			  	if(mentionsInit.stopMention)
-			  		return false;
-			  	var data = mentionsContact;
-			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
-				callback.call(this, data);
-				mentionsInit.isSearching=true;
-		   		var search = {"searchType" : ["citoyens","organizations","projects"], "name": query};
-		  		$.ajax({
-					type: "POST",
-			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
-			        data: search,
-			        dataType: "json",
-			        success: function(retdata){
-			        	if(!retdata){
-			        		toastr.error(retdata.content);
-			        	}else{
-				        	mylog.log(retdata);
-				        	data = [];
-				        	//for(var key in retdata){
-					        //	for (var id in retdata[key]){
-					        $.each(retdata.results, function (e, value){
-						        	avatar="";
-						        	//console.log(retdata[key]);
-						        	//aert(retdata[key][id].type);
-						        	if(typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl!="")
-						        		avatar = baseUrl+value.profilThumbImageUrl;
-						        	object = new Object;
-						        	object.id = e;
-						        	object.name = value.name;
-						        	object.slug = value.slug;
-						        	object.avatar = avatar;
-						        	object.type = value.type;
-						        	var findInLocal = _.findWhere(mentionsContact, {
-										name: value.name, 
-										type: value.type
-									}); 
-									if(typeof(findInLocal) == "undefined"){
-										mentionsContact.push(object);
-									}
-						 	//		}
-				        	//}
-				        	});
-				        	data=mentionsContact;
-				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
-							callback.call(this, data);
-							mylog.log("callback",callback);
-			  			}
-					}	
-				})
-		  	}
+			allowRepeat:true,
+		 	onDataRequest:function (mode, query, callback) {
+			  	if(!mentionsInit.stopMention){
+				  	var data = mentionsContact;
+				  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+					callback.call(this, data);
+					mentionsInit.isSearching=true;
+			   		var search = {"searchType" : ["citoyens","organizations","projects"], "name": query};
+			  		$.ajax({
+						type: "POST",
+				        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
+				        data: search,
+				        dataType: "json",
+				        success: function(retdata){
+				        	if(!retdata){
+				        		toastr.error(retdata.content);
+				        	}else{
+					        	mylog.log(retdata);
+					        	data = [];
+					        	//for(var key in retdata){
+						        //	for (var id in retdata[key]){
+						        $.each(retdata.results, function (e, value){
+							        	avatar="";
+							        	//console.log(retdata[key]);
+							        	//aert(retdata[key][id].type);
+							        	if(typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl!="")
+							        		avatar = baseUrl+value.profilThumbImageUrl;
+							        	object = new Object;
+							        	object.id = e;
+							        	object.name = value.name;
+							        	object.slug = value.slug;
+							        	object.avatar = avatar;
+							        	object.type = value.type;
+							        	var findInLocal = _.findWhere(mentionsContact, {
+											name: value.name, 
+											type: value.type
+										}); 
+										//if(typeof(findInLocal) == "undefined"){
+										//	mentionsContact.push(object);
+										//}
+							 	//		}
+					        	//}
+					        	});
+					        	data=mentionsContact;
+					    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+								callback.call(this, data);
+								mylog.log("callback",callback);
+				  			}
+						}	
+					});
+			  	}
+			 }
 	  	});
 	},
 	beforeSave : function(object, domElement){
@@ -2488,11 +2489,14 @@ var mentionsInit = {
 			var textMention="";
 			$(domElement).mentionsInput('val', function(text) {
 				textMention=text;
+				console.log(textMention);
 				$.each(mentionsInput, function(e,v){
 					strRep=v.name;
-					if(typeof v.slug != "undefined")
-						strRep="@"+v.slug;
-					textMention = textMention.replace("@["+v.name+"]("+v.type+":"+v.id+")", strRep);
+					while (textMention.indexOf("@["+v.name+"]("+v.type+":"+v.id+")") > -1){
+						if(typeof v.slug != "undefined")
+							strRep="@"+v.slug;
+						textMention = textMention.replace("@["+v.name+"]("+v.type+":"+v.id+")", strRep);
+					}
 				});
 			});			
 			object.mentions=mentionsInput;
@@ -2503,10 +2507,12 @@ var mentionsInit = {
 	addMentionInText: function(text,mentions){
 		$.each(mentions, function( index, value ){
 			if(typeof value.slug != "undefined"){
-				str="<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
-		   						value.name+
-		   					"</span>";
-				text = text.replace("@"+value.slug, str);
+				while (text.indexOf("@"+value.slug) > -1){
+					str="<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+			   						value.name+
+			   					"</span>";
+					text = text.replace("@"+value.slug, str);
+				}
 			}else{
 				//Working on old news
 		   		array = text.split(value.value);

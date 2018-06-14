@@ -22,8 +22,8 @@ var translate = {"organizations":"Organisations",
                  "followers":"Ils nous suivent"};
 
 function startSearch(indexMin, indexMax, callBack){
-    if(location.hash.indexOf("interop") >=0){
-      interop.startSearch();
+    if(typeof searchObject.source != "undefined"){
+		interop.startSearch();
     }else{
         if(searchObject.text.indexOf("co.") === 0 ){
           searchT = searchObject.text.split(".");

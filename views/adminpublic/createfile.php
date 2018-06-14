@@ -275,9 +275,9 @@ $this->renderPartial($layoutPath.'header',
 		    	<tbody class="directoryLines" id="bodyCreateMapping">
 			    	<tr id="LineAddMapping">
 		    			<td>
-		    				<!--<input type="text" placeholder="Saisir une source mapping" list="listSource" class="col-sm-12">
-		    					<datalist id="selectSource"></datalist>-->
-							<select id="selectSource" class="col-sm-12">
+		    				<input type="checkbox" id="checkSwitch" onclick="isCheckSwitch()" checked></input>
+		    				<input type="text" id="selectSourceTxt" class="col-sm-11">
+							 <select id="selectSource" class="col-sm-11">
 							</select>
 					
 		    			</td>
@@ -410,7 +410,7 @@ var listSource = [];
 var ligneList = [];
 var mappingPrevious = $("#chooseMapping").html();
 var ifMappingDelete = false;
-// var listeObligatoire = ["name","email","type","address.postalCode","address.addressLocality","address.codeInsee","address.streetAddress","address.addressCountry"];
+
 var listeObligatoire = {
 	name : "name",
 	type : "type",
@@ -433,6 +433,7 @@ jQuery(document).ready(function() {
 	$("#btnBDD").hide();
 	$("#btnImport").hide();
 	$("#btnError").hide();
+	$("#selectSourceTxt").hide();
 	bindCreateFile();
 	bindUpdate();
 	
@@ -467,6 +468,7 @@ function bindCreateFile(){
 		returnStep1();
   	});
 
+//	Bouton Insert
   	$("#btnconfirmInsertMapping").off().on('click', function(e){
   		var params = {
   			names : $("#nameMapping").val(),
@@ -487,6 +489,7 @@ function bindCreateFile(){
   			toastr.error("<?php echo Yii::t("import","You will need to enter the name for your mapping"); ?>");
   	});
 
+//	Boutton Update
   	$("#btnconfirmUpdateMapping").off().on('click',function(e)
   	{
   		  	var params = {
@@ -499,12 +502,8 @@ function bindCreateFile(){
   			setMappings(params);
   		else
   			toastr.error("<?php echo Yii::t("import","You will need to enter the name for your mapping"); ?>");
-  	})
+  	});
 
-/*
-$("#checkboxTest").bootstrapSwitch({
-	isCheckTest();
-});*/
 	$("#checkboxTest").bootstrapSwitch();
 	$("#checkboxTest").on("switchChange.bootstrapSwitch", function (event, state) {
 		mylog.log("isTest Check");
@@ -520,7 +519,7 @@ $("#checkboxTest").bootstrapSwitch({
 	$("#btnconfirmDeleteMapping").off().on('click', function(e)
 	{
 		mylog.log("deleteMapping");
-		var params ={
+		var params = {
 			idMapping : $("#chooseMapping").val() //Les liens 
 		}
 
@@ -537,7 +536,6 @@ $("#checkboxTest").bootstrapSwitch({
 				$("#divUpdate").hide();
 				$("#divAjout").show();
 				ifMappingDelete = true;
-				//idMapping = "-1";
 			},
 			error:function(data){
 				mylog.log("error");
@@ -706,7 +704,15 @@ $("#checkboxTest").bootstrapSwitch({
 		     $(this).remove()
 		  })[0].click() ;
   	});
-}
+
+  	//Trouver un moyenne de mettre un data.
+  	$("#selectSource").off().on('click',function(){
+  		
+  		 var vSelectSource = $("#selectSource option:selected").val();
+  		 mylog.log(vSelectSource);
+
+  		autoSelectAttributesElt(data,vSelectSource);
+  	});
 
 function preStep2(){
 	cleanVisualisation();
@@ -1059,6 +1065,9 @@ function returnStep2(){
 	$("#menu-step-mapping").show(400);
 	$("#menu-step-source").hide(400);
 	$("#menu-step-visualisation").hide(400);
+	$("#btnImport").hide();
+	$("#btnError").hide();
+	$("#btnBDD").hide();
 	nbFinal=0;
 }
 
@@ -1362,6 +1371,24 @@ function setMappings(params)
 		}
 
 }
+
+function autoSelectAttributesElt(data,vSelectSource){
+	$.each(data.arrayMapping, function(key,value){
+		if(vSelectSource == key)
+			$("#selectAttributesElt option:"+value).change();
+	});
+}
+
+function isCheckSwitch(){
+	if($("#checkSwitch").is(':checked')){
+		$("#selectSource").show();
+		$("#selectSourceTxt").hide();
+	}
+	else{
+		$("#selectSource").hide();
+		$("#selectSourceTxt").show();
+	}
+}
 /*
 function listMapping(params)
 {
@@ -1394,21 +1421,4 @@ function listMapping(params)
 	mylog.log("listSource",listSource);
 }
 */
-function verifImport(btnImport)
-{
-	if($("#btnImport").hide())
-		$("#btnBDD").show();
-	else
-		$("#btnBDD").hide();
-}
-function isCheckTest()
-{
-	if($("#checkboxTest").is(':checked'))
-		{
-		mylog.log("Test is check");
-		$("#divNbTestAff").show();
-		}
-	else
-		$("#divNbTestAff").hide();
-}
 </script>

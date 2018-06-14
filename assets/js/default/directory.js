@@ -2833,15 +2833,18 @@ var directory = {
            
           mylog.log("-----------headerHtml :"+countHeader);
           resultsStr = (countHeader > 1) ? trad.results : trad.result;
-          headerStr +='<div class="col-xs-12 padding-20">'+
-                        '<h4 class="elipsis col-md-10 col-xs-10">'+
+          headerStr +='<div class="col-xs-12 margin-bottom-10">'+
+                        '<h4 class="elipsis col-md-9 col-sm-8 col-xs-10 no-padding">'+
                         "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
                         '<small>'+
                           directory.searchTypeHtml()+
                         '</small>'+
                       '</h4>'+
-                      '<div class="pull-right">'+
-                        '<button class="btn switchDirectoryView ';
+                      '<div class="col-md-3 col-sm-3 pull-right no-padding text-right">';
+                        if(userId!="" && searchObject.initType=="classifieds"){
+                          headerStr+='<button class="btn addToAlert margin-right-5" data-value="list" onclick="directory.addToAlert();"><i class="fa fa-bell"></i> Add to alert</button>';
+                        }
+                         headerStr+='<button class="btn switchDirectoryView ';
                           if(directory.viewMode=="list") headerStr+='active ';
           headerStr+=     'margin-right-5" data-value="list"><i class="fa fa-bars"></i></button>'+
                         '<button class="btn switchDirectoryView ';
@@ -2865,6 +2868,75 @@ var directory = {
         //}
       //});
       
+    },
+    addToAlert : function(){
+      var message = "<span class='text-dark'>"+tradDynForm.saveresearchandalert+"</span><br>";
+      var searchName = (searchObject.text != "" ) ? searchObject.text : "";   
+      var boxBookmark = bootbox.dialog({
+            title: message,
+            message: '<div class="row">  ' +
+                      '<div class="col-md-12"> ' +
+                        '<form class="form-horizontal"> ' +
+                          '<label class="col-md-12 no-padding" for="awesomeness">'+tradDynForm.searchtosave+' : </label><br> ' +
+                          "<span>"+location.hash+"</span><br><br>"+
+                          '<label class="col-md-12 no-padding" for="awesomeness">'+tradDynForm.nameofsearch+' : </label><br> ' +                        
+                          '<input type="text" id="nameFavorite" class="nameSearch wysiwygInput form-control" value="'+searchName+'" style="width: 100%" placeholder="'+tradDynForm.addname+'..."></input>'+
+                          "<br>"+
+            
+                        '<label class="col-md-6 col-sm-6 no-padding" for="awesomeness">'+tradDynForm.bealertbymailofnewclassified+' ?</label> ' +
+                        '<div class="col-md-4 col-sm-4"> <div class="radio no-padding"> <label for="awesomeness-0"> ' +
+                          '<input type="radio" name="awesomeness" id="awesomeness-0" value="true"  checked="checked"> ' +
+                          tradDynForm.yes+' </label> ' +
+                          '</div><div class="radio no-padding"> <label for="awesomeness-1"> ' +
+                          '<input type="radio" name="awesomeness" id="awesomeness-1" value="false"> '+tradDynForm.no+' </label> ' +
+                          '</div> ' +
+                    '</div> </div>' +
+                    '</form></div></div>',
+            buttons: {
+                success: {
+                    label: trad.save,
+                    className: "btn-primary",
+                    callback: function () {
+                        var formData={
+                          "parentId":userId,
+                          "parentType":"citoyens",
+                          "url":location.hash,
+                          "alert":$("input[name='awesomeness']:checked").val(),
+                          "name":$("#nameFavorite").val(),
+                          "type":"research"
+                        }
+                        mylog.log(formData);
+                        $.ajax({
+                          type: "POST",
+                          url: baseUrl+"/"+moduleId+"/bookmark/save",
+                          data: formData,
+                          dataType: "json",
+                          success: function(data) {
+                            if(data.result){
+                              //addFloopEntity(data.parent["_id"]["$id"], data.parentType, data.parent);
+                              toastr.success(data.msg); 
+                              //urlCtrl.loadByHash(location.hash);
+                            }
+                            else{
+                              if(typeof(data.type)!="undefined" && data.type=="info")
+                                toastr.info(data.msg);
+                              else
+                                toastr.error(data.msg);
+                            }
+                          },
+                        });  
+                    }
+                },
+                cancel: {
+                  label: trad.cancel,
+                  className: "btn-secondary",
+                  callback: function() {
+                    //$(".becomeAdminBtn").removeClass("fa-spinner fa-spin").addClass("fa-user-plus");
+                  }
+                }
+              }
+ 
+      });
     },
     switcherViewer : function(results, dom){
       $(".switchDirectoryView").off().on("click",function(){

@@ -480,8 +480,7 @@ function bindLeftMenuFilters () {
     $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
     $("#priceMax").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
     $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
-
- }
+}
 
 /* -------------------------
 END CLASSIFIED

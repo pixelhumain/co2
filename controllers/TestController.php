@@ -15,44 +15,27 @@ class TestController extends CommunecterController {
 
   public function actionMsg() {
     
-    $langs = array("en","fr","de","es") ;
+    $langs = array("de","es", "it") ;
     $files = array("activityList","category","chart","comment","common","cooperation","docs","document","event","form","home","import","jobs","KCFinderWidget","loader","login","mail","need","news","notification","openData","organization","person","project","rooms","survey","translate" );
-    echo "<h1>Missing in folder 'de'</h1>";
-    foreach ($files as $key => $value) {
-    	echo "<h3 style='color:red'>file : ".$value.".php</h3>";
-    	try {
-    		$fr = include ( "./protected/messages/fr/".$value.".php");
-	    	//$es = include ( "./protected/messages/es/".$value.".php");
-	    	$de = include ( "./protected/messages/de/".$value.".php");
-	    	foreach ($fr as $k => $v) {
-	    		//echo $k.":".$v."<br/>";
-	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
-	    		if(!@$de[$k]) echo '<span>"'.htmlspecialchars($k).'" => "",</span> <br/>';
-	    	}	
-    	} catch (Exception $e) {
-    		echo $value."file unfound <br/>";
-    	}
-    	
-    }
-    echo "<h1>Missing in folder 'es'</h1>";
-    foreach ($files as $key => $value) {
-    	echo "<h3>file : ".$value."</h3>";
-    	try {
-    		$fr = include ( "./protected/messages/fr/".$value.".php");
-	    	$es = include ( "./protected/messages/es/".$value.".php");
-	    	//$de = include ( "./protected/messages/de/".$value.".php");
-	    	foreach ($fr as $k => $v) {
-	    		//echo $k.":".$v."<br/>";
-	    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
-	    		if(!@$es[$k])echo '<span>"'.$k.'" => "",</span> <br/>';
-	    	}	
-    	} catch (Exception $e) {
-    		echo $value."file unfound <br/>";
-    	}
-    	
-    }
-    
-
+    foreach ($langs as $langKey) {
+	    echo "<h1>Missing in folder '".$langKey."'</h1>";
+	    foreach ($files as $key => $value) {
+	    	echo "<h3 style='color:red'>file : ".$value.".php</h3>";
+	    	try {
+	    		$fr = include ( "./protected/messages/fr/".$value.".php");
+		    	//$es = include ( "./protected/messages/es/".$value.".php");
+		    	$otherLang = include ( "./protected/messages/".$langKey."/".$value.".php");
+		    	foreach ($fr as $k => $v) {
+		    		//echo $k.":".$v."<br/>";
+		    		//if(!@$es[$k])echo "<span style='color:red'>'".$k."' is missing in ./protected/messages/es/".$value.".php</span> <br/>";
+		    		if(!@$otherLang[$k]) echo '<span>"'.htmlspecialchars($k).'" => "",</span> <br/>';
+		    	}	
+	    	} catch (Exception $e) {
+	    		echo $value."file unfound <br/>";
+	    	}
+	    	
+	    }
+	} 
   }
 
   public function actionMango() {
@@ -1632,4 +1615,26 @@ La vie en santé;Santé;;
 		$a = array($str => $res);
 		Rest::json($a);exit;
 	}
+
+
+
+	public function actionTestPoleEmploi(){
+		$url = 'https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT COUNT(*) FROM "421692f5-f342-4223-9c51-72a27dcaf51e" WHERE "CITY_CODE"=\'62041\' LIMIT 30';
+
+		$url = 'https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT * FROM "421692f5-f342-4223-9c51-72a27dcaf51e" WHERE "CITY_CODE"=\'37043\' LIMIT 30';
+		$res["url"] = $url;
+		$res["res"] = Convert::poleEmploi($url);
+		//$res["res"] = PoleEmploi::poleEmploi($url);
+
+		Rest::json($res);exit;
+	}
+
+
+
+
+
+
+
+
+
 }

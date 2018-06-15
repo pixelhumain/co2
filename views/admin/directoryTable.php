@@ -161,7 +161,7 @@ var icons = {
 	events : "fa-calendar",
 	citoyens : "fa-user",
 	services : "fa-sun-o",
-	classified : "fa-bullhorn",
+	classifieds : "fa-bullhorn",
 	poi : "fa-map-marker",
 	news : "fa-newspaper-o"
 };

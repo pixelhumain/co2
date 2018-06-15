@@ -259,7 +259,7 @@
         </div>-->
         <?php } ?>
 
-        <?php if($typeSelected == "all" ){ ?>   
+        <?php /* if($typeSelected == "all" ){ ?>   
           
           <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?>  
           <div class="no-padding col-md-10 col-sm-9 col-xs-12 text-left pull-right headerSearchContainer"></div>
@@ -359,10 +359,10 @@
 
             <hr class="hidden-xs no-margin">-->
             
-            <button class="btn border-blue btn-directory-type padding-10" data-type="classified">
+            <button class="btn border-blue btn-directory-type padding-10" data-type="classifieds">
                 <i class="fa fa-bullhorn"></i> 
                 <span class="elipsis label-filter"><?php echo Yii::t("common","Classified") ?></span>
-                <span class="count-badge-filter" id="countclassified"></span>
+                <span class="count-badge-filter" id="countclassifieds"></span>
             </button><br class="hidden-xs">
             
             <button class="btn border-blue btn-directory-type padding-10" data-type="ressources">
@@ -374,7 +374,7 @@
             <hr class="hidden-sm hidden-md hidden-lg no-margin" data-type="ressources">
           </div>
         <?php } ?>
-        <?php } else if ( $typeSelected == "vote" ){?>
+        <?php } else */ if ( $typeSelected == "vote" ){?>
 
           <div class="col-sm-2 col-md-2 col-xs-12 text-right margin-top-15 no-padding" id="col-btn-type-directory">
             <button class="btn text-white bg-dark btn-open-filliaire">
@@ -403,7 +403,7 @@
             </button>
           </div>
 
-        <?php } else if ( $typeSelected == "events" ){?>
+        <?php /*} else if ( $typeSelected == "events" ){?>
           <style type="text/css">
             header{
               padding-bottom:15px;
@@ -431,12 +431,12 @@
               <?php } ?>
           </div>
 
-        <?php } else if ($typeSelected == "classified" || $typeSelected == "ressources" ){ 
+        <?php */ } else if ($typeSelected == "classifieds" || $typeSelected == "ressources" ){ 
           if(Yii::app()->params["CO2DomainName"] != "terla"){
 
-            $dmod = ($typeSelected == "classified") ? "classifieds" : "ressources";
-            $categories = CO2::getModuleContextList($dmod,"categories");
-            $this->renderPartial($dmod.".views.co.categories", array( "typeSelected" => $typeSelected,"categories" => $categories ));
+           // $dmod = ($typeSelected == "classified") ? "classifieds" : "ressources";
+            $categories = CO2::getModuleContextList($typeSelected,"categories");
+            $this->renderPartial("eco.views.co.categories", array( "typeSelected" => $typeSelected,"categories" => $categories ));
           } else { 
 
           $service = CO2::getContextList("service");
@@ -512,27 +512,26 @@
         <?php } ?>
 
         <?php  
-          if($typeSelected != "classified" && Yii::app()->params["CO2DomainName"] == "terla"){ 
+          if($typeSelected != "classifieds" && Yii::app()->params["CO2DomainName"] == "terla"){ 
             $this->renderPartial("../default/panels/filterMenu", 
                   array("typeSelected"=>$typeSelected,
                         ));
           } 
         ?>
         <?php $col = ( !in_array($typeSelected, 
-                       array("classified","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 9; ?>
+                       array("classifieds","ressources","products","services","circuits","events","vote","all","places") )) ? 9 : 9; ?>
         
         <?php if(Yii::app()->params["CO2DomainName"] == "terla"){ $col = 8; } ?>
-
-        <div class="col-md-10 col-sm-9 col-xs-12 pull-right">
-          <div class="no-padding col-xs-12" id="dropdown_search">
-            <div class='col-md-12 col-sm-12 text-center search-loader text-dark'>
-                <i class='fa fa-spin fa-circle-o-notch'></i> <?php echo Yii::t("common","Currently researching") ?> ...
-            </div>
-          </div>
-          <div class="no-padding col-xs-12 text-left footerSearchContainer"></div>
-          <?php if(Yii::app()->params["CO2DomainName"] != "terla"){ ?> 
-          <!--<div id="listTags" class="col-sm-2 col-md-2 hidden-xs hidden-sm text-left"></div>-->
+          <?php if($typeSelected != "classifieds"){ ?>
+          <div class="no-padding col-md-10 col-sm-10 col-xs-12 text-left col-sm-offset-1 col-md-offset-1 headerSearchContainer"></div>
           <?php } ?>
+          <div class="col-md-10 col-sm-10 col-sm-offset-1 col-md-offset-1 col-xs-12">
+            <div class="no-padding col-xs-12" id="dropdown_search">
+              <div class='col-md-12 col-sm-12 text-center search-loader text-dark'>
+                  <i class='fa fa-spin fa-circle-o-notch'></i> <?php echo Yii::t("common","Currently researching") ?> ...
+              </div>
+            </div>
+          <div class="no-padding col-xs-12 text-left footerSearchContainer"></div>
         <?php } ?>
         </div>
   </div>
@@ -554,7 +553,27 @@ if( typeof themeObj != "undefined" && typeof themeObj.headerParams != "undefined
     headerParams[k] = v;
   });
 }
-
+var categoriesFilters ={};
+if(searchObject.initType=="events") categoriesFilters=<?php echo json_encode(Event::$types) ?>;
+if(searchObject.initType=="all"){
+  categoriesFilters={
+    "all":{"key":"all", "label":"All", "icon":"search", "color":"dark"},
+    "persons" : { "key": "persons", "icon":"user", "label":"people","color":"yellow"}, 
+    "NGO" : { "key": "NGO", "icon":"group", "label":"NGOs","color":"green-k"}, 
+    "LocalBusiness" : { "key": "LocalBusiness", "icon":"industry", "label":"LocalBusiness","color":"azure"}, 
+    "Group" : { "key": "Group", "icon":"circle-o", "label":"Groups","color":"turq"}, 
+    "GovernmentOrganization" : { "key": "GovernmentOrganization", "icon":"university", "label":"services publics","color":"red"},
+    "projects" : { "key": "projects", "icon":"lightbulb-o", "label":"projects","color":"purple"}, 
+    "events" : { "key": "events", "icon":"calendar", "label":"events","color":"orange"}, 
+    "poi" : { "key": "poi", "icon":"map-marker", "label":"points of interest","color":"green-poi"}, 
+    //"place" : { "key": "place", "icon":"map-marker", "label":"points of interest","color":"brown"},
+    //"places" : { "key": "places", "icon":"map-marker", "label":"Places","color":"brown"}, 
+    "classifieds" : { "key": "classified", "icon":"bullhorn", "label":"classifieds","color":"azure"}, 
+     
+    //"ressources" : { "key": "ressources", "icon":"cubes", "label":"Ressource","color":"vine"} 
+    //"services" : { "key": "services", "icon":"sun-o", "label":"services","color":"orange"}, "circuits" : { "key": "circuits", "icon":"ravelry", "label":"circuits","color":"orange"},
+  };
+}
 function setHeaderDirectory(type){
  
   var params = new Array();
@@ -605,9 +624,10 @@ var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" 
 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
 
-var classified = <?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
+//var classifieds = modules.classifieds; //<?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
 
 jQuery(document).ready(function() {
+
   initKInterface({"affixTop":200});
 	currentTypeSearchSend = "search";
   $("#col-btn-type-directory .btn-directory-type").each(function(){
@@ -662,6 +682,7 @@ jQuery(document).ready(function() {
   <?php if(!@$_GET["nopreload"]){ ?>
     //initBtnScopeList();
     indexStepInit = 100;
+    
     startSearch(0, indexStepInit, searchCallback);
   <?php } ?>
 });

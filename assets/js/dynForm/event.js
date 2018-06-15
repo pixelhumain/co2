@@ -184,6 +184,7 @@ dynForm = {
             startDate : dyFInputs.startDateInput("datetime"),
             endDate : dyFInputs.endDateInput("datetime"),
             location : dyFInputs.location,
+            email : dyFInputs.text(),
             tags : dyFInputs.tags(),
             shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
             /*formshowers : {

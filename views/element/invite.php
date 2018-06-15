@@ -50,15 +50,16 @@
 	border:none!important;
 	padding: 2px;
 	text-align: left;
-	width: 92%;
-	margin-left: 4%;
 	padding: 6px 4px 4px 8px;
 	margin-bottom: 3px;
 	background:transparent !important;
 }
-
-#modal-invite .btn-scroll-type:hover{
+#dropdown-search-invite .listInviteElement{
+	cursor: pointer;
+}
+#modal-invite .listInviteElement:hover,#modal-invite .not-find-inside:hover, .li-dropdown-invite-results a{
 	background-color:rgba(0, 0, 0, 0.04) !important;
+	cursor: pointer;
 }
 
 
@@ -75,6 +76,39 @@
 .btn-is-admin.isAdmin a{
 	color:#5cb85c!important;
 }
+.listInviteElement .thumb-send-to, .li-dropdown-invite-results .thumb-send-to{
+	width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 3px;
+    margin-top: 7px;
+ }
+ .listInviteElement span.name-invite{
+ 	margin-top: 7px;	
+ }
+ .listInviteElement span.follows{
+ 	font-style: italic;
+ 	color: gray;
+ }
+ .listInviteElement .remove-invite{
+ 	padding: 3px 8px;
+    border-radius: 3px;
+    margin-top: 19px;
+ }
+ .li-dropdown-invite-results{
+ 	list-style: none;
+ }
+ .li-dropdown-invite-results .success, .li-dropdown-invite-results .error{
+ 	border-radius:100%; 
+    height: 40px;
+    line-height: 40px;
+    font-size: 25px;
+    width: 40px;
+    color: white;
+ }
+.li-dropdown-invite-results .msg-back{
+ 	font-style: italic;
+ }
 
 </style>
 <div class="<?php if(empty($search) || $search == false){ ?> portfolio-modal modal fade <?php } ?>" id="modal-invite" tabindex="-1" role="dialog" aria-hidden="true">
@@ -97,12 +131,13 @@
 								if($parentType == Person::COLLECTION)
 									echo Yii::t("invite","Search or invite your contacts");
 								else if ($parentType == Event::COLLECTION )
-									echo Yii::t("common","Invite people") ;			
+									echo Yii::t("common","Invite people on") ;			
 								else if ($parentType == Project::COLLECTION )
-									echo Yii::t("common",'Invite contributors') ;
+									echo Yii::t("common",'Invite contributors on') ;
 								else
-									echo Yii::t("common","Invite members");
+									echo Yii::t("common","Invite members on");
 							?>
+							<br/><span class="name-parent bold"></span>
 						</span>
 						<br>
 					</h3>
@@ -119,14 +154,7 @@
 								</div>
 							</a>
 						</li>
-						<li role="presentation">
-							<a href="javascript:" class="" id="menuImportFile">
-								<div id="titleImportFile" class='radius-10 padding-10 text-grey text-dark'>
-									<i class="fa fa-upload fa-2x"></i> 
-									<?php echo Yii::t("invite","Import a file"); ?> 
-								</div>
-							</a>
-						</li>
+						
 						<?php
 						if($parentType != Person::COLLECTION){
 						?>
@@ -141,6 +169,15 @@
 						<?php
 						}
 						?>
+						<li role="presentation">
+							<a href="javascript:" class="" id="menuImportFile">
+								<div id="titleImportFile" class='radius-10 padding-10 text-grey text-dark'>
+									<i class="fa fa-pencil fa-2x"></i> 
+									<?php echo Yii::t("invite","Others");
+									//echo Yii::t("invite","Import a file"); ?> 
+								</div>
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -148,14 +185,14 @@
 				<div id="step1-search" class="modal-body col-xs-6" >
 					<div class="form-group">
 						<input type="text" class="form-control text-left" placeholder='<?php echo Yii::t("invite", "A name, an e-mail..."); ?>' autocomplete = "off" id="inviteSearch" name="inviteSearch" value="">
-						<div class="col-xs-12" id="dropdown-search-invite" style="max-height: 400px; overflow: auto;"></div>
-						<form id="form-invite" class="box-login col-xs-12" style="padding:5px">
+						<div class="col-xs-12 no-padding" id="dropdown-search-invite" style="max-height: 400px; overflow: auto;"></div>
+						<form id="form-invite" class="box-login col-xs-12 no-padding" style="padding:5px">
 						<!-- <div class="col-xs-12" id="form-invite" style="padding:5px"> -->
-							<div class="modal-body text-center">
-								<h2 class="text-green">
+							<div class="modal-body text-center no-padding">
+								<h3 class="text-dark">
 									<i class="fa fa-plus-circle padding-bottom-10"></i>
 									<span class="font-light"> <?php echo Yii::t("person","Invite someone"); ?></span>
-								</h2>
+								</h3>
 
 								<div class="row margin-bottom-10">
 									<div class="col-md-1 col-md-offset-1" id="iconUser">    
@@ -186,15 +223,29 @@
 							<div class="errorHandler alert alert-danger"></div>
 							<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 								<hr>
-								<button class="btn btn-primary" id="btnInviteNew" ><i class="fa fa-add"></i> <?php echo Yii::t("invite","Add to the list"); ?> </button>
+								<button class="btn btn-success" id="btnInviteNew" ><i class="fa fa-add"></i> <?php echo Yii::t("invite","Add to the list"); ?> </button>
 							</div>
 						</form>
 					</div>
 				</div>
-				<div id="step1-import" class="modal-body col-xs-6">
-					<div class="form-group">
+				<div id="step1-other" class="modal-body col-xs-6">
+					<div class="form-group col-xs-12">
+						<select id="typeOther" name="typeOther">
+							<option value="-1"><?php echo Yii::t("common","Choose"); ?></option>
+							<option value="import"><?php echo Yii::t("invite","Import a file"); ?></option>
+							<option value="text"><?php echo Yii::t("invite","Write"); ?></option>
+						</select>
+					</div>
+					<div class="form-group col-xs-12" id="step-import">
 						<label for="fileEmail" > <?php echo Yii::t("invite","Files (CSV)"); ?> : <input type="file" id="fileEmail" name="fileEmail" accept=".csv"> </label>
 					</div>
+					<div class="form-group col-xs-12" id="step-text" >
+						<textarea id="textarea-invite" rows="10" cols="50"></textarea></br>
+						<button id="btnValiderTextarea" class="btn btn-success" >
+							<?php echo Yii::t("invite","Check"); ?> 
+						</button>
+					</div>
+					<span id="errorFile" class="col-xs-12 text-red" ></span>
 				</div>
 				<div id="step1-mycontacts" class="modal-body col-xs-6" >
 					<div class="form-group">
@@ -203,13 +254,13 @@
 				</div>
 				<div id="step2" class="modal-body col-xs-6" >
 					<div class="form-group">
-						<div class="col-xs-12">
+						<div class="col-xs-12 no-padding">
 							<h4> <?php echo Yii::t("invite","List of persons invited"); ?></h4>
-							<div class="col-xs-12" id="dropdown-invite" style="max-height: 400px; overflow: auto;"></div>
+							<div class="col-xs-12 no-padding" id="dropdown-invite" style="max-height: 400px; overflow-y: auto;"></div>
 						</div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<button id="btnValider" class="btn btn-success" >
-								<?php echo Yii::t("common","Invite"); ?> 
+								<?php echo Yii::t("common","Launch invitations"); ?> 
 							</button>
 						</div>
 					</div>
@@ -219,8 +270,11 @@
 				<div id="stepResult" class="modal-body col-xs-12" >
 					<div class="form-group">
 						<div class="col-xs-12">
-							<h4> <?php echo Yii::t("common", "Results") ;?> </h4>
+							<h4> <?php echo Yii::t("invite", "Result of invitations sent") ;?> </h4>
 							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
+							<?php if($parentType != Person::COLLECTION){ ?>
+								<button class="btn btn-success margin-top-20 col-xs-12 link-to-community"><i class="fa fa-users"></i> <?php echo Yii::t("invite","See the community") ?></button>
+							<?php } ?>
 						</div>
 					</div>
 				</div>
@@ -236,8 +290,8 @@
 	var parentLinks = <?php echo json_encode(@$parentLinks); ?>;
 	// var members = <?php //echo json_encode( $members ); ?>;
 	var contactTypes = {
-			citoyens : { color: "yellow", icon:"user", label:"People" },
-			organizations :	{ color: "green", icon:"group", label:"Organizations" } 
+			citoyens : { color: "yellow", icon:"user", label: trad.People },
+			organizations :	{ color: "green", icon:"group", label: trad.Organizations } 
 		};
 
 	var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $parentType, @Yii::app()->session["userId"]) ?>";
@@ -250,6 +304,8 @@
 
 	jQuery(document).ready(function() {
 		// mylog.log("members", members);
+		if(parentType != "citoyens")
+			$("#title-invite .name-parent").text(contextData.name);
 		initInvite();
 		bindInvite();
 		fadeInView("step1-search");
@@ -265,9 +321,9 @@
 			if(inView == "step1-search") {
 				$("#modal-invite #divSearchInvite").show();
 				$("#modal-invite #step1-search").show();
-			} else if(inView == "step1-import") {
+			} else if(inView == "step1-other") {
 				$("#modal-invite #divSearchInvite").show();
-				$("#modal-invite #step1-import").show();
+				$("#modal-invite #step1-other").show();
 			} else if(inView == "step1-mycontacts") {
 				$("#modal-invite #divSearchInvite").show();
 				$("#modal-invite #step1-mycontacts").show();
@@ -294,14 +350,18 @@
 		$("#modal-invite #divSearchInvite").hide();
 		$("#modal-invite #divResult").hide();
 		$("#modal-invite #step1-search").hide();
-		$("#modal-invite #step1-import").hide();
+		$("#modal-invite #step1-other").hide();
 		$("#modal-invite #step1-mycontacts").hide();
 		$("#modal-invite #step2").hide();
 		$("#modal-invite #form-invite").hide();
+		$("#modal-invite #errorFile").hide();
+		$("#modal-invite #step-import").hide();
+		$("#modal-invite #step-text").hide();
 
 		$("#modal-invite #dropdown-invite").html("");
 		$("#modal-invite #dropdown-search-invite").html("");
 		$("#modal-invite #dropdown-result").html("");
+		$("#modal-invite #errorFile").html("");
 
 		$("#modal-invite #inviteSearch").val("");
 		$("#modal-invite #inviteName").val("");
@@ -309,6 +369,8 @@
 		$("#fileEmail").val("");
 
 		$("#modal-invite .errorHandler").hide();
+
+		
 		
 	}
 
@@ -319,11 +381,39 @@
 			fadeInView("step1-mycontacts");
 			myContactsToListInvites();
 		});
+		$(".link-to-community").click(function(){
+			$(".close-modal").trigger("click");
+			$(".load-data-community").trigger("click");
+		});
+		$("#modal-invite #typeOther").change(function(e) {
+			mylog.log("typeOther");
+			initInvite();
+			fadeInView("step1-other");
+			if( $(this).val() == "import" ){
+				$("#modal-invite #step-import").show();
+				$("#modal-invite #step-text").hide();
+			} else if( $(this).val() == "text" ){
+				$("#modal-invite #step-import").hide();
+				$("#modal-invite #step-text").show();
+			} else {
+				$("#modal-invite #step-import").hide();
+				$("#modal-invite #step-text").hide();
+			}
+		});
+
+		$("#modal-invite #btnValiderTextarea").click(function() {
+			var textarea = $("#modal-invite #textarea-invite").val();
+			var mailsArray = [] ;
+			if(textarea.indexOf("<") > -1)
+				textarea = textarea.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi).join(';');
+			mailsArray = textarea.split(/[\s\n;,]+/);
+			checkAndGetMailsInvite(mailsArray);
+		});
 
 
 		$("#modal-invite #menuImportFile").click(function() {
 			mylog.log("menuImportFile");
-			fadeInView("step1-import");
+			fadeInView("step1-other");
 		});
 
 		$("#modal-invite #menuInviteSomeone").click(function() {
@@ -333,7 +423,7 @@
 		$("#modal-invite #fileEmail").change(function(e) {
 			mylog.log("fileEmail");
 			$.blockUI({
-				message : '<span class="homestead"><i class="fa fa-spin fa-circle-o-noch"></i> Merci de patienter ...</span>'
+				message : '<span class="homestead"><i class="fa fa-spin fa-circle-o-noch"></i> '+trad.currentlyloading+'...</span>'
 			});
 			//$("#listEmailGrid").html("");
 			var ext = $("#modal-invite input#fileEmail").val().split(".").pop().toLowerCase();
@@ -432,7 +522,8 @@
 				Object.keys(listInvite.citoyens).length > 0 || 
 				Object.keys(listInvite.invites).length > 0 ) {
 				mylog.log("#modal-invite #btnValider here");
-
+				$('#modal-invite #btnValider').prop("disabled", true);
+				$('#modal-invite #btnValider').html("<i class='fa fa-spin fa-circle-o-notch'></i> ");
 
 				// $( ".divRoles" ).each(function(key, value) {
 				// 	mylog.log("divRoles", $(this).data("id"), $(this).data("type"));
@@ -456,61 +547,79 @@
 						var str = "";
 						if(typeof data.citoyens != "undefined"){
 							$.each(data.citoyens, function(key, value){
-								mylog.log("contactsList.invites key, value", key, value);
-								if(value.result == true){
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-												str += '<span class="text-dark text-bold">' + value.newElement.name + ' a été invité-e </span>';
-										str += "</div>";
-									str += "</li>";
-								}else{
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-											str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-										str += "</div>";
-									str += "</li>";
+								if(value.result){
+									mylog.log("contactsList.invites key, value", key, value);
+									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
+									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
+									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+newElementType+".png";		
+									var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
+									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
+											'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
+												"<div class='success pull-left text-green'><i class='fa fa-check'></i></div>"+
+												"<div class='btn-scroll-type pull-left col-xs-10' >"+
+													'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> '+
+												 	'<span class="text-dark text-bold margin-left-5">'+
+														newElement.name + 
+													'</span><br/>'+
+													'<span class="text-dark text-bold margin-left-5 text-green msg-back">' + value.msg + '</span>'+
+										 		"</div>"+
+											'</a>'+
+										"</li>";
 								}
 							});
 						}
 
 						if(typeof data.invites != "undefined"){
 							$.each(data.invites, function(key, value){
-								mylog.log("contactsList.invites key, value", key, value);
-								if(value.result == true){
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-												str += '<span class="text-dark text-bold">' + value.newElement.name + ' a été invité-e </span>';
-										str += "</div>";
-									str += "</li>";
-								}else{
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-											str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-										str += "</div>";
-									str += "</li>";
+								if(value.result){
+									mylog.log("contactsList.invites key, value", key, value);
+									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
+									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
+									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+newElementType+".png";		
+									var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
+									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
+											'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
+												"<div class='success pull-left text-green'><i class='fa fa-check'></i></div>"+
+												"<div class='btn-scroll-type pull-left col-xs-10' >"+
+													'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> '+
+													'<span class="text-dark text-bold margin-left-5">'+
+														newElement.name +
+													'</span><br/>'+
+													'<span class="text-dark text-bold text-green margin-left-5 msg-back">'+
+														'<i class="fa fa-arrow-right"></i> '+trad.invitationsenttojoinco+'</br>'+
+														'<i class="fa fa-arrow-right"></i> '+value.msg +
+													'</span>'+
+												"</div>"+
+											'</a>'+
+										"</li>";
 								}
+															
 							});
 						}
 
 						if(typeof data.organizations != "undefined"){
 							$.each(data.organizations, function(key, value){
-								mylog.log("contactsList.invites key, value", key, value);
-								if(value.result == true){
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-												str += '<span class="text-dark text-bold">' + value.newElement.name + ' a été invité-e </span>';
-										str += "</div>";
-									str += "</li>";
-								}else{
-									str += "<li class='li-dropdown-scope'>";
-										str +="<div class='btn-scroll-type' >";
-											str += '<span class="text-dark text-bold">' + value.msg + '</span>';
-										str += "</div>";
-									str += "</li>";
+								if(value.result){
+									mylog.log("contactsList.invites key, value", key, value);
+									var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+value.newElementType+".png";		
+									var bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";	
+									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
+											'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
+												"<div class='success pull-left text-green'><i class='fa fa-check'></i></div>"+
+												"<div class='btn-scroll-type pull-left col-xs-10' >"+
+													'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> '+
+													'<span class="text-dark text-bold margin-left-5">'+
+													 	value.newElement.name + 
+													'</span><br/>'+
+													'<span class="text-dark text-bold text-green msg-back margin-left-5">' + value.msg + '</span>'+
+												"</div>"+
+											"</a>"+
+										"</li>";
 								}
 							});
 						}
-						
+						$('#modal-invite #btnValider').prop("disabled", false);
+						$('#modal-invite #btnValider').html(tradDynForm.launchInvitations);
 						initListInvite();
 						fadeInView("result");
 						$("#modal-invite #dropdown-result").html(str);
@@ -609,6 +718,7 @@
 							listInvite.citoyens[id].isAdmin = "";
 
 					}else{
+						//tradMsg=(parentType!="citoyens") ? tradDynForm[alreadyInTheList+parentType] : tradDynForm[alreadyInTheList];
 						toastr.error(tradDynForm.alreadyInTheList);
 					}
 				}else if(type == "organizations"){
@@ -618,13 +728,15 @@
 							profilThumbImageUrl : profilThumbImageUrl
 						} ;
 					}else{
+						//tradMsg=(parentType!="citoyens") ? tradDynForm[alreadyInTheList+parentType] : tradDynForm[alreadyInTheList];
 						toastr.error(tradDynForm.alreadyInTheList);
 					}
 				}
 				showElementInvite(listInvite, true);
 				bindRemove();
 			}else{
-				toastr.error(tradDynForm.thisPersonIsAlreadyOnYourContacts);
+				tradMsg=(parentType!="citoyens") ? tradDynForm["alreadyInTheList"+parentType] : tradDynForm.thisPersonIsAlreadyOnYourContacts;
+				toastr.error(tradMsg);
 			}
 			
 		});
@@ -663,7 +775,7 @@
 		tabObject = [];
 
 		var searchMode = "personOnly";
-		if(parentType == "organizations"){
+		if(parentType != "citoyens" && parentType != "person"){
 			searchMode = "mixte";
 		}
 
@@ -692,20 +804,20 @@
 		//var dropdown = "#dropdown-search-invite";
 		var listNotExits = true;
 		var addRoles = {};
+		var searchInContactsList=(dropdown=="#dropdown-mycontacts-invite") ? true : false;
+		var str = "";
 		if(invite == true){
-			var str = "";
 			dropdown = "#dropdown-invite";
-		}else{
-			var str = "<div class='col-xs-12'><div class='btn-scroll-type'><a href='javascript:;' onclick='newInvitation()' >Pas trouvé ? Lancer une invitation à rejoindre votre réseau !</a></div></div>";
+		}else if(!searchInContactsList){
+			var str = "<div class='col-xs-12 no-padding'><div class='btn-scroll-type col-xs-12 not-find-inside padding-20'><a href='javascript:;' onclick='newInvitation()' class='col-xs-12 text-center'>"+trad.notfoundlaunchinvite+" !</a></div></div>";
 		}
-		
 		if(notNull(contactsList.citoyens) && Object.keys(contactsList.citoyens).length ){
-			str += '<div class="col-xs-12">'+
+			str += '<div class="col-xs-12 no-padding">'+
 						'<h5 class="padding-10 text-'+contactTypes.citoyens.color+'"><i class="fa fa-'+contactTypes.citoyens.icon+'"></i> '+contactTypes.citoyens.label+'<hr></h5>'+			
 					'</div>';
 			$.each(contactsList.citoyens, function(key, value){
 				mylog.log("contactsList.citoyens key, value", key, value);
-				str += htmlListInvite(key, value, invite, "citoyens", invite);
+				str += htmlListInvite(key, value, invite, "citoyens", invite, searchInContactsList);
 
 				if(typeof value.roles != "undefined" || typeof value.roles == null){
 					var tagRolesList = [] ;
@@ -720,7 +832,7 @@
 		if(notNull(contactsList.invites) && Object.keys(contactsList.invites).length ){
 			$.each(contactsList.invites, function(key, value){
 				mylog.log("contactsList.invites key, value", key, value);
-				str += htmlListInvite(key, value, invite, "invites", invite);
+				str += htmlListInvite(key, value, invite, "invites", searchInContactsList);
 
 				if(typeof value.roles != "undefined" || typeof value.roles == null){
 					var tagRolesList = [] ;
@@ -732,12 +844,18 @@
 		}
 
 		if(notNull(contactsList.organizations) && Object.keys(contactsList.organizations).length ){
-			str += '<div class="col-xs-12">'+
+			str += '<div class="col-xs-12 no-padding">'+
 						'<h5 class="padding-10 text-'+contactTypes.organizations.color+'"><i class="fa fa-'+contactTypes.organizations.icon+'"></i> '+contactTypes.organizations.label+'<hr></h5>'+			
 					'</div>';
 			$.each(contactsList.organizations, function(key, value){
 				mylog.log("contactsList.organizations key, value", key, value);
-				str += htmlListInvite(key, value, invite, "organizations", invite);
+				str += htmlListInvite(key, value, invite, "organizations", searchInContactsList);
+
+				if(typeof value.roles != "undefined" || typeof value.roles == null){
+					var tagRolesList = [] ;
+					$.each(value.roles, function(i,k) { tagRolesList.push( {id:k,text:k} ); });
+					addRoles[key] = tagRolesList;
+				}
 			});
 			listNotExits = false;
 		}
@@ -765,31 +883,29 @@
 		showListInvite();
 	}
 
-	function htmlListInvite(id, elem, invite, type, role=false){
+	function htmlListInvite(id, elem, invite, type, searchInContactsList){
 		//( typeof elem.id != "undefined" ? elem.id : elem.email )
-		mylog.log("htmlListInvite", id, elem, invite, type, role);
+		mylog.log("htmlListInvite", id, elem, invite, type, searchInContactsList);
 		var typeList = type ;
 		if(type ==  "invites" )
 			type = "citoyens";
-
-		var inMyContact = inMyContacts(type,id);
-
-		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl+'/'+ elem.profilThumbImageUrl : "";
-		var str = "<div class='col-xs-12'>";
-			var classStr = " ";
+		var inMyContact = (!searchInContactsList) ? inMyContacts(type,id) : false;
+		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl + elem.profilThumbImageUrl : assetPath + "/images/thumb/default_"+type+".png";		
+		var str = "<div class='col-xs-12 listInviteElement no-padding'>";
+			var classStr = "col-xs-10";
 			if(invite == true){
-				str+='<button class="btn btn-link text-red tooltips col-xs-2 remove-invite" '+
+				str+='<div class="col-xs-2"><button class="btn bg-red btn-link text-red tooltips pull-left remove-invite" '+
 						'id="'+id+'Remove" '+
 						'name="'+id+'Remove" '+
 						'data-toggle="tooltip" data-placement="top" '+
 						'data-type="'+type+'" ' +
 						'data-type-list="'+typeList+'" ' +
 						'data-id="'+id+'" ' + 
-						'data-toggle="tooltip" data-placement="top" title="Remove" >'+
+						'data-toggle="tooltip" data-placement="bottom" title="'+trad.clear+'" >'+
 						'<i class="fa fa-remove"></i>'+
-						'</button>';
+						'</button></div>';
 			} else {
-				classStr = " add-invite";
+				classStr = "col-xs-12 add-invite";
 			}
 
 			str +="<div class='btn-scroll-type "+classStr+"'"+
@@ -800,32 +916,39 @@
 					" data-profilThumbImageUrl='"+profilThumbImageUrl+"' "+
 					'data-type-list="'+typeList+'" ' +
 					" data-type='"+type+"' >";
-				if(profilThumbImageUrl != "")
-					str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to" height="35" width="35"> ';
-				else {
+				bgThumb=(type=="citoyens") ? "yellow" : "green";
+					str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+'" height="35" width="35"> ';
+				/*else {
 					if(type == "citoyens")
 						str += '<i class="fa fa-user "></i> ';
 					else if(type == "organizations")
 						str += '<i class="fa fa-users "></i> ';
+				}*/
+				marginName= (!inMyContact) ? "margin-top-15" : "";
+				str += '<span class="text-dark text-bold name-invite col-xs-9 elipsis '+marginName+'">' + elem.name ; 
+				mylog.log("mailalal", typeList, elem.mail, (typeList == "invites" && typeof elem.mail != "undefined"));
+				if(typeList == "invites" && typeof elem.mail != "undefined"){
+					mylog.log("mailalal", typeList, elem.mail);
+					str += ' <'+ elem.mail +'> </span>';
 				}
+				str += '</span>';
 
-				str += '<span class="text-dark text-bold">' + elem.name + '</span>';
-				if(inMyContact == true)
-					str += ' <span class="text-dark text-bold text-green follows tooltips"> '+
-								'<i class="fa fa-link" data-toggle="tooltip" data-placement="top" title="'+trad.follows+'" alt="" data-original-title="'+trad.follows+'"></i>'+
+				if(inMyContact == true && parentType=="citoyens")
+					str += ' <span class="text-bold col-xs-9 follows tooltips"> '+
+								'<i class="fa fa-link" data-toggle="tooltip" data-placement="top" title="'+trad.follows+'" alt="" data-original-title="'+trad.follows+'"></i> In my contacts'+
 							'</span>';
 
 				if (invite == true && parentType != "citoyens" && type == "citoyens") {
 
 					var isAdmin = ( (typeof elem.isAdmin != "undefined" && elem.isAdmin == "admin") ? "isAdmin" : "" );
-					str += '<small id="isAdmin'+id+'" class="btn-is-admin pull-right text-grey margin-top-10 '+isAdmin+'" data-id="'+id+'" data-type="'+type+'" data-type-list="'+typeList+'" >'+
+					str += '<small id="isAdmin'+id+'" class="btn-is-admin pull-right text-grey margin-top-20 '+isAdmin+'" data-id="'+id+'" data-type="'+type+'" data-type-list="'+typeList+'" >'+
 								'<a href="javascript:">admin <i class="fa fa-user-secret"></i></a>'+
 							'</small>';
 				}
 				
 				if(invite == true && parentType != "citoyens"){
 					str += '<div class="divRoles col-md-12 col-sm-12 col-xs-12" data-id="'+id+'" data-type="'+type+'" data-type-list="'+typeList+'" >'+
-								'<input id="tagsRoles'+id+'" class="tagsRoles" type="text" data-type="select2" name="roles" placeholder="Add a role" value="" style="width:100%;">'+
+								'<input id="tagsRoles'+id+'" class="tagsRoles" type="text" data-type="select2" name="roles" placeholder="'+tradDynForm.addroles+'" style="width:100%;">'+
 							'</div>';	
 				}
 			str += "</div>";
@@ -862,9 +985,13 @@
 			dataType: "json",
 			success: function(data){
 				mylog.log("getcontactsbymails data", data, data.length);
+				var regexMail = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+				
+				var nbError = 0;
 				$.each(data, function(keyMails, valueMails){
 					mylog.log("keyMails valueMails", keyMails, valueMails, typeof valueMails);
 					
+  					
 					if(typeof valueMails == "object"){
 						listInvite.citoyens[valueMails.id] = { 
 							name : valueMails.name,
@@ -875,18 +1002,31 @@
 							listInvite.citoyens[valueMails.id].isAdmin = "";
 
 					} else {
-						listInvite.invites[keyUniqueByMail(keyMails)] = {
-							name : keyMails,
-							email : keyMails,
-							msg : ""
-						} ;
+						mylog.log("regexMail", keyMails, regexMail.test(keyMails))
+						if(regexMail.test(keyMails)){
+							listInvite.invites[keyUniqueByMail(keyMails)] = {
+								name : keyMails,
+								mail : keyMails,
+								msg : ""
+							} ;
 
-						if(parentType != "citoyens")
-							listInvite.invites[keyUniqueByMail(keyMails)].isAdmin = "";
+							if(parentType != "citoyens")
+								listInvite.invites[keyUniqueByMail(keyMails)].isAdmin = "";
+						} else {
+							nbError++;
+						}
+						
 					}
 					
 				});
 				showElementInvite(listInvite, true);
+				bindRemove();
+				mylog.log("nbError", nbError);
+				if(nbError > 0){
+					$("#modal-invite #errorFile").html(nbError+ " mails ne sont pas valides");
+					$("#modal-invite #errorFile").show();
+				}
+
 				$.unblockUI();
 			}
 		});

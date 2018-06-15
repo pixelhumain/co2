@@ -6,25 +6,25 @@ dynForm = {
 	    onLoads : {
 	    	
 	    	sub : function(){
-	    	
+	    		dyFInputs.setSub("bg-azure");
 	    	},
 	    	onload : function(data){ 		
 	    		if(typeof currentRoomId == "undefined") var currentRoomId = "";
 
-	            console.log("init input hidden parentdata : ", contextData.id, contextData.type, currentRoomId);
-	            $("#ajaxFormModal #parentId").val(contextData.id);
-	            $("#ajaxFormModal #parentType").val(contextData.type);
+	    		pid = (contextData && contextData.id) ? contextData.id : userId;
+	    		ptype = (contextData && contextData.type) ? contextData.type : "citoyens";
+	            console.log("init input hidden parentdata : ", pid, ptype, currentRoomId);
+	            $("#ajaxFormModal #parentId").val( pid );
+	            $("#ajaxFormModal #parentType").val( ptype );
 	            //$("#ajaxFormModal #idParentRoom").val(currentRoomId);
 				
 	    		dataHelper.activateMarkdown("#ajaxFormModal #description");
 	    		//dataHelper.activateMarkdown("#ajaxFormModal #arguments");
 
-				console.log("checkcheck0", data, typeof data, contextData);
+				console.log("checkcheck0", data, typeof data);
 
 				$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
 						  					  .addClass("bg-turq");
-
-    		 	console.log("dynFormProposal", contextData);
     		 	
 
             	$("#ajax-modal #ajaxFormModal .titletext label").html("<i class='fa fa-chevron-down'></i> "+tradDynForm.surveyname);
@@ -135,17 +135,18 @@ dynForm = {
 	    	
 			$("#ajaxFormModal #voteDateEnd").val( moment(   $("#ajaxFormModal #voteDateEnd").val(), dateformat).format() );
         },
-	    afterSave : function(data){ console.log("after save survey", data);
-             dyFObj.closeForm();
-              if(typeof startNewsSearch != "undefined" && location.hash == "#live") 
+	    afterSave : function(data){ 
+	    	console.log("after save survey", data);
+            dyFObj.closeForm();
+            if(typeof startNewsSearch != "undefined" && location.hash == "#live") 
             	startNewsSearch(true);
-         	 else if(typeof loadNewsStream != "undefined") 
+         	else if(typeof loadNewsStream != "undefined") 
             	loadNewsStream(true);
-             else if(typeof initSectionNews != "undefined") {
+            else if(typeof initSectionNews != "undefined") {
             	$('#timeline-page').html("<div class='col-xs-12 text-center'><i class='fa fa-spin fa-circle-o-notch fa-2x'></i></div>");
             	setTimeout(function(){ initSectionNews(); }, 2000);
-           	 }
-             else
+           	}
+            else
              	urlCtrl.loadByHash(location.hash);
 	    },
 
@@ -233,8 +234,8 @@ dynForm = {
             //idUserAuthor : dyFInputs.inputHidden( ( (userId!=null && userConnected!=null) ? userId : "") ),
             status: dyFInputs.inputHidden( "amendable" ),
             //canModify: dyFInputs.inputHidden( true ),
-            parentId : dyFInputs.inputHidden(contextData.id),
-            parentType : dyFInputs.inputHidden(contextData.type),
+            parentId : dyFInputs.inputHidden(),
+            parentType : dyFInputs.inputHidden(),
             //organizer : dyFInputs.inputHidden("currentUser"),
             //type : dyFInputs.inputHidden("entry")
                         

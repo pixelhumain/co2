@@ -107,9 +107,7 @@ function showNotif(show){
 	else 	 $('#notificationPanelSearch').hide("fast");
 
 	
-	$("#dropdown-user").removeClass("open");
-    $("#dropdown-dda").removeClass("open");
-    
+	$("#dropdown-user, #dropdown-dda, .dropdownApps-menuTop").removeClass("open");
     showFloopDrawer(false);
 }
 

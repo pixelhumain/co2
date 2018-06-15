@@ -224,7 +224,7 @@
 		 	$connectCommunity=@Element::$connectTypes[$type];
 		?>
 		<li class="">
-			<a href="javascript:" class="ssmla capitalize load-data-directory" 
+			<a href="javascript:" class="ssmla capitalize load-data-directory load-data-community" 
 				data-type-dir="<?php echo @$connectCommunity; ?>" data-icon="users">
 				<i class="fa fa-users"></i> <?php echo Yii::t("common","Community"); ?>
 			</a>
@@ -315,7 +315,7 @@
 				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
 			<li><hr></li>
 			<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classified" data-icon="bullhorn">
+				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classifieds" data-icon="bullhorn">
 					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
 				</a>
 			</li>
@@ -331,6 +331,16 @@
 				</a>
 			</li>
 		<?php } ?>
+
+		<?php 	//if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				   // $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
+			<li><hr></li>
+			<li class="">
+				<a href="javascript:" class="ssmla" id="btn-start-curiculum">
+					<i class="fa fa-clipboard"></i> <?php echo Yii::t("common","My CV"); ?>
+				</a>
+			</li>
+		<?php //} ?>
 
 		<?php if( $type==Person::COLLECTION ){ ?>
 			<!--<li><hr></li>

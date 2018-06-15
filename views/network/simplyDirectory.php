@@ -2,6 +2,9 @@
 	.dropdown_searchListNW{
 		min-height: 100%;
 	}
+	.sub-menu-social{
+	 	margin-top: -30px;
+	 }
 </style>
 
 <div class="col-md-12 no-padding" id="repertory" style="background-color: white">
@@ -752,7 +755,7 @@ function breadcrumGuide(level, url){
 }
 
 function getAjaxFiche(url, breadcrumLevel){
-	mylog.log("getAjaxFiche Network", url, breadcrumLevel);
+	mylog.log("getAjaxFiche Network", url, breadcrumLevel, isMapEnd);
 	$("#ficheInfoDetail").empty();
 	if(location.hash == ""){
 		history.pushState(null, "New Title", '?src='+networkParams+url);

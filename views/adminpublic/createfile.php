@@ -275,9 +275,9 @@ $this->renderPartial($layoutPath.'header',
 		    	<tbody class="directoryLines" id="bodyCreateMapping">
 			    	<tr id="LineAddMapping">
 		    			<td>
-		    			<!--	<input type="checkbox" id="checkSwitch" onclick="isCheckSwitch()" checked></input>
-		    				<input type="text" id="selectSourceTxt" class="col-sm-11" placeholder="<?php echo Yii::t("import","Grap manually my mapping"); ?>">-->
-							 <select id="selectSource" class="col-sm-12">
+		    			<input type="checkbox" id="checkSwitch" onclick="isCheckSwitch()" title="Passé à une saisir de type select/manuelle" checked></input>
+		    				<input type="text" id="selectSourceTxt" class="col-sm-11" placeholder="<?php echo Yii::t("import","Grap manually my mapping"); ?>" maxlength="40" title="Maximum 40 caractères">
+							 <select id="selectSource" class="col-sm-11">
 							</select>
 					
 		    			</td>
@@ -406,10 +406,9 @@ var nameFile = "";
 var typeFile = "";
 var typeElement = "";
 var nbFinal = 0 ;
-var listSource = [];
-var ligneList = [];
 var mappingPrevious = $("#chooseMapping").html();
 var ifMappingDelete = false;
+var listSource = [];
 
 var listeObligatoire = {
 	name : "name",
@@ -605,36 +604,47 @@ function bindCreateFile(){
   		var selectAttributesElt = $("#selectAttributesElt option:selected").val() ;
 
 
-
-  		var inc = 1;
-  		while(error == false && inc <= nbLigneMapping){
-  			if($("#valueSource"+inc).text() == selectSource ){
-  				error = true;
-  				msgError += "<?php echo Yii::t("import","You have already added this elements in the CSV column"); ?>"
+  		
+  		if(selectSourceTxt == "" && $("#checkSwitch").is(':not(:checked)')){
+  			error = true;
+  			msgError += "Vous devrez saisir une valeur dans le champ source ";
+  		}
+  		else if(selectSourceTxt != "" && $("#checkSwitch").is(':not(:checked')){
+  			var inc = 0;
+  			while(error == false && inc <= nbLigneMapping){
+				if($("#valueSource"+inc).text() == selectSourceTxt){
+					error = true;
+					msgError += "Vous avez déjà saisir ce nom de mapping ";
+				}
+				if($("#valueAttributeElt"+inc).text() == selectAttributesElt){
+	  				error = true;
+	  				msgError += "<?php echo Yii::t("import","You have already add this elements in the mapping column"); ?>"
+	  			}
+	  			inc++;
   			}
 
-  			if($("#valueAttributeElt"+inc).text() == selectAttributesElt){
-  				error = true;
-  				msgError += "<?php echo Yii::t("import","You have already add this elements in the mapping column"); ?>"
-  			}
+  		}
+  		else {
+	  		var inc = 0;
+	  		while(error == false && inc <= nbLigneMapping){
+	  			if($("#valueSource"+inc).text() == selectSource ){
+	  				error = true;
+	  				msgError += "<?php echo Yii::t("import","You have already added this elements in the CSV column"); ?>"
+	  			}
 
-  			if(selectSourceTxt == "" && $("#selectSourceTxt").is('checked'))
-  			{
-  				error = true;
-  				msgError += "Vous devrez saisir une valeur dans le champ source";
-  			}
-  			inc++;
+	  			if($("#valueAttributeElt"+inc).text() == selectAttributesElt){
+	  				error = true;
+	  				msgError += "<?php echo Yii::t("import","You have already add this elements in the mapping column"); ?>"
+	  			}
+	  			inc++;
+	  		}
   		}
 
   		if(error == false){
 
-  			var params = {
-  			cdt : "insert",
-  			valueSource : selectSource,
-  			valueElt : selectAttributesElt
-  			}
-
   			var attributeEltSplit = selectAttributesElt.split(".");
+
+
   			if(verifNameSelected(attributeEltSplit)){
   				var newOptionSelect = addNewMappingForSelecte(attributeEltSplit, false);
 	  			var arrayOption = [];
@@ -649,18 +659,27 @@ function bindCreateFile(){
   			}  			
 	  		ligne = '<tr id="lineMapping'+nbLigneMapping+'" class="lineMapping"> ';
 
-	  		//if($("#checkSwitch").is(':checked')){
+	  		if($("#checkSwitch").is(':checked')){
 	  			ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + selectSource + '</td>';
-	  		/*}
+	  		}
 	  		else{
 	  		ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + selectSourceTxt + '</td>';
-	  		}*/
+	  		}
 
 	  		ligne =	 ligne + '<td id="valueAttributeElt'+nbLigneMapping+'">' + selectAttributesElt + '</td>';
-	  		ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSource +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
+
+	  		if($("#checkSwitch").is(':checked')){
+	  			ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSourceTxt +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
+	  		}
+	  		else{
+	  			ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSource +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
+	  		}
+
 	  		$("#nbLigneMapping").val(nbLigneMapping);
 	  		$("#LineAddMapping").before(ligne);
 
+	  		$("#selectSourceTxt").val('');
+	  		disabledChamp();
 	  	//	listMapping(params);
 	  		
 	  	}
@@ -718,15 +737,6 @@ function bindCreateFile(){
 		     $(this).remove()
 		  })[0].click() ;
   	});
-
-  	//Trouver un moyenne de mettre un data.
-  	/*$("#selectSource").off().on('click',function(){
-  		
-  		 var vSelectSource = $("#selectSource option:selected").val();
-  		 mylog.log(vSelectSource);
-
-  		autoSelectAttributesElt(data,vSelectSource);
-  	});*/
 }
 
 function preStep2(){
@@ -949,13 +959,13 @@ function createStepTwo(data){
 		$("#nbFileMapping").html(file.length - 1 + "<?php echo Yii::t("import"," element(s)"); ?>"); //Compte le nb d'élèment
 		$.each(file[0], function(key, value){
 			chaineSelectCSVHidden += '<option value="'+value+'">'+value+'</option>'; //Pour l'utilisateur puisse rajouté un élèment en cas s'il lui manque
-			listSource[value] += value;
+			listSource[key] += value;
 		});
 	}else if(data.typeFile == "json" || data.typeFile == "geojson" || data.typeFile == "js"){ //Cas JSON
 		$("#nbFileMapping").html(data.nbElement  + "<?php echo Yii::t("import"," element(s)"); ?>"); //Compte le nb d'élèment
 		$.each(data.arbre, function(key, value){
 			chaineSelectCSVHidden += '<option value="'+value+'">'+value+'</option>'; //Pour l'utilisateur puisse rajouté un élèment en cas s'il lui manque
-			listSource[value] += value;
+			listSource[key] += value;
 		});
 	}
 
@@ -977,7 +987,7 @@ function createStepTwo(data){
 
 //Affiche information de data
 	mylog.log("createStepTwo", data);
-
+	mylog.log("ListSource", listSource);
 //Partie HTML a était mise en commentaire
 	if(typeElement != "<?php echo Organization::COLLECTION;?>")
 		$("#divCheckboxWarnings").hide();
@@ -996,8 +1006,6 @@ function createStepTwo(data){
 			ligne =	 ligne + '<td id="valueAttributeElt'+nbLigneMapping+'">' + value + '</td>';
 			ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ key +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
 	  		nbLigneMapping++;
-
-	  		ligneList[key] += value;
 
 	  		$("#LineAddMapping").before(ligne);
 	  		i++;
@@ -1025,8 +1033,6 @@ function createStepTwo(data){
 	nameUpdate = '<input type="text" name="nameMappingUpdate" id="nameMappingUpdate" value='+data.nameUpdate+'>';
 	$("#divSaisirNameUpdate").html(nameUpdate);
 	
-	mylog.log("ligneList", ligneList);
-	mylog.log("listSource",listSource);
 	//mylog.log("listElt",listElt);
 
 	bindUpdate();
@@ -1387,13 +1393,6 @@ function setMappings(params)
 
 }
 
-function autoSelectAttributesElt(data,vSelectSource){
-	$.each(data.arrayMapping, function(key,value){
-		if(vSelectSource == key)
-			$("#selectAttributesElt option:"+value).change();
-	});
-}
-
 function isCheckSwitch(){
 	if($("#checkSwitch").is(':checked')){
 		$("#selectSource").show();
@@ -1404,36 +1403,32 @@ function isCheckSwitch(){
 		$("#selectSourceTxt").show();
 	}
 }
-/*
-function listMapping(params)
-{
-	mylog.log("listMapping",params);
-	var chaineAttributesElt = "";
-	var chaineAttributesSource = "";
 
-	if(params.cdt == "insert"){
-		$.each(ligneList, function(key, value){
-			if(ligneList[params.valueSource] == listSource[key])
-				listSource[key] -=  ligneList[params.valueSource];
+//NE FONCTIONNE PAS
 
-			chaineAttributesSource +='<option value="'+key+'">'+key+'</option>';
-			chaineAttributesElt +='<option name="optionAttributesElt" value="'+value+'">'+value+'</option>';
-		});
-	}/*
-	else if(params.cdt == "delete"){
-		$.each(ligneList, function(key,value){
-			if(ligneList[params.valueSource] == listSource[key])
-			ligneList += listSource[params.valueSource] 
-		});
+function disabledChamp(){
+	var selectSource = $("#selectSource option:selected").val();
+	var chaineSelect = "";
+	var nbLigneMapping = $("#nbLigneMapping").val();
+	var i = 0;
 
-		chaineAttributesSource += '<option value="'+key+'">'+key+'</option>';
-		chaineAttributesElt += '<option value="'+value+'">'+value+'</option>';
+	while(nbLigneMapping <= i)
+	{
+		if($("#valueSource"+i).text() == selectSource)
+			chaineSelect += '<option value="'+listSource[i]+'" disabled>'+listSource[i]+'</option>';
+		else
+			chaineSelect += '<option value="'+listSource[i]+'">'+listSource[i]+'</option>';
+		i++;
 	}
-
-	$("#selectAttributesElt").html(chaineAttributesElt);
-	$("#selectSource").html(chaineAttributesSource);
-	mylog.log("ligneList",ligneList);
-	mylog.log("listSource",listSource);
+/*
+	$.each(listSource, function(key,value){
+		if($("#valueSource" + i).text() == selectSource)
+			chaineSelect += '<option value="'+value+'" disabled>'+value+'</option>';
+		else
+			chaineSelect += '<option value="'+value+'">'+value+'</option>';
+		i++;
+	});*/
+	
+	$("#selectSource").html(chaineSelect); 
 }
-*/
 </script>

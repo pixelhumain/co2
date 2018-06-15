@@ -321,7 +321,7 @@
 		  			}
 		  			$chatColor = (@$element["hasRC"] || $type == Person::COLLECTION ) ? "text-red" : "";
 
-		  			if( $type != Person::COLLECTION )
+		  			if( Yii::app()->params['rocketchatMultiEnabled'] && $type != Person::COLLECTION )
 	  				{
 			  		?>
 			  			<div class="btn-group " id="paramsMenu">
@@ -1011,8 +1011,12 @@
 				onchangeClick=false;
 				loadCoop(roomId, proposalId, resolutionId, actionId);
 			}
-			else if(sub=="networks")
+			else if(sub=="networks"){
 				loadNetworks();
+			}
+			else if(sub=="curiculum"){
+				loadCuriculum();
+			}
 			
 		} else
 			loadNewsStream(true);

@@ -8,7 +8,7 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 
 <h4>
 	Informations générales
-	<button class="btn btn-default btn-sm bg-blue-k" id="btn-update-cv-skills">
+	<button class="btn btn-primary" id="btn-update-cv-skills">
 		<i class="fa fa-pencil"></i> Modifier
 	</button>
 </h4>
@@ -26,20 +26,53 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 					); ?>
 
 <?php foreach ($values as $key => $lbl) { ?>
-	<h5 class="label text-azure"><?php echo $lbl; ?></h5>
-	<div class="label text-dark">
-		<?php echo isset($curiculum["skills"][$key]) ? $curiculum["skills"][$key] : "Non renseigné"; ?>
+	<div class="col-xs-12 col-sm-6 col-md-6">
+		<h5 class="label text-azure"><?php echo $lbl; ?></h5>
+		<div class="label text-dark">
+			<?php echo isset($curiculum["skills"][$key]) ? $curiculum["skills"][$key] : "Non renseigné"; ?>
+		</div>
 	</div>
-	<br>
 <?php } //var_dump($curiculum); ?>
 
-<br><br>
-<h4>Parcours personnel et professionnel</h4>
-<hr>
+<div class="col-xs-12 margin-top-50">
+	<hr>
+	<h4>
+		Parcours personnel et professionnel
+		<button class="btn btn-primary" id="btn-add-lifepath">
+			<i class="fa fa-plus-circle"></i> Ajouter
+		</button>
+	</h4>
+	<br>
+<?php if(@$curiculum["lifepath"]){ ?>
+	<?php foreach ($curiculum["lifepath"] as $keyPath => $experiences) { ?>
+		<div class="panel panel-white padding-15">
+			<h5 class="">
+				Expérience n°<?php echo $keyPath+1; ?>
+				<button class="btn btn-sm pull-right margin-left-10">
+					<i class="fa fa-trash"></i>
+				</button> 
+				<button class="btn btn-sm pull-right">
+					<i class="fa fa-pencil"></i>
+				</button> 
+			</h5>
+			<hr>
+			<?php foreach ($experiences as $key => $lbl) { ?>
+				<?php //if(@$curiculum["lifepath"][$keyPath][$key]){ ?>
+					<h5 class="label text-azure"><?php echo $key; ?></h5>
+				<?php //} ?>
+				<p class="text-dark">
+					<?php echo isset($curiculum["lifepath"][$keyPath][$key]) ? 
+							   $curiculum["lifepath"][$keyPath][$key] : "Non renseigné"; ?>
+				</p>
+				<br>
+			<?php } //var_dump($curiculum); ?>
+		</div>
+	<?php } //var_dump($curiculum); ?>
+<?php } ?>
 
-<button class="btn btn-default">
-	<i class="fa fa-plus-circle"></i> Ajouter
-</button>
+</div>
+
+
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		/*var dataUpdate = {
@@ -55,6 +88,10 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 		$("#btn-update-cv-skills").click(function(){
 			//dyFObj.openForm("curiculum", dataUpdate);
 			updateCVSkills();
+		});
+		$("#btn-add-lifepath").click(function(){
+			//dyFObj.openForm("curiculum", dataUpdate);
+			addLifePath();
 		});
 	});
 
@@ -162,6 +199,96 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 					console.log("in detail", value, contextData.curiculum,  contextData.curiculum.skills[value])
 					if(typeof contextData.curiculum.skills[value] != "undefined"){
 						dataUpdate[value] = contextData.curiculum.skills[value];
+					}
+				});
+			}
+		}
+		console.log("openFormCV", dataUpdate);
+		dyFObj.openForm(form, "sub", dataUpdate);		
+	}
+
+
+	function addLifePath() {
+		var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
+				timer : false,
+				dynForm : {
+					jsonSchema : {
+						title : "Ajouter une expérience",//trad.addCuriculum,// trad["Update network"],
+						icon : "fa-key",
+						onLoads : {
+							sub : function(data){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url").addClass("bg-dark");
+								console.log("DATA XXX", data);
+
+								// if(data.startDateDB && data.endDateDB){
+				    // 				$("#ajaxFormModal").after("<input type='hidden' id='startDateParent' value='"+data.startDateDB+"'/>"+
+				    // 										  "<input type='hidden' id='endDateParent' value='"+data.endDateDB+"'/>");
+				    // 				$("#ajaxFormModal #startDate").after("<span id='parentstartDate'><i class='fa fa-warning'></i> "+tradDynForm["parentStartDate"]+" : "+ moment( data.startDateDB /*,"YYYY-MM-DD HH:mm"*/).format('DD/MM/YYYY HH:mm')+"</span>");
+				    // 				$("#ajaxFormModal #endDate").after("<span id='parentendDate'><i class='fa fa-warning'></i> "+tradDynForm["parentEndDate"]+" : "+ moment( data.endDateDB /*,"YYYY-MM-DD HH:mm"*/).format('DD/MM/YYYY HH:mm')+"</span>");
+				    // 			}
+								//bindDesc("#ajaxFormModal");
+							}
+						},
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	//removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							dyFObj.closeForm();
+							toastr.success("Enregistrement des données de votre CV");
+							strHash="";
+    						if(location.hash.indexOf(".view")>0){
+    							hashPage=location.hash.split(".view");
+    							strHash=".view"+hashPage[1];
+    						}	
+    						//location.hash = data.resultGoods.values.slug+strHash;
+    						///hashUrlPage="#"+data.resultGoods.values.slug;
+    						/*if(typeof data.resultGoods.values.curiculum.lifepath != "undefined")
+	    						$.each(data.resultGoods.values.curiculum.lifepath, function(key,value){
+	    							console.log("afterSave --*", key, value);
+									contextData.curiculum.lifepath[key]=value;
+		    					});*/
+							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
+							//loadDataDirectory(connectType, "user", true);
+							//changeHiddenFields();
+						},
+						properties : {
+					    	info : {
+				                inputType : "custom",
+				                html:"<p class='text-"+typeObj["organization"].color+"'>"+
+				                		//"Faire connaître votre Organisation n'a jamais été aussi simple !<br>" +
+									    //tradDynForm["infocreateorganization"]+" ...<hr>" +
+									 "</p>",
+				            },
+					        block : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(), 
+
+							title : dyFInputs.inputText("Titre"),
+
+							
+				            description : dyFInputs.textarea("Description", 
+				            								"...", { maxlength: 500 }),
+				            //startDate : dyFInputs.startDateInput("datetime"),
+            				//endDate : dyFInputs.endDateInput("datetime"),
+            				//location : dyFInputs.location,
+					    }
+					}
+				}
+			};
+		var dataUpdate = {
+			block : "curiculum.lifepath",
+	        id : contextData.id,
+	        typeElement : contextData.type
+		};
+
+		if(typeof contextData.curiculum != "undefined"){
+			if(typeof contextData.curiculum.lifepath != "undefined"){
+				var CVattrs = ["title", "description", "startDate", "endDate", "location"];
+				$.each(CVattrs, function(key, value){ 
+					console.log("in detail", value, contextData.curiculum,  contextData.curiculum.lifepath[value])
+					if(typeof contextData.curiculum.lifepath[value] != "undefined"){
+						dataUpdate[value] = contextData.curiculum.lifepath[value];
 					}
 				});
 			}

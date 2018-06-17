@@ -26,12 +26,12 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 					); ?>
 
 <?php foreach ($values as $key => $lbl) { ?>
-	<div class="label text-dark"><?php echo $lbl; ?></div>
+	<h5 class="label text-azure"><?php echo $lbl; ?></h5>
 	<div class="label text-dark">
 		<?php echo isset($curiculum["skills"][$key]) ? $curiculum["skills"][$key] : "Non renseigné"; ?>
 	</div>
 	<br>
-<?php } var_dump($curiculum); ?>
+<?php } //var_dump($curiculum); ?>
 
 <br><br>
 <h4>Parcours personnel et professionnel</h4>
@@ -68,7 +68,7 @@ Détaillez votre parcours personnel et professionnel pour faciliter votre recher
 						icon : "fa-key",
 						onLoads : {
 							sub : function(data){
-								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url").addClass("bg-red");
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url").addClass("bg-dark");
 								console.log("DATA XXX", data);
 								if(typeof data.driverLicense != "undefined"){ 
 									if(data.driverLicense == "false"){

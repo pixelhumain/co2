@@ -18,6 +18,8 @@ dynForm = {
                 	$("#ajax-modal .modal-header").addClass("bg-green");
                     $("#ajax-modal .infocustom p").addClass("text-green");
                 }
+
+                $("#ajax-modal .locationBtn").addClass("hidden");
     	   	},
 	    	sub : function(){
 				
@@ -35,6 +37,7 @@ dynForm = {
 	            var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
 	            var typeIcon = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? typeObj[currentKFormType].icon : elementObj.dynForm.jsonSchema.icon;
 	            
+
 	            $("#ajax-modal-modal-title").html( "<i class='fa fa-"+typeIcon+"'></i> "+typeName );
 	            
 				$("#ajax-modal .modal-header").removeClass("bg-dark bg-red bg-purple bg-green bg-green-poi bg-orange bg-turq bg-yellow bg-url bg-azure").addClass("bg-"+typeObj[currentKFormType].color);
@@ -64,17 +67,15 @@ dynForm = {
 	    	dyFObj.setMongoId('organizations', function(){
 	    		uploadObj.gotoUrl = '#page.type.organizations.id.'+uploadObj.id;
 	    	});
+	    	
 	    },
 	    beforeSave : function(){
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
 	    },
-	    afterSave : function(f){
-	    	if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
+	    afterSave : function(){
+			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		    	if(typeof f == "function")
-	    			f();
-	    	}
 		    else { 
 		    	mylog.log("here", isMapEnd);
 		    	if(typeof networkJson != "undefined")
@@ -101,6 +102,7 @@ dynForm = {
             								{ required : true } ),
             tags : dyFInputs.tags(),
             location : dyFInputs.location,
+            formLocality : dyFInputs.formLocality("My adresse", "My adresse", {}),
 	        image : dyFInputs.image(),
             email : dyFInputs.text(),
 	        shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),

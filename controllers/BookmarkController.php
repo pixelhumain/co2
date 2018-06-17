@@ -18,6 +18,7 @@ class BookmarkController extends CommunecterController {
 	    return array(
 	        //CTK actions
 	        'delete'                => 'citizenToolKit.controllers.bookmark.DeleteAction',
+	        'save'                => 'citizenToolKit.controllers.bookmark.SaveAction',
 	        'sendmailnotif'                => 'citizenToolKit.controllers.bookmark.SendMailNotifAction',
 	    );
 	}

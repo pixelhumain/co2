@@ -489,7 +489,7 @@ function bindLeftMenuFilters () {
             if(typeof searchObject.priceMin != "undefined") delete searchObject.priceMin;
             if(typeof searchObject.priceMax != "undefined") delete searchObject.priceMax;
             if(typeof searchObject.devise != "undefined") delete searchObject.devise;
-            $("#priceMin, #priceMax, $devise").val("");
+            $("#priceMin, #priceMax, #devise").val("");
         }else{
             if(typeof $("#priceMin").val() != "undefined" && $("#priceMin").val()!="")
                 searchObject.priceMin=$("#priceMin").val();
@@ -685,21 +685,23 @@ function initSearchObject(){
         activeClassifiedFilters();
 }
 function activeClassifiedFilters(){
-    if(typeof searchObject.priceMin != "undefined"){
-        str="";
-        if(typeof searchObject.priceMin != "undefined")
-            str+=(typeof searchObject.priceMax != "undefined") ?  searchObject.priceMin+" - " : "Sup. à "+searchObject.priceMin;
-        if(typeof searchObject.priceMax != "undefined")
-            str+=(typeof searchObject.priceMin != "undefined") ?  searchObject.priceMax : "Inf. à "+searchObject.priceMax;
-        if(typeof searchObject.devise != "undefined")
-            str+= " "+searchObject.devise;
-        $(".dropdown-price .dropdown-toggle").addClass("active").html(str+" <i class='fa fa-angle-down'></i>");
-    }
+    if(typeof searchObject.priceMin != "undefined" || typeof searchObject.priceMax != "undefined" || typeof searchObject.devise != "undefined")
+       activePriceFilter();
     if(typeof searchObject.searchSType =="undefined")
         $(".dropdown-section, .dropdown-category, .dropdown-subType").hide();
     else if(typeof searchObject.category =="undefined")
         $(".dropdown-subType").hide();
 
+}
+function activePriceFilter(){
+    str="";
+    if(typeof searchObject.priceMin != "undefined")
+        str+=(typeof searchObject.priceMax != "undefined") ?  searchObject.priceMin+" - " : "Sup. à "+searchObject.priceMin;
+    if(typeof searchObject.priceMax != "undefined")
+        str+=(typeof searchObject.priceMin != "undefined") ?  searchObject.priceMax : "Inf. à "+searchObject.priceMax;
+    if(typeof searchObject.devise != "undefined")
+        str+= " "+searchObject.devise;
+    $(".dropdown-price .dropdown-toggle").addClass("active").html(str+" <i class='fa fa-angle-down'></i>");
 }
 function activeTagsFilter(){
     countTags=0;

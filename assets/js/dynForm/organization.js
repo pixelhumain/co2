@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : trad.addOrganization,
+	    title : trad.addorganization,
 	    icon : "group",
 	    type : "object",
 	    onLoads : {
@@ -61,6 +61,7 @@ dynForm = {
 	    	},
 	    },
 	    beforeBuild : function(){
+	    	//alert("before Build orga");
 	    	dyFObj.setMongoId('organizations', function(){
 	    		uploadObj.gotoUrl = '#page.type.organizations.id.'+uploadObj.id;
 	    	});
@@ -69,11 +70,12 @@ dynForm = {
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
 	    },
-	    afterSave : function(f){
+	    afterSave : function(data,callB){
 	    	if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-		    	if(typeof f == "function")
-	    			f();
+		    	//principalement pour les surveys
+		    	if(typeof callB == "function")
+	    			callB();
 	    	}
 		    else { 
 		    	mylog.log("here", isMapEnd);

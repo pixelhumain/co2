@@ -1621,9 +1621,14 @@ La vie en santé;Santé;;
 	public function actionTestPoleEmploi(){
 		$url = 'https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT COUNT(*) FROM "421692f5-f342-4223-9c51-72a27dcaf51e" WHERE "CITY_CODE"=\'62041\' LIMIT 30';
 
-		$url = 'https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT * FROM "421692f5-f342-4223-9c51-72a27dcaf51e" WHERE "CITY_CODE"=\'37043\' LIMIT 30';
+		//$url = 'https://api.emploi-store.fr/partenaire/offresdemploi/v1/rechercheroffres?sql=SELECT * FROM "421692f5-f342-4223-9c51-72a27dcaf51e" WHERE "CITY_CODE"=\'62041\' LIMIT 30';
+
+		// $url = 'https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search?resource_id=421692f5-f342-4223-9c51-72a27dcaf51e';
+
+		//$url = 'https://api.emploi-store.fr/partenaire/offresdemploi/v1/rechercheroffres/cityCode/75056';
+
 		$res["url"] = $url;
-		$res["res"] = Convert::poleEmploi($url);
+		$res["res"] = Convert::poleEmploi2($url);
 		//$res["res"] = PoleEmploi::poleEmploi($url);
 
 		Rest::json($res);exit;

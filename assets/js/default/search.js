@@ -46,6 +46,17 @@ function initSearchInterface(){
         activeTagsFilter();
         startSearch(0, indexStepInit, searchCallback);
     });
+    $(".btn-tags-refresh").off().on("click", function(){
+        searchObject.tags=[];
+        $('#tagsFilterInput').val("").trigger("change");
+        searchObject.page=0;
+        pageCount=true;
+        searchObject.count=true;
+        if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+        $(".dropdown-tags").removeClass("open");
+        activeTagsFilter();
+        startSearch(0, indexStepInit, searchCallback);
+    });
 
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
@@ -648,7 +659,7 @@ function initSearchObject(){
             $.each($_GET, function(e,v){
                 if(e=="scopeType") initScopesResearch.key=v; else searchObject[e]=v;
                 // Check on types on search app
-                if(searchObject.initType!= "all" && e=="types") delete searchObject[e];
+                if((searchObject.initType!= "all" && searchObject.initType!= "news") && e=="types") delete searchObject[e];
                 else if (e=="types"){searchObject[e]=[v]; delete searchObject.ranges;}
                 if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
                 if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
@@ -666,8 +677,10 @@ function initSearchObject(){
             if(initScopesResearch.key!="" && initScopesResearch.ids.length > 0)
                 checkMyScopeObject(initScopesResearch, $_GET);
         }
-    }else
+    }else{
         appendScopeBreadcrum();
+        activeFiltersInterface("tags",searchObject.tags);
+    }
     if(searchObject.initType=="classifieds") 
         activeClassifiedFilters();
 }
@@ -832,7 +845,7 @@ var searchAllEngine = {
             projects : 0,
             events : 0,
             citoyens : 0,
-            classified : 0,
+            classifieds : 0,
             poi : 0,
             news : 0,
             places : 0,

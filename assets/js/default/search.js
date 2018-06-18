@@ -608,10 +608,10 @@ function constructSearchObjectAndGetParams(){
   if(typeof searchObject.countType != "undefined")
     searchConstruct.countType=searchObject.countType;
 
-  // if(typeof custom != "undefined"){
-  //   getStatus+=(getStatus!="") ? "&":"";
-  //   getStatus+="cityxx="+custom.id;
-  // }
+  if(typeof custom != "undefined"){
+    getStatus+=(getStatus!="") ? "&":"";
+    getStatus+="city="+custom.id;
+  }
 
   // Locality
   getStatus=getUrlSearchLocality(getStatus);

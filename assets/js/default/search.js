@@ -304,7 +304,8 @@ function bindLeftMenuFilters () {
             $(".dropdown-types .dropdown-toggle").addClass("active").html(typeClass+" <i class='fa fa-angle-down'></i>");
             $(".dropdown-section, .dropdown-category, .dropdown-subType").show();
             searchObject.searchSType=typeKey;
-            if( jsonHelper.notNull("modules."+typeKey) ){
+            initCategoryClassifieds(typeKey);
+            /*if( jsonHelper.notNull("modules."+typeKey) ){
                 //alert('build left menu'+classified.sections[sectionKey].filters);
                // classifieds.currentLeftFilters = classifieds[typeKey].categories;
                 var filters = modules[typeKey].categories; 
@@ -312,7 +313,7 @@ function bindLeftMenuFilters () {
                              icon : filters.icon }
                 directory.sectionFilter( filters, ".classifiedFilters",what);
                 bindLeftMenuFilters ();
-            }
+            }*/
             /*else if(classifieds.currentLeftFilters != null) {
                 var what = { title : classifieds.currentLeftFilters.label, 
                              icon : classifieds.currentLeftFilters.icon }
@@ -689,9 +690,22 @@ function activeClassifiedFilters(){
        activePriceFilter();
     if(typeof searchObject.searchSType =="undefined")
         $(".dropdown-section, .dropdown-category, .dropdown-subType").hide();
-    else if(typeof searchObject.category =="undefined")
-        $(".dropdown-subType").hide();
+    else
+        initCategoryClassifieds(searchObject.searchSType);
+    //if(typeof searchObject.category =="undefined")
+     //   $(".dropdown-subType").hide();
 
+}
+function initCategoryClassifieds(typeKey){
+    if( jsonHelper.notNull("modules."+typeKey) ){
+        //alert('build left menu'+classified.sections[sectionKey].filters);
+       // classifieds.currentLeftFilters = classifieds[typeKey].categories;
+        var filters = modules[typeKey].categories; 
+        var what = { title : filters.label, 
+                     icon : filters.icon }
+        directory.sectionFilter( filters, ".classifiedFilters",what);
+        bindLeftMenuFilters ();
+    }
 }
 function activePriceFilter(){
     str="";

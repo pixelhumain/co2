@@ -128,6 +128,12 @@
   - user pourront demander des push sur differentes destination FB, twitter, 
 [ ] systeme calculant la valeur indirect de communecter basé sur un systeme de valeur economique existant 
   ex : sur les base des prix des pages jaune calculé la valeur cumulé de l'annuaire 
+** Navigation  
+[ ] calculateur de poids d'une action : 
+  - j'envoie un message direct, ca me coute tant
+  - je fais une recherche , combien ca coute 
+  - j'envoie un message à un groupe (avec ou sans images)
+  - combien coute l'hébergement d'une page et sa visualisation par une personne
 
 * API 
 [ ] integrate France Connect
@@ -182,4 +188,6 @@
 * Dongles 
 [ ] contribution par mail : https://www.diigo.com/tools/post_by_email
 [ ] plugin Chrome plugguer avec dynform et l'api pour partage rapide et viral a la diigo 
+
+
 

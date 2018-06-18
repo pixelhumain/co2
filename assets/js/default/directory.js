@@ -773,7 +773,7 @@ function initPageTable(number){
   
 function searchCallback() { 
   directory.elemClass = '.searchEntityContainer ';
-  directory.filterTags(true);
+ // directory.filterTags(true);
   //$(".btn-tag").off().on("click",function(){ directory.toggleEmptyParentSection(null,"."+$(this).data("tag-value"), directory.elemClass, 1)});
   $("#searchBarTextJS").off().on("keyup",function() { 
     directory.search ( null, $(this).val() );

@@ -665,7 +665,7 @@ function initSearchObject(){
                 if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
                 if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  
-                if($.inArray(searchObject.initType, ["all", "events"])>-1 && $.inArray(e,["section","category","subType"]) > -1) delete searchObject[e];
+                if($.inArray(searchObject.initType, ["all", "events", "news"])>-1 && $.inArray(e,["section","category","subType"]) > -1) delete searchObject[e];
                 if($.inArray(e,["cities","zones","cp"]) > -1) $.each(v.split(","), function(i, j){ initScopesResearch.ids.push(j) });
                 if(e=="tags"){
                     searchObject.tags=[];

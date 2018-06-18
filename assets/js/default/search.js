@@ -318,6 +318,7 @@ function bindLeftMenuFilters () {
             $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
             if(key == "co"){
                 delete searchObject.source;
+                initCountType();
                 startSearch(0, indexStepInit, searchCallback);
             }else{
                 searchObject.source = key;

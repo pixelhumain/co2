@@ -679,7 +679,7 @@ function initSearchObject(){
         }
     }else{
         appendScopeBreadcrum();
-        activeFiltersInterface("tags",searchObject.tags);
+        activeFiltersInterface("tags", searchObject.tags);
     }
     if(searchObject.initType=="classifieds") 
         activeClassifiedFilters();

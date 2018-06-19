@@ -510,6 +510,8 @@ var trad = {
 	"showmap" :"<?php echo Yii::t("common","Show map") ?>",
 	"invitationsenttojoinco":"<?php echo Yii::t("invite","Email successfully sent to join communecter.org") ?>",
 	"notfoundlaunchinvite":"<?php echo Yii::t("invite","Not found ? Launch an invitation to join your network") ?>",
+	"bealertofnewitems":"<?php echo Yii::t("common","Be alerted of new items") ?>",
+	"alert":"<?php echo Yii::t("common","Alert") ?>",
 };
 
 var tradDynForm = {

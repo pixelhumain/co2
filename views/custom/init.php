@@ -2,7 +2,7 @@
 
 //init will always be exeecuted in a JS document ready
 
-if( @$_GET["city"] ){ 
+if( @$_GET["city"] || @Yii::app()->session['custom'] ){ 
     
     if( !@Yii::app()->session['custom'])
     {

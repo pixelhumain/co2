@@ -1626,9 +1626,15 @@ La vie en santé;Santé;;
 		// $url = 'https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search?resource_id=421692f5-f342-4223-9c51-72a27dcaf51e';
 
 		$url = 'https://api.emploi-store.fr/partenaire/offresdemploi/v1/rechercheroffres';
-
+		$params = array(	
+						'technicalParameters' => array(
+							'page'=>1,
+							'per_page'=>20,
+							'sort'=>1) ,
+						'criterias' => array(
+							'cityCode'=>"97407" ) );
 		$res["url"] = $url;
-		$res["res"] = Convert::poleEmploi2($url);
+		$res["res"] = Convert::poleEmploi2($url, $params);
 		//$res["res"] = PoleEmploi::poleEmploi($url);
 
 		Rest::json($res);exit;

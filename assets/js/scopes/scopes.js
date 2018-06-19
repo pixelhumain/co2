@@ -402,6 +402,7 @@ function bindScopesInputEvent(news){
 		//if(myScopes.type!="open")
 		localStorage.setItem("myScopes",JSON.stringify(myScopes));
 		searchObject.count=true;
+		appendHeaderFilterActive();
 		if(location.hash.indexOf("#live") >= 0 || location.hash.indexOf("#freedom") >= 0){
 			startNewsSearch(true)
 		} else if (location.hash.indexOf("#interoperability") >= 0) {

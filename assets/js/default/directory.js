@@ -23,8 +23,9 @@ var translate = {"organizations":"Organisations",
 
 function startSearch(indexMin, indexMax, callBack){
     if(typeof searchObject.source != "undefined"){
-		interop.startSearch();
-    }else{
+      interopSearch(searchObject.source, searchObject.source);
+		  //interop.startSearch();
+    } else {
         if(searchObject.text.indexOf("co.") === 0 ){
           searchT = searchObject.text.split(".");
           if( searchT[1] && typeof co[ searchT[1] ] == "function" ){

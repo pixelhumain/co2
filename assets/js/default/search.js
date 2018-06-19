@@ -314,28 +314,32 @@ function bindLeftMenuFilters () {
         //if(bindEcoSource())
            //bindEcoSource();
         $(".btn-select-source").click(function(){
-            var key = $(this).data("key");
-            $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
-            if(key == "co"){
-                delete searchObject.source;
-                initCountType();
-                startSearch(0, indexStepInit, searchCallback);
-            }else{
-                searchObject.source = key;
-                if( typeof interop == "undefined" ){
-                    lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
-                        if( typeof interopObj == "undefined" ){
-                           lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
-                                interopObj[key].startSearch();
-                            } ); 
-                       }else{
-                            interopObj[key].startSearch(); 
-                       }
-                    });
-                } else {
-                    interopObj[key].startSearch();
-                }
-            }
+            // var key = $(this).data("key");
+            // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
+
+            interopSearch($(this).data("key"), $(this).data("source"));
+            // var key = $(this).data("key");
+            // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
+            // if(key == "co"){
+            //     delete searchObject.source;
+            //     initCountType();
+            //     startSearch(0, indexStepInit, searchCallback);
+            // }else{
+            //     searchObject.source = key;
+            //     if( typeof interop == "undefined" ){
+            //         lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
+            //             if( typeof interopObj == "undefined" ){
+            //                lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
+            //                     interopObj[key].startSearch();
+            //                 } ); 
+            //            }else{
+            //                 interopObj[key].startSearch(); 
+            //            }
+            //         });
+            //     } else {
+            //         interopObj[key].startSearch();
+            //     }
+            // }
         });
 
         $(".keycat").addClass("hidden");
@@ -512,7 +516,30 @@ function bindLeftMenuFilters () {
 /* -------------------------
 END CLASSIFIED
 ----------------------------- */
-
+function interopSearch(keyS, nameS){
+    //var key = $(this).data("key");
+    $(".dropdown-sources .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
+    if(keyS == "co"){
+        delete searchObject.source;
+        initCountType();
+        startSearch(0, indexStepInit, searchCallback);
+    }else{
+        searchObject.source = keyS;
+        if( typeof interop == "undefined" ){
+            lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
+                if( typeof interopObj == "undefined" ){
+                   lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
+                        interopObj[keyS].startSearch();
+                    } ); 
+               }else{
+                    interopObj[keyS].startSearch(); 
+               }
+            });
+        } else {
+            interopObj[keyS].startSearch();
+        }
+    }
+}
 /* ----------------------------
         SEARCH ENGINE
 -------------------------------*/

@@ -13,13 +13,17 @@ dynForm = {
 			    	}
 			    },
 			    beforeBuild : function(){
+			    	//alert("before Build project");
 			    	dyFObj.setMongoId('projects', function(){
 			    		uploadObj.gotoUrl = '#page.type.projects.id.'+uploadObj.id;
 			    	});
 			    },
-			    afterSave : function(urlReload){
+			    afterSave : function(data,callB){
 					if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
 				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+				    	//principalement pour les surveys
+				    	if(typeof callB == "function")
+	    					callB();
 					} else { 
 			          	dyFObj.closeForm(); 
 			          	urlCtrl.loadByHash( uploadObj.gotoUrl );

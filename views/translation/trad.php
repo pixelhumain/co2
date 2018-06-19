@@ -510,6 +510,8 @@ var trad = {
 	"showmap" :"<?php echo Yii::t("common","Show map") ?>",
 	"invitationsenttojoinco":"<?php echo Yii::t("invite","Email successfully sent to join communecter.org") ?>",
 	"notfoundlaunchinvite":"<?php echo Yii::t("invite","Not found ? Launch an invitation to join your network") ?>",
+	"bealertofnewitems":"<?php echo Yii::t("common","Be alerted of new items") ?>",
+	"alert":"<?php echo Yii::t("common","Alert") ?>",
 };
 
 var tradDynForm = {
@@ -1024,7 +1026,7 @@ var tradCategory = {
     "internship":"<?php echo Yii::t("category","Internship") ?>",
     "training":"<?php echo Yii::t("category","Training") ?>",
     "irecruit":"<?php echo Yii::t("category","I recruit") ?>",
-    "isearchajob":"<?php echo Yii::t("category","I look for a job") ?>",
+    "isearchajob":"<?php echo Yii::t("category","I am looking for") ?>",
 		"purComptManagement":"<?php echo Yii::t("category","Purchase-Comptability-Management") ?>",
 		"artsCrafts":"<?php echo Yii::t("category","Arts-Crafts") ?>",
 		"bankInsurance":"<?php echo Yii::t("category","Bank-Insurance") ?>",

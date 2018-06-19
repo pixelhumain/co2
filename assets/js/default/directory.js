@@ -302,7 +302,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
             //affiche les éléments sur la carte
             console.log("mapElements", results);
             Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
-                        
+            spinSearchAddon();
             if(typeof callBack == "function")
               callBack();
         }
@@ -774,7 +774,7 @@ function initPageTable(number){
   
 function searchCallback() { 
   directory.elemClass = '.searchEntityContainer ';
-  directory.filterTags(true);
+ // directory.filterTags(true);
   //$(".btn-tag").off().on("click",function(){ directory.toggleEmptyParentSection(null,"."+$(this).data("tag-value"), directory.elemClass, 1)});
   $("#searchBarTextJS").off().on("keyup",function() { 
     directory.search ( null, $(this).val() );
@@ -2855,9 +2855,9 @@ var directory = {
                           directory.searchTypeHtml()+
                         '</small>'+
                       '</h4>'+
-                      '<div class="col-md-3 col-sm-3 pull-right no-padding text-right">';
+                      '<div class="col-md-3 col-sm-3 col-xs-2 pull-right no-padding text-right">';
                         if(userId!="" && searchObject.initType=="classifieds"){
-                          headerStr+='<button class="btn addToAlert margin-right-5" data-value="list" onclick="directory.addToAlert();"><i class="fa fa-bell"></i> Add to alert</button>';
+                          headerStr+='<button class="btn btn-default letter-blue addToAlert margin-right-5 tooltips" data-toggle="tooltip" data-placement="bottom" title="'+trad.bealertofnewitems+'" data-value="list" onclick="directory.addToAlert();"><i class="fa fa-bell"></i> <span class="hidden-xs">'+trad.alert+'</span></button>';
                         }
                          headerStr+='<button class="btn switchDirectoryView ';
                           if(directory.viewMode=="list") headerStr+='active ';

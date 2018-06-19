@@ -62,6 +62,7 @@ function initSearchInterface(){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == "" ){
+            spinSearchAddon(true);
             searchObject.page=0;
             searchObject.text = $(this).val();
             pageCount=true;
@@ -123,6 +124,7 @@ function initSearchInterface(){
     //.menu-btn-start-search,
     $("#menu-map-btn-start-search,  #main-search-bar-addon").off().on("click", function(){
         scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 0;
+        spinSearchAddon(true);
         simpleScroll(scrollH);
         if($(this).hasClass("menu-btn-start-search"))
             searchObject.text=$("#second-search-bar").val();
@@ -157,7 +159,11 @@ function initSearchInterface(){
     });
     
 }
-
+function spinSearchAddon(bool){
+    removeClass= (bool) ? "fa-arrow-circle-right" : "fa-spin fa-circle-o-notch";
+    addClass= (bool) ? "fa-spin fa-circle-o-notch" : "fa-arrow-circle-right";
+    $("#main-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
+}
 function startSearchTerla(indexMin, indexMax, callBack){
     var name = $("#second-search-bar").val() != "" ? $("#second-search-bar").val() : $("#new-search-bar").val();
     memorySearch = name;

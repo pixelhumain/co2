@@ -2,7 +2,7 @@
 
 //init will always be exeecuted in a JS document ready
 
-if( @$_GET["city"] || Yii::app()->session['custom'] ){ 
+if( @$_GET["city"] || @Yii::app()->session['custom'] ){ 
     
     if( !@Yii::app()->session['custom'])
     {
@@ -20,11 +20,15 @@ if( @$_GET["city"] || Yii::app()->session['custom'] ){
 
 custom.id = "<?php echo Yii::app()->session['custom']['id'] ?>";
 custom.type = "<?php echo Yii::app()->session['custom']['type'] ?>";
-
+setOpenBreadCrum({'cities': custom.id });
 <?php if(Yii::app()->session['custom']["logo"]){ ?>
     custom.logo = modules.eco.url+"<?php echo Yii::app()->session['custom']['logo'] ?>";
     $(".logo-menutop").attr({'src':custom.logo});
 <?php } 
     }
-} ?>
+}else{
+    Yii::app()->session["custom"] = null; ?>
+    delete custom;
+<?php } ?>
+
 

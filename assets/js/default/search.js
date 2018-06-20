@@ -1,3 +1,4 @@
+
 function initSearchInterface(){
     
     if(searchObject.text != "") $("#main-search-bar, #second-search-bar").val(searchObject.text);
@@ -667,10 +668,22 @@ function constructSearchObjectAndGetParams(){
   countActiveFilters();
   //Construct url with all necessar params
   hashT=location.hash.split("?");
-  if(getStatus != "")
-    location.hash=hashT[0].substring(0)+"?"+getStatus;
-  else
-    location.hash=hashT[0];
+  if(getStatus != ""){
+    if(historyReplace){
+        alert();
+        history.replaceState({}, null, hashT[0].substring(0)+"?"+getStatus);
+    }
+    else
+        location.hash=hashT[0].substring(0)+"?"+getStatus;
+  }else{
+    if(historyReplace){
+                alert();
+        history.replaceState({}, null, hashT[0]);
+    }
+    else
+        location.hash=hashT[0];
+    }
+    historyReplace=false;
 
   return searchConstruct;
 }
@@ -698,7 +711,7 @@ function initSearchObject(){
                 // Check on types on search app
                 if((searchObject.initType!= "all" && searchObject.initType!= "news") && e=="types") delete searchObject[e];
                 else if (e=="types"){searchObject[e]=[v]; delete searchObject.ranges;}
-                if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax"]) > -1) delete searchObject[e];
+                if(searchObject.initType!="classifieds" && $.inArray(e,["devise","priceMin","priceMax", "source"]) > -1) delete searchObject[e];
                 if(searchObject.initType!="events" && $.inArray(e,["startDate","endDate"]) > -1) delete searchObject[e];
                 if(searchObject.initType=="all" && e=="searchSType") delete searchObject[e];  
                 if($.inArray(searchObject.initType, ["all", "events", "news"])>-1 && $.inArray(e,["section","category","subType"]) > -1) delete searchObject[e];
@@ -725,7 +738,7 @@ function activeClassifiedFilters(){
     if(typeof searchObject.priceMin != "undefined" || typeof searchObject.priceMax != "undefined" || typeof searchObject.devise != "undefined")
        activePriceFilter();
     if(typeof searchObject.searchSType =="undefined")
-        $(".dropdown-section, .dropdown-category, .dropdown-subType").hide();
+        $(".dropdown-section, .dropdown-category, .dropdown-subType, .dropdown-sources").hide();
     else
         initCategoryClassifieds(searchObject.searchSType);
     //if(typeof searchObject.category =="undefined")
@@ -741,6 +754,7 @@ function initCategoryClassifieds(typeKey){
                      icon : filters.icon }
         directory.sectionFilter( filters, ".classifiedFilters",what);
         bindLeftMenuFilters ();
+        if(typeKey=="jobs") $(".dropdown-sources").show(); else $(".dropdown-sources").hide();
     }
 }
 function activePriceFilter(){

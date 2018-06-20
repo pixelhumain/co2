@@ -1609,7 +1609,7 @@ function  bindExplainLinks() {
 
 function resetSearchObject(){
 	$.each(searchObject, function(key,v){
-        if($.inArray(key,["startDate","endDate", "searchSType", "section", "subType", "catgeory", "priceMin", "priceMax", "devise", "source"]) > -1){
+        if($.inArray(key,["startDate","endDate", "searchSType", "section", "subType", "category", "priceMin", "priceMax", "devise", "source"]) > -1){
             delete searchObject[key];
         }
     });

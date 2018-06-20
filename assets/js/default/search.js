@@ -668,14 +668,12 @@ function constructSearchObjectAndGetParams(){
   hashT=location.hash.split("?");
   if(getStatus != ""){
     if(historyReplace){
-        alert();
         history.replaceState({}, null, hashT[0].substring(0)+"?"+getStatus);
     }
     else
         location.hash=hashT[0].substring(0)+"?"+getStatus;
   }else{
     if(historyReplace){
-                alert();
         history.replaceState({}, null, hashT[0]);
     }
     else

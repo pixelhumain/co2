@@ -190,6 +190,7 @@ class CommunecterController extends Controller
       'autocompletemultiscope'          => array("href" => "/ph/co2/city/autocompletemultiscope"),
       "save"               => array("href" => "/ph/co2/city/save", "public" => true),
       'getlevel'          => array("href" => "/ph/co2/city/getlevel"),
+      'getgeoshape'          => array("href" => "/ph/co2/city/getgeoshape"),
     ),
     "news"=> array(
       "index"   => array( "href" => "/ph/co2/news/index", "public" => true,'title' => "Fil d'actualités - N.E.W.S", "subTitle"=>"Nord.Est.West.Sud","pageTitle"=>"Fil d'actualités - N.E.W.S"),

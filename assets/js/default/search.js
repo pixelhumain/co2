@@ -637,11 +637,13 @@ function constructSearchObjectAndGetParams(){
       searchConstruct.endDate = searchObject.endDate;
     }
   }
+  
   if(typeof searchObject.source != "undefined"){ 
     searchConstruct.source = searchObject.source;
     getStatus+=(getStatus!="") ? "&":"";
     getStatus+="source="+searchObject.source;
   }
+
   if(typeof searchObject.indexMin != "undefined" && notNull(searchObject.indexMin)){
     searchConstruct.indexMin=searchObject.indexMin;
   }

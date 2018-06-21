@@ -38,7 +38,7 @@
 #col-btn-type-directory .btn-directory-type,
 #sub-menu-left .btn-select-type-anc{
   /*margin-bottom:5px;*/
-  width:100%;
+  /*width:100%;*/
   text-align: right;
   line-height: 20px;
   vertical-align: text-bottom;
@@ -47,16 +47,16 @@
   text-transform: uppercase;
   background-color: transparent;
 }
-.btn-directory-type{
+/*.btn-directory-type{
   padding-right: 15px !important;
   border-radius: 0px;
   border: 0px;
-}
+}*/
 .btn-directory-type:focus{
   outline: inherit !important;
 }
-.btn-directory-type:hover, .btn-directory-type.active{
-  /*padding-right: 10px !important;*/
+/*.btn-directory-type:hover, .btn-directory-type.active{
+  /*padding-right: 10px !important;
   margin-right:-3px!important;
   box-shadow: none !important;
   font-weight: bold !important;
@@ -69,7 +69,7 @@
   font-size: 13px;
   vertical-align: middle;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
+}*/
 .open-type-filter{
   display:none;
 }
@@ -557,7 +557,7 @@ var categoriesFilters ={};
 if(searchObject.initType=="events") categoriesFilters=<?php echo json_encode(Event::$types) ?>;
 if(searchObject.initType=="all"){
   categoriesFilters={
-    "all":{"key":"all", "label":"All", "icon":"search", "color":"dark"},
+    "all":{"key":"all", "label":"All", "icon":"refresh", "color":"dark"},
     "persons" : { "key": "persons", "icon":"user", "label":"people","color":"yellow"}, 
     "NGO" : { "key": "NGO", "icon":"group", "label":"NGOs","color":"green-k"}, 
     "LocalBusiness" : { "key": "LocalBusiness", "icon":"industry", "label":"LocalBusiness","color":"azure"}, 

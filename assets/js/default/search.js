@@ -293,8 +293,7 @@ function bindLeftMenuFilters () {
         }
         $(".dropdown-section .dropdown-toggle").html(trad.section+" <i class='fa fa-angle-down'></i>");
         $(".dropdown-category .dropdown-toggle").html(trad.category+" <i class='fa fa-angle-down'></i>");
-        $(".dropdown-subType .dropdown-toggle").html(trad.subcategory+" <i class='fa fa-angle-down'></i>");
-        $(".dropdown-section .dropdown-toggle, .dropdown-category .dropdown-toggle, .dropdown-subType .dropdown-toggle").removeClass("active");
+        $(".dropdown-section .dropdown-toggle, .dropdown-category .dropdown-toggle").removeClass("active");
         if( $(this).hasClass( "active" ) )
         {
             typeKey = null;
@@ -303,13 +302,13 @@ function bindLeftMenuFilters () {
             $('.classifiedSection').remove();
             $(".label-category, .resultTypes").html("");
             $(".dropdown-types .dropdown-toggle").removeClass("active").html(trad.type+" <i class='fa fa-angle-down'></i>");
-            $(".dropdown-section, .dropdown-category, .dropdown-subType").hide(700);
+            $(".dropdown-section, .dropdown-category").hide(700);
             
         } 
         else 
         {
             $(".dropdown-types .dropdown-toggle").addClass("active").html(typeClass+" <i class='fa fa-angle-down'></i>");
-            $(".dropdown-section, .dropdown-category, .dropdown-subType").show();
+            $(".dropdown-section, .dropdown-category").show();
             searchObject.searchSType=typeKey;
             initCategoryClassifieds(typeKey);
             /*if( jsonHelper.notNull("modules."+typeKey) ){
@@ -376,8 +375,7 @@ function bindLeftMenuFilters () {
         pageCount=true;
         searchObject.count=true;
         $(".dropdown-category .dropdown-toggle").html(trad.category+" <i class='fa fa-angle-down'></i>");
-        $(".dropdown-subType .dropdown-toggle").html(trad.subcategory+" <i class='fa fa-angle-down'></i>");
-        $(".dropdown-category .dropdown-toggle, .dropdown-subType .dropdown-toggle").removeClass("active")
+        $(".dropdown-category .dropdown-toggle").removeClass("active")
         if( $(this).hasClass( "active" ) )
         {
             sectionKey = null;
@@ -425,7 +423,6 @@ function bindLeftMenuFilters () {
         pageCount=true;
         searchObject.count=true;
         if(typeof searchObject.subType != "undefined") delete searchObject.subType;
-        $(".dropdown-subType .dropdown-toggle").removeClass("active").html(trad.subcategory+" <i class='fa fa-angle-down'></i>");
         if( $(this).hasClass( "active" ) ){
             if(typeof searchObject.category != "undefined") delete searchObject.category;
             //searchObject.tags=[sectionKey];//searchTxt = sectionKey;
@@ -478,20 +475,20 @@ function bindLeftMenuFilters () {
         searchObject.count=true;
         if( $(this).hasClass( "active" ) ){
             if(typeof searchObject.subType != "undefined") delete searchObject.subType;
-            $(".dropdown-subType .dropdown-toggle").removeClass("active").html(trad.subcategory+" <i class='fa fa-angle-down'></i>");
             $(this).removeClass( "active" );
+            $(".dropdown-category .dropdown-toggle").addClass("active").html(tradCategory[searchObject.category]+" <i class='fa fa-angle-down'></i>");
         }else{
             $(".keycat").removeClass("active");
             $(this).addClass("active");
-            $(".dropdown-subType .dropdown-toggle").addClass("active").html(tradCategory[classSubType]+" <i class='fa fa-angle-down'></i>");
             searchObject.subType=classSubType;
             searchObject.category=classType;
+            $(".dropdown-category .dropdown-toggle").addClass("active").html(tradCategory[searchObject.category]+" | "+tradCategory[classSubType]+" <i class='fa fa-angle-down'></i>");
         }
 
         KScrollTo("#container-scope-filter");
         startSearch(0, searchObject.indexStep, searchCallback);  
     });
-    $('.dropdown-menu[aria-labelledby="dropdownPrice"], .dropdown-menu[aria-labelledby="dropdownTags"]').on('click', function(event){
+    $('.dropdown-menu[aria-labelledby="dropdownPrice"], .dropdown-menu[aria-labelledby="dropdownTags"], .dropdown-menu[aria-labelledby="dropdownCategory"]').on('click', function(event){
         // The event won't be propagated up to the document NODE and 
         // therefore delegated events won't be fired
         event.stopPropagation();
@@ -734,12 +731,17 @@ function activeClassifiedFilters(){
     if(typeof searchObject.priceMin != "undefined" || typeof searchObject.priceMax != "undefined" || typeof searchObject.devise != "undefined")
        activePriceFilter();
     if(typeof searchObject.searchSType =="undefined")
-        $(".dropdown-section, .dropdown-category, .dropdown-subType, .dropdown-sources").hide();
+        $(".dropdown-section, .dropdown-category, .dropdown-sources").hide();
     else
         initCategoryClassifieds(searchObject.searchSType);
-    //if(typeof searchObject.category =="undefined")
-     //   $(".dropdown-subType").hide();
-
+    if(typeof searchObject.searchSType != "undefined")
+        activeFiltersInterface("searchSType", searchObject.searchSType, "classifieds");
+    if(typeof searchObject.section != "undefined")
+        activeFiltersInterface("section", searchObject.section, "classifieds");
+    if(typeof searchObject.category != "undefined")
+        activeFiltersInterface("category", searchObject.category, "classifieds");
+    if(typeof searchObject.searchSType != "subType")
+        activeFiltersInterface("subType", searchObject.subType, "classifieds");
 }
 function initCategoryClassifieds(typeKey){
     if( jsonHelper.notNull("modules."+typeKey) ){
@@ -781,51 +783,67 @@ function activeTagsFilter(){
     else
         $(".dropdown-tags .dropdown-toggle").removeClass("active").html(trad.tags+" <i class='fa fa-angle-down'></i>");
 }     
-function initCategoriesApp(){
+function initCategoriesApp(type){
     str='';
     $.each(categoriesFilters, function(e,v){
-        dataType="data-type-event='"+e+"' data-type='events'";
-        countBadge="";
-        if(searchObject.initType=="all"){
+        if(type=="events"){
+                dataType="data-type-event='"+e+"' data-type='events'";
+                textColor= (typeof v.color != "undefined") ? "text-"+v.color : "";
+                icon = (typeof v.icon != "undefined") ? "<i class='fa fa-"+v.icon+"'></i> " : "";
+                str+='<button class="btn btn-directory-type padding-10 '+textColor+'" '+dataType+'>'+
+                        icon+ 
+                        '<span class="elipsis label-filter">'+tradCategory[e]+'</span>'+
+                    '</button><br class="hidden-xs">';
+
+        }else{
             dataType="data-type='"+e+"'";
             countBadge='<span class="count-badge-filter" id="count'+e+'"></span>';
+            textColor= (typeof v.color != "undefined") ? "text-"+v.color : "";
+            classType= (e=="all") ? 'col-xs-12 btn-default' : "padding-10 col-xs-4";
+                icon = (typeof v.icon != "undefined") ? "<i class='fa fa-"+v.icon+"'></i> " : "";
+                str+='<button class="btn btn-directory-type '+textColor+' '+classType+'" '+dataType+'>'+
+                        icon;
+                        if(e!="all"){
+                str+=       "<br/>"+ 
+                            '<span class="elipsis label-filter">'+tradCategory[e]+'</span><br/>'+
+                            countBadge
+                        }else
+                str+=       '<span class="elipsis label-filter">'+tradCategory[e]+'</span><br/>';
+                 str+=   '</button>';
         }
-        textColor= (typeof v.color != "undefined") ? "text-"+v.color : "";
-        icon = (typeof v.icon != "undefined") ? "<i class='fa fa-"+v.icon+"'></i> " : "";
-        str+='<button class="btn btn-directory-type padding-10 '+textColor+'" '+dataType+'>'+
-                icon+ 
-                '<span class="elipsis label-filter">'+tradCategory[e]+'</span>'+
-                countBadge+
-            '</button><br class="hidden-xs">';
     });
     $(".dropdown-types .dropdown-menu").html(str);
     bindLeftMenuFilters();
 }
 function showFiltersInterface(){ 
     if(searchObject.initType=="classifieds"){
-        $(".dropdown-section, .dropdown-types, .dropdown-category, .dropdown-subType, .dropdown-price").show();
+        $(".dropdown-section, .dropdown-types, .dropdown-category, .dropdown-price").show();
         str="";
         $.each(["classifieds","ressources","jobs"], function(key,entry){
             //$.each(modules[entry].categories, function(e,v){
-                str+='<div class="col-md-4 col-sm-4 col-xs-6 no-padding">'+
-                        '<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold elipsis btn-select-type-anc" '+
-                        'data-type-anc="'+tradCategory[modules[entry].categories.labelFront]+'" data-key="'+entry+'" '+
-                        'data-type="classifieds">'+
-                            '<i class="fa fa-'+modules[entry].categories.icon+'"></i> '+
-                            tradCategory[modules[entry].categories.labelFront]+
-                        '</button>'+
-                    '</div>';
+                //str+='<div class="col-md-4 col-sm-4 col-xs-6 no-padding">'+
+                str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold elipsis btn-select-type-anc dropDesign" '+
+                    'data-type-anc="'+tradCategory[modules[entry].categories.labelFront]+'" data-key="'+entry+'" '+
+                    'data-type="classifieds">'+
+                        '<div class="checkbox-filter pull-left"><label>'+
+                            '<input type="checkbox" class="checkbox-info">'+
+                            '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                        '</label></div>'+
+                        '<i class="fa fa-'+modules[entry].categories.icon+'"></i> '+
+                        tradCategory[modules[entry].categories.labelFront]+
+                '</button>';
+                //    '</div>';
             //});
         });
         $(".dropdown-types .dropdown-menu").html(str);
         bindLeftMenuFilters();
     }else if(searchObject.initType=="events"){
-        initCategoriesApp();
-        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-subType, .dropdown-price").hide();
+        initCategoriesApp("events");
+        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-price").hide();
         $(".dropdown-types").show();
     }else if(searchObject.initType=="all"){
-        initCategoriesApp();
-        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-subType, .dropdown-price").hide();
+        initCategoriesApp("all");
+        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-price").hide();
         $(".dropdown-types").show();
     }else if(searchObject.initType=="news"){
         str="";
@@ -842,22 +860,22 @@ function showFiltersInterface(){
             //});
         });
         $(".dropdown-types .dropdown-menu").html(str);
-        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-subType, .dropdown-price").hide();
+        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-price").hide();
     }
 }
 function activeFiltersInterface(filter,value){
     if(filter=="section"){
         $(".dropdown-section .dropdown-toggle").addClass("active").html(tradCategory[value]+" <i class='fa fa-angle-down'></i>");
-        //$(".btn-select-type-anc[data-key='"+value+"']").addClass("active");
+        $(".btn-select-section[data-key='"+value+"']").addClass("active");
     }
     if(filter=="searchSType"){
         $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[value]+" <i class='fa fa-angle-down'></i>");
         if(searchObject.initType=="events")
             $(".btn-directory-type[data-type-event='"+value+"']").addClass("active");
         else{
-            $(".dropdown-section, .dropdown-category, .dropdown-subType").show();
-            $(".btn-select-category[data-keycat='"+value+"']").addClass("active");
-            $(".keycat[data-categ='"+value+"']").removeClass("hidden");
+            $(".dropdown-section, .dropdown-category").show();
+            $(".btn-select-type-anc[data-key='"+value+"']").addClass("active");
+            //$(".keycat[data-categ='"+value+"']").removeClass("hidden");
         }
     }
     if(filter=="tags"){
@@ -872,12 +890,12 @@ function activeFiltersInterface(filter,value){
     }
     if(filter=="category"){
         $(".dropdown-category .dropdown-toggle").addClass("active").html(tradCategory[value]+" <i class='fa fa-angle-down'></i>");
-        $(".keycat[data-keycat='"+value+"'][data-categ='"+searchObject.searchSType+"']").addClass("active");
-        $(".dropdown-subType").show();
+        $(".btn-select-category[data-keycat='"+value+"']").addClass("active");
+        $(".keycat[data-categ='"+value+"']").removeClass("hidden");
     }
     if(filter=="subType"){
-        $(".dropdown-subType .dropdown-toggle").addClass("active").html(tradCategory[value]+" <i class='fa fa-angle-down'></i>");
-        $(".keycat[data-keycat='"+value+"'][data-categ='"+searchObject.searchSType+"']").addClass("active");
+        $(".dropdown-category .dropdown-toggle").addClass("active").html(tradCategory[searchObject.category]+" | "+ tradCategory[value]+" <i class='fa fa-angle-down'></i>");
+        $(".keycat[data-keycat='"+value+"'][data-categ='"+searchObject.category+"']").addClass("active");
     }
     if(filter=="types"){
         $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[value]+" <i class='fa fa-angle-down'></i>");

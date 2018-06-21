@@ -343,7 +343,8 @@ function initPageTable(number){
   function refreshCountBadge(count){
     //console.log("aquuuui",count);
     $.each(searchAllEngine.searchCount, function(e,v){
-      $("#count"+e).text(v);
+      type=(e=="citoyens")? "persons" : e; 
+      $("#count"+type).text(v);
     });
     /*if(searchObject.text!=""){
       countSocial=count.organizations+count.projects+count.places+count.citoyens+count.poi;
@@ -3548,9 +3549,13 @@ var directory = {
         if(typeof objJson.sections != "undefined"){
           str="";
           $.each(objJson.sections, function(e,v){
-            str+='<button class="btn btn-default col-xs-12 padding-10 bold text-dark elipsis btn-select-section" '+
+            str+='<button class="btn btn-default col-xs-12 padding-10 bold text-dark elipsis btn-select-section dropDesign" '+
                   'data-section-anc="'+v.label+'" data-key="'+v.key+'" '+ 
                   'data-section="classifieds">'+
+                  '<div class="checkbox-filter pull-left"><label>'+
+                            '<input type="checkbox" class="checkbox-info">'+
+                            '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                        '</label></div>'+
                     '<i class="fa fa-'+v.icon+' hidden-xs"></i> '+ 
                     tradCategory[v.labelFront]+
               '</button>';
@@ -3569,24 +3574,36 @@ var directory = {
                           '</a>'+
                         '</div>'
                 }
-                else 
-                  str += '<button class="btn btn-default col-xs-12 text-dark btn-select-category margin-bottom-5 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                else {
+                  str += '<button class="btn btn-default col-xs-12 text-dark btn-select-category margin-bottom-5 elipsis dropDesign" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                        '<div class="checkbox-filter pull-left"><label>'+
+                            '<input type="checkbox" class="checkbox-info">'+
+                            '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                        '</label></div>'+
                         '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[k]+'</button><br>';
+                }
                 if(typeof o.subcat != "undefined" && type != "btn" )
                 {
                   $.each( o.subcat ,function(i,oT){
-                      subStr += '<button class="btn btn-default col-xs-12 text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
-                              '<i class="fa fa-angle-right"></i> '+tradCategory[i]+'</button><br class="hidden">';
+                      str += '<button class="btn btn-default col-xs-12 text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+' dropDesign" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                                '<div class="checkbox-filter pull-left"><label>'+
+                                  '<input type="checkbox" class="checkbox-info">'+
+                                  '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                                '</label></div>'+
+                                tradCategory[i]+'</button><br class="hidden">';
                   });
                 }else if(typeof objJson.subcat != "undefined"){
                   $.each( objJson.subcat ,function(i,oT){
                       icon=(typeof oT.icon != "undefined") ? oT.icon : "angle-right";
-                      subStr += '<button class="btn btn-default text-dark col-xs-12 margin-bottom-5 margin-left-15 elipsis hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                      str += '<button class="btn btn-default text-dark col-xs-12 margin-bottom-5 margin-left-15 elipsis hidden keycat keycat-'+k+' dropDesign" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                                '<div class="checkbox-filter pull-left"><label>'+
+                                  '<input type="checkbox" class="checkbox-info">'+
+                                  '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                                '</label></div>'+
                               '<i class="fa fa-'+icon+'"></i> '+tradCategory[i]+'</button><br class="hidden">';
                   });
                 }
                 $(".dropdown-category .dropdown-menu").html(str);
-                $(".dropdown-subType .dropdown-menu").html(subStr);
             });
         }
     },

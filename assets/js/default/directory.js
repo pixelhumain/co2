@@ -2812,7 +2812,7 @@ var directory = {
           if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
              subData="data-ktype='"+addType+"' ";
              typeForm="organization";
-          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "interop")
+          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "jobs" && typeForm != "interop")
             typeForm=typeObj[typeObj[addType].sameAs].ctrl;
           btn+='<button class="btn bg-white margin-left-5 btn-add pull-right text-'+headerParams[addType].color+' '+
             'data-type="'+typeForm+'" '+

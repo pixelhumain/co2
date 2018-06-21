@@ -537,12 +537,16 @@ END CLASSIFIED
 ----------------------------- */
 function interopSearch(keyS, nameS){
     //var key = $(this).data("key");
-    $(".dropdown-sources .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
+    $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
     if(keyS == "co"){
         delete searchObject.source;
         initCountType();
+        $(".dropdown-price .divMoney").removeClass("hidden");
+        $(".dropdown-price .priceMax").removeClass("hidden");
         startSearch(0, indexStepInit, searchCallback);
     }else{
+        $(".dropdown-price .divMoney").addClass("hidden");
+        $(".dropdown-price .priceMax").addClass("hidden");
         searchObject.source = keyS;
         if( typeof interop == "undefined" ){
             lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){

@@ -81,9 +81,22 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchObject.types = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classifieds","ressources"/*,"cities"*/];
-        if(searchObject.text != "" || Object.keys(getSearchLocalityObject()).length > 0) 
-          searchObject.types.push("persons");
+        if(isCustom(typeInit, "types")){
+          searchObject.types = [];
+          alert();
+          $.each(custom.menu[searchObject.initType].filters.types, function(e, v){
+            if($.inArray(v, ["NGO","Group","LocalBusiness","GovernmentOrganization"]) >= 0){
+             if( $.inArray("organizations", searchObject.types)<0)
+              searchObject.types.push("organizations");
+            }else
+              searchObject.types.push(v);
+          });
+        }
+        else{
+          searchObject.types = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classifieds","ressources"/*,"cities"*/];
+          if(searchObject.text != "" || Object.keys(getSearchLocalityObject()).length > 0) 
+            searchObject.types.push("persons");
+        }
     }else if(typeInit == "allSig"){
       searchObject.types = ["persons", "organizations", "projects", "poi", "cities"];
       searchObject.indexStep = 50;
@@ -3535,10 +3548,14 @@ var directory = {
 				// 		'<span class="" >'+v.label+"</span>"+
 				// 	'</button>';
 
-				str+='<button class="btn btn-default col-sm-3 col-xs-12 padding-10 bold text-dark elipsis btn-select-source" '+
-						'data-source="'+v.label+'" data-key="'+v.key+'" style="height: 60px;">'+
-							'<span class="col-xs-2" ><img src="'+parentModuleUrl+v.path+'" width="40" height="40" class=""/></span>'+ 
-							'<span class="col-xs-10 text-left" >'+v.label+"</span>"+
+				str+='<button class="btn btn-default col-xs-12 padding-10 bold text-dark elipsis btn-select-source dropDesign" '+
+						'data-source="'+v.label+'" data-key="'+v.key+'">'+
+							'<div class="checkbox-filter pull-left"><label>'+
+                  '<input type="checkbox" class="checkbox-info">'+
+                  '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+              '</label></div>'+
+              '<span class="pull-left" ><img src="'+parentModuleUrl+v.path+'" width="20" height="20" class=""/></span>'+ 
+							'<span class="pull-left" >'+v.label+"</span>"+
 						'</button>';
 	        });
 			$(".dropdown-sources").show();

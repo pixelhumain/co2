@@ -73,9 +73,13 @@ dynForm = {
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
 	    },
-	    afterSave : function(){
-			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+	    afterSave : function(data,callB){
+	    	if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+		    	//principalement pour les surveys
+		    	if(typeof callB == "function")
+	    			callB();
+	    	}
 		    else { 
 		    	mylog.log("here", isMapEnd);
 		    	if(typeof networkJson != "undefined")

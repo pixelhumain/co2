@@ -101,7 +101,7 @@ dynForm = {
             								{ admin : trad.administrator, member : trad.Member, creator : trad.justCitizen }, 
             								{ required : true } ),
             tags : dyFInputs.tags(),
-            formLocality : dyFInputs.formLocality(tradDynForm.addLocality, tradDynForm.addLocality, {}),
+            formLocality : dyFInputs.formLocality(tradDynForm.addLocality, tradDynForm.addLocality),
             location : dyFInputs.location,
 	        image : dyFInputs.image(),
             email : dyFInputs.text(),

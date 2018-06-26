@@ -602,13 +602,17 @@ function constructSearchObjectAndGetParams(){
     getStatus+="page="+(searchObject.page+1);
   }
   if(typeof searchObject.searchSType != "undefined"){
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="searchSType="+searchObject.searchSType;
+    if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.searchSType == "undefined"){
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="searchSType="+searchObject.searchSType;
+    }
     searchConstruct.searchSType = searchObject.searchSType;
   }
   if(typeof searchObject.section != "undefined"){
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="section="+searchObject.section;
+    if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.section == "undefined"){
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="section="+searchObject.section;
+    }
     searchConstruct.section = searchObject.section;
   }
   if(typeof searchObject.category != "undefined"){
@@ -745,6 +749,8 @@ function initSearchObject(){
     }
     if(searchObject.initType=="classifieds") 
         activeClassifiedFilters();
+    if(searchObject.initType=="all" || searchObject.initType=="events")
+        initCategoriesApp(searchObject.initType);
 }
 function activeClassifiedFilters(){
     if(typeof searchObject.priceMin != "undefined" || typeof searchObject.priceMax != "undefined" || typeof searchObject.devise != "undefined")
@@ -759,7 +765,7 @@ function activeClassifiedFilters(){
         activeFiltersInterface("section", searchObject.section, "classifieds");
     if(typeof searchObject.category != "undefined")
         activeFiltersInterface("category", searchObject.category, "classifieds");
-    if(typeof searchObject.searchSType != "subType")
+    if(typeof searchObject.subType != "undefined")
         activeFiltersInterface("subType", searchObject.subType, "classifieds");
 }
 function initCategoryClassifieds(typeKey){
@@ -816,71 +822,129 @@ function initCategoriesApp(type){
 
         }else{
             dataType="data-type='"+e+"'";
-            countBadge='<span class="count-badge-filter" id="count'+e+'"></span>';
+            countBadge=(e!="all") ? '<span class="count-badge-filter" id="count'+e+'"></span>' : "";
             textColor= (typeof v.color != "undefined") ? "text-"+v.color : "";
-            classType= (e=="all") ? 'col-xs-12 btn-default' : "padding-10 col-xs-4";
+            classType= (e=="all") ? 'col-xs-12 btn-default' : "padding-10 col-xs-12";
                 icon = (typeof v.icon != "undefined") ? "<i class='fa fa-"+v.icon+"'></i> " : "";
                 str+='<button class="btn btn-directory-type '+textColor+' '+classType+'" '+dataType+'>'+
-                        icon;
-                        if(e!="all"){
-                str+=       "<br/>"+ 
-                            '<span class="elipsis label-filter">'+tradCategory[e]+'</span><br/>'+
+                        icon+
+                        //if(e!="all"){
+                //str+=       "<br/>"+ 
+                            '<span class="elipsis label-filter">'+tradCategory[e]+'</span>'+
                             countBadge
-                        }else
-                str+=       '<span class="elipsis label-filter">'+tradCategory[e]+'</span><br/>';
+                      //  }else
+                //str+=       '<span class="elipsis label-filter">'+tradCategory[e]+'</span><br/>';
                  str+=   '</button>';
         }
     });
     $(".dropdown-types .dropdown-menu").html(str);
     bindLeftMenuFilters();
 }
-function showFiltersInterface(){ 
-    if(searchObject.initType=="classifieds"){
-        $(".dropdown-section, .dropdown-types, .dropdown-category, .dropdown-price").show();
-        str="";
-        $.each(["classifieds","ressources","jobs"], function(key,entry){
-            //$.each(modules[entry].categories, function(e,v){
-                //str+='<div class="col-md-4 col-sm-4 col-xs-6 no-padding">'+
-                str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold elipsis btn-select-type-anc dropDesign" '+
-                    'data-type-anc="'+tradCategory[modules[entry].categories.labelFront]+'" data-key="'+entry+'" '+
-                    'data-type="classifieds">'+
-                        '<div class="checkbox-filter pull-left"><label>'+
-                            '<input type="checkbox" class="checkbox-info">'+
-                            '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
-                        '</label></div>'+
-                        '<i class="fa fa-'+modules[entry].categories.icon+'"></i> '+
-                        tradCategory[modules[entry].categories.labelFront]+
-                '</button>';
-                //    '</div>';
-            //});
-        });
-        $(".dropdown-types .dropdown-menu").html(str);
-        bindLeftMenuFilters();
-    }else if(searchObject.initType=="events"){
-        initCategoriesApp("events");
-        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-price").hide();
-        $(".dropdown-types").show();
-    }else if(searchObject.initType=="all"){
-        initCategoriesApp("all");
-        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-price").hide();
-        $(".dropdown-types").show();
-    }else if(searchObject.initType=="news"){
-        str="";
-        $.each([{"key":"all", "label":"all", "icon":"newspaper-o"},{"key":"news", "label":"onlynews", "icon":"rss"},{"key":"activityStream","label":"activityCommunecter", "icon":"map-marker"},{"key":"surveys", "label":"surveys", "icon":"gavel"}], function(key,entry){
-            //$.each(modules[entry].categories, function(e,v){
-                str+='<div class="col-xs-12 no-padding">'+
-                        '<button class="btn btn-default bold elipsis btn-news-type-filters col-xs-12" '+
-                        'data-type-anc="'+entry.key+'" data-key="'+entry.key+'" data-label="'+entry.label+'" '+
-                        'data-type="news">'+
-                            '<i class="fa fa-'+entry.icon+'"></i> '+
-                            tradCategory[entry.label]+
-                        '</button>'+
-                    '</div>';
-            //});
-        });
-        $(".dropdown-types .dropdown-menu").html(str);
-        $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-price").hide();
+function isCustom(typeInterface, labelFilter){
+    res=false;
+    if(typeof custom != "undefined" 
+            && typeof custom.menu != "undefined" 
+            && typeof custom.menu[typeInterface] != "undefined"){
+            if(notNull(labelFilter)){
+                if(typeof custom.menu[typeInterface].filters != "undefined" && typeof custom.menu[typeInterface].filters[labelFilter] != "undefined")
+                    return true;
+                else
+                    return false;
+            }else if(_.isObject(custom.menu[typeInterface]))
+                return true;
     }
+    return res;
+}
+function showFiltersInterface(){ 
+    if(isCustom(searchObject.initType))
+        customFiltersInterface();
+    else{
+        if(searchObject.initType=="classifieds"){
+                $(".dropdown-section, .dropdown-types, .dropdown-category, .dropdown-price").show();
+                str="";
+                $.each(["classifieds","ressources","jobs"], function(key,entry){
+                    //$.each(modules[entry].categories, function(e,v){
+                        //str+='<div class="col-md-4 col-sm-4 col-xs-6 no-padding">'+
+                        str+='<button class="btn btn-default col-md-12 col-sm-12 padding-10 bold elipsis btn-select-type-anc dropDesign" '+
+                            'data-type-anc="'+tradCategory[modules[entry].categories.labelFront]+'" data-key="'+entry+'" '+
+                            'data-type="classifieds">'+
+                                '<div class="checkbox-filter pull-left"><label>'+
+                                    '<input type="checkbox" class="checkbox-info">'+
+                                    '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                                '</label></div>'+
+                                '<i class="fa fa-'+modules[entry].categories.icon+'"></i> '+
+                                tradCategory[modules[entry].categories.labelFront]+
+                        '</button>';
+                        //    '</div>';
+                    //});
+                });
+                $(".dropdown-types .dropdown-menu").html(str);
+            bindLeftMenuFilters();
+        }else if(searchObject.initType=="events"){
+            //initCategoriesApp("events");
+            $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-price").hide();
+            $(".dropdown-tags, .dropdown-types").show();
+        }else if(searchObject.initType=="all"){
+            //initCategoriesApp("all");
+            $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-price").hide();
+            $(".dropdown-tags, .dropdown-types").show();
+        }else if(searchObject.initType=="news"){
+            str="";
+            $.each([{"key":"all", "label":"all", "icon":"newspaper-o"},{"key":"news", "label":"onlynews", "icon":"rss"},{"key":"activityStream","label":"activityCommunecter", "icon":"map-marker"},{"key":"surveys", "label":"surveys", "icon":"gavel"}], function(key,entry){
+                //$.each(modules[entry].categories, function(e,v){
+                    str+='<div class="col-xs-12 no-padding">'+
+                            '<button class="btn btn-default bold elipsis btn-news-type-filters col-xs-12 dropDesign" '+
+                            'data-type-anc="'+entry.key+'" data-key="'+entry.key+'" data-label="'+entry.label+'" '+
+                            'data-type="news">'+
+                                '<div class="checkbox-filter pull-left"><label>'+
+                                    '<input type="checkbox" class="checkbox-info">'+
+                                    '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                                '</label></div>'+
+                                '<i class="fa fa-'+entry.icon+'"></i> '+
+                                tradCategory[entry.label]+
+                            '</button>'+
+                        '</div>';
+                //});
+            });
+            $(".dropdown-types .dropdown-menu").html(str);
+            $(".dropdown-tags, .dropdown-types").show();
+            $(".dropdown-section, .dropdown-category, .dropdown-sources, .dropdown-price").hide();
+        }
+    }
+}
+function customFiltersInterface(){
+    show={
+        all:["tags", "types"],
+        events:["tags", "types"],
+        news:["tags", "types"],
+        classifieds:["tags", "types", "section", "category", "price", "source"]};
+    $.each(custom.menu[searchObject.initType].filters, function(e, v){
+        if(v.length > 1){
+            custom.categories=new Object;
+            custom.categories=v;
+            if(e=="types"){
+                $.each(categoriesFilters, function(i, content){
+                    if($.inArray(i, v) < 0 && i!="all")
+                        delete categoriesFilters[i];
+                });
+            }
+        }else{
+            keyfilter=e;
+            if(e=="types" && searchObject.initType!="news"){
+                keyfilter="searchSType";
+            }
+            if(typeof searchObject.forced == "undefined") searchObject.forced=new Object,
+            searchObject.forced[keyfilter]=v[0];
+            searchObject[keyfilter]=(searchObject.initType=="news") ? [v[0]] : v[0];
+            delete show[searchObject.initType][e];
+            $("#filters-nav-list .dropdown-"+e).remove();
+        }
+    });
+    menuToShow="";
+    $.each(show[searchObject.initType], function(e,v){
+        menuToShow+=(menuToShow != "") ? ", .dropdown-"+v : ".dropdown-"+v;
+    });
+    $(menuToShow).show();
 }
 function activeFiltersInterface(filter,value){
     if(filter=="section"){

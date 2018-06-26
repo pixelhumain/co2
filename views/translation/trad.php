@@ -515,6 +515,14 @@ var trad = {
 };
 
 var tradDynForm = {
+	
+	"addressSummary" : "<?php echo Yii::t("common","Address Summary" ); ?>",
+	"confirmAddress" : "<?php echo Yii::t("common","Confirm address" ); ?>",
+	"valideFormInMap" : "<?php echo Yii::t("common","ValideFormInMap" ); ?>",
+	"doNotForgetToGeolocateYourAddress" : "<?php echo Yii::t("common","Do not forget to geolocate your address." ); ?>",
+	"searchACityATownOrAPostalCode" : "<?php echo Yii::t("common","Search a city, a town or a postal code"); ?>",
+	"addLocality" : "<?php echo Yii::t("common","Add Locality"); ?>",
+	"country" : "<?php echo Yii::t("common","Country"); ?>",
 	"launchInvitations" : "<?php echo Yii::t("common","Launch invitations"); ?>",
 	"weWereUnableToReadYourFile" : "<?php echo Yii::t("invite","We were unable to read your file."); ?>",
 	"youMustUseACSVFormat" : "<?php echo Yii::t("invite","You must use a CSV format"); ?>",

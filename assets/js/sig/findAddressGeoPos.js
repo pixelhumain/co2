@@ -402,7 +402,6 @@ function addResultsInForm(commonGeoObj, countryCode){
 			dyFObj.formInMap.NE_lat = $(this).data("lat");
 			dyFObj.formInMap.NE_lng = $(this).data("lng");
 			dyFObj.formInMap.showWarningGeo(false);
-			dyFObj.formInMap.valideLocality();
 		}
 	});
 }

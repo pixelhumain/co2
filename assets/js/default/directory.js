@@ -334,9 +334,12 @@ function initPageTable(number){
             pageCount=false;
             searchObject.page=(page-1);
             scrollEnd=false;
-            indexMin=searchObject.indexStep*searchObject.page;
+            searchObject.indexMin=searchObject.indexStep*searchObject.page;
             pageEvent=true;
-            startSearch(indexMin,indexStep);
+            if(typeof searchObject.source != "undefined")
+              interopSearch(searchObject.source, searchObject.source);
+            else
+              startSearch(searchObject.indexMin,searchObject.indexStep);
           }
       });
   }

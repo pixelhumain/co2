@@ -534,29 +534,42 @@ END CLASSIFIED
 ----------------------------- */
 function interopSearch(keyS, nameS){
     //var key = $(this).data("key");
-    $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
+    
     if(keyS == "co"){
         delete searchObject.source;
         initCountType();
+        $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
         $(".dropdown-price .divMoney").removeClass("hidden");
         $(".dropdown-price .priceMax").removeClass("hidden");
-        startSearch(0, indexStepInit, searchCallback);
+        $(".dropdown-category").removeClass("hidden");
+        $(".btn-select-category[data-keycat='training']").removeClass("hidden");
+        $(".btn-select-category[data-keycat='internship']").removeClass("hidden");
+        startSearch(searchObject.indexMin, searchObject.indexStep, searchCallback);
     }else{
         $(".dropdown-price .divMoney").addClass("hidden");
         $(".dropdown-price .priceMax").addClass("hidden");
+        $(".dropdown-section").addClass("hidden");
+        $(".btn-select-category[data-keycat='training']").addClass("hidden");
+        $(".btn-select-category[data-keycat='internship']").addClass("hidden");
         searchObject.source = keyS;
         if( typeof interop == "undefined" ){
             lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
                 if( typeof interopObj == "undefined" ){
                    lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
-                        interopObj[keyS].startSearch();
+                        nameS = interopObj[keyS].name ;
+                        $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
+                        interopObj[keyS].startSearch(searchObject.indexMin, searchObject.indexStep);
                     } ); 
                }else{
-                    interopObj[keyS].startSearch(); 
+                    nameS = interopObj[keyS].name ;
+                    $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
+                    interopObj[keyS].startSearch(searchObject.indexMin, searchObject.indexStep); 
                }
             });
         } else {
-            interopObj[keyS].startSearch();
+            nameS = interopObj[keyS].name ;
+            $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
+            interopObj[keyS].startSearch(searchObject.indexMin, searchObject.indexStep);
         }
     }
 }

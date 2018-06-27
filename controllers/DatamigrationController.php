@@ -4504,7 +4504,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 								"childName" => $value["name"],
 								"roles" => array() );
 			//var_dump($child);
-			$res["organizations"][] = Link::multiconnect($child, "5a3132e440bb4ef422243a4b", Organization::COLLECTION);
+			$res["organizations"][] = Link::multiconnect($child, "577e4ad740bb4e9c6e10130d", Organization::COLLECTION);
 
 			$res["update"][] = PHDB::update(Organization::COLLECTION, 
 										  	array("_id"=>new MongoId($key)),

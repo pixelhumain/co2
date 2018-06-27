@@ -142,7 +142,7 @@ function getFloopItem(id, type, value){
 
 			chatColor = (value.hasRC) ? "text-red" : "";
 			HTML += '<button class="btn btn-xs btn-default btn-open-chat pull-right '+chatColor+' contact'+id+'" '+
-					'data-name-el="'+value.name+'" data-username="'+chatUsername+'" data-slug="'+chatSlug+'" data-type-el="'+type.name+'"  data-open="'+( (value.preferences.isOpenEdition)?true:false )+'"  data-hasRC="'+( ( value.hasRC )?true:false)+'" data-id="'+id+'">'+
+					'data-name-el="'+value.name+'" data-username="'+chatUsername+'" data-slug="'+chatSlug+'" data-type-el="'+type.name+'"  data-open="'+( (value.preferences && value.preferences.isOpenEdition)?true:false )+'"  data-hasRC="'+( ( value.hasRC )?true:false)+'" data-id="'+id+'">'+
 				'<i class="fa fa-comments"></i>'+
 			'</button>';
 			/*if( value.preferences.isOpenEdition == false )

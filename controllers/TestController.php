@@ -1673,4 +1673,9 @@ La vie en santé;Santé;;
 		echo $time." < ".$expire." : ".($time < $expire);
 		echo "<br>reste : ".($expire-$time) ;
 	}
+
+
+	public function actionTestSecondTime(){
+		$form = PHDB::findOne( Form::COLLECTION, array("id"=>$parentSurvey), $fields);
+	}
 }

@@ -277,6 +277,7 @@ jQuery(document).ready(function() {
         activeTagsFilter();
         startNewsSearch(true);
     });
+    if(searchObject.text != "") $("#main-search-bar, #second-search-bar").val(searchObject.text);
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());

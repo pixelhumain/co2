@@ -1675,7 +1675,10 @@ La vie en santé;Santé;;
 	}
 
 
-	public function actionTestSecondTime(){
-		$form = PHDB::findOne( Form::COLLECTION, array("id"=>$parentSurvey), $fields);
+	public function actionGetSurveyByFormId(){
+		
+		$link = Form::getSurveyByFormId("5b27a1e35a7c00d4d97509d0", Person::COLLECTION, "isAdmin");
+		Rest::json($link);exit;
+
 	}
 }

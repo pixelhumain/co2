@@ -54,6 +54,9 @@
 	#contentBanner img{
 		min-height:280px;
 	}
+	.badgePH{
+		padding: 5px 10px;
+	}
 </style>
 
 <?php 
@@ -103,9 +106,21 @@
 		} ?>
 	</div>
 	
-	<?php if(!empty($element["preferences"]["isOpenEdition"]) || !empty($element["preferences"]["isOpenData"]) ){ ?>
-    <div class="section-badges pull-right">
+	<?php if(!empty($element["preferences"]["isOpenEdition"]) || !empty($element["preferences"]["isOpenData"]) || !empty($element["preferences"]["private"]) ){ ?>
+    <div class="section-badges pull-right no-padding">
 		<div class="no-padding">
+			<?php if (!empty($element["preferences"]["private"])) { ?>
+				<div class="badgePH pull-left" data-title="Only reserved to the community">
+					<a href="javascript:;" class="editConfidentialityBtn">
+					<span class="pull-right tooltips text-red" data-toggle="tooltip" data-placement="bottom" 
+							title="<?php echo Yii::t("common","Only reserved to the community") ?>" 
+							style="font-size: 13px; line-height: 30px;">
+						<i class="fa fa-lock" style="font-size: 17px;"></i> 
+						<?php echo Yii::t("common","Private") ?>
+					</span>
+					</a>
+				</div>
+			<?php } ?>
 			<?php if(!empty($element["preferences"]["isOpenData"])){?>
 				<?php //if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
 					<div class="badgePH pull-left" data-title="OPENDATA">
@@ -123,7 +138,7 @@
 			} ?>
 
 			<?php if (!empty($element["preferences"]["isOpenEdition"])) { ?>
-				<div class="badgePH pull-left margin-left-15" data-title="OPENEDITION">
+				<div class="badgePH pull-left" data-title="OPENEDITION">
 					<a href="javascript:;" class="btn-show-activity">
 					<span class="pull-right tooltips" data-toggle="tooltip" data-placement="left" 
 							title="<?php echo Yii::t("common","All users can participate and modify informations") ?>" 

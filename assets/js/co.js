@@ -659,6 +659,63 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 }		
 
 var CoAllReadyLoad = false;
+
+function  bindLBHLinks() { 
+	$(".lbh").unbind("click").on("click",function(e) {  	
+		e.preventDefault();
+		$("#openModal").modal("hide");
+		mylog.warn("***************************************");
+		mylog.warn("bindLBHLinks",$(this).attr("href"));
+		mylog.warn("***************************************");
+		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
+	    urlCtrl.loadByHash( h );
+	});
+	$(".lbh-menu-app").unbind("click").on("click",function(e){
+		e.preventDefault();
+		resetSearchObject();
+		historyReplace=true;
+		urlCtrl.loadByHash($(this).data("hash"));
+	})
+	//open any url in a modal window
+	$(".lbhp").unbind("click").on("click",function(e) {
+		e.preventDefault();
+		$("#openModal").modal("hide");
+		mylog.warn("***************************************");
+		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
+		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
+		mylog.warn("***************************************");
+		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
+		if( $(this).data("modalshow") ){
+			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
+			if(h.indexOf("#page") >= 0)
+				url="app/"+url
+	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
+			//smallMenu.open ( getAjax(directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
+			
+		}
+		else {
+			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
+	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
+	    	//smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url ,"","blockUI",h);
+		}
+	});
+
+
+	//open any url in a preview window
+	$(".lbh-preview-element").unbind("click").on("click",function(e) {
+		e.preventDefault();
+		$("#openModal").modal("hide");
+		mylog.warn("***************************************");
+		mylog.warn("bindLBHLinks Preview ELEMENT", $(this).attr("href"),$(this).data("modalshow"));
+		mylog.warn("***************************************");
+		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
+		var url = (h.indexOf("#") == 0 ) ? "app/"+ urlCtrl.convertToPath(h) : "app/"+ h;
+		openPreviewElement( baseUrl+'/'+moduleId+"/"+url);
+			//smallMenu.open ( getAjax(directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
+	});
+}
+
+
 var urlCtrl = {
 	afterLoad : null,
 	loadableUrls : {
@@ -1022,308 +1079,6 @@ var urlCtrl = {
 	}
 }
 
-/* ****************
-Generic non-ajax panel loading process 
-**************/
-function showPanel(box,callback)
-{ 
-	$(".my-main-container").scrollTop(0);
-
-  	$(".box").hide(200);
-  	showNotif(false);
-  	
-  	if(isMapEnd) showMap(false);
-			
-	mylog.log("showPanel",box);
-	//showTopMenu(false);
-	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
-
-	$("."+box).show(500);
-	if (typeof callback == "function") {
-		callback();
-	}
-}
-
-
-/* ****************
-Generic ajax panel loading process 
-loads any REST Url endpoint returning HTML into the content section
-also switches the global Title and Icon
-**************/
-
-function  processingBlockUi() { 
-	mylog.log("processingBlockUi");
-	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
-			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
-		  '</h4>';
-
-	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
-		msg = themeObj.blockUi.processingMsg;
-	$.blockUI({ message :  msg });
-	bindLBHLinks();
-}
-function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
-	//alert("showAjaxPanel"+url);
-	$(".progressTop").show().val(20);
-	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
-	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
-	//var dest = themeObj.mainContainer;
-	hideScrollTop = false;
-	//alert("showAjaxPanel"+dest);
-	showNotif(false);
-			
-	$(".hover-info,.hover-info2").hide();
-	showMap(false);
-
-	$(".box").hide(200);
-	//showPanel('box-ajax');
-	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
-	$(".panelTitle").html(icon+title).fadeIn();
-	mylog.log("GETAJAX",icon+title);
-	//showTopMenu(true);
-	userIdBefore = userId;
-	setTimeout(function(){
-		if( $(dest).length )
-		{
-			setTimeout(function(){ $('.progressTop').val(40)}, 1000);
-			setTimeout(function(){ $('.progressTop').val(60)}, 3000);
-			getAjax(dest, url, function(data){ 
-				
-				if( dest != themeObj.mainContainer )
-					$(".subModuleTitle").html("");
-
-				$(".modal-backdrop").hide();
-				bindExplainLinks();
-				bindTags();
-				bindLBHLinks();
-				$(".progressTop").val(90);
-				setTimeout(function(){ $(".progressTop").val(100)}, 10);
-				$(".progressTop").fadeOut(200);
-				$.unblockUI();
-
-				if(mapEnd)
-					showMap(true);
-
-				
-					addBtnSwitch();
-				
-
-	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
-	        		uploadObj.set(contextData.type,contextData.id);
-	        	}
-	        	
-	        	if( typeof urlCtrl.afterLoad == "function") {
-	        		urlCtrl.afterLoad();
-	        		urlCtrl.afterLoad = null;
-	        	}
-
-	        	if( custom && custom.logo )
-	    			$(".logo-menutop").attr( {'src':custom.logo} ); 	
-
-
-	        	/*if(debug){
-	        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
-	        			if(prevDbAccessCount == 0){
-	        				dbAccessCount = parseInt(data);
-	        				prevDbAccessCount = dbAccessCount;
-	        			} else {
-	        				dbAccessCount = parseInt(data)-prevDbAccessCount;
-	        				prevDbAccessCount = parseInt(data);
-	        			}
-	        			//console.error('dbaccess:'+prevDbAccessCount);
-	        			
-	        			//$(".dbAccessBtn").remove();
-	        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
-	        		},null);
-	        	}*/
-	        },"html");
-		} else 
-			console.error( 'showAjaxPanel', dest, "doesn't exist" );
-	}, 100);
-}
-/*prevDbAccessCount = 0; 
-function clearDbAccess() { 
-	getAjax(null, baseUrl+'/'+moduleId+"/log/clear", function(data){ 
-		$(".dbAccessBtn").remove();
-		prevDbAccessCount = 0; 
-	});
-}*/
-
-function decodeHtml(str) {
-	mylog.log("decodeHtml", str);
-    var txt = document.createElement("textarea");
-    txt.innerHTML = str;
-    mylog.log("decodeHtml",  txt.value);
-    return txt.value;
-}
-
-function setTitle(str, icon, topTitle,keywords,shortDesc) { mylog.log("setTitle", str);
-	if(typeof icon != "undefined" && icon != "")
-		icon = ( icon.indexOf("<i") >= 0 ) ? icon : "<i class='fa fa-"+icon+"'></i> ";
-
-	//$(".moduleLabel").html( icon +" "+ str);
-
-	if(topTitle)
-		str = topTitle;
-	
-	$(document).prop('title', ( str != "" ) ? str : "Communecter, se connecter à sa commune" );
-	
-	if(notNull(keywords))
-		$('meta[name="keywords"]').attr("content",keywords);
-	else
-		$('meta[name="keywords"]').attr("content","communecter,connecter, commun,commune, réseau, sociétal, citoyen, société, territoire, participatif, social, smarterre");
-	
-	if(notNull(shortDesc))
-		$('meta[name="description"]').attr("content",shortDesc);
-	else
-		$('meta[name="description"]').attr("content","Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.");
-}
-
-
-function checkMenu(urlObj, hash){
-	mylog.log("checkMenu *******************", hash);
-	//mylog.dir(urlObj);
-	$(".menu-button-left").removeClass("selected");
-	if(typeof urlObj.menuId != "undefined"){ mylog.log($("#"+urlObj.menuId).data("hash"));
-		if($("#"+urlObj.menuId).attr("href") == hash)
-			$("#"+urlObj.menuId).addClass("selected");
-	}
-}
-
-var backUrl = null;
-function checkIsLoggued(uId){
-	if( uId == "" ||  typeof uId == "undefined" ){
-		mylog.warn("");
-		toastr.error("<h1>Section Sécuriser, Merci de vous connecter!</h1>");
-		
-		setTitle("Section Sécuriser", "user-secret");
-
-		backUrl = location.hash;
-		Login.openLogin();
-    	
-    	resetUnlogguedTopBar();
-	}else 
-		return true;
-}
-function resetUnlogguedTopBar() { 
-	//put anything that needs to be reset 
-	//replace the loggued toolBar nav by log buttons
-	$('.topMenuButtons').html('<button class="btn-top btn btn-success  hidden-xs" onclick="showPanel(\'box-register\');"><i class="fa fa-plus-circle"></i> <span class="hidden-sm hidden-md hidden-xs">Sinscrire</span></button>'+
-							  ' <button class="btn-top btn bg-red  hidden-xs" style="margin-right:10px;" onclick="showPanel(\'box-login\');"><i class="fa fa-sign-in"></i> <span class="hidden-sm hidden-md hidden-xs">Se connecter</span></button>');
-}
-
-function _checkLoggued() { 
-	$.ajax({
-	  type: "POST",
-	  url: baseUrl+"/"+moduleId+"/person/logged",
-	  success: function(data){
-		if( !data.userId || data.userId == "" ||  typeof data.userId == "undefined" ){
-			/*userId = data.userId;
-			resetUnlogguedTopBar();*/
-			window.location.reload();
-		}
-	  },
-	  dataType: "json"
-	});
-}
-
-
-/* ****************
-visualize all tagged elements on a map
-**************/
-function showTagOnMap (tag) { 
-
-	mylog.log("showTagOnMap",tag);
-
-	var data = { 	 "name" : tag, 
-		 			 "locality" : "",
-		 			 "searchType" : [ "persons" ], 
-		 			 //"searchBy" : "INSEE",
-            		 "indexMin" : 0, 
-            		 "indexMax" : 500  
-            		};
-
-        //setTitle("", "");$(".moduleLabel").html("<i class='fa fa-spin fa-circle-o-notch'></i> Les acteurs locaux : <span class='text-red'>" + cityNameCommunexion + ", " + cpCommunexion + "</span>");
-		
-		$.blockUI({
-			message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i> Recherches des collaborateurs ...</h1>"
-		});
-
-		showMap(true);
-		
-		$.ajax({
-	      type: "POST",
-	          url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
-	          data: data,
-	          dataType: "json",
-	          error: function (data){
-	             mylog.log("error"); mylog.dir(data);          
-	          },
-	          success: function(data){
-	            if(!data){ toastr.error(data.content); }
-	            else{
-	            	mylog.dir(data);
-	            	Sig.showMapElements(Sig.map, data);
-	            	//setTitle("", "");$(".moduleLabel").html("<i class='fa fa-connect-develop'></i> Les acteurs locaux : <span class='text-red'>" + cityNameCommunexion + ", " + cpCommunexion + "</span>");
-					//$(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté : " + cityNameCommunexion + ', ' + cpCommunexion);
-					//toastr.success('Vous êtes communecté !<br/>' + cityNameCommunexion + ', ' + cpCommunexion);
-					$.unblockUI();
-	            }
-	          }
-	 	});
-
-	//urlCtrl.loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
-	//Sig.showFilterOnMap(tag);
-}
-
-/* ****************
-show a definition in the focus menu panel
-**************/
-function showDefinition( id,copySection ){ 
-
-	setTimeout(function(){
-		mylog.log("showDefinition",id,copySection);
-		
-		//$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
-		
-		if(copySection){
-			contentHTML = $("."+id).html();
-			if(copySection != true)
-				contentHTML = copySection;
-			smallMenu.open(contentHTML);
-			bindExplainLinks()	
-		}
-		else {
-			$(".hover-info").css("display" , "inline");
-			toggle( "."+id , ".explain" );
-			$("."+id+" .explainDesc").removeClass("hide");
-		}
-		return false;
-	}, 500);
-}
-
-var timeoutHover = setTimeout(function(){}, 0);
-var hoverPersist = false;
-var positionMouseMenu = "out";
-
-function activateHoverMenu () { 
-	//mylog.log("enter all");
-	positionMouseMenu = "in";
-	$(themeObj.mainContainer).animate({ opacity:0.3 }, 400 );
-	$(".lbl-btn-menu-name").show(200);
-	$(".lbl-btn-menu-name").css("display", "inline");
-	$(".menu-button-title").addClass("large");
-
-	showInputCommunexion();
-
-	hoverPersist = false;
-	clearTimeout(timeoutHover);
-	timeoutHover = setTimeout(function(){
-		hoverPersist = true;
-	}, 1000);
-}
-
-var favTypes = [];
 var smallMenu = {
 	destination : ".menuSmallBlockUI",
 	inBlockUI : true,
@@ -1517,7 +1272,329 @@ var smallMenu = {
 		else
 			el.html(content);
 	}
+};
+
+function showAjaxPanel (url,title,icon, mapEnd , urlObj) { 
+	//alert("showAjaxPanel"+url);
+	$(".progressTop").show().val(20);
+	var dest = ( typeof urlObj == "undefined" || typeof urlObj.useHeader != "undefined" ) ? themeObj.mainContainer : ".pageContent" ;
+	mylog.log("showAjaxPanel", url, urlObj,dest,urlCtrl.afterLoad );	
+	//var dest = themeObj.mainContainer;
+	hideScrollTop = false;
+	//alert("showAjaxPanel"+dest);
+	showNotif(false);
+			
+	$(".hover-info,.hover-info2").hide();
+	showMap(false);
+
+	$(".box").hide(200);
+	//showPanel('box-ajax');
+	icon = (icon) ? " <i class='fa fa-"+icon+"'></i> " : "";
+	$(".panelTitle").html(icon+title).fadeIn();
+	mylog.log("GETAJAX",icon+title);
+	//showTopMenu(true);
+	userIdBefore = userId;
+	setTimeout(function(){
+		if( $(dest).length )
+		{
+			setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+			setTimeout(function(){ $('.progressTop').val(60)}, 3000);
+			getAjax(dest, url, function(data){ 
+				
+				if( dest != themeObj.mainContainer )
+					$(".subModuleTitle").html("");
+
+				$(".modal-backdrop").hide();
+				bindExplainLinks();
+				bindTags();
+				bindLBHLinks();
+				$(".progressTop").val(90);
+				setTimeout(function(){ $(".progressTop").val(100)}, 10);
+				$(".progressTop").fadeOut(200);
+				$.unblockUI();
+
+				if(mapEnd)
+					showMap(true);
+
+				
+					addBtnSwitch();
+				
+
+	    		if(typeof contextData != "undefined" && contextData != null && contextData.type && contextData.id ){
+	        		uploadObj.set(contextData.type,contextData.id);
+	        	}
+	        	
+	        	if( typeof urlCtrl.afterLoad == "function") {
+	        		urlCtrl.afterLoad();
+	        		urlCtrl.afterLoad = null;
+	        	}
+
+	        	if( custom && custom.logo )
+	    			$(".logo-menutop").attr( {'src':custom.logo} ); 	
+
+
+	        	/*if(debug){
+	        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
+	        			if(prevDbAccessCount == 0){
+	        				dbAccessCount = parseInt(data);
+	        				prevDbAccessCount = dbAccessCount;
+	        			} else {
+	        				dbAccessCount = parseInt(data)-prevDbAccessCount;
+	        				prevDbAccessCount = parseInt(data);
+	        			}
+	        			//console.error('dbaccess:'+prevDbAccessCount);
+	        			
+	        			//$(".dbAccessBtn").remove();
+	        			//$(".menu-info-profil").prepend('<span class="text-red dbAccessBtn" ><i class="fa fa-database text-red text-bold fa-2x"></i> '+dbAccessCount+' <a href="javascript:clearDbAccess();"><i class="fa fa-times text-red text-bold"></i></a></span>');
+	        		},null);
+	        	}*/
+	        },"html");
+		} else 
+			console.error( 'showAjaxPanel', dest, "doesn't exist" );
+	}, 100);
 }
+
+
+function inMyContacts (type,id) { 
+	var res = false ;
+	var type= (type=="citoyens") ? "people" : type;
+	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
+		$.each( myContacts[type], function( key,val ){
+			//mylog.log("val", val);
+			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
+				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
+				res = true;
+				return ;
+			}
+		});
+	}
+	return res;
+}
+/* ****************
+Generic non-ajax panel loading process 
+**************/
+function showPanel(box,callback)
+{ 
+	$(".my-main-container").scrollTop(0);
+
+  	$(".box").hide(200);
+  	showNotif(false);
+  	
+  	if(isMapEnd) showMap(false);
+			
+	mylog.log("showPanel",box);
+	//showTopMenu(false);
+	$(themeObj.mainContainer).animate({ top: -1500, opacity:0 }, 500 );
+
+	$("."+box).show(500);
+	if (typeof callback == "function") {
+		callback();
+	}
+}
+
+
+/* ****************
+Generic ajax panel loading process 
+loads any REST Url endpoint returning HTML into the content section
+also switches the global Title and Icon
+**************/
+
+function  processingBlockUi() { 
+	mylog.log("processingBlockUi");
+	msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
+			'<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
+		  '</h4>';
+
+	if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
+		msg = themeObj.blockUi.processingMsg;
+	$.blockUI({ message :  msg });
+	bindLBHLinks();
+}
+
+/*prevDbAccessCount = 0; 
+function clearDbAccess() { 
+	getAjax(null, baseUrl+'/'+moduleId+"/log/clear", function(data){ 
+		$(".dbAccessBtn").remove();
+		prevDbAccessCount = 0; 
+	});
+}*/
+
+function decodeHtml(str) {
+	mylog.log("decodeHtml", str);
+    var txt = document.createElement("textarea");
+    txt.innerHTML = str;
+    mylog.log("decodeHtml",  txt.value);
+    return txt.value;
+}
+
+function setTitle(str, icon, topTitle,keywords,shortDesc) { mylog.log("setTitle", str);
+	if(typeof icon != "undefined" && icon != "")
+		icon = ( icon.indexOf("<i") >= 0 ) ? icon : "<i class='fa fa-"+icon+"'></i> ";
+
+	//$(".moduleLabel").html( icon +" "+ str);
+
+	if(topTitle)
+		str = topTitle;
+	
+	$(document).prop('title', ( str != "" ) ? str : "Communecter, se connecter à sa commune" );
+	
+	if(notNull(keywords))
+		$('meta[name="keywords"]').attr("content",keywords);
+	else
+		$('meta[name="keywords"]').attr("content","communecter,connecter, commun,commune, réseau, sociétal, citoyen, société, territoire, participatif, social, smarterre");
+	
+	if(notNull(shortDesc))
+		$('meta[name="description"]').attr("content",shortDesc);
+	else
+		$('meta[name="description"]').attr("content","Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.");
+}
+
+
+function checkMenu(urlObj, hash){
+	mylog.log("checkMenu *******************", hash);
+	//mylog.dir(urlObj);
+	$(".menu-button-left").removeClass("selected");
+	if(typeof urlObj.menuId != "undefined"){ mylog.log($("#"+urlObj.menuId).data("hash"));
+		if($("#"+urlObj.menuId).attr("href") == hash)
+			$("#"+urlObj.menuId).addClass("selected");
+	}
+}
+
+var backUrl = null;
+function checkIsLoggued(uId){
+	if( uId == "" ||  typeof uId == "undefined" ){
+		mylog.warn("");
+		toastr.error("<h1>Section Sécuriser, Merci de vous connecter!</h1>");
+		
+		setTitle("Section Sécuriser", "user-secret");
+
+		backUrl = location.hash;
+		Login.openLogin();
+    	
+    	resetUnlogguedTopBar();
+	}else 
+		return true;
+}
+function resetUnlogguedTopBar() { 
+	//put anything that needs to be reset 
+	//replace the loggued toolBar nav by log buttons
+	$('.topMenuButtons').html('<button class="btn-top btn btn-success  hidden-xs" onclick="showPanel(\'box-register\');"><i class="fa fa-plus-circle"></i> <span class="hidden-sm hidden-md hidden-xs">Sinscrire</span></button>'+
+							  ' <button class="btn-top btn bg-red  hidden-xs" style="margin-right:10px;" onclick="showPanel(\'box-login\');"><i class="fa fa-sign-in"></i> <span class="hidden-sm hidden-md hidden-xs">Se connecter</span></button>');
+}
+
+function _checkLoggued() { 
+	$.ajax({
+	  type: "POST",
+	  url: baseUrl+"/"+moduleId+"/person/logged",
+	  success: function(data){
+		if( !data.userId || data.userId == "" ||  typeof data.userId == "undefined" ){
+			/*userId = data.userId;
+			resetUnlogguedTopBar();*/
+			window.location.reload();
+		}
+	  },
+	  dataType: "json"
+	});
+}
+
+
+/* ****************
+visualize all tagged elements on a map
+**************/
+function showTagOnMap (tag) { 
+
+	mylog.log("showTagOnMap",tag);
+
+	var data = { 	 "name" : tag, 
+		 			 "locality" : "",
+		 			 "searchType" : [ "persons" ], 
+		 			 //"searchBy" : "INSEE",
+            		 "indexMin" : 0, 
+            		 "indexMax" : 500  
+            		};
+
+        //setTitle("", "");$(".moduleLabel").html("<i class='fa fa-spin fa-circle-o-notch'></i> Les acteurs locaux : <span class='text-red'>" + cityNameCommunexion + ", " + cpCommunexion + "</span>");
+		
+		$.blockUI({
+			message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i> Recherches des collaborateurs ...</h1>"
+		});
+
+		showMap(true);
+		
+		$.ajax({
+	      type: "POST",
+	          url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
+	          data: data,
+	          dataType: "json",
+	          error: function (data){
+	             mylog.log("error"); mylog.dir(data);          
+	          },
+	          success: function(data){
+	            if(!data){ toastr.error(data.content); }
+	            else{
+	            	mylog.dir(data);
+	            	Sig.showMapElements(Sig.map, data);
+	            	//setTitle("", "");$(".moduleLabel").html("<i class='fa fa-connect-develop'></i> Les acteurs locaux : <span class='text-red'>" + cityNameCommunexion + ", " + cpCommunexion + "</span>");
+					//$(".search-loader").html("<i class='fa fa-check'></i> Vous êtes communecté : " + cityNameCommunexion + ', ' + cpCommunexion);
+					//toastr.success('Vous êtes communecté !<br/>' + cityNameCommunexion + ', ' + cpCommunexion);
+					$.unblockUI();
+	            }
+	          }
+	 	});
+
+	//urlCtrl.loadByHash('#project.detail.id.56c1a474f6ca47a8378b45ef',null,true);
+	//Sig.showFilterOnMap(tag);
+}
+
+/* ****************
+show a definition in the focus menu panel
+**************/
+function showDefinition( id,copySection ){ 
+
+	setTimeout(function(){
+		mylog.log("showDefinition",id,copySection);
+		
+		//$( themeObj.mainContainer ).animate({ opacity:0.3 }, 400 );
+		
+		if(copySection){
+			contentHTML = $("."+id).html();
+			if(copySection != true)
+				contentHTML = copySection;
+			smallMenu.open(contentHTML);
+			bindExplainLinks()	
+		}
+		else {
+			$(".hover-info").css("display" , "inline");
+			toggle( "."+id , ".explain" );
+			$("."+id+" .explainDesc").removeClass("hide");
+		}
+		return false;
+	}, 500);
+}
+
+var timeoutHover = setTimeout(function(){}, 0);
+var hoverPersist = false;
+var positionMouseMenu = "out";
+
+function activateHoverMenu () { 
+	//mylog.log("enter all");
+	positionMouseMenu = "in";
+	$(themeObj.mainContainer).animate({ opacity:0.3 }, 400 );
+	$(".lbl-btn-menu-name").show(200);
+	$(".lbl-btn-menu-name").css("display", "inline");
+	$(".menu-button-title").addClass("large");
+
+	showInputCommunexion();
+
+	hoverPersist = false;
+	clearTimeout(timeoutHover);
+	timeoutHover = setTimeout(function(){
+		hoverPersist = true;
+	}, 1000);
+}
+
+var favTypes = [];
+
 
 function searchFinder(name)
 {
@@ -1607,70 +1684,22 @@ function  bindExplainLinks() {
 	 });
 }
 
-function  bindLBHLinks() { 
-	$(".lbh").unbind("click").on("click",function(e) {  	
-		e.preventDefault();
-		$("#openModal").modal("hide");
-		mylog.warn("***************************************");
-		mylog.warn("bindLBHLinks",$(this).attr("href"));
-		mylog.warn("***************************************");
-		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-	    urlCtrl.loadByHash( h );
-	});
-	$(".lbh-menu-app").unbind("click").on("click",function(e){
-		e.preventDefault();
-		 $.each(searchObject, function(key,v){
-            if($.inArray(key,["startDate","endDate", "searchSType", "section", "subType","priceMin", "priceMax", "devise"]) > -1){
-                delete searchObject[key];
-            }
-        });
-		searchObject.page=0,
-		searchObject.indexMin=0,
-		searchObject.indexStep=30,
-		searchObject.count=true,
-		searchObject.initType="",
-		searchObject.types=[],
-		searchObject.countType=[];
-		urlCtrl.loadByHash($(this).data("hash"));
-	})
-	//open any url in a modal window
-	$(".lbhp").unbind("click").on("click",function(e) {
-		e.preventDefault();
-		$("#openModal").modal("hide");
-		mylog.warn("***************************************");
-		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
-		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
-		mylog.warn("***************************************");
-		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-		if( $(this).data("modalshow") ){
-			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
-			if(h.indexOf("#page") >= 0)
-				url="app/"+url
-	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
-			//smallMenu.open ( getAjax(directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
-			
-		}
-		else {
-			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
-	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
-	    	//smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url ,"","blockUI",h);
-		}
-	});
-
-
-	//open any url in a preview window
-	$(".lbh-preview-element").unbind("click").on("click",function(e) {
-		e.preventDefault();
-		$("#openModal").modal("hide");
-		mylog.warn("***************************************");
-		mylog.warn("bindLBHLinks Preview ELEMENT", $(this).attr("href"),$(this).data("modalshow"));
-		mylog.warn("***************************************");
-		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-		var url = (h.indexOf("#") == 0 ) ? "app/"+ urlCtrl.convertToPath(h) : "app/"+ h;
-		openPreviewElement( baseUrl+'/'+moduleId+"/"+url);
-			//smallMenu.open ( getAjax(directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
-	});
+function resetSearchObject(){
+	$.each(searchObject, function(key,v){
+        if($.inArray(key,["startDate","endDate", "searchSType", "section", "subType", "category", "priceMin", "priceMax", "devise", "source"]) > -1){
+            delete searchObject[key];
+        }
+    });
+	searchObject.page=0,
+	searchObject.indexMin=0,
+	searchObject.indexStep=30,
+	searchObject.count=true,
+	searchObject.initType="",
+	searchObject.types=[],
+	searchObject.countType=[];
+		
 }
+
 
 
 function openPreviewElement(url){
@@ -1964,22 +1993,6 @@ function myContactLabel (type,id) {
 		});
 	}
 	return null;
-}
-
-function inMyContacts (type,id) { 
-	var res = false ;
-	var type= (type=="citoyens") ? "people" : type;
-	if(typeof myContacts != "undefined" && myContacts != null && myContacts[type]){
-		$.each( myContacts[type], function( key,val ){
-			//mylog.log("val", val);
-			if( ( typeof val["_id"] != "undefined" && id == val["_id"]["$id"] ) || 
-				(typeof val["id"] != "undefined" && id == val["id"] ) ) {
-				res = true;
-				return ;
-			}
-		});
-	}
-	return res;
 }
 
 function autoCompleteInviteSearch(search){
@@ -2351,57 +2364,58 @@ var mentionsInit = {
 	get : function(domElement){
 		mentionsInput=[];
 		$(domElement).mentionsInput({
-		  onDataRequest:function (mode, query, callback) {
-			  	if(mentionsInit.stopMention)
-			  		return false;
-			  	var data = mentionsContact;
-			  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
-				callback.call(this, data);
-				mentionsInit.isSearching=true;
-		   		var search = {"searchType" : ["citoyens","organizations","projects"], "name": query};
-		  		$.ajax({
-					type: "POST",
-			        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
-			        data: search,
-			        dataType: "json",
-			        success: function(retdata){
-			        	if(!retdata){
-			        		toastr.error(retdata.content);
-			        	}else{
-				        	mylog.log(retdata);
-				        	data = [];
-				        	//for(var key in retdata){
-					        //	for (var id in retdata[key]){
-					        $.each(retdata.results, function (e, value){
-						        	avatar="";
-						        	//console.log(retdata[key]);
-						        	//aert(retdata[key][id].type);
-						        	if(typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl!="")
-						        		avatar = baseUrl+value.profilThumbImageUrl;
-						        	object = new Object;
-						        	object.id = e;
-						        	object.name = value.name;
-						        	object.slug = value.slug;
-						        	object.avatar = avatar;
-						        	object.type = value.type;
-						        	var findInLocal = _.findWhere(mentionsContact, {
-										name: value.name, 
-										type: value.type
-									}); 
-									if(typeof(findInLocal) == "undefined"){
-										mentionsContact.push(object);
-									}
-						 	//		}
-				        	//}
-				        	});
-				        	data=mentionsContact;
-				    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
-							callback.call(this, data);
-							mylog.log("callback",callback);
-			  			}
-					}	
-				})
-		  	}
+			allowRepeat:true,
+		 	onDataRequest:function (mode, query, callback) {
+			  	if(!mentionsInit.stopMention){
+				  	var data = mentionsContact;
+				  	data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+					callback.call(this, data);
+					mentionsInit.isSearching=true;
+			   		var search = {"searchType" : ["citoyens","organizations","projects"], "name": query};
+			  		$.ajax({
+						type: "POST",
+				        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
+				        data: search,
+				        dataType: "json",
+				        success: function(retdata){
+				        	if(!retdata){
+				        		toastr.error(retdata.content);
+				        	}else{
+					        	mylog.log(retdata);
+					        	data = [];
+					        	//for(var key in retdata){
+						        //	for (var id in retdata[key]){
+						        $.each(retdata.results, function (e, value){
+							        	avatar="";
+							        	//console.log(retdata[key]);
+							        	//aert(retdata[key][id].type);
+							        	if(typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl!="")
+							        		avatar = baseUrl+value.profilThumbImageUrl;
+							        	object = new Object;
+							        	object.id = e;
+							        	object.name = value.name;
+							        	object.slug = value.slug;
+							        	object.avatar = avatar;
+							        	object.type = value.type;
+							        	var findInLocal = _.findWhere(mentionsContact, {
+											name: value.name, 
+											type: value.type
+										}); 
+										//if(typeof(findInLocal) == "undefined"){
+										//	mentionsContact.push(object);
+										//}
+							 	//		}
+					        	//}
+					        	});
+					        	data=mentionsContact;
+					    		data = _.filter(data, function(item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+								callback.call(this, data);
+								mylog.log("callback",callback);
+				  			}
+						}	
+					});
+			  	}
+			 }
 	  	});
 	},
 	beforeSave : function(object, domElement){
@@ -2412,11 +2426,14 @@ var mentionsInit = {
 			var textMention="";
 			$(domElement).mentionsInput('val', function(text) {
 				textMention=text;
+				console.log(textMention);
 				$.each(mentionsInput, function(e,v){
 					strRep=v.name;
-					if(typeof v.slug != "undefined")
-						strRep="@"+v.slug;
-					textMention = textMention.replace("@["+v.name+"]("+v.type+":"+v.id+")", strRep);
+					while (textMention.indexOf("@["+v.name+"]("+v.type+":"+v.id+")") > -1){
+						if(typeof v.slug != "undefined")
+							strRep="@"+v.slug;
+						textMention = textMention.replace("@["+v.name+"]("+v.type+":"+v.id+")", strRep);
+					}
 				});
 			});			
 			object.mentions=mentionsInput;
@@ -2427,10 +2444,12 @@ var mentionsInit = {
 	addMentionInText: function(text,mentions){
 		$.each(mentions, function( index, value ){
 			if(typeof value.slug != "undefined"){
-				str="<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
-		   						value.name+
-		   					"</span>";
-				text = text.replace("@"+value.slug, str);
+				while (text.indexOf("@"+value.slug) > -1){
+					str="<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
+			   						value.name+
+			   					"</span>";
+					text = text.replace("@"+value.slug, str);
+				}
 			}else{
 				//Working on old news
 		   		array = text.split(value.value);

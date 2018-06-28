@@ -23,8 +23,9 @@ var translate = {"organizations":"Organisations",
 
 function startSearch(indexMin, indexMax, callBack){
     if(typeof searchObject.source != "undefined"){
-		interop.startSearch();
-    }else{
+      interopSearch(searchObject.source, searchObject.source);
+		  //interop.startSearch();
+    } else {
         if(searchObject.text.indexOf("co.") === 0 ){
           searchT = searchObject.text.split(".");
           if( searchT[1] && typeof co[ searchT[1] ] == "function" ){
@@ -80,9 +81,22 @@ function initTypeSearch(typeInit){
     //var defaultType = $("#main-btn-start-search").data("type");
 
     if(typeInit == "all") {
-        searchObject.types = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classifieds","ressources"/*,"cities"*/];
-        if(searchObject.text != "" || Object.keys(getSearchLocalityObject()).length > 0) 
-          searchObject.types.push("persons");
+        if(isCustom(typeInit, "types")){
+          searchObject.types = [];
+          alert();
+          $.each(custom.menu[searchObject.initType].filters.types, function(e, v){
+            if($.inArray(v, ["NGO","Group","LocalBusiness","GovernmentOrganization"]) >= 0){
+             if( $.inArray("organizations", searchObject.types)<0)
+              searchObject.types.push("organizations");
+            }else
+              searchObject.types.push(v);
+          });
+        }
+        else{
+          searchObject.types = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classifieds","ressources"/*,"cities"*/];
+          if(searchObject.text != "" || Object.keys(getSearchLocalityObject()).length > 0) 
+            searchObject.types.push("persons");
+        }
     }else if(typeInit == "allSig"){
       searchObject.types = ["persons", "organizations", "projects", "poi", "cities"];
       searchObject.indexStep = 50;
@@ -301,7 +315,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
             //affiche les éléments sur la carte
             console.log("mapElements", results);
             Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
-                        
+            spinSearchAddon();
             if(typeof callBack == "function")
               callBack();
         }
@@ -333,16 +347,20 @@ function initPageTable(number){
             pageCount=false;
             searchObject.page=(page-1);
             scrollEnd=false;
-            indexMin=searchObject.indexStep*searchObject.page;
+            searchObject.indexMin=searchObject.indexStep*searchObject.page;
             pageEvent=true;
-            startSearch(indexMin,indexStep);
+            if(typeof searchObject.source != "undefined")
+              interopSearch(searchObject.source, searchObject.source);
+            else
+              startSearch(searchObject.indexMin,searchObject.indexStep);
           }
       });
   }
   function refreshCountBadge(count){
     //console.log("aquuuui",count);
     $.each(searchAllEngine.searchCount, function(e,v){
-      $("#count"+e).text(v);
+      type=(e=="citoyens")? "persons" : e; 
+      $("#count"+type).text(v);
     });
     /*if(searchObject.text!=""){
       countSocial=count.organizations+count.projects+count.places+count.citoyens+count.poi;
@@ -773,7 +791,7 @@ function initPageTable(number){
   
 function searchCallback() { 
   directory.elemClass = '.searchEntityContainer ';
-  directory.filterTags(true);
+ // directory.filterTags(true);
   //$(".btn-tag").off().on("click",function(){ directory.toggleEmptyParentSection(null,"."+$(this).data("tag-value"), directory.elemClass, 1)});
   $("#searchBarTextJS").off().on("keyup",function() { 
     directory.search ( null, $(this).val() );
@@ -2811,7 +2829,7 @@ var directory = {
           if($.inArray(addType, ["NGO", "Group","LocalBusiness","GovernmentOrganization"])>0){
              subData="data-ktype='"+addType+"' ";
              typeForm="organization";
-          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "interop")
+          }else if(typeForm != "ressources" && typeForm != "poi" && typeForm != "places" && typeForm != "classifieds" && typeForm != "jobs" && typeForm != "interop")
             typeForm=typeObj[typeObj[addType].sameAs].ctrl;
           btn+='<button class="btn bg-white margin-left-5 btn-add pull-right text-'+headerParams[addType].color+' '+
             'data-type="'+typeForm+'" '+
@@ -2854,9 +2872,9 @@ var directory = {
                           directory.searchTypeHtml()+
                         '</small>'+
                       '</h4>'+
-                      '<div class="col-md-3 col-sm-3 pull-right no-padding text-right">';
+                      '<div class="col-md-3 col-sm-3 col-xs-2 pull-right no-padding text-right">';
                         if(userId!="" && searchObject.initType=="classifieds"){
-                          headerStr+='<button class="btn addToAlert margin-right-5" data-value="list" onclick="directory.addToAlert();"><i class="fa fa-bell"></i> Add to alert</button>';
+                          headerStr+='<button class="btn btn-default letter-blue addToAlert margin-right-5 tooltips" data-toggle="tooltip" data-placement="bottom" title="'+trad.bealertofnewitems+'" data-value="list" onclick="directory.addToAlert();"><i class="fa fa-bell"></i> <span class="hidden-xs">'+trad.alert+'</span></button>';
                         }
                          headerStr+='<button class="btn switchDirectoryView ';
                           if(directory.viewMode=="list") headerStr+='active ';
@@ -3533,10 +3551,14 @@ var directory = {
 				// 		'<span class="" >'+v.label+"</span>"+
 				// 	'</button>';
 
-				str+='<button class="btn btn-default col-sm-3 col-xs-12 padding-10 bold text-dark elipsis btn-select-source" '+
-						'data-source="'+v.label+'" data-key="'+v.key+'" style="height: 60px;">'+
-							'<span class="col-xs-2" ><img src="'+parentModuleUrl+v.path+'" width="40" height="40" class=""/></span>'+ 
-							'<span class="col-xs-10 text-left" >'+v.label+"</span>"+
+				str+='<button class="btn btn-default col-xs-12 padding-10 bold text-dark elipsis btn-select-source dropDesign" '+
+						'data-source="'+v.label+'" data-key="'+v.key+'">'+
+							'<div class="checkbox-filter pull-left"><label>'+
+                  '<input type="checkbox" class="checkbox-info">'+
+                  '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+              '</label></div>'+
+              '<span class="pull-left" ><img src="'+parentModuleUrl+v.path+'" width="20" height="20" class=""/></span>'+ 
+							'<span class="pull-left" >'+v.label+"</span>"+
 						'</button>';
 	        });
 			$(".dropdown-sources").show();
@@ -3547,9 +3569,13 @@ var directory = {
         if(typeof objJson.sections != "undefined"){
           str="";
           $.each(objJson.sections, function(e,v){
-            str+='<button class="btn btn-default col-xs-12 padding-10 bold text-dark elipsis btn-select-section" '+
+            str+='<button class="btn btn-default col-xs-12 padding-10 bold text-dark elipsis btn-select-section dropDesign" '+
                   'data-section-anc="'+v.label+'" data-key="'+v.key+'" '+ 
                   'data-section="classifieds">'+
+                  '<div class="checkbox-filter pull-left"><label>'+
+                            '<input type="checkbox" class="checkbox-info">'+
+                            '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                        '</label></div>'+
                     '<i class="fa fa-'+v.icon+' hidden-xs"></i> '+ 
                     tradCategory[v.labelFront]+
               '</button>';
@@ -3568,24 +3594,36 @@ var directory = {
                           '</a>'+
                         '</div>'
                 }
-                else 
-                  str += '<button class="btn btn-default col-xs-12 text-dark btn-select-category margin-bottom-5 elipsis" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                else {
+                  str += '<button class="btn btn-default col-xs-12 text-dark btn-select-category margin-bottom-5 elipsis dropDesign" style="margin-left:-5px;" data-keycat="'+k+'">'+
+                        '<div class="checkbox-filter pull-left"><label>'+
+                            '<input type="checkbox" class="checkbox-info">'+
+                            '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                        '</label></div>'+
                         '<i class="fa fa-'+o.icon+' hidden-xs"></i> '+tradCategory[k]+'</button><br>';
+                }
                 if(typeof o.subcat != "undefined" && type != "btn" )
                 {
                   $.each( o.subcat ,function(i,oT){
-                      subStr += '<button class="btn btn-default col-xs-12 text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
-                              '<i class="fa fa-angle-right"></i> '+tradCategory[i]+'</button><br class="hidden">';
+                      str += '<button class="btn btn-default col-xs-12 text-dark margin-bottom-5 margin-left-15 hidden keycat keycat-'+k+' dropDesign" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                                '<div class="checkbox-filter pull-left"><label>'+
+                                  '<input type="checkbox" class="checkbox-info">'+
+                                  '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                                '</label></div>'+
+                                tradCategory[i]+'</button><br class="hidden">';
                   });
                 }else if(typeof objJson.subcat != "undefined"){
                   $.each( objJson.subcat ,function(i,oT){
                       icon=(typeof oT.icon != "undefined") ? oT.icon : "angle-right";
-                      subStr += '<button class="btn btn-default text-dark col-xs-12 margin-bottom-5 margin-left-15 elipsis hidden keycat keycat-'+k+'" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                      str += '<button class="btn btn-default text-dark col-xs-12 margin-bottom-5 margin-left-15 elipsis hidden keycat keycat-'+k+' dropDesign" data-categ="'+k+'" data-keycat="'+oT.key+'">'+
+                                '<div class="checkbox-filter pull-left"><label>'+
+                                  '<input type="checkbox" class="checkbox-info">'+
+                                  '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                                '</label></div>'+
                               '<i class="fa fa-'+icon+'"></i> '+tradCategory[i]+'</button><br class="hidden">';
                   });
                 }
                 $(".dropdown-category .dropdown-menu").html(str);
-                $(".dropdown-subType .dropdown-menu").html(subStr);
             });
         }
     },

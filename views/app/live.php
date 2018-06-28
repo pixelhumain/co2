@@ -233,7 +233,10 @@ jQuery(document).ready(function() {
     });
     $(".btn-news-type-filters").off().on("click", function(){
         keyType=$(this).data("key");
-        searchObject.types= (keyType!="all") ? keyType : []; 
+        searchObject.types= (keyType!="all") ? [keyType] : [];
+        $(".btn-news-type-filters").removeClass("active"); 
+        if(keyType!="all");
+            $(this).addClass("active");
         if(keyType=="all")
             $(".dropdown-types .dropdown-toggle").removeClass("active").html(trad.type+" <i class='fa fa-angle-down'></i>");
         else    
@@ -274,6 +277,7 @@ jQuery(document).ready(function() {
         activeTagsFilter();
         startNewsSearch(true);
     });
+    if(searchObject.text != "") $("#main-search-bar, #second-search-bar").val(searchObject.text);
     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());

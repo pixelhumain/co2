@@ -42,6 +42,7 @@ class CityController extends CommunecterController {
 	        'save'       			=> 'citizenToolKit.controllers.city.SaveAction',
 	        'getlevel'		=> 'citizenToolKit.controllers.city.GetLevelAction',
 	        'getcitiesbyscope' => 'citizenToolKit.controllers.city.GetCitiesByScopeAction',
+	        'getgeoshape'		=> 'citizenToolKit.controllers.city.GetGeoshapeAction',
 
 	    );
 	}

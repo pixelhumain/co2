@@ -538,7 +538,7 @@
 	            		?>
 	            		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			  				<li class="text-left">
-				               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
+				               	<a href="javascript:;" id="" class="bg-white editConfidentialityBtn">
 				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 				                </a>
 				            </li>

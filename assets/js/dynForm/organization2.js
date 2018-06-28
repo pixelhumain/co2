@@ -73,9 +73,13 @@ dynForm = {
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
 	    },
-	    afterSave : function(){
-			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
+	    afterSave : function(data,callB){
+	    	if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
 		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+		    	//principalement pour les surveys
+		    	if(typeof callB == "function")
+	    			callB();
+	    	}
 		    else { 
 		    	mylog.log("here", isMapEnd);
 		    	if(typeof networkJson != "undefined")
@@ -101,11 +105,11 @@ dynForm = {
             								{ admin : trad.administrator, member : trad.Member, creator : trad.justCitizen }, 
             								{ required : true } ),
             tags : dyFInputs.tags(),
+            formLocality : dyFInputs.formLocality(tradDynForm.addLocality, tradDynForm.addLocality),
             location : dyFInputs.location,
-            formLocality : dyFInputs.formLocality("My adresse", "My adresse", {}),
 	        image : dyFInputs.image(),
             email : dyFInputs.text(),
-	        shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
+	        shortDescription : dyFInputs.textarea(tradDynForm.shortDescription, "...",{ maxlength: 140 }),
 	        url : dyFInputs.inputUrl(),
             "preferences[publicFields]" : dyFInputs.inputHidden([]),
             "preferences[privateFields]" : dyFInputs.inputHidden([]),

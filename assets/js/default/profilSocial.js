@@ -327,7 +327,7 @@ function bindButtonMenu(){
 		});
 	});
 
-	$("#editConfidentialityBtn").on("click", function(){
+	$(".editConfidentialityBtn").on("click", function(){
     	mylog.log("confidentiality", seePreferences);
     	$("#modal-confidentiality").modal("show");
     	if(seePreferences=="true"){

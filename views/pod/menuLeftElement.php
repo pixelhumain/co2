@@ -103,7 +103,8 @@
 					$modalTarget = "#invite-modal-element";
 				}
 
-				$urlLink = "#element.invite.type.".$type.".id.".(string)$element["_id"] ;
+				//$urlLink = "#element.invite.type.".$type.".id.".(string)$element["_id"] ;
+				$urlLink = "#element.invite.type.forms.id.5b27a1e35a7c00d4d97509d0";
 				$modalTarget = "#modal-invite";
 				$whereConnect="";
 				if($type!=Person::COLLECTION)

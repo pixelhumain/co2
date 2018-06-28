@@ -545,6 +545,7 @@ var formInMap = {
 		});
 		return country ;
 	},
+	
 
 	backToForm : function(cancel){
 		$("#right_tool_map").addClass("hidden-xs hidden-sm");

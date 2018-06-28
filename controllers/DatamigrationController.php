@@ -4690,6 +4690,29 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		
 		echo $i." poi updaté <br/>";
 	}
+
+	public function actionRemovePendingUser() {
+		$nbUser = 0;
+		$users = PHDB::find(Person::COLLECTION, 
+							array("pending" => true), 
+							array("pending", "modifiedByBatch"));
+		foreach ($users as $key => $person) {
+			$person["modifiedByBatch"][] = array("RemovePendingUser" => new MongoDate(time()));
+			$res = PHDB::update(Person::COLLECTION, 
+										  	array("_id"=>new MongoId($key)),
+					                        array(	'$set' => array( "modifiedByBatch" => $person["modifiedByBatch"]),
+					                        		'$unset' => array("pending"=>"") )
+					                    );
+
+			if($res["ok"] == 1){
+				$nbUser++;
+			}else{
+				echo "<br/> Error with user id : ".$key;
+			}
+		}
+
+		echo "Number of user with preferences modified : ".$nbUser;
+	}
 }
 
 

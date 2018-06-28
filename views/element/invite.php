@@ -1,5 +1,20 @@
-<style>
+<?php
+$cssJs = array(
+	'/assets/css/freelancer.css',
+);
+HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->theme->baseUrl);
 
+
+
+$cssJs = array(
+	'/plugins/select2/select2.min.js' ,
+	'/plugins/select2/select2.css',
+);
+HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBaseUrl(true));
+
+?>
+
+<style>
 #modal-invite .dropdown-menu{
 	top:65%;
 	left : 15px;
@@ -304,7 +319,7 @@
 
 	jQuery(document).ready(function() {
 		// mylog.log("members", members);
-		if(parentType != "citoyens")
+		if(parentType != "citoyens" && typeof contextData != "undefined")
 			$("#title-invite .name-parent").text(contextData.name);
 		initInvite();
 		bindInvite();

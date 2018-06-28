@@ -140,7 +140,7 @@ $this->renderPartial($layoutPath.'header',
 					<label for="fileImport"><?php echo Yii::t("common", "File (CSV, JSON)"); ?> : </label>
 				</div>
 				<div class="col-sm-4 col-xs-12" id="divInputFile">
-					<input type="file" id="fileImport" name="fileImport" accept=".csv,.json,.js,.geojson">
+					<input type="file" id="fileImport" name="fileImport" accept=".csv,.json,.js,.geojson,.xml">
 				</div>
 			</div>
 			<div id="divUrl" class="col-sm-6 col-xs-12">
@@ -275,9 +275,10 @@ $this->renderPartial($layoutPath.'header',
 		    	<tbody class="directoryLines" id="bodyCreateMapping">
 			    	<tr id="LineAddMapping">
 		    			<td>
-		    			<input type="checkbox" id="checkSwitch" onclick="isCheckSwitch()" title="Passé à une saisir de type select/manuelle" checked></input>
-		    				<input type="text" id="selectSourceTxt" class="col-sm-11" placeholder="<?php echo Yii::t("import","Grap manually my mapping"); ?>" maxlength="40" title="Maximum 40 caractères">
-							 <select id="selectSource" class="col-sm-11">
+		    				<input type="hidden" name="hiddenSwitch" id="hiddenSwitch" value="noHidden">
+		    			<!--<input type="checkbox" id="checkSwitch" onclick="isCheckSwitch()" title="Passé à une saisir de type select/manuelle" checked></input>-->
+		    				<input type="text" id="selectSourceTxt" class="col-sm-12" placeholder="<?php echo Yii::t("import","Grap manually my mapping"); ?>" maxlength="40" title="Maximum 40 caractères">
+							 <select id="selectSource" class="col-sm-12">
 							</select>
 					
 		    			</td>
@@ -292,7 +293,6 @@ $this->renderPartial($layoutPath.'header',
 			</table>
 			<div class="col-sm-12 col-xs-12">
 				<div class="col-sm-6 col-xs-12">
-				<!--<i>(*) Champ obligatoire</i><br>-->
 				<i><?php echo Yii::t("import","Fields mandatory"); ?> (*)</i><br />
 					<label for="inputKey"><?php echo Yii::t("import","Key : "); ?></label>
 					<input class="" placeholder="<?php echo Yii::t("import","Key assigned to all data import"); ?>" id="inputKey" name="inputKey" value="">
@@ -339,6 +339,7 @@ $this->renderPartial($layoutPath.'header',
 				<a href="javascript:;" id="btnPreviousStep" class="btn btn-danger margin-top-15"><?php echo Yii::t("common", "Previous step"); ?></a>
 				<a href="javascript:;" id="btnNextStep2" class="btn btn-success margin-top-15"><?php echo Yii::t("common", "Next step"); ?></a>
 			</div>
+			<div class="testAffichageXML"></div>
 		</div>
 
 		<!-- VISUALISATION STEP3 -->
@@ -401,7 +402,7 @@ $this->renderPartial($layoutPath.'header',
 <script type="text/javascript">
 var file = [] ;
 var csvFile = "" ;
-var extensions = ["csv", "json", "js", "geojson"];
+var extensions = ["csv", "json", "js", "geojson","xml"];
 var nameFile = "";
 var typeFile = "";
 var typeElement = "";
@@ -409,6 +410,7 @@ var nbFinal = 0 ;
 var mappingPrevious = $("#chooseMapping").html();
 var ifMappingDelete = false;
 var listSource = [];
+var elements = [];
 
 var listeObligatoire = {
 	name : "name",
@@ -416,7 +418,8 @@ var listeObligatoire = {
 	postalCode : "postalCode",
 	addressLocality : "addressLocality",
 	streetAddress : "streetAddress",
-	addressCountry : "addressCountry"
+	addressCountry : "addressCountry",
+	username : "username"
 }
 
 
@@ -604,28 +607,17 @@ function bindCreateFile(){
   		var selectAttributesElt = $("#selectAttributesElt option:selected").val() ;
 
 
-  		
-  		if(selectSourceTxt == "" && $("#checkSwitch").is(':not(:checked)')){
-  			error = true;
-  			msgError += "Vous devrez saisir une valeur dans le champ source ";
-  		}
-  		else if(selectSourceTxt != "" && $("#checkSwitch").is(':not(:checked')){
-  			var inc = 0;
-  			while(error == false && inc <= nbLigneMapping){
-				if($("#valueSource"+inc).text() == selectSourceTxt){
-					error = true;
-					msgError += "Vous avez déjà saisir ce nom de mapping ";
-				}
-				if($("#valueAttributeElt"+inc).text() == selectAttributesElt){
-	  				error = true;
-	  				msgError += "<?php echo Yii::t("import","You have already add this elements in the mapping column"); ?>"
-	  			}
-	  			inc++;
-  			}
-
-  		}
-  		else {
 	  		var inc = 0;
+	  		if(selectSourceTxt == '' && $("#hiddenSwitch").val() == "yesHidden")
+	  		{
+	  			error = true;
+	  			msgError += "Vous devrez remplir le champ";
+	  		}
+	  		if(selectSource == "Autre" && selectSourceTxt == '')
+	  		{
+	  			error = true;
+	  			msgError += "Vous ne pouvez pas avoir la source Autre, veuillez choisir un autre champ ou recliquer sur autre si vous voulez saisir manuellement ";
+	  		}
 	  		while(error == false && inc <= nbLigneMapping){
 	  			if($("#valueSource"+inc).text() == selectSource ){
 	  				error = true;
@@ -638,7 +630,6 @@ function bindCreateFile(){
 	  			}
 	  			inc++;
 	  		}
-  		}
 
   		if(error == false){
 
@@ -658,29 +649,18 @@ function bindCreateFile(){
 	  			$("#selectAttributesElt").append(chaine);
   			}  			
 	  		ligne = '<tr id="lineMapping'+nbLigneMapping+'" class="lineMapping"> ';
-
-	  		if($("#checkSwitch").is(':checked')){
-	  			ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + selectSource + '</td>';
-	  		}
-	  		else{
-	  		ligne =	 ligne + '<td id="valueSource'+nbLigneMapping+'">' + selectSourceTxt + '</td>';
-	  		}
-
+	  		ligne = ligne + ($("#hiddenSwitch").val() === "yesHidden" ? '<td id="valueSource'+nbLigneMapping+'">' + selectSourceTxt + '</td>' : '<td id="valueSource'+nbLigneMapping+'">' + selectSource + '</td>');
 	  		ligne =	 ligne + '<td id="valueAttributeElt'+nbLigneMapping+'">' + selectAttributesElt + '</td>';
-
-	  		if($("#checkSwitch").is(':checked')){
-	  			ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSourceTxt +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
-	  		}
-	  		else{
-	  			ligne =	 ligne + '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSource +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>';
-	  		}
+	  		ligne = ligne + ($("#hiddenSwitch").val() === "yesHidden" ? '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSourceTxt +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>' : '<td><input type="hidden" id="idHeadCSV'+nbLigneMapping+'" value="'+ selectSource +'"/><a href="javascript:;" class="deleteLineMapping btn btn-danger">X</a></td></tr>');
 
 	  		$("#nbLigneMapping").val(nbLigneMapping);
 	  		$("#LineAddMapping").before(ligne);
 
 	  		$("#selectSourceTxt").val('');
-	  		disabledChamp();
-	  	//	listMapping(params);
+	  		switchChamp();
+	  		$("#hiddenSwitch").val('noHidden');
+	  		//disabledChamp();
+	  		//listMapping(params);
 	  		
 	  	}
 	  	else
@@ -802,6 +782,11 @@ function preStep2(){
 			  			params["file"] = file;
 			  			params["nbTest"] = $("#inputNbTest").val();
 			  		}
+			  		else if(typeFile == "xml"){
+			  			params["pathObject"] = "elements";
+			  			params["file"] = file;
+			  			params["nbTest"] = $("#inputNbTest").val();	
+			  		}
 	  				//mylog.log("params ",params);
 		  			stepThree(params);
 		  			showStep3();
@@ -837,6 +822,12 @@ function preStep2(){
 				  		stepThree(params);
 				  		showStep3();
 			  		}
+			  		else if(typeFile == "xml"){
+			  			params["pathObject"] = "elements";
+			  			params["file"] = file;
+			  			stepThree(params);
+			  			showStep3();
+			  		}
 	  			}
 	  		}
 			  //S'il n'y a rien dans le lien
@@ -859,10 +850,10 @@ function stepTwo(){
 
 	mylog.log("params", params);
 
-	if(typeFile == "json" || typeFile == "js" || typeFile == "geojson")
+	if(typeFile == "json" || typeFile == "js" || typeFile == "geojson" || typeFile == "xml")
 		params["file"] = file ;
-	else
-		file = dataHelper.csvToArray(csvFile, $("#selectSeparateur").val(), $("#selectSeparateurText").val())
+	else if(typeFile == "csv")
+		file = dataHelper.csvToArray(csvFile, $("#selectSeparateur").val(), $("#selectSeparateurText").val());
 
 	$.ajax({
         type: 'POST',
@@ -944,6 +935,11 @@ function bindUpdate(data){
 					$("#divPathElement").show();
 					file.push(e.target.result);
 	  			}
+	  			else if(typeFile == "xml"){
+	  				file.push(e.target.result);
+	  				$("#divCsv").hide();
+	  				$("#divPathElement").hide();
+	  			}	
 			};
 			reader.readAsText(e.target.files.item(0));
 		}
@@ -961,7 +957,8 @@ function createStepTwo(data){
 			chaineSelectCSVHidden += '<option value="'+value+'">'+value+'</option>'; //Pour l'utilisateur puisse rajouté un élèment en cas s'il lui manque
 			listSource[key] += value;
 		});
-	}else if(data.typeFile == "json" || data.typeFile == "geojson" || data.typeFile == "js"){ //Cas JSON
+	}
+	else if(data.typeFile == "json" || data.typeFile == "geojson" || data.typeFile == "js"){ //Cas JSON
 		$("#nbFileMapping").html(data.nbElement  + "<?php echo Yii::t("import"," element(s)"); ?>"); //Compte le nb d'élèment
 		$.each(data.arbre, function(key, value){
 			chaineSelectCSVHidden += '<option value="'+value+'">'+value+'</option>'; //Pour l'utilisateur puisse rajouté un élèment en cas s'il lui manque
@@ -969,7 +966,23 @@ function createStepTwo(data){
 		});
 	}
 
+	else if(data.typeFile == "xml"){
+		$("#nbFileMapping").html(data.nbElement + "<?php echo Yii::t("import"," element(s)"); ?>");
+		$.each(data.arbre, function(key, value){
+			chaineSelectCSVHidden += '<option value="'+value+'">'+value+'</option>';
+			listSource[key] += value;
+		});
+
+		file[0] = data.json;
+		mylog.log("file", file);
+	}	
+
+	chaineSelectCSVHidden += '<option onClick="switchChamp()" value="Autre" ><?php echo Yii::t("import","Other"); ?></option>';	
+
+
+	// $("#switchChampGC").click(switchChamp()); // POUR GOOGLE CHROME CAR C'EST UN BON NAVIGATEUR :) :) :) :) :) :) ET ENCORE CELA NE FONCTIONNE PAS :):):):)))))))))))))))))))))
 	$("#selectSource").html(chaineSelectCSVHidden); //Le select de la partie "Lien" côté Source
+	
 
 //On fait de même pour le select côté communecter
 	chaineAttributesElt = "" ;
@@ -987,7 +1000,7 @@ function createStepTwo(data){
 
 //Affiche information de data
 	mylog.log("createStepTwo", data);
-	mylog.log("ListSource", listSource);
+	//mylog.log("ListSource", listSource);
 //Partie HTML a était mise en commentaire
 	if(typeElement != "<?php echo Organization::COLLECTION;?>")
 		$("#divCheckboxWarnings").hide();
@@ -1100,7 +1113,7 @@ function returnStep1(){
 	typeFile = "";
 	typeElement = "";
 	nbFinal=0;
-	$('#divInputFile').html('<input type="file" id="fileImport" name="fileImport" accept=".csv,.json,.js,.geojson">')
+	$('#divInputFile').html('<input type="file" id="fileImport" name="fileImport" accept=".csv,.json,.js,.geojson,.xml">')
 	$('#menu-step-1 i.fa').removeClass("fa-circle-o").addClass("fa-circle");
 	$('#menu-step-2 i.fa').removeClass("fa-circle").addClass("fa-circle-o");
 	$('#menu-step-2').removeClass("selected");
@@ -1354,7 +1367,7 @@ function setMappings(params)
 						$("#modal-ajout-element").modal('toggle');
 						$("#divAjout").hide();
 						mappingPrevious += '<option value="'+data._id+'">'+data.name+'</option>';
-						mylog.log("mappingPrevious", mappingPrevious);
+						//mylog.log("mappingPrevious", mappingPrevious);
 					},
 					error: function(data)
 					{
@@ -1392,20 +1405,27 @@ function setMappings(params)
 		}
 
 }
-
-function isCheckSwitch(){
-	if($("#checkSwitch").is(':checked')){
-		$("#selectSource").show();
-		$("#selectSourceTxt").hide();
-	}
-	else{
+function switchChamp(){
+	selectSource = $("#selectSource option:selected").val();
+	hiddenSwitch = $("#hiddenSwitch").val();
+	if(hiddenSwitch === "noHidden" && selectSource === "Autre")
+	{
+		mylog.log("switchChamp");
 		$("#selectSource").hide();
 		$("#selectSourceTxt").show();
+		$("#hiddenSwitch").val('yesHidden');
+		return true;
+	}
+	else
+	{
+		$("#selectSource").show();
+		$("#selectSourceTxt").hide();
+		return false;
 	}
 }
 
 //NE FONCTIONNE PAS
-
+/*
 function disabledChamp(){
 	var selectSource = $("#selectSource option:selected").val();
 	var chaineSelect = "";
@@ -1427,8 +1447,8 @@ function disabledChamp(){
 		else
 			chaineSelect += '<option value="'+value+'">'+value+'</option>';
 		i++;
-	});*/
+	});
 	
 	$("#selectSource").html(chaineSelect); 
-}
+}*/
 </script>

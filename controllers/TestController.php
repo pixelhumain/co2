@@ -1673,4 +1673,12 @@ La vie en santé;Santé;;
 		echo $time." < ".$expire." : ".($time < $expire);
 		echo "<br>reste : ".($expire-$time) ;
 	}
+
+
+	public function actionGetSurveyByFormId(){
+		
+		$link = Form::getSurveyByFormId("5b27a1e35a7c00d4d97509d0", Person::COLLECTION, "isAdmin");
+		Rest::json($link);exit;
+
+	}
 }

@@ -2,18 +2,22 @@
 
 //init will always be exeecuted in a JS document ready
 
-if( @$_GET["city"])
+if( @$_GET["el"])
 { 
 
     Yii::app()->session['custom']=null;
     if( !@Yii::app()->session['custom'])
     {
-        $city = City::getById( $_GET["city"] );
-        if(@$city["custom"]){
-            Yii::app()->session['custom'] = array("id"   => (string) $city["_id"],
-                                                  "type" => City::COLLECTION );
-            Yii::app()->session['custom'] = array_merge(Yii::app()->session['custom'],$city["custom"]);
-        }
+        $stum = explode(".",  $_GET["el"] );
+        //if( Element::getModelByType( $stum[0] ) ){
+            $el = ($stum[0]=="city") ? City::getById($stum[1]) 
+                                     : Element::getByTypeAndId( $stum[0] , $stum[1] );
+            if(@$el["custom"]){
+                Yii::app()->session['custom'] = array( "id"   => (string) $el["_id"],
+                                                       "type" => City::COLLECTION );
+                Yii::app()->session['custom'] = array_merge(Yii::app()->session['custom'],$el["custom"]);
+            }
+        //}
     }
 } else {
     //Yii::app()->session["custom"] = null; ?>
@@ -33,8 +37,6 @@ if( @Yii::app()->session['custom'] ){ ?>
         $(".logo-menutop").attr({'src':custom.logo});
     <?php } 
 }
- ?>
+?>
 
- alert("xxx<?php echo Yii::app()->session['custom']["id"]; ?>")
-
-
+alert("xxx<?php echo Yii::app()->session['custom']["id"]; ?>")

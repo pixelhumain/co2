@@ -40,8 +40,22 @@ dynForm = {
 							  "</p>",
 		            },
 			        name : dyFInputs.name("project"),
+			        similarLink : dyFInputs.similarLink,
 		            parentType : dyFInputs.inputHidden(),
 		            parentId : dyFInputs.inputHidden(),
+		            public : dyFInputs.checkboxSimple("false", "public", 
+            										{ "onText" : trad.yes,
+            										  "offText": trad.no,
+            										  "onLabel" : "public",
+            										  "offLabel": "private",
+            										  //"inputId" : ".amendementDateEnddatetime",
+            										  "labelText": "Make you project publicly visible ?",
+            										  //"labelInInput": "Activer les amendements",
+            										  "labelInformation": "<i class='fa fa-info-circle'></i><br/>"+
+            										  					" <b>Private :</b> project only visible by its community and create contents only for its contributors and admin<br/>"+
+            										  					"<b>Visible :</b> project visible in search engine, accessible, can communicate needs and events"
+
+            		}),
 		            image : dyFInputs.image(),
 		            location : dyFInputs.location,
 		            email : dyFInputs.text(),

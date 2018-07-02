@@ -1740,7 +1740,7 @@ function  bindLBHLinks() {
 		}
 	});
 
-
+}
 
 function openPreviewElement(url){
 	$("#modal-preview-coop").html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-azure'></i>").show(200);

@@ -87,7 +87,7 @@ $embedPath = (@$embed) ? $path."?layout=embedded" : "" ;
 			//toastr.error("status changed : "+e.data.data);	
 		}
 
-		if(e.data.eventName=="unread-changed-by-subscription" && ( contextData && ( e.data.data.name == contextData.type+"_"+slugify(contextData.name) ||  e.data.data.name == contextData.username ) ) ){
+		if(e.data.eventName=="unread-changed-by-subscription" && (typeof contextData !="undefined" && contextData && ( e.data.data.name == contextData.type+"_"+slugify(contextData.name) ||  e.data.data.name == contextData.username ) ) ){
 			
 			if(e.data.data && e.data.data.unread && e.data.data.unread > 0){
 				console.info("xxxxxxxxxxxxxx unread-changed-by-subscription ");

@@ -10,7 +10,7 @@ if( @$_GET["el"])
     {
         $stum = explode(".",  $_GET["el"] );
         //if( Element::getModelByType( $stum[0] ) ){
-            $el = ($stum[0]=="city") ? City::getById($stum[1]) 
+            $el = ($stum[0]=="city") ? City::getByInsee($stum[1]) 
                                      : Element::getByTypeAndId( $stum[0] , $stum[1] );
             if(@$el["custom"]){
                 Yii::app()->session['custom'] = array( "id"   => (string) $el["_id"],
@@ -20,8 +20,8 @@ if( @$_GET["el"])
         //}
     }
 } else {
-    //Yii::app()->session["custom"] = null; ?>
-    //delete custom;
+    Yii::app()->session["custom"] = null; 
+    //delete custom; ?>
 <?php }
 
 if( @Yii::app()->session['custom'] ){ ?>
@@ -38,5 +38,3 @@ if( @Yii::app()->session['custom'] ){ ?>
     <?php } 
 }
 ?>
-
-alert("xxx<?php echo Yii::app()->session['custom']["id"]; ?>")

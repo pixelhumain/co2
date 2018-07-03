@@ -659,7 +659,6 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 }		
 
 var CoAllReadyLoad = false;
-
 function  bindLBHLinks() { 
 	$(".lbh").unbind("click").on("click",function(e) {  	
 		e.preventDefault();
@@ -1700,7 +1699,7 @@ function resetSearchObject(){
 		
 }
 
-function  bindLBHLinks() { 
+/*function  bindLBHLinks() { 
 	$(".lbh").unbind("click").on("click",function(e) {  	
 		e.preventDefault();
 		$("#openModal").modal("hide");
@@ -1740,7 +1739,7 @@ function  bindLBHLinks() {
 		}
 	});
 
-}
+}*/
 
 function openPreviewElement(url){
 	$("#modal-preview-coop").html("<i class='fa fa-spin fa-circle-o-notch padding-25 fa-2x letter-azure'></i>").show(200);

@@ -320,6 +320,7 @@
 			showLoader('#content-view-admin');
 		}
 	}
+	
 	function descHtmlToMarkdown() {
 		mylog.log("htmlToMarkdown");
 	}

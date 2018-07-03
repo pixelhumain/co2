@@ -267,6 +267,7 @@ function startAdminSearch(initPage){
         }
     });
 }
+
 function buildDirectoryLine( e, collection, type, icon/* tags, scopes*/ ){
 		strHTML="";
 		if(typeof e._id =="undefined" || ((typeof e.name == "undefined" || e.name == "") && (e.text == "undefined" || e.text == "")) )

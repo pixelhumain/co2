@@ -310,7 +310,7 @@ class AppController extends CommunecterController {
         if( (!empty($element["status"]) && $element["status"] == "deleted") ||  
             (!empty($element["tobeactivated"]) && $element["tobeactivated"] == true) )
              $this->redirect( Yii::app()->createUrl($controller->module->id) );
-        if(!Preference::isPublicElement($element["preferences"]) &&
+        if(!Preference::isPublicElement(@$element["preferences"]) &&
              (!@Yii::app()->session["userId"] || !Authorisation::canEditItem(Yii::app()->session["userId"], $id, $type)))
             $this->redirect( Yii::app()->createUrl($controller->module->id) );
         if(@$element["parentId"] && @$element["parentType"] && 

@@ -71,9 +71,7 @@ dynForm = {
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
 	    },
 	    afterSave : function(data,callB){
-	    	alert(uploadObj.domTarget);
 	    	if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 ){
-		    	alert("ouiiii");
 		    	$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
 		    	//principalement pour les surveys
 		    	if(typeof callB == "function")

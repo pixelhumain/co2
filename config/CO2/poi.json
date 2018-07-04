@@ -2,7 +2,6 @@
 {
     "sections" : {
         
-
         "link"          : { "label": "Link, Url","key":"link","icon":"link"},
         "tool"          : { "label": "Tool","key":"tool","icon":"wrench"},
         "machine"       : { "label": "Machine","key":"machine","icon":"cogs"},
@@ -20,12 +19,12 @@
         "funPlace"      : { "label": "Fun place","key":"funPlace","icon":"smile-o"},
         "place"         : { "label": "Public place","key":"place","icon":"map-marker"},
         "artPiece"      : { "label": "Art pieces","key":"artPiece","icon":"paint-brush"},
-        "streetArt"    : { "label": "Street art","key":"streetArts","icon":"paint-brush"},
+        "streetArt"     : { "label": "Street art","key":"streetArts","icon":"paint-brush"},
         "openScene"     : { "label": "Open mic","key":"openScene","icon":"bullhorn"},
         "stand"         : { "label": "Stand","key":"stand","icon":"map-marker"},
         "parking"       : { "label": "Parking","key":"parking","icon":"car"},
-        "todo"           : { "label":"Todo","key":"todo","icon":"cog"},
-        "other"           : { "label":"Other","key":"other","icon":"map-marker"}
+        "todo"          : { "label":"Todo","key":"todo","icon":"cog"},
+        "other"         : { "label":"Other","key":"other","icon":"map-marker"}
 
     },
     "filters":{

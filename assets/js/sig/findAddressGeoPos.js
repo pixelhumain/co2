@@ -122,9 +122,9 @@ function callGeoWebService(providerName, requestPart, countryCode, success, erro
 	var data = {};
 
 	if(providerName == "nominatim") {
-		if(formInMap.typeSearchInternational == "address" || dyFObj.formInMap.typeSearchInternational == "address")
+		if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "address" || dyFObj.formInMap.typeSearchInternational == "address")
 		url = "//nominatim.openstreetmap.org/search?q=" + requestPart + "," + countryCode + "&format=json&polygon=0&addressdetails=1";
-		else if(formInMap.typeSearchInternational == "city" || dyFObj.formInMap.typeSearchInternational == "city")
+		else if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "city" || dyFObj.formInMap.typeSearchInternational == "city")
 		url = "//nominatim.openstreetmap.org/search?city=" + requestPart + "&country=" + countryCode + "&format=json&polygon=0&addressdetails=1";
 	
 		if(notNull(mainLanguage))
@@ -132,15 +132,15 @@ function callGeoWebService(providerName, requestPart, countryCode, success, erro
 	}
 	
 	if(providerName == "google") {
-		if(formInMap.typeSearchInternational == "address" || dyFObj.formInMap.typeSearchInternational == "address")
+		if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "address" || dyFObj.formInMap.typeSearchInternational == "address")
 		url = "//maps.googleapis.com/maps/api/geocode/json?address=" + requestPart + "," + countryCode;
-		else if(formInMap.typeSearchInternational == "city" || dyFObj.formInMap.typeSearchInternational == "city")
+		else if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "city" || dyFObj.formInMap.typeSearchInternational == "city")
 		url = "//maps.googleapis.com/maps/api/geocode/json?locality=" + requestPart + "&country=" + countryCode;
 	}	
 	if(providerName == "data.gouv") {
-		if(formInMap.typeSearchInternational == "address" || dyFObj.formInMap.typeSearchInternational == "address")
+		if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "address" || dyFObj.formInMap.typeSearchInternational == "address")
 		url = "//api-adresse.data.gouv.fr/search/?q=" + requestPart;
-		else if(formInMap.typeSearchInternational == "city" || dyFObj.formInMap.typeSearchInternational == "city")
+		else if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "city" || dyFObj.formInMap.typeSearchInternational == "city")
 		url = "//api-adresse.data.gouv.fr/search/?q=" + requestPart + "&type=city";
 	}
 	if(providerName == "communecter") {
@@ -269,7 +269,7 @@ function getCommonGeoObject(objs, providerName){
 
 		commonObj = addCoordinates(commonObj, obj, providerName);
 		commonObj["type"] = "addressEntity";
-		if(typeof formInMap.formType != "undefined")
+		if(typeof formInMap != "undefined" && typeof formInMap.formType != "undefined")
 			commonObj["typeSig"] = formInMap.formType;
 		commonObj["name"] = getFullAddress(commonObj);
 
@@ -391,14 +391,13 @@ function addResultsInForm(commonGeoObj, countryCode){
 		$("#dropdown-newElement_streetAddress-found").hide();
 		$('[name="newElement_lat"]').val($(this).data("lat"));
 		$('[name="newElement_lng"]').val($(this).data("lng"));
-		mylog.log("lat lon", formInMap);
-		if(formInMap.actived == true){
+		
+		if(typeof formInMap != "undefined" && formInMap.actived == true){
 			formInMap.NE_lat = $(this).data("lat");
 			formInMap.NE_lng = $(this).data("lng");
 			formInMap.showWarningGeo(false);
 			formInMap.initHtml();
 		}else{
-			alert("here");
 			dyFObj.formInMap.NE_lat = $(this).data("lat");
 			dyFObj.formInMap.NE_lng = $(this).data("lng");
 			dyFObj.formInMap.showWarningGeo(false);

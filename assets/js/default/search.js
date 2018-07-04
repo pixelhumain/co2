@@ -778,6 +778,7 @@ function initCategoryClassifieds(typeKey){
         directory.sectionFilter( filters, ".classifiedFilters",what);
         bindLeftMenuFilters ();
         if(typeKey=="jobs") $(".dropdown-sources").show(); else $(".dropdown-sources").hide();
+        if(typeKey=="ressources") $(".dropdown-price").hide(); else $(".dropdown-price").show();
     }
 }
 function activePriceFilter(){

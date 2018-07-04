@@ -179,20 +179,18 @@ dynForm = {
          //    									offLabel: tradDynForm.no,
          //    									inputId: "#public"
 			      //   					}),
-			public : dyFInputs.checkboxSimple("false", "public", 
+		
+			public : dyFInputs.checkboxSimple("true", "public", 
 				{ "onText" : trad.yes,
 				  "offText": trad.no,
-				  "onLabel" : "public",
-				  "offLabel": "private",
+				  "onLabel" : tradDynForm.public,
+				  "offLabel": tradDynForm.private,
 				  //"inputId" : ".amendementDateEnddatetime",
-				  "labelText": "Make your event publicly visible ?",
+				  "labelText": tradDynForm.makeeventvisible+" ?",
 				  //"labelInInput": "Activer les amendements",
-				  "labelInformation": "<i class='fa fa-info-circle'></i><br/>"+
-				  					" <b>Private :</b> Event visible only by its attendees and create contents only for attendees and admins<br/>"+
-				  					"<b>Visible :</b> Event visible in search engine, agenda and communication available for all"
-
+				  "labelInformation": tradDynForm.explainvisibleevent
     		}),
-	        image : dyFInputs.image( ),
+	        image : dyFInputs.image(),
             allDay : dyFInputs.allDay(),
             startDate : dyFInputs.startDateInput("datetime"),
             endDate : dyFInputs.endDateInput("datetime"),

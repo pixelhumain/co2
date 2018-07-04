@@ -786,6 +786,10 @@ var tradDynForm = {
 	"searchtosave"       : "<?php echo Yii::t("common", "Search to save") ?>",
 	"bealertbymailofnewclassified" : "<?php echo Yii::t("common", "Do you want to receive a mail alert of new items") ?>",
 	"saveresearchandalert": "<?php echo Yii::t("common", "Save this research as favorites and be alert") ?>",
+	"makeeventvisible": "<?php echo Yii::t("form", "Make your event publicly visible") ?>",
+	"explainvisibleevent": "<?php echo Yii::t("form", "<b>Private :</b> Event visible only by its attendees and create contents only for attendees and admins<br/><b>Public :</b> Event visible in search engine, agenda and communication available for all") ?>",
+	"makeprojectvisible": "<?php echo Yii::t("form", "Make your project publicly visible") ?>",
+	"explainvisibleproject": "<?php echo Yii::t("form", "<b>Private :</b> Project visible only by its contributors and create contents accessible only by its community<br/><b>Public :</b> Project visible in search engine and communication available for all") ?>",
 };
 
 var tradCategory = {

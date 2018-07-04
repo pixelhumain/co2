@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : trad.addOrganization,
+	    title : trad.addorganization,
 	    icon : "group",
 	    type : "object",
 	    onLoads : {
@@ -89,13 +89,7 @@ dynForm = {
 	        }
 	    },
 	    properties : {
-	    	info : {
-                inputType : "custom",
-                html:"<p class='text-"+typeObj["organization"].color+"'>"+
-                		//"Faire connaître votre Organisation n'a jamais été aussi simple !<br>" +
-					    tradDynForm["infocreateorganization"]+" ...<hr>" +
-					 "</p>",
-            },
+	    	
 	        name : dyFInputs.name("organization"),
 	        similarLink : dyFInputs.similarLink,
 	        type : dyFInputs.inputSelect(tradDynForm["organizationType"], tradDynForm["organizationType"], organizationTypes, { required : true }),

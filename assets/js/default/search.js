@@ -815,7 +815,11 @@ function initCategoriesApp(type){
                 dataType="data-type-event='"+e+"' data-type='events'";
                 textColor= (typeof v.color != "undefined") ? "text-"+v.color : "";
                 icon = (typeof v.icon != "undefined") ? "<i class='fa fa-"+v.icon+"'></i> " : "";
-                str+='<button class="btn btn-directory-type padding-10 '+textColor+'" '+dataType+'>'+
+                str+='<button class="btn btn-directory-type dropDesign col-xs-12 padding-10 '+textColor+'" '+dataType+'>'+
+                    '<div class="checkbox-filter pull-left"><label>'+
+                                '<input type="checkbox" class="checkbox-info">'+
+                                '<span class="cr"><i class="cr-icon fa fa-circle"></i></span>'+
+                        '</label></div>'+
                         icon+ 
                         '<span class="elipsis label-filter">'+tradCategory[e]+'</span>'+
                     '</button><br class="hidden-xs">';
@@ -952,7 +956,8 @@ function activeFiltersInterface(filter,value){
         $(".btn-select-section[data-key='"+value+"']").addClass("active");
     }
     if(filter=="searchSType"){
-        $(".dropdown-types .dropdown-toggle").addClass("active").html(tradCategory[value]+" <i class='fa fa-angle-down'></i>");
+        labelInit=(searchObject.initType=="classifieds") ? tradCategory[modules[value].categories.labelFront] :tradCategory[value];
+        $(".dropdown-types .dropdown-toggle").addClass("active").html(labelInit+" <i class='fa fa-angle-down'></i>");
         if(searchObject.initType=="events")
             $(".btn-directory-type[data-type-event='"+value+"']").addClass("active");
         else{

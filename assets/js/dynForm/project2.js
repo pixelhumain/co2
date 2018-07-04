@@ -40,17 +40,13 @@ dynForm = {
 		            parentType : dyFInputs.inputHidden(),
 		            parentId : dyFInputs.inputHidden(),
 		            public : dyFInputs.checkboxSimple("false", "public", 
-            										{ "onText" : trad.yes,
+            										{"onText" : trad.yes,
             										  "offText": trad.no,
-            										  "onLabel" : "public",
-            										  "offLabel": "private",
-            										  //"inputId" : ".amendementDateEnddatetime",
-            										  "labelText": "Make you project publicly visible ?",
+            										  "onLabel" : tradDynForm.public,
+            										  "offLabel": tradDynForm.private,
+            										  "labelText": tradDynForm.makeprojectvisible+" ?",
             										  //"labelInInput": "Activer les amendements",
-            										  "labelInformation": "<i class='fa fa-info-circle'></i><br/>"+
-            										  					" <b>Private :</b> project only visible by its community and create contents only for its contributors and admin<br/>"+
-            										  					"<b>Visible :</b> project visible in search engine, accessible, can communicate needs and events"
-
+            										  "labelInformation": tradDynForm.explainvisibleproject
             		}),
 		            image : dyFInputs.image(),
 		            formLocality : dyFInputs.formLocality(tradDynForm.addLocality, tradDynForm.addLocality),

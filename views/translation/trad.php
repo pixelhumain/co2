@@ -176,6 +176,8 @@ var trad = {
 	"address" : "<?php echo Yii::t("common","Address") ?>",
 	"classified" : "<?php echo Yii::t("common","classified") ?>",
 	"classifieds" : "<?php echo Yii::t("common","classifieds") ?>",
+	"job" : "<?php echo Yii::t("common","job") ?>",
+	"jobs" : "<?php echo Yii::t("common","jobs") ?>",
 	"municipality" : "<?php echo Yii::t("common","municipality") ?>",
 	"municipalities" : "<?php echo Yii::t("common","municipalities") ?>",
 	"places" : "<?php echo Yii::t("common","Places") ?>",

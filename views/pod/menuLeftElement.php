@@ -298,7 +298,16 @@
 			</li>			
 		<?php }  
 		} ?>
-
+		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){  
+					if(!@$front || (@$front && $front["poi"])){ 
+		?>
+			<li>
+				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="jobs" data-icon="briefcase">
+					<i class="fa fa-briefcase"></i> <?php echo Yii::t("common","Jobs"); ?>
+				</a>
+			</li>			
+		<?php }  
+		} ?>
 		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
 				  $type==Event::COLLECTION || $type==Person::COLLECTION || $type==Place::COLLECTION ){  
 					if(!@$front || (@$front && $front["poi"])){ 

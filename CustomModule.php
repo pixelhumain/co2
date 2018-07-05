@@ -46,7 +46,7 @@ class CustomModule extends CWebModule {
 		$this->setImport(array(
 			'citizenToolKit.models.*',
 			'ressources.models.*',
-			'classifieds.models.*',
+			'eco.models.*',
 			'places.models.*',
 			'chat.models.*',
 			'interop.models.*',

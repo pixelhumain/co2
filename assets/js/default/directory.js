@@ -93,7 +93,7 @@ function initTypeSearch(typeInit){
           });
         }
         else{
-          searchObject.types = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classifieds","ressources"/*,"cities"*/];
+          searchObject.types = ["organizations", "projects", "events", /*"places",*/ "poi",/* "news",*/ "classifieds"/*,"ressources","cities"*/];
           if(searchObject.text != "" || Object.keys(getSearchLocalityObject()).length > 0) 
             searchObject.types.push("persons");
         }

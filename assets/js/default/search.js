@@ -349,36 +349,10 @@ function bindLeftMenuFilters () {
             
     });
     $(".btn-select-source").click(function(){
-            // var key = $(this).data("key");
-            // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
+        interopSearch($(this).data("key"), $(this).data("source"));
+    });
 
-            
-            // var key = $(this).data("key");
-            // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
-            /* if($(this).data("key") == "co"){
-                delete searchObject.source;
-                pageCount=true;
-                searchObject.count=true;
-        
-                // initCountType();
-                startSearch(0, indexStepInit, searchCallback);
-             }else{*/
-                 interopSearch($(this).data("key"), $(this).data("source"));
-            //     if( typeof interop == "undefined" ){
-            //         lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
-            //             if( typeof interopObj == "undefined" ){
-            //                lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
-            //                     interopObj[key].startSearch();
-            //                 } ); 
-            //            }else{
-            //                 interopObj[key].startSearch(); 
-            //            }
-            //         });
-            //     } else {
-            //         interopObj[key].startSearch();
-            //     }
-             //}
-        });
+
     $(".btn-select-section").off().on("click", function()
     {    
         searchType = [ typeInit ];
@@ -568,8 +542,7 @@ function interopSearch(keyS, nameS){
         $(".dropdown-price .priceMax").hide();
         $(".dropdown-section, .dropdown-category").hide();
         searchObject.page=0;
-        //$(".btn-select-category[data-keycat='training']").addClass("hidden");
-        //, dropdown$(".btn-select-category[data-keycat='internship']").addClass("hidden");
+        
         searchObject.source = keyS;
         if( typeof interop == "undefined" ){
             lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){

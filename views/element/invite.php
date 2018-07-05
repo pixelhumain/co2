@@ -287,7 +287,10 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 						<div class="col-xs-12">
 							<h4> <?php echo Yii::t("invite", "Result of invitations sent") ;?> </h4>
 							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
-							<?php if($parentType != Person::COLLECTION){ ?>
+							<?php 
+							if($parentType != Person::COLLECTION){ ?>
+								<a href="<?php echo Yii::app()->getRequest()->getBaseUrl(true) ?>/survey/co/members/id/<?php echo $id; ?>" class="btn btn-success margin-top-20 col-xs-12 " id="btn-home" style="font-size:20px;"><i class="fa fa-home"></i> <?php echo Yii::t("invite","See the community") ?></a>
+							<?php } else if($parentType != Person::COLLECTION){ ?>
 								<button class="btn btn-success margin-top-20 col-xs-12 link-to-community"><i class="fa fa-users"></i> <?php echo Yii::t("invite","See the community") ?></button>
 							<?php } ?>
 						</div>

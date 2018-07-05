@@ -281,7 +281,6 @@ function bindLeftMenuFilters () {
         //Case specific to focus on poleEmploi
         if(typeof searchObject.source != "undefined"){
             delete searchObject.source;
-            $(".dropdown-price .divMoney").show();
             $(".dropdown-sources .dropdown-toggle").removeClass("active").html(trad.datasource+" <i class='fa fa-angle-down'></i>");
         }    
         if( typeKey == "classifieds" || typeKey == "jobs" || typeKey == "all"){
@@ -531,16 +530,13 @@ function interopSearch(keyS, nameS){
         searchObject.count=true;
         searchObject.page=0;
         $(".dropdown-sources .dropdown-toggle").removeClass("active").html(trad.datasource+" <i class='fa fa-angle-down'></i>");
-        $(".dropdown-price .divMoney").show();
-        $(".dropdown-price .priceMax").show();
-        $(".dropdown-section, .dropdown-category").show();
-       // $(".btn-select-category[data-keycat='training']").removeClass("hidden");
-        //$(".btn-select-category[data-keycat='internship']").removeClass("hidden");
+        $(".dropdown-section, .dropdown-price").show();
+        $(".btn-select-category").show();
         startSearch(0, searchObject.indexStep, searchCallback);
     }else{
-        $(".dropdown-price .divMoney").hide();
-        $(".dropdown-price .priceMax").hide();
-        $(".dropdown-section, .dropdown-category").hide();
+        $(".dropdown-section, .dropdown-price").hide();
+        $(".btn-select-category").hide();
+        $(".keycat-joboffer").removeClass("hidden");
         searchObject.page=0;
         
         searchObject.source = keyS;

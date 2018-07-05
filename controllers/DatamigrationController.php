@@ -555,6 +555,7 @@ class DatamigrationController extends CommunecterController {
 					array('$set' => array("modified"=>new MongoDate($v["modified"]["sec"])))			
 				);
 		  	}
+		  	echo "done mon petit";
 		}
 	}
 	// Refactor classifieds
@@ -573,6 +574,7 @@ class DatamigrationController extends CommunecterController {
 					array('$set' => array("updated"=> strtotime ($v["updated"]["sec"]), "created"=>strtotime ($v["created"]["sec"])))			
 				);*/
 		  	}
+		  	echo "impressionnant";
 		}
 	}
 	// Refactor classifieds

@@ -33,6 +33,7 @@ var trad = {
 	"section" : "<?php echo Yii::t("common","Section") ?>",
 	"category" : "<?php echo Yii::t("common","Category") ?>",
 	"subcategory" : "<?php echo Yii::t("common","Subcategory") ?>",
+	"datasource" : "<?php echo Yii::t("common","Source data") ?>",
 	"tags" : "<?php echo Yii::t("common","Tags") ?>",
 	"price" : "<?php echo Yii::t("common","Price") ?>",
 	"noone":"<?php echo Yii::t("common","No one") ?>",

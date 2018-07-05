@@ -277,7 +277,13 @@ function bindLeftMenuFilters () {
         searchObject.count=true;
         searchObject.page=0;
         typeClass = $(this).data("type-anc");
-        typeKey = $(this).data("key");    
+        typeKey = $(this).data("key");
+        //Case specific to focus on poleEmploi
+        if(typeof searchObject.source != "undefined"){
+            delete searchObject.source;
+            $(".dropdown-price .divMoney").show();
+            $(".dropdown-sources .dropdown-toggle").removeClass("active").html(trad.datasource+" <i class='fa fa-angle-down'></i>");
+        }    
         if( typeKey == "classifieds" || typeKey == "jobs" || typeKey == "all"){
             $(".dropdown-price").show(200);
             setTimeout(function(){
@@ -550,17 +556,17 @@ function interopSearch(keyS, nameS){
         pageCount=true;
         searchObject.count=true;
         searchObject.page=0;
-        $(".dropdown-sources .dropdown-toggle").removeClass("active").html("Source de donnée <i class='fa fa-angle-down'></i>");
-        $(".dropdown-price .divMoney").removeClass("hidden");
-        $(".dropdown-price .priceMax").removeClass("hidden");
-        $(".dropdown-section, .dropdown-category").removeClass("hidden");
+        $(".dropdown-sources .dropdown-toggle").removeClass("active").html(trad.datasource+" <i class='fa fa-angle-down'></i>");
+        $(".dropdown-price .divMoney").show();
+        $(".dropdown-price .priceMax").show();
+        $(".dropdown-section, .dropdown-category").show();
        // $(".btn-select-category[data-keycat='training']").removeClass("hidden");
         //$(".btn-select-category[data-keycat='internship']").removeClass("hidden");
         startSearch(0, searchObject.indexStep, searchCallback);
     }else{
-        $(".dropdown-price .divMoney").addClass("hidden");
-        $(".dropdown-price .priceMax").addClass("hidden");
-        $(".dropdown-section, .dropdown-category").addClass("hidden");
+        $(".dropdown-price .divMoney").hide();
+        $(".dropdown-price .priceMax").hide();
+        $(".dropdown-section, .dropdown-category").hide();
         searchObject.page=0;
         //$(".btn-select-category[data-keycat='training']").addClass("hidden");
         //, dropdown$(".btn-select-category[data-keycat='internship']").addClass("hidden");

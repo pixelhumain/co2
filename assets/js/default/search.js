@@ -275,6 +275,7 @@ function bindLeftMenuFilters () {
         indexStepInit = 100;
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         typeClass = $(this).data("type-anc");
         typeKey = $(this).data("key");    
         if( typeKey == "classifieds" || typeKey == "jobs" || typeKey == "all"){
@@ -331,19 +332,32 @@ function bindLeftMenuFilters () {
         $(".btn-select-type-anc, .btn-select-section, .btn-select-category, .keycat").removeClass("active");
         //if(bindEcoSource())
            //bindEcoSource();
-        $(".btn-select-source").click(function(){
+        
+
+        $(".keycat").addClass("hidden");
+        if(typeof searchObject.section != "undefined") delete searchObject.section;
+        if(typeof searchObject.category != "undefined") delete searchObject.category;
+        if(typeof searchObject.subType != "undefined") delete searchObject.subType;
+        if(typeof searchObject.searchSType != "undefined") $(this).addClass("active");
+        startSearch(0, indexStepInit, searchCallback);
+            
+    });
+    $(".btn-select-source").click(function(){
             // var key = $(this).data("key");
             // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
 
-            interopSearch($(this).data("key"), $(this).data("source"));
+            
             // var key = $(this).data("key");
             // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
-            // if(key == "co"){
-            //     delete searchObject.source;
-            //     initCountType();
-            //     startSearch(0, indexStepInit, searchCallback);
-            // }else{
-            //     searchObject.source = key;
+            /* if($(this).data("key") == "co"){
+                delete searchObject.source;
+                pageCount=true;
+                searchObject.count=true;
+        
+                // initCountType();
+                startSearch(0, indexStepInit, searchCallback);
+             }else{*/
+                 interopSearch($(this).data("key"), $(this).data("source"));
             //     if( typeof interop == "undefined" ){
             //         lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
             //             if( typeof interopObj == "undefined" ){
@@ -357,23 +371,15 @@ function bindLeftMenuFilters () {
             //     } else {
             //         interopObj[key].startSearch();
             //     }
-            // }
+             //}
         });
-
-        $(".keycat").addClass("hidden");
-        if(typeof searchObject.section != "undefined") delete searchObject.section;
-        if(typeof searchObject.category != "undefined") delete searchObject.category;
-        if(typeof searchObject.subType != "undefined") delete searchObject.subType;
-        if(typeof searchObject.searchSType != "undefined") $(this).addClass("active");
-        startSearch(0, indexStepInit, searchCallback);
-            
-    });
     $(".btn-select-section").off().on("click", function()
     {    
         searchType = [ typeInit ];
         indexStepInit = 100;
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         $(".dropdown-category .dropdown-toggle").html(trad.category+" <i class='fa fa-angle-down'></i>");
         $(".dropdown-category .dropdown-toggle").removeClass("active")
         if( $(this).hasClass( "active" ) )
@@ -422,6 +428,7 @@ function bindLeftMenuFilters () {
         // Event for count in DB
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         if(typeof searchObject.subType != "undefined") delete searchObject.subType;
         if( $(this).hasClass( "active" ) ){
             if(typeof searchObject.category != "undefined") delete searchObject.category;
@@ -473,6 +480,7 @@ function bindLeftMenuFilters () {
         // Event for count in DB
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         if( $(this).hasClass( "active" ) ){
             if(typeof searchObject.subType != "undefined") delete searchObject.subType;
             $(this).removeClass( "active" );
@@ -518,6 +526,7 @@ function bindLeftMenuFilters () {
         $(".dropdown-price").removeClass("open");
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         startSearch(0, searchObject.indexStep, searchCallback);
     });
     $("#btn-create-classified").off().on("click", function(){
@@ -537,20 +546,24 @@ function interopSearch(keyS, nameS){
     
     if(keyS == "co"){
         delete searchObject.source;
-        initCountType();
-        $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
+        //initCountType();
+        pageCount=true;
+        searchObject.count=true;
+        searchObject.page=0;
+        $(".dropdown-sources .dropdown-toggle").removeClass("active").html("Source de donnée <i class='fa fa-angle-down'></i>");
         $(".dropdown-price .divMoney").removeClass("hidden");
         $(".dropdown-price .priceMax").removeClass("hidden");
-        $(".dropdown-category").removeClass("hidden");
-        $(".btn-select-category[data-keycat='training']").removeClass("hidden");
-        $(".btn-select-category[data-keycat='internship']").removeClass("hidden");
-        startSearch(searchObject.indexMin, searchObject.indexStep, searchCallback);
+        $(".dropdown-section, .dropdown-category").removeClass("hidden");
+       // $(".btn-select-category[data-keycat='training']").removeClass("hidden");
+        //$(".btn-select-category[data-keycat='internship']").removeClass("hidden");
+        startSearch(0, searchObject.indexStep, searchCallback);
     }else{
         $(".dropdown-price .divMoney").addClass("hidden");
         $(".dropdown-price .priceMax").addClass("hidden");
-        $(".dropdown-section").addClass("hidden");
-        $(".btn-select-category[data-keycat='training']").addClass("hidden");
-        $(".btn-select-category[data-keycat='internship']").addClass("hidden");
+        $(".dropdown-section, .dropdown-category").addClass("hidden");
+        searchObject.page=0;
+        //$(".btn-select-category[data-keycat='training']").addClass("hidden");
+        //, dropdown$(".btn-select-category[data-keycat='internship']").addClass("hidden");
         searchObject.source = keyS;
         if( typeof interop == "undefined" ){
             lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){

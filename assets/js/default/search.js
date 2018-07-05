@@ -343,36 +343,10 @@ function bindLeftMenuFilters () {
             
     });
     $(".btn-select-source").click(function(){
-            // var key = $(this).data("key");
-            // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
+        interopSearch($(this).data("key"), $(this).data("source"));
+    });
 
-            
-            // var key = $(this).data("key");
-            // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
-            /* if($(this).data("key") == "co"){
-                delete searchObject.source;
-                pageCount=true;
-                searchObject.count=true;
-        
-                // initCountType();
-                startSearch(0, indexStepInit, searchCallback);
-             }else{*/
-                 interopSearch($(this).data("key"), $(this).data("source"));
-            //     if( typeof interop == "undefined" ){
-            //         lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
-            //             if( typeof interopObj == "undefined" ){
-            //                lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
-            //                     interopObj[key].startSearch();
-            //                 } ); 
-            //            }else{
-            //                 interopObj[key].startSearch(); 
-            //            }
-            //         });
-            //     } else {
-            //         interopObj[key].startSearch();
-            //     }
-             //}
-        });
+
     $(".btn-select-section").off().on("click", function()
     {    
         searchType = [ typeInit ];
@@ -550,20 +524,23 @@ function interopSearch(keyS, nameS){
         pageCount=true;
         searchObject.count=true;
         searchObject.page=0;
+        $(".dropdown-price").removeClass("hidden");
         $(".dropdown-sources .dropdown-toggle").removeClass("active").html("Source de donnée <i class='fa fa-angle-down'></i>");
         $(".dropdown-price .divMoney").removeClass("hidden");
-        $(".dropdown-price .priceMax").removeClass("hidden");
+        $(".dropdown-price .divPriceMax").removeClass("hidden");
         $(".dropdown-section, .dropdown-category").removeClass("hidden");
-       // $(".btn-select-category[data-keycat='training']").removeClass("hidden");
-        //$(".btn-select-category[data-keycat='internship']").removeClass("hidden");
+        $(".btn-select-category[data-keycat='training']").removeClass("hidden");
+        $(".btn-select-category[data-keycat='internship']").removeClass("hidden");
         startSearch(0, searchObject.indexStep, searchCallback);
     }else{
-        $(".dropdown-price .divMoney").addClass("hidden");
-        $(".dropdown-price .priceMax").addClass("hidden");
-        $(".dropdown-section, .dropdown-category").addClass("hidden");
+        $(".dropdown-price").addClass("hidden");
+        // $(".dropdown-price .divMoney").addClass("hidden");
+        // $(".dropdown-price .divPriceMax").addClass("hidden");
+        $(".dropdown-section").addClass("hidden");
+        $(".btn-select-category[data-keycat='training']").addClass("hidden");
+        $(".btn-select-category[data-keycat='internship']").addClass("hidden");
         searchObject.page=0;
-        //$(".btn-select-category[data-keycat='training']").addClass("hidden");
-        //, dropdown$(".btn-select-category[data-keycat='internship']").addClass("hidden");
+        
         searchObject.source = keyS;
         if( typeof interop == "undefined" ){
             lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){

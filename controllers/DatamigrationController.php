@@ -4713,6 +4713,33 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 		echo "Number of user with preferences modified : ".$nbUser;
 	}
+
+
+	public function actionInviteDigitalReunion() {
+		$nbUser = 0;
+		$orga = PHDB::find(Organization::COLLECTION, 
+							array("source.key" => "digitalreunion"));
+
+		foreach ($orga as $key => $value){
+			$child = array();
+			$child[] = array( 	"childId" => $key,
+								"childType" => Organization::COLLECTION,
+								"childName" => $value["name"],
+								"roles" => array() );
+			//var_dump($child);
+			$res["organizations"][] = Link::multiconnect($child, "577e4ad740bb4e9c6e10130d", Organization::COLLECTION);
+
+			$res["update"][] = PHDB::update(Organization::COLLECTION, 
+										  	array("_id"=>new MongoId($key)),
+					                        array(	'$set' => array( "tags" => array("Digital Réunion"))));
+
+		}
+
+		//577e4ad740bb4e9c6e10130d
+
+		Rest::json($res); exit;
+	}
+		
 }
 
 

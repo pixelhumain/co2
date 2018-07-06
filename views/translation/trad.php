@@ -518,7 +518,7 @@ var trad = {
 };
 
 var tradDynForm = {
-	
+	"addANewAddress" : "<?php echo Yii::t("form","Add a new address" ); ?>",
 	"addressSummary" : "<?php echo Yii::t("common","Address Summary" ); ?>",
 	"confirmAddress" : "<?php echo Yii::t("common","Confirm address" ); ?>",
 	"valideFormInMap" : "<?php echo Yii::t("common","ValideFormInMap" ); ?>",

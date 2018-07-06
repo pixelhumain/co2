@@ -14,7 +14,9 @@ if( @$_GET["el"])
                                      : Element::getByTypeAndId( $stum[0] , $stum[1] );
             if(@$el["custom"]){
                 Yii::app()->session['custom'] = array( "id"   => (string) $el["_id"],
-                                                       "type" => City::COLLECTION );
+                                                       "type" => City::COLLECTION,
+                                                       "url" => "/custom?el=".$_GET["el"]."#welcome"
+                                                    );
                 Yii::app()->session['custom'] = array_merge(Yii::app()->session['custom'],$el["custom"]);
             }
         //}
@@ -34,7 +36,6 @@ if( @Yii::app()->session['custom'] ){ ?>
     setOpenBreadCrum({'cities': custom.id });
     <?php if(Yii::app()->session['custom']["logo"]){ ?>
         custom.logo = modules.eco.url+"<?php echo Yii::app()->session['custom']['logo'] ?>";
-        $(".logo-menutop").attr({'src':custom.logo});
         themeObj.blockUi = {
             processingMsg :'<div class="lds-css ng-scope">'+
                     '<div style="width:100%;height:100%" class="lds-dual-ring">'+

@@ -35,6 +35,27 @@ if( @Yii::app()->session['custom'] ){ ?>
     <?php if(Yii::app()->session['custom']["logo"]){ ?>
         custom.logo = modules.eco.url+"<?php echo Yii::app()->session['custom']['logo'] ?>";
         $(".logo-menutop").attr({'src':custom.logo});
+        themeObj.blockUi = {
+            processingMsg :'<div class="lds-css ng-scope">'+
+                    '<div style="width:100%;height:100%" class="lds-dual-ring">'+
+                        '<img src="'+custom.logo+'" class="loadingPageImg" height=80>'+
+                        '<div style="border-color: transparent #ff9205 transparent #ff9205;"></div>'+
+                        '<div style="border-color: transparent #3dd4ed transparent #3dd4ed;"></div>'+
+                    '</div>'+
+                '</div>', 
+            errorMsg : '<img src="'+custom.logo+'" class="logo-menutop" height=80>'+
+              '<i class="fa fa-times"></i><br>'+
+               '<span class="col-md-12 text-center font-blackoutM text-left">'+
+                '<span class="letter letter-red font-blackoutT" style="font-size:40px;">404</span>'+
+               '</span>'+
+
+              '<h4 style="font-weight:300" class=" text-dark padding-10">'+
+                'Oups ! Une erreur s\'est produite'+
+              '</h4>'+
+              '<span style="font-weight:300" class=" text-dark">'+
+                'Vous allez être redirigé vers la page d\'accueil'+
+              '</span>'
+        };
     <?php } 
 }
 ?>

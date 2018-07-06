@@ -83,7 +83,6 @@ function initTypeSearch(typeInit){
     if(typeInit == "all") {
         if(isCustom(typeInit, "types")){
           searchObject.types = [];
-          alert();
           $.each(custom.menu[searchObject.initType].filters.types, function(e, v){
             if($.inArray(v, ["NGO","Group","LocalBusiness","GovernmentOrganization"]) >= 0){
              if( $.inArray("organizations", searchObject.types)<0)

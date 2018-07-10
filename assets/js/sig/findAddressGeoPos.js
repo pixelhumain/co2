@@ -373,7 +373,7 @@ function addResultsInForm(commonGeoObj, countryCode){
 		if(notEmpty(value.countryCode)){
 			mylog.log("Country Code",value.countryCode.toLowerCase(), countryCode.toLowerCase());
 			if(value.countryCode.toLowerCase() == countryCode.toLowerCase()){ 
-				html += "<li><a href='javascript:' class='item-street-found' data-lat='"+value.geo.latitude+"' data-lng='"+value.geo.longitude+"'><i class='fa fa-marker-map'></i> "+value.name+"</a></li>";
+				html += "<li><a href='javascript:;' class='item-street-found' data-lat='"+value.geo.latitude+"' data-lng='"+value.geo.longitude+"'><i class='fa fa-marker-map'></i> "+value.name+"</a></li>";
 			}
 		}
 	});

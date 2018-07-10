@@ -68,11 +68,12 @@ class Co2Module extends CWebModule {
 	}
 	private $_assetsUrl;
 
-	public function getAssetsUrl()
+	public function getAssetsUrl($noBase=null)
 	{
+		$baseAssets= ($noBase) ? "assets" : $this->id.'.assets';
 		if ($this->_assetsUrl === null)
 	        $this->_assetsUrl = Yii::app()->getAssetManager()->publish(
-	            Yii::getPathOfAlias($this->id.'.assets') );
+	            Yii::getPathOfAlias($baseAssets) );
 	    return $this->_assetsUrl;
 	}
 

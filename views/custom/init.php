@@ -14,62 +14,61 @@ if( @$_GET["el"] || @$custom )
             if($stum[0]=="city") {
                 $el = City::getByInsee($stum[1]);
                 Yii::app()->session['custom'] = array( "id"   => (string) $el["_id"],
-                                                       "type" => City::COLLECTION );
+                                                       "type" => City::COLLECTION,
+                                                       "url" => "/custom?el=".$_GET["el"],
+                                                       "title"=> "Le port"
+                                                );
+                if(@$el["custom"]["logo"]) $el["custom"]["logo"]=Yii::app()->getModule("eco")->getAssetsUrl(true).$el["custom"]["logo"];
+                $el["custom"]["logo"] = substr($el["custom"]["logo"], strpos($el["custom"]["logo"], '/assets'), strlen($el["custom"]["logo"]));
             }
             else if( @$stum[1] == "cte" ){
                 $el = PHDB::findOne( $stum[0], array("id"=>$stum[1]) );
                 Yii::app()->session['custom'] = array( 
                     "id"   => (string) $el["_id"],
                     "type" => Form::COLLECTION,
-                    "url" => "/survey/co/index/id/cte");
+                    "url" => "/survey/co/index/id/cte",
+                    "title"=> "CTE TCO");
+                if(@$el["custom"]["urlLogo"]) $el["custom"]["logo"]=$el["custom"]["urlLogo"];
             }
             else {
                 $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
                 Yii::app()->session['custom'] = array( "id"   => (string) $el["_id"],
-                                                       "type" => $stum[à] );
-                
+                                                       "type" => $stum[0],
+                                                       "title"=> $el["name"],
+                                                       "url"=> "/custom?el=".$_GET["el"] );
+                if(@$el["profilImageUrl"]) $el["custom"]["logo"]=$el["profilImageUrl"];   
             }
             if(@$el["custom"])
                 Yii::app()->session['custom'] = array_merge(Yii::app()->session['custom'],$el["custom"]);
-
-        //}
     }
 } else {
     Yii::app()->session["custom"] = null; 
     //delete custom; ?>
 <?php }
 
-if( @Yii::app()->session['custom'] ){ ?>
+if( @Yii::app()->session['custom'] ){  ?>
 
-var custom = {};
-
-jQuery(document).ready(function() {
-
-    custom.id = "<?php echo Yii::app()->session['custom']['id'] ?>";
-    custom.type = "<?php echo Yii::app()->session['custom']['type'] ?>";
+var custom = {
+    id : "<?php echo Yii::app()->session['custom']['id'] ?>",
+    type : "<?php echo Yii::app()->session['custom']['type'] ?>"
+    };
 
     <?php if(@Yii::app()->session['custom']['menu']){ ?>
         custom.menu=<?php echo json_encode(Yii::app()->session['custom']['menu']) ?>;
     <?php } ?>
-    if( custom.type == "cities" )
-        setOpenBreadCrum({'cities': custom.id });
-
+   
     <?php if( @Yii::app()->session['custom']["logo"]){ ?>
-        pathUrl = baseUrl; 
+        pathUrl = ""; /*baseUrl; 
         if( custom.type == "cities" )
             pathUrl= modules.eco.url;
         else if( custom.type == "forms" )
-            pathUrl= modules.survey.url;
+            pathUrl= modules.survey.url;*/
 
         custom.logo = pathUrl+"<?php echo Yii::app()->session['custom']['logo'] ?>";
-        
-        if( custom.type == "cities" )
-            $(".logo-menutop").attr({'src':custom.logo});
-        
         themeObj.blockUi = {
             processingMsg :'<div class="lds-css ng-scope">'+
                     '<div style="width:100%;height:100%" class="lds-dual-ring">'+
-                        '<img src="'+custom.logo+'" class="loadingPageImg" height=80>'+
+                        '<img src="'+baseUrl+custom.logo+'" class="loadingPageImg" height=80>'+
                         '<div style="border-color: transparent #ff9205 transparent #ff9205;"></div>'+
                         '<div style="border-color: transparent #3dd4ed transparent #3dd4ed;"></div>'+
                     '</div>'+
@@ -88,6 +87,5 @@ jQuery(document).ready(function() {
               '</span>'
         };
     <?php } 
-}
+    }
 ?>
-});

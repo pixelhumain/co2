@@ -106,8 +106,21 @@ function initTypeSearch(typeInit){
     }
 }
 function initCountType(){
-  if(searchObject.initType=="all")
-    searchObject.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", /*"news",*/ "classifieds","ressources"];
+  if(searchObject.initType=="all"){
+    if(isCustom(searchObject.initType, "types")){
+        searchObject.countType = [];
+        $.each(custom.menu[searchObject.initType].filters.types, function(e, v){
+          //if($.inArray(v, ["NGO","Group","LocalBusiness","GovernmentOrganization"]) >= 0){
+          // if( $.inArray("organizations", searchObject.countType)<0)
+          //  searchObject.types.push("organizations");
+          //}else
+            searchObject.countType.push(v);
+        });
+    }
+    else{
+      searchObject.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", /*"news",*/ "classifieds","ressources"];
+    }
+  }
   else if(searchObject.initType=="ressources") searchObject.countType=["ressources"];
   else if(searchObject.initType=="classifieds") searchObject.countType=["classifieds"];
   else if(searchObject.initType=="events") searchObject.countType=["events"];

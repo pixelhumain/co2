@@ -311,7 +311,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 			citoyens : { color: "yellow", icon:"user", label: trad.People },
 			organizations :	{ color: "green", icon:"group", label: trad.Organizations } 
 		};
-
+	var rolesListCustom = <?php echo json_encode(@$roles); ?>;
 	var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $parentType, @Yii::app()->session["userId"]) ?>";
 
 	var listInvite = { 
@@ -320,6 +320,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 		invites : {},
 	};
 
+	var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $parentType, @Yii::app()->session["userId"]) ?>";
+
 	jQuery(document).ready(function() {
 		// mylog.log("members", members);
 		if(parentType != "citoyens" && typeof contextData != "undefined")
@@ -327,6 +329,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 		initInvite();
 		bindInvite();
 		fadeInView("step1-search");
+		if(rolesListCustom.length > 0)
+			rolesList = rolesListCustom ;
 	});
 
 	function fadeInView(inView){

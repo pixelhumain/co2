@@ -10,7 +10,7 @@ function userValidatedActions() {
 	if (typeof initLoginRegister != "undefined" &&  initLoginRegister.invitor != "") {
 		$(".errorHandler").hide();
 		$('.pendingProcess').show();
-		$('.form-register #registerName').val(name);
+		$('.form-register #registerName').val(initLoginRegister.name);
 		$('.form-register #isInvitation').val(true);
 		$('#email3').prop('disabled', true);
 		$('#inviteCodeLink').hide();
@@ -207,11 +207,13 @@ var Login = function() {
 		    		  	} else if (data.msg == "accountPending") {
 		    		  		pendingUserId = data.pendingUserId;
 		    		  		$(".errorHandler").hide();
-							$('.register').click();
+							//$('.register').trigger("click");
 							$('.pendingProcess').show();
 							var pendingUserEmail = data.pendingUserEmail;
 							$('#email3').val(pendingUserEmail);
 							$('#email3').prop('disabled', true);
+							$('.form-register #isInvitation').val(true);
+							$('#modalRegister').modal("show");
 		    		  	} else{
 		    		  		msg = data.msg;
 		    		  		$('.loginResult').html(msg);

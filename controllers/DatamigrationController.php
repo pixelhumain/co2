@@ -4741,6 +4741,25 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 		Rest::json($res); exit;
 	}
+
+	public function actionPendingMissing() {
+		$nbUser = 0;
+		$person = PHDB::find(Person::COLLECTION, 
+							array("pwd" => array('$exists' => 0), "pending" => array('$exists' => 0)));
+
+		foreach ($person as $key => $value){
+			echo $key." <br/> ";
+			$nbUser++;
+			$res["update"][] = PHDB::update(Person::COLLECTION, 
+										  	array("_id"=>new MongoId($key)),
+					                        array(	'$set' => array( "pending" => true)));
+
+		}
+		echo $nbUser;
+		//577e4ad740bb4e9c6e10130d
+
+		//Rest::json($res); exit;
+	}
 		
 }
 

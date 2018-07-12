@@ -50,6 +50,7 @@ class CustomModule extends CWebModule {
 			'places.models.*',
 			'chat.models.*',
 			'interop.models.*',
+			'survey.models.*',
 			$this->id.'.models.*',
 			$this->id.'.components.*',
 			$this->id.'.messages.*',

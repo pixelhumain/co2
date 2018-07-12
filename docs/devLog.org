@@ -40,7 +40,8 @@ Migration des ressources dans classified et refactor sur les "classified" qui de
 4* Bash des object type dans documents, comments, notifications et news
   =>lancer l'url "/co2/datamigration/UpdateTypeInCollectionsLinkToClassifieds"
 
-
+* other batch 
+/co2/datamigration/PendingMissing
 ---------------------------------------
 ---------- VERSION C0.30 --------------
 ---------------------------------------

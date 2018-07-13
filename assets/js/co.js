@@ -1064,7 +1064,7 @@ var urlCtrl = {
 		 			}
 				});
 			}else{
-				if(custom==null || custom.url==null)	
+				if(typeof custom == "undefined" || typeof custom.url=="undefined")	
 					showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 			}
 		}
@@ -1348,8 +1348,8 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	        	// if( custom && custom.logo )
 	        	// 	custom.init("co.js");
         		// }
-        		//if( custom && custom.type == "cities" )
-        		//	setOpenBreadCrum({'cities': custom.id });
+        		if( typeof custom != "undefined" && custom.type == "cities" )
+        			setOpenBreadCrum({'cities': custom.id });
 
 	    			//$(".logo-menutop").attr( {'src':custom.logo} ); 	
 
@@ -1951,7 +1951,7 @@ function myAdminList (ctypes) {
 		};
 		$.each( ctypes, function(i,ctype) {
 			var connectionType = connectionTypes[ctype];
-			myList[ ctype ] = { label: trad[ctype], options:{} };
+			myList[ ctype ] = { label: ctype, options:{} };
 			if( notNull(myContacts) ){
 				mylog.log("myAdminList",ctype, connectionType, myContacts, myContacts[ ctype ]);
 				$.each( myContacts[ ctype ],function(id,elemObj){

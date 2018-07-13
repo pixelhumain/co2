@@ -1345,12 +1345,11 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	        		urlCtrl.afterLoad();
 	        		urlCtrl.afterLoad = null;
 	        	}
-	        	if( custom && custom.logo ){
-	        		$(".topLogoAnim").remove();
-       				$(".logo-menutop, .logoLoginRegister").attr({'src':baseUrl+custom.logo});
-        		}
-        		if( custom && custom.type == "cities" )
-        			setOpenBreadCrum({'cities': custom.id });
+	        	// if( custom && custom.logo )
+	        	// 	custom.init("co.js");
+        		// }
+        		//if( custom && custom.type == "cities" )
+        		//	setOpenBreadCrum({'cities': custom.id });
 
 	    			//$(".logo-menutop").attr( {'src':custom.logo} ); 	
 

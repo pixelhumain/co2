@@ -1,4 +1,3 @@
-
 <?php 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
@@ -26,9 +25,8 @@
 <section class="bg-white inline-block pull-left no-padding" id="bg-homepage">
 
 <?php 
-    if( @Yii::app()->session['custom']["welcomeTpl"]){
+    if( @Yii::app()->session['custom']["welcomeTpl"])
         $this->renderPartial( Yii::app()->session["custom"]["welcomeTpl"] );
-    }
     else if( @$_GET["city"] || Yii::app()->session['custom']['id'] )
     {
       $city = City::getById( Yii::app()->session['custom']['id'] );

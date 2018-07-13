@@ -56,6 +56,9 @@ var custom = {
     <?php if(@Yii::app()->session['custom']['menu']){ ?>
         custom.menu=<?php echo json_encode(Yii::app()->session['custom']['menu']) ?>;
     <?php } ?>
+    <?php if(@Yii::app()->session['custom']['menuTop']){ ?>
+        custom.menuTop=<?php echo json_encode(Yii::app()->session['custom']['menuTop']) ?>;
+    <?php } ?>
    
     <?php if( @Yii::app()->session['custom']["logo"]){ ?>
         pathUrl = ""; /*baseUrl; 

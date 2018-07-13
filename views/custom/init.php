@@ -6,8 +6,8 @@ if( @$_GET["el"] || @$custom )
 { 
 
     //Yii::app()->session['custom']=null;
-    if( !@Yii::app()->session['custom'])
-    {
+    //if( !@Yii::app()->session['custom'])
+    //{
         $stum = (@$custom) ?  explode(".",  $custom ) : explode(".",  $_GET["el"] );
         //if( Element::getModelByType( $stum[0] ) ){
             $el = null;
@@ -64,7 +64,7 @@ if( @$_GET["el"] || @$custom )
 
             Yii::app()->session['custom'] = $c;
             
-    }
+    //}
 } else {
     Yii::app()->session["custom"] = null; 
     //delete custom; ?>

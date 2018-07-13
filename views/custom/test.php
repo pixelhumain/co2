@@ -1,4 +1,5 @@
 <h1>TEST Custom sur orga</h1>
+<<<<<<< HEAD
 <h1>TEST Custom sur orga</h1>
 <h1>TEST Custom sur orga</h1>
 <h1>TEST Custom sur orga</h1>
@@ -27,3 +28,5 @@
 <h1>TEST Custom sur orga</h1>
 <h1>TEST Custom sur orga</h1>
 <h1>TEST Custom sur orga</h1>
+=======
+>>>>>>> master

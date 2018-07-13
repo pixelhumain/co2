@@ -103,7 +103,7 @@ if( @Yii::app()->session['custom'] ){  ?>
         if(typeof custom.menuTop != "undefined"){
             $.each(custom.menuTop, function(e,v){
                 if(e=="DDA")
-                    $("#dropdown-dda").remove();
+                    $(".btn-dashboard-dda").remove();
                 if(e=="donate")
                     $(".donation-btn").remove();
                 if(e=="communexion"){

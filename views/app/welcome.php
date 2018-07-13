@@ -25,14 +25,20 @@
 
 <section class="bg-white inline-block pull-left no-padding" id="bg-homepage">
 
-    <?php 
-    if( @$_GET["city"] || Yii::app()->session['custom']['id'] ){
+<?php 
+    if( @Yii::app()->session['custom']["welcomeTpl"]){
+        $this->renderPartial( Yii::app()->session["custom"]["welcomeTpl"] );
+    }
+    else if( @$_GET["city"] || Yii::app()->session['custom']['id'] )
+    {
       $city = City::getById( Yii::app()->session['custom']['id'] );
       if(@$city["custom"] && $city["custom"]["bannerTpl"])
         $this->renderPartial( 'eco.views.custom.'.$city["custom"]["bannerTpl"] );
-    }
+    } 
     else 
-        $this->renderPartial($layoutPath.'home.'.Yii::app()->params["CO2DomainName"], array());  ?>
+        $this->renderPartial( $layoutPath.'home.'.Yii::app()->params["CO2DomainName"], array() );
+
+?>
 </section>
 
 <script type="text/javascript" >
@@ -40,6 +46,7 @@
 var currentCategory = "";
 
 jQuery(document).ready(function() {
+
     <?php $this->renderPartial( 'co2.views.custom.init' ); ?>
     initKInterface({"affixTop":0});
     $("#mainNav").addClass("affix");

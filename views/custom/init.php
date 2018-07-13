@@ -27,19 +27,21 @@ if( @$_GET["el"] || @$custom )
                     "id"   => (string) $el["_id"],
                     "type" => Form::COLLECTION,
                     "url" => "/survey/co/index/id/cte",
-                    "title"=> "CTE TCO");
+                    "title"=> $el["title"] );
                 if(@$el["custom"]["urlLogo"]) $el["custom"]["logo"]=$el["custom"]["urlLogo"];
             }
             else {
+                if($stum[0] == "o")
+                    $stum[0] = Organization::COLLECTION;
                 $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
                 Yii::app()->session['custom'] = array( "id"   => (string) $el["_id"],
                                                        "type" => $stum[0],
                                                        "title"=> $el["name"],
                                                        "url"=> "/custom?el=".$_GET["el"] );
-                if(@$el["profilImageUrl"]) $el["custom"]["logo"]=$el["profilImageUrl"];   
+                if( @$el["profilImageUrl"] ) $el["custom"]["logo"]=$el["profilImageUrl"];
             }
             if(@$el["custom"])
-                Yii::app()->session['custom'] = array_merge(Yii::app()->session['custom'],$el["custom"]);
+                Yii::app()->session['custom'] = array_merge( Yii::app()->session['custom'], $el["custom"] );
     }
 } else {
     Yii::app()->session["custom"] = null; 
@@ -50,7 +52,8 @@ if( @Yii::app()->session['custom'] ){  ?>
 
 var custom = {
     id : "<?php echo Yii::app()->session['custom']['id'] ?>",
-    type : "<?php echo Yii::app()->session['custom']['type'] ?>"
+    type : "<?php echo Yii::app()->session['custom']['type'] ?>",
+    all : <?php echo json_encode(Yii::app()->session['custom']) ?>
     };
 
     <?php if(@Yii::app()->session['custom']['menu']){ ?>
@@ -58,17 +61,19 @@ var custom = {
     <?php } ?>
    
     <?php if( @Yii::app()->session['custom']["logo"]){ ?>
-        pathUrl = ""; /*baseUrl; 
+        pathUrl = modules.co2.url;
         if( custom.type == "cities" )
             pathUrl= modules.eco.url;
         else if( custom.type == "forms" )
-            pathUrl= modules.survey.url;*/
+            pathUrl= modules.survey.url;
 
+        
         custom.logo = pathUrl+"<?php echo Yii::app()->session['custom']['logo'] ?>";
+
         themeObj.blockUi = {
             processingMsg :'<div class="lds-css ng-scope">'+
                     '<div style="width:100%;height:100%" class="lds-dual-ring">'+
-                        '<img src="'+baseUrl+custom.logo+'" class="loadingPageImg" height=80>'+
+                        '<img src="'+custom.logo+'" class="loadingPageImg" height=80>'+
                         '<div style="border-color: transparent #ff9205 transparent #ff9205;"></div>'+
                         '<div style="border-color: transparent #3dd4ed transparent #3dd4ed;"></div>'+
                     '</div>'+

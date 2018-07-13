@@ -45,7 +45,6 @@ var currentCategory = "";
 
 jQuery(document).ready(function() {
 
-    <?php $this->renderPartial( 'co2.views.custom.init' ); ?>
     initKInterface({"affixTop":0});
     $("#mainNav").addClass("affix");
     initWelcomeInterface();

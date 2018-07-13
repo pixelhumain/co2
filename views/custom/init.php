@@ -5,7 +5,7 @@
 if( @$_GET["el"] || @$custom )
 { 
 
-    Yii::app()->session['custom']=null;
+    //Yii::app()->session['custom']=null;
     if( !@Yii::app()->session['custom'])
     {
         $stum = (@$custom) ?  explode(".",  $custom ) : explode(".",  $_GET["el"] );

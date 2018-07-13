@@ -911,28 +911,30 @@ function customFiltersInterface(){
         events:["tags", "types"],
         news:["tags", "types"],
         classifieds:["tags", "types", "section", "category", "price", "source"]};
-    $.each(custom.menu[searchObject.initType].filters, function(e, v){
-        if(v.length > 1){
-            custom.categories=new Object;
-            custom.categories=v;
-            if(e=="types"){
-                $.each(categoriesFilters, function(i, content){
-                    if($.inArray(i, v) < 0 && i!="all")
-                        delete categoriesFilters[i];
-                });
+    if(typeof custom.menu[searchObject.initType].filters != "undefined"){
+        $.each(custom.menu[searchObject.initType].filters, function(e, v){
+            if(v.length > 1){
+                custom.categories=new Object;
+                custom.categories=v;
+                if(e=="types"){
+                    $.each(categoriesFilters, function(i, content){
+                        if($.inArray(i, v) < 0 && i!="all")
+                            delete categoriesFilters[i];
+                    });
+                }
+            }else{
+                keyfilter=e;
+                if(e=="types" && searchObject.initType!="news"){
+                    keyfilter="searchSType";
+                }
+                if(typeof searchObject.forced == "undefined") searchObject.forced=new Object,
+                searchObject.forced[keyfilter]=v[0];
+                searchObject[keyfilter]=(searchObject.initType=="news") ? [v[0]] : v[0];
+                delete show[searchObject.initType][e];
+                $("#filters-nav-list .dropdown-"+e).remove();
             }
-        }else{
-            keyfilter=e;
-            if(e=="types" && searchObject.initType!="news"){
-                keyfilter="searchSType";
-            }
-            if(typeof searchObject.forced == "undefined") searchObject.forced=new Object,
-            searchObject.forced[keyfilter]=v[0];
-            searchObject[keyfilter]=(searchObject.initType=="news") ? [v[0]] : v[0];
-            delete show[searchObject.initType][e];
-            $("#filters-nav-list .dropdown-"+e).remove();
-        }
-    });
+        });
+    }
     menuToShow="";
     $.each(show[searchObject.initType], function(e,v){
         menuToShow+=(menuToShow != "") ? ", .dropdown-"+v : ".dropdown-"+v;

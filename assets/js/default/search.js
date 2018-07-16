@@ -59,8 +59,9 @@ function initSearchInterface(){
         startSearch(0, indexStepInit, searchCallback);
     });
 
-    $(".main-search-bar").keyup(function(e){
+    $("#main-search-bar, #main-search-xs-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
+        $(".main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == "" ){
             spinSearchAddon(true);
@@ -72,8 +73,9 @@ function initSearchInterface(){
             startSearch(0, indexStepInit, searchCallback);
         }
     });
-    $(".main-search-bar").change(function(){
+    $("#main-search-bar, #main-search-xs-bar").change(function(){
         $("#second-search-bar").val($(this).val());
+        $(".main-search-bar").val($(this).val());
     });
 
     $("#second-search-bar").keyup(function(e){
@@ -123,14 +125,16 @@ function initSearchInterface(){
          }
     });
     //.menu-btn-start-search,
-    $("#menu-map-btn-start-search,  .main-search-bar-addon").off().on("click", function(){
+    $("#menu-map-btn-start-search,  #main-search-bar-addon, #main-search-xs-bar-addon").off().on("click", function(){
         scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 0;
         spinSearchAddon(true);
         simpleScroll(scrollH);
         if($(this).hasClass("menu-btn-start-search"))
             searchObject.text=$("#second-search-bar").val();
         else if ($(this).hasClass("input-group-addon"))   
-            searchObject.text=$(".main-search-bar").val();
+            searchObject.text=$("#main-search-bar").val();
+        else if ($(this).hasClass("input-group-addon-xs"))   
+            searchObject.text=$("#main-search-xs-bar").val();
         else
             searchObject.text=$("#input-search-map").val();
         $("#second-search-bar, .main-search-bar, #input-search-map").val(searchObject.text);

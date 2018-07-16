@@ -19,6 +19,7 @@ dynForm = {
 			    	});
 			    },
 			    afterSave : function(data,callB){
+
 					if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 ){
 				    	$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
 				    	//principalement pour les surveys
@@ -26,8 +27,12 @@ dynForm = {
 	    					callB();
 					} else { 
 			          	dyFObj.closeForm(); 
-			          	urlCtrl.loadByHash( uploadObj.gotoUrl );
+			          	if(updateForm!=null)//use case for answerList forms updating
+			        		window.location.reload();
+			        	else 
+			          		urlCtrl.loadByHash( uploadObj.gotoUrl );
 			        }
+			        
 			    },
 			    beforeSave : function(){
 			    	if( typeof $("#ajaxFormModal #description").code === 'function' ) 

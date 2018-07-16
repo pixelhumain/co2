@@ -1,7 +1,7 @@
 
 function initSearchInterface(){
     
-    if(searchObject.text != "") $("#main-search-bar, #second-search-bar").val(searchObject.text);
+    if(searchObject.text != "") $(".main-search-bar, #second-search-bar").val(searchObject.text);
     $(".theme-header-filter").off().on("click",function(){
             if(!$("#filter-thematic-menu").is(":visible") || $(this).hasClass("toogle-filter"))
                 $("#filter-thematic-menu").toggle();
@@ -59,7 +59,7 @@ function initSearchInterface(){
         startSearch(0, indexStepInit, searchCallback);
     });
 
-    $("#main-search-bar").keyup(function(e){
+    $(".main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == "" ){
@@ -72,12 +72,12 @@ function initSearchInterface(){
             startSearch(0, indexStepInit, searchCallback);
         }
     });
-    $("#main-search-bar").change(function(){
+    $(".main-search-bar").change(function(){
         $("#second-search-bar").val($(this).val());
     });
 
     $("#second-search-bar").keyup(function(e){
-        $("#main-search-bar").val($(this).val());
+        $(".main-search-bar").val($(this).val());
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == ""){
             //initTypeSearch(typeInit);
@@ -110,7 +110,7 @@ function initSearchInterface(){
      
     $("#input-search-map").off().keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());
-        $("#main-search-bar").val($("#input-search-map").val());
+        $(".main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
             if(typeInit == "all") initTypeSearch("allSig");
             else initTypeSearch(typeInit);
@@ -123,17 +123,17 @@ function initSearchInterface(){
          }
     });
     //.menu-btn-start-search,
-    $("#menu-map-btn-start-search,  #main-search-bar-addon").off().on("click", function(){
+    $("#menu-map-btn-start-search,  .main-search-bar-addon").off().on("click", function(){
         scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 0;
         spinSearchAddon(true);
         simpleScroll(scrollH);
         if($(this).hasClass("menu-btn-start-search"))
             searchObject.text=$("#second-search-bar").val();
         else if ($(this).hasClass("input-group-addon"))   
-            searchObject.text=$("#main-search-bar").val();
+            searchObject.text=$(".main-search-bar").val();
         else
             searchObject.text=$("#input-search-map").val();
-        $("#second-search-bar, #main-search-bar, #input-search-map").val(searchObject.text);
+        $("#second-search-bar, .main-search-bar, #input-search-map").val(searchObject.text);
         searchPage=0;
         searchObject.count=true;
         pageCount=true;
@@ -163,7 +163,7 @@ function initSearchInterface(){
 function spinSearchAddon(bool){
     removeClass= (bool) ? "fa-arrow-circle-right" : "fa-spin fa-circle-o-notch";
     addClass= (bool) ? "fa-spin fa-circle-o-notch" : "fa-arrow-circle-right";
-    $("#main-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
+    $(".main-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
 }
 function startSearchTerla(indexMin, indexMax, callBack){
     var name = $("#second-search-bar").val() != "" ? $("#second-search-bar").val() : $("#new-search-bar").val();
@@ -514,7 +514,7 @@ function bindLeftMenuFilters () {
 
     $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
     $("#priceMax").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
-    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
+    $('.main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
 }
 
 /* -------------------------

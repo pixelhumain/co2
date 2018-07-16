@@ -435,7 +435,12 @@
           if(Yii::app()->params["CO2DomainName"] != "terla"){
 
            // $dmod = ($typeSelected == "classified") ? "classifieds" : "ressources";
-            $categories = CO2::getModuleContextList($typeSelected,"categories");
+            //$categories = CO2::getModuleContextList($typeSelected,"categories");
+            if ($typeSelected == "classifieds")
+              $categories = CO2::getModuleContextList(Classified::MODULE, "categories", $typeSelected);
+            else
+              $categories = CO2::getModuleContextList($typeSelected,"categories");
+            
             $this->renderPartial("eco.views.co.categories", array( "typeSelected" => $typeSelected,"categories" => $categories ));
           } else { 
 
@@ -624,7 +629,7 @@ var typeSelected = <?php echo (@$_GET['type']) ? "'".$_GET['type']."'" : "null" 
 
 var filliaireCategories = <?php echo json_encode($filliaireCategories); ?>;
 
-//var classifieds = modules.classifieds; //<?php echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
+//var classifieds = modules.classifieds; //<?php //echo json_encode(CO2::getModuleContextList("classifieds","categories")); ?>;
 
 jQuery(document).ready(function() {
 

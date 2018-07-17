@@ -38,8 +38,10 @@ if( @$_GET["el"] || @$custom )
                 if(@$el["custom"])
                     $c = array_merge( $c , $el["custom"] );
 
-                if(@$el["custom"]["urlLogo"]) 
-                    $c["logo"]=$el["custom"]["urlLogo"];
+                if(@$el["custom"]["logo"]){ 
+                    //$el["custom"]["logo"]= 
+                    $c["logo"]=Yii::app()->getModule("survey")->getAssetsUrl(true).$el["custom"]["logo"];
+                }
             }
             else {
                 if($stum[0] == "o")

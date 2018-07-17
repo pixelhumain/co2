@@ -32,6 +32,8 @@ dynForm = {
 	    beforeSave : function(){
 	    	if( typeof $("#ajaxFormModal #description").code === 'function' ) 
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
+
+	    	$("#ajaxFormModal #newElement_country").remove();
 	    },
 	    properties : {
 	    	

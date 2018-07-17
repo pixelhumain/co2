@@ -155,11 +155,11 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 			}
 			//else
 			//	showFormBlock(false);
-
+			spinSearchAddon();
 			bindTags();
 			if($("#noMoreNews").length<=0)
 				$("#newsstream").append(loading);
-					
+			
 			//$("#formCreateNewsTemp").appendTo("#modal-create-anc #formCreateNews");
 			//$("#info-write-msg").html("<?php echo Yii::t("common","Write a public message visible on the wall of selected places") ?>");
 			//$("#info-write-msg").html("Conseil : donnez un maximum de détails");
@@ -185,7 +185,6 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 						$("#news-list").append(data);
 						if($("#noMoreNews").length<=0)
 							$("#newsstream").append(loading);
-
 						//buildTimeLine (data.news, 0, 5);
 						//bindTags();
 						//if(typeof(data.limitDate.created) == "object")
@@ -201,6 +200,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 			});
 	}
 	$("#dropdown_search").hide(300);
+
 	
 }
 

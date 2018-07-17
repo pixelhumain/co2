@@ -72,6 +72,8 @@ dynForm = {
 	    beforeSave : function(){
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
+
+	    	$("#ajaxFormModal #newElement_country").remove();
 	    },
 	    afterSave : function(data,callB){
 	    	if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 ){

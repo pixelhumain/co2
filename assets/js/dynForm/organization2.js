@@ -85,7 +85,10 @@ dynForm = {
 		    	if(typeof networkJson != "undefined")
 					isMapEnd = true;
 				dyFObj.closeForm();
-				urlCtrl.loadByHash( uploadObj.gotoUrl );
+				if(updateForm!=null)//use case for answerList forms updating
+	        		window.location.reload();
+	        	else 
+					urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    },
 	    properties : {

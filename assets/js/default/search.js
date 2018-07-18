@@ -525,8 +525,7 @@ function bindLeftMenuFilters () {
 END CLASSIFIED
 ----------------------------- */
 function interopSearch(keyS, nameS){
-    //var key = $(this).data("key");
-    
+    mylog.log("interopSearch");
     if(keyS == "co"){
         delete searchObject.source;
         //initCountType();
@@ -545,18 +544,13 @@ function interopSearch(keyS, nameS){
         
         searchObject.source = keyS;
         if( typeof interop == "undefined" ){
+             mylog.log("interopSearch 1");
             lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
-                if( typeof interopObj == "undefined" ){
-                   lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
-                        nameS = interopObj[keyS].name ;
-                        $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
-                        interopObj[keyS].startSearch(searchObject.indexMin, searchObject.indexStep);
-                    } ); 
-               }else{
+                lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
                     nameS = interopObj[keyS].name ;
                     $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
-                    interopObj[keyS].startSearch(searchObject.indexMin, searchObject.indexStep); 
-               }
+                    interopObj[keyS].startSearch(searchObject.indexMin, searchObject.indexStep);
+                } ); 
             });
         } else {
             nameS = interopObj[keyS].name ;

@@ -57,7 +57,7 @@ if( @$_GET["el"] || @$custom )
                     $c = array_merge( $c , $el["custom"] );
 
                 if (@$el["custom"]["logo"]) 
-                    $c["logo"] = Yii::app()->getModule( $el["custom"]["module"])->getAssetsUrl(true).$el["custom"]["logo"];
+                    $c["logo"] = Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true).$el["custom"]["logo"];
                 else if( @$el["profilImageUrl"] ) {
                     $c["logo"] = $el["profilImageUrl"];
                     $el["custom"]["logo"]=$el["profilImageUrl"];

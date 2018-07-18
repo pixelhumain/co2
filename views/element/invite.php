@@ -573,7 +573,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 									mylog.log("contactsList.invites key, value", key, value);
 									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
 									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
-									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+newElementType+".png";		
+									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+newElementType+".png";		
 									var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
 									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
 											'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
@@ -597,7 +597,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 									mylog.log("contactsList.invites key, value", key, value);
 									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
 									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
-									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+newElementType+".png";		
+									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+newElementType+".png";		
 									var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
 									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
 											'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
@@ -623,7 +623,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 							$.each(data.organizations, function(key, value){
 								if(value.result){
 									mylog.log("contactsList.invites key, value", key, value);
-									var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+value.newElementType+".png";		
+									var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+value.newElementType+".png";		
 									var bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";	
 									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
 											'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
@@ -912,7 +912,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 		if(type ==  "invites" )
 			type = "citoyens";
 		var inMyContact = (!searchInContactsList) ? inMyContacts(type,id) : false;
-		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl + elem.profilThumbImageUrl : assetPath + "/images/thumb/default_"+type+".png";		
+		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl + elem.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+type+".png";		
 		var str = "<div class='col-xs-12 listInviteElement no-padding'>";
 			var classStr = "col-xs-10";
 			if(invite == true){

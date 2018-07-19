@@ -259,6 +259,25 @@ function addCustomValidators() {
 		} 
 		return true;
 	},"Cette date est exterieure à l'évènement parent.");
+
+	jQuery.extend(jQuery.validator.messages, {
+		required: tradDynForm["This field is required."],
+		remote: tradDynForm["Please fix this field."],
+		email: tradDynForm["Please enter a valid email address."],
+		url: tradDynForm["Please enter a valid URL."],
+		date: tradDynForm["Please enter a valid date."],
+		dateISO: tradDynForm["Please enter a valid date (ISO)."],
+		number: tradDynForm["Please enter a valid number."],
+		digits: tradDynForm["Please enter only digits."],
+		creditcard: tradDynForm["Please enter a valid credit card number."],
+		equalTo: tradDynForm["Please enter the same value again."],
+		maxlength: $.validator.format(tradDynForm["Please enter no more than {0} characters."]),
+		minlength: $.validator.format(tradDynForm["Please enter at least {0} characters."]),
+		rangelength: $.validator.format(tradDynForm["Please enter a value between {0} and {1} characters long."]),
+		range: $.validator.format(tradDynForm["Please enter a value between {0} and {1}."]),
+		max: $.validator.format(tradDynForm["Please enter a value less than or equal to {0}."]),
+		min: $.validator.format(tradDynForm["Please enter a value greater than or equal to {0}."])
+	});
 }
 
 

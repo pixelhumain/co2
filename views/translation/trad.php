@@ -518,6 +518,22 @@ var trad = {
 };
 
 var tradDynForm = {
+	"This field is required." :  "<?php echo Yii::t("common","This field is required."); ?>",
+	"Please fix this field." :  "<?php echo Yii::t("common","Please fix this field."); ?>",
+	"Please enter a valid email address." :  "<?php echo Yii::t("common","Please enter a valid email address."); ?>",
+	"Please enter a valid URL." :  "<?php echo Yii::t("common","Please enter a valid URL."); ?>",
+	"Please enter a valid date." :  "<?php echo Yii::t("common","Please enter a valid date."); ?>",
+	"Please enter a valid date (ISO)." :  "<?php echo Yii::t("common","Please enter a valid date (ISO)."); ?>",
+	"Please enter a valid number." :  "<?php echo Yii::t("common","Please enter a valid number."); ?>",
+	"Please enter only digits." :  "<?php echo Yii::t("common","Please enter only digits."); ?>",
+	"Please enter a valid credit card number." :  "<?php echo Yii::t("common","Please enter a valid credit card number."); ?>",
+	"Please enter the same value again." :  "<?php echo Yii::t("common","Please enter the same value again."); ?>",
+	"Please enter no more than {0} characters." :  "<?php echo Yii::t("common","Please enter no more than {0} characters."); ?>",
+	"Please enter at least {0} characters." :  "<?php echo Yii::t("common","Please enter at least {0} characters."); ?>",
+	"Please enter a value between {0} and {1} characters long." :  "<?php echo Yii::t("common","Please enter a value between {0} and {1} characters long."); ?>",
+	"Please enter a value between {0} and {1}." :  "<?php echo Yii::t("common","Please enter a value between {0} and {1}."); ?>",
+	"Please enter a value less than or equal to {0}." :  "<?php echo Yii::t("common","Please enter a value less than or equal to {0}."); ?>",
+	"Please enter a value greater than or equal to {0}." :  "<?php echo Yii::t("common","Please enter a value greater than or equal to {0}."); ?>",
 	"addANewAddress" : "<?php echo Yii::t("form","Add a new address" ); ?>",
 	"addressSummary" : "<?php echo Yii::t("common","Address Summary" ); ?>",
 	"confirmAddress" : "<?php echo Yii::t("common","Confirm address" ); ?>",

@@ -88,9 +88,9 @@ if( @Yii::app()->session['custom'] ){  ?>
             $(".topLogoAnim").remove();
             $(".logo-menutop, .logoLoginRegister").attr({'src':custom.logo});
         }
-        if( typeof custom != "undefined" && custom.type == "cities" )
-            setOpenBreadCrum({'cities': custom.id });
-
+        if( typeof custom != "undefined" && custom.type == "cities" ){
+            setOpenBreadCrum({'cities': custom.id }, true);
+        }
     };
     custom.initMenu = function(where){
         if(typeof custom.menu != "undefined"){

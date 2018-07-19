@@ -572,9 +572,11 @@ function constructSearchObjectAndGetParams(){
     getStatus+="text="+searchObject.text;
   }
   if(typeof searchObject.types != "undefined" && searchObject.types.length==1 && (searchObject.initType=="all" || searchObject.initType=="news")){
+    if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.types == "undefined"){
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="types="+searchObject.types.join(",");
+    }
     searchConstruct.searchType=searchObject.types;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="types="+searchObject.types.join(",");
   }else{
     searchConstruct.searchType=searchObject.types;
   }

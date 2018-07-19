@@ -925,8 +925,9 @@ function customFiltersInterface(){
                 if(e=="types" && searchObject.initType!="news"){
                     keyfilter="searchSType";
                 }
-                if(typeof searchObject.forced == "undefined") searchObject.forced=new Object,
+                if(typeof searchObject.forced == "undefined") searchObject.forced=new Object;
                 searchObject.forced[keyfilter]=v[0];
+           //     console.log("keyyyy",searc)
                 searchObject[keyfilter]=(searchObject.initType=="news") ? [v[0]] : v[0];
                 delete show[searchObject.initType][e];
                 $("#filters-nav-list .dropdown-"+e).remove();

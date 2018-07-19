@@ -146,6 +146,7 @@ if( @Yii::app()->session['custom'] ){  ?>
                 'Vous allez être redirigé vers la page d\'accueil'+
               '</span>'
         };
+alert("is custom");
 </script>
     <?php } 
     }

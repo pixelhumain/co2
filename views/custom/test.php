@@ -40,7 +40,8 @@
 			
 			
 		</ul></center>
-		<iframe id="networkIframe" src="http://127.0.0.1/ph/network/default/index/?src=HVAorga" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+
+		<iframe id="networkIframe" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
 	</div>
 
 </div>
@@ -50,13 +51,11 @@
 
 	jQuery(document).ready(function() {
         $("#btnOrga").click(function(){
-        	alert("btnOrga");
-             $("#networkIframe").attr("src", "http://127.0.0.1/ph/network/default/index/?src=HVAorga");
+        	$("#networkIframe").attr("src", "http://127.0.0.1/ph/network/default/index/?src=HVAorga");
         });
 
         $("#btnEvent").click(function(){
-        	alert("btnEvent");
-             $("#networkIframe").attr("src", "http://127.0.0.1/ph/network/default/index/?src=HVAevent");
+        	$("#networkIframe").attr("src", "http://127.0.0.1/ph/network/default/index/?src=HVAevent");
         });
 
     });

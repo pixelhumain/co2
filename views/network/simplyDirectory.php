@@ -21,6 +21,8 @@ var searchPrefTag = null ;
 var indexStep = indexStepInit;
 var scrollEnd = false;
 
+contextData = {};
+
 var tagsActived = {};
 var disableActived = false;
 var citiesActived = [] ;
@@ -95,6 +97,12 @@ function initVar(){
 				'</div>';
 	$("#btn-back").parent().replaceWith(btnSearch);
 	$("#mapLegende").addClass("hidden");
+
+	if(typeof networkJson.request.parent != "undefined" &&
+		typeof networkJson.request.parent.id != "undefined" &&
+		typeof networkJson.request.parent.type != "undefined" ){
+		contextData = networkJson.request.parent ;
+	}
 }
 
 function addTooltips(){
@@ -385,6 +393,10 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	if(typeof seeDisable != "undefined" && seeDisable == true)
 		data.seeDisable = true;
 
+	if(typeof networkJson.request.parent != "undefined" &&
+		typeof networkJson.request.parent.id != "undefined" &&
+		typeof networkJson.request.parent.type != "undefined" )
+		data.parent = networkJson.request.parent;
 	//console.log("loadingData true");
 	loadingData = true;
 

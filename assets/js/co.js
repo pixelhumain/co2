@@ -1032,7 +1032,7 @@ var urlCtrl = {
 			else
 	       		showPanel(panelName,null,title);
 	       	
-	    }  else if( hash.indexOf("#settings") >= 0 ){
+	    }*/  else if( hash.indexOf("#settings") >= 0 ){
 	    	if(userId == "" )
 	    		$('#modalLogin').modal("show");
 	    	else{

@@ -112,7 +112,7 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
-                $this->renderPartial('classifieds.views.co.standalone', $params ); 
+                $this->renderPartial('eco.views.co.standalone', $params ); 
                 
             }
 

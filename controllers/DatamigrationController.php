@@ -555,6 +555,7 @@ class DatamigrationController extends CommunecterController {
 					array('$set' => array("modified"=>new MongoDate($v["modified"]["sec"])))			
 				);
 		  	}
+		  	echo "done mon petit";
 		}
 	}
 	// Refactor classifieds
@@ -573,6 +574,7 @@ class DatamigrationController extends CommunecterController {
 					array('$set' => array("updated"=> strtotime ($v["updated"]["sec"]), "created"=>strtotime ($v["created"]["sec"])))			
 				);*/
 		  	}
+		  	echo "impressionnant";
 		}
 	}
 	// Refactor classifieds
@@ -4690,6 +4692,75 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		
 		echo $i." poi updaté <br/>";
 	}
+
+	public function actionRemovePendingUser() {
+		$nbUser = 0;
+		$users = PHDB::find(Person::COLLECTION, 
+							array("pending" => true), 
+							array("pending", "modifiedByBatch"));
+		foreach ($users as $key => $person) {
+			$person["modifiedByBatch"][] = array("RemovePendingUser" => new MongoDate(time()));
+			$res = PHDB::update(Person::COLLECTION, 
+										  	array("_id"=>new MongoId($key)),
+					                        array(	'$set' => array( "modifiedByBatch" => $person["modifiedByBatch"]),
+					                        		'$unset' => array("pending"=>"") )
+					                    );
+
+			if($res["ok"] == 1){
+				$nbUser++;
+			}else{
+				echo "<br/> Error with user id : ".$key;
+			}
+		}
+
+		echo "Number of user with preferences modified : ".$nbUser;
+	}
+
+
+	public function actionInviteDigitalReunion() {
+		$nbUser = 0;
+		$orga = PHDB::find(Organization::COLLECTION, 
+							array("source.key" => "digitalreunion"));
+
+		foreach ($orga as $key => $value){
+			$child = array();
+			$child[] = array( 	"childId" => $key,
+								"childType" => Organization::COLLECTION,
+								"childName" => $value["name"],
+								"roles" => array() );
+			//var_dump($child);
+			$res["organizations"][] = Link::multiconnect($child, "577e4ad740bb4e9c6e10130d", Organization::COLLECTION);
+
+			$res["update"][] = PHDB::update(Organization::COLLECTION, 
+										  	array("_id"=>new MongoId($key)),
+					                        array(	'$set' => array( "tags" => array("Digital Réunion"))));
+
+		}
+
+		//577e4ad740bb4e9c6e10130d
+
+		Rest::json($res); exit;
+	}
+
+	public function actionPendingMissing() {
+		$nbUser = 0;
+		$person = PHDB::find(Person::COLLECTION, 
+							array("pwd" => array('$exists' => 0), "pending" => array('$exists' => 0)));
+
+		foreach ($person as $key => $value){
+			echo $key." <br/> ";
+			$nbUser++;
+			$res["update"][] = PHDB::update(Person::COLLECTION, 
+										  	array("_id"=>new MongoId($key)),
+					                        array(	'$set' => array( "pending" => true)));
+
+		}
+		echo $nbUser;
+		//577e4ad740bb4e9c6e10130d
+
+		//Rest::json($res); exit;
+	}
+		
 }
 
 

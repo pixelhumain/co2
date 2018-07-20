@@ -1,6 +1,6 @@
 dynForm = {
     jsonSchema : {
-	    title : trad.addOrganization,
+	    title : trad.addorganization,
 	    icon : "group",
 	    type : "object",
 	    onLoads : {
@@ -20,7 +20,6 @@ dynForm = {
                 }
     	   	},
 	    	sub : function(){
-				
 				if(typeof currentKFormType == "undefined" || currentKFormType == "" || 
 				  currentKFormType == "null" || currentKFormType == null){
 					currentKFormType = "organization";
@@ -30,12 +29,11 @@ dynForm = {
 					$("#ajaxFormModal #type").val(currentKFormType);
 				}
 
-				mylog.log("currentKFormType", currentKFormType);
+				mylog.log("currentKFormType sub", currentKFormType);
 	    		//console.log("onLoads Sub currentKFormType", currentKFormType, contextData, contextData.id);
 	            var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
 	            var typeIcon = (typeof currentKFormType != "undefined" && currentKFormType!=null) ? typeObj[currentKFormType].icon : elementObj.dynForm.jsonSchema.icon;
 	            
-
 	            $("#ajax-modal-modal-title").html( "<i class='fa fa-"+typeIcon+"'></i> "+typeName );
 	            
 				$("#ajax-modal .modal-header").removeClass("bg-dark bg-red bg-purple bg-green bg-green-poi bg-orange bg-turq bg-yellow bg-url bg-azure").addClass("bg-"+typeObj[currentKFormType].color);
@@ -58,28 +56,34 @@ dynForm = {
 	    		 														"</span></small>" );
 				}
 				mylog.log("currentKFormType", currentKFormType);
-
 	    	},
 	    },
 	    beforeBuild : function(){
+	    	//alert("before Build orga");
 	    	dyFObj.setMongoId('organizations', function(){
 	    		uploadObj.gotoUrl = '#page.type.organizations.id.'+uploadObj.id;
 	    	});
-	    	
 	    },
 	    beforeSave : function(){
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
 	    },
-	    afterSave : function(){
-			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
-		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+	    afterSave : function(data,callB){
+	    	if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 ){
+		    	$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
+		    	//principalement pour les surveys
+		    	if(typeof callB == "function")
+	    			callB();
+	    	}
 		    else { 
 		    	mylog.log("here", isMapEnd);
 		    	if(typeof networkJson != "undefined")
 					isMapEnd = true;
 				dyFObj.closeForm();
-				urlCtrl.loadByHash( uploadObj.gotoUrl );
+				if(updateForm!=null)//use case for answerList forms updating
+	        		window.location.reload();
+	        	else 
+	          		urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    },
 	    properties : {

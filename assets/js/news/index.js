@@ -460,12 +460,13 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	textNews=data.text;
 	$(idTextArea).val(textNews);
 	if(typeof data.mentions != "undefined" && data.mentions.length != 0){
-		text=data.text;
+		/*text=data.text;
 		$.each(data.mentions, function(e,v){
-			if(typeof v.slug != "undefined")
+			if(typeof v.slug != "undefined"){
 				text=text.replace("@"+v.slug, v.name);
+			}
 		});
-		$(idTextArea).val(text);
+		$(idTextArea).val(text);*/
 		$(idTextArea).mentionsInput("update", data.mentions);
 	}
 	$(idTextArea).on('keyup ', function(e){

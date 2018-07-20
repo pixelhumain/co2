@@ -13,17 +13,26 @@ dynForm = {
 			    	}
 			    },
 			    beforeBuild : function(){
+			    	//alert("before Build project");
 			    	dyFObj.setMongoId('projects', function(){
 			    		uploadObj.gotoUrl = '#page.type.projects.id.'+uploadObj.id;
 			    	});
 			    },
-			    afterSave : function(urlReload){
-					if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 ){
-				    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+			    afterSave : function(data,callB){
+
+					if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 ){
+				    	$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
+				    	//principalement pour les surveys
+				    	if(typeof callB == "function")
+	    					callB();
 					} else { 
 			          	dyFObj.closeForm(); 
-			          	urlCtrl.loadByHash( uploadObj.gotoUrl );
+			          	if(updateForm!=null)//use case for answerList forms updating
+			        		window.location.reload();
+			        	else 
+			          		urlCtrl.loadByHash( uploadObj.gotoUrl );
 			        }
+			        
 			    },
 			    beforeSave : function(){
 			    	if( typeof $("#ajaxFormModal #description").code === 'function' ) 
@@ -36,8 +45,18 @@ dynForm = {
 							  "</p>",
 		            },
 			        name : dyFInputs.name("project"),
+			        similarLink : dyFInputs.similarLink,
 		            parentType : dyFInputs.inputHidden(),
 		            parentId : dyFInputs.inputHidden(),
+		          	public : dyFInputs.checkboxSimple("true", "public", 
+            										 {"onText" : trad.yes,
+            										  "offText": trad.no,
+            										  "onLabel" : tradDynForm.public,
+            										  "offLabel": tradDynForm.private,
+            										  "labelText": tradDynForm.makeprojectvisible+" ?",
+            										  //"labelInInput": "Activer les amendements",
+            										  "labelInformation": tradDynForm.explainvisibleproject
+            		}),
 		            image : dyFInputs.image(),
 		            location : dyFInputs.location,
 		            email : dyFInputs.text(),

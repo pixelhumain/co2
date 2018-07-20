@@ -246,18 +246,6 @@
             "placeholderMainSearch" : "search ..."
         },
 
-		"#interoperability": {
-            "inMenu" : false, 
-            "useHeader" : true, 
-            "open" : true, 
-            "subdomain" : "interoperability", 
-            "subdomainName" : "Intéropérabilité",
-            "hash" : "#app.interoperability",
-            "icon" : "database", 
-            "mainTitle" : "Module d'intéropérabilité",
-            "placeholderMainSearch" : "Rechercher des données venus d'ailleurs ..."
-        },
-
 		"#rooms": {
 			"inMenu" : false, 
 			"useHeader" : false,

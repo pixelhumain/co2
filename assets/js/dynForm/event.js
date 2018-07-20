@@ -15,14 +15,14 @@ dynForm = {
 						  					  .addClass("bg-orange");
     		 	$("#ajax-modal-modal-title").html(
     		 		$("#ajax-modal-modal-title").html()+
-    		 		" <br><small class='text-white'>"+tradDynForm["speakingas"]+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
+    		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+contextData.name+"</span></small>" );
     		 	
     		 	
 	    		if(contextData && contextData.type == "events"){
 	    			$("#ajaxFormModal #parentId").removeClass('hidden');
 	    		
     				if( $('#ajaxFormModal #parentId > optgroup > option[value="'+contextData.id+'"]').length == 0 )
-	    				$('#ajaxFormModal #parentId > optgroup[label="events"]').prepend('<option value="'+contextData.id+'" selected>'+tradDynForm["ispartof"]+' : '+contextData.name+'</option>');
+	    				$('#ajaxFormModal #parentId > optgroup[label="events"]').prepend('<option value="'+contextData.id+'" selected>'+tradDynForm.ispartof+' : '+contextData.name+'</option>');
 	    			else if ( contextData && contextData.id && contextData.type ){
 		    			$("#ajaxFormModal #parentId").val( contextData.id );
 		    			$("#ajaxFormModal #parentType").val( contextData.type ); 
@@ -65,8 +65,8 @@ dynForm = {
 	    	});
 	    },
 	    afterSave : function(){
-			if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
-		    	$('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
+			if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 )
+		    	$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
 		    else { 
 	          dyFObj.closeForm(); 
 	          urlCtrl.loadByHash( uploadObj.gotoUrl);
@@ -128,12 +128,12 @@ dynForm = {
             },
 	        organizerType : dyFInputs.inputHidden(),
 	        parentId :{
-	         	label : tradDynForm["ispartofevent"]+" ?",
+	         	label : tradDynForm.ispartofevent+" ?",
             	inputType : "select",
             	class : "",
-            	placeholder : tradDynForm["ispartofevent"]+" ?",
+            	placeholder : tradDynForm.ispartofevent+" ?",
             	options : {
-            		"":tradDynForm["noparent"]
+            		"":tradDynForm.noparent
             	},
             	"groupOptions" : myAdminList( ["events"] ),
             	init : function(){ mylog.log("init ParentId");
@@ -163,14 +163,14 @@ dynForm = {
 		            		}
 		            		$("#startDateParent").val(startDateParent);
 		            		$("#endDateParent").val(endDateParent);
-		            		$("#parentstartDate").html("<i class='fa fa-warning'></i> "+tradDynForm["eventparentStartDate"]+" : "+moment( startDateParent ).format('DD/MM/YYYY HH:mm'));
-			    			$("#parentendDate").html("<i class='fa fa-warning'></i> "+tradDynForm["eventparentEndDate"]+" : "+moment( endDateParent ).format('DD/MM/YYYY HH:mm'));
+		            		$("#parentstartDate").html("<i class='fa fa-warning'></i> "+tradDynForm.eventparentStartDate+" : "+moment( startDateParent ).format('DD/MM/YYYY HH:mm'));
+			    			$("#parentendDate").html("<i class='fa fa-warning'></i> "+tradDynForm.eventparentEndDate+" : "+moment( endDateParent ).format('DD/MM/YYYY HH:mm'));
 	            		}
 	            	});
 	            }
             },
             parentType : dyFInputs.inputHidden(),
-	        type : dyFInputs.inputSelect(tradDynForm["eventTypes"],null,eventTypes, { required : true }),
+	        type : dyFInputs.inputSelect(tradDynForm.eventTypes,null,eventTypes, { required : true }),
 	        // public : dyFInputs.checkboxSimple("true", "public", {
 			      //   							labelText: tradDynForm.isPublic + " ?", 
 			      //   							onText:tradDynForm.yes, 
@@ -179,14 +179,25 @@ dynForm = {
          //    									offLabel: tradDynForm.no,
          //    									inputId: "#public"
 			      //   					}),
-	        image : dyFInputs.image( ),
+		
+			public : dyFInputs.checkboxSimple("true", "public", 
+				{ "onText" : trad.yes,
+				  "offText": trad.no,
+				  "onLabel" : tradDynForm.public,
+				  "offLabel": tradDynForm.private,
+				  //"inputId" : ".amendementDateEnddatetime",
+				  "labelText": tradDynForm.makeeventvisible+" ?",
+				  //"labelInInput": "Activer les amendements",
+				  "labelInformation": tradDynForm.explainvisibleevent
+    		}),
+	        image : dyFInputs.image(),
             allDay : dyFInputs.allDay(),
             startDate : dyFInputs.startDateInput("datetime"),
             endDate : dyFInputs.endDateInput("datetime"),
             location : dyFInputs.location,
             email : dyFInputs.text(),
             tags : dyFInputs.tags(),
-            shortDescription : dyFInputs.textarea(tradDynForm["shortDescription"], "...",{ maxlength: 140 }),
+            shortDescription : dyFInputs.textarea(tradDynForm.shortDescription, "...",{ maxlength: 140 }),
             /*formshowers : {
             	label : tradDynForm["indetails"],
                 inputType : "custom",

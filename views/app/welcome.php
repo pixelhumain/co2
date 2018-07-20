@@ -1,4 +1,3 @@
-
 <?php 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     //header + menu
@@ -24,7 +23,20 @@
 ?>
 
 <section class="bg-white inline-block pull-left no-padding" id="bg-homepage">
-    <?php $this->renderPartial($layoutPath.'home.'.Yii::app()->params["CO2DomainName"], array());  ?>
+
+<?php 
+    if( @Yii::app()->session['custom']["welcomeTpl"])
+        $this->renderPartial( Yii::app()->session["custom"]["welcomeTpl"] );
+    else if( @$_GET["city"] || Yii::app()->session['custom']['id'] )
+    {
+      $city = City::getById( Yii::app()->session['custom']['id'] );
+      if(@$city["custom"] && $city["custom"]["bannerTpl"])
+        $this->renderPartial( 'eco.views.custom.'.$city["custom"]["bannerTpl"] );
+    } 
+    else 
+        $this->renderPartial( $layoutPath.'home.'.Yii::app()->params["CO2DomainName"], array() );
+
+?>
 </section>
 
 <script type="text/javascript" >
@@ -32,6 +44,7 @@
 var currentCategory = "";
 
 jQuery(document).ready(function() {
+
     initKInterface({"affixTop":0});
     $("#mainNav").addClass("affix");
     initWelcomeInterface();

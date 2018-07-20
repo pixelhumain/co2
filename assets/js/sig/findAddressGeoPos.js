@@ -117,13 +117,14 @@ function callGoogle(requestPart, countryCode){
 
 /* fonction pour appeler le web service de géoloc de sont choix */
 function callGeoWebService(providerName, requestPart, countryCode, success, error){
+	mylog.log("callGeoWebService", providerName, requestPart, countryCode, success, error)
 	var url = "";
 	var data = {};
 
 	if(providerName == "nominatim") {
-		if(formInMap.typeSearchInternational == "address")
+		if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "address" || dyFObj.formInMap.typeSearchInternational == "address")
 		url = "//nominatim.openstreetmap.org/search?q=" + requestPart + "," + countryCode + "&format=json&polygon=0&addressdetails=1";
-		else if(formInMap.typeSearchInternational == "city")
+		else if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "city" || dyFObj.formInMap.typeSearchInternational == "city")
 		url = "//nominatim.openstreetmap.org/search?city=" + requestPart + "&country=" + countryCode + "&format=json&polygon=0&addressdetails=1";
 	
 		if(notNull(mainLanguage))
@@ -131,15 +132,15 @@ function callGeoWebService(providerName, requestPart, countryCode, success, erro
 	}
 	
 	if(providerName == "google") {
-		if(formInMap.typeSearchInternational == "address")
+		if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "address" || dyFObj.formInMap.typeSearchInternational == "address")
 		url = "//maps.googleapis.com/maps/api/geocode/json?address=" + requestPart + "," + countryCode;
-		else if(formInMap.typeSearchInternational == "city")
+		else if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "city" || dyFObj.formInMap.typeSearchInternational == "city")
 		url = "//maps.googleapis.com/maps/api/geocode/json?locality=" + requestPart + "&country=" + countryCode;
 	}	
 	if(providerName == "data.gouv") {
-		if(formInMap.typeSearchInternational == "address")
+		if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "address" || dyFObj.formInMap.typeSearchInternational == "address")
 		url = "//api-adresse.data.gouv.fr/search/?q=" + requestPart;
-		else if(formInMap.typeSearchInternational == "city")
+		else if(typeof formInMap != "undefined" && formInMap.typeSearchInternational == "city" || dyFObj.formInMap.typeSearchInternational == "city")
 		url = "//api-adresse.data.gouv.fr/search/?q=" + requestPart + "&type=city";
 	}
 	if(providerName == "communecter") {
@@ -268,7 +269,8 @@ function getCommonGeoObject(objs, providerName){
 
 		commonObj = addCoordinates(commonObj, obj, providerName);
 		commonObj["type"] = "addressEntity";
-		commonObj["typeSig"] = formInMap.formType;
+		if(typeof formInMap != "undefined" && typeof formInMap.formType != "undefined")
+			commonObj["typeSig"] = formInMap.formType;
 		commonObj["name"] = getFullAddress(commonObj);
 
 		if(typeof commonObj["postalCode"] != "undefined" && commonObj["postalCode"].indexOf(";") >= 0){
@@ -371,7 +373,7 @@ function addResultsInForm(commonGeoObj, countryCode){
 		if(notEmpty(value.countryCode)){
 			mylog.log("Country Code",value.countryCode.toLowerCase(), countryCode.toLowerCase());
 			if(value.countryCode.toLowerCase() == countryCode.toLowerCase()){ 
-				html += "<li><a href='javascript:' class='item-street-found' data-lat='"+value.geo.latitude+"' data-lng='"+value.geo.longitude+"'><i class='fa fa-marker-map'></i> "+value.name+"</a></li>";
+				html += "<li><a href='javascript:;' class='item-street-found' data-lat='"+value.geo.latitude+"' data-lng='"+value.geo.longitude+"'><i class='fa fa-marker-map'></i> "+value.name+"</a></li>";
 			}
 		}
 	});
@@ -380,18 +382,26 @@ function addResultsInForm(commonGeoObj, countryCode){
 	$("#dropdown-newElement_streetAddress-found").show();
 
 	$(".item-street-found").click(function(){
-		Sig.markerFindPlace.setLatLng([$(this).data("lat"), $(this).data("lng")]);
-		Sig.map.panTo([$(this).data("lat"), $(this).data("lng")]);
-		Sig.map.setZoom(16);
+		if(typeof Sig != "undefined"){
+			Sig.markerFindPlace.setLatLng([$(this).data("lat"), $(this).data("lng")]);
+			Sig.map.panTo([$(this).data("lat"), $(this).data("lng")]);
+			Sig.map.setZoom(16);
+		}
 		mylog.log("lat lon", $(this).data("lat"), $(this).data("lng"));
 		$("#dropdown-newElement_streetAddress-found").hide();
 		$('[name="newElement_lat"]').val($(this).data("lat"));
 		$('[name="newElement_lng"]').val($(this).data("lng"));
-		formInMap.NE_lat = $(this).data("lat");
-		formInMap.NE_lng = $(this).data("lng");
-		formInMap.showWarningGeo(false);
-		formInMap.initHtml();
-
+		
+		if(typeof formInMap != "undefined" && formInMap.actived == true){
+			formInMap.NE_lat = $(this).data("lat");
+			formInMap.NE_lng = $(this).data("lng");
+			formInMap.showWarningGeo(false);
+			formInMap.initHtml();
+		}else{
+			dyFObj.formInMap.NE_lat = $(this).data("lat");
+			dyFObj.formInMap.NE_lng = $(this).data("lng");
+			dyFObj.formInMap.showWarningGeo(false);
+		}
 	});
 }
 

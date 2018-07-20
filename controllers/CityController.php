@@ -41,6 +41,8 @@ class CityController extends CommunecterController {
 	        'autocompletemultiscope'=> 'citizenToolKit.controllers.city.AutocompleteMultiScopeAction',
 	        'save'       			=> 'citizenToolKit.controllers.city.SaveAction',
 	        'getlevel'		=> 'citizenToolKit.controllers.city.GetLevelAction',
+	        'getcitiesbyscope' => 'citizenToolKit.controllers.city.GetCitiesByScopeAction',
+	        'getgeoshape'		=> 'citizenToolKit.controllers.city.GetGeoshapeAction',
 
 	    );
 	}

@@ -1,26 +1,29 @@
 
 function userValidatedActions() { 
-	if (userValidated) {
+	if (typeof initLoginRegister != "undefined" &&  initLoginRegister.userValidated) {
 		$(".errorHandler").hide();
 		$(".emailValidated").show();
 		$(".form-login #password-login").focus();
 	}
 
 	//We are in a process of invitation. The user already exists in the db.
-	if (invitor != "") {
+	if (typeof initLoginRegister != "undefined" &&  initLoginRegister.invitor != "") {
 		$(".errorHandler").hide();
 		$('.pendingProcess').show();
-		$('.form-register #registerName').val(name);
+		$('.form-register #registerName').val(initLoginRegister.name);
 		$('.form-register #isInvitation').val(true);
 		$('#email3').prop('disabled', true);
 		$('#inviteCodeLink').hide();
 	}
 }
 
-function removeParametersWithoutReloading() {
+function removeParametersWithoutReloading(el) {
+	
+	urlRedirect=(notNull(el)) ? "?el="+el : "";  
+
 	window.history.pushState("Invitation", 
 		"Invitation", 
-		location.href.replace(location.search,""));
+		location.href.replace(location.search,urlRedirect));
 }
 
 var Login = function() {
@@ -204,11 +207,13 @@ var Login = function() {
 		    		  	} else if (data.msg == "accountPending") {
 		    		  		pendingUserId = data.pendingUserId;
 		    		  		$(".errorHandler").hide();
-							$('.register').click();
+							//$('.register').trigger("click");
 							$('.pendingProcess').show();
 							var pendingUserEmail = data.pendingUserEmail;
 							$('#email3').val(pendingUserEmail);
 							$('#email3').prop('disabled', true);
+							$('.form-register #isInvitation').val(true);
+							$('#modalRegister').modal("show");
 		    		  	} else{
 		    		  		msg = data.msg;
 		    		  		$('.loginResult').html(msg);
@@ -448,6 +453,7 @@ var Login = function() {
 
 		    		  	}
 		    		  	else{
+		    		  		$('.modal').modal('hide');
 		    		  		$("#modalRegisterSuccessContent").html("<h3><i class='fa fa-smile-o fa-4x text-green'></i><br><br> "+data.msg+"</h3>");
 			    		  	$("#modalRegisterSuccess").modal({ show: 'true' }); 
 			    		  	// Hide modal if "Okay" is pressed
@@ -539,8 +545,7 @@ var Login = function() {
 		openLogin : function() { 
 			if(!Login.loaded)
 				Login.init();
-			else 
-				$('#modalLogin').modal("show");
+			$('#modalLogin').modal("show");
 			//$('#modalRegister').modal("show");
 		}
 	};

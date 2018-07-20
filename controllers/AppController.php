@@ -279,6 +279,11 @@ class AppController extends CommunecterController {
         $this->redirect( Yii::app()->createUrl("/ressources/co/ressources") );
     }
 
+    public function actionInterop(){
+        //echo "Hello there "; echo Yii::app()->createUrl("/interop/co/index"); exit; 
+        $this->redirect( Yii::app()->createUrl("/interop") );
+    }
+
     public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
         CO2Stat::incNbLoad("co2-page");
             
@@ -305,7 +310,10 @@ class AppController extends CommunecterController {
         if( (!empty($element["status"]) && $element["status"] == "deleted") ||  
             (!empty($element["tobeactivated"]) && $element["tobeactivated"] == true) )
              $this->redirect( Yii::app()->createUrl($controller->module->id) );
-
+        if(!Preference::isPublicElement(@$element["preferences"]) &&
+             (!@Yii::app()->session["userId"] || (
+                (@Yii::app()->session["userId"] && $element["creator"] != Yii::app()->session["userId"]) && !Authorisation::canEditItem(Yii::app()->session["userId"], $id, $type))))
+            $this->redirect( Yii::app()->createUrl($controller->module->id) );
         if(@$element["parentId"] && @$element["parentType"] && 
             $element["parentId"] != "dontKnow" && $element["parentType"] != "dontKnow")
             $element['parent'] = Element::getSimpleByTypeAndId( $element["parentType"], $element["parentId"]);
@@ -338,6 +346,7 @@ class AppController extends CommunecterController {
             else if($type == "poi") $this->renderPartial('../poi/preview', $params ); 
             else echo $this->renderPartial("page", $params, true);
         }else{
+
             echo $this->renderPartial("page", $params, true);
 	    }
     }

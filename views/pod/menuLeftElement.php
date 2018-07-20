@@ -103,7 +103,8 @@
 					$modalTarget = "#invite-modal-element";
 				}
 
-				$urlLink = "#element.invite.type.".$type.".id.".(string)$element["_id"] ;
+				//$urlLink = "#element.invite.type.".$type.".id.".(string)$element["_id"] ;
+				$urlLink = "#element.invite.type.forms.id.5b27a1e35a7c00d4d97509d0";
 				$modalTarget = "#modal-invite";
 				$whereConnect="";
 				if($type!=Person::COLLECTION)
@@ -297,7 +298,16 @@
 			</li>			
 		<?php }  
 		} ?>
-
+		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){  
+					if(!@$front || (@$front && $front["poi"])){ 
+		?>
+			<li>
+				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="jobs" data-icon="briefcase">
+					<i class="fa fa-briefcase"></i> <?php echo Yii::t("common","Jobs"); ?>
+				</a>
+			</li>			
+		<?php }  
+		} ?>
 		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
 				  $type==Event::COLLECTION || $type==Person::COLLECTION || $type==Place::COLLECTION ){  
 					if(!@$front || (@$front && $front["poi"])){ 
@@ -331,6 +341,16 @@
 				</a>
 			</li>
 		<?php } ?>
+
+		<?php 	//if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				   // $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
+			<li><hr></li>
+			<li class="">
+				<a href="javascript:" class="ssmla" id="btn-start-curiculum">
+					<i class="fa fa-clipboard"></i> <?php echo Yii::t("common","My CV"); ?>
+				</a>
+			</li>
+		<?php //} ?>
 
 		<?php if( $type==Person::COLLECTION ){ ?>
 			<!--<li><hr></li>

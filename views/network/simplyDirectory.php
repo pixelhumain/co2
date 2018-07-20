@@ -21,6 +21,8 @@ var searchPrefTag = null ;
 var indexStep = indexStepInit;
 var scrollEnd = false;
 
+contextData = {};
+
 var tagsActived = {};
 var disableActived = false;
 var citiesActived = [] ;
@@ -95,6 +97,12 @@ function initVar(){
 				'</div>';
 	$("#btn-back").parent().replaceWith(btnSearch);
 	$("#mapLegende").addClass("hidden");
+
+	if(typeof networkJson.request.parent != "undefined" &&
+		typeof networkJson.request.parent.id != "undefined" &&
+		typeof networkJson.request.parent.type != "undefined" ){
+		contextData = networkJson.request.parent ;
+	}
 }
 
 function addTooltips(){
@@ -385,6 +393,10 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	if(typeof seeDisable != "undefined" && seeDisable == true)
 		data.seeDisable = true;
 
+	if(typeof networkJson.request.parent != "undefined" &&
+		typeof networkJson.request.parent.id != "undefined" &&
+		typeof networkJson.request.parent.type != "undefined" )
+		data.parent = networkJson.request.parent;
 	//console.log("loadingData true");
 	loadingData = true;
 
@@ -431,7 +443,8 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 					data = val ;
 				}
 
-				dataSuccess(data, indexMin, indexMax, locality); 
+				dataSuccess(data, indexMin, indexMax, locality);
+				
 			}
 		});
 	} else {
@@ -446,6 +459,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 			},
 			success: function(data){
 				dataSuccess(data, indexMin, indexMax); 
+				//geoShapeCity();
 			}
 		});
 	}
@@ -570,6 +584,7 @@ function dataSuccess(data, indexMin, indexMax, locality){
 	var length = ($( "div.searchEntity" ).length);
 	if(length > 1) s = "s";
 	$("#countResult").html(length+" résultat"+s);
+	geoShapeCity();
 	$.unblockUI();
 }
 
@@ -1172,6 +1187,47 @@ function filterType(types){
 	        str +=  '</ul> </div>';
 	    $("#divTypesMenu").append(str);
 	}
+}
+
+function geoShapeCity(){
+	mylog.log("geoShapeCity");
+
+	if(typeof networkJson.skin.geoShape != "undefined" && networkJson.skin.geoShape == true){
+		var data = null
+		if(typeof networkJson.request.searchLocalityNAME != "undefined")
+			data = { name : networkJson.request.searchLocalityNAME };
+		else if(typeof networkJson.request.searchLocalityINSEE != "undefined")
+			data = { insee : networkJson.request.searchLocalityINSEE };
+		else if(typeof networkJson.request.searchLocalityID != "undefined")
+			data = { id : networkJson.request.searchLocalityID } ;
+		mylog.log("geoShapeCity", data);
+		if(data != null){
+			$.ajax({
+				type: "POST",
+				url: baseUrl+"/"+moduleId+"/city/getgeoshape/",
+				data: data,
+				dataType: "json",
+				success: function(data){
+					//var geoShape = [] ;
+					$.each(data,function(k,v){
+	          			if(typeof v.geoShape != "undefined"){
+	          				var geoShape = Sig.inversePolygon(v.geoShape.coordinates[0]);
+	          				Sig.addPolygon(geoShape);
+	          				//geoShape = geoShape.concat(Sig.inversePolygon(v.geoShape.coordinates[0]))
+							// Sig.showPolygon(geoShape);
+							setTimeout(function(){
+								//Sig.map.fitBounds(geoShape);
+								Sig.map.invalidateSize();
+							}, 1500);
+	          			}
+						
+	          		});
+				}
+			});
+		}
+	}
+	
+	
 }
 
 </script>

@@ -110,9 +110,6 @@
   [ ]  en mode carto : indiquer qu'il ne sont pas sur la carte et leur proposer de se communecter. 
   [ ]  Dans le header : a la place du cp , proposer de ce communecter.
 [ ] synchroniser le scopper et la carto 
-[ ] Module FAQ : posez une questions a cette entité
-[ ] rapatrier les docs module
-[ ] repair fluidlog
 [ ] declaration de pb contextualisé 
   - bug idée ... sur chaque page , persistent et en mode votable
 [ ] representation du multi scoping sur la carte
@@ -128,12 +125,24 @@
   - user pourront demander des push sur differentes destination FB, twitter, 
 [ ] systeme calculant la valeur indirect de communecter basé sur un systeme de valeur economique existant 
   ex : sur les base des prix des pages jaune calculé la valeur cumulé de l'annuaire 
+** Navigation  
+[ ] calculateur de poids d'une action : 
+  - j'envoie un message direct, ca me coute tant
+  - je fais une recherche , combien ca coute 
+  - j'envoie un message à un groupe (avec ou sans images)
+  - combien coute l'hébergement d'une page et sa visualisation par une personne
+
+* Modules 
+[ ] COIX : ya les twitss et les COix : c le module live en focus sur un hashtag, can be embeded comme http://notesondesign.org/seminaire-communs-et-territoires/
+[ ] Module FAQ : posez une questions a cette entité
+[ ] rapatrier les docs module
 
 * API 
 [ ] integrate France Connect
 
 * Import / Export 
 [ ] ical
+[ ] from diigo bookmarks 
 
 * Interop 
   [.2] ajouter un RSS , systeme fondant 
@@ -164,10 +173,10 @@
 [ ] optim : pour eviter les count propositions, dans les boucles ajouter le propalCount on the actionRoom
 
 * Notifications :
-    [.2] Un subevent a été ajouté sur un event auquel je suis participant
-    [ ] Un nouveau message privé (écrit sur votre journal) vous a été adressé.
-    [ ] ajouter des acceptation dans le notif, pour pas etre obligé d'aller sur le post
-    [ ] Améliorer la notification de report d'abus
+[.2] Un subevent a été ajouté sur un event auquel je suis participant
+[ ] Un nouveau message privé (écrit sur votre journal) vous a été adressé.
+[ ] ajouter des acceptation dans le notif, pour pas etre obligé d'aller sur le post
+[ ] Améliorer la notification de report d'abus
 
 * Financement 
 [1.1] jauge de tarification proportionnel et prix libre de contribution au commun 
@@ -182,4 +191,6 @@
 * Dongles 
 [ ] contribution par mail : https://www.diigo.com/tools/post_by_email
 [ ] plugin Chrome plugguer avec dynform et l'api pour partage rapide et viral a la diigo 
+
+
 

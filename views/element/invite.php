@@ -1,5 +1,20 @@
-<style>
+<?php
+$cssJs = array(
+	'/assets/css/freelancer.css',
+);
+HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->theme->baseUrl);
 
+
+
+$cssJs = array(
+	'/plugins/select2/select2.min.js' ,
+	'/plugins/select2/select2.css',
+);
+HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBaseUrl(true));
+
+?>
+
+<style>
 #modal-invite .dropdown-menu{
 	top:65%;
 	left : 15px;
@@ -272,7 +287,10 @@
 						<div class="col-xs-12">
 							<h4> <?php echo Yii::t("invite", "Result of invitations sent") ;?> </h4>
 							<div class="col-xs-12" id="dropdown-result"" style="max-height: 400px; overflow: auto;"></div>
-							<?php if($parentType != Person::COLLECTION){ ?>
+							<?php 
+							if($parentType != Person::COLLECTION){ ?>
+								<a href="<?php echo Yii::app()->getRequest()->getBaseUrl(true) ?>/survey/co/members/id/<?php echo $id; ?>" class="btn btn-success margin-top-20 col-xs-12 " id="btn-home" style="font-size:20px;"><i class="fa fa-home"></i> <?php echo Yii::t("invite","See the community") ?></a>
+							<?php } else if($parentType != Person::COLLECTION){ ?>
 								<button class="btn btn-success margin-top-20 col-xs-12 link-to-community"><i class="fa fa-users"></i> <?php echo Yii::t("invite","See the community") ?></button>
 							<?php } ?>
 						</div>
@@ -293,7 +311,7 @@
 			citoyens : { color: "yellow", icon:"user", label: trad.People },
 			organizations :	{ color: "green", icon:"group", label: trad.Organizations } 
 		};
-
+	var rolesListCustom = <?php echo json_encode(@$roles); ?>;
 	var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $parentType, @Yii::app()->session["userId"]) ?>";
 
 	var listInvite = { 
@@ -302,13 +320,17 @@
 		invites : {},
 	};
 
+	var isElementAdmin= "<?php echo Authorisation::isElementAdmin($parentId, $parentType, @Yii::app()->session["userId"]) ?>";
+
 	jQuery(document).ready(function() {
 		// mylog.log("members", members);
-		if(parentType != "citoyens")
+		if(parentType != "citoyens" && typeof contextData != "undefined")
 			$("#title-invite .name-parent").text(contextData.name);
 		initInvite();
 		bindInvite();
 		fadeInView("step1-search");
+		if(rolesListCustom.length > 0)
+			rolesList = rolesListCustom ;
 	});
 
 	function fadeInView(inView){
@@ -522,7 +544,8 @@
 				Object.keys(listInvite.citoyens).length > 0 || 
 				Object.keys(listInvite.invites).length > 0 ) {
 				mylog.log("#modal-invite #btnValider here");
-
+				// $('#modal-invite #btnValider').prop("disabled", true);
+				// $('#modal-invite #btnValider').html("<i class='fa fa-spin fa-circle-o-notch'></i> ");
 
 				// $( ".divRoles" ).each(function(key, value) {
 				// 	mylog.log("divRoles", $(this).data("id"), $(this).data("type"));
@@ -550,7 +573,7 @@
 									mylog.log("contactsList.invites key, value", key, value);
 									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
 									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
-									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+newElementType+".png";		
+									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+newElementType+".png";		
 									var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
 									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
 											'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
@@ -574,7 +597,7 @@
 									mylog.log("contactsList.invites key, value", key, value);
 									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
 									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
-									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+newElementType+".png";		
+									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+newElementType+".png";		
 									var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
 									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
 											'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
@@ -600,7 +623,7 @@
 							$.each(data.organizations, function(key, value){
 								if(value.result){
 									mylog.log("contactsList.invites key, value", key, value);
-									var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : assetPath + "/images/thumb/default_"+value.newElementType+".png";		
+									var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+value.newElementType+".png";		
 									var bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";	
 									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
 											'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
@@ -617,7 +640,8 @@
 								}
 							});
 						}
-						
+						$('#modal-invite #btnValider').prop("disabled", false);
+						$('#modal-invite #btnValider').html(tradDynForm.launchInvitations);
 						initListInvite();
 						fadeInView("result");
 						$("#modal-invite #dropdown-result").html(str);
@@ -888,7 +912,7 @@
 		if(type ==  "invites" )
 			type = "citoyens";
 		var inMyContact = (!searchInContactsList) ? inMyContacts(type,id) : false;
-		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl + elem.profilThumbImageUrl : assetPath + "/images/thumb/default_"+type+".png";		
+		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl + elem.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+type+".png";		
 		var str = "<div class='col-xs-12 listInviteElement no-padding'>";
 			var classStr = "col-xs-10";
 			if(invite == true){

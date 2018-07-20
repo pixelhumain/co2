@@ -27,6 +27,7 @@ class LinkController extends CommunecterController {
 			'follow' 			=> 'citizenToolKit.controllers.link.FollowAction',
 			'validate' 			=> 'citizenToolKit.controllers.link.ValidateAction',
 			'favorite' 			=> 'citizenToolKit.controllers.link.FavoriteAction',
+			'updateadminlink'	=> 'citizenToolKit.controllers.link.UpdateAdminLinkAction',
 	    );
 	}
 }

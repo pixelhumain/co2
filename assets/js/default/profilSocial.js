@@ -195,6 +195,15 @@ function bindButtonMenu(){
 		loadNetworks();
 	});
 
+	$("#btn-start-curiculum").click(function(){
+		responsiveMenuLeft();
+		location.hash=hashUrlPage+".view.curiculum";
+		toogleNotif(false);
+		KScrollTo("#profil_imgPreview");
+		//history.pushState(null, "New Title", hashUrlPage+".view.detail");
+		loadCuriculum();
+	});
+
 	$("#btn-hide-desc").click(function(){
 		if($("#desc-event").hasClass("hidden")){
 			$("#desc-event").removeClass("hidden");
@@ -318,7 +327,7 @@ function bindButtonMenu(){
 		});
 	});
 
-	$("#editConfidentialityBtn").on("click", function(){
+	$(".editConfidentialityBtn").on("click", function(){
     	mylog.log("confidentiality", seePreferences);
     	$("#modal-confidentiality").modal("show");
     	if(seePreferences=="true"){
@@ -424,6 +433,7 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	else if(dataName == "poi")			{ html += countData+" <b>"+trad["point"+s+"interest"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
 	else if(dataName == "classifieds")	{ html += countData+" <b>"+trad["classified"+s]+"</b> "+trad['createdby'+s]+" " + elementName; }
 	else if(dataName == "ressources")	{ html += countData+" <b>ressource"+s+"</b> "+trad['createdby'+s]+" " + elementName; }
+	else if(dataName == "jobs")	{ html += countData+" <b>"+trad.job+s+"</b> "+trad['createdby'+s]+" " + elementName; }
 
 	else if(dataName == "needs")	{ html += countData+" <b>"+trad[need+s]+"</b> "+trad.of+" " + elementName; }
 
@@ -651,6 +661,19 @@ function loadNetworks(){
 				function(data){
 					mylog.log("loadNetworks success", data, edit);
 					displayInTheContainer(data, "networks", "external-link", "networks",edit);
+				}
+	,"html");
+}
+
+function loadCuriculum(){
+	mylog.log("loadCuriculum");
+	showLoader('#central-container');
+	getAjax('', baseUrl+'/'+moduleId+'/element/getcuriculum/type/'+contextData.type+
+				'/id/'+contextData.id,
+				function(html){
+					mylog.log("loadCuriculum success", html);
+					$("#central-container").html(html);
+					//displayInTheContainer(data, "networks", "external-link", "networks",edit);
 				}
 	,"html");
 }

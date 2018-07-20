@@ -36,9 +36,15 @@ Migration des ressources dans classified et refactor sur les "classified" qui de
     *** /co2/datamigration/UpdateLineInDB
 3* Renomer et déplacer les images
   - Renommer le dossier "upload/communecter/classified/" en "upload/communecter/classifieds/"
-  - Déplacer le contenu du dossier "upload/communecter/ressources/" dans "upload/communecter/classifieds/"
+    cp -r upload/communecter/classified/ upload/communecter/classifieds/
+  - Déplacer le contenu du dossier "upload/communecter/ressources/" dans "upload/communecter/classifieds/" 
+    cd upload/communecter/ressources/
+    mv * ../classifieds/
 4* Bash des object type dans documents, comments, notifications et news
   =>lancer l'url "/co2/datamigration/UpdateTypeInCollectionsLinkToClassifieds"
+
+* other batch 
+/co2/datamigration/PendingMissing
 
 
 ---------------------------------------

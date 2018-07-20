@@ -538,7 +538,7 @@
 	            		?>
 	            		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			  				<li class="text-left">
-				               	<a href="javascript:;" id="editConfidentialityBtn" class="bg-white">
+				               	<a href="javascript:;" id="" class="bg-white editConfidentialityBtn">
 				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 				                </a>
 				            </li>
@@ -1017,8 +1017,12 @@
 				onchangeClick=false;
 				loadCoop(roomId, proposalId, resolutionId, actionId);
 			}
-			else if(sub=="networks")
+			else if(sub=="networks"){
 				loadNetworks();
+			}
+			else if(sub=="curiculum"){
+				loadCuriculum();
+			}
 			
 		} else
 			loadNewsStream(true);

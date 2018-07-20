@@ -1615,4 +1615,70 @@ La vie en santé;Santé;;
 		$a = array($str => $res);
 		Rest::json($a);exit;
 	}
+
+
+
+	public function actionTestPoleEmploi(){
+		// $url = 'https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT COUNT(*) FROM "421692f5-f342-4223-9c51-72a27dcaf51e" WHERE "CITY_CODE"=\'62041\' LIMIT 30';
+
+		//$url = 'https://api.emploi-store.fr/partenaire/offresdemploi/v1/rechercheroffres?sql=SELECT * FROM "421692f5-f342-4223-9c51-72a27dcaf51e" WHERE "CITY_CODE"=\'62041\' LIMIT 30';
+
+		// $url = 'https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search?resource_id=421692f5-f342-4223-9c51-72a27dcaf51e';
+
+		$url = 'https://api.emploi-store.fr/partenaire/offresdemploi/v1/rechercheroffres';
+		$params = array(	
+						'technicalParameters' => array(
+							'page'=>1,
+							'per_page'=>20,
+							'sort'=>1) ,
+						'criterias' => array(
+							'keywords'=>"agriculture" ) );
+		$res["url"] = $url;
+		$res["res"] = Convert::poleEmploi2($url, $params);
+		//$res["res"] = PoleEmploi::poleEmploi($url);
+
+		Rest::json($res);exit;
+	}
+
+
+	public function actionTestPoleEmploiToken(){
+		$res = array("cas" => 0 , "token" => array());
+		if(!empty(Yii::app()->params["tokenpoleEmploi"])){
+			$res = array("cas" => 1 , "token" => Yii::app()->params["tokenpoleEmploi"]);
+		}else{
+			$tok = Application::getToken("poleEmploi");
+			$res = array("cas" => 2 , "token" => $tok);
+
+			if(empty(Yii::app()->params["tokenpoleEmploi"])){
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, "https://entreprise.pole-emploi.fr/connexion/oauth2/access_token?realm=%2Fpartenaire");
+				curl_setopt($curl, CURLOPT_POST, true);
+				curl_setopt($curl, CURLOPT_POSTFIELDS, "grant_type=client_credentials&client_id=PAR_communectertest_c46ea89b19688d7d3364badae07f308f722f83b0cd9bd040ecc5a468c6f1d07a&client_secret=de3f5d98dcefef02d98c239b3973878320ec7815005dff553afc35ae067f3dc9&scope=application_PAR_communectertest_c46ea89b19688d7d3364badae07f308f722f83b0cd9bd040ecc5a468c6f1d07a api_offresdemploiv1 o2dsoffre api_infotravailv1"); 
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				$token = curl_exec($curl);
+				$token_final = json_decode($token, true);
+				Application::saveToken("poleEmploi", $token_final);
+				$res = array("cas" => 3 , "token" => Yii::app()->params["tokenpoleEmploi"]);
+				curl_close($curl);
+			}
+		}
+
+		Rest::json($res);exit;
+	}
+
+	public function actionTestSecondTime(){
+		var_dump(time());
+		$time = time();
+		$expire = 1529998978+1500;
+		echo $time." < ".$expire." : ".($time < $expire);
+		echo "<br>reste : ".($expire-$time) ;
+	}
+
+
+	public function actionGetSurveyByFormId(){
+		
+		$link = Form::getSurveyByFormId("5b27a1e35a7c00d4d97509d0", Person::COLLECTION, "isAdmin");
+		Rest::json($link);exit;
+
+	}
 }

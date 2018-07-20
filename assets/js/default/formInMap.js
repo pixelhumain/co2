@@ -545,6 +545,7 @@ var formInMap = {
 		});
 		return country ;
 	},
+	
 
 	backToForm : function(cancel){
 		$("#right_tool_map").addClass("hidden-xs hidden-sm");
@@ -566,7 +567,8 @@ var formInMap = {
 				dyFInputs.locationObj.copyMapForm2Dynform(locObj);
 				dyFInputs.locationObj.addLocationToForm(locObj);
 			}
-			$(".locationBtn").html("<i class='fa fa-home'></i> Adresse secondaire");
+			if(typeof cancel == "undefined" || cancel == false)
+				$(".locationBtn").html("<i class='fa fa-home'></i> "+tradDynForm.secondLocality);
 			formInMap.initData();
 			$.unblockUI();
 			showMap(false);
@@ -579,9 +581,6 @@ var formInMap = {
 			formInMap.updateLocality = false;
 			if(typeof cancel == "undefined" || cancel == false)
 				formInMap.updateLocalityElement();
-			// showMap(false);
-			// if(typeof contextData.map != "undefined" && contextData.map != null)
-				// Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
 		}
 		
 	},

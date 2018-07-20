@@ -386,7 +386,7 @@
     //$this->renderPartial('../default/panels/toolbar'); 
     $sizeForm="col-sm-12"; 
   }else
-    $sizeForm="col-sm-10 col-sm-offset-1";
+    $sizeForm="col-xs-12 col-sm-10 col-sm-offset-1";
 
 ?>
 <!-- <div id="newLiveFeedForm" class="col-xs-12 no-padding margin-bottom-10"></div> -->

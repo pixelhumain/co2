@@ -660,7 +660,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 function loadSettings(hash){
 	$("#modal-settings").show();
 	var url = "settings/index";
-	if(hash.indexOf("page") >= 0){
+	if(typeof hash != "undefined" && hash.indexOf("page") >= 0){
 		hashT=hash.split(".");
 		url += "/page/"+hashT[2];
 		if(hash.indexOf("to") >= 0){

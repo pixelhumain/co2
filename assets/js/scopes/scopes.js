@@ -136,16 +136,18 @@ function getUrlSearchLocality(urlGet){
 	if(notNull(searchingOnLoc)){
 		$.each(searchingOnLoc, function(key, value){
 			mylog.log("getMultiScopeForSearch value.active", value.active);
-			if(value.active == true){
-				if(value.type == "cities"){
-					keyScope=(typeof value.postalCode == "undefined") ? value.id : value.id+"cp"+value.postalCode;
-					keyScope+=(typeof value.allCP == "undefined" && value.allCP) ? "allPostalCode" : "";
-					urlScopeCity.push(keyScope);
+			if(typeof custom == "undefined" || typeof custom.scopes == "undefined" || typeof custom.scopes[key] == "undefined" ){
+				if(value.active == true){
+					if(value.type == "cities"){
+						keyScope=(typeof value.postalCode == "undefined") ? value.id : value.id+"cp"+value.postalCode;
+						keyScope+=(typeof value.allCP == "undefined" && value.allCP) ? "allPostalCode" : "";
+						urlScopeCity.push(keyScope);
+					}
+					else if (value.type == "cp")
+						urlScopeCp.push(value.id);
+					else if (value.type.indexOf("level") >= 0)
+						urlScopeZone.push(value.id);
 				}
-				else if (value.type == "cp")
-					urlScopeCp.push(value.id);
-				else if (value.type.indexOf("level") >= 0)
-					urlScopeZone.push(value.id);
 			}
 		});
 		if(urlScopeCity.length > 0) urlMyScope+="&cities="+urlScopeCity.join(",");
@@ -215,7 +217,7 @@ function appendScopeBreadcrum(){
 	if($.inArray(myScopes.type, ["multiscopes", "communexion"]) > -1)
 		$("#"+myScopes.type+"-btn").addClass("active");
 }
-function setOpenBreadCrum(params){
+function setOpenBreadCrum(params, customCity){
 	setOpenScope={};
 	if(typeof params.zones != "undefined"){
 		zones=params.zones.split(",");
@@ -251,6 +253,8 @@ function setOpenBreadCrum(params){
 			myScopes.open=data.scopes;
 			localStorage.setItem("myScopes",JSON.stringify(myScopes));
 			appendScopeBreadcrum();
+			if(customCity)
+				custom.scopes=myScopes["open"];
 		},
 		error: function(error){
 			toastr.error("waswrong")

@@ -572,9 +572,11 @@ function constructSearchObjectAndGetParams(){
     getStatus+="text="+searchObject.text;
   }
   if(typeof searchObject.types != "undefined" && searchObject.types.length==1 && (searchObject.initType=="all" || searchObject.initType=="news")){
+    if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.types == "undefined"){
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="types="+searchObject.types.join(",");
+    }
     searchConstruct.searchType=searchObject.types;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="types="+searchObject.types.join(",");
   }else{
     searchConstruct.searchType=searchObject.types;
   }
@@ -925,8 +927,9 @@ function customFiltersInterface(){
                 if(e=="types" && searchObject.initType!="news"){
                     keyfilter="searchSType";
                 }
-                if(typeof searchObject.forced == "undefined") searchObject.forced=new Object,
+                if(typeof searchObject.forced == "undefined") searchObject.forced=new Object;
                 searchObject.forced[keyfilter]=v[0];
+           //     console.log("keyyyy",searc)
                 searchObject[keyfilter]=(searchObject.initType=="news") ? [v[0]] : v[0];
                 delete show[searchObject.initType][e];
                 $("#filters-nav-list .dropdown-"+e).remove();

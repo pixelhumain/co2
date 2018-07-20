@@ -58,10 +58,9 @@ function initSearchInterface(){
         activeTagsFilter();
         startSearch(0, indexStepInit, searchCallback);
     });
-
-    $("#main-search-bar, #main-search-xs-bar").keyup(function(e){
+     $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
-        $(".main-search-bar").val($(this).val());
+        $("#main-search-xs-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == "" ){
             spinSearchAddon(true);
@@ -73,10 +72,25 @@ function initSearchInterface(){
             startSearch(0, indexStepInit, searchCallback);
         }
     });
-    $("#main-search-bar, #main-search-xs-bar").change(function(){
+   
+    $("#main-search-xs-bar").keyup(function(e){
+        $("#second-search-bar").val($(this).val());
+        $("#main-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        if(e.keyCode == 13 || $(this).val() == "" ){
+            spinSearchAddon(true);
+            searchObject.page=0;
+            searchObject.text = $(this).val();
+            pageCount=true;
+            searchObject.count=true;
+            if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
+            startSearch(0, indexStepInit, searchCallback);
+        }
+    });
+    /*$("#main-search-bar, #main-search-xs-bar").change(function(){
         $("#second-search-bar").val($(this).val());
         $(".main-search-bar").val($(this).val());
-    });
+    });*/
 
     $("#second-search-bar").keyup(function(e){
         $(".main-search-bar").val($(this).val());

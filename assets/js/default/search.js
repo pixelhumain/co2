@@ -540,7 +540,7 @@ function interopSearch(keyS, nameS){
         $(".dropdown-section, .dropdown-price").hide();
         $(".btn-select-category").hide();
         $(".keycat-joboffer").removeClass("hidden");
-        searchObject.page=0;
+        //searchObject.page=0;
         
         searchObject.source = keyS;
         if( typeof interop == "undefined" ){

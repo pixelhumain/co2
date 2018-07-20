@@ -72,6 +72,8 @@ dynForm = {
 	    beforeSave : function(){
 	    	if (typeof $("#ajaxFormModal #description").code === 'function' ) 
 	    		$("#ajaxFormModal #description").val( $("#ajaxFormModal #description").code() );
+
+	    	$("#ajaxFormModal #newElement_country").remove();
 	    },
 	    afterSave : function(data,callB){
 	    	if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 ){
@@ -85,7 +87,10 @@ dynForm = {
 		    	if(typeof networkJson != "undefined")
 					isMapEnd = true;
 				dyFObj.closeForm();
-				urlCtrl.loadByHash( uploadObj.gotoUrl );
+				if(updateForm!=null)//use case for answerList forms updating
+	        		window.location.reload();
+	        	else 
+					urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    },
 	    properties : {

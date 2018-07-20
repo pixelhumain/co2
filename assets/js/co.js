@@ -989,29 +989,35 @@ var urlCtrl = {
 	    if( urlCtrl.jsController(hash) ){
 	    	mylog.log("urlCtrl.loadByHash >>> hash found",hash);
 	    }
-	    else if( hash.indexOf("#panel") >= 0 ){
-
-	    	panelName = hash.substr(7);
+	    /*else if( hash.indexOf("#panel") >= 0 ){
+	    	showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
+	    	panelName = hash.split("#panel.");
+	    	panelName = panelName[1];
 	    	mylog.log("panelName",panelName);
 	    	if( (panelName == "box-login" || panelName == "box-register") && userId != "" && userId != null ){
-	    		urlCtrl.loadByHash("#default.home");
+	    		//alert();
+	    		urlCtrl.loadByHash("#welcome");
+	    	//	showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 	    		return false;
 	    	} else if(panelName == "box-add")
 	            title = 'ADD SOMETHING TO MY NETWORK';
 	        else
 	            title = "WELCOM MUNECT HEY !!!";
 	        if(panelName == "box-login"){
-				Login.openLogin();
 				$.unblockUI();
+				$(".progressTop").hide();
+				//alert("ici");
+				Login.openLogin();
+				
 	        }
 			else if(panelName == "box-register"){
-				$('#modalRegister').modal("show");
 				$.unblockUI();
+				$('#modalRegister').modal("show");
 			}
 			else
 	       		showPanel(panelName,null,title);
 	       	
-	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
+	    }*/  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
 	    }
@@ -1057,8 +1063,10 @@ var urlCtrl = {
 				  			showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
 		 			}
 				});
-			}else
-				showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
+			}else{
+				if(typeof custom == "undefined" || typeof custom.url=="undefined")	
+					showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
+			}
 		}
 	    else if ( moduleId != activeModuleId) {
 	    	//alert( ctrlId +"/"+ actionId );
@@ -1070,7 +1078,17 @@ var urlCtrl = {
 	    location.hash = hash;
 
 	    
-
+	    if( location.hash.indexOf("#panel") >= 0 ){
+        panelName = location.hash.substr(7);
+        mylog.log("panelName",panelName);
+        if( userId == "" ){
+            if(panelName == "box-login")                
+                Login.openLogin();
+        else if(panelName == "box-register")
+            $('#modalRegister').modal("show");
+        
+        }
+    }
 	    /*if(typeof back == "function"){
 	    	alert("back");
 	    	back();
@@ -1327,11 +1345,25 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 	        		urlCtrl.afterLoad();
 	        		urlCtrl.afterLoad = null;
 	        	}
+	        	// if( custom && custom.logo )
+	        	// 	custom.init("co.js");
+        		// }
+        		if( typeof custom != "undefined" && custom.type == "cities" )
+        			setOpenBreadCrum({'cities': custom.id });
 
-	        	if( custom && custom.logo )
-	    			$(".logo-menutop").attr( {'src':custom.logo} ); 	
+	    			//$(".logo-menutop").attr( {'src':custom.logo} ); 	
 
-
+	    		if( location.hash.indexOf("#panel") >= 0 ){
+			        panelName = location.hash.substr(7);
+			        mylog.log("panelName",panelName);
+			        if( userId == "" ){
+			            if(panelName == "box-login")                
+			                Login.openLogin();
+			        else if(panelName == "box-register")
+			            $('#modalRegister').modal("show");
+			        
+			        }
+				}
 	        	/*if(debug){
 	        		getAjax(null, baseUrl+'/'+moduleId+"/log/dbaccess", function(data){ 
 	        			if(prevDbAccessCount == 0){
@@ -1919,7 +1951,7 @@ function myAdminList (ctypes) {
 		};
 		$.each( ctypes, function(i,ctype) {
 			var connectionType = connectionTypes[ctype];
-			myList[ ctype ] = { label: trad[ctype], options:{} };
+			myList[ ctype ] = { label: ctype, options:{} };
 			if( notNull(myContacts) ){
 				mylog.log("myAdminList",ctype, connectionType, myContacts, myContacts[ ctype ]);
 				$.each( myContacts[ ctype ],function(id,elemObj){
@@ -2890,15 +2922,18 @@ function showLoader(id){
 function bindButtonOpenForm(){ 
 	//window select open form type (selectCreate)
 	$(".btn-open-form").off().on("click",function(){
+
         var typeForm = $(this).data("form-type");
         mylog.log("test", $(this).data("form-subtype"));
         currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-        //mylog.log("contextData", contextData, contextData.type, contextData.id );
+        mylog.log("bindButtonOpenForm contextData", contextData);
         //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
-        if(contextData && contextData.type && contextData.id )
+        if(contextData && contextData.type && contextData.id ){
             dyFObj.openForm(typeForm,"sub");
-        else
+        }
+        else{
             dyFObj.openForm(typeForm);
+        }
     });
 }
 

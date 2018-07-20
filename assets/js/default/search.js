@@ -1,7 +1,7 @@
 
 function initSearchInterface(){
     
-    if(searchObject.text != "") $("#main-search-bar, #second-search-bar").val(searchObject.text);
+    if(searchObject.text != "") $(".main-search-bar, #second-search-bar").val(searchObject.text);
     $(".theme-header-filter").off().on("click",function(){
             if(!$("#filter-thematic-menu").is(":visible") || $(this).hasClass("toogle-filter"))
                 $("#filter-thematic-menu").toggle();
@@ -59,8 +59,9 @@ function initSearchInterface(){
         startSearch(0, indexStepInit, searchCallback);
     });
 
-    $("#main-search-bar").keyup(function(e){
+    $("#main-search-bar, #main-search-xs-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
+        $(".main-search-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == "" ){
             spinSearchAddon(true);
@@ -72,12 +73,13 @@ function initSearchInterface(){
             startSearch(0, indexStepInit, searchCallback);
         }
     });
-    $("#main-search-bar").change(function(){
+    $("#main-search-bar, #main-search-xs-bar").change(function(){
         $("#second-search-bar").val($(this).val());
+        $(".main-search-bar").val($(this).val());
     });
 
     $("#second-search-bar").keyup(function(e){
-        $("#main-search-bar").val($(this).val());
+        $(".main-search-bar").val($(this).val());
         //$("#input-search-map").val($(this).val());
         if(e.keyCode == 13 || $(this).val() == ""){
             //initTypeSearch(typeInit);
@@ -110,7 +112,7 @@ function initSearchInterface(){
      
     $("#input-search-map").off().keyup(function(e){
         $("#second-search-bar").val($("#input-search-map").val());
-        $("#main-search-bar").val($("#input-search-map").val());
+        $(".main-search-bar").val($("#input-search-map").val());
         if(e.keyCode == 13){
             if(typeInit == "all") initTypeSearch("allSig");
             else initTypeSearch(typeInit);
@@ -123,7 +125,7 @@ function initSearchInterface(){
          }
     });
     //.menu-btn-start-search,
-    $("#menu-map-btn-start-search,  #main-search-bar-addon").off().on("click", function(){
+    $("#menu-map-btn-start-search,  #main-search-bar-addon, #main-search-xs-bar-addon").off().on("click", function(){
         scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 0;
         spinSearchAddon(true);
         simpleScroll(scrollH);
@@ -131,9 +133,11 @@ function initSearchInterface(){
             searchObject.text=$("#second-search-bar").val();
         else if ($(this).hasClass("input-group-addon"))   
             searchObject.text=$("#main-search-bar").val();
+        else if ($(this).hasClass("input-group-addon-xs"))   
+            searchObject.text=$("#main-search-xs-bar").val();
         else
             searchObject.text=$("#input-search-map").val();
-        $("#second-search-bar, #main-search-bar, #input-search-map").val(searchObject.text);
+        $("#second-search-bar, .main-search-bar, #input-search-map").val(searchObject.text);
         searchPage=0;
         searchObject.count=true;
         pageCount=true;
@@ -163,7 +167,7 @@ function initSearchInterface(){
 function spinSearchAddon(bool){
     removeClass= (bool) ? "fa-arrow-circle-right" : "fa-spin fa-circle-o-notch";
     addClass= (bool) ? "fa-spin fa-circle-o-notch" : "fa-arrow-circle-right";
-    $("#main-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
+    $(".main-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
 }
 function startSearchTerla(indexMin, indexMax, callBack){
     var name = $("#second-search-bar").val() != "" ? $("#second-search-bar").val() : $("#new-search-bar").val();
@@ -275,8 +279,14 @@ function bindLeftMenuFilters () {
         indexStepInit = 100;
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         typeClass = $(this).data("type-anc");
-        typeKey = $(this).data("key");    
+        typeKey = $(this).data("key");
+        //Case specific to focus on poleEmploi
+        if(typeof searchObject.source != "undefined"){
+            delete searchObject.source;
+            $(".dropdown-sources .dropdown-toggle").removeClass("active").html(trad.datasource+" <i class='fa fa-angle-down'></i>");
+        }    
         if( typeKey == "classifieds" || typeKey == "jobs" || typeKey == "all"){
             $(".dropdown-price").show(200);
             setTimeout(function(){
@@ -331,34 +341,7 @@ function bindLeftMenuFilters () {
         $(".btn-select-type-anc, .btn-select-section, .btn-select-category, .keycat").removeClass("active");
         //if(bindEcoSource())
            //bindEcoSource();
-        $(".btn-select-source").click(function(){
-            // var key = $(this).data("key");
-            // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
-
-            interopSearch($(this).data("key"), $(this).data("source"));
-            // var key = $(this).data("key");
-            // $(".dropdown-sources .dropdown-toggle").addClass("active").html($(this).data("source")+" <i class='fa fa-angle-down'></i>");
-            // if(key == "co"){
-            //     delete searchObject.source;
-            //     initCountType();
-            //     startSearch(0, indexStepInit, searchCallback);
-            // }else{
-            //     searchObject.source = key;
-            //     if( typeof interop == "undefined" ){
-            //         lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
-            //             if( typeof interopObj == "undefined" ){
-            //                lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
-            //                     interopObj[key].startSearch();
-            //                 } ); 
-            //            }else{
-            //                 interopObj[key].startSearch(); 
-            //            }
-            //         });
-            //     } else {
-            //         interopObj[key].startSearch();
-            //     }
-            // }
-        });
+        
 
         $(".keycat").addClass("hidden");
         if(typeof searchObject.section != "undefined") delete searchObject.section;
@@ -368,12 +351,18 @@ function bindLeftMenuFilters () {
         startSearch(0, indexStepInit, searchCallback);
             
     });
+    $(".btn-select-source").click(function(){
+        interopSearch($(this).data("key"), $(this).data("source"));
+    });
+
+
     $(".btn-select-section").off().on("click", function()
     {    
         searchType = [ typeInit ];
         indexStepInit = 100;
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         $(".dropdown-category .dropdown-toggle").html(trad.category+" <i class='fa fa-angle-down'></i>");
         $(".dropdown-category .dropdown-toggle").removeClass("active")
         if( $(this).hasClass( "active" ) )
@@ -422,6 +411,7 @@ function bindLeftMenuFilters () {
         // Event for count in DB
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         if(typeof searchObject.subType != "undefined") delete searchObject.subType;
         if( $(this).hasClass( "active" ) ){
             if(typeof searchObject.category != "undefined") delete searchObject.category;
@@ -473,6 +463,7 @@ function bindLeftMenuFilters () {
         // Event for count in DB
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         if( $(this).hasClass( "active" ) ){
             if(typeof searchObject.subType != "undefined") delete searchObject.subType;
             $(this).removeClass( "active" );
@@ -518,6 +509,7 @@ function bindLeftMenuFilters () {
         $(".dropdown-price").removeClass("open");
         pageCount=true;
         searchObject.count=true;
+        searchObject.page=0;
         startSearch(0, searchObject.indexStep, searchCallback);
     });
     $("#btn-create-classified").off().on("click", function(){
@@ -526,45 +518,39 @@ function bindLeftMenuFilters () {
 
     $("#priceMin").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
     $("#priceMax").filter_input({regex:'[0-9]'}); //[a-zA-Z0-9_] 
-    $('#main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
+    $('.main-search-bar, #second-search-bar, #input-search-map').filter_input({regex:'[^@\"\`/\(|\)/\\\\]'}); //[a-zA-Z0-9_] 
 }
 
 /* -------------------------
 END CLASSIFIED
 ----------------------------- */
 function interopSearch(keyS, nameS){
-    //var key = $(this).data("key");
-    
+    mylog.log("interopSearch");
     if(keyS == "co"){
         delete searchObject.source;
-        initCountType();
-        $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
-        $(".dropdown-price .divMoney").removeClass("hidden");
-        $(".dropdown-price .priceMax").removeClass("hidden");
-        $(".dropdown-category").removeClass("hidden");
-        $(".btn-select-category[data-keycat='training']").removeClass("hidden");
-        $(".btn-select-category[data-keycat='internship']").removeClass("hidden");
-        startSearch(searchObject.indexMin, searchObject.indexStep, searchCallback);
+        //initCountType();
+        pageCount=true;
+        searchObject.count=true;
+        searchObject.page=0;
+        $(".dropdown-sources .dropdown-toggle").removeClass("active").html(trad.datasource+" <i class='fa fa-angle-down'></i>");
+        $(".dropdown-section, .dropdown-price").show();
+        $(".btn-select-category").show();
+        startSearch(0, searchObject.indexStep, searchCallback);
     }else{
-        $(".dropdown-price .divMoney").addClass("hidden");
-        $(".dropdown-price .priceMax").addClass("hidden");
-        $(".dropdown-section").addClass("hidden");
-        $(".btn-select-category[data-keycat='training']").addClass("hidden");
-        $(".btn-select-category[data-keycat='internship']").addClass("hidden");
+        $(".dropdown-section, .dropdown-price").hide();
+        $(".btn-select-category").hide();
+        $(".keycat-joboffer").removeClass("hidden");
+        //searchObject.page=0;
+        
         searchObject.source = keyS;
         if( typeof interop == "undefined" ){
+             mylog.log("interopSearch 1");
             lazyLoad( modules.interop.assets+'/js/interop.js', null , function(data){
-                if( typeof interopObj == "undefined" ){
-                   lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
-                        nameS = interopObj[keyS].name ;
-                        $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
-                        interopObj[keyS].startSearch(searchObject.indexMin, searchObject.indexStep);
-                    } ); 
-               }else{
+                lazyLoad( modules.interop.assets+'/js/init.js', null, function(data){
                     nameS = interopObj[keyS].name ;
                     $(".dropdown-sources  .dropdown-toggle").addClass("active").html(nameS+" <i class='fa fa-angle-down'></i>");
-                    interopObj[keyS].startSearch(searchObject.indexMin, searchObject.indexStep); 
-               }
+                    interopObj[keyS].startSearch(searchObject.indexMin, searchObject.indexStep);
+                } ); 
             });
         } else {
             nameS = interopObj[keyS].name ;
@@ -586,9 +572,11 @@ function constructSearchObjectAndGetParams(){
     getStatus+="text="+searchObject.text;
   }
   if(typeof searchObject.types != "undefined" && searchObject.types.length==1 && (searchObject.initType=="all" || searchObject.initType=="news")){
+    if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.types == "undefined"){
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="types="+searchObject.types.join(",");
+    }
     searchConstruct.searchType=searchObject.types;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="types="+searchObject.types.join(",");
   }else{
     searchConstruct.searchType=searchObject.types;
   }
@@ -923,28 +911,31 @@ function customFiltersInterface(){
         events:["tags", "types"],
         news:["tags", "types"],
         classifieds:["tags", "types", "section", "category", "price", "source"]};
-    $.each(custom.menu[searchObject.initType].filters, function(e, v){
-        if(v.length > 1){
-            custom.categories=new Object;
-            custom.categories=v;
-            if(e=="types"){
-                $.each(categoriesFilters, function(i, content){
-                    if($.inArray(i, v) < 0 && i!="all")
-                        delete categoriesFilters[i];
-                });
+    if(typeof custom.menu[searchObject.initType].filters != "undefined"){
+        $.each(custom.menu[searchObject.initType].filters, function(e, v){
+            if(v.length > 1){
+                custom.categories=new Object;
+                custom.categories=v;
+                if(e=="types"){
+                    $.each(categoriesFilters, function(i, content){
+                        if($.inArray(i, v) < 0 && i!="all")
+                            delete categoriesFilters[i];
+                    });
+                }
+            }else{
+                keyfilter=e;
+                if(e=="types" && searchObject.initType!="news"){
+                    keyfilter="searchSType";
+                }
+                if(typeof searchObject.forced == "undefined") searchObject.forced=new Object;
+                searchObject.forced[keyfilter]=v[0];
+           //     console.log("keyyyy",searc)
+                searchObject[keyfilter]=(searchObject.initType=="news") ? [v[0]] : v[0];
+                delete show[searchObject.initType][e];
+                $("#filters-nav-list .dropdown-"+e).remove();
             }
-        }else{
-            keyfilter=e;
-            if(e=="types" && searchObject.initType!="news"){
-                keyfilter="searchSType";
-            }
-            if(typeof searchObject.forced == "undefined") searchObject.forced=new Object,
-            searchObject.forced[keyfilter]=v[0];
-            searchObject[keyfilter]=(searchObject.initType=="news") ? [v[0]] : v[0];
-            delete show[searchObject.initType][e];
-            $("#filters-nav-list .dropdown-"+e).remove();
-        }
-    });
+        });
+    }
     menuToShow="";
     $.each(show[searchObject.initType], function(e,v){
         menuToShow+=(menuToShow != "") ? ", .dropdown-"+v : ".dropdown-"+v;

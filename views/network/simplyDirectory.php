@@ -64,7 +64,7 @@ jQuery(document).ready(function() {
 	checkScroll();
 	var timeoutSearch = setTimeout(function(){ }, 100);
 	setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
-	mylog.log("indexStepInit", indexStepInit);
+	// // mylog.log("indexStepInit", indexStepInit);
 	bindButtonOpenForm();
 	startSearchSimply(0, indexStepInit);
 });
@@ -106,10 +106,10 @@ function initVar(){
 }
 
 function addTooltips(){
-	mylog.log("addTooltips");
+	 // mylog.log("addTooltips");
 	if(typeof networkJson.skin != "undefined" && typeof networkJson.skin.tooltips != "undefined"){
 		$.each(networkJson.skin.tooltips,function(k,v){
-			mylog.log("addTooltips", k,v);
+			 // mylog.log("addTooltips", k,v);
 			$( k ).addClass("tooltips");
 			$( k ).data( "toggle", "tooltip" );
 			$( k ).data( "placement", "bottom" );
@@ -119,14 +119,14 @@ function addTooltips(){
 }
 
 function bindNetwork(){
-	mylog.log("bindNetwork");
+	 // mylog.log("bindNetwork");
 	$('#btn-toogle-map').click(function(e){ 
 		showMapNetwork(); 
 		updateMap(); 
 	});
 	
 	$('.reset').on('click', function() {
-		mylog.log(".reset");
+		 // mylog.log(".reset");
 		$('.tagFilter').removeClass('active');
 		$(".tagFilter").removeAttr("checked");
 		$('.villeFilter').removeClass('active');
@@ -151,7 +151,7 @@ function bindNetwork(){
 	});
 
 	$("#btn-search").click(function(){
-		mylog.log("#btn-search", $("#right_tool_map").is(":visible"));
+		 // mylog.log("#btn-search", $("#right_tool_map").is(":visible"));
 		if(!$("#right_tool_map").is(":visible")){
 			$("#right_tool_map").show( 700 );
 			$("#btn-search").find("i").removeClass("fa-chevron-left").addClass("fa-chevron-right");
@@ -163,7 +163,7 @@ function bindNetwork(){
 	});
 
 	$('#btn-menu-launch').click(function(){
-		mylog.log("#btn-menu-launch", $(this).hasClass("active"));
+		 // mylog.log("#btn-menu-launch", $(this).hasClass("active"));
 		if(!$(this).hasClass("active")){
 			$(this).addClass("active");
 			$(".main-menu-left").show();
@@ -178,7 +178,7 @@ function bindNetwork(){
 	});
 
 	$(".showHideMoreTitleMap").click(function(){
-		mylog.log(".showHideMoreTitleMap");
+		 // mylog.log(".showHideMoreTitleMap");
 		if($(this).find("i").hasClass("fa-angle-down")){
 			$(".contentShortInformationMap").show("slow");
 			$(".contentTitleMap").addClass("active");	
@@ -202,14 +202,14 @@ function bindNetwork(){
 }
 
 function showMapNetwork(show){
-	mylog.log("showMapNetwork", show, isMapEnd);
-	mylog.log("typeof SIG : ", typeof Sig);
+	 // mylog.log("showMapNetwork", show, isMapEnd);
+	 // mylog.log("typeof SIG : ", typeof Sig);
 
 	if(typeof Sig == "undefined") show = false;
 
 	if( typeof show == "undefined") 
 		show = !isMapEnd;
-	mylog.log("show", show);
+	 // mylog.log("show", show);
 	if(show){
 		isMapEnd =true;
 		showNotif(false);
@@ -268,7 +268,7 @@ function showMapNetwork(show){
 }
 
 function showMenuNetwork(show){ 
-	mylog.log("showMenuNetwork", show);
+	 // mylog.log("showMenuNetwork", show);
 	if(typeof show == "undefined") 
 		show = $("#main-top-menu").css("opacity") == 1;
 	
@@ -301,7 +301,7 @@ function showMenuNetwork(show){
 }
 
 function startSearchSimply(indexMin, indexMax){
-	mylog.log("startSearchSimply", indexMin, indexMax, indexStep);
+	 // mylog.log("startSearchSimply", indexMin, indexMax, indexStep);
 	$("#listTagClientFilter").html('spiner');
 	if(loadingData) return;
 	loadingData = true;
@@ -323,7 +323,7 @@ function startSearchSimply(indexMin, indexMax){
 }
 
 function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
-	mylog.log("autoCompleteSearchSimply", name, locality, indexMin, indexMax);
+	 // mylog.log("autoCompleteSearchSimply", name, locality, indexMin, indexMax);
 	var levelCommunexionName = { 
 		1 : "INSEE",
 		2 : "CODE_POSTAL_INSEE",
@@ -337,7 +337,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 	var searchTagGlobal = [];
 	if (undefined !== nwVar.searchTag && nwVar.searchTag.length) $.merge(searchTagGlobal,nwVar.searchTag) ;
 	if (undefined !== nwVar.searchCategory && nwVar.searchCategory.length) $.unique($.merge(searchTagGlobal,nwVar.searchCategory)) ;
-	mylog.log("searchTagGlobal : "+searchTagGlobal);
+	 // mylog.log("searchTagGlobal : "+searchTagGlobal);
 
 	var searchTagsSimply = {} ;
 	if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
@@ -360,7 +360,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 		});
 	}
 
-	mylog.log("searchTagsSimply", searchTagsSimply);
+	 // mylog.log("searchTagsSimply", searchTagsSimply);
 
 	var data = {
 		"name" : name,
@@ -417,18 +417,18 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 
 
 	if( notNull(networkJson.dataSrc) ) {
-		mylog.log("networkJson.dataSrc");
+		 // mylog.log("networkJson.dataSrc");
 		$.ajax({
 			type: "POST",
 			url: baseUrl+"/" + moduleId + "/element/getdatabyurl",
 			data: { url : networkJson.dataSrc , json : false},
 			dataType: "json",
 			error: function (data){
-				mylog.log("error");
+				 // mylog.log("error");
 				mylog.dir(data);
 			},
 			success: function (data) { 
-				mylog.log("data", data);
+				 // mylog.log("data", data);
 
 				if(notNull(data.entities)){
 					var val = {
@@ -454,7 +454,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 			data: data,
 			dataType: "json",
 			error: function (data){
-				mylog.log("error");
+				 // mylog.log("error");
 				mylog.dir(data);
 			},
 			success: function(data){
@@ -466,7 +466,7 @@ function autoCompleteSearchSimply(name, locality, indexMin, indexMax){
 }
 
 function dataSuccess(data, indexMin, indexMax, locality){
-	mylog.log("dataSuccess", data, !data.res, indexMin, indexMax, locality);
+	 // mylog.log("dataSuccess", data, !data.res, indexMin, indexMax, locality);
 	if(!data.res) {
 		toastr.error(data.content); 
 	} else {
@@ -490,10 +490,10 @@ function dataSuccess(data, indexMin, indexMax, locality){
 			htmlCO2 = directory.showResultsDirectoryHtml(data.res);
 			//parcours la liste des résultats de la recherche
 			countResult=Object.keys(data.res).length;
-			mylog.log("data.res ", data.res);
+			 // mylog.log("data.res ", data.res);
 			$.each(data.res, function(i, o) {
-				mylog.log("Search ", o);
-				mylog.log("Tags element", o.tags);
+				 // mylog.log("Search ", o);
+				 // mylog.log("Tags element", o.tags);
 				mapElements.push(o);
 				contextMapNetwork.push(o);
 			}); //end each
@@ -560,7 +560,7 @@ function dataSuccess(data, indexMin, indexMax, locality){
 			} //end else (str=="")
 
 			//signal que le chargement est terminé
-			mylog.log("test");
+			 // mylog.log("test");
 			loadingData = false;
 			//quand la recherche est terminé, on remet la couleur normal du bouton search
 			$(".btn-start-search").removeClass("bg-azure");
@@ -589,7 +589,7 @@ function dataSuccess(data, indexMin, indexMax, locality){
 }
 
 function tagActivedUpdate(checked, tag, parent){
-	mylog.log("tagActivedUpdate", checked, tag, parent,tagsActived, typeof tagsActived[parent], (typeof tagsActived[parent] == "undefined"));
+	 // mylog.log("tagActivedUpdate", checked, tag, parent,tagsActived, typeof tagsActived[parent], (typeof tagsActived[parent] == "undefined"));
 	if(checked== false){
 		tagsActived[parent].splice($.inArray(tag, tagsActived[parent]),1);
 	}
@@ -617,7 +617,7 @@ function refreshResultHeader(count){
 	$("#dropdown_search_result").html(str);
 }
 function chargement(){
-	mylog.log("chargement");
+	 // mylog.log("chargement");
 	$(".searchEntityContainer").hide(700);
 	refreshResultHeader("loading");
 	setTimeout(function(){ updateMap(); }, 1000);
@@ -625,7 +625,7 @@ function chargement(){
 
 function bindAutocomplete(){
 	$(".tagFilterAuto").off().click(function(e){
-		mylog.log(".tagFilter",  $(this));
+		 // mylog.log(".tagFilter",  $(this));
 		var checked = $(this).is( ':checked' );
 		var val = $(this).attr("value");
 		tagActivedUpdate(checked, val, "tags");
@@ -642,7 +642,7 @@ function bindAutocomplete(){
 	$(".rolesFilterAuto").off().click(function(e){
 		var checked = $(this).is( ':checked' );
 		var role = $(this).attr("value");
-		mylog.log(".rolesFilterAuto", checked, role);
+		 // mylog.log(".rolesFilterAuto", checked, role);
 		rolesActivedUpdate(checked, role);
 		chargement();
 	});
@@ -651,7 +651,7 @@ function bindAutocomplete(){
 
 
 function loadFilters(){
-	mylog.log("loadFilters");
+	 // mylog.log("loadFilters");
 	var displayLimit = 10;
 	var classToHide = "";
 	var i = 0;
@@ -675,8 +675,8 @@ function loadFilters(){
 	}); 
 
 	$(".tagFilter").click(function(e){
-		mylog.log(".tagFilter",  $(this));
-		mylog.log("label :", $(this).hasClass( "active" ));
+		 // mylog.log(".tagFilter",  $(this));
+		 // mylog.log("label :", $(this).hasClass( "active" ));
 
 		var checked = false;
 		if($(this).hasClass( "active" ) == false){
@@ -689,8 +689,8 @@ function loadFilters(){
 
 		var filtre = $(this).data("filtre");
 		var parent = $(this).data("parent");
-		mylog.log("parent",parent);
-		mylog.log("filtre",filtre);
+		 // mylog.log("parent",parent);
+		 // mylog.log("filtre",filtre);
 		if(typeof networkJson.filter != "undefined" && typeof networkJson.filter.linksTag != "undefined"){
 			$.each(networkJson.filter.linksTag, function(keyNet, valueNet){
 				if(typeof valueNet.tags[filtre] != "undefined"){
@@ -711,7 +711,7 @@ function loadFilters(){
 	});
 
 	$(".villeFilter").off().click(function(e){
-		mylog.log(".villeFilter",  $(this));
+		 // mylog.log(".villeFilter",  $(this));
 		var checked = false;
 		if($(this).hasClass( "active" ) == false){
 			$(this).addClass("active");
@@ -744,7 +744,7 @@ function loadFilters(){
 
 function breadcrumGuide(level, url){
 	newLevel=$(".breadcrumAnchor").length;
-	mylog.log("breadcrumGuide", newLevel, level, url);
+	 // mylog.log("breadcrumGuide", newLevel, level, url);
 	if(level==0){
 		reverseToRepertory();
 	}
@@ -770,7 +770,7 @@ function breadcrumGuide(level, url){
 }
 
 function getAjaxFiche(url, breadcrumLevel){
-	mylog.log("getAjaxFiche Network", url, breadcrumLevel, isMapEnd);
+	 // mylog.log("getAjaxFiche Network", url, breadcrumLevel, isMapEnd);
 	$("#ficheInfoDetail").empty();
 	if(location.hash == ""){
 		history.pushState(null, "New Title", '?src='+networkParams+url);
@@ -788,13 +788,13 @@ function getAjaxFiche(url, breadcrumLevel){
 	urlHash=url;
 	pageView=false;
 	if(urlHash.indexOf("page") >= 0){
-		mylog.log("here");
+		 // mylog.log("here");
 		if(urlHash.indexOf("#@") != -1)
 			url= "/app/"+urlHash.replace( "#@","" ).replace( /\./g,"/" );
 		else
 			url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
 
-				mylog.log("url", url);
+				 // mylog.log("url", url);
 				$("#repertory").hide( 700 );
 				$(".main-menu-left").hide( 700 );
 				$("#ficheInfoDetail").show( 700 );
@@ -803,11 +803,11 @@ function getAjaxFiche(url, breadcrumLevel){
 				$.blockUI({
 					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>"+trad.currentlyloading+" ...</span></h4>"
 				});
-				mylog.log("networkParams", networkParams);
+				 // mylog.log("networkParams", networkParams);
 				
 				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
 					$.unblockUI();
-					mylog.log(contextData);
+					 // mylog.log(contextData);
 					//Construct breadcrumb
 					if(breadcrumLevel != false){
 						$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
@@ -818,14 +818,14 @@ function getAjaxFiche(url, breadcrumLevel){
 				urlHash.indexOf("news") < 0 &&
 				urlHash.indexOf("network") < 0 && 
 				urlHash.indexOf("invite") < 0 ){
-		mylog.log("here2");
+		 // mylog.log("here2");
 		pageView=true;
 		var urlSplit = "";
 		if(urlHash.indexOf("#@") != -1)
 			urlSplit=urlHash.replace( "#@","" ).split(".");
 		else
 			urlSplit=urlHash.replace( "#","" ).split(".");
-		mylog.log("urlSplit", urlSplit);
+		 // mylog.log("urlSplit", urlSplit);
 		if(typeof urlSplit == "string")
 			slug=urlSplit;
 		else
@@ -839,7 +839,7 @@ function getAjaxFiche(url, breadcrumLevel){
 		  			var urlHash="#page.type."+data.contextType+".id."+data.contextId;
 		  		}
 		  		url= "/app/"+urlHash.replace( "#","" ).replace( /\./g,"/" );
-				mylog.log("url", url);
+				 // mylog.log("url", url);
 				$("#repertory").hide( 700 );
 				$(".main-menu-left").hide( 700 );
 				$("#ficheInfoDetail").show( 700 );
@@ -848,11 +848,11 @@ function getAjaxFiche(url, breadcrumLevel){
 				$.blockUI({
 					message : "<h4 style='font-weight:300' class='text-dark padding-10'><i class='fa fa-spin fa-circle-o-notch'></i><br>"+trad.currentlyloading+" ...</span></h4>"
 				});
-				mylog.log("networkParams", networkParams);
+				 // mylog.log("networkParams", networkParams);
 				
 				getAjax('#ficheInfoDetail', baseUrl+'/'+moduleId+url+'?src='+networkParams, function(){
 					$.unblockUI();
-					mylog.log(contextData);
+					 // mylog.log(contextData);
 					//Construct breadcrumb
 					if(breadcrumLevel != false){
 						$html= '<i class="fa fa-chevron-right fa-1x text-red breadcrumChevron" style="padding: 0px 10px 0px 10px;" data-value="'+breadcrumLevel+'"></i>'+'<a href="javascript:;" onclick="breadcrumGuide('+breadcrumLevel+',\''+urlHash+'\')" class="breadcrumAnchor text-dark" data-value="'+breadcrumLevel+'">'+contextData.name+'</a>';
@@ -866,7 +866,7 @@ function getAjaxFiche(url, breadcrumLevel){
 
 
 function reverseToRepertory(){
-	mylog.log("reverseToRepertory", isMapEnd);
+	 // mylog.log("reverseToRepertory", isMapEnd);
 	if(isMapEnd)
 		showMapNetwork();
 	updateMap();
@@ -931,7 +931,7 @@ function inArrayRegex(tab,regex){
 }
 
 function cityActivedUpdate(checked, city){
-	mylog.log("cityActivedUpdate", checked, city);
+	 // mylog.log("cityActivedUpdate", checked, city);
 	if(checked== false){
 		citiesActived.splice($.inArray(city.toUpperCase(), citiesActived),1);
 	} else {
@@ -940,7 +940,7 @@ function cityActivedUpdate(checked, city){
 }
 
 function  typeActivedUpdate(checked, type){
-	mylog.log("typeActivedUpdate", checked, type);
+	 // mylog.log("typeActivedUpdate", checked, type);
 	if(checked== false){
 		typesActived.splice($.inArray(type, typesActived),1);
 	} else {
@@ -949,7 +949,7 @@ function  typeActivedUpdate(checked, type){
 }
 
 function  rolesActivedUpdate(checked, role){
-	mylog.log("rolesActivedUpdate", checked, role);
+	 // mylog.log("rolesActivedUpdate", checked, role);
 	if(checked== false){
 		rolesActived.splice($.inArray(role, rolesActived),1);
 	} else {
@@ -958,23 +958,23 @@ function  rolesActivedUpdate(checked, role){
 }
 
 function addTab(tab, tab2){
-	mylog.log("addTab", tab, tab2);
+	 // mylog.log("addTab", tab, tab2);
 	var res = [];
 	$.each(tab2, function(key2, value2){
-		mylog.log("addTab value2 ", key2, value2);
+		 // mylog.log("addTab value2 ", key2, value2);
 		$.each(tab, function(key1, value1){
-			mylog.log("addTab key1 ", key1, value1);
+			 // mylog.log("addTab key1 ", key1, value1);
 			var t = value1.slice();
 			t.push(value2);
 			res.push(t);
 		});
 	});
-	mylog.log("addTab res", res);
+	 // mylog.log("addTab res", res);
 	return res ;
 }
 
 function orAndAnd(allFiltres){
-	mylog.log("orAndAnd", allFiltres);
+	 // mylog.log("orAndAnd", allFiltres);
 	var res = [];
 	$.each(allFiltres, function(keyF, valueFiltre){
 		if(valueFiltre.length > 0){
@@ -986,12 +986,12 @@ function orAndAnd(allFiltres){
 				res = addTab(res, valueFiltre);
 		}
 	});
-	mylog.log("orAndAnd Res", res);
+	 // mylog.log("orAndAnd Res", res);
 	return res ;
 }
 
 function getAllTags(allFiltres){
-	mylog.log("getAllTags", allFiltres);
+	 // mylog.log("getAllTags", allFiltres);
 	var res = [];
 	$.each(allFiltres, function(keyF, valueFiltre){
 		if(valueFiltre.length > 0){
@@ -1000,24 +1000,24 @@ function getAllTags(allFiltres){
 			});
 		}
 	});
-	mylog.log("getAllTags Res", [res]);
+	 // mylog.log("getAllTags Res", [res]);
 	return [res] ;
 }
 
 function andAndOr(allFiltres){
-	mylog.log("andAndOr", allFiltres);
+	 // mylog.log("andAndOr", allFiltres);
 	var res = [];
 	$.each(allFiltres, function(keyF, valueFiltre){
 		if(valueFiltre.length > 0){
 			res.push(valueFiltre);
 		}
 	});
-	mylog.log("andAndOr Res", res);
+	 // mylog.log("andAndOr Res", res);
 	return res ;
 }
 
 function updateMap(){
-	mylog.log("updateMap", tagsActived, disableActived);
+	 // mylog.log("updateMap", tagsActived, disableActived);
 	$(".searchEntityContainer").hide();
 	var params = ((typeof networkJson.filter == "undefined" || typeof networkJson.filter.paramsFiltre == "undefined") ? null :  networkJson.filter.paramsFiltre);
 	var test = [];
@@ -1026,7 +1026,7 @@ function updateMap(){
 	if(typeof networkJson.request.oneElement != "undefined" && typeof networkJson.request.sourceKey != "undefined" && networkJson.request.oneElement == true){
 		
 		 elementNetwork = networkJson.request.sourceKey[0].split("@");
-		 mylog.log("elementNetwork", elementNetwork);
+		  // mylog.log("elementNetwork", elementNetwork);
 	}
 
 	if ( params != null && ( (params.conditionBlock == "and" || typeof params.conditionBlock == "undefined" ) && params.conditionTagsInBlock == "and" ) )
@@ -1040,9 +1040,9 @@ function updateMap(){
 	} else
 		test = orAndAnd(tagsActived);
 
-	mylog.log("testNetwork", test);
+	 // mylog.log("testNetwork", test);
 
-	mylog.log("searchValNetwork", searchValNetwork);
+	 // mylog.log("searchValNetwork", searchValNetwork);
 	var filteredList = [];
 	var add = false;
 	if(test.length > 0){
@@ -1052,7 +1052,7 @@ function updateMap(){
 					add = ( (verb == "and") ? and( tags, v.tags ) : or( tags, v.tags ) );
 				else
 					add= false;
-				mylog.log("configFiltre", add, disableActived, v.disabled, v.address.addressLocality, citiesActived, typesActived, rolesActived);
+				 // mylog.log("configFiltre", add, disableActived, v.disabled, v.address.addressLocality, citiesActived, typesActived, rolesActived);
 				if(	add && 
 					( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
@@ -1068,7 +1068,7 @@ function updateMap(){
 
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0  ) ) )  {
-					mylog.log("v.tags", v.tags);
+					 // mylog.log("v.tags", v.tags);
 					filteredList = addTabMap(v, filteredList);
 					$(".container_"+v.type+"_"+v.id).show();
 				}
@@ -1106,7 +1106,7 @@ function updateMap(){
 
 	countResult=filteredList.length;
 	refreshResultHeader(countResult);
-	mylog.log("filteredList", filteredList);
+	 // mylog.log("filteredList", filteredList);
 	Sig.restartMap();
 	Sig.showMapElements(Sig.map,filteredList);
 	$.unblockUI();
@@ -1119,12 +1119,12 @@ function addTabMap(element, tab){
 }
 
 function isLinks(element, id){
-	mylog.log("isLinks", element, id);
+	 // mylog.log("isLinks", element, id);
 	var res = false ;
-	mylog.log("rolesActived", rolesActived);
+	 // mylog.log("rolesActived", rolesActived);
 	if(rolesActived.length){
 		$.each(rolesActived,function(k,v){
-			mylog.log(v, element);
+			 // mylog.log(v, element);
 			if(v == "creator" && element.creator == id){
 					res = true ;
 					return true;
@@ -1149,7 +1149,7 @@ function isLinks(element, id){
 }
 
 function filterTags(tags){
-	mylog.log("filterTags", tags);
+	 // mylog.log("filterTags", tags);
 	if(typeof tags != "undefined" ){
 		str = '<div class="panel-heading">'+
 	          '<h4 class="panel-title" onclick="manageCollapse(\'tags\', \'false\')">'+
@@ -1170,7 +1170,7 @@ function filterTags(tags){
 
 
 function filterType(types){
-	mylog.log("filterType", types);
+	 // mylog.log("filterType", types);
 	if(typeof tags != "undefined" ){
 		str = '<div class="panel-heading">'+
 	          '<h4 class="panel-title" onclick="manageCollapse(\'types\', \'false\')">'+
@@ -1190,7 +1190,7 @@ function filterType(types){
 }
 
 function geoShapeCity(){
-	mylog.log("geoShapeCity");
+	 // mylog.log("geoShapeCity");
 
 	if(typeof networkJson.skin.geoShape != "undefined" && networkJson.skin.geoShape == true){
 		var data = null
@@ -1200,7 +1200,7 @@ function geoShapeCity(){
 			data = { insee : networkJson.request.searchLocalityINSEE };
 		else if(typeof networkJson.request.searchLocalityID != "undefined")
 			data = { id : networkJson.request.searchLocalityID } ;
-		mylog.log("geoShapeCity", data);
+		 // mylog.log("geoShapeCity", data);
 		if(data != null){
 			$.ajax({
 				type: "POST",

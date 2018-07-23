@@ -111,7 +111,9 @@ dynForm = {
             "preferences[publicFields]" : dyFInputs.inputHidden([]),
             "preferences[privateFields]" : dyFInputs.inputHidden([]),
             "preferences[isOpenData]" : dyFInputs.inputHidden(true),
-            "preferences[isOpenEdition]" : dyFInputs.inputHidden(true)
+            "preferences[isOpenEdition]" : dyFInputs.inputHidden(true),
+            "parentType" : dyFInputs.inputHidden(""),
+            "parentId" : dyFInputs.inputHidden(""),
 	    }
 	}
 };

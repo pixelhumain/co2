@@ -46,6 +46,7 @@ function buildListContactHtml(contacts, myId){
 							'<button id="btnFloopClose"><i class="fa fa-times"></i></button>' +
 							
 						'</div>';
+						HTML += '<i class="fa fa-search" style="padding:15px 0px 15px 11px;"></i><input type="text" id="search-contact" class="form-control" placeholder="'+trad.searchnamepostalcity+'">';
 		HTML += 		'<div class="floopScroll">' ;
 							
 						$.each(floopContactTypes, function(key, type){
@@ -100,7 +101,7 @@ function buildListContactHtml(contacts, myId){
 						'</div>'+
 					  '</div>' +
 					  '</div>';
-		HTML += '<i class="fa fa-search" style="padding:15px 0px 15px 11px;"></i><input type="text" id="search-contact" class="form-control" placeholder="'+trad.searchnamepostalcity+'">';
+		
 				
 
 		return HTML;

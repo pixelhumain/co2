@@ -28,8 +28,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 	</div>
 	<div class="open-block col-xs-12 no-padding">
 		<a href="javascript:;" class="btn-show-block col-xs-12">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGOS/CO2/logo-min.png" width="25" height="20"/> <span><?php echo Yii::t("settings", "on communecter") ?></span>
-			<span class="hover-line pull-right text-azure"><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "edit") ?> </span>
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/LOGOS/CO2/logo-min.png" width="25" height="20"/> <span><?php echo Yii::t("settings", "On COmmunecter") ?></span>
+			<span class="hover-line pull-right text-azure"><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?> </span>
 		</a>
 	</div>
 	<div class="show-block col-xs-12">
@@ -42,7 +42,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 			<input id="" type="checkbox" data-off-text=" " data-on-text=" " data-sub="confirm" checked="false" class="BSswitch">
 		</div>
 		<div class="col-xs-12 padding-5 notification-label">
-			<label><i class="fa fa-rss"></i> <?php echo Yii::t("settings", "You have a new followers") ?></label>
+			<label><i class="fa fa-rss"></i> <?php echo Yii::t("settings", "You have a new follower") ?></label>
 			<input id="" type="checkbox" data-off-text=" " data-on-text=" " data-sub="follow" checked="false" class="BSswitch">
 		</div>
 		<div class="col-xs-12 padding-5 notification-label">
@@ -54,7 +54,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 			<input id="" type="checkbox" data-off-text=" " data-on-text=" " data-sub="add" checked="false" class="BSswitch">
 		</div>
 		<div class="col-xs-12 padding-5 notification-label">
-			<label><i class="fa fa-thumbs-up"></i> <?php echo Yii::t("settings", "Activity on one of your news (Comment/Like/Unlike)") ?></label>
+			<label><i class="fa fa-thumbs-up"></i> <?php echo Yii::t("settings", "Someone reacted on your news (Comment/Like/Unlike)") ?></label>
 			<input id="" type="checkbox" data-off-text=" " data-on-text=" " data-sub="comment,like,unlike" checked="false" class="BSswitch">
 		</div>
 		<!--<div class="col-xs-12 padding-5 notification-label">
@@ -75,13 +75,13 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 	<div class="open-block col-xs-12 no-padding">
 		<a href="javascript:;" class="btn-show-block col-xs-12" data-name="mymails">
 			<i class="fa fa-envelope"></i> <span><?php echo Yii::t("settings", "Alert by mail") ?></span>
-			<span class="hover-line pull-right text-azure"><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "edit") ?> </span>
+			<span class="hover-line pull-right text-azure"><i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit") ?> </span>
 		</a>
 	</div>
 	<div class="show-block col-xs-12">
 		<span class="col-xs-12 text-center">
-			<i class="fa fa-info-circle"></i><br/><?php echo Yii::t("settings","Be free to desactivate all your notifications about activity on your user account or set it <b>by level</b>.") ?><br/>
-            <?php echo Yii::t("settings","Find <b>all options</b> linked to </b>its level</b>.<br/> Of course, <b>higher</b> level <b>includes</b> options of <b>lower</b> level of notications.") ?><br/>
+			<i class="fa fa-info-circle"></i><br/><?php echo Yii::t("settings","Be free to desactivate all your notifications about activity on your user account or set it <b>by level</b>") ?>.<br/>
+            <?php echo Yii::t("settings","Find <b>all options</b> linked to </b>its level</b>.<br/> Of course, <b>higher</b> level <b>includes</b> options of <b>lower</b> level of notifications") ?>.<br/>
 		</span>
 		<hr>
 		<div class="dropdown no-padding col-xs-12 margin-bottom-20 margin-top-20">
@@ -98,19 +98,19 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 				</li>
 				<li>
 					<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="low" data-type="<?php echo Person::COLLECTION ?>" data-id="<?php echo Yii::app()->session["userId"] ?>">
-						<h4 class="list-group-item-heading"><i class="fa fa-ban"></i> <?php echo Yii::t("settings", "Low") ?></h4>
+						<h4 class="list-group-item-heading"><i class="fa fa-thermometer-quarter"></i> <?php echo Yii::t("settings", "Low") ?></h4>
                         <p class="list-group-item-text small"><?php echo Yii::t("settings", "Get minimum of notifications by email") ?></p>
 					</a>
 				</li>
 				<li>
 					<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="default" data-type="<?php echo Person::COLLECTION ?>" data-id="<?php echo Yii::app()->session["userId"] ?>">
-						<h4 class="list-group-item-heading"><i class="fa fa-ban"></i> <?php echo Yii::t("settings", "By default") ?></h4>
+						<h4 class="list-group-item-heading"><i class="fa fa-thermometer-half"></i> <?php echo Yii::t("settings", "By default") ?></h4>
                         <p class="list-group-item-text small"><?php echo Yii::t("settings", "Basic package of notifications") ?></p>
 					</a>
 				</li>
 				<li>
 					<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="high" data-type="<?php echo Person::COLLECTION ?>" data-id="<?php echo Yii::app()->session["userId"] ?>">
-						<h4 class="list-group-item-heading"><i class="fa fa-ban"></i> <?php echo Yii::t("settings", "High") ?></h4>
+						<h4 class="list-group-item-heading"><i class="fa fa-thermometer-full"></i> <?php echo Yii::t("settings", "High") ?></h4>
                         <p class="list-group-item-text small"><?php echo Yii::t("settings", "Keep connect to all activities linked to your user account") ?></p>
 					</a>
 				</li>
@@ -123,7 +123,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
         <small>
         <i class="fa fa-envelope-o" style="width:20px;"></i> <b><?php echo Yii::t("settings","Invitation to join an organization, a project or an event")?></b><br>
         <i class="fa fa-check" style="width:20px;"></i> <b><?php echo Yii::t("settings","Confirmation to be part of an organization, a project or an event")?></b><br>
-        <i class="fa fa-comment" style="width:20px;"></i> <b><?php echo Yii::t("settings","Message for classified or ressource") ?></b><br>
+        <i class="fa fa-comment" style="width:20px;"></i> <b><?php echo Yii::t("settings","Message about one of your classified or a ressource") ?></b><br>
         </small>
         <hr>
         <h5><i class="fa fa-angle-down"></i> <?php echo Yii::t("settings", "By default")?>:</h5>
@@ -131,7 +131,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
         <i class="fa fa-newspaper-o" style="width:20px;"></i> <b><?php echo Yii::t("settings","Someone writes a news on your wall")?></b><br>
         <i class="fa fa-thumbs-up" style="width:20px;"></i> <b><?php echo Yii::t("settings","Activity on your post (comment, like, unlike)")?></b><br>
         <i class="fa fa-at" style="width:20px;"></i> <b><?php echo Yii::t("settings","Mentions of you in comments and news") ?></b><br>
-        <i class="fa fa-rss" style="width:20px;"></i> <b><?php echo Yii::t("settings","You have a new followers") ?></b><br>
+        <i class="fa fa-rss" style="width:20px;"></i> <b><?php echo Yii::t("settings","You have a new follower") ?></b><br>
         </small>
         <hr>
         <h5><i class="fa fa-angle-down"></i> <?php echo Yii::t("settings", "High")?>:</h5>

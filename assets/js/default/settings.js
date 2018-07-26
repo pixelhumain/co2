@@ -141,7 +141,7 @@ var settings = {
 		  	data: settings,
 		  	success: function(data){
 		  		if(data.result)
-					toastr.success("Notifications settings well updated");
+					toastr.success(tradSettings.notificationsSettingsSuccess);
 				else
 					toastr.error(data.msg);
 		  	},
@@ -175,8 +175,8 @@ var settings = {
 							var oldElement = isOldElement(value);
 							var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl + value.profilThumbImageUrl : assetPath + "/images/thumb/default_"+defaultImg+".png";
 							var id = (typeof value._id != "undefined" && typeof value._id.$id != "undefined") ? value._id.$id : id;
-							var setNotif = (typeof value.notifications != "undefined") ? tradLabel[value.notifications] : tradLabel["default"];
-							var setMails = (typeof value.mails != "undefined") ? tradLabel[value.mails] : tradLabel["default"];
+							var setNotif = (typeof value.notifications != "undefined") ? tradSettings[value.notifications] : tradSettings["bydefault"];
+							var setMails = (typeof value.mails != "undefined") ? tradSettings[value.mails] : tradSettings["bydefault"];
 							var elementClass = oldElement ? "oldSettingsCommunity"+type : "";
 							var elementStyle = oldElement ? "display:none" : ""; 
 							var cp = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
@@ -216,22 +216,22 @@ var settings = {
 						'<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">'+
   						'<li>'+
       						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="desactivated" data-type="'+type+'" data-id="'+id+'">'+
-      							'Desactivated'+
+      							tradSettings.desactivated+
       						'</a>'+
     					'</li>'+
     					'<li>'+
       						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="low" data-type="'+type+'" data-id="'+id+'">'+
-      							'Low'+
+      							tradSettings.low+
       						'</a>'+
     					'</li>'+
     					'<li>'+
       						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="default" data-type="'+type+'" data-id="'+id+'">'+
-      							'By default'+
+      							tradSettings.bydefault+
       						'</a>'+
     					'</li>'+
     					'<li>'+
       						'<a href="javascript:;" class="settingsCommunity" data-settings="notifications" data-value="high" data-type="'+type+'" data-id="'+id+'">'+
-      							'High'+
+      							tradSettings.high+
       						'</a>'+
     					'</li>'+
 					'</ul>'+
@@ -245,22 +245,22 @@ var settings = {
 						'<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">'+
   						'<li>'+
       						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="desactivated" data-type="'+type+'" data-id="'+id+'">'+
-      								'Desactivated'+
+      								tradSettings.desactivated+
       						'</a>'+
     					'</li>'+
     					'<li>'+
       						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="low" data-type="'+type+'" data-id="'+id+'">'+
-      							'Low'+
+      							tradSettings.low+
       						'</a>'+
     					'</li>'+
     					'<li>'+
       						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="default" data-type="'+type+'" data-id="'+id+'">'+
-      							'By default'+
+      							tradSettings.bydefault+
       						'</a>'+
     					'</li>'+
     					'<li>'+
       						'<a href="javascript:;" class="settingsCommunity" data-settings="mails" data-value="high" data-type="'+type+'" data-id="'+id+'">'+
-      							'High'+
+      							tradSettings.high+
       						'</a>'+
     					'</li>'+
 					'</ul>'+
@@ -272,7 +272,7 @@ var settings = {
 		html='<div class="col-md-6 col-sm-6 col-xs-6">'+
 				
       				'<a class="btn btn-default col-md-12 col-sm-12 col-xs-12 dropdown-settings" href="javascript:;" onclick="settings.showPanelConfidentiality(\''+type+'\',\''+id+'\',true)">'+
-      					'<i class="fa fa-cogs"></i> settings'+
+      					'<i class="fa fa-cogs"></i> '+tradSettings.settings+
       				'</a>'+
 						
         	'</div>';

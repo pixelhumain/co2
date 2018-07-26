@@ -133,6 +133,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
     bottom: 0px;
     position: fixed;
 }
+#modal-confidentiality{
+	z-index: 20000;
+}
 @media (max-width: 991px) {
  /* .open-type-filter{
         display: block;
@@ -163,24 +166,24 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 </style>
 <div id="header-settings" class="shadow2">
 	<a href='javascript:;' id="show-menu-xs" class="visible-xs visible-sm pull-left" data-placement="bottom" data-title="Menu"><i class="fa fa-bars"></i></a>
-	<h2 class="elipsis no-margin"><i class="fa fa-cogs hidden-xs"></i> <?php echo Yii::t("settings", "Settings of my accont") ?></h2>
+	<h2 class="elipsis no-margin"><i class="fa fa-cogs hidden-xs"></i> <?php echo Yii::t("settings", "My settings on {what}", array("{what}"=>Yii::app()->name)) ?></h2>
 	<a href='javascript:;' class="lbh pull-right" id="close-settings"><span><i class="fa fa-close"></i></span></a>
 </div>
 <div id="menu-left" class="col-md-3 col-sm-2 col-xs-12 shadow2">
   	<ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
 		<li class="col-xs-12 no-padding">
 			<a href="javascript:" class="link-docs-menu down-menu" data-page="notificationsAccount">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Notifications"); ?>
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Notifications"); ?>
 			</a>
 			<ul class="subMenu col-xs-12 no-padding">
 				<li class="col-xs-12 no-padding">
 					<a href="javascript:;" class="link-docs-menu" data-page="notificationsAccount">
-						<?php echo Yii::t("common","My account"); ?>
+						<?php echo Yii::t("common","Me"); ?>
 					</a>
 				</li>
 				<li class="col-xs-12 no-padding">
 					<a href="javascript:;" class="link-docs-menu" data-page="notificationsCommunity">
-						<?php echo Yii::t("docs","My community"); ?>
+						<?php echo Yii::t("common","My community"); ?>
 					</a>
 				</li>
 			</ul>
@@ -192,17 +195,17 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 		</li>-->
 		<li class="col-xs-12 no-padding">
 			<a href="javascript:" class="link-docs-menu down-menu" data-page="confidentiality">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Confidentiality"); ?>
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Confidentiality"); ?>
 			</a>
 			<ul class="subMenu col-xs-12 no-padding">
 				<li class="col-xs-12 no-padding">
 					<a href="javascript:;" class="link-docs-menu" data-page="confidentiality">
-						<?php echo Yii::t("common","My account"); ?>
+						<?php echo Yii::t("common","Me"); ?>
 					</a>
 				</li>
 				<li class="col-xs-12 no-padding">
 					<a href="javascript:;" class="link-docs-menu" data-page="confidentialityCommunity">
-						<?php echo Yii::t("docs","My community"); ?>
+						<?php echo Yii::t("common","My community"); ?>
 					</a>
 				</li>
 			</ul>

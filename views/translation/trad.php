@@ -1173,7 +1173,14 @@ var tradTags = {
 	"internet" : "<?php echo Yii::t("tags","ict"),Yii::t("tags","internet") ?>",
 	"sport" : "<?php echo Yii::t("tags","sport") ?>"
 };
-
+var tradSettings = {
+	"notificationsSettingsSuccess" : "<?php echo Yii::t("settings","Notifications settings well updated") ?>",
+	"desactivated" : "<?php echo Yii::t("settings","Desactivated") ?>",
+	"low" : "<?php echo Yii::t("settings","Low") ?>",
+	"bydefault" : "<?php echo Yii::t("settings","By default") ?>",
+	"high" : "<?php echo Yii::t("settings","High") ?>",
+	"settings" : "<?php echo Yii::t("settings","Settings") ?>",
+}; 
 var tradCountry = {
 	"BE":"Belgique", 
     "FR":"France",

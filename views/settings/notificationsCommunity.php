@@ -19,7 +19,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
     		<h4 class="title"><i class="fa fa-bell"></i> <?php echo Yii::t("settings", "Settings on your community's notifications") ?></h4>
     	</div>
     	<div id="settingsScrollByType" class="pull-left"></div>
-    		<a href="javascript:;" id="btnSettingsInfos" class="text-dark pull-right margin-right-20"><i class="fa fa-info-circle"></i> <span class="hidden-xs"> All infos</span></a>
+    		<a href="javascript:;" id="btnSettingsInfos" class="text-dark pull-right margin-right-20"><i class="fa fa-info-circle"></i> <span class="hidden-xs"> <?php echo Yii::t("common", "All informations") ?></span></a>
     	<input type="text" id="search-in-settings" class="form-control" placeholder="<?php echo Yii::t("common","Search name, slug, postal code, city ...") ?>">
     </div>
     <div id="community-settings-list"></div>
@@ -34,11 +34,11 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
             <div class="modal-body center text-dark">
                 <h5 class="no-margin uppercase"><i class="fa fa-cogs"></i> <?php echo Yii::t("settings","You will set parameters of notifications you received about <b>activity on elements that you are connected : organizations, projects and events</b>")?></h5><br/>
                 <span class="no-margin">
-                    <b><?php echo Yii::t("settings", "Notifications") ?>:</b> <small><?php echo Yii::t("settings", "Alerts you receive inside communecter") ?></small><br/>
-                    <b><?php echo Yii::t("settings", "Mails") ?>:</b> <small><?php echo Yii::t("settings", "Alerts you received on your email adress") ?></small><br/> 
+                    <b><?php echo Yii::t("common", "Notifications") ?>:</b> <small><?php echo Yii::t("settings", "Alerts you receive inside communecter") ?></small><br/>
+                    <b><?php echo Yii::t("common", "Mails") ?>:</b> <small><?php echo Yii::t("settings", "Alerts you received on your email adress") ?></small><br/> 
                     <hr/>
-                    <i class="fa fa-check"></i> <?php echo Yii::t("settings","Be free to desactivate all your notifications or set it <b>by level</b>.") ?><br/>
-                    <i class="fa fa-check"></i> <?php echo Yii::t("settings","Find <b>all options</b> linked to </b>its level</b>.<br/> Of course, <b>higher</b> level <b>includes</b> options of <b>lower</b> level of notications.") ?><br/>
+                    <i class="fa fa-check"></i> <?php echo Yii::t("settings","Be free to desactivate all your notifications or set it <b>by level</b>") ?>.<br/>
+                    <i class="fa fa-check"></i> <?php echo Yii::t("settings","Find <b>all options</b> linked to </b>its level</b>.<br/> Of course, <b>higher</b> level <b>includes</b> options of <b>lower</b> level of notifications") ?><br/>
                     <i class="fa fa-check"></i> <?php echo Yii::t("settings","Some options are only done for administrator of the community and will be indicated in the following list by <b>a status 'only admin'</b>") ?><br/>
                 </span>
                 <hr>

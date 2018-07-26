@@ -37,6 +37,10 @@
 						<?php if ($type!=Person::COLLECTION){ ?>
 							<strong><i class="fa fa-group"></i> <?php echo Yii::t("common","Open Edition") ;?></strong> : 
 							<?php echo Yii::t("common","All users can participed / modified the informations."); ?><br/><br/>
+							<?php if ($type!=Organization::COLLECTION){ ?>
+							<strong><i class="fa fa-lock"></i> <?php echo Yii::t("common","Private") ;?></strong> : 
+							<?php echo Yii::t("common","Only community can access to this page and see its informations."); ?><br/><br/>
+						<?php } ?>
 						<?php } ?>
 					</div>
 				</div>
@@ -135,6 +139,19 @@
 									<i class="fa fa-user-secret"></i> <?php echo Yii::t("common","No"); ?></button>
 							</div>
 						</div>
+						<?php if($type != Organization::COLLECTION){ ?> 
+							<div class="col-sm-4 col-xs-4 text-right padding-10 margin-top-10">
+								<i class="fa fa-message"></i> <strong><?php echo Yii::t("common","Private") ;?> :</strong>
+							</div>
+							<div class="col-sm-8 col-xs-8 text-left padding-10">
+								<div class="btn-group btn-group-private inline-block">
+									<button class="btn btn-default confidentialitySettings" type="private" value="true">
+										<i class="fa fa-group"></i> <?php echo Yii::t("common","Yes"); ?></button>
+									<button class="btn btn-default confidentialitySettings" type="private" value="false">
+										<i class="fa fa-user-secret"></i> <?php echo Yii::t("common","No"); ?></button>
+								</div>
+							</div>
+						<?php } ?>
 					<?php } ?>
 				</div>
 			</div>
@@ -156,7 +173,7 @@ var contextId='<?php echo @$id ?>';
 var contextType='<?php echo @$type ?>';
 var typePreferences=["privateFields", "publicFields"];
 var nameFields=["email", "locality", "phone", "directory", "birthDate"];
-var typePreferencesBool = ["isOpenData", "isOpenEdition"];
+var typePreferencesBool = ["isOpenData", "isOpenEdition", "private"];
 console.log("preferences",preferences);
 jQuery(document).ready(function() {
 	settings.bindButtonConfidentiality(preferences);

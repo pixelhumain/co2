@@ -379,17 +379,17 @@ function modifyNews(idNews,typeNews){
 
 	var boxComment = bootbox.dialog({
 	  message: message,
-	  title: 'Modifier votre publication',
+	  title: trad.updatethepost,
 	  buttons: {
 	  	annuler: {
-	      label: "Annuler",
+	      label: trad.cancel,
 	      className: "btn-default",
 	      callback: function() {
 	        mylog.log("Annuler");
 	      }
 	    },
 	    enregistrer: {
-	      label: "Enregistrer",
+	      label: trad.save,
 	      className: "btn-success",
 	      callback: function() {
 	      	heightCurrent=$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").height();

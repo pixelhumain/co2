@@ -19,7 +19,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
     		<h4 class="title"><i class="fa fa-bell"></i> <?php echo Yii::t("settings", "Settings on your community's notifications") ?></h4>
     	</div>
     	<div id="settingsScrollByType" class="pull-left"></div>
-    		<a href="javascript:;" id="btnSettingsInfos" class="text-dark pull-right margin-right-20"><i class="fa fa-info-circle"></i> <span class="hidden-xs"> <?php echo Yii::t("common", "All informations") ?></span></a>
+    		<a href="javascript:;" id="btnSettingsInfos" class="text-dark pull-right margin-right-20"><i class="fa fa-info-circle"></i> <span class="hidden-xs"> <?php echo Yii::t("common", "Infos") ?></span></a>
     	<input type="text" id="search-in-settings" class="form-control" placeholder="<?php echo Yii::t("common","Search name, slug, postal code, city ...") ?>">
     </div>
     <div id="community-settings-list"></div>

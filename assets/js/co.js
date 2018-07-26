@@ -2496,9 +2496,9 @@ var mentionsInit = {
 											name: value.name, 
 											type: value.type
 										}); 
-										//if(typeof(findInLocal) == "undefined"){
-										//	mentionsContact.push(object);
-										//}
+										if(typeof(findInLocal) == "undefined"){
+											mentionsContact.push(object);
+										}
 							 	//		}
 					        	//}
 					        	});

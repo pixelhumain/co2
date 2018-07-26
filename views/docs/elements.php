@@ -16,7 +16,7 @@ $this->renderPartial("../docs/assets");
                             <span class="text-orange">événements</span>',
                           "description" => "Communecter s'appuie sur quatres éléments pour mettre en lumière ceux qui imaginent, organisent et mettent en place les solutions de demain ...",
 )); ?>
-
+<!--<iframe name='embed_readwrite' src='https://framaslides.org/share/5ac4c4777a3f25.25464680?showControls=true' showControls allowfullscreen width=600 height=400></iframe>-->
 <div id="docCarousel" class="carousel slide" data-ride="carousel">
   <!-- Indicators -->
   <ol class="carousel-indicators">

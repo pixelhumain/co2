@@ -516,6 +516,7 @@ var trad = {
 	"notfoundlaunchinvite":"<?php echo Yii::t("invite","Not found ? Launch an invitation to join your network") ?>",
 	"bealertofnewitems":"<?php echo Yii::t("common","Be alerted of new items") ?>",
 	"alert":"<?php echo Yii::t("common","Alert") ?>",
+	"updatethepost":"<?php echo Yii::t("common","Update the post") ?>",
 };
 
 var tradDynForm = {

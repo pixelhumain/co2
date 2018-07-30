@@ -28,6 +28,7 @@ var disableActived = false;
 var citiesActived = [] ;
 var typesActived = [] ;
 var rolesActived = [] ;
+var classifiedsActived = [] ;
 var searchValNetwork = "";
 
 var loadingData = false;
@@ -146,6 +147,7 @@ function bindNetwork(){
 		}
 		typesActived = [] ;
 		rolesActived = [] ;
+		classifiedsActived = [] ;
 		searchValNetwork = "";
 		chargement();
 	});
@@ -617,7 +619,6 @@ function refreshResultHeader(count){
 	$("#dropdown_search_result").html(str);
 }
 function chargement(){
-	 // mylog.log("chargement");
 	$(".searchEntityContainer").hide(700);
 	refreshResultHeader("loading");
 	setTimeout(function(){ updateMap(); }, 1000);
@@ -644,6 +645,20 @@ function bindAutocomplete(){
 		var role = $(this).attr("value");
 		 // mylog.log(".rolesFilterAuto", checked, role);
 		rolesActivedUpdate(checked, role);
+		chargement();
+	});
+
+	$(".classifiedsFilterAuto").off().click(function(e){
+		var checked = false ;
+		if($(this).hasClass( "active" ) == false){
+			$(this).addClass("active");
+			checked = true;
+		}else{
+			$(this).removeClass("active");
+		}
+		var role = $(this).data("filtre");
+		mylog.log(".classifiedsFilterAuto", checked, role);
+		classifiedsActivedUpdate(checked, role);
 		chargement();
 	});
 }
@@ -957,6 +972,15 @@ function  rolesActivedUpdate(checked, role){
 	}
 }
 
+function  classifiedsActivedUpdate(checked, role){
+	 // mylog.log("rolesActivedUpdate", checked, role);
+	if(checked== false){
+		classifiedsActived.splice($.inArray(role, classifiedsActived),1);
+	} else {
+		classifiedsActived.push(role);
+	}
+}
+
 function addTab(tab, tab2){
 	 // mylog.log("addTab", tab, tab2);
 	var res = [];
@@ -1017,7 +1041,7 @@ function andAndOr(allFiltres){
 }
 
 function updateMap(){
-	 // mylog.log("updateMap", tagsActived, disableActived);
+	mylog.log("updateMap", tagsActived, disableActived, classifiedsActived, classifiedsActived.length);
 	$(".searchEntityContainer").hide();
 	var params = ((typeof networkJson.filter == "undefined" || typeof networkJson.filter.paramsFiltre == "undefined") ? null :  networkJson.filter.paramsFiltre);
 	var test = [];
@@ -1040,7 +1064,7 @@ function updateMap(){
 	} else
 		test = orAndAnd(tagsActived);
 
-	 // mylog.log("testNetwork", test);
+	mylog.log("updateMap testNetwork", test);
 
 	 // mylog.log("searchValNetwork", searchValNetwork);
 	var filteredList = [];
@@ -1066,6 +1090,9 @@ function updateMap(){
 					( rolesActived.length == 0  || 
 						(isLinks(v, elementNetwork[0]) ) ) && 
 
+					( classifiedsActived.length == 0  || 
+						(isClassifiedsActived(v, elementNetwork[0]) ) ) && 
+
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0  ) ) )  {
 					 // mylog.log("v.tags", v.tags);
@@ -1076,7 +1103,7 @@ function updateMap(){
 		});
 	}else{
 		if( disableActived == true || citiesActived.length > 0 || 
-			typesActived.length > 0 || rolesActived.length > 0 || 
+			typesActived.length > 0 || rolesActived.length > 0 || classifiedsActived.length > 0 || 
 			searchValNetwork.length > 0)  {
 			$.each(contextMapNetwork,function(k,v){
 				if(	( 	disableActived == false || 
@@ -1089,7 +1116,10 @@ function updateMap(){
 						(	typeof v.typeSig != "undefined" && 
 							$.inArray( v.typeSig, typesActived ) >= 0  ) ) &&
 					( rolesActived.length == 0  || 
-						(isLinks(v, elementNetwork[0]) ) )  && 
+						(isLinks(v, elementNetwork[0]) ) )  &&
+
+					( classifiedsActived.length == 0  || 
+						(isClassifiedsActived(v, elementNetwork[0]) ) ) && 
 
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0 ) ) ) {
@@ -1142,6 +1172,22 @@ function isLinks(element, id){
 						typeof element.links[ v ][id] != "undefined" ){
 				res = true ;
 				return true;
+			}
+		});
+	}
+	return res ;
+}
+
+function isClassifiedsActived(element, id){
+	mylog.log("isClassifiedsActived", element, id);
+	var res = false ;
+
+	if(classifiedsActived.length){
+		$.each(classifiedsActived,function(k,v){
+			 // mylog.log(v, element);
+			if(v == element.typeClassified ){
+					res = true ;
+					return true;
 			}
 		});
 	}

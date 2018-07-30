@@ -90,21 +90,25 @@
 
 				if ($type == Event::COLLECTION ){ 
 					$inviteLink = "people";
-					$inviteText =  Yii::t("common","Invite people") ;			
+					$inviteText =  Yii::t("common","Invite people") ;
+					$urlLink = "#element.invite.type.".Event::COLLECTION.".id.".(string)$element["_id"];		
 				}else if ($type == Organization::COLLECTION) { 
 					$inviteLink = "members";
 					$inviteText =  Yii::t("common",'Invite members') ;
+					$urlLink = "#element.invite.type.".Organization::COLLECTION.".id.".(string)$element["_id"];
 				}else if ($type == Project::COLLECTION ){ 
 					$inviteLink = "contributors";
 					$inviteText =  Yii::t("common",'Invite contributors') ;
+					$urlLink = "#element.invite.type.".Project::COLLECTION.".id.".(string)$element["_id"];
 				}else if ($type == Person::COLLECTION) { 
 					$inviteLink = "people";
 					$inviteText =  Yii::t("common",'Invite people') ;
 					$modalTarget = "#invite-modal-element";
+					$urlLink = "#element.invite.type.".Person::COLLECTION.".id.".(string)$element["_id"];
 				}
 
 				//$urlLink = "#element.invite.type.".$type.".id.".(string)$element["_id"] ;
-				$urlLink = "#element.invite.type.forms.id.5b27a1e35a7c00d4d97509d0";
+				
 				$modalTarget = "#modal-invite";
 				$whereConnect="";
 				if($type!=Person::COLLECTION)

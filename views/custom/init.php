@@ -4,7 +4,7 @@
 
 if( @$_GET["el"] || @$custom )
 { 
-
+    $urel = (@$custom) ? @$custom : @$_GET["el"];
     //Yii::app()->session['custom']=null;
     //if( !@Yii::app()->session['custom'])
     //{
@@ -51,13 +51,18 @@ if( @$_GET["el"] || @$custom )
                 $c = array( "id"   => (string) $el["_id"],
                            "type" => $stum[0],
                            "title"=> $el["name"],
-                           "url"=> "/custom?el=".$_GET["el"] );
+                           "url"=> "/custom?el=".$urel );
                 
                 if(@$el["custom"])
                     $c = array_merge( $c , $el["custom"] );
 
+                if (@$el["custom"]["module"]) 
+                    $c["assetsUrl"] = Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true);
+
                 if (@$el["custom"]["logo"]) 
                     $c["logo"] = Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true).$el["custom"]["logo"];
+                else if (@$el["custom"]["banner"]) 
+                    $c["banner"] = Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true).$el["custom"]["banner"];
                 else if( @$el["profilImageUrl"] ) {
                     $c["logo"] = $el["profilImageUrl"];
                     $el["custom"]["logo"]=$el["profilImageUrl"];
@@ -88,9 +93,9 @@ if( @Yii::app()->session['custom'] ){  ?>
             $(".topLogoAnim").remove();
             $(".logo-menutop, .logoLoginRegister").attr({'src':custom.logo});
         }
-        if( typeof custom != "undefined" && custom.type == "cities" ){
-            setOpenBreadCrum({'cities': custom.id }, true);
-        }
+        if( typeof custom != "undefined" && custom.type == "cities" )
+            setOpenBreadCrum({'cities': custom.id });
+
     };
     custom.initMenu = function(where){
         if(typeof custom.menu != "undefined"){
@@ -149,6 +154,7 @@ if( @Yii::app()->session['custom'] ){  ?>
                 'Vous allez être redirigé vers la page d\'accueil'+
               '</span>'
         };
+//alert("<?php echo $stum[0]."|".$stum[1] ?>");        
 </script>
     <?php } 
     }

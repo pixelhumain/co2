@@ -23,7 +23,9 @@
 * Tags
 
 * Elements
-[ ] comptabiliser le temps + type 
+[ ] faire une taille originale des pages minimale (juste logo, baniere ) genre carte de visite , pour ceux qui n'ont pas de contenu et avoir un btn + panels activer des fonctions sur ma page, il s auraient alors des états (emoticone) en fonction de leur activité : asleep | awake | active | hyperactive | megaConnector...
+[ ] sur les page custom ou .co, avoir un btn "make this my homepage" sur un slug ou un ?el= , qui aura pour effet de remplacer #page.type..... par le design du custom
+[ ] OCECO : comptabiliser le temps + type 
 [ ] ecrire noir sur blanc les regles de remuneration de chaque 
 [ ] ecrire la doc de fonctionnement 
   [ ] a quoi ca peut servir 
@@ -41,6 +43,9 @@
       [ ] build as you complete the info
       [ ] create dashbord design monrep , mode browsing > convert flood to dash design 
       [ ] 2 modes selector or browsing
+  ** dynsurvey 
+    * dynSurvey no DB 100% json
+
   ** Person 
   [ ] citoyen recoltant
   [ ] pouvoir supprimer son compte
@@ -81,6 +86,8 @@
     [ ] import from diigo, bookmarks or delicious
     [ ] btn add to my favorites 
     [ ] bookmarklet like diigo 
+* bookmark 
+  [ ] une news qui a un lien serait copié en bookmark le text = descrition, lien , titre du lien , tags 
 
 * City 
 [ ] faire des appels a projets 
@@ -191,6 +198,29 @@
 * Dongles 
 [ ] contribution par mail : https://www.diigo.com/tools/post_by_email
 [ ] plugin Chrome plugguer avec dynform et l'api pour partage rapide et viral a la diigo 
+
+* COstumizer 
+      dynSurvey step by step creting a custom interface 
+
+* Discuss and connect
+  * follow Mails  
+    start a talk 
+    can be an email with a list of participants 
+    if discuss@co.tools is part of the discussion 
+    a visualisation of the community ,
+    of the discusion is made in a new way 
+    states according to labels help filtering data 
+    a timeline to see things differently 
+
+    can even become a mail reader interface 
+    - with labeling / tagging / classification 
+    - 
+    to connect something forward mail to follow@co.tools
+      creates a thread 
+      connected to the account of the senders mail
+      and first line can have some colang information 
+      ex @openAtlas connects the follow to an element and it's community
+      or best would even be openAtlas@follow.co.tools
 
 
 

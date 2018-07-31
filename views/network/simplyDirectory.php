@@ -30,6 +30,8 @@ var typesActived = [] ;
 var rolesActived = [] ;
 var classifiedsActived = [] ;
 var searchValNetwork = "";
+var startDate = "" ;
+var endDate = "" ;
 
 var loadingData = false;
 var mapElements = new Array();
@@ -661,6 +663,24 @@ function bindAutocomplete(){
 		classifiedsActivedUpdate(checked, role);
 		chargement();
 	});
+
+	$("#dateStartFiltre").change(function(){
+		if($(this).val() == ""){
+			startDate = "";	
+		}else{
+			startDate = moment($(this).val(), "DD/MM/YYYY hh:mm").format();
+		}
+		chargement();
+	});
+
+	$("#dateEndFiltre").change(function(){
+		if($(this).val() == ""){
+			endDate = "";	
+		}else{
+			endDate = moment($(this).val(), "DD/MM/YYYY hh:mm").format();
+		}
+		chargement();
+	});
 }
 
 
@@ -1040,6 +1060,29 @@ function andAndOr(allFiltres){
 	return res ;
 }
 
+function dateIsGood(event){
+	var res = false;
+	var before = false;
+	var after = false;
+	if(startDate != "" ){
+		//startDate = moment($("#dateStartFiltre").val(), "DD/MM/YYYY hh:mm").format();
+		after = moment(event.startDate).isSameOrAfter(startDate);
+		mylog.log("dateIsGood", event.startDate, startDate, moment(event.startDate).isSameOrAfter(startDate), moment(event.startDate).isSameOrBefore(endDate));
+	}else
+		after = true;
+
+	if( endDate != ""){
+		//endDate = moment($("#dateEndFiltre").val(), "DD/MM/YYYY hh:mm").format();
+		before = moment(event.endDate).isSameOrBefore(endDate);
+	}else
+		before = true;
+
+	res = (after == true && before == true) ? true : false ;
+	return res ;
+}
+
+
+
 function updateMap(){
 	mylog.log("updateMap", tagsActived, disableActived, classifiedsActived, classifiedsActived.length);
 	$(".searchEntityContainer").hide();
@@ -1091,7 +1134,10 @@ function updateMap(){
 						(isLinks(v, elementNetwork[0]) ) ) && 
 
 					( classifiedsActived.length == 0  || 
-						(isClassifiedsActived(v, elementNetwork[0]) ) ) && 
+						(isClassifiedsActived(v, elementNetwork[0]) ) ) &&
+
+					( v.type != "events"  || 
+						( (v.type == "events" && dateIsGood(v) ) ) ) && 
 
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0  ) ) )  {
@@ -1104,6 +1150,7 @@ function updateMap(){
 	}else{
 		if( disableActived == true || citiesActived.length > 0 || 
 			typesActived.length > 0 || rolesActived.length > 0 || classifiedsActived.length > 0 || 
+			startDate != "" || endDate != "" ||
 			searchValNetwork.length > 0)  {
 			$.each(contextMapNetwork,function(k,v){
 				if(	( 	disableActived == false || 
@@ -1119,7 +1166,10 @@ function updateMap(){
 						(isLinks(v, elementNetwork[0]) ) )  &&
 
 					( classifiedsActived.length == 0  || 
-						(isClassifiedsActived(v, elementNetwork[0]) ) ) && 
+						(isClassifiedsActived(v, elementNetwork[0]) ) ) &&
+
+					( v.type != "events"  || 
+						( (v.type == "events" && dateIsGood(v) ) ) ) && 
 
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0 ) ) ) {

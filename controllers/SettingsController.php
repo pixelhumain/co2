@@ -44,7 +44,8 @@ class SettingsController extends CommunecterController {
  	}
  	public function actionIndex($page=null){
  		$params=array(
- 			"page"=>@$page
+ 			"page"=>@$page,
+ 			"to"=>@$_GET["slug"]
  			);
      	echo $this->renderPartial("index", $params,true);
 	}

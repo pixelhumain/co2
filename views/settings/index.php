@@ -216,6 +216,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 </div>
 <script type="text/javascript">
 var page="<?php echo @$page ?>";
+var searchInCommunity="<?php echo @$to ?>";
 var initUrlSettings=urlBackHistory;
 jQuery(document).ready(function() {
 	//hide basic loader on searching view 

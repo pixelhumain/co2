@@ -544,7 +544,10 @@
 				            </li>
 				            <li class="text-left">
 				            	<!--id="btn-preferences-notifications"-->
-				               	<a href="#settings" class="lbh bg-white">
+				            	<?php if(in_array($type, [Project::COLLECTION, Organization::COLLECTION, Event::COLLECTION]))
+				            		$urlTo=".page.notificationsCommunity?slug=".$element["slug"];
+				            	?>
+				               	<a href="#settings<?php echo @$urlTo ?>" class="lbh bg-white">
 				                    <i class="fa fa-check"></i> <?php echo Yii::t("common", "Notifications preferences"); ?>
 				                </a>
 				            </li>

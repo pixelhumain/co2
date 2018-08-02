@@ -4,69 +4,62 @@
 
 if( @$_GET["el"] || @$custom )
 { 
+    $stum = (@$custom) ?  explode(".",  $custom ) : explode(".",  $_GET["el"] );
+    $el = null;
+    $c = null;
+    if($stum[0]=="city") {
+        $el = City::getByInsee($stum[1]);
+        $c = array( "id"   => (string) $el["_id"],
+                                               "type" => City::COLLECTION,
+                                               "url" => "/custom?el=".$_GET["el"],
+                                               "title"=> "Le port"
+                                        );
+        if(@$el["custom"])
+            $c = array_merge( $c , $el["custom"] );
 
-    //Yii::app()->session['custom']=null;
-    //if( !@Yii::app()->session['custom'])
-    //{
-        $stum = (@$custom) ?  explode(".",  $custom ) : explode(".",  $_GET["el"] );
-        //if( Element::getModelByType( $stum[0] ) ){
-            $el = null;
-            $c = null;
-            if($stum[0]=="city") {
-                $el = City::getByInsee($stum[1]);
-                $c = array( "id"   => (string) $el["_id"],
-                                                       "type" => City::COLLECTION,
-                                                       "url" => "/custom?el=".$_GET["el"],
-                                                       "title"=> "Le port"
-                                                );
-                if(@$el["custom"])
-                    $c = array_merge( $c , $el["custom"] );
+        if(@$el["custom"]["logo"]) {
+            $el["custom"]["logo"]= Yii::app()->getModule("eco")->getAssetsUrl(true).$el["custom"]["logo"];
+        
+            $c["logo"] = substr($el["custom"]["logo"], strpos($el["custom"]["logo"], '/assets'), strlen($el["custom"]["logo"]));
+        }
+    }
+    else if( @$stum[1] == "cte" ){
+        $el = PHDB::findOne( $stum[0], array("id"=>$stum[1]) );
+        $c = array( 
+            "id"   => (string) $el["_id"],
+            "type" => Form::COLLECTION,
+            "url" => "/survey/co/index/id/cte",
+            "title"=> $el["title"] );
+        if(@$el["custom"])
+            $c = array_merge( $c , $el["custom"] );
 
-                if(@$el["custom"]["logo"]) {
-                    $el["custom"]["logo"]= Yii::app()->getModule("eco")->getAssetsUrl(true).$el["custom"]["logo"];
-                
-                    $c["logo"] = substr($el["custom"]["logo"], strpos($el["custom"]["logo"], '/assets'), strlen($el["custom"]["logo"]));
-                }
-            }
-            else if( @$stum[1] == "cte" ){
-                $el = PHDB::findOne( $stum[0], array("id"=>$stum[1]) );
-                $c = array( 
-                    "id"   => (string) $el["_id"],
-                    "type" => Form::COLLECTION,
-                    "url" => "/survey/co/index/id/cte",
-                    "title"=> $el["title"] );
-                if(@$el["custom"])
-                    $c = array_merge( $c , $el["custom"] );
+        if(@$el["custom"]["logo"]){ 
+            $c["logo"]=Yii::app()->getModule("survey")->getAssetsUrl(true).$el["custom"]["logo"];
+        }
+    }
+    else {
+        if($stum[0] == "o")
+            $stum[0] = Organization::COLLECTION;
+        $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
+        
+        $c = array( "id"   => (string) $el["_id"],
+                   "type" => $stum[0],
+                   "title"=> $el["name"],
+                   "url"=> "/custom?el=".$_GET["el"] );
+        
+        if(@$el["custom"])
+            $c = array_merge( $c , $el["custom"] );
 
-                if(@$el["custom"]["logo"]){ 
-                    //$el["custom"]["logo"]= 
-                    $c["logo"]=Yii::app()->getModule("survey")->getAssetsUrl(true).$el["custom"]["logo"];
-                }
-            }
-            else {
-                if($stum[0] == "o")
-                    $stum[0] = Organization::COLLECTION;
-                $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
-                
-                $c = array( "id"   => (string) $el["_id"],
-                           "type" => $stum[0],
-                           "title"=> $el["name"],
-                           "url"=> "/custom?el=".$_GET["el"] );
-                
-                if(@$el["custom"])
-                    $c = array_merge( $c , $el["custom"] );
+        if (@$el["custom"]["logo"]) 
+            $c["logo"] = Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true).$el["custom"]["logo"];
+        else if( @$el["profilImageUrl"] ) {
+            $c["logo"] = $el["profilImageUrl"];
+            $el["custom"]["logo"]=$el["profilImageUrl"];
+        }
+    }
 
-                if (@$el["custom"]["logo"]) 
-                    $c["logo"] = Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true).$el["custom"]["logo"];
-                else if( @$el["profilImageUrl"] ) {
-                    $c["logo"] = $el["profilImageUrl"];
-                    $el["custom"]["logo"]=$el["profilImageUrl"];
-                }
-            }
-
-            Yii::app()->session['custom'] = $c;
+    Yii::app()->session['custom'] = $c;
             
-    //}
 } else {
     Yii::app()->session["custom"] = null; 
     //delete custom; ?>
@@ -76,13 +69,6 @@ if( @Yii::app()->session['custom'] ){  ?>
 
 <script type="text/javascript">
     var custom = <?php echo json_encode(Yii::app()->session['custom']) ?>;
-     <?php if(@Yii::app()->session['custom']['menu']){ ?>
-       // custom.menu=<?php echo json_encode(Yii::app()->session['custom']['menu']) ?>;
-    <?php } ?>
-    <?php if(@Yii::app()->session['custom']['menuTop']){ ?>
-        //custom.menuTop=<?php echo json_encode(Yii::app()->session['custom']['menuTop']) ?>;
-    <?php } ?>
-   
     custom.init = function(where){
         if(custom.logo){
             $(".topLogoAnim").remove();
@@ -149,7 +135,8 @@ if( @Yii::app()->session['custom'] ){  ?>
                 'Vous allez être redirigé vers la page d\'accueil'+
               '</span>'
         };
+    <?php } ?>
 </script>
-    <?php } 
+<?php
     }
 ?>

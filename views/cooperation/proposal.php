@@ -363,7 +363,7 @@
 	
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
 		<?php if(@$proposal["description"]){ ?>
-		<div class=" col-xs-12" id="container-text-proposal" 
+		<div class=" col-xs-12 ws-pre-line" id="container-text-proposal" 
 			 style="padding:15px!important; background-color: #eee;" ><?php echo @$proposal["description"]; ?></div>
 		<?php } ?>
 		<div class="col-xs-12">	

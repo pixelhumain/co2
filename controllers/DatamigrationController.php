@@ -4760,6 +4760,22 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 		//Rest::json($res); exit;
 	}
+
+	public function actionRemoveLevel3Mising() {
+		$nbUser = 0;
+		$city = PHDB::find(City::COLLECTION, 
+							array("level3" => array('$exists' => 1), "level3Name" => array('$exists' => 0)));
+
+		foreach ($city as $key => $value){
+			echo $key." ".$value["name"]." <br/> ";
+			$nbUser++;
+			PHDB::update(City::COLLECTION, 
+						  	array("_id"=>new MongoId($key)),
+	                        array(	'$unset' => array( "level3"=> "")));
+
+		}
+		echo $nbUser;
+	}
 		
 }
 

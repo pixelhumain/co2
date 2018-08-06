@@ -1066,17 +1066,19 @@ function dateIsGood(event){
 	var after = false;
 	if(startDate != "" ){
 		//startDate = moment($("#dateStartFiltre").val(), "DD/MM/YYYY hh:mm").format();
-		after = moment(event.startDate).isSameOrAfter(startDate);
-		mylog.log("dateIsGood", event.startDate, startDate, moment(event.startDate).isSameOrAfter(startDate), moment(event.startDate).isSameOrBefore(endDate));
+		after = moment(startDate).isSameOrAfter(event.startDate);
+		mylog.log("dateIsGood startDate", event.startDate, startDate, moment(startDate).isSameOrAfter(event.startDate) );
 	}else
 		after = true;
 
 	if( endDate != ""){
 		//endDate = moment($("#dateEndFiltre").val(), "DD/MM/YYYY hh:mm").format();
+		//before = moment(endDate).isSameOrBefore(event.endDate);
 		before = moment(event.endDate).isSameOrBefore(endDate);
+		mylog.log("dateIsGood endDate", event.endDate, endDate, moment(event.endDate).isSameOrBefore(endDate), moment(endDate).isSameOrBefore(event.endDate));
 	}else
 		before = true;
-
+	mylog.log("dateIsGood after before", after, before );
 	res = (after == true && before == true) ? true : false ;
 	return res ;
 }

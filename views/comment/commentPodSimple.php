@@ -78,6 +78,7 @@
     	font-size: 14px !important;
 	}
 </style>
+<!-- /////////////////////////// QUESTION FROM BOUBOULE : IS STILL USED @Tango ? //////////////////////////// -->
 <?php if($contextType == "actionRooms"){ ?>
 <div class='row'>
 	<?php 
@@ -109,7 +110,7 @@
     ?>
 </div>
 <?php } ?>
-
+<!-- /////////////////////////// END QUESTION //////////////////////////// -->
 
 <div class="footer-comments row">
 
@@ -191,9 +192,9 @@
 								<span class="text-comment text-left pull-left <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>"><?php echo $comment["text"]; ?></span>
 							</span><br>
 							<small class="bold">
-							<?php if(isset(Yii::app()->session["userId"]) && !@$comment["rating"]){ ?>
-								 
-								<?php if(@$canComment){ ?>
+							<?php if(@Yii::app()->session["userId"] && !@$comment["rating"]){ ?>
+								 <div class="col-md-12 pull-left no-padding" id="footer-comments-<?php echo @(string)$comment["_id"]; ?>"></div>
+								<?php /*if(@$canComment){ ?>
 								<?php 
 									$lblReply = Yii::t("common","Answer");
 									if(sizeOf($comment["replies"])==1) $lblReply = "<i class='fa fa-reply fa-rotate-180'></i>" . sizeOf($comment["replies"])." ".Yii::t("comment","answer");
@@ -263,7 +264,7 @@
 
 									</div>
 
-							<?php } ?>
+							<?php */ } ?>
 							</small>
 						</span>
 						<div id="comments-list-<?php echo $comment["_id"]; ?>" class="hidden pull-left col-md-11 col-sm-11 col-xs-11 no-padding answerCommentContainer">
@@ -307,7 +308,7 @@
 	var comments = <?php echo json_encode($comments); ?>;
 	
 	var context = <?php echo json_encode($context)?>;
-
+	var canComment = <?php echo @$canComment ?>;
 	var profilThumbImageUrlUser = "<?php echo @$profilThumbImageUrlUser; ?>";
 	var isUpdatedComment=false;
 	// mylog.log("context");
@@ -316,7 +317,7 @@
 	// mylog.dir(comments);
 
 	jQuery(document).ready(function() {
-
+		initCommentsTools(comments, "comments", canComment);
 		var idTextArea = '#textarea-new-comment<?php echo $idComment; ?>';
 		bindEventTextArea(idTextArea, idComment, contextType, false, "");
 		bindEventActions();
@@ -359,7 +360,7 @@
 
 	function bindEventActions(){
 
-		$('.commentVoteUp').off().on("click",function(){
+		/*$('.commentVoteUp').off().on("click",function(){
 			id=$(this).data("id");
 			mylog.log("thisData voted : ",  $(this).data("voted"));
 			//if($(this).data("voted")=="true") 
@@ -376,8 +377,8 @@
 				actionOnComment($(this),'<?php echo Action::ACTION_VOTE_UP ?>', method);
 				disableOtherAction(id, '.commentVoteUp',method);
 			}
-		});
-		$('.commentVoteDown').off().on("click",function(){
+		});*/
+		/*$('.commentVoteDown').off().on("click",function(){
 			id=$(this).data("id");
 			if((!$(this).hasClass("text-orange") && $(this).data("voted")==true)){
 				if($(".commentReportAbuse[data-id='"+id+"']").hasClass("text-red")){
@@ -391,7 +392,7 @@
 				actionOnComment($(this),'<?php echo Action::ACTION_VOTE_DOWN ?>', method);
 				disableOtherAction(id, '.commentVoteDown', method);
 			}
-		});
+		});*/
 
 		//Abuse process
 		$('.commentReportAbuse').off().on("click",function(){
@@ -662,7 +663,7 @@
 
 
 
-	function actionOnComment(comment, action, method) {
+	/*function actionOnComment(comment, action, method) {
 		mylog.log(comment);
 		params=new Object,
 		params.id = comment.data("id"),
@@ -712,7 +713,7 @@
 	        		toastr.error("Error calling the serveur : contact your administrator.");
 	        	}
 			});
-	}
+	}*/
 
 
 

@@ -183,7 +183,7 @@ function showMediaComments(id){
 /* COMMENTS vvv */
 
 
-function initCommentsTools(thisMedias){
+/*function initCommentsTools(thisMedias){
   //ajoute la barre de commentaire & vote up down signalement sur tous les medias
   $.each(thisMedias, function(key, media){
     if(typeof media._id != "undefined"){
@@ -218,6 +218,6 @@ function initCommentsTools(thisMedias){
     var id = $(this).data("media-id");
     showMediaComments(id);
   });
-}
+}*/
 
 /* COMMENTS ^^^ */

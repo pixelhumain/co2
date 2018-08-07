@@ -517,6 +517,17 @@ var trad = {
 	"bealertofnewitems":"<?php echo Yii::t("common","Be alerted of new items") ?>",
 	"alert":"<?php echo Yii::t("common","Alert") ?>",
 	"updatethepost":"<?php echo Yii::t("common","Update the post") ?>",
+	"ilove":"<?php echo Yii::t("common","I love") ?>",
+	"ilike":"<?php echo Yii::t("common","I like") ?>",
+	"enjoying":"<?php echo Yii::t("common","Enjoying") ?>",
+	"glad":"<?php echo Yii::t("common","Glad") ?>",
+	"bothering":"<?php echo Yii::t("common","Bothering") ?>",
+	"sad":"<?php echo Yii::t("common","Sad") ?>",
+	"amazing":"<?php echo Yii::t("common","Amazing") ?>",
+	"scaring":"<?php echo Yii::t("common","Scaring") ?>",
+	"answer":"<?php echo Yii::t("comment","answer") ?>",
+	"answers":"<?php echo Yii::t("comment","answers") ?>",
+
 };
 
 var tradDynForm = {

@@ -762,7 +762,7 @@ function initPageTable(number){
       formData = new Object();
       formData.parentId = $(thiselement).attr("data-id");
       formData.childId = userId;
-      formData.childType = personCOLLECTION;
+      formData.childType = "citoyens";
       formData.connectType =  "share";
       var type = $(thiselement).attr("data-type");
       var id = $(thiselement).attr("data-id");

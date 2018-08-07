@@ -21,6 +21,8 @@ $cssAnsScriptFilesModule = array(
   '/plugins/jquery-mentions-input-master/jquery.mentionsInput.js',
   '/plugins/jquery-mentions-input-master/jquery.mentionsInput.css',
   '/plugins/jquery-mentions-input-master/lib/jquery.events.input.js',
+  '/plugins/facemotion/faceMocion.css',
+  '/plugins/facemotion/faceMocion.js',
   
 );
 //error_log("BasURL : ".Yii::app()->request->baseUrl);

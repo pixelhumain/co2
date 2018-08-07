@@ -185,7 +185,7 @@
       "restricted"=>array(
         "icon"=>"rss",
         "label"=>ucfirst(Yii::t("common", "followers")),
-        "explain"=>Yii::t("news", "Posted on followers and members wall and visible to all on this wall")//Visible to all on this wall and published on community's network",
+        "explain"=>Yii::t("news", "Posted on followers and members wall and visible to all on this wall")
       ),
       "private"=>array(
         "icon"=>"users",

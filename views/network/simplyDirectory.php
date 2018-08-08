@@ -27,6 +27,7 @@ var tagsActived = {};
 var disableActived = false;
 var citiesActived = [] ;
 var typesActived = [] ;
+var eventsTypeActived = [] ;
 var rolesActived = [] ;
 var classifiedsActived = [] ;
 var searchValNetwork = "";
@@ -640,7 +641,10 @@ function bindAutocomplete(){
 		var ville = $(this).attr("value");
 		typeActivedUpdate(checked, ville);
 		chargement();
-	});
+	}); 
+
+
+	
 
 	$(".rolesFilterAuto").off().click(function(e){
 		var checked = $(this).is( ':checked' );
@@ -661,6 +665,20 @@ function bindAutocomplete(){
 		var role = $(this).data("filtre");
 		mylog.log(".classifiedsFilterAuto", checked, role);
 		classifiedsActivedUpdate(checked, role);
+		chargement();
+	});
+
+	$(".eventsTypeAuto").off().click(function(e){ 
+		var checked = false ;
+		if($(this).hasClass( "active" ) == false){
+			$(this).addClass("active");
+			checked = true;
+		}else{
+			$(this).removeClass("active");
+		}
+		var filtre = $(this).data("filtre");
+		mylog.log("eventsTypeAuto", checked, filtre);
+		eventsTypeActivedUpdate(checked, filtre);
 		chargement();
 	});
 
@@ -974,6 +992,8 @@ function cityActivedUpdate(checked, city){
 	}
 }
 
+
+
 function  typeActivedUpdate(checked, type){
 	 // mylog.log("typeActivedUpdate", checked, type);
 	if(checked== false){
@@ -998,6 +1018,15 @@ function  classifiedsActivedUpdate(checked, role){
 		classifiedsActived.splice($.inArray(role, classifiedsActived),1);
 	} else {
 		classifiedsActived.push(role);
+	}
+}
+
+function eventsTypeActivedUpdate(checked, type){
+	mylog.log("eventsTypeActivedUpdate", checked, type);
+	if(checked== false){
+		eventsTypeActived.splice($.inArray(type, eventsTypeActived),1);
+	} else {
+		eventsTypeActived.push(type);
 	}
 }
 
@@ -1066,8 +1095,9 @@ function dateIsGood(event){
 	var after = false;
 	if(startDate != "" ){
 		//startDate = moment($("#dateStartFiltre").val(), "DD/MM/YYYY hh:mm").format();
-		after = moment(startDate).isSameOrAfter(event.startDate);
-		mylog.log("dateIsGood startDate", event.startDate, startDate, moment(startDate).isSameOrAfter(event.startDate) );
+		//after = moment(startDate).isSameOrAfter(event.startDate);
+		after = moment(event.startDate).isSameOrAfter(startDate);
+		mylog.log("dateIsGood startDate", event.startDate, startDate, moment(startDate).isSameOrAfter(event.startDate), moment(event.startDate).isSameOrAfter(startDate) );
 	}else
 		after = true;
 
@@ -1078,8 +1108,9 @@ function dateIsGood(event){
 		mylog.log("dateIsGood endDate", event.endDate, endDate, moment(event.endDate).isSameOrBefore(endDate), moment(endDate).isSameOrBefore(event.endDate));
 	}else
 		before = true;
-	mylog.log("dateIsGood after before", after, before );
+	mylog.log("dateIsGood after before", after, before, (after == true && before == true) );
 	res = (after == true && before == true) ? true : false ;
+	mylog.log("dateIsGood res", res );
 	return res ;
 }
 
@@ -1139,6 +1170,12 @@ function updateMap(){
 						(isClassifiedsActived(v, elementNetwork[0]) ) ) &&
 
 					( v.type != "events"  || 
+						( ( v.type == "events" && 
+							( eventsTypeActived.length == 0  || 
+								(	typeof v.typeEvent != "undefined" && 
+									$.inArray( v.typeEvent, eventsTypeActived ) >= 0  ) ) ) ) ) && 
+
+					( v.type != "events"  || 
 						( (v.type == "events" && dateIsGood(v) ) ) ) && 
 
 					( 	searchValNetwork.length == 0 || 
@@ -1152,7 +1189,7 @@ function updateMap(){
 	}else{
 		if( disableActived == true || citiesActived.length > 0 || 
 			typesActived.length > 0 || rolesActived.length > 0 || classifiedsActived.length > 0 || 
-			startDate != "" || endDate != "" ||
+			startDate != "" || endDate != "" || eventsTypeActived.length  > 0 || 
 			searchValNetwork.length > 0)  {
 			$.each(contextMapNetwork,function(k,v){
 				if(	( 	disableActived == false || 
@@ -1172,6 +1209,12 @@ function updateMap(){
 
 					( v.type != "events"  || 
 						( (v.type == "events" && dateIsGood(v) ) ) ) && 
+
+					( v.type != "events"  || 
+						( ( v.type == "events" && 
+							( eventsTypeActived.length == 0  || 
+								(	typeof v.typeEvent != "undefined" && 
+									$.inArray( v.typeEvent, eventsTypeActived ) >= 0  ) ) ) ) ) && 
 
 					( 	searchValNetwork.length == 0 || 
 						( 	v.name.search( new RegExp( searchValNetwork, "i" ) ) >= 0 ) ) ) {

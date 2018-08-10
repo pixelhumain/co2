@@ -512,6 +512,8 @@ class CommunecterController extends Controller
     ),
     "mailmanagement"=> array(
       "droppedmail" => array("href" => "/co2/mailmanagement/droppedmail"),
+      "updatetopending" => array("href" => "/co2/mailmanagement/updatetopending"),
+      "createandsend" => array("href" => "/co2/mailmanagement/createandsend"),
     ),
     "element"=> array(
       "updatesettings"      => array('href' => "/ph/co2/element/updatesettings"),

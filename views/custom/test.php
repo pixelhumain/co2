@@ -1,3 +1,16 @@
+<?php $cssJS = array(
+    
+    '/plugins/jquery.dynForm.js',
+	'/plugins/jquery-validation/dist/jquery.validate.min.js',
+);
+
+HtmlHelper::registerCssAndScriptsFiles($cssJS, Yii::app()->request->baseUrl);
+
+$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+$me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
+$this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.mainMenu', array("me"=>$me) );
+?>
+
 <style>
 #ulhva {
     list-style-type: none;
@@ -37,6 +50,8 @@
             <li id="menuAccueil" class="active lihva"><a id="btnAccueil" href="javascript:;" class="">Accueil</a></li>
             <li id="menuOrga" class="lihva "><a id="btnOrga" href="javascript:;" class="">Acteurs</a></li>
 			<li id="menuEvent" class="lihva"><a id="btnEvent" href="javascript:;" class="">Evénements</a></li>
+            <li id="menuOrga" class="lihva "><a id="btnRejoindre" href="javascript:;" class="">Rejoindre le réseau</a></li>
+            <li id="menuEvent" class="lihva"><a id="btnQui" href="javascript:;" class="">Qui-sommes nous ?</a></li>
 		</ul>
         <div id="accueil">
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id laoreet nulla. Suspendisse purus sapien, molestie a feugiat ut, varius vitae sapien. Suspendisse et mauris vitae turpis gravida placerat sagittis id lectus. Etiam a molestie erat. Fusce euismod faucibus quam, in sodales odio bibendum non. Cras eu nisi elit. Donec tempus malesuada massa, quis gravida massa mollis eu.
@@ -49,8 +64,12 @@ Sed ut odio augue. Integer rhoncus mauris nec accumsan gravida. Nullam finibus u
 
 Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vestibulum dignissim ultrices lacus. Ut auctor lobortis turpis ut ornare. Nulla facilisi. Etiam auctor erat sed imperdiet hendrerit. Morbi eu tincidunt ante. Pellentesque viverra quam purus, et tempor dolor rhoncus eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ac ornare quam. Donec sollicitudin felis mi, eu aliquam lectus interdum eget. Maecenas facilisis maximus quam, et pretium tellus placerat id. 
         </div>
-		<iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+		<!-- <iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
         <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+        <iframe id="annonce" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe> -->
+        <div id="qui">
+            Portail HVA qu'est que c'est ? ....
+        </div>
 	</div>
 
 </div>
@@ -79,6 +98,56 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
             changeMenu("accueil");
         });
 
+        $("#btnQui").click(function(){
+            changeMenu("qui");
+        });
+
+        $("#btnAnnonce").click(function(){
+            changeMenu("annonce");
+        });
+
+        $("#btnRejoindre").click(function(){
+        	var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/mailmanagement/createandsend/",
+				dynForm : {
+					jsonSchema : {
+						title : "Rejoindre",// trad["Update network"],
+						icon : "fa-key",
+						onLoads : {
+							sub : function(){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  				  .addClass("bg-dark");
+								//bindDesc("#ajaxFormModal");
+							}
+						},
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	//removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							mylog.dir(data);
+							dyFObj.closeForm();
+						},
+						properties : {
+							name : dyFInputs.text("Nom et Prénom","Nom et Prénom",{ required : true }),
+							orga : dyFInputs.text("Entreprise / Association","Entreprise / Association",{ required : true }),
+							email : dyFInputs.text(),
+							tel : dyFInputs.text("Téléphone", "Téléphone",{ required : true }),
+							ville : dyFInputs.text("Ville", "Ville",{ required : true }),
+							tplMail : dyFInputs.inputHidden("coco@gmail.com"),
+							tplObject : dyFInputs.inputHidden("Inscription sur Portail HVA"),
+							tpl : dyFInputs.inputHidden("hvaRejoindre"),
+						}
+					}
+				}
+			};
+
+			dyFObj.openForm(form, "sub");		
+			
+        });
+
+        
+
     });
 
     function changeMenu(menu){
@@ -86,20 +155,56 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
         if(menu == "event"){
             $("#orga").hide();
             $("#accueil").hide();
+            $("#annonce").hide();
+            $("#qui").hide();
+            $("#rejoindre").hide();
+            $("#accueil").hide();
             $("#event").show();
-
             $("#menuEvent").addClass("active");
+
         }else if(menu == "orga"){
             $("#event").hide();
             $("#accueil").hide();
+            $("#annonce").hide();
+            $("#qui").hide();
+            $("#rejoindre").hide();
             $("#orga").show();
-
             $("#menuOrga").addClass("active");
+
+        }else if(menu == "annonce"){
+            $("#event").hide();
+            $("#accueil").hide();
+            $("#orga").hide();
+            $("#qui").hide();
+            $("#rejoindre").hide();
+            $("#annonce").show();
+            $("#menuAnnonce").addClass("active");
+
+        }else if(menu == "qui"){
+            $("#event").hide();
+            $("#accueil").hide();
+            $("#annonce").hide();
+            $("#orga").hide();
+            $("#rejoindre").hide();
+            $("#qui").show();
+            $("#menuQui").addClass("active");
+
+        }else if(menu == "rejoindre"){
+            $("#event").hide();
+            $("#accueil").hide();
+            $("#annonce").hide();
+            $("#orga").hide();
+            $("#qui").hide();
+            $("#rejoindre").show();
+            $("#menuRejoindre").addClass("active");
+
         }else{
             $("#orga").hide();
             $("#event").hide();
+            $("#annonce").hide();
+            $("#qui").hide();
+            $("#rejoindre").hide();
             $("#accueil").show();
-
             $("#menuAccueil").addClass("active");
         }
     }

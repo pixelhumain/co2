@@ -17,7 +17,8 @@ class ActionController extends CommunecterController {
 	public function actions()
 	{
 	    return array(
-	        'addaction'    => 'citizenToolKit.controllers.action.AddActionAction'
+	        'addaction'    => 'citizenToolKit.controllers.action.AddActionAction',
+	        'list'    => 'citizenToolKit.controllers.action.ListAction'
 	    );
 	}
 }

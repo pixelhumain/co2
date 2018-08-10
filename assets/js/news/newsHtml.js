@@ -801,7 +801,7 @@ function newsVoteDown($this, id){
 		$($this).children(".label").html($($this).data("count")+" <i class='fa fa-thumbs-down'></i>");
 	}
 }*/
-function newsReportAbuse($this, id){
+/*function newsReportAbuse($this, id){
 	
 	//toastr.info('This vote has been well registred');
 	if($($this).children(".label").hasClass("text-red")){
@@ -815,7 +815,7 @@ function newsReportAbuse($this, id){
 	
 	//disableOtherAction($($this), '.commentReportAbuse', method);
 	$($this).children(".label").html($($this).data("count")+" <i class='fa fa-flag'></i>");
-}
+}*/
 
 function reportNewsAbuse($this,action, method) {
 	// mylog.log(contextId);
@@ -863,7 +863,7 @@ function reportNewsAbuse($this,action, method) {
 	}
 }
 
-function disableOtherNewsAction($this,action,method){
+/*function disableOtherNewsAction($this,action,method){
 	if(method){
 		if (action == ".newsVoteUp")
 			$this.children(".label").removeClass("text-green").addClass("text-dark");
@@ -880,7 +880,7 @@ function disableOtherNewsAction($this,action,method){
 		//if (action == ".commentReportAbuse")
 		//	$this.children(".label").removeClass("text-dark").addClass("text-red");
 	}
-}
+}*/
 /*function blankNews(id){
 /*	$.blockUI({
 			message : '<div class="newsContent"><h2 class="homestead text-dark" style="padding:40px;"><i class="fa fa-spin fa-refresh"></i> Chargement de l\'actualité ...</h2></div>', 

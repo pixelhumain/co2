@@ -490,6 +490,7 @@ class CommunecterController extends Controller
     ),
     "action"=> array(
        "addaction"   => array("href" => "/ph/co2/action/addaction"),
+       "list"   => array("href" => "/ph/co2/action/list"),
     ),
     "notification"=> array(
       "getnotifications"          => array("href" => "/ph/co2/notification/get","json" => true),

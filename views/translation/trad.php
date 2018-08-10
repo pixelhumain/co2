@@ -527,7 +527,21 @@ var trad = {
 	"scaring":"<?php echo Yii::t("common","Scaring") ?>",
 	"answer":"<?php echo Yii::t("comment","answer") ?>",
 	"answers":"<?php echo Yii::t("comment","answers") ?>",
-
+	"youcantmakeactionafterabuse":"<?php echo Yii::t("common","You can't make any actions after reporting abuse !") ?>",
+	"youalreadydeclareabuse": "<?php echo Yii::t("common","You already declare this content as abused.") ?>",
+	"reportanabuse": "<?php echo Yii::t("common","Report an abuse") ?>",
+	"sendreport": "<?php echo Yii::t("common","Send the report") ?>",
+	"whyareyoureportabuse": "<?php echo Yii::t("common","For which reason do you report this content") ?>",
+	"eviltongues": "<?php echo Yii::t("common","Evil tongues") ?>",
+	"incitementagressivedriving": "<?php echo Yii::t("common","Incitement and glorification of agressive driving") ?>",
+	"displaygorytrash": "<?php echo Yii::t("common","Display of gory and trash content") ?>",
+	"pornographiccontent": "<?php echo Yii::t("common","Pornographic content") ?>",
+	"deceitfullinks": "<?php echo Yii::t("common","Deceptive or deceitful links") ?>",
+	"copyrightinfringement": "<?php echo Yii::t("common","Copyright infringement") ?>",
+	"allreportisdefinive": "<?php echo Yii::t("common","All reporting is definitive and you can&#146;t cancel it") ?>",
+	"explainmoderationprocess": "<?php echo Yii::t("common","Your reporting will be sent to the system's administrators, <br/> who will deal with it according to the") ?>",
+	"generaltermsofuse": "<?php echo Yii::t("common","general terms of use") ?>",
+	"yourcommentisempty": "<?php echo Yii::t("comment","Your comment is empty") ?>",
 };
 
 var tradDynForm = {

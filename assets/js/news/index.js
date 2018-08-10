@@ -267,7 +267,7 @@ function bindEventNews(){
 		mylog.log("newsShare",$(this).data("id"));
 		count = parseInt($(this).data("count"));
 		$(this).data( "count" , count+1 );
-		$(this).children(".label").html($(this).data("count")+" <i class='fa fa-share-alt'></i>");
+		$(this).children(".label").html($(this).data("count")+" <i class='fa fa-retweet'></i>");
 	});
 
 	$('.filter').off().on("click",function(){

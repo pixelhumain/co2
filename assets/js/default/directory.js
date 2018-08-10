@@ -1183,7 +1183,7 @@ var directory = {
          userId != null && userId != "")
       str += "<button id='btn-share-"+params.type+"' class='pull-left text-light btn btn-link no-padding btn-share'"+
                                     " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
-                                    "<small><i class='fa fa-share'></i> "+trad["share"]+"</small></button> ";
+                                    "<small><i class='fa fa-retweet'></i> "+trad["share"]+"</small></button> ";
 
       str += "</div>";
 
@@ -1817,7 +1817,7 @@ var directory = {
                    "</a>";  
             str += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share pull-right'"+
                               " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
-                              "<i class='fa fa-share'></i> Partager</button>";
+                              "<i class='fa fa-retweet'></i> Partager</button>";
 
 
             var devise = (typeof params.devise != "undefined") ? params.devise : "";
@@ -2022,7 +2022,7 @@ var directory = {
           params.attendees += "<button id='btn-share-event' class='text-dark btn btn-link no-padding margin-left-10 btn-share'"+
                               " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"' "+//data-name='"+params.name+"'"+
                               " data-isShared='"+isShared+"'>"+
-                              "<i class='fa fa-share'></i> "+trad["share"]+"</button>";
+                              "<i class='fa fa-retweet'></i> "+trad["share"]+"</button>";
         }
         if(typeof params.edit  != "undefined"){
           params.attendees += "<button class='text-dark btn btn-link no-padding margin-left-10 disconnectConnection'"+

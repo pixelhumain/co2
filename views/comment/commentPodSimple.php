@@ -149,7 +149,6 @@
 
 				if($nbTotalComments == 0 && $level == 1) { echo "<span class='noComment'>".Yii::t("comment", "No comment")."</span>"; }
 				if($nbTotalComments == 0) return;
-				//if($nbTotalComments == 0 && $level == 2) echo "Aucune commentaire";
 
 		 		
 				foreach ($comments as $key => $comment) { 
@@ -189,7 +188,7 @@
 						                  </select>
 						                </div> 
 								<?php } ?><br>
-								<span class="text-comment text-left pull-left <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>"><?php echo $comment["text"]; ?></span>
+								<span class="text-comment text-comment-<?php echo $comment["_id"] ?>  text-left pull-left <?php echo (@$comment['reportAbuseCount']&&$comment['reportAbuseCount']>=5)?'text-red-light-moderation':'' ?>" data-parent-id="<?php echo $idComment ?>"><?php echo $comment["text"]; ?></span>
 							</span><br>
 							<small class="bold">
 							<?php if(@Yii::app()->session["userId"] && !@$comment["rating"]){ ?>
@@ -323,25 +322,18 @@
 		bindEventActions();
 
 		mylog.log(".comments-list-<?php echo $idComment; ?> .text-comment");
-		$("#comments-list-<?php echo $idComment; ?> .text-comment").each(function(){
+		/*$("#comments-list-<?php echo $idComment; ?> .text-comment").each(function(){
 			idComment=$(this).data("id");
 			idParent=$(this).data("parent-id");
 			textComment=$(this).html();
-			if(typeof idParent != "undefined"){
-				comments[idComment]=comments[idParent].replies[idComment];
-			}
-			/*if(typeof idParent != "undefined"){
-				if(typeof(comments[idParent].replies[idComment].mentions) != "undefined"){
-	          		textComment = mentionsInit.addMentionInText(textComment,comments[idParent].replies[idComment].mentions);
-	        	}
-			}else{*/
-				if(typeof(comments[idComment]) !="undefined" && typeof(comments[idComment].mentions) != "undefined"){
-	          		textComment = mentionsInit.addMentionInText(textComment,comments[idComment].mentions);
-	        	}
+			//if(typeof idParent != "undefined"){
+			//	comments[idComment]=comments[idParent].replies[idComment];
+			//}
+			
 	        //}
 			textComment = linkify(textComment);
 			$(this).html(textComment);
-		});
+		});*/
 		$.each(comments, function(i,v){
 			if(typeof v.rating != "undefined"){
 				$("#ratingComments"+i).barrating({
@@ -350,52 +342,37 @@
 				});
 				$("#ratingComments"+i).barrating("set", v.rating);
 	      		//$("#ratingComments"+i).barrating();
-			}
+			}else{
+				if(typeof v.replies != "undefined"){
+					$.each(v.replies, function(e, reply){
+						comments[e]=reply;
+						mentionAndLinkify(e,reply);
+					});
+				}
+				mentionAndLinkify(i,v);
+				
+		    }
 		});
 
 		$(".tooltips").tooltip();
 	});
 
-	
+	function mentionAndLinkify(objectId,object, getText){
+		textComment=object.text;
+		if(typeof(object.mentions) != "undefined"){
+		    textComment = mentionsInit.addMentionInText(textComment, object.mentions);
+		}
+		textComment = linkify(textComment);
+		if(notNull(getText) && getText)
+			return textComment;
+		else
+			$("#item-comment-"+objectId+" .text-comment").html(textComment);
+	}
 
 	function bindEventActions(){
 
-		/*$('.commentVoteUp').off().on("click",function(){
-			id=$(this).data("id");
-			mylog.log("thisData voted : ",  $(this).data("voted"));
-			//if($(this).data("voted")=="true") 
-			//	alert(typeof $(this).data("voted"));
-			if((!$(this).hasClass("text-green") && $(this).data("voted")==true)){
-				if($(".commentReportAbuse[data-id='"+id+"']").hasClass("text-red")){
-					toastr.info("<?php echo Yii::t("common", "You can't make any actions on this comment after reporting abuse !") ?>");
-				}
-				else{
-					toastr.info("<?php echo Yii::t("common", "Remove your last opinion before") ?>");
-				}
-			}else{
-				method= $(this).hasClass("text-green");
-				actionOnComment($(this),'<?php echo Action::ACTION_VOTE_UP ?>', method);
-				disableOtherAction(id, '.commentVoteUp',method);
-			}
-		});*/
-		/*$('.commentVoteDown').off().on("click",function(){
-			id=$(this).data("id");
-			if((!$(this).hasClass("text-orange") && $(this).data("voted")==true)){
-				if($(".commentReportAbuse[data-id='"+id+"']").hasClass("text-red")){
-					toastr.info("<?php echo Yii::t("common", "You can't make any actions on this comment after reporting abuse !") ?>");
-				}
-				else{
-					toastr.info("<?php echo Yii::t("common", "Remove your last opinion before") ?>");
-				}
-			}else{	
-				method= $(this).hasClass("text-orange");
-				actionOnComment($(this),'<?php echo Action::ACTION_VOTE_DOWN ?>', method);
-				disableOtherAction(id, '.commentVoteDown', method);
-			}
-		});*/
-
 		//Abuse process
-		$('.commentReportAbuse').off().on("click",function(){
+		/*$('.commentReportAbuse').off().on("click",function(){
 			id=$(this).data("id");
 			if($(this).data("voted")=="true")
 				toastr.info("<?php echo Yii::t("common", "Remove your last opinion before") ?>");
@@ -407,19 +384,15 @@
 					reportAbuse($(this), $(this).data("contextid"));
 				}
 			}
-		});
+		});*/
 		$('.deleteComment').off().on("click",function(){
 			actionAbuseComment($(this), "<?php echo Comment::STATUS_DELETED ?>", "");
 		});
 	}
 	
 
-	function showOneComment(textComment, idComment, isAnswer, idNewComment, argval, mentionsArray){
-		console.log(mentionsArray);
-		if(notNull(mentionsArray)){
-			textComment = mentionsInit.addMentionInText(textComment,mentionsArray);
-		}
-		textComment = linkify(textComment);
+	function showOneComment(newComment, idComment, isAnswer, idNewComment, argval, mentionsArray){
+		textComent=mentionAndLinkify(idNewComment,newComment, true);
 		var classArgument = "";
 		if(argval == "up") classArgument = "bg-green-comment";
 		if(argval == "down") classArgument = "bg-red-comment";
@@ -436,42 +409,7 @@
 						'		<span class="text-comment">'	+ textComment + "</span>" +
 						'	</span><br>'+
 							'<small class="bold">' +
-								<?php if(@$canComment){ ?>
-							'		<a class="" href=\'javascript:answerComment(\"<?php echo $idComment; ?>\", \"'+idNewComment+'\", \"'+contextType+'\")\'>'+trad.answer+'</a> '+
-								<?php } ?> 
-								<?php if(isset(Yii::app()->session["userId"])){ ?>
-
-							'		<a class="tooltips commentVoteUp" style="margin-left:5px;margin-right:5px;"'+
-							'			    class="tooltips commentVoteUp"'+
-							'				data-voted="false"'+
-							'				data-id="'+idNewComment+'" data-countcomment="0"	' +
-							'				data-toggle="tooltip" data-placement="top" title="'+trad.ilike+'"'+
-							'				href="javascript:">0 <i class="fa fa-thumbs-up"></i></a> ' +
-
-							'		<a class="tooltips commentVoteDown"'+
-							'			   	data-voted="false"'+
-							'				data-id="'+idNewComment+'" data-countcomment="0"	' +
-							'				data-toggle="tooltip" data-placement="top" title="'+trad.idontlike+'"'+
-							'			  	href="javascript:">0 <i class="fa fa-thumbs-down"></i></a> ' +
-							
-							'<div class="tool-action-comment">' +
-							'		<a class="tooltips commentReportAbuse" style="margin-left:5px;margin-right:5px;"'+
-							'			   	data-voted="false"'+
-							'				data-id="'+idNewComment+'" data-countcomment="0"	' +
-							'				data-toggle="tooltip" data-placement="top" title="'+trad.declareabuse+'"'+
-							'			  	href="javascript:">0 <i class="fa fa-flag"></i></a> '+
-									
-							'		<a style="margin-left:5px; margin-right:5px;"  class="tooltips"'+
-							'			   data-toggle="tooltip" data-placement="top" title="'+trad.edit+'"'+
-							'			   href=\'javascript:editComment(\"'+idNewComment+'\")\'><i class="fa fa-pencil"></i></a>'+
-
-							'		<a class="tooltips"'+
-							'			   data-toggle="tooltip" data-placement="top" title="'+trad.delete+'"'+
-							'			   href=\'javascript:confirmDeleteComment(\"'+idNewComment+'\", $(this))\'><i class="fa fa-times"></i></a>'+
-							'</div>' +
-							//'			<a class="" href=\'javascript:deleteComment(\"'+idNewComment+'\")\'>Supprimer</a> '+
-							//'			<a class="" href=\'javascript:modifyComment(\"'+idNewComment+'\")\'>Modifier</a>'+
-								<?php } ?>
+								'<div class="col-md-12 pull-left no-padding" id="footer-comments-'+idNewComment+'"></div>'+
 							'</small>'+
 						'</span>'+	
 						'<div id="comments-list-'+idNewComment+'" class="hidden pull-left col-md-11 no-padding answerCommentContainer"></div>' +
@@ -484,84 +422,16 @@
 		}else{
 			$('#container-txtarea-'+idComment).after(html);
 		}
+		initCommentsTools({newComment}, "comments", true, idComment);
 	}
 
 	
 
-	function saveComment(textComment, parentCommentId, domElement){
-		textComment = $.trim(textComment);
-		if(!notEmpty(parentCommentId)) parentCommentId = "";
-		if(textComment == "") {
-			toastr.error("<?php echo Yii::t("comment","Your comment is empty") ?>");
-			return;
-		}
-
-		var argval = $("#argval").val();
-		newComment={
-			parentCommentId: parentCommentId,
-			text : textComment,
-			contextId : context["_id"]["$id"],
-			contextType : contextType,
-			argval : argval
-		};
-		newComment=mentionsInit.beforeSave(newComment, domElement);
-		$.ajax({
-			url: baseUrl+'/'+moduleId+"/comment/save/",
-			data: newComment,
-			type: 'post',
-			global: false,
-			dataType: 'json',
-			success: 
-				function(data) {
-					if(!data.result){
-						toastr.error(data.msg);
-					}
-					else { 
-						toastr.success(data.msg);
-						var count = $("#newsFeed"+context["_id"]["$id"]+" .nbNewsComment").html();
-						
-						if(!notEmpty(count)) count = 0;
-						//mylog.log(count, context["_id"]["$id"]);
-						comments[data.id.$id]=data.newComment;
-						if(data.newComment.contextType=="news"){
-							mentionsInit.reset(domElement);
-							count = parseInt(count);
-							var newCount = count +1;
-							var labelCom = (newCount>1) ? trad.comments : trad.comment;
-							$("#newsFeed"+context["_id"]["$id"]+" .lblComment").html("<i class='fa fa-comment'></i> <span class='nbNewsComment'>"+newCount+"</span> "+labelCom);
-							$("#newsFeed"+context["_id"]["$id"]+" .newsAddComment").data('count', newCount);
-						// }else{
-						// 	$("#newsFeed"+context["_id"]["$id"]+" .lblComment").html("<i class='fa fa-comment'></i> <span class='nbNewsComment'>1</span> commentaire");
-						// 	$("#newsFeed"+context["_id"]["$id"]+" .newsAddComment").data('count', 1);
-						}
-						
-						// $('.nbComments').html((parseInt($('.nbComments').html()) || 0) + 1);
-						// if (data.newComment.contextType=="news"){
-						// 	$(".newsAddComment[data-id='"+data.newComment.contextId+"']").children().children(".nbNewsComment").text(parseInt($('.nbComments').html()) || 0);
-						// }
-						//switchComment(commentId, data.newComment, parentCommentId);
-						latestComments = data.time;
-
-						var isAnswer = parentCommentId!="";
-						mentionsArray=null;
-						if(typeof data.newComment.mentions != "undefined"){
-							mentionsArray=data.newComment.mentions;
-						}
-						showOneComment(data.newComment.text, parentCommentId, isAnswer, data.id.$id, argval, mentionsArray);   
-						bindEventActions();    
-					}
-				},
-			error: 
-				function(data) {
-					toastr.error('<?php echo Yii::t("comment","Error calling the serveur : contact your administrator.") ?>');
-				}
-		});
-		
-	}
+	
 
 
 
-	function reportAbuse(comment, contextId) {
+	/*function reportAbuse(comment, contextId) {
 		// mylog.log(contextId);
 		var message = "<div id='reason' class='radio'>"+
 			"<h3 class='margin-top-10'>Pour quelle raison signalez-vous ce contenu ?</h3>" +
@@ -616,9 +486,9 @@
 		boxComment.on("hide.bs.modal", function() {
 		  $.unblockUI();
 		});
-	}
+	}*/
 
-	function actionAbuseComment(comment, action, reason, reasonComment) {
+	/*function actionAbuseComment(comment, action, reason, reasonComment) {
 		$.ajax({
 			url: baseUrl+'/'+moduleId+"/action/addaction/",
 			data: {
@@ -659,7 +529,7 @@
 	        		toastr.error('<?php echo Yii::t("comment","Error calling the serveur : contact your administrator.") ?>');
 	        	}
 			});
-	}
+	}*/
 
 
 
@@ -780,7 +650,7 @@
 		isUpdatedComment=true;
 		var commentContent = comments[idComment].text;
 		var message = "<div id='container-txtarea-"+idComment+"' class='content-update-comment'>"+
-						"<textarea id='textarea-new-comment"+idComment+"' class='form-control' placeholder='"+trad.modifyyourcomment+"'>"+commentContent+
+						"<textarea id='textarea-edit-comment"+idComment+"' class='form-control' placeholder='"+trad.modifyyourcomment+"'>"+commentContent+
 						"</textarea>"+
 					  "</div>";
 		var boxComment = bootbox.dialog({
@@ -798,7 +668,7 @@
 		      label: trad.save,
 		      className: "btn-success",
 		      callback: function() {
-		      	updateComment(idComment,$("#textarea-new-comment"+idComment).val(), "#textarea-new-comment"+idComment);
+		      	updateComment(idComment,$("#textarea-edit-comment"+idComment).val(), "#textarea-edit-comment"+idComment);
 				isUpdatedComment=false;
 				return true;
 		      }
@@ -808,7 +678,7 @@
 
 		boxComment.on("shown.bs.modal", function() {
 		  $.unblockUI();
-		  bindEventTextArea('#textarea-new-comment'+idComment, idComment, contextType, false, "", comments[idComment]);
+		  bindEventTextArea('#textarea-edit-comment'+idComment, idComment, contextType, false, "", comments[idComment]);
 		});
 
 		boxComment.on("hide.bs.modal", function() {

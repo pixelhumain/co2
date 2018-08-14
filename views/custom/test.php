@@ -50,6 +50,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
             <li id="menuAccueil" class="active lihva"><a id="btnAccueil" href="javascript:;" class="">Accueil</a></li>
             <li id="menuOrga" class="lihva "><a id="btnOrga" href="javascript:;" class="">Acteurs</a></li>
 			<li id="menuEvent" class="lihva"><a id="btnEvent" href="javascript:;" class="">Evénements</a></li>
+            <li id="menuAnnonce" class="lihva"><a id="btnAnnonce" href="javascript:;" class="">Annonces</a></li>
             <li id="menuOrga" class="lihva "><a id="btnRejoindre" href="javascript:;" class="">Rejoindre le réseau</a></li>
             <li id="menuEvent" class="lihva"><a id="btnQui" href="javascript:;" class="">Qui-sommes nous ?</a></li>
 		</ul>
@@ -64,9 +65,9 @@ Sed ut odio augue. Integer rhoncus mauris nec accumsan gravida. Nullam finibus u
 
 Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vestibulum dignissim ultrices lacus. Ut auctor lobortis turpis ut ornare. Nulla facilisi. Etiam auctor erat sed imperdiet hendrerit. Morbi eu tincidunt ante. Pellentesque viverra quam purus, et tempor dolor rhoncus eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ac ornare quam. Donec sollicitudin felis mi, eu aliquam lectus interdum eget. Maecenas facilisis maximus quam, et pretium tellus placerat id. 
         </div>
-		<!-- <iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+		<iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
         <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
-        <iframe id="annonce" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe> -->
+        <iframe id="annonce" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
         <div id="qui">
             Portail HVA qu'est que c'est ? ....
         </div>

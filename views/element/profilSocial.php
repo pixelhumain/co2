@@ -807,7 +807,6 @@
 
 
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-10 no-padding central-section pull-right">
-
 		<?php    
 			$marginCentral="";
 			$classDescH="hidden"; 
@@ -815,7 +814,10 @@
 				
 			if(!isset($linksBtn["isFollowing"]) && !isset($linksBtn["isAdmin"]) )
 				$classDescH = "";
-
+			
+			if(@$element["custom"] && @$element["custom"]["pubTpl"])
+				echo $this->renderPartial($element["custom"]["pubTpl"], array("central"=>true));
+	
 			if($typeItem != Person::COLLECTION){ 
 		?>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:30px;">
@@ -859,6 +861,9 @@
 
 		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-<?php echo $marginCentral; ?>" 
 			 id="notif-column">
+			<?php if(@$element["custom"] && @$element["custom"]["pubTpl"])
+				echo $this->renderPartial($element["custom"]["pubTpl"]); ?>
+	
 		</div>
 	</section>
 

@@ -12,9 +12,18 @@
 ----------------------------------------------------
 ----------------------------------------------------
 
+
+
+
 ---------------------------------------
 ---------- VERSION C0.30 (warrior flower) --------------
 ---------------------------------------
+
+* Batch Hotfix
+Supprimer le level3 si il n'y a pas de name 
+/co2/datamigration/RemoveLevel3Mising 
+
+
 * Refactor de classifieds 
 Migration des ressources dans classified et refactor sur les "classified" qui deviennent des "classifieds"
 ***** STEPS ********

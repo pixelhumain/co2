@@ -384,7 +384,7 @@
   if($contextParentType != "city"){
     Menu::news($type);
     //$this->renderPartial('../default/panels/toolbar'); 
-    $sizeForm="col-sm-12"; 
+    $sizeForm="col-sm-12 col-xs-12"; 
   }else
     $sizeForm="col-xs-12 col-sm-10 col-sm-offset-1";
 

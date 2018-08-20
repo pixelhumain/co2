@@ -398,7 +398,7 @@ function bindAboutPodElement() {
 
 			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
 			if($.inArray(contextData.type, [typeObj.organization.col, typeObj.person.col, typeObj.project.col, typeObj.event.col]) > -1 )
-				form.dynForm.jsonSchema.properties.email = dyFInputs.text();
+				form.dynForm.jsonSchema.properties.email = dyFInputs.email();
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText(tradDynForm["fix"],tradDynForm["enterfixnumber"]);
 				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText(tradDynForm["mobile"],tradDynForm["entermobilenumber"]);

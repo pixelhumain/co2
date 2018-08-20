@@ -130,6 +130,8 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
 						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
+                            alert("Il manque votre adresse mail pour recevoir ce mail ;)");
+                            dyFObj.closeForm();
 					    	//removeFieldUpdateDynForm(contextData.type);
 					    },
 						afterSave : function(data){

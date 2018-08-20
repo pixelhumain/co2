@@ -107,6 +107,13 @@ if( @Yii::app()->session['custom'] ){  ?>
                     $(".documentation-btn").remove();
                 if(e=="statistics")
                     $(".statistics-btn").remove();
+                if(e=="search")
+                    $("#second-search-bar").remove();
+                if(e=="app")
+                    $("#dropdownApps").remove();
+                if(e=="map")
+                    $("#btn-show-map").remove();
+
             });
         }
     ;}

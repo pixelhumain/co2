@@ -397,8 +397,11 @@ function bindAboutPodElement() {
 			}
 
 			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
-			if($.inArray(contextData.type, [typeObj.organization.col, typeObj.person.col, typeObj.project.col, typeObj.event.col]) > -1 )
-				form.dynForm.jsonSchema.properties.email = dyFInputs.email();
+			if($.inArray(contextData.type, [typeObj.organization.col, typeObj.person.col, typeObj.project.col, typeObj.event.col]) > -1 ){
+				var ruleMail = ( (contextData.type == typeObj.person.col) ? { email: true, required : true } : { email: true } ) ;
+				form.dynForm.jsonSchema.properties.email = dyFInputs.email(tradDynForm.mainemail, tradDynForm.mainemail, ruleMail);
+			}
+			
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText(tradDynForm["fix"],tradDynForm["enterfixnumber"]);
 				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText(tradDynForm["mobile"],tradDynForm["entermobilenumber"]);

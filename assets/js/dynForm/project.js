@@ -27,7 +27,7 @@ dynForm = {
 	    					callB();
 					} else { 
 			          	dyFObj.closeForm(); 
-			          	if(updateForm!=null)//use case for answerList forms updating
+			          	if(typeof updateForm != "undefined" && updateForm != null)//use case for answerList forms updating
 			        		window.location.reload();
 			        	else 
 			          		urlCtrl.loadByHash( uploadObj.gotoUrl );

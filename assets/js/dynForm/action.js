@@ -148,6 +148,10 @@ dynForm = {
             //prend le parentIdElement quand on est sur la page d'une resolution
             parentId : dyFInputs.inputHidden(typeof parentIdElement != "undefined" ? parentIdElement : contextData.id),
             parentType : dyFInputs.inputHidden(typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type),
+
+            parentIdSurvey : dyFInputs.inputHidden(typeof form != "undefined" ? form._id.$id : ""),
+            parentTypeSurvey : dyFInputs.inputHidden(typeof form != "undefined" ? "forms" : ""),
+            role : dyFInputs.inputHidden(typeof role != "undefined" ? role : ""),
             // image : dyFInputs.image()
 	    }
 	}

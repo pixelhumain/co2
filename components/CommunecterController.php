@@ -11,7 +11,7 @@ class CommunecterController extends Controller
   public $subTitle = "se connecter à sa commune";
   public $pageTitle = "Communecter, se connecter à sa commune";
   public static $moduleKey = "communecter";
-  public $keywords = "communecter,connecter, commun,commune, réseau, sociétal, citoyen, société, territoire, participatif, social, smarterre,tiers lieux, ";
+  public $keywords = "communecter,connecter, commun,commune, réseau, sociétal, citoyen, société, territoire, participatif, social, smarterre,tiers lieux, smart city, smartcity ";
   public $description = "Communecter : Connecter à sa commune, inter connecter les communs, un réseau sociétal pour un citoyen connecté et acteur au centre de sa société.";
   public $projectName = "";
   public $projectImage = "/images/CTK.png";

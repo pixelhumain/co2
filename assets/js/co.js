@@ -1981,7 +1981,7 @@ function parentList (ctypes, parentId, parentType) {
 
 		if(!notEmpty(myList[parentType]))
 			myList[ parentType ] = { label: parentType, options:{} };
-    	myList[ parentType ]["options"][ parentId ] = contextData.parent.name;  
+    	myList[ parentType ]["options"][ parentId ] = ( (typeof contextData.parent != "undefined" && typeof contextData.parent.name != "undefined" ) ? contextData.parent.name : tradDynForm["dontknow"] );  
     }
     return myList; 
 }

@@ -350,6 +350,7 @@ function bindAboutPodElement() {
 
 								if(typeof data.resultGoods.values.organizer != "undefined"){
 									mylog.log("modif organizer", data.resultGoods.values.organizer);
+
 									contextData.organizer = data.resultGoods.values.organizer.organizer;
 									contextData.organizerId = data.resultGoods.values.organizer.organizerId;
 									contextData.organizerType = data.resultGoods.values.organizer.organizerType;
@@ -359,11 +360,11 @@ function bindAboutPodElement() {
 
 									if(notEmpty(contextData.organizerId) && contextData.organizerId!="dontKnow"){
 										html = '<a href="#page.type.'+contextData.organizerType+'.id.'+contextData.organizerId+'" class="lbh">'+ 
-											'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
-											contextData.organizer.name+'</a><br/>';
+													'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
+												data.resultGoods.values.organizer.organizer.name+'</a><br/>';
 										htmlHeader = tradDynForm.organizedby + " " + html;
 									}
-
+									
 									$("#organizerAbout").html(html);
 									$("#organizerHeader").html(htmlHeader);
 								}

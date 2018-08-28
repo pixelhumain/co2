@@ -54,7 +54,9 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
             <li id="menuOrga" class="lihva "><a id="btnRejoindre" href="javascript:;" class="">Rejoindre le réseau</a></li>
             <li id="menuEvent" class="lihva"><a id="btnQui" href="javascript:;" class="">Qui-sommes nous ?</a></li>
 		</ul>
-        <div id="accueil">
+        <div id="accueil" class="col-xs-12" style ="padding: 15px; text-align: justify;">
+
+                <img src="http://www.catalunyaexperience.fr/wp-content/uploads/2015/03/001-ES1308N-0740-1024x683.jpg" style="width : 500px" class="col-md-6 col-xs-12">
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id laoreet nulla. Suspendisse purus sapien, molestie a feugiat ut, varius vitae sapien. Suspendisse et mauris vitae turpis gravida placerat sagittis id lectus. Etiam a molestie erat. Fusce euismod faucibus quam, in sodales odio bibendum non. Cras eu nisi elit. Donec tempus malesuada massa, quis gravida massa mollis eu.
 
 In sem metus, aliquam in viverra at, tincidunt at ipsum. Fusce viverra sollicitudin quam in eleifend. Phasellus aliquam at erat at dictum. Vivamus non massa vel justo tempor pharetra eu suscipit nibh. Mauris ante eros, finibus eu suscipit ultricies, gravida ac augue. Integer tortor nisl, egestas eu condimentum eget, commodo eget augue. In non dolor bibendum, placerat purus quis, fermentum tellus. Aenean at lorem non elit condimentum molestie ac vitae odio. Sed facilisis dui ac nisi consectetur placerat. Aliquam maximus elit et urna efficitur, non suscipit leo iaculis. Ut a diam sit amet mi semper vestibulum. Etiam a velit aliquam, varius metus sit amet, accumsan justo.
@@ -68,7 +70,7 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
 		<iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
         <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
         <iframe id="annonce" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
-        <div id="qui">
+        <div id="qui" class="col-xs-12">
             Portail HVA qu'est que c'est ? ....
         </div>
 	</div>
@@ -79,12 +81,17 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
 	
 
 	jQuery(document).ready(function() {
+        $("#qui").hide();
         $('#orga').load(function(){
             $("#orga").hide();
         });
 
         $('#event').load(function(){
             $("#event").hide();
+        });
+
+        $('#annonce').load(function(){
+            $("#annonce").hide();
         });
 
         $("#btnOrga").click(function(){
@@ -123,6 +130,8 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
 						},
 						beforeSave : function(){
 							mylog.log("beforeSave");
+                            alert("Il manque votre adresse mail pour recevoir ce mail ;)");
+                            dyFObj.closeForm();
 					    	//removeFieldUpdateDynForm(contextData.type);
 					    },
 						afterSave : function(data){

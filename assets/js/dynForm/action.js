@@ -75,9 +75,20 @@ dynForm = {
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 
-                var type = typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type;
-                var id = typeof parentIdElement != "undefined" ? parentIdElement : contextData.id;
+                if(typeof form != "undefined"){
+                    window.location.reload();
+                }else{
+                    var type = typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type;
+                    var id = typeof parentIdElement != "undefined" ? parentIdElement : contextData.id;
 
+                    console.log("afterSave action data", data);
+                    dyFObj.closeForm();
+                    uiCoop.getCoopData(type, id, "room", null, data.map.idParentRoom);
+                    setTimeout(function(){
+                        uiCoop.getCoopData(type, id, "action", null, data.id);
+                    }, 1000); 
+                }
+                
                 console.log("afterSave action data", data);
                 dyFObj.closeForm();
 

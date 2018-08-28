@@ -38,7 +38,18 @@
   		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
 	<h3 class=" padding-10  radius-5 col-xs-12 bg-turq text-white text-bold"  >	
-		<?php if(@$action["name"])echo "<i class='fa fa-hashtag'></i> ".@$action["name"];?>
+		<?php 
+			$str = "";
+			if(@$action["name"]) $str = "<i class='fa fa-hashtag'></i> ".@$action["name"];
+			if(@$action["parentSurvey"]){
+				// $url = Yii::app()->createUrl('/survey/co/action/id/'.$action["parentSurvey"]["id"].'/action/'.(String) $action["_id"]);
+
+				$url = Yii::app()->createUrl('/survey/co/action/id/'.(String) $action["_id"]);
+				$str = '<a href="'.$url.'" target="_blank" >'.$str.'</a>';
+			} 
+			echo $str;
+
+			?>
 	</h3>
 </div>
 

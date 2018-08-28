@@ -75,7 +75,7 @@ dynForm = {
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 
-                if(typeof form != "undefined"){
+                if(typeof uiCoop == "undefined"){
                     window.location.reload();
                 }else{
                     var type = typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type;
@@ -89,17 +89,6 @@ dynForm = {
                     }, 1000); 
                 }
                 
-                console.log("afterSave action data", data);
-                dyFObj.closeForm();
-
-                if(typeof uiCoop != "undefined"){
-                    uiCoop.getCoopData(type, id, "room", null, data.map.idParentRoom);
-                    setTimeout(function(){
-                        uiCoop.getCoopData(type, id, "action", null, data.id);
-                    }, 1000);
-                } else 
-                    window.location.reload();
-                //urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
             }
 	    },
 	    properties : {

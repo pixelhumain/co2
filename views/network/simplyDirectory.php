@@ -89,10 +89,14 @@ jQuery(document).ready(function() {
 	addTooltips();
 	bindNetwork();
 
-	if(location.hash == "" || location.hash == "#network.simplydirectory")
+	if(location.hash == "" || location.hash == "#network.simplydirectory"){
+		mylog.log("here1")
 		showMapNetwork(true);
-	else
+	}
+	else{
+		mylog.log("here2");
 		showMapNetwork(false);
+	}
 
 	$("#right_tool_map").removeClass("hidden-sm").hide( 700 );
 	hideScrollTop = true;
@@ -907,7 +911,7 @@ function getAjaxFiche(url, breadcrumLevel){
 				urlHash.indexOf("news") < 0 &&
 				urlHash.indexOf("network") < 0 && 
 				urlHash.indexOf("invite") < 0 ){
-		 // mylog.log("here2");
+		
 		pageView=true;
 		var urlSplit = "";
 		if(urlHash.indexOf("#@") != -1)
@@ -955,7 +959,7 @@ function getAjaxFiche(url, breadcrumLevel){
 
 
 function reverseToRepertory(){
-	 // mylog.log("reverseToRepertory", isMapEnd);
+	mylog.log("reverseToRepertory", isMapEnd);
 	if(isMapEnd)
 		showMapNetwork();
 	updateMap();

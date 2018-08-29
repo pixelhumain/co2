@@ -144,7 +144,7 @@ var calendar = {
     },
     showCalendar : function (domElement, events, initMode, initDate) {
         calendarObject = [];
-        console.log("showEvent",events);
+        console.log("showCalendar",domElement, events, initMode, initDate);
         if(events){
             $.each(events,function(eventId,eventObj){
                 eventCal = calendar.buildCalObj(eventObj);
@@ -204,19 +204,24 @@ var calendar = {
               
             },
             eventRender:function(event, element, view) {
-              console.log("event",event,"element",element);
-              popupHtml=calendar.popupHtml(event);
-              element.popover({
-                  html:true,
-                  animation: true,
-                  container:'body',
-                  title: event.name,
-                  template:calendar.popupTemplate(),
-                  placement: 'top',
-                  trigger: 'focus',
-                  content: popupHtml,
-              });
-              element.attr('tabindex', -1);
+            console.log("event",event,"element",element);
+                if(networkJson == "undefined"){
+                    popupHtml=calendar.popupHtml(event);
+                    element.popover({
+                        html:true,
+                        animation: true,
+                        container:'body',
+                        title: event.name,
+                        template:calendar.popupTemplate(),
+                        placement: 'top',
+                        trigger: 'focus',
+                        content: popupHtml,
+                    });
+                    element.attr('tabindex', -1);
+                }
+             
+
+
              // $("#popup"+event.id).mouseout(function(){
                // $(this).remove();
               //});

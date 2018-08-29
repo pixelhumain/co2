@@ -949,6 +949,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		if(dataName == "events"){
 			//init calendar view
 			calendar.init("#profil-content-calendar");
+			mylog.log("calendar data", data);
 			calendar.showCalendar("#profil-content-calendar", data);
      		$(window).on('resize', function(){
   				$("#profil-content-calendar").fullCalendar('destroy');

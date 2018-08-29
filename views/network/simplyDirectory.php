@@ -1,3 +1,30 @@
+<?php
+
+$cssAnsScriptFilesTheme = array(
+	'/plugins/moment/min/moment.min.js' ,
+    '/plugins/moment/min/moment-with-locales.min.js',
+	'/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
+    '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
+    '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
+    
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+
+$cssAnsScriptFilesModule = array(
+	'/js/default/calendar.js',
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
+
+HtmlHelper::registerCssAndScriptsFiles( 
+array(  //'/css/onepage.css',
+	'/css/calendar.css',
+) , 
+Yii::app()->theme->baseUrl. '/assets');
+
+
+?>
+
 <style>
 	.dropdown_searchListNW{
 		min-height: 100%;
@@ -9,6 +36,10 @@
 
 <div class="col-md-12 no-padding" id="repertory" style="background-color: white">
 	<div id="dropdown_search_result" class="col-md-12 col-sm-12 col-xs-12"></div>
+	<div class='col-xs-12 margin-bottom-10'>
+		<a href='javascript:;' id='showHideCalendar' class='text-azure' data-hidden='0'><i class='fa fa-caret-up'></i> Hide calendar</a>
+	</div>
+	<div id='profil-content-calendar' class='col-xs-12 margin-bottom-20'></div>
 	<div id="dropdown_search" class="col-md-12 container list-group-item dropdown_searchListNW"></div>
 </div>
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="ficheInfoDetail"></div>
@@ -70,7 +101,12 @@ jQuery(document).ready(function() {
 	setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
 	// // mylog.log("indexStepInit", indexStepInit);
 	bindButtonOpenForm();
+
+	calendar.init("#profil-content-calendar");
+
 	startSearchSimply(0, indexStepInit);
+
+	
 });
 
 function initVar(){
@@ -207,7 +243,7 @@ function bindNetwork(){
 }
 
 function showMapNetwork(show){
-	 // mylog.log("showMapNetwork", show, isMapEnd);
+	 mylog.log("showMapNetwork", show, isMapEnd);
 	 // mylog.log("typeof SIG : ", typeof Sig);
 
 	if(typeof Sig == "undefined") show = false;
@@ -823,7 +859,7 @@ function breadcrumGuide(level, url){
 }
 
 function getAjaxFiche(url, breadcrumLevel){
-	 // mylog.log("getAjaxFiche Network", url, breadcrumLevel, isMapEnd);
+	mylog.log("getAjaxFiche Network", url, breadcrumLevel, isMapEnd);
 	$("#ficheInfoDetail").empty();
 	if(location.hash == ""){
 		history.pushState(null, "New Title", '?src='+networkParams+url);
@@ -1228,6 +1264,14 @@ function updateMap(){
 	$.each(filteredList, function(e,v){
 		$(".contain_"+v.type+"_"+v.id).show(700);
 	});
+
+
+	calendar.showCalendar("#profil-content-calendar", filteredList);
+	$(window).on('resize', function(){
+		$("#profil-content-calendar").fullCalendar('destroy');
+		calendar.showCalendar("#profil-content-calendar", filteredList, "month");
+	});
+	
 
 	countResult=filteredList.length;
 	refreshResultHeader(countResult);

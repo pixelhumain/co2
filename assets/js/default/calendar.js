@@ -233,10 +233,11 @@ var calendar = {
         dateToShow = new Date();
     },
     setCategoryColor : function(tab){
+      console.log("test setCategoryColor ", tab);
   		  $(".fc-content").css("color", "white");
   	  	for(var i =0; i<tab.length; i++){
   	  	  	$("."+tab[i]+" .fc-content").css("color", "white");
-            $("."+tab[i]+" .fc-content").css("background-color", calendar.templateColor[i]);
+            //$("."+tab[i]+" .fc-content").css("background-color", calendar.templateColor[i]);
   	  	}
   	},
   	getRandomColor : function() {

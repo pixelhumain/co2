@@ -125,6 +125,10 @@ class CommunecterController extends Controller
       "list"    => array("href" => "/ph/co2/collections/list"),
       "crud"    => array("href" => "/ph/co2/collections/crud"),
     ),
+    "folder" => array(
+      "list"    => array("href" => "/ph/co2/folder/list"),
+      "crud"    => array("href" => "/ph/co2/folder/crud"),
+    ),
     "tool" => array(
       "get"    => array("href" => "/ph/co2/tool/get")
     ),

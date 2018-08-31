@@ -19,8 +19,8 @@ dynForm = {
                 $("#ajaxFormModal #parentType").val(contextData.type);
                 $("#ajaxFormModal #idParentRoom").val(currentRoomId);
                 
-                if( typeof parentIdSurvey != "undefined" )
-                    $( "#ajaxFormModal #parentIdSurvey" ).val( parentIdSurvey );
+                // if( typeof parentIdSurvey != "undefined" )
+                //     $( "#ajaxFormModal #parentIdSurvey" ).val( parentIdSurvey );
 
                 dataHelper.activateMarkdown("#ajaxFormModal #description");
                 $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
@@ -156,7 +156,7 @@ dynForm = {
             //prend le parentIdElement quand on est sur la page d'une resolution
             parentId : dyFInputs.inputHidden(typeof parentIdElement != "undefined" ? parentIdElement : contextData.id),
             parentType : dyFInputs.inputHidden(typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type),
-
+            parentIdSurvey : dyFInputs.inputHidden(typeof form != "undefined" ? form : ""),
             parentIdSurvey : dyFInputs.inputHidden(typeof form != "undefined" ? form._id.$id : ""),
             parentTypeSurvey : dyFInputs.inputHidden(typeof form != "undefined" ? "forms" : ""),
             role : dyFInputs.inputHidden(typeof role != "undefined" ? role : ""),

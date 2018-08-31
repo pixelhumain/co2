@@ -877,7 +877,7 @@ function bindAboutPodElement() {
 	}
 	function updateBookmark(id) {
 		mylog.log("updBook",id);
-		filesUp=files[id];
+		filesUp=docsList[id];
 		var params=new Object;
 		params.id=id;
 		if(filesUp.url != "undefined")

@@ -193,12 +193,7 @@
 
 	<li class="">
 		<a href="javascript:" class="ssmla" id="btn-start-gallery">
-			<i class="fa fa-camera"></i> <?php echo Yii::t("common","Gallery"); ?>
-		</a>
-	</li>
-	<li class="">
-		<a href="javascript:" class="ssmla" id="btn-start-library">
-			<i class="fa fa-book"></i> <?php echo Yii::t("common","Library"); ?>
+			<i class="fa fa-cloud"></i> <?php echo Yii::t("common","Gallery"); ?>
 		</a>
 	</li>
 

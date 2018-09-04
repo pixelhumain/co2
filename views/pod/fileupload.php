@@ -62,7 +62,7 @@
 	});
 
 	function initBtnUploadAction(){
-		$("#"+contentId+"_photoAdd").on('submit',(function(e) {
+		$("#"+contentId+"_photoAdd").on('submit',function(e) {
 			if(debug)mylog.log("id2", id);
 			dataSend = new FormData(this);
 			console.log("omrdata",dataSend);
@@ -71,7 +71,8 @@
 			updateBtnUpload(true);
 			$("#"+contentId+"_imgPreview").addClass("hidden");
 			$.ajax({
-				url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/communecter/folder/"+type+"/ownerId/"+id+"/input/avatar",
+				//url : baseUrl+"/"+moduleId+"/document/<?php echo Yii::app()->params['uploadUrl'] ?>dir/communecter/folder/"+type+"/ownerId/"+id+"/input/avatar",
+				url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/communecter/folder/"+type+"/ownerId/"+id+"/input/avatar/contentKey/profil/docType/image",
 				type: "POST",
 				data: dataSend,
 				contentType: false,
@@ -79,9 +80,30 @@
 				processData: false,
 				dataType: "json",
 				success: function(data){
-					if(debug)mylog.log(data);
-			  		if(data.success){
-			  			imageName = data.name;
+					if(data.result){
+			        	imagesPath.push(baseUrl+data.src);
+						imageId = data.id["$id"];
+						setTimeout(function(){
+							updateBtnUpload(false);
+							mylog.log(typeof(updateSlider));
+							if(typeof(updateSlider) != "undefined" && typeof (updateSlider) == "function"){
+								updateSlider(data.src, data.id["$id"]);
+					  		}
+					  		if(typeof(updateSliderImage) !="undefined" && typeof(updateSliderImage) == "function" && "undefined" != typeof events[id]){
+					  			updateSliderImage(id, data.src);
+					  		}
+						}, 2000);
+					    toastr.success(data.msg);
+					    //met à jour l'image de myMarker (marker sur MA position)
+					    Sig.initHomeBtn();
+					    //met à jour l'image de profil dans le menu principal
+					    updateMenuThumbProfil();
+
+					} else{
+						updateBtnUpload(false);
+						toastr.error(data.msg);
+					}
+		  			/*imageName = data.name;
 			  			var doc = { 
 					  		"id":id,
 					  		"type":type,
@@ -102,10 +124,11 @@
 			  			saveImage(doc, "/"+data.dir+data.name);
 			  		}
 			  		else
-			  			toastr.error(data.msg);
-			  },
+			  			toastr.error(data.msg);*/
+			  	
+				}
 			});
-		}));
+		});
 		$("#"+contentId+"_photoAddBtn").off().on("click", function(event){
   			if (!$(event.target).is('input')) {
   					$(this).find("#"+contentId+"_avatar").trigger('click');

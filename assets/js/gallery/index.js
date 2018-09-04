@@ -183,6 +183,7 @@ function getfilesFolderView(k, v, edit){
 	return htmlFolders;
 }
 function getImageFolderView(key, v, edit){
+	edit=(typeof v.edit != "undefined" && !v.edit) ? v.edit : edit;
 	contentFolderKey="slider";
 	contentTitle=v.name;
 	countLabel="";
@@ -205,9 +206,10 @@ function getImageFolderView(key, v, edit){
 	var	htmlBtn = ' <a href="javascript:;" class="openFolder filter-albums-gallery" data-folder="'+keyFolder+'" data-folder-name="'+contentTitle+'" data-doctype="image" data-key="'+contentFolderKey+'">'+
 						'<div class="center">' +
 							'<span class="titleAlbum titleFolder">'+contentTitle+'</span><br/>'+
-							'<span>'+countLabel+'</span><br/>'+
-							getToolBarFolder(key,"text-white")+
-						'</div>'+
+							'<span>'+countLabel+'</span><br/>';
+							if(edit)
+								htmlBtn+=getToolBarFolder(key,"text-white");
+						htmlBtn+='</div>'+
 					' </a>';
 
 	var htmlAlbums = '<li id="folder'+key+'" class="content_image_album mix '+key+' gallery-img no-padding" data-cat="1">'+

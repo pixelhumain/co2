@@ -23,6 +23,10 @@
   *** Indexe les id des folders dans les entrée document et clean l'ancienne data
 ** Quatrième Bash : "co2/datamigration/CreateThumbPath"
   *** Ajoute les folders thumb pour les images décalées dans leurs dossiers (si images)
+
+* Bash sur les documents du CTE déjà uploadé
+** "/co2/datamigration/ChangeFilesCTESurveyDatas"
+  *** Supprime la data mauvaise et ajoute la clé du survey
 ---------------------------------------
 ---------- VERSION C0.30 (warrior flower) --------------
 ---------------------------------------

@@ -394,7 +394,7 @@ jQuery(document).ready(function() {
 										fd.append("parentId", contextData.id);
 										fd.append("parentType", contextData.type);
 										fd.append("formOrigin", "banner");
-										fd.append("contentKey", "banner");
+										//fd.append("contentKey", "banner");
 										fd.append("cropW", cropResult.cropW);
 										fd.append("cropH", cropResult.cropH);
 										fd.append("cropX", cropResult.cropX);
@@ -410,7 +410,7 @@ jQuery(document).ready(function() {
 										// Attach file
 										//formData.append('image', $('input[type=banniere]')[0].files[0]); 
 										$.ajax({
-											url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/communecter/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banner",
+											url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/communecter/folder/"+contextData.type+"/ownerId/"+contextData.id+"/input/banner/docType/image/contentKey/banner",
 											type: "POST",
 											data: fd,
 											contentType: false,
@@ -421,7 +421,9 @@ jQuery(document).ready(function() {
 										        if(data.result){
 										        	$(".saveBanner").prop("disabled",false);
 								        			$(".saveBanner").find("i").removeClass("fa-spin fa-spinner").addClass("fa-send");
-										        	newBanner='<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src.profilBannerUrl+'" style="">';
+										        	newBanner='<a href="'+baseUrl+data.src.profilRealBannerUrl+'" class="thumb-info" data-title="'+trad.coverImageof+' '+contextData.name+'"" data-lightbox="all">'+
+										        		'<img class="col-md-12 col-sm-12 col-xs-12 no-padding img-responsive" src="'+baseUrl+data.src.profilBannerUrl+'" style="">'+
+										        		'</a>';
 										        	$("#contentBanner").html(newBanner);
 										        	$(".contentHeaderInformation").addClass("backgroundHeaderInformation");
 										        	$.unblockUI();

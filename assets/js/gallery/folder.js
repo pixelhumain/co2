@@ -9,7 +9,7 @@ folder={
 			"btnSuccessLabel": trad.choose
 		}
 	},
-	showPanel: function(action, typeMoved, idSelected ){
+	showPanel: function(action, typeMoved, idSelected, callbackPanel, initDoc){
 		var dialog = bootbox.dialog({
 		    title: folder.panelFolder[action].title,
 		    message: '<div id="folderTreeHtml">'+
@@ -25,19 +25,21 @@ folder={
 			        label: trad.cancel,
 			        className: 'btn-default',
 			        callback: function(){
-			        	breadcrumLevel=($("#breadcrumLevel .breadcrumAnchor").length);
+			        	breadcrumLevel=$("#breadcrumGallery .breadcrumAnchor").length;
 			            dialog.modal('hide');
 			        }
 			    },
 			    ok: {
 			        label: folder.panelFolder[action].btnSuccessLabel,
 			        className: 'btn-success',
-			        callback: function(){
-			        	selectedFolder=$("#breadcrumFolder .breadcrumAnchor").last().data("folder-key");
+			        callback: function(e){
+			        	e.preventDefault();
+			        	var selectedFolder=$("#breadcrumFolder .breadcrumAnchor").last().data("folder-key");
 			        	if(action=="move"){
 			        		listIds=(typeMoved=="documents") ? selectedIds : [idSelected];
 			        		folder.addToFolder(selectedFolder, typeMoved,  listIds);
-			        	}
+			        	} else if (action=="get")
+			        		callbackPanel(selectedFolder);
 			        }
 			    }
 			}
@@ -46,20 +48,24 @@ folder={
 		    //setTimeout(function(){
 		    folderKey = (folderId != "") ? folderId : null;
 		    breadcrumLevel=0;
-		    folder.openDirectory(folderKey, true);
+		    if(notNull(initDoc)){
+		    	folderKey= (notNull(initDoc.folderId)) ? initDoc.folderId : null;
+		    	initDoc=initDoc.docType;
+		    }
+		    folder.openDirectory(folderKey, true, initDoc);
 		    $(".addFolder").click(function(){
-		    	folder.crudFolder("new", $("#breadcrumFolder .breadcrumAnchor").last().data("folder-key"),  true);
+		    	folder.crudFolder("new", $("#breadcrumFolder .breadcrumAnchor").last().data("folder-key"),  true, initDoc);
 		    });
 		        //dialog.find('.bootbox-body').html('I was loaded after the dialog was shown!');
 		    //}, 1000);
 		});
 	},
-	appendLevel: function(domTarget, inFolder, name, idFolder, contKey){
+	appendLevel: function(domTarget, inFolder, name, idFolder, contKey, docT){
 		className=(inFolder)? "btn btn-default": "bold text-dark";
 		foldKey=(notNull(idFolder)) ? idFolder : folderId; 
 		contKey=(notNull(contKey)) ? contKey : contentKey;
 		labelName=name;
-		docT=docType;
+		docT=(notNull(docT)) ? docT: docType;
 		if(!inFolder && breadcrumLevel==0){
 			labelName= "<i class='fa fa-home'></i>";
 			docT="";
@@ -77,19 +83,20 @@ folder={
 		$(domTarget).append($html);
 		breadcrumLevel++;
 	},
-	openDirectory: function(id, buildLevel){
+	openDirectory: function(id, buildLevel, init){
 		nameDir="";
 		nameDir="";
 		htmlMenuCol="";
+		docT=(notNull(init)) ? init : docType;
 		if(notNull(buildLevel)){
 			if(breadcrumLevel==0)
-				folder.buildNewBreadcrum("#breadcrumFolder", true, id);
+				folder.buildNewBreadcrum("#breadcrumFolder", true, id, docT);
 			else{
 				folder.appendLevel("#breadcrumFolder", true, navInFolders[id].name, id);
 			}
 		}
 		
-		folder.getChildrenFolders(id);
+		folder.getChildrenFolders(id, docT);
 	
 	},
 	addToFolder : function(id, type, ids){
@@ -105,7 +112,7 @@ folder={
 						keyMov="slider";
 						if(docType=="image")
 							contentKey="slider";
-						folderId=data.movedIn;
+						folderId=(data.movedIn!="")?data.movedIn:null ;
 						if(type=="folders")
 							navInFolders[data.movedEl._id.$id] = data.movedEl;
 						folder.buildNewBreadcrum("#breadcrumGallery", false, folderId);
@@ -131,12 +138,12 @@ folder={
 			return "<span class=''> "+trad.noalbumregister+"</span>";
 		}
 	},
-	crudFolder: function(action, idFolder, inFolder){	
+	crudFolder: function(action, idFolder, inFolder, docT){	
 		var params = {};
 		params.targetType = itemType;
 		params.targetId = itemId;
 		params.colType = "documents";
-		params.docType = docType;
+		params.docType = (notNull(docT)) ? docT : docType;
 		nameFolder=(action!="new") ? navInFolders[idFolder].name : "";
 		if(typeof folderId != "undefined" || notNull(idFolder)){
 			params.folderId=(notNull(idFolder)) ? idFolder : folderId;
@@ -211,15 +218,16 @@ folder={
 		});	
 	},
 	addFolderInNav : function(k, fold){
-		if(typeof navInFolders[k] == "undefined" && $.inArray(k, ["profil","banner", "album"]) <= 0 ){
+		if(typeof navInFolders[k] == "undefined" && $.inArray(k, ["profil","banner", "album"]) < 0 ){
 			if(typeof fold.parentId == "undefined")
 				fold.parentId=(docType=="image") ? "album" : docType;	
 			navInFolders[k]=fold;
 		}
 	},
-	buildNewBreadcrum : function (domTarget, inFolder, idFolder){
+	buildNewBreadcrum : function (domTarget, inFolder, idFolder, docT){
 		breadcrumLevel=0;
 		$(domTarget).html("");
+		docT=(notNull(docT))? docT : docType;
 		if(!inFolder){
 			folder.appendLevel(domTarget, inFolder, 0);
 			if(docType!="")
@@ -227,13 +235,14 @@ folder={
 		}
 		if(notNull(idFolder)){
 			parents=folder.getParentsFolders(idFolder, 0, inFolder);
+			console.log(parents);
 			countParent=Object.keys(parents).length;
 			if(countParent > 0){
 				for (var i = countParent; i != 0; i--) {
 				  	$.each(parents, function(key,v){
 						if(v.level==i){
 							parentName=v.name;
-							folderK=(key != "album")  ? key:"";
+							folderK=($.inArray(key, ["album", "file"]) <= 0)  ? key:"";
 							folder.appendLevel(domTarget, inFolder, parentName, folderK);
 							return false;
 						}
@@ -242,11 +251,16 @@ folder={
 				
 			}
 			// Append current level
-			folder.appendLevel(domTarget, inFolder, navInFolders[idFolder].name);
-		}else if(contentKey!="" && docType=="image")
-			folder.appendLevel(domTarget, inFolder, navInFolders["album"].name);
-		else if(docType=="file" && inFolder)
-			folder.appendLevel(domTarget, inFolder, navInFolders["file"].name);
+			folder.appendLevel(domTarget, inFolder, navInFolders[idFolder].name, idFolder);
+		}else if(docT=="image" && !inFolder && contentKey!=""){
+			//contK=(contentKey=="") ? "slider" : contentKey;
+			folder.appendLevel(domTarget, inFolder, mapButton[contentKey], "", contentKey, docT);
+			//folder.appendLevel(domTarget, inFolder, mapButton[contentKey]["album"].name, "", contK, docT);
+		}else if(inFolder){
+			contK=(docT=="image" && contentKey=="") ? "slider" : null;
+			nameLabel= (docT=="image") ? navInFolders["album"].name : navInFolders["file"].name;
+			folder.appendLevel(domTarget, inFolder, nameLabel, "", contK, docT);
+		}
 	},
 	galleryGuide : function (domTarget, inFolder, level, name, docT, contentK, foldId){
 		docType=(typeof docT != "undefined" ) ? docT : "";
@@ -277,10 +291,11 @@ folder={
 		}
 		return arrayParents;
 	},
-	getChildrenFolders: function (id){
+	getChildrenFolders: function (id, docT){
 		arrayChildren={};
+		docT=(notNull(docT)) ? docT : docType;
 		if(!notNull(id) || id==""){
-			var id = (docType == "image") ? "album" : "file";
+			var id = (docT == "image") ? "album" : "file";
 		}
 		if(Object.keys(navInFolders).length > 0){
 			$.each(navInFolders,function(i,v){
@@ -294,7 +309,7 @@ folder={
 			var params={
 				"contextType": itemType,
 				"contextId": itemId,
-				"docType": docType,
+				"docType": docT,
 				"children" : true
 			};	
 			if($.inArray(id, ["album", "file"]) <= 0)

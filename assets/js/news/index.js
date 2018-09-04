@@ -1167,7 +1167,7 @@ function initFormImages(){
 			contextParentId = idSession;
 		}
 		$.ajax({
-			url : baseUrl+"/"+moduleId+"/document/"+uploadUrl+"dir/communecter/folder/"+contextParentType+"/ownerId/"+contextParentId+"/input/newsImage",
+			url : baseUrl+"/"+moduleId+"/document/uploadSave/dir/communecter/folder/"+contextParentType+"/ownerId/"+contextParentId+"/input/newsImage/docType/image/contentKey/slider",
 			type: "POST",
 			data: new FormData(this),
 			contentType: false,
@@ -1176,62 +1176,28 @@ function initFormImages(){
 			dataType: "json",
 			success: function(data){
 				if(debug)mylog.log(data);
-		  		if(data.success){
-		  			imageName = data.name;
-					var doc = { 
-						"id":contextParentId,
-						"type":contextParentType,
-						"folder":contextParentType+"/"+contextParentId+"/album",
-						"moduleId":"communecter",
-						"name" : data.name , 
-						"date" : new Date() , 
-						"size" : data.size ,
-						"doctype" : docType,
-						"contentKey" : contentKey,
-						"formOrigin" : "news"
-					};
-					mylog.log(doc);
-					path = "/"+data.dir+data.name;
-					$.ajax({
-					  	type: "POST",
-					  	url: baseUrl+"/"+moduleId+"/document/save",
-					  	data: doc,
-				      	dataType: "json"
-					}).done( function(data){
-				        if(data.result){
-						    toastr.success(data.msg);
-						    //setTimeout(function(){
-						    $(".imagesNews").last().val(data.id.$id);
-						    $(".imagesNews").last().attr("name","");
-						    $(".newImageAlbum").last().find("img").removeClass("grayscale");
-						    $(".newImageAlbum").last().find("i").remove();
-						    $(".newImageAlbum").last().append("<a href='javascript:;' onclick='deleteImage(\""+data.id.$id+"\",\""+data.name+"\")'><i class='fa fa-times fa-x padding-5 text-white removeImage' id='deleteImg"+data.id.$id+"'></i></a>");
-						    //},200);
-				
-						} else{
-							toastr.error(data.msg);
-							if($("#results img").length>1)
-						  		$(".newImageAlbum").last().remove();
-						  	else{
-						  		$("#results").empty();
-						  		$("#results").hide();
-						  	}
-						}
-						$("#addImage").off();
-						$(".form-create-news-container .form-actions .waitendofloading").remove();
-					});
-		  		}
-		  		else{
-			  		if($("#results img").length>1)
+	  		    if(data.result){
+				    toastr.success(data.msg);
+				    //setTimeout(function(){
+				    $(".imagesNews").last().val(data.id.$id);
+				    $(".imagesNews").last().attr("name","");
+				    $(".newImageAlbum").last().find("img").removeClass("grayscale");
+				    $(".newImageAlbum").last().find("i").remove();
+				    $(".newImageAlbum").last().append("<a href='javascript:;' onclick='deleteImage(\""+data.id.$id+"\",\""+data.name+"\")'><i class='fa fa-times fa-x padding-5 text-white removeImage' id='deleteImg"+data.id.$id+"'></i></a>");
+				    //},200);
+		
+				} else{
+					toastr.error(data.msg);
+					if($("#results img").length>1)
 				  		$(".newImageAlbum").last().remove();
 				  	else{
 				  		$("#results").empty();
 				  		$("#results").hide();
 				  	}
-				  	$("#addImage").off();
-		  			toastr.error(data.msg);
-		  		}
-			},
+				}
+				$("#addImage").off();
+				$(".form-create-news-container .form-actions .waitendofloading").remove();
+			}
 		});
 	}));
 }

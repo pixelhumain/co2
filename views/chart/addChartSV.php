@@ -77,13 +77,13 @@ textarea.form-control{
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<p><?php echo Yii::t("chart","These forms are here to show the values {what} in order to give an overview about organization, manage and life {what}",array("{what}"=> Yii::t("common","of the ".Element::getControlerByCollection($parentType)))) ?></p>
 			</div>
-			<div class="col-md-6 col-sm-6 col-xs-6">
+			<!--<div class="col-md-6 col-sm-6 col-xs-6">
 				<a id="btncommons" href="javascript:;" onclick="switchTypeChart('commons')" class="btn <?php if (isset($properties["commons"]) && !empty($properties["commons"])) echo "text-orange" ?>">
 					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Commons") ?>
 				</a>
 				<p><?php echo Yii::t("chart","Define {what} as a common. It means to manage one or several resources openly and transparently whitout appropriating it",array("{what}"=>Yii::t("common","this ".Element::getControlerByCollection($parentType)))) ?></p>
 
-			</div>
+			</div>-->
 			<div class="col-md-6 col-sm-6 col-xs-6">
 				<a id="btnopen" href="javascript:;" onclick="switchTypeChart('open')" class="btn <?php if (isset($properties["open"]) && !empty($properties["open"])) echo "text-orange" ?>">
 					<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Open") ?>
@@ -253,6 +253,7 @@ jQuery(document).ready(function() {
 	//bindprojectSubViewchart();
 	runChartFormValidation();
 	removeChartProperty();
+	switchTypeChart("open");
 });
 function runChartFormValidation() {
 	var formChart = $('.form-chart');

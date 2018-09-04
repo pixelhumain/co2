@@ -17,9 +17,9 @@ dynForm = {
     		 }
     	},
     	beforeBuild : function(){
-	    	uploadObj.gotoUrl = location.hash;
+	    	//uploadObj.gotoUrl = location.hash;
 	    	uploadObj.contentKey="file";
-			uploadObj.set( contextData.type,contextData.id,true);
+			uploadObj.set( contextData.type, contextData.id, "file");
 	    },
 	    save : function() { 
 	    	if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
@@ -31,6 +31,17 @@ dynForm = {
                 html:"<p class='text-dark'><i class='fa fa-info-circle'></i> "+tradDynForm.infouploadfile+" <hr></p>",
             },
 	        file : dyFInputs.file(),
+	          
+	        folder : {
+	            inputType : "folder",
+	            label : trad.selectafolder,
+	            emptyMsg:trad.nofolderselected,
+	            folderKey : folderId,
+	            docType : "file",
+	            contentKey: "",
+	            contextType : contextData.type, 
+	            contextId : contextData.id
+	        },
 	        //newsCreation : dyFInputs.checkbox(false,"newsCreation",{labelText: tradDynForm.sharefilesasnews, onText:tradDynForm.yes, offText:tradDynForm.no,labelInInput:tradDynForm.shareit, inputId: "#createNews"}),
 	        newsCreation : dyFInputs.checkboxSimple("false", "newsCreation", {
 			        							labelText: tradDynForm.sharefilesasnews + " ?", 

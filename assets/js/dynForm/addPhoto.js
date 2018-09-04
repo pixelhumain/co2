@@ -17,9 +17,9 @@ dynForm = {
     		 }
     	},
 	    beforeBuild : function(){
-	    	uploadObj.gotoUrl = location.hash;
+	    	//uploadObj.gotoUrl = location.hash;
 	    	uploadObj.contentKey="slider";
-			uploadObj.set( contextData.type,contextData.id );
+			uploadObj.set( contextData.type,contextData.id, "image", uploadObj.contentKey);
 	    },
 	    save : function() { 
 	    	if( $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
@@ -33,6 +33,16 @@ dynForm = {
 					 "</p>",
             },
 	        image : dyFInputs.image(),
+	        folder : {
+	            inputType : "folder",
+	            label : trad.selectanalbum,
+	            emptyMsg:trad.noalbumselected,
+	            folderKey : folderId,
+	            docType : "image",
+	            contentKey: "slider",
+	            contextType : contextData.type, 
+	            contextId : contextData.id
+	        },
 	        newsCreation : dyFInputs.checkboxSimple("false", "newsCreation", {
 			        							labelText: tradDynForm.shareimagesasnews + " ?", 
 			        							onText:tradDynForm.yes, 

@@ -3804,6 +3804,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	public static function createfolder($folderPath){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			echo "/////////////create folder//////////////////////////<br/>";
+
 			$upload_dir = Yii::app()->params['uploadDir']."communecter/";
 			$folderPath=str_replace ( $upload_dir , "" , $folderPath ); 
 			$folderPathExp=explode("/", $folderPath);
@@ -3814,6 +3815,27 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	               mkdir ( $upload_dir,0775 );
 			 
 	        }
+	    }else{
+	    	echo "Bah alors champion ? douché q'tin reconno";
+	    }
+	}
+	public static function actionChangeFilesCTESurveyDatas(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$el=PHDB::find(Document::COLLECTION,array("keySurvey"=>array('$exists'=>true)));
+				//echo "//////////".count($res)." ".$type."/////////////////<br>";
+				$count=0;
+				foreach ($el as $key => $value) {
+					$arraySetted=array('$unset'=>array("keySurvey"=>""), '$set'=>array("surveyId"=>'cte'));
+					//print_r($value);
+					PHDB::update(
+							Document::COLLECTION,
+							array("_id"=>new MongoId($key)),
+							$arraySetted);
+					$count++;
+					
+					
+		 		}
+		 	echo $count." documents qui sont passés à la casserole";
 	    }else{
 	    	echo "Bah alors champion ? douché q'tin reconno";
 	    }

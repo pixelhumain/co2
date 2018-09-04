@@ -1681,4 +1681,9 @@ La vie en santé;Santé;;
 		Rest::json($link);exit;
 
 	}
+
+	public function actionDateForm(){
+		$res = Form::isFinish("cte");
+		Rest::json($res);
+	}
 }

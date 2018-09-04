@@ -70,6 +70,19 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
 		<iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
         <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
         <iframe id="annonce" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+        
+        <div id="rejoindre" class="col-xs-12" style ="padding: 15px; text-align: justify;">
+
+            <h3> Comment nous rejoindre ? </h3>
+
+            <span>
+                C'est simple il suffit de remplir 
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc8yce4HQQJHflDViNR_NDdlK9t7n3qoD2EjTQKWqNQLzcx8A/viewform?c=0&w=1&usp=mail_form_link">ce questionnaire</a>  <br/> <br/>
+                Et de faire l'adhésion sur <a href="https://www.helloasso.com/associations/le-chaudron/adhesions/adhesion-portail-hva
+">Hello Asso</a> 
+            </span>
+        </div>
+
         <div id="qui" class="col-xs-12">
             Portail HVA qu'est que c'est ? ....
         </div>
@@ -115,44 +128,45 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
         });
 
         $("#btnRejoindre").click(function(){
-        	var form = {
-				saveUrl : baseUrl+"/"+moduleId+"/mailmanagement/createandsend/",
-				dynForm : {
-					jsonSchema : {
-						title : "Rejoindre",// trad["Update network"],
-						icon : "fa-key",
-						onLoads : {
-							sub : function(){
-								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-											  				  .addClass("bg-dark");
-								//bindDesc("#ajaxFormModal");
-							}
-						},
-						beforeSave : function(){
-							mylog.log("beforeSave");
-                            alert("Il manque votre adresse mail pour recevoir ce mail ;)");
-                            dyFObj.closeForm();
-					    	//removeFieldUpdateDynForm(contextData.type);
-					    },
-						afterSave : function(data){
-							mylog.dir(data);
-							dyFObj.closeForm();
-						},
-						properties : {
-							name : dyFInputs.text("Nom et Prénom","Nom et Prénom",{ required : true }),
-							orga : dyFInputs.text("Entreprise / Association","Entreprise / Association",{ required : true }),
-							email : dyFInputs.text(),
-							tel : dyFInputs.text("Téléphone", "Téléphone",{ required : true }),
-							ville : dyFInputs.text("Ville", "Ville",{ required : true }),
-							tplMail : dyFInputs.inputHidden("coco@gmail.com"),
-							tplObject : dyFInputs.inputHidden("Inscription sur Portail HVA"),
-							tpl : dyFInputs.inputHidden("hvaRejoindre"),
-						}
-					}
-				}
-			};
+            changeMenu("rejoindre");
+   //      	var form = {
+			// 	saveUrl : baseUrl+"/"+moduleId+"/mailmanagement/createandsend/",
+			// 	dynForm : {
+			// 		jsonSchema : {
+			// 			title : "Rejoindre",// trad["Update network"],
+			// 			icon : "fa-key",
+			// 			onLoads : {
+			// 				sub : function(){
+			// 					$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+			// 								  				  .addClass("bg-dark");
+			// 					//bindDesc("#ajaxFormModal");
+			// 				}
+			// 			},
+			// 			beforeSave : function(){
+			// 				mylog.log("beforeSave");
+   //                          alert("Il manque votre adresse mail pour recevoir ce mail ;)");
+   //                          dyFObj.closeForm();
+			// 		    	//removeFieldUpdateDynForm(contextData.type);
+			// 		    },
+			// 			afterSave : function(data){
+			// 				mylog.dir(data);
+			// 				dyFObj.closeForm();
+			// 			},
+			// 			properties : {
+			// 				name : dyFInputs.text("Nom et Prénom","Nom et Prénom",{ required : true }),
+			// 				orga : dyFInputs.text("Entreprise / Association","Entreprise / Association",{ required : true }),
+			// 				email : dyFInputs.text(),
+			// 				tel : dyFInputs.text("Téléphone", "Téléphone",{ required : true }),
+			// 				ville : dyFInputs.text("Ville", "Ville",{ required : true }),
+			// 				tplMail : dyFInputs.inputHidden("coco@gmail.com"),
+			// 				tplObject : dyFInputs.inputHidden("Inscription sur Portail HVA"),
+			// 				tpl : dyFInputs.inputHidden("hvaRejoindre"),
+			// 			}
+			// 		}
+			// 	}
+			// };
 
-			dyFObj.openForm(form, "sub");		
+			// dyFObj.openForm(form, "sub");		
 			
         });
 

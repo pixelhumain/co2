@@ -1982,7 +1982,7 @@ function parentList (ctypes, parentId, parentType) {
 
 		if(!notEmpty(myList[parentType]))
 			myList[ parentType ] = { label: parentType, options:{} };
-    	myList[ parentType ]["options"][ parentId ] = contextData.parent.name;  
+    	myList[ parentType ]["options"][ parentId ] = ( (typeof contextData.parent != "undefined" && typeof contextData.parent.name != "undefined" ) ? contextData.parent.name : tradDynForm["dontknow"] );  
     }
     return myList; 
 }
@@ -2923,11 +2923,10 @@ function showLoader(id){
 function bindButtonOpenForm(){ 
 	//window select open form type (selectCreate)
 	$(".btn-open-form").off().on("click",function(){
-
+		mylog.log("btn-open-form");
         var typeForm = $(this).data("form-type");
-        mylog.log("test", $(this).data("form-subtype"));
         currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-        mylog.log("bindButtonOpenForm contextData", contextData);
+        mylog.log("btn-open-form contextData", typeForm, currentKFormType, contextData);
         //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
         if(contextData && contextData.type && contextData.id ){
             dyFObj.openForm(typeForm,"sub");

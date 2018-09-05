@@ -45,7 +45,7 @@ if( @$_GET["el"] || @$custom )
         $c = array( "id"   => (string) $el["_id"],
                    "type" => $stum[0],
                    "title"=> $el["name"],
-                   "url"=> "/custom?el=".$_GET["el"] );
+                   "url"=> "/custom?el=".(!@$_GET["el"]) ? (string) $el["_id"] : @$_GET["el"] );
         
         if(@$el["custom"])
             $c = array_merge( $c , $el["custom"] );
@@ -107,6 +107,13 @@ if( @Yii::app()->session['custom'] ){  ?>
                     $(".documentation-btn").remove();
                 if(e=="statistics")
                     $(".statistics-btn").remove();
+                if(e=="search")
+                    $("#second-search-bar").remove();
+                if(e=="app")
+                    $("#dropdownApps").remove();
+                if(e=="map")
+                    $("#btn-show-map").remove();
+
             });
         }
     ;}

@@ -3664,6 +3664,201 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}else 
 			echo "Tout le monde t'as vu !! reste bien tranquille";
 	}
+	public function actionInsertFoldersElement(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);
+			//$slugcitoyens=PHDB::find(Slug::COLLECTION);
+			$typeEl=array("organizations","projects","events","citoyens");
+			//$slugExist=array();
+			//foreach($slugcitoyens as $data){
+			//	array_push($slugExist,$data["name"]);
+			//}
+			foreach($typeEl as $type){
+				
+				$res=PHDB::find($type,array("documents"=>array('$exists'=>true)));
+				echo "//////////".count($res)." ".$type."/////////////////<br>";
+				$count=0;
+				foreach ($res as $key => $value) {
+					
+						// replace non letter or digits by -
+					var_dump($value["documents"]);	
+					$folders=[];
+					if(@$value["documents"]["image"]){
+						$folders=array_merge($folders,self::prepareFolder($type, $key, $value["documents"]["image"], "image"));	
+					}
+					if(@$value["documents"]["file"]){
+						$folders=array_merge($folders,self::prepareFolder($type, $key, $value["documents"]["file"], "file"));	
+					}
+					var_dump($folders);
+					$count++;
+					
+					
+		 		}
+		 		echo "////////////////".$count." ".$type." traités (comme des animaux) ///////";
+			}
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
+	}
+	public function actionCreateFoldersPathAndDocumentPath(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);	
+			$res=PHDB::find(Folder::COLLECTION);
+			echo "//////////".count($res)." folders vont être épiés traités envoyer à l'abatoire/////////////////<br>";
+			$count=0;
+			foreach ($res as $key => $value) {
+				$docs=PHDB::find(Document::COLLECTION, 
+					array("id"=>$value["contextId"], "type"=>$value["contextType"], "doctype"=>$value["docType"], "collection"=>$value["name"]));
+				$folderPath=Folder::getFolderPath($value);
+				self::createfolder($folderPath);
+				echo "=>>>>>>> folder path : ".$folderPath."<br/><hr>";
+				foreach($docs as $id => $v){
+					$pathDocument=Document::getDocumentPath($v);
+					$newPath=$folderPath."/".$v["name"];
+					echo $id." :: ".$pathDocument."</br>";
+					echo "Move file to :: ".$newPath."</br>";
+					if(file_exists ($pathDocument))
+						rename($pathDocument, $newPath);
+					$count++;
+				}
+				//var_dump($folders);
+				
+	 		}
+	 		echo "////////////////".$count." documents sous de la source de la kilienne ///////";
+			
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
+	}
+	public function actionCreateThumbPath(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);	
+			$docs=PHDB::find(Document::COLLECTION, 
+					array("doctype"=>"image", "folderId"=>array('$exists'=>true)));
+			//echo "=>>>>>>> folder path : ".$folderPath."<br/><hr>";
+			$count=0;
+			foreach($docs as $id => $v){
+				$folderPath=Folder::getFolderPath(Folder::getById($v["folderId"]))."/thumb";
+				self::createfolder($folderPath);
+				
+   				$pathDocument=Yii::app()->params['uploadDir'].$v["moduleId"]."/".$v["folder"]."/thumb/".$v["name"];
+				$newPath=$folderPath."/".$v["name"];
+				echo $id." :: ".$pathDocument."</br>";
+				echo "Move file to :: ".$newPath."</br>";
+				if(file_exists ($pathDocument))
+					rename($pathDocument, $newPath);
+				$count++;
+				//var_dump($folders);
+				
+	 		}
+	 		echo "////////////////".$count." documents sous de la source de la kilienne ///////";
+			
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
+	}
+	public function actionUpdateDocsAndDeleteCollection(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);	
+			$res=PHDB::find(Folder::COLLECTION);
+			echo "//////////".count($res)." folders ont été épiés traités envoyer à l'abatoire/////////////////<br>";
+			$count=0;
+			foreach ($res as $key => $value) {
+				$docs=PHDB::find(Document::COLLECTION, 
+					array("id"=>$value["contextId"], "type"=>$value["contextType"], "doctype"=>$value["docType"], "collection"=>$value["name"]));
+				foreach($docs as $id => $v){
+					echo $id." :: ".$key."</br>";
+					$set=array('$set'=>array("folderId"=>$key), '$unset'=>array("collection"=>true));
+					PHDB::update(
+							Document::COLLECTION,
+							array("_id"=>new MongoId($id)),
+							$set);
+					$count++;
+				}
+				
+	 		}
+	 		echo "////////////////".$count." documents updaté avec le folderId ///////";
+	 		$typeEl=array("organizations","projects","events","citoyens");
+	 		$count=0;
+			foreach($typeEl as $type){
+				
+				$el=PHDB::find($type,array("documents"=>array('$exists'=>true)));
+				//echo "//////////".count($res)." ".$type."/////////////////<br>";
+				foreach ($el as $key => $value) {
+
+					PHDB::update(
+							$type,
+							array("_id"=>new MongoId($key)),
+							array('$unset'=>array("documents"=>true)));	
+					$count++;
+					
+					
+		 		}
+			}
+	 		echo "////////////////".$count." elements ou l'on a supprimer l'arbre documentations ///////";
+			
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
+	}
+	public static function createfolder($folderPath){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			echo "/////////////create folder//////////////////////////<br/>";
+
+			$upload_dir = Yii::app()->params['uploadDir']."communecter/";
+			$folderPath=str_replace ( $upload_dir , "" , $folderPath ); 
+			$folderPathExp=explode("/", $folderPath);
+			foreach($folderPathExp as $folder){
+				$upload_dir .= $folder.'/';
+	            echo $upload_dir."<br/>";
+	            if( !file_exists ( $upload_dir ) )
+	               mkdir ( $upload_dir,0775 );
+			 
+	        }
+	    }else{
+	    	echo "Bah alors champion ? douché q'tin reconno";
+	    }
+	}
+	public static function actionChangeFilesCTESurveyDatas(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$el=PHDB::find(Document::COLLECTION,array("keySurvey"=>array('$exists'=>true)));
+				//echo "//////////".count($res)." ".$type."/////////////////<br>";
+				$count=0;
+				foreach ($el as $key => $value) {
+					$arraySetted=array('$unset'=>array("keySurvey"=>""), '$set'=>array("surveyId"=>'cte'));
+					//print_r($value);
+					PHDB::update(
+							Document::COLLECTION,
+							array("_id"=>new MongoId($key)),
+							$arraySetted);
+					$count++;
+					
+					
+		 		}
+		 	echo $count." documents qui sont passés à la casserole";
+	    }else{
+	    	echo "Bah alors champion ? douché q'tin reconno";
+	    }
+	}
+
+	public static function prepareFolder($type, $id, $value, $docType, $parentId=null){
+		$foldarray=[];
+		foreach($value as $key => $subs){
+			if($key != "updated"){
+				$newFolder=array("name"=>$key, "docType" => $docType, "contextId"=>$id, "contextType"=> $type, "created"=> @$subs["updated"], "updated"=>@$subs["updated"]);
+				$newFolder["count"]=PHDB::count(Document::COLLECTION, array("type"=>$type, "id"=>$id, "collection"=>$key));
+				if(!empty($parentId))
+					$newFolder["parentId"]=$parentId;
+				PHDB::insert(Folder::COLLECTION,  
+                    $newFolder);
+				array_push($foldarray, $newFolder);
+				if(count($subs)>1)
+					$foldarray=array_merge($foldarray,self::prepareFolder($type, $id, $subs, $docType, (string)$newFolder["_id"]));	
+			}
+		}
+		return $foldarray;
+
+	}
 	public function actionUpdateSlugifyElement(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			ini_set('memory_limit', '-1');
@@ -4759,6 +4954,22 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		//577e4ad740bb4e9c6e10130d
 
 		//Rest::json($res); exit;
+	}
+
+	public function actionRemoveLevel3Mising() {
+		$nbUser = 0;
+		$city = PHDB::find(City::COLLECTION, 
+							array("level3" => array('$exists' => 1), "level3Name" => array('$exists' => 0)));
+
+		foreach ($city as $key => $value){
+			echo $key." ".$value["name"]." <br/> ";
+			$nbUser++;
+			PHDB::update(City::COLLECTION, 
+						  	array("_id"=>new MongoId($key)),
+	                        array(	'$unset' => array( "level3"=> "")));
+
+		}
+		echo $nbUser;
 	}
 		
 }

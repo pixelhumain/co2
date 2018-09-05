@@ -542,10 +542,17 @@ function loadNewsStream(isLiveBool){
 		},"html");
 	}, 700);
 }
-function loadGallery(){
+function loadGallery(dir, key, folderId){
 	toogleNotif(false);
-	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id+"/docType/image";
-	
+	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
+	if(notNull(dir))
+		url+="/docType/"+dir;
+
+	if(notNull(key))
+		url+="/contentKey/"+key;
+
+	if(notNull(folderId))
+		url+="/folderId/"+folderId;
 	showLoader('#central-container');
 	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 		null,

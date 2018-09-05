@@ -816,7 +816,6 @@
 
 
 	<section class="col-xs-12 col-md-9 col-sm-9 col-lg-10 no-padding central-section pull-right">
-
 		<?php    
 			$marginCentral="";
 			$classDescH="hidden"; 
@@ -824,7 +823,10 @@
 				
 			if(!isset($linksBtn["isFollowing"]) && !isset($linksBtn["isAdmin"]) )
 				$classDescH = "";
-
+			
+			if(@$element["custom"] && @$element["custom"]["pubTpl"])
+				echo $this->renderPartial($element["custom"]["pubTpl"], array("central"=>true));
+	
 			if($typeItem != Person::COLLECTION){ 
 		?>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-top:30px;">
@@ -868,6 +870,9 @@
 
 		<div class="col-md-3 col-lg-3 hidden-sm hidden-xs margin-top-<?php echo $marginCentral; ?>" 
 			 id="notif-column">
+			<?php if(@$element["custom"] && @$element["custom"]["pubTpl"])
+				echo $this->renderPartial($element["custom"]["pubTpl"]); ?>
+	
 		</div>
 	</section>
 
@@ -934,6 +939,8 @@
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 	var dirHash="<?php echo @$_GET['dir']; ?>";
+	var key="<?php echo @$_GET['key']; ?>";
+	var folderKey="<?php echo @$_GET['folder']; ?>";
 	var roomId = "<?php echo @$_GET['room']; ?>";
 	var proposalId = "<?php echo @$_GET['proposal']; ?>";
 	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
@@ -955,7 +962,7 @@
 			$(".createProjectBtn").show()
 
 		$(".hide-"+contextData.type).hide();
-		getProfilSubview(subView,dirHash);
+		getProfilSubview(subView,dirHash, key, folderKey);
 		
 		//loadActionRoom();
 
@@ -985,10 +992,10 @@
 			$("meta[property='og:image']").attr("content",baseUrl+image);
 		}
 	}
-	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);
+	function getProfilSubview(sub, dir,key, folderId){ console.log("getProfilSubview", sub, dir);
 		if(sub!=""){
 			if(sub=="gallery")
-				loadGallery();
+				loadGallery(dir, key, folderKey);
 			if(sub=="library")
 				loadLibrary();
 			else if(sub=="notifications")

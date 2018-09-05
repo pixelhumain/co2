@@ -18,19 +18,22 @@ dynForm = {
                 $("#ajaxFormModal #parentId").val(contextData.id);
                 $("#ajaxFormModal #parentType").val(contextData.type);
                 $("#ajaxFormModal #idParentRoom").val(currentRoomId);
+                
+                // if( typeof parentIdSurvey != "undefined" )
+                //     $( "#ajaxFormModal #parentIdSurvey" ).val( parentIdSurvey );
 
                 dataHelper.activateMarkdown("#ajaxFormModal #description");
                 $("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
                                               .addClass("bg-turq");
 
                 if (typeof contextData.name != "undefined" && contextData.name != "")
-                $("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+"<small class='text-white'><br>" + tradDynForm.inSpace + " : <i class='text-white'>#"+currentRoomName+"</i></small>" );
+                    $("#ajax-modal-modal-title").html($("#ajax-modal-modal-title").html()+"<small class='text-white'><br>" + tradDynForm.inSpace + " : <i class='text-white'>#"+currentRoomName+"</i></small>" );
             
                 console.log("onload action data", data, "currentRoomId", typeof currentRoomId);
                 if(typeof currentRoomId != "undefined" && currentRoomId != "")
-                $("#ajaxFormModal #idParentRoom").val(currentRoomId);
+                    $("#ajaxFormModal #idParentRoom").val(currentRoomId);
                 else if(typeof data.idParentRoom != "undefined")
-                $("#ajaxFormModal #idParentRoom").val(data.idParentRoom);
+                    $("#ajaxFormModal #idParentRoom").val(data.idParentRoom);
 
                 if(typeof data.startDate != "undefined"){
                     var d = new Date(data.startDate);
@@ -62,25 +65,30 @@ dynForm = {
             
             console.log("TEST DATE TIMEZONE");
             console.log($("#ajaxFormModal #amendementDateEnd").val());
-            
-            $("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format() ); 
-            $("#ajaxFormModal #endDate").val( moment(   $("#ajaxFormModal #endDate").val(), dateformat).format() );
+            if($("#ajaxFormModal #startDate").val()){
+                $("#ajaxFormModal #startDate").val( moment( $("#ajaxFormModal #startDate").val(), dateformat).format() ); 
+                $("#ajaxFormModal #endDate").val( moment(   $("#ajaxFormModal #endDate").val(), dateformat).format() );
+            }
         },
 	    afterSave : function(data){
             if( $('.fine-uploader-manual-trigger').length &&  $('.fine-uploader-manual-trigger').fineUploader('getUploads').length > 0 )
                 $('.fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
             else 
             { 
-                var type = typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type;
-                var id = typeof parentIdElement != "undefined" ? parentIdElement : contextData.id;
+                if(typeof uiCoop == "undefined"){
+                    window.location.reload();
+                }else{
+                    var type = typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type;
+                    var id = typeof parentIdElement != "undefined" ? parentIdElement : contextData.id;
 
-                console.log("afterSave action data", data);
-                dyFObj.closeForm();
-                uiCoop.getCoopData(type, id, "room", null, data.map.idParentRoom);
-                setTimeout(function(){
-                    uiCoop.getCoopData(type, id, "action", null, data.id);
-                }, 1000); 
-                //urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
+                    console.log("afterSave action data", data);
+                    dyFObj.closeForm();
+                    uiCoop.getCoopData(type, id, "room", null, data.map.idParentRoom);
+                    setTimeout(function(){
+                        uiCoop.getCoopData(type, id, "action", null, data.id);
+                    }, 1000); 
+                }
+                
             }
 	    },
 	    properties : {
@@ -148,6 +156,10 @@ dynForm = {
             //prend le parentIdElement quand on est sur la page d'une resolution
             parentId : dyFInputs.inputHidden(typeof parentIdElement != "undefined" ? parentIdElement : contextData.id),
             parentType : dyFInputs.inputHidden(typeof parentTypeElement != "undefined" ? parentTypeElement : contextData.type),
+            parentIdSurvey : dyFInputs.inputHidden(typeof form != "undefined" ? form : ""),
+            parentIdSurvey : dyFInputs.inputHidden(typeof form != "undefined" ? form._id.$id : ""),
+            parentTypeSurvey : dyFInputs.inputHidden(typeof form != "undefined" ? "forms" : ""),
+            role : dyFInputs.inputHidden(typeof role != "undefined" ? role : ""),
             // image : dyFInputs.image()
 	    }
 	}

@@ -907,7 +907,7 @@ var urlCtrl = {
 						//open path in a modal (#openModal)
 						if(pathT[0] == "modal"){
 							path = path.substring(5);
-							alert(baseUrl+'/'+moduleId+path);
+							//alert(baseUrl+'/'+moduleId+path);
 							smallMenu.openAjaxHTML(baseUrl+'/'+moduleId+path);
 						} else {
 							//console.log(">>>>>>>>>>>>>>>>>>> endPoint:",endPoint);
@@ -1078,6 +1078,7 @@ var urlCtrl = {
 							if(key.indexOf("?")>-1){
 								get = key.substr(key.indexOf("?"), key.length);
 								key = key.substr(0, key.indexOf("?"), key.length);
+								alert(get);
 								//console.log("load key", key);
 							}
 				  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
@@ -2005,7 +2006,7 @@ function parentList (ctypes, parentId, parentType) {
 
 		if(!notEmpty(myList[parentType]))
 			myList[ parentType ] = { label: parentType, options:{} };
-    	myList[ parentType ]["options"][ parentId ] = contextData.parent.name;  
+    	myList[ parentType ]["options"][ parentId ] = ( (typeof contextData.parent != "undefined" && typeof contextData.parent.name != "undefined" ) ? contextData.parent.name : tradDynForm["dontknow"] );  
     }
     return myList; 
 }
@@ -2946,11 +2947,10 @@ function showLoader(id){
 function bindButtonOpenForm(){ 
 	//window select open form type (selectCreate)
 	$(".btn-open-form").off().on("click",function(){
-
+		mylog.log("btn-open-form");
         var typeForm = $(this).data("form-type");
-        mylog.log("test", $(this).data("form-subtype"));
         currentKFormType = ($(this).data("form-subtype")) ? $(this).data("form-subtype") : null;
-        mylog.log("bindButtonOpenForm contextData", contextData);
+        mylog.log("btn-open-form contextData", typeForm, currentKFormType, contextData);
         //alert(contextData.type+" && "+contextData.id+" : "+typeForm);
         if(contextData && contextData.type && contextData.id ){
             dyFObj.openForm(typeForm,"sub");

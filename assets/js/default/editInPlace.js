@@ -350,6 +350,7 @@ function bindAboutPodElement() {
 
 								if(typeof data.resultGoods.values.organizer != "undefined"){
 									mylog.log("modif organizer", data.resultGoods.values.organizer);
+
 									contextData.organizer = data.resultGoods.values.organizer.organizer;
 									contextData.organizerId = data.resultGoods.values.organizer.organizerId;
 									contextData.organizerType = data.resultGoods.values.organizer.organizerType;
@@ -359,11 +360,11 @@ function bindAboutPodElement() {
 
 									if(notEmpty(contextData.organizerId) && contextData.organizerId!="dontKnow"){
 										html = '<a href="#page.type.'+contextData.organizerType+'.id.'+contextData.organizerId+'" class="lbh">'+ 
-											'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
-											contextData.organizer.name+'</a><br/>';
+													'<i class="fa fa-'+dyFInputs.get(contextData.organizerType).icon+'"></i> '+
+												data.resultGoods.values.organizer.organizer.name+'</a><br/>';
 										htmlHeader = tradDynForm.organizedby + " " + html;
 									}
-
+									
 									$("#organizerAbout").html(html);
 									$("#organizerHeader").html(htmlHeader);
 								}
@@ -397,8 +398,11 @@ function bindAboutPodElement() {
 			}
 
 			form.dynForm.jsonSchema.properties.tags = dyFInputs.tags();
-			if($.inArray(contextData.type, [typeObj.organization.col, typeObj.person.col, typeObj.project.col, typeObj.event.col]) > -1 )
-				form.dynForm.jsonSchema.properties.email = dyFInputs.text();
+			if($.inArray(contextData.type, [typeObj.organization.col, typeObj.person.col, typeObj.project.col, typeObj.event.col]) > -1 ){
+				var ruleMail = ( (contextData.type == typeObj.person.col) ? { email: true, required : true } : { email: true } ) ;
+				form.dynForm.jsonSchema.properties.email = dyFInputs.email(tradDynForm.mainemail, tradDynForm.mainemail, ruleMail);
+			}
+			
 			if(contextData.type == typeObj.person.col || contextData.type == typeObj.organization.col ){
 				form.dynForm.jsonSchema.properties.fixe= dyFInputs.inputText(tradDynForm["fix"],tradDynForm["enterfixnumber"]);
 				form.dynForm.jsonSchema.properties.mobile= dyFInputs.inputText(tradDynForm["mobile"],tradDynForm["entermobilenumber"]);
@@ -874,7 +878,7 @@ function bindAboutPodElement() {
 	}
 	function updateBookmark(id) {
 		mylog.log("updBook",id);
-		filesUp=files[id];
+		filesUp=docsList[id];
 		var params=new Object;
 		params.id=id;
 		if(filesUp.url != "undefined")

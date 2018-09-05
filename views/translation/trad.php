@@ -1222,6 +1222,7 @@ var tradSettings = {
 	"desactivated" : "<?php echo Yii::t("settings","Desactivated") ?>",
 	"low" : "<?php echo Yii::t("settings","Low") ?>",
 	"bydefault" : "<?php echo Yii::t("settings","By default") ?>",
+	"default" : "<?php echo Yii::t("settings","By default") ?>",
 	"high" : "<?php echo Yii::t("settings","High") ?>",
 	"settings" : "<?php echo Yii::t("settings","Settings") ?>",
 }; 

@@ -33,7 +33,7 @@ var settings = {
 		//To checked private or public
 		$.each(typePreferences, function(e, typePref){
 			$.each(fieldPreferences, function(field, hidden){
-				if(typeof preferences[typePref] != "undefined" && $.inArray(field, preferences[typePref])>-1){
+				if(notNull(preferences) && typeof preferences[typePref] != "undefined" && $.inArray(field, preferences[typePref])>-1){
 					$('.btn-group-'+field+' > button[value="'+typePref.replace("Fields", "")+'"]').addClass('active');
 					fieldPreferences[field]=false;		
 				}
@@ -44,7 +44,7 @@ var settings = {
 			if(hidden) $('.btn-group-'+field+' > button[value="hide"]').addClass('active');
 		});
 		$.each(typePreferencesBool, function(field, typePrefB){
-			if(typeof preferences[typePrefB] != "undefined" && preferences[typePrefB] == true)
+			if(notNull(preferences) && typeof preferences[typePrefB] != "undefined" && preferences[typePrefB] == true)
 				$('.btn-group-'+typePrefB+' > button[value="true"]').addClass('active');	
 			else
 				$('.btn-group-'+typePrefB+' > button[value="false"]').addClass('active');
@@ -78,7 +78,7 @@ var settings = {
 	settingsCommunityEvents : function(){
 		$(".settingsCommunity").off().on("click", function() {
 			settings.savePreferencesNotification($(this).data("settings"),$(this).data("value"), $(this).data("type"), $(this).data("id"));
-			$(this).parents().eq(2).find(".dropdown-settings .changeValueDrop").html(tradLabel[$(this).data("value")]);
+			$(this).parents().eq(2).find(".dropdown-settings .changeValueDrop").html(tradSettings[$(this).data("value")]);
 		});
 		$("#community-settings #search-in-settings").keyup(function(){
 			settings.filterSettingsCommunity($(this).val());
@@ -128,32 +128,41 @@ var settings = {
 		return new Date(endDate) < new Date();
 	},
 	savePreferencesNotification : function(settingsName, settingsValue, parentType, parentId, settingsSubName){
-		var settings={
+		var updateSettings={
 			"settings" : settingsName,
 			"value" : settingsValue,
 			"type" : parentType,
 			"id" : parentId
 		};
-		if(notNull(settingsSubName)) settings.subName=settingsSubName;
+		if(notNull(settingsSubName)) updateSettings.subName=settingsSubName;
 		$.ajax({
 		  	type: "POST",
 		  	url: baseUrl+"/"+moduleId+"/element/updatesettings",
-		  	data: settings,
+		  	data: updateSettings,
 		  	success: function(data){
-		  		if(data.result)
+		  		if(data.result){
+		  			if($.inArray(updateSettings.settings, ["mails", "notifications"])>0)
+		  				settings.updateMyContacts(updateSettings);
 					toastr.success(tradSettings.notificationsSettingsSuccess);
+		  		}
 				else
 					toastr.error(data.msg);
 		  	},
 		  	dataType: "json"
 		});
 	},
+	updateMyContacts : function(values){
+		//typeContact=(values.type=="citoyens") ? "people" : values.type;
+		if(typeof myContacts[values.type] != "undefined" && typeof myContacts[values.type][values.id] != "undefined"){
+			myContacts[values.type][values.id][values.settings]=values.value;
+		}
+	},
 	getCommunitySettings : function(typeSet){
 		var scrollContent = "";
 		var str = "";
 		if(typeof myContacts != "undefined"){
 			$.each(myContacts, function(type, array){
-				if(type != "people"){
+				if(type != "citoyens"){
 			
 			scrollContent += "<a href='javascript:' id='btn-scroll-type-"+type+"' class='text-"+typeObj[typeObj[type].sameAs].color+" btn-scroll-type pull-left'><i class='fa fa-"+typeObj[typeObj[type].sameAs].icon+"'></i> <span class='hidden-xs'>"+trad['my'+type]+"</span></a>";
 			str += 		'<div class="panel panel-default scroll-container col-xs-12 no-padding" id="scroll-type-'+type+'">  '+	

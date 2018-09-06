@@ -1,5 +1,8 @@
 var notifications = null;
-var maxNotifTimestamp = 0;
+var maxNotifTimestamp = {
+	element : 0,
+	user : 0
+};
 var indexMinNotif=0;
 var endLoadingNotifs=false;
 function showNotif(show){
@@ -69,7 +72,7 @@ function bindNotifEvents(element, event, elementType, elementId ){ console.log("
     	$(this).find("i").addClass("fa-spin");
     	$(".notifList"+$(this).data("element")).html("<li class='col-xs-12 loadingProcessIndicators text-center'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading+"</li>");
     	indexMinNotif=0;
-    	maxNotifTimestamp=0;
+    	maxNotifTimestamp[targetNotif($(this).data("element"))]=0;
         getAjaxNotification($(this).data("element"), null, $(this).data("type"), $(this).data("id"));
         $(this).find("i").removeClass("fa-spin");
     });
@@ -146,7 +149,7 @@ function removeNotification(id)
     });
 }
 
-function removeAllNotifications()
+function removeAllNotifications(element)
 { 
 	//Ancienne markAllAsRead
 	$.ajax({
@@ -165,7 +168,9 @@ function removeAllNotifications()
     });
 	
 }
-
+function targetNotif(element){
+	return (element !="") ? "element" : "user";
+}
 function refreshNotifications(elementId,elementType,element)
 {
 	//ajax get Notifications
@@ -177,13 +182,13 @@ function refreshNotifications(elementId,elementType,element)
 	else
 		var event=null;*/
 	//indexMinNotif=0;
-	event=(maxNotifTimestamp!=0) ? "refresh" : null;
+	event=(maxNotifTimestamp[targetNotif(element)]!=0) ? "refresh" : null;
 	getAjaxNotification(element, event, elementType, elementId);
 }
 function getAjaxNotification(element, event, elementType, elementId){
 
 	if(notNull(event) && event=="refresh"){
-		param={refreshTimestamp: maxNotifTimestamp};
+		param={refreshTimestamp: maxNotifTimestamp[targetNotif(element)]};
 	}else{
 		param={indexMin: indexMinNotif};
 	}
@@ -274,8 +279,8 @@ function buildNotifications(list, element, event, elementType, elementId)
 			//}else{
 				notifHtml+=str;
 			//}
-			if( notifObj.timestamp > maxNotifTimestamp )
-				maxNotifTimestamp = notifObj.timestamp;
+			if( notifObj.timestamp > maxNotifTimestamp[targetNotif(element)])
+				maxNotifTimestamp[targetNotif(element)] = notifObj.timestamp;
 		});
 		setTimeout( function(){
 	    	//notifCount(false, element);

@@ -1474,7 +1474,14 @@ La vie en santé;Santé;;
 
 	public function actionPdfTest(){
 		$form = PHDB::findOne( Form::COLLECTION , array("id"=>"cte","session"=>"1"));
-		$data = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>"cte","session"=>"1", "user"=> "5ac4c5536ff9928b248b458a" ) ) ;
+		$answers = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>"cte","session"=>"1", "user"=> "5ac4c5536ff9928b248b458a" ) ) ;
+		foreach ($answers as $k => $v) {
+			$answers[$v["formId"]] = $v;
+		}
+		$adminForm = ( Form::canAdmin((string)$form["_id"], $form) ) ? PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin","session"=>"1") ) : PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin","session"=>"1"), array("scenarioAdmin") ) ;
+
+		
+
 		$params = array(
 			"author" => "Raphael",
 			"title" => "Mon Titre Putain",
@@ -1482,9 +1489,40 @@ La vie en santé;Santé;;
 			"custom" => $form["custom"],
 			"footer" => true,
 			"tplData" => "cteDossier",
-			"data" => $data,
+			"answers" => $answers,
+			"adminForm" => $adminForm,
+			"canAdmin" => Form::canAdmin( (string)$form["_id"], $form ) ,
 		);
+
+		$html = $this->renderPartial('application.views.pdf.dossierCte', $params, true);
+
+		$params["html"] = $html ;
 		Pdf::createPdf($params);
+	}
+
+	public function actionPdfTest2(){
+		$form = PHDB::findOne( Form::COLLECTION , array("id"=>"cte","session"=>"1"));
+		$answers = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>"cte","session"=>"1", "user"=> "5ac4c5536ff9928b248b458a" ) ) ;
+		foreach ($answers as $k => $v) {
+			$answers[$v["formId"]] = $v;
+		}
+
+		$adminForm = ( Form::canAdmin((string)$form["_id"], $form) ) ? PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin","session"=>"1") ) : PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin","session"=>"1"), array("scenarioAdmin") ) ;
+
+		
+
+		$params = array(
+			"author" => "Raphael",
+			"title" => "Mon Titre Putain",
+			"subject" => "SUJET",
+			"custom" => $form["custom"],
+			"footer" => true,
+			"tplData" => "cteDossier",
+			"answers" => $answers,
+			"adminForm" => $adminForm,
+			"canAdmin" => Form::canAdmin( (string)$form["_id"], $form ) ,
+		);
+		Rest::json($params); exit;
 	}
 
 

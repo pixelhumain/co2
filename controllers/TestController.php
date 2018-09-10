@@ -1473,7 +1473,65 @@ La vie en santé;Santé;;
 	}
 
 	public function actionPdfTest(){
-		Pdf::createPdf();
+		$form = PHDB::findOne( Form::COLLECTION , array("id"=>"cte"));
+		$answers = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>"cte","session"=>"1", "user"=> "5ac4c5536ff9928b248b458a" ) ) ;
+		foreach ($answers as $k => $v) {
+			$answers[$v["formId"]] = $v;
+		}
+
+		$adminAnswers = PHDB::findOne( Form::ANSWER_COLLECTION , array("formId"=>"cte","session"=>"1", "user"=> "5ac4c5536ff9928b248b458a") );
+
+		$adminForm = ( Form::canAdmin((string)$form["_id"], $form) ) ? PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin") ) : PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin"), array("scenarioAdmin") ) ;
+
+		$userO = Person::getById("5ac4c5536ff9928b248b458a");
+
+		$params = array(
+			"author" => "Raphael",
+			"title" => "Mon Titre Putain",
+			"subject" => "SUJET",
+			"custom" => $form["custom"],
+			"footer" => true,
+			"tplData" => "cteDossier",
+			"answers" => $answers,
+			"form" => $form,
+			"user" => $userO,
+			"adminForm" => $adminForm,
+			"adminAnswers"=>$adminAnswers,
+			"canSuperAdmin" => Form::canSuperAdmin($form["id"], "1", $form, $adminForm),
+			"canAdmin" => Form::canAdmin( (string)$form["_id"], $form ) ,
+		);
+
+		$html = $this->renderPartial('application.views.pdf.dossierCte', $params, true);
+
+		$params["html"] = $html ;
+		Pdf::createPdf($params);
+	}
+
+	public function actionPdfTest2(){
+		$form = PHDB::findOne( Form::COLLECTION , array("id"=>"cte"));
+		$answers = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>"cte","session"=>"1", "user"=> "5ac4c5536ff9928b248b458a" ) ) ;
+		foreach ($answers as $k => $v) {
+			$answers[$v["formId"]] = $v;
+		}
+
+		$adminForm = ( Form::canAdmin((string)$form["_id"], $form) ) ? PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin") ) : PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin"), array("scenarioAdmin") ) ;
+
+		
+		$userO = Person::getById("5ac4c5536ff9928b248b458a");
+		$params = array(
+			"author" => "Raphael",
+			"title" => "Mon Titre Putain",
+			"subject" => "SUJET",
+			"custom" => $form["custom"],
+			"footer" => true,
+			"tplData" => "cteDossier",
+			"answers" => $answers,
+			"form" => $form,
+			"user" => $userO,
+			"adminForm" => $adminForm,
+			"canAdmin" => Form::canAdmin( (string)$form["_id"], $form ) ,
+		);
+		Rest::json($params); exit;
 	}
 
 

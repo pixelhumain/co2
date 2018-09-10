@@ -1473,7 +1473,18 @@ La vie en santé;Santé;;
 	}
 
 	public function actionPdfTest(){
-		Pdf::createPdf();
+		$form = PHDB::findOne( Form::COLLECTION , array("id"=>"cte","session"=>"1"));
+		$data = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>"cte","session"=>"1", "user"=> "5ac4c5536ff9928b248b458a" ) ) ;
+		$params = array(
+			"author" => "Raphael",
+			"title" => "Mon Titre Putain",
+			"subject" => "SUJET",
+			"custom" => $form["custom"],
+			"footer" => true,
+			"tplData" => "cteDossier",
+			"data" => $data,
+		);
+		Pdf::createPdf($params);
 	}
 
 

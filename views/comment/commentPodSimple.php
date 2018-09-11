@@ -173,7 +173,7 @@
 							 style="margin-right:10px;height:32px; border-radius:3px;">
 					
 						<span class="pull-left content-comment">						
-							<span class="text-black pull-left">
+							<span class="text-black pull-left col-xs-12 no-padding">
 								<a href="#<?php echo @$slug; ?>" class="text-dark pull-left">
 									<strong><?php echo $comment["author"]["name"]; ?></strong>
 								</a> 
@@ -319,7 +319,7 @@
 	jQuery(document).ready(function() {
 
 		var idTextArea = '#textarea-new-comment<?php echo $idComment; ?>';
-		bindEventTextArea(idTextArea, idComment, contextType, false, "", contextPath);
+		bindEventTextArea(idTextArea, idComment, contextType, false, "", null, contextPath);
 		bindEventActions();
 
 		mylog.log(".comments-list-<?php echo $idComment; ?> .text-comment");
@@ -431,7 +431,7 @@
 						'	 style="margin-right:10px;height:32px; border-radius:3px;">'+
 					
 						'<span class="pull-left content-comment">'+						
-						'	<span class="text-black">'+
+						'	<span class="text-black col-xs-12 no-padding">'+
 						'		<span class="text-dark"><strong><?php echo @$me["name"]; ?></strong></span><br>'+
 						'		<span class="text-comment">'	+ textComment + "</span>" +
 						'	</span><br>'+

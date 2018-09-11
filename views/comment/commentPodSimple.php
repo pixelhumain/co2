@@ -310,6 +310,7 @@
 
 	var profilThumbImageUrlUser = "<?php echo @$profilThumbImageUrlUser; ?>";
 	var isUpdatedComment=false;
+	var contextPath="<?php echo @$path; ?>";
 	// mylog.log("context");
 	// mylog.dir(context);
 	// mylog.log("comments");
@@ -318,7 +319,7 @@
 	jQuery(document).ready(function() {
 
 		var idTextArea = '#textarea-new-comment<?php echo $idComment; ?>';
-		bindEventTextArea(idTextArea, idComment, contextType, false, "");
+		bindEventTextArea(idTextArea, idComment, contextType, false, "", contextPath);
 		bindEventActions();
 
 		mylog.log(".comments-list-<?php echo $idComment; ?> .text-comment");
@@ -487,7 +488,7 @@
 
 	
 
-	function saveComment(textComment, parentCommentId, domElement){
+	function saveComment(textComment, parentCommentId, domElement, path){
 		textComment = $.trim(textComment);
 		if(!notEmpty(parentCommentId)) parentCommentId = "";
 		if(textComment == "") {
@@ -503,6 +504,8 @@
 			contextType : contextType,
 			argval : argval
 		};
+		if(notNull(path))
+			newComment.path=path;
 		newComment=mentionsInit.beforeSave(newComment, domElement);
 		$.ajax({
 			url: baseUrl+'/'+moduleId+"/comment/save/",

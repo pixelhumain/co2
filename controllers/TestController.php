@@ -1473,17 +1473,27 @@ La vie en santé;Santé;;
 	}
 
 	public function actionPdfTest(){
-		$form = PHDB::findOne( Form::COLLECTION , array("id"=>"cte"));
-		$answers = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>"cte","session"=>"1", "user"=> "5ac4c5536ff9928b248b458a" ) ) ;
+		$id = "cte" ;
+		$u = "5ac4c5536ff9928b248b458a";
+		$s = "1";
+		$form = PHDB::findOne( Form::COLLECTION , array("id"=>$id));
+		$forms = PHDB::find( Form::COLLECTION , array("parentSurvey"=>$id));
+		foreach ($forms as $k => $v) {
+			$form["scenario"][$v["id"]]["form"] = $v;
+		}
+		$adminAnswers = PHDB::findOne( Form::ANSWER_COLLECTION , array("formId"=>$id ,"session"=>$s, "user"=> $u) );
+
+		$answers = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>$id,"session"=>$s, "user"=> $u ) ) ;
 		foreach ($answers as $k => $v) {
 			$answers[$v["formId"]] = $v;
 		}
 
-		$adminAnswers = PHDB::findOne( Form::ANSWER_COLLECTION , array("formId"=>"cte","session"=>"1", "user"=> "5ac4c5536ff9928b248b458a") );
+		$adminForm = ( Form::canAdmin((string)$form["_id"], $form) ) ? PHDB::findOne( Form::COLLECTION , array("id"=>$id."Admin") ) : PHDB::findOne( Form::COLLECTION , array("id"=>$id."Admin"), array("scenarioAdmin") ) ;
 
-		$adminForm = ( Form::canAdmin((string)$form["_id"], $form) ) ? PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin") ) : PHDB::findOne( Form::COLLECTION , array("id"=>"cteAdmin"), array("scenarioAdmin") ) ;
+		
+		$userO = Person::getById($u);
 
-		$userO = Person::getById("5ac4c5536ff9928b248b458a");
+
 
 		$params = array(
 			"author" => "Raphael",

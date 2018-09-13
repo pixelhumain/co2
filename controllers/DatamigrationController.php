@@ -4974,7 +4974,8 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 	public function actionUnifierAnswers() {
 		$nbAnswer = 0;
-		$answers = PHDB::find(Form::ANSWER_COLLECTION);
+		$answers = PHDB::find(	Form::ANSWER_COLLECTION, 
+								array("modifiedByBatch.UnifierAnswers" => array('$exists' => 0)) );
 
 		$unique = array();
 
@@ -5045,6 +5046,15 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 				$unique[$answer["user"]]["risks"] = $answer["risks"] ;
 			}
+
+			if( !empty($answer["eligible"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["eligible"] = $answer["eligible"] ;
+			}
+
+			$unique[$answer["user"]]["modifiedByBatch"][] = array("UnifierAnswers" => new MongoDate(time()));
 
 			$deleted[] = new MongoId($key) ;
 		}

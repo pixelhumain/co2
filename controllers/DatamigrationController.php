@@ -4990,7 +4990,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 					"formId" => @$answer["parentSurvey"],
 					"created" => @$answer["created"],
 					"session" => $answer["session"],
-					"scenario" => array()
+					"answers" => array()
 				);
 			}
 
@@ -5013,7 +5013,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 				!empty($answer["formId"]) && 
 				in_array($answer["formId"], array("cte1", "cte2", "cte3") ) ) {
 
-				$unique[$answer["user"]]["scenario"][$answer["formId"]] = $answer["answers"] ;
+				$unique[$answer["user"]]["answers"][$answer["formId"]] = $answer["answers"] ;
 			}
 
 

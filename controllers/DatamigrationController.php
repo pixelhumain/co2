@@ -4971,6 +4971,94 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 		echo $nbUser;
 	}
+
+	public function actionUnifierAnswers() {
+		$nbAnswer = 0;
+		$answers = PHDB::find(Form::ANSWER_COLLECTION);
+
+		$unique = array();
+
+
+		$deleted = array();
+		foreach ($answers as $key => $answer) {
+
+			if(empty($unique[$answer["user"]])){
+				$unique[$answer["user"]] = array(
+					"user" => $answer["user"],
+					"name" => $answer["name"],
+					"email" => @$answer["email"],
+					"formId" => @$answer["parentSurvey"],
+					"created" => @$answer["created"],
+					"session" => $answer["session"],
+					"scenario" => array()
+				);
+			}
+
+			if( empty($unique[$answer["user"]]["created"]) && 
+				!empty($answer["created"]) ){
+				$unique[$answer["user"]]["created"] = $answer["created"];
+			}
+
+			if( empty($unique[$answer["user"]]["formId"]) && 
+				!empty($answer["parentSurvey"]) )
+				$unique[$answer["user"]]["formId"] = $answer["parentSurvey"];
+
+
+			if( empty($unique[$answer["user"]]["email"]) && 
+				!empty($answer["email"]) )
+				$unique[$answer["user"]]["email"] = $answer["email"];
+
+
+			if( !empty($answer["answers"]) && 
+				!empty($answer["formId"]) && 
+				in_array($answer["formId"], array("cte1", "cte2", "cte3") ) ) {
+
+				$unique[$answer["user"]]["scenario"][$answer["formId"]] = $answer["answers"] ;
+			}
+
+
+			if( !empty($answer["step"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["step"] = $answer["step"] ;
+			}
+
+			if( !empty($answer["categories"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["categories"] = $answer["categories"] ;
+			}
+
+			if( !empty($answer["comment"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["comment"] = $answer["comment"] ;
+			}
+
+
+			if( !empty($answer["risks"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["risks"] = $answer["risks"] ;
+			}
+
+			$deleted[] = new MongoId($key) ;
+		}
+
+		//Rest::json($unique);
+
+		PHDB::remove( Form::ANSWER_COLLECTION , array( "_id" => array('$in' => $deleted) ) );
+
+		foreach ($unique as $key => $value) {
+			PHDB::insert( Form::ANSWER_COLLECTION, $value );
+		}
+
+		echo "Good" ;
+	}
 		
 }
 

@@ -39,9 +39,9 @@ function initGrid(albums, docs, edit){
 		folder.addFolderInNav(k,v);
 		
 		if(docType == "image"){
-			folderHtml+=getImageFolderView(k, v);
+			folderHtml+=getImageFolderView(k, v, edit);
 		}else{
-			folderHtml+=getfilesFolderView(k, v);
+			folderHtml+=getfilesFolderView(k, v, edit);
 		}
 	});
 	$("#GridAlbums").html(folderHtml);
@@ -69,10 +69,11 @@ function initGrid(albums, docs, edit){
 	        }
 	    });
 	}else{
-		var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12 padding-5'>"+
-							"<i class='fa fa-ban fa-4x text-dark'></i> <i class='fa fa-picture-o fa-4x text-dark'></i>"+
-							" "+trad.nopicture+
-						"</div>";
+		var htmlDefault = "<div class='center col-md-12 col-sm-12 col-xs-12 text-dark padding-5' style='font-size:18px;font-style:italic;'>"+
+					"<i class='fa fa-ban fa-x'></i>"+
+				" <i class='fa fa-"+rootsGallery[docType].icon+" fa-x margin-left-5'></i>"+
+							" "+rootsGallery[docType].emptyMsg+
+		"</div>";
 		$('#Grid').html(htmlDefault);
 	}
 	if(docType=="bookmarks"){
@@ -175,9 +176,10 @@ function getfilesFolderView(k, v, edit){
 		' <div class="portfolio-item">'+
 			' <a href="javascript:;" class="openFolder" data-folder="'+k+'" data-folder-name="'+nameCol+'" data-docType="file">'+
 			'<div class="content-info col-sx-12 padding-5">'+
-						'<span class="content-info-span"><i class="fa fa-2x fa-folder-o"></i> <span class="titleFolder">'+nameCol+'</span></span>'+
-							getToolBarFolder(k,"pull-right text-dark")+
-					'</div>'+
+						'<span class="content-info-span"><i class="fa fa-2x fa-folder-o"></i> <span class="titleFolder">'+nameCol+'</span></span>';
+							if(edit)
+								htmlFolders+=getToolBarFolder(k,"pull-right text-dark");
+					htmlFolders+='</div>'+
 		' </a></div>' +
 	'</li>' ;
 	return htmlFolders;
@@ -279,26 +281,6 @@ function buildLink(data) {
 	return link;
  }
  function initMenuGallery(){
- 		rootsGallery={
- 			"image":{
-	 			"title":trad.photos,
-	 			"explain":"Partager des photos<br/>Organiser et trier par albums",
-	 			"icon": "image",
-	 			"img" : moduleUrl+'/images/photos.jpg'
- 			},
- 			"file":{
-	 			"title":trad.documents,
-	 			"explain":trad.explainfile,
-	 			"icon": "file-text-o",
-	 			"img" : moduleUrl+'/images/file3.jpg'
- 			},
- 			"bookmarks":{
-	 			"title":trad.bookmarks,
-	 			"explain":trad.explainbookmark,
-	 			"icon": "bookmark",
-	 			"img" : moduleUrl+'/images/bookmark2.jpeg'
- 			}
- 		};
  		html="";
  		$.each(rootsGallery, function(docT, value){
  			htmlBtn= ' <a href="javascript:;" class="filter-folder-gallery col-xs-12">'+

@@ -118,7 +118,29 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 	var mapButton = {"media": "Media", "slider": "Album", "profil" : "Profil", "banner" : "Banner", "logo" : "Logo"};
 	var mapContentKey= {"album": "slider", "profil" : "profil", "banner" : "banner"};
 	var docTypeNameFolder= {"image": trad.photos, "file" : trad.documents, "bookmarks" : trad.bookmarks};
-
+	var rootsGallery={
+		"image":{
+			"title":trad.photos,
+			"explain":"Partager des photos<br/>Organiser et trier par albums",
+			"icon": "image",
+			"img" : moduleUrl+'/images/photos.jpg',
+			"emptyMsg": trad.nopicture
+		},
+		"file":{
+			"title":trad.documents,
+			"explain":trad.explainfile,
+			"icon": "file-text-o",
+			"img" : moduleUrl+'/images/file3.jpg',
+			"emptyMsg" :trad.nofile
+		},
+		"bookmarks":{
+			"title":trad.bookmarks,
+			"explain":trad.explainbookmark,
+			"icon": "bookmark",
+			"img" : moduleUrl+'/images/bookmark2.jpeg',
+			"emptyMsg":trad.nobookmark
+		}
+	};
 	jQuery(document).ready(function() {
 		if(typeof initGallery != "undefined"){
 			initGallery.init();

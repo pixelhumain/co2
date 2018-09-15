@@ -413,6 +413,7 @@ var trad = {
 	"library":"<?php echo Yii::t("common","Library") ?>",
 	"nopicture":"<?php echo Yii::t("common","No picture in this album") ?>",
 	"nofile":"<?php echo Yii::t("common","No file in this folder") ?>",
+	"nobookmark":"<?php echo Yii::t("common","No bookmark") ?>",
 	"folder":"<?php echo Yii::t("common","folder") ?>",
 	"moveinfolder":"<?php echo Yii::t("common","Move in a folder") ?>",
 	"move":"<?php echo Yii::t("common","Move") ?>",

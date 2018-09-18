@@ -76,22 +76,7 @@ dynForm = {
 	    	$("#ajaxFormModal #newElement_country").remove();
 	    },
 	    afterSave : function(data,callB){
-	    	if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 ){
-		    	$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
-		    	//principalement pour les surveys
-		    	if(typeof callB == "function")
-	    			callB();
-	    	}
-		    else { 
-		    	mylog.log("here", isMapEnd);
-		    	if(typeof networkJson != "undefined")
-					isMapEnd = true;
-				dyFObj.closeForm();
-				if(typeof updateForm != "undefined" && updateForm != null)//use case for answerList forms updating
-	        		window.location.reload();
-	        	else 
-					urlCtrl.loadByHash( uploadObj.gotoUrl );
-	        }
+	    	dyFObj.commonAfterSave();
 	    },
 	    properties : {
 	    	

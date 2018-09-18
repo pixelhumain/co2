@@ -19,15 +19,7 @@ dynForm = {
 	    	});
 	    },
 	    afterSave : function(data,callB){
-			if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 ){
-		    	$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
-		    	//principalement pour les surveys
-		    	if(typeof callB == "function")
-					callB();
-			} else { 
-	          	dyFObj.closeForm(); 
-	          	urlCtrl.loadByHash( uploadObj.gotoUrl );
-	        }
+			dyFObj.commonAfterSave();
 	    },
 	    beforeSave : function(){
 	    	if( typeof $("#ajaxFormModal #description").code === 'function' ) 

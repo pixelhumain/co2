@@ -25,7 +25,8 @@
   *** Ajoute les folders thumb pour les images décalées dans leurs dossiers (si images)
 
 * Bash sur les documents du CTE déjà uploadé
-** "/co2/datamigration/ChangeFilesCTESurveyDatas"
+** : "/co2/datamigration/ChangeFilesCTESurveyDatas"
+
   *** Supprime la data mauvaise et ajoute la clé du survey
 ---------------------------------------
 ---------- VERSION C0.30 (warrior flower) --------------

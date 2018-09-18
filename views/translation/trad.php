@@ -414,6 +414,7 @@ var trad = {
 	"library":"<?php echo Yii::t("common","Library") ?>",
 	"nopicture":"<?php echo Yii::t("common","No picture in this album") ?>",
 	"nofile":"<?php echo Yii::t("common","No file in this folder") ?>",
+	"nobookmark":"<?php echo Yii::t("common","No bookmark") ?>",
 	"folder":"<?php echo Yii::t("common","folder") ?>",
 	"moveinfolder":"<?php echo Yii::t("common","Move in a folder") ?>",
 	"move":"<?php echo Yii::t("common","Move") ?>",
@@ -854,6 +855,8 @@ var tradDynForm = {
 	"explainvisibleevent": "<?php echo Yii::t("form", "<b>Private :</b> Event visible only by its attendees and create contents only for attendees and admins<br/><b>Public :</b> Event visible in search engine, agenda and communication available for all") ?>",
 	"makeprojectvisible": "<?php echo Yii::t("form", "Make your project publicly visible") ?>",
 	"explainvisibleproject": "<?php echo Yii::t("form", "<b>Private :</b> Project visible only by its contributors and create contents accessible only by its community<br/><b>Public :</b> Project visible in search engine and communication available for all") ?>",
+	"makeprojectvisible": "<?php echo Yii::t("form", "Make your project publicly visible") ?>",
+	"tooManyItemsError": "<?php echo Yii::t("form", "You can&#146;t upload {netItems} items.  Item limit is {itemLimit}.") ?>",
 };
 
 var tradCategory = {

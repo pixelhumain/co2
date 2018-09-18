@@ -19,7 +19,7 @@ class DocumentController extends CommunecterController {
 	        //CTK actions
 	        'list'					=> 'citizenToolKit.controllers.document.ListAction',
 	        'save'					=> 'citizenToolKit.controllers.document.SaveAction',
-	        'deletedocumentbytid'	=> 'citizenToolKit.controllers.document.DeleteDocumentByIdAction',
+	        'deletedocumentbyid'	=> 'citizenToolKit.controllers.document.DeleteDocumentByIdAction',
             'delete'                => 'citizenToolKit.controllers.document.DeleteAction',
             'upload'                => 'citizenToolKit.controllers.document.UploadAction',
             'update'                => 'citizenToolKit.controllers.document.UpdateAction',

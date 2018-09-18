@@ -1590,7 +1590,7 @@ var directory = {
         str += "</div>";
 
         //alert(params.id);
-        getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/"+params.type+"/tpl/json" , function( data ) { 
+        /*getAjax( null , baseUrl+'/'+moduleId+"/document/list/id/"+params.id+"/type/"+params.type+"/tpl/json" , function( data ) { 
           var c = 1;
           $.each(data.list,function(k,v) { 
             mylog.log("data list",k,v);
@@ -1603,9 +1603,10 @@ var directory = {
             }
           });
 
-        });
-
-        if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
+        });*/
+        if("undefined" != typeof params.images && params.images.length > 0)
+          str+="<div id='container-element-accordeon'></div>";
+        /*if("undefined" != typeof params.profilImageUrl && params.profilImageUrl != "")
           str += '<div class="col-xs-12 text-center">'+
             '<div id="myCarousel" class="carousel slide" data-ride="carousel">'+
               //<!-- Indicators -->
@@ -1633,7 +1634,7 @@ var directory = {
             // '<a class="thumb-info" href="'+baseUrl+params.profilImageUrl+'" data-title="" data-lightbox="all">'+
             //   "<img class='img-responsive' src='"+baseUrl+params.profilImageUrl+"'/>"+
             // '</a>'+
-        '</div>';
+        '</div>';*/
 /*
         if( params.creator == userId || params.author == userId || params.parentId == userId || dyFObj.canUserEdit() ){
           str += '<hr>'+

@@ -373,6 +373,7 @@ function modifyNews(idNews,typeNews){
 			            '<input type="hidden" name="scope" id="scope" value="'+scopeTarget+'"/>'+
 	        		'</div>'+
 	        		'<div id="scopeListContainerFormUpdate" class="form-group col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-10"></div>'+
+					'<div id="error-update" class="form-group col-xs-12 no-padding margin-bottom-10"></div>'+
 				"</div>";
 	
 	message+="</div>";
@@ -380,6 +381,7 @@ function modifyNews(idNews,typeNews){
 	var boxComment = bootbox.dialog({
 	  message: message,
 	  title: trad.updatethepost,
+	  backdrop:true,
 	  buttons: {
 	  	annuler: {
 	      label: trad.cancel,
@@ -392,36 +394,55 @@ function modifyNews(idNews,typeNews){
 	      label: trad.save,
 	      className: "btn-success",
 	      callback: function() {
-	      	heightCurrent=$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").height();
-	      	$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").append("<div class='updateLoading' style='line-height:"+heightCurrent+"px'><i class='fa fa-spin fa-spinner'></i> En cours de modification</div>");
-    		newNews = getNewsObject("#form-news-update", "update");// new Object;
-    		newNews.idNews = idNews;	
-			newNews=mentionsInit.beforeSave(newNews, '.newsTextUpdate');	
-			$.ajax({
-		        type: "POST",
-		        url: baseUrl+"/"+moduleId+"/news/update?tpl=co2",
-		        data: newNews,
-				type: "POST",
-		    }).done(function (data) {
-	    		if(data)
-	    		{
-	    			$("#"+typeNewsUpdate+idNewsUpdate).replaceWith(data);
-	    			bindEventNews();
-	    			toastr.success("Votre publication a bien été modifié");
-					return true;
-	    		}
-	    		else 
-	    		{
-					toastr.error(data.msg);
-	    		}
-	    		$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
-				$("#btn-submit-form").prop('disabled', false);
+	      	$("#btn-submit-form").prop('disabled', true);
+			$("#btn-submit-form i").removeClass("fa-arrow-circle-right").addClass("fa-circle-o-notch fa-spin");
+			$("#error-update").empty();
+			error=[];
+			if($("#form-news-update .noGoSaveNews").length)
+				error.push("waitendofloading");
+			if($("#form-news-update #results").html() == "" && $("#form-news-update .get_url_input").val()== "")
+				error.push("writesomethingplease");
+			if($("#form-news-update input[name='scope']").val()=="public" && Object.keys(newsScopes).length==0)
+				error.push("addplacesplease");
+			if(error.length > 0){
+				$.each(error, function(e, v){
+					$("#error-update").before("<span class='help-block "+v+" italic'>* "+trad[v]+"</span>");
+				});
+				$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+				$("#btn-submit-form").prop('disabled', false);		
 				return false;
-		    }).fail(function(){
-			   toastr.error("Something went wrong, contact your admin"); 
-			   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
-			   $("#btn-submit-form").prop('disabled', false);
-		    });
+			}else{
+				heightCurrent=$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").height();
+	      		$("#"+typeNewsUpdate+idNewsUpdate).find(".timeline-panel").append("<div class='updateLoading' style='line-height:"+heightCurrent+"px'><i class='fa fa-spin fa-spinner'></i> En cours de modification</div>");
+	    		newNews = getNewsObject("#form-news-update", "update");// new Object;
+	    		newNews.idNews = idNews;	
+				newNews=mentionsInit.beforeSave(newNews, '.newsTextUpdate');	
+				$.ajax({
+			        type: "POST",
+			        url: baseUrl+"/"+moduleId+"/news/update?tpl=co2",
+			        data: newNews,
+					type: "POST",
+			    }).done(function (data) {
+		    		if(data)
+		    		{
+		    			$("#"+typeNewsUpdate+idNewsUpdate).replaceWith(data);
+		    			bindEventNews();
+		    			toastr.success("Votre publication a bien été modifié");
+						return true;
+		    		}
+		    		else 
+		    		{
+						toastr.error(data.msg);
+		    		}
+		    		$("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+					$("#btn-submit-form").prop('disabled', false);
+					return false;
+			    }).fail(function(){
+				   toastr.error("Something went wrong, contact your admin"); 
+				   $("#btn-submit-form i").removeClass("fa-circle-o-notch fa-spin").addClass("fa-arrow-circle-right");
+				   $("#btn-submit-form").prop('disabled', false);
+			    });
+			}
 	      }
 	    },
 	  }
@@ -432,9 +453,9 @@ function modifyNews(idNews,typeNews){
 	  bindEventTextAreaNews('#textarea-edit-news'+idNews, idNews, updateNews[idNews]);
 	});
 
-	boxComment.on("hide.bs.modal", function() {
+	/*boxComment.on("hide.bs.modal", function() {
 	  $.unblockUI();
-	});
+	});*/
 }
 function updateNews(idNews, newText, type){
 	var classe1=""; var classe2="";
@@ -445,7 +466,7 @@ function updateNews(idNews, newText, type){
 
 function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommentId*/){
 	processUrl.getMediaFromUrlContent(idTextArea,"#results",1);
-	if($("#form-news-update #results").html!="") $("#form-news-update #results").show();
+	if($("#form-news-update #results").html() !="") $("#form-news-update #results").show();
 	mentionsInit.get(idTextArea);
 	$(".removeMediaUrl").click(function(){
         $trigger=$(this).parents().eq(1).find(idTextArea);
@@ -459,16 +480,8 @@ function bindEventTextAreaNews(idTextArea, idNews,data/*, isAnswer, parentCommen
 	autosize($(idTextArea));
 	textNews=data.text;
 	$(idTextArea).val(textNews);
-	if(typeof data.mentions != "undefined" && data.mentions.length != 0){
-		/*text=data.text;
-		$.each(data.mentions, function(e,v){
-			if(typeof v.slug != "undefined"){
-				text=text.replace("@"+v.slug, v.name);
-			}
-		});
-		$(idTextArea).val(text);*/
+	if(typeof data.mentions != "undefined" && data.mentions.length != 0)
 		$(idTextArea).mentionsInput("update", data.mentions);
-	}
 	$(idTextArea).on('keyup ', function(e){
 		var heightTxtArea = $(idTextArea).css("height");
     	$("#container-txtarea-news-"+idNews).css('height', heightTxtArea);
@@ -775,7 +788,7 @@ function bindScopesNewsEvent(news){
 			$(this).parent().remove();
 			mylog.log("manageMultiscopes pushHtml", pushHtml);
 			$("#content-added-scopes-container").append(pushHtml);
-			$(".form-create-news-container .form-actions .addplacesplease").remove();
+			$(".addplacesplease").remove();
 			bindScopesNewsEvent();
 		}else{
 			mylog.log("manageMultiscopes remove", key, newsScopes);

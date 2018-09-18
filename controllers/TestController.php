@@ -1518,36 +1518,24 @@ La vie en santé;Santé;;
 	}
 
 	public function actionPdfTest2(){
-		$id = "cte" ;
-		$u = "5ac4c5536ff9928b248b458a";
-		$s = "1";
-		$form = PHDB::findOne( Form::COLLECTION , array("id"=>$id));
-		$forms = PHDB::find( Form::COLLECTION , array("parentSurvey"=>$id));
-		foreach ($forms as $k => $v) {
-			$form["scenario"][$v["id"]]["form"] = $v;
-		}
-		$answers = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>$id,"session"=>$s, "user"=> $u ) ) ;
-		foreach ($answers as $k => $v) {
-			$answers[$v["formId"]] = $v;
-		}
-
-		$adminForm = ( Form::canAdmin((string)$form["_id"], $form) ) ? PHDB::findOne( Form::COLLECTION , array("id"=>$id."Admin") ) : PHDB::findOne( Form::COLLECTION , array("id"=>$id."Admin"), array("scenarioAdmin") ) ;
-
 		
-		$userO = Person::getById($u);
+		$id = "5b9f6e536ff99204228b4569";
+		$answer = PHDB::findOne( Form::ANSWER_COLLECTION, array("_id"=>new MongoId($id)));
+		$form = PHDB::findOne( Form::COLLECTION , array("id"=>$answer["formId"]));
+
+		$title = ( @$answer["answers"]["cte2"]["answers"]["project"]  ) ?  $answer["answers"]["cte2"]["answers"]["project"]["name"] : "Dossier";
+
 		$params = array(
-			"author" => "Raphael",
-			"title" => "Mon Titre Putain",
-			"subject" => "SUJET",
+			"author" => @$answer["name"],
+			"answer" => $answer,
+			"title" => $title,
+			"subject" => "CTE",
 			"custom" => $form["custom"],
 			"footer" => true,
 			"tplData" => "cteDossier",
-			"answers" => $answers,
-			"form" => $form,
-			"user" => $userO,
-			"adminForm" => $adminForm,
-			"canAdmin" => Form::canAdmin( (string)$form["_id"], $form ) ,
+			"form" => $form
 		);
+
 		Rest::json($params); exit;
 	}
 

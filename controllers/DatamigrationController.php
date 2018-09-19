@@ -5096,6 +5096,25 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 						"res" => $res);
 		Rest::json($result);
 	}
+
+	public function actionStepAnswers() {
+		$nbAnswer = 0;
+		$answers = PHDB::find(	Form::ANSWER_COLLECTION, 
+								array("modifiedByBatch.StepAnswers" => array('$exists' => 0)) );
+
+		$res = array();
+		foreach ($answers as $key => $answer) {
+
+			if(empty($answer["step"])){
+				$res [] = PHDB::update(Form::ANSWER_COLLECTION, 
+						  	array("_id"=>new MongoId($key)),
+	                        array(	'$set' => array( "step"=> "dossier")));
+			}
+
+		}
+
+		Rest::json($res);
+	}
 		
 }
 

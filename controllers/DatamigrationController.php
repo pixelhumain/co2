@@ -4971,6 +4971,33 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}
 		echo $nbUser;
 	}
+
+
+	public function actionLinkParentForm() {
+		$nbUser = 0;
+		$form = Form::getById("cte");
+		$orga=PHDB::findOne($form ["parentType"],array("_id"=>new MongoId($form ["parentId"])), array("name", "links"));
+		$res = array();
+		if(!empty($orga["links"]["projects"] ) ) {
+			foreach ($form["links"]["projectExtern"] as $key => $value){
+				
+				if(empty($orga["links"]["projects"][$key] ) ) {
+					$child = array();
+					$child[] = array( 	"childId" => (String) $form["parentId"],
+										"childType" => $form["parentType"],
+										"childName" => $orga["name"],
+										"roles" =>  (!empty($value["roles"]) ? $value["roles"] : array()) );
+
+					$res[] = Link::multiconnect($child, $key, $value["type"]);
+				
+					$nbUser++;
+				}
+			}
+		}
+		$result = array("nb" => $nbUser,
+						"res" => $res);
+		Rest::json($result);
+	}
 		
 }
 

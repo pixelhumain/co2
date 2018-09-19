@@ -4,6 +4,7 @@
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "welcome",
+                                "themeParams"=>@$params
                             )
                         );
     $cssAnsScriptFiles = array(

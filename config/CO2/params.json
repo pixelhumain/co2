@@ -15,9 +15,16 @@
     "deviseDefault" : "€",
     "nbAdminModeration" : 3,
     "nbReportCoModeration" : 3,
-    
+    "appRendering":"horizontal",
     "onepageKey" : [ "co", "net" ],
-
+    "urlKey":{
+    	"eco":"annonces",
+    	"search":"search",
+    	"live":"live",
+    	"page":"page",
+    	"agenda":"agenda",
+    	"index":"index"
+    },
 	"pages" : {
 		
 		"#app.index": {
@@ -29,7 +36,8 @@
 
 		"#welcome": {
 			"inMenu" : false, 
-			"useHeader" : false, 
+			"useHeader" : true, 
+			"useFilter" : false, 
 			"open" : true, 
 			"subdomain" : "welcome", 
 			"subdomainName" : "Home",
@@ -57,11 +65,13 @@
 		"#search": {
 			"inMenu" : true, 
 			"useHeader" : true, 
+			"useFilter" : true,
 			"open" : true, 
 			"subdomain" : "search", 
 			"subdomainName" : "All",
 			"hash" : "#app.search",
 			"icon" : "search", 
+			"type" : "all",
 			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
 			"placeholderMainSearch" : "what are you looking for ?",
 			"lblBtnCreate" : "Create a page",
@@ -82,6 +92,7 @@
 		"#web":
       	  	{ "inMenu" : true, 
               "useHeader" : true, 
+              "useFilter" : false,
               "open" : false, 
               "subdomain" : "web", 
               "subdomainName" : "Web",
@@ -105,10 +116,12 @@
 		"#live": {
 			"inMenu" : true, 
 			"useHeader" : true, 
+			"useFilter" : true,
 			"open" : true, 
 			"subdomain" : "live", 
 			"subdomainName" : "News feed",
 			"hash":"#app.live",
+			"type" : "news",
 			"icon" : "newspaper-o", 
 			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
 			"placeholderMainSearch" : "search in live ...",
@@ -122,11 +135,13 @@
 		"#agenda": {
 			"inMenu" : true, 
 			"useHeader" : true, 
+			"useFilter" : true,
 			"open" : true, 
 			"subdomain" : "agenda", 
 			"subdomainName" : "Events",
 			"hash":"#app.agenda",
 			"icon" : "calendar", 
+			"type" : "events",
 			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
 			"placeholderMainSearch" : "search an event ...",
 			"lblBtnCreate" : "Create an event",
@@ -142,12 +157,14 @@
 		"#annonces": {
 			"inMenu" : true, 
 			"useHeader" : true, 
+			"useFilter" : true,
 			"open" : true, 
 			"subdomain" : "annonces", 
 			"subdomainName" : "classifieds",
 			"hash" : "#eco",
 			"module":"eco",
 			"icon" : "bullhorn", 
+			"type" : "classifieds",
 			"mainTitle" : "Classified ads",
 			"placeholderMainSearch" : "search among classifieds ...",
 			"lblBtnCreate" : "Create a classified ad",
@@ -197,7 +214,8 @@
 
 		"#page": {
 			"inMenu" : false, 
-			"useHeader" : false, 
+			"useHeader" : true,
+			"useFilter" : false, 
 			"open" : true, 
 			"subdomain" : "page", 
 			"subdomainName" : "page",

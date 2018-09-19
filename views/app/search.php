@@ -22,7 +22,7 @@
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
-    $params = CO2::getThemeParams();
+   // $params = CO2::getThemeParams();
 
     $maxImg = 5;
 
@@ -47,8 +47,9 @@
     $this->renderPartial($layoutPath.'header', 
                             array(  "layoutPath"=>$layoutPath ,
                                     "page" => $page,
-                                    "type" => @$type,
-                                    "dontShowMenu"=> (!@$dontShowMenu) ? true : false ) ); 
+                                    "type" => @$type)
+                                    //"dontShowMenu"=> (!@$dontShowMenu) ? true : false )
+                        ); 
 
 
     $randImg = rand(1, $maxImg);
@@ -66,8 +67,7 @@
         /*opacity: 0.3;
         background-color: black;*/
     }
-    <?php if($params["title"] != "Kgougle") {} ?>
-   /* header {
+      /* header {
       background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/<?php echo $page; ?>/pexels-<?php echo $randImg; ?>.jpeg") center center;
       /*opacity: 0.3;
       background-color: black;*/
@@ -143,8 +143,7 @@
 
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
-var page = "<?php echo @$page; ?>";
-var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
+
 var pageCount=false;
 searchObject.count=true;
 searchObject.initType=typeInit;
@@ -160,7 +159,7 @@ var currentKFormType = "";
 
 jQuery(document).ready(function() {
     
-    setTitle(titlePage, "", titlePage);
+
     
     initCountType();
     var typeUrl = "?nopreload=true";

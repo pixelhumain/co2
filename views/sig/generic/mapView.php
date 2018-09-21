@@ -258,7 +258,7 @@
 			</div>
 		<?php } ?>
 
-		<div class="btn-group-map tools-btn">
+		<div class="btn-group-map tools-btn hidden-xs">
 		
 			<?php if(!isset($sigParams['useBtnCloseMap']) || @$sigParams['useBtnCloseMap'] == true ){ ?>
 			<div class="btn-group btn-group-lg tooltips"

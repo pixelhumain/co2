@@ -202,14 +202,14 @@ function getAjaxNotification(element, event, elementType, elementId){
         	buildNotifications(data.notif, element, event, elementType, elementId);
         	if(typeof data.countNotif != "undefined")
         		notifCount(data.countNotif, element);
-        	if(data.coop > 0){
+        	/*if(data.coop > 0){
         		$(".btn-dashboard-dda").show();
         		$(".coopNotifs").html(data.coop).show(100);
         	}
         	else{
         		//$(".btn-dashboard-dda").hide();
         		//$(".coopNotifs").html("");
-        	}
+        	}*/
         } else {
             toastr.error("no notifications found ");
         }

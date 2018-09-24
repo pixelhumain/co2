@@ -176,6 +176,9 @@ function initSearchInterface(){
         if(type=="vote") type="entry";
         dyFObj.openForm(type);
     });
+    if(typeof themeParams!="undefined" && typeof themeParams.appRendering != "undefined" && themeParams.appRendering=="vertical"){
+        $(".headerSearchContainer, .bodySearchContainer").removeClass("col-md-10 col-sm-10 col-sm-offset-1 col-md-offset-1");
+    }
     
 }
 function spinSearchAddon(bool){

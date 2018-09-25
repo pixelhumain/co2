@@ -48,6 +48,20 @@
 			"lblBtnCreate" : "Create something",
 			"colorBtnCreate" : "green"
 		},
+		"#myhome": {
+			"inMenu" : false, 
+			"useHeader" : true, 
+			"useFilter" : false, 
+			"open" : true, 
+			"subdomain" : "home", 
+			"subdomainName" : "Home",
+			"hash" : "#app.home",
+			"icon" : "", 
+			"mainTitle" : "My citizen network",
+			"placeholderMainSearch" : "love it ...",
+			"lblBtnCreate" : "Create something",
+			"colorBtnCreate" : "green"
+		},
 		"#docs": {
 			"inMenu" : false, 
 			"useHeader" : false, 

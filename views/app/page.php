@@ -17,7 +17,8 @@
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page",
-                                "dontShowMenu"=>true) ); 
+                                "dontShowMenu"=>true,
+                                "useFilter"=>false) ); 
 ?>
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">

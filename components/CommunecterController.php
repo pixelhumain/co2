@@ -565,6 +565,7 @@ class CommunecterController extends Controller
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),
+      "home"             => array('href' => "/ph/co2/app/home",         "public" => true),
       "index"             => array('href' => "/ph/co2/app/index",             "public" => true),
       "web"               => array('href' => "/ph/co2/app/web",               "public" => true),
       "websearch"         => array('href' => "/ph/co2/app/websearch",         "public" => true),

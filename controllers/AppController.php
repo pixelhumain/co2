@@ -283,7 +283,12 @@ class AppController extends CommunecterController {
         //echo "Hello there "; echo Yii::app()->createUrl("/interop/co/index"); exit; 
         $this->redirect( Yii::app()->createUrl("/interop") );
     }
-
+    public function actionHome(){
+        CO2Stat::incNbLoad("co2-home");
+        if( !@Yii::app()->session["userId"] )
+             $this->redirect( Yii::app()->createUrl($controller->module->id) );
+            echo $this->renderPartial("home", array(), true);
+    }
     public function actionPage($type, $id, $view=null, $mode=null, $dir=null, $key=null, $folder=null){
         CO2Stat::incNbLoad("co2-page");
             

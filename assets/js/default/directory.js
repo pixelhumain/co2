@@ -2898,11 +2898,13 @@ var directory = {
           headerStr+=     'margin-right-5" data-value="list"><i class="fa fa-bars"></i></button>'+
                         '<button class="btn switchDirectoryView ';
                           if(directory.viewMode=="block") headerStr+='active ';
-          headerStr+=     '" data-value="block"><i class="fa fa-th-large"></i></button>'+
-                        '<button class="btn-show-map hidden-xs" style="" title="'+trad.showthemap+'" alt="'+trad.Showthemap+'">'+
-                            '<i class="fa fa-map-marker"></i> Carte'+
-                          '</button>'+
-                    '</div>';      
+          headerStr+=     '" data-value="block"><i class="fa fa-th-large"></i></button>';
+                          if(typeof themeParams != "undefined" && themeParams.appRendering !="undefined" && themeParams.appRendering=="vertical"){
+          headerStr+=       '<button class="btn-show-map hidden-xs" style="" title="'+trad.showthemap+'" alt="'+trad.Showthemap+'">'+
+                              '<i class="fa fa-map-marker"></i> Carte'+
+                            '</button>';
+                            }
+          headerStr+= '</div>';      
       }
       return headerStr;
     },

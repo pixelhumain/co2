@@ -327,6 +327,17 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
             //affiche les éléments sur la carte
             console.log("mapElements", results);
             Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
+            $(".btn-show-map").off().click(function(){
+              if(typeof formInMap != "undefined" && formInMap.actived == true)
+                formInMap.cancel(true);
+                //else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
+              //  getContextDataLinks();
+              else{
+                if(isMapEnd == false && contextData && contextData.map && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id) )
+                  Sig.showMapElements(Sig.map, contextData.map.data, contextData.map.icon, contextData.map.title);
+                  showMap();
+              }
+            });
             spinSearchAddon();
             if(typeof callBack == "function")
               callBack();
@@ -2888,6 +2899,9 @@ var directory = {
                         '<button class="btn switchDirectoryView ';
                           if(directory.viewMode=="block") headerStr+='active ';
           headerStr+=     '" data-value="block"><i class="fa fa-th-large"></i></button>'+
+                        '<button class="btn-show-map hidden-xs" style="" title="'+trad.showthemap+'" alt="'+trad.Showthemap+'">'+
+                            '<i class="fa fa-map-marker"></i> Carte'+
+                          '</button>'+
                     '</div>';      
       }
       return headerStr;

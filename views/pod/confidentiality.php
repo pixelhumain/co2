@@ -147,6 +147,18 @@
 								</div>
 							</div>
 						<?php } ?>
+					<?php } else { ?>
+						<div class="col-sm-4 col-xs-4 text-right padding-10 margin-top-10">
+							<i class="fa fa-message"></i> <strong><?php echo Yii::t("common","Recevoir des mails") ;?> :</strong>
+						</div>
+						<div class="col-sm-8 col-xs-8 text-left padding-10">
+							<div class="btn-group btn-group-sendMail inline-block">
+								<button class="btn btn-default confidentialitySettings" type="sendMail" value="true">
+									<i class="fa fa-group"></i> <?php echo Yii::t("common","Yes"); ?></button>
+								<button class="btn btn-default confidentialitySettings" type="sendMail" value="false">
+									<i class="fa fa-user-secret"></i> <?php echo Yii::t("common","No"); ?></button>
+							</div>
+						</div>
 					<?php } ?>
 				</div>
 			</div>
@@ -177,7 +189,7 @@ function bindButtonConfidentiality(){
 		foreach ($nameFields as $key => $value) {
 			$fieldPreferences[$value] = true;
 		}
-		$typePreferencesBool = array("isOpenData", "isOpenEdition", "private");
+		$typePreferencesBool = array("isOpenData", "isOpenEdition", "sendMail", "private");
 		//To checked private or public
 		foreach($typePreferences as $typePref){
 			foreach ($fieldPreferences as $field => $hidden) {

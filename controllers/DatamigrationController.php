@@ -5115,6 +5115,31 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 		Rest::json($res);
 	}
+
+	public function actionUpdatePreferencesSendMail() {
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$nbUser = 0;
+			$users = PHDB::find(Person::COLLECTION, array());
+			foreach ($users as $key => $person) {
+				$person["modifiedByBatch"][] = array("updatePreferencesSendMail" => new MongoDate(time()));
+				$person["preferences"]["sendMail"] = true;
+				$res = PHDB::update(Person::COLLECTION, 
+											  	array("_id"=>new MongoId($key)),
+						                        array('$set' => array(	"preferences" => $person["preferences"],
+						                        						"modifiedByBatch" => $person["modifiedByBatch"])
+						                        					)
+						                    );
+
+				if($res["ok"] == 1){
+					$nbUser++;
+				}else{
+					echo "<br/> Error with user id : ".$key;
+				}
+			}
+
+			echo "Number of user with preferences modified : ".$nbUser;
+		}
+	}
 		
 }
 

@@ -5119,7 +5119,7 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 	public function actionUpdatePreferencesSendMail() {
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			$nbUser = 0;
-			$users = PHDB::find(Person::COLLECTION, array());
+			$users = PHDB::find(Person::COLLECTION, array("modifiedByBatch.updatePreferencesSendMail" => array('$exists' => 0)));
 			foreach ($users as $key => $person) {
 				$person["modifiedByBatch"][] = array("updatePreferencesSendMail" => new MongoDate(time()));
 				$person["preferences"]["sendMail"] = true;

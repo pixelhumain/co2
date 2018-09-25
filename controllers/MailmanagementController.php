@@ -24,6 +24,7 @@ class MailmanagementController extends CommunecterController {
 	{
 	    return array(
 	        'updatetopending'    => 'citizenToolKit.controllers.mailmanagement.UpdateToPendingAction',
+	        'droppedmail'    => 'citizenToolKit.controllers.mailmanagement.DroppedMailAction',
 	        'createandsend'    => 'citizenToolKit.controllers.mailmanagement.CreateAndSendAction'
 	    );
 	}

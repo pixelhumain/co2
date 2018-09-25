@@ -293,7 +293,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 
 								?>
 
-								<a href="<?php echo Yii::app()->getRequest()->getBaseUrl(true) ?>/survey/co/members/id/<?php echo $id; ?>" class="btn btn-success margin-top-20 col-xs-12 " id="btn-home" style="font-size:20px;"><i class="fa fa-home"></i> <?php echo Yii::t("invite","See the community") ?></a>
+								<a href="<?php echo Yii::app()->getRequest()->getBaseUrl(true) ?>/survey/co/members/id/<?php echo $id; ?>/session/<?php echo $_GET["session"]; ?>" class="btn btn-success margin-top-20 col-xs-12 " id="btn-home" style="font-size:20px;"><i class="fa fa-home"></i> <?php echo Yii::t("invite","See the community") ?></a>
 							<?php } else /*if($parentType != Person::COLLECTION) */ {?>
 								<button class="btn btn-success margin-top-20 col-xs-12 link-to-community"><i class="fa fa-users"></i> <?php echo Yii::t("invite","See the community") ?></button>
 							<?php } ?>

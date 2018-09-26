@@ -59,6 +59,10 @@
 
     $useBorderElement = false;
     if(@Yii::app()->params["front"]) $front = Yii::app()->params["front"];
+
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+$me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
+$this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.mainMenu', array("me"=>$me) );
 ?>
 <style>
 	

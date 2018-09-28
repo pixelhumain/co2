@@ -1,24 +1,27 @@
 ### Applications
-- **[TOUS](https://wiki.communecter.org/fr/moteur-de-recherche.html)** : retrouver les acteurs d'un territoire
-- **[ACTUALITÉ](https://wiki.communecter.org/fr/agenda.html)** : calendrier des actions locales
+
+- **[TOUS](https://doc.co.tools/books/2---utiliser-loutil/page/moteur-de-recherche)** : retrouver les acteurs d'un territoire
+- **[ACTUALITÉ](https://doc.co.tools/books/2---utiliser-loutil/page/agenda)** : calendrier des actions locales
 - **[ÉVÈNEMENTS](https://framaslides.org/share/59ca4fb47906b0.73386068)** : actualité localisée
 - **ANNONCES** : vendez des biens et des services, proposez et recherchez des ressources humaines ou matérielles
 
 ### Outils
-- **[ESPACE COOPÉRATIF](https://wiki.communecter.org/fr/espace-coop%C3%A9ratif.html)** : outil de gouvernance pour les projets et les organisations
-- **[NETWORK](https://wiki.communecter.org/fr/network---cr%C3%A9er-une-carte.html)** : création de cartes personnalisées
-- **[MESSAGERIE](https://wiki.communecter.org/fr/chat-de-discussions.html)** : outil de discussions instantanées
-- **[GESTIONNAIRE DE FICHIERS ET D'URL](https://wiki.communecter.org/fr/librairie.html)** : agréger de la connaissance et partage de listes de liens
+
+- **[ESPACE COOPÉRATIF](https://doc.co.tools/books/2---utiliser-loutil/page/espace-coop%C3%A9ratif)** : outil de gouvernance pour les projets et les organisations
+- **[NETWORK](https://doc.co.tools/books/2---utiliser-loutil/page/cr%C3%A9er-un-network)** : création de cartes personnalisées
+- **[MESSAGERIE](https://doc.co.tools/books/2---utiliser-loutil/page/chat-de-discussions)** : outil de discussions instantanées
+- **[GESTIONNAIRE DE FICHIERS ET D'URL](https://doc.co.tools/books/2---utiliser-loutil/page/librairie)** : agréger de la connaissance et partage de listes de liens
 - **CUSTOM** : créer un réseau personnalisé ré-utilisant toutes les fonctionnalités de la plateforme
 - **FORMULAIRE** : récoltez et analysez de l'information par questionnaire
 
 ### Fonctionnalités supplémentaires
-- **[Cartographie interne](https://wiki.communecter.org/fr/les-cartes.html)**
+
+- **[Cartographie interne](https://doc.co.tools/books/2---utiliser-loutil/page/les-cartes)**
  : tous les éléments étant géolocalisés on peut afficher une 
 cartographie interactive des données de la page affichée (résultat de 
 recherche, agenda d'une ville, liste des projets d'une organisation, 
 ...)
-- **[Sondages](https://wiki.communecter.org/fr/sondages.html)** : questionnaire à choix multiple diffusable dans le live
+- **[Sondages](https://doc.co.tools/books/2---utiliser-loutil/page/sondages)** : questionnaire à choix multiple diffusable dans le live
 - **Tags** : permet de classer les éléments par thème
 - **Alertes** : soyez notifié d'une nouvelle publication d'annonce
 - **S'abonner** : pour retrouver l'actualité de n'importe élément dans l'accueil

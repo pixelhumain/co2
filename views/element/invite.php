@@ -568,87 +568,104 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 					data: params,
 					dataType: "json",
 					success: function(data){
-						mylog.log("link/multiconnect success", data);
-						var nbInvites = data.length;
-						var str = "";
-						if(typeof data.citoyens != "undefined"){
-							$.each(data.citoyens, function(key, value){
-								if(value.result){
-									mylog.log("contactsList.invites key, value", key, value);
-									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
-									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
-									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+newElementType+".png";		
-									var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
-									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
-											'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
-												"<div class='success pull-left text-green'><i class='fa fa-check'></i></div>"+
-												"<div class='btn-scroll-type pull-left col-xs-10' >"+
-													'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> '+
-												 	'<span class="text-dark text-bold margin-left-5">'+
-														newElement.name + 
-													'</span><br/>'+
-													'<span class="text-dark text-bold margin-left-5 text-green msg-back">' + value.msg + '</span>'+
-										 		"</div>"+
-											'</a>'+
-										"</li>";
-								}
-							});
+
+
+						if(parentType == "actions"){
+							toastr.info(trad["processing"]);
+							// var idProposal = $(this).data("id-action");
+							// uiCoop.getCoopData(parentType, parentId, "action", null, idProposal, 
+							// 	function(){
+							// 		uiCoop.minimizeMenuRoom(true);
+							// 		uiCoop.showAmendement(false);
+							// 		toastr.success(trad["processing ok"]);
+							// 	}, false);
+							// $(".close-modal").trigger("click");
+							// $(".load-data-community").trigger("click");
+						} else {
+							mylog.log("link/multiconnect success", data);
+							var nbInvites = data.length;
+							var str = "";
+							if(typeof data.citoyens != "undefined"){
+								$.each(data.citoyens, function(key, value){
+									if(value.result){
+										mylog.log("contactsList.invites key, value", key, value);
+										var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
+										var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
+										var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+newElementType+".png";		
+										var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
+										str += "<li class='li-dropdown-invite-results col-xs-12'>"+
+												'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
+													"<div class='success pull-left text-green'><i class='fa fa-check'></i></div>"+
+													"<div class='btn-scroll-type pull-left col-xs-10' >"+
+														'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> '+
+													 	'<span class="text-dark text-bold margin-left-5">'+
+															newElement.name + 
+														'</span><br/>'+
+														'<span class="text-dark text-bold margin-left-5 text-green msg-back">' + value.msg + '</span>'+
+											 		"</div>"+
+												'</a>'+
+											"</li>";
+									}
+								});
+							}
+
+							if(typeof data.invites != "undefined"){
+								$.each(data.invites, function(key, value){
+									if(value.result){
+										mylog.log("contactsList.invites key, value", key, value);
+										var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
+										var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
+										var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+newElementType+".png";		
+										var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
+										str += "<li class='li-dropdown-invite-results col-xs-12'>"+
+												'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
+													"<div class='success pull-left text-green'><i class='fa fa-check'></i></div>"+
+													"<div class='btn-scroll-type pull-left col-xs-10' >"+
+														'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> '+
+														'<span class="text-dark text-bold margin-left-5">'+
+															newElement.name +
+														'</span><br/>'+
+														'<span class="text-dark text-bold text-green margin-left-5 msg-back">'+
+															'<i class="fa fa-arrow-right"></i> '+trad.invitationsenttojoinco+'</br>'+
+															'<i class="fa fa-arrow-right"></i> '+value.msg +
+														'</span>'+
+													"</div>"+
+												'</a>'+
+											"</li>";
+									}
+																
+								});
+							}
+
+							if(typeof data.organizations != "undefined"){
+								$.each(data.organizations, function(key, value){
+									if(value.result){
+										mylog.log("contactsList.invites key, value", key, value);
+										var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+value.newElementType+".png";		
+										var bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";	
+										str += "<li class='li-dropdown-invite-results col-xs-12'>"+
+												'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
+													"<div class='success pull-left text-green'><i class='fa fa-check'></i></div>"+
+													"<div class='btn-scroll-type pull-left col-xs-10' >"+
+														'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> '+
+														'<span class="text-dark text-bold margin-left-5">'+
+														 	value.newElement.name + 
+														'</span><br/>'+
+														'<span class="text-dark text-bold text-green msg-back margin-left-5">' + value.msg + '</span>'+
+													"</div>"+
+												"</a>"+
+											"</li>";
+									}
+								});
+							}
+							$('#modal-invite #btnValider').prop("disabled", false);
+							$('#modal-invite #btnValider').html(tradDynForm.launchInvitations);
+							initListInvite();
+							fadeInView("result");
+							$("#modal-invite #dropdown-result").html(str);
 						}
 
-						if(typeof data.invites != "undefined"){
-							$.each(data.invites, function(key, value){
-								if(value.result){
-									mylog.log("contactsList.invites key, value", key, value);
-									var newElement=(typeof value.newElement != "undefined") ? value.newElement : value.parent;
-									var newElementType = (typeof newElementType != "undefined") ? newElementType : "citoyens";
-									var profilThumbImageUrl = (typeof newElement.profilThumbImageUrl != "undefined" && newElement.profilThumbImageUrl != "") ? baseUrl + newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+newElementType+".png";		
-									var bgThumb=(newElementType=="citoyens") ? "yellow" : "green";
-									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
-											'<a href="#page.type.'+newElementType+'.id.'+newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
-												"<div class='success pull-left text-green'><i class='fa fa-check'></i></div>"+
-												"<div class='btn-scroll-type pull-left col-xs-10' >"+
-													'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> '+
-													'<span class="text-dark text-bold margin-left-5">'+
-														newElement.name +
-													'</span><br/>'+
-													'<span class="text-dark text-bold text-green margin-left-5 msg-back">'+
-														'<i class="fa fa-arrow-right"></i> '+trad.invitationsenttojoinco+'</br>'+
-														'<i class="fa fa-arrow-right"></i> '+value.msg +
-													'</span>'+
-												"</div>"+
-											'</a>'+
-										"</li>";
-								}
-															
-							});
-						}
-
-						if(typeof data.organizations != "undefined"){
-							$.each(data.organizations, function(key, value){
-								if(value.result){
-									mylog.log("contactsList.invites key, value", key, value);
-									var profilThumbImageUrl = (typeof value.newElement.profilThumbImageUrl != "undefined" && value.newElement.profilThumbImageUrl != "") ? baseUrl + value.newElement.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+value.newElementType+".png";		
-									var bgThumb=(value.newElementType=="citoyens") ? "yellow" : "green";	
-									str += "<li class='li-dropdown-invite-results col-xs-12'>"+
-											'<a href="#page.type.'+value.newElementType+'.id.'+value.newElement._id.$id+'" target="_blank" class="lbh col-xs-12">'+
-												"<div class='success pull-left text-green'><i class='fa fa-check'></i></div>"+
-												"<div class='btn-scroll-type pull-left col-xs-10' >"+
-													'<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+' no-margin" height="35" width="35"> '+
-													'<span class="text-dark text-bold margin-left-5">'+
-													 	value.newElement.name + 
-													'</span><br/>'+
-													'<span class="text-dark text-bold text-green msg-back margin-left-5">' + value.msg + '</span>'+
-												"</div>"+
-											"</a>"+
-										"</li>";
-								}
-							});
-						}
-						$('#modal-invite #btnValider').prop("disabled", false);
-						$('#modal-invite #btnValider').html(tradDynForm.launchInvitations);
-						initListInvite();
-						fadeInView("result");
-						$("#modal-invite #dropdown-result").html(str);
+						
 				 	}
 				});
 				

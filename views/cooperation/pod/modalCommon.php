@@ -156,12 +156,12 @@ jQuery(document).ready(function() {
                 console.log("HERE", "actions", idAction, "action", null, idAction);
                 if( isGood == true){
                     toastr.success(msg);
-                    // uiCoop.getCoopData("actions", idAction, "action", null, idAction, 
-                    //     function(){
-                    //         uiCoop.minimizeMenuRoom(true);
-                    //         uiCoop.showAmendement(false);
-                    //         toastr.success(trad["processing ok"]);
-                    //     }, false);
+                    uiCoop.getCoopData(contextData.type, contextData.id, "action", null, idAction, 
+                      function(){
+                        uiCoop.minimizeMenuRoom(true);
+                        uiCoop.showAmendement(false);
+                        toastr.success(trad["processing ok"]);
+                      }, false);
                 } else {
                     toastr.error(msg);
                 }

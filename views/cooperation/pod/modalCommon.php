@@ -129,7 +129,7 @@ jQuery(document).ready(function() {
         var listInvite = { citoyens : ccc };
 
         var params = {
-            parentId : actionId,
+            parentId : idAction,
             parentType : "actions",
             listInvite : listInvite
         };
@@ -153,10 +153,10 @@ jQuery(document).ready(function() {
                 });
 
 
-                console.log("HERE", "actions", actionId, "action", null, actionId);
+                console.log("HERE", "actions", idAction, "action", null, idAction);
                 if( isGood == true){
                     toastr.success(msg);
-                    // uiCoop.getCoopData("actions", actionId, "action", null, actionId, 
+                    // uiCoop.getCoopData("actions", idAction, "action", null, idAction, 
                     //     function(){
                     //         uiCoop.minimizeMenuRoom(true);
                     //         uiCoop.showAmendement(false);

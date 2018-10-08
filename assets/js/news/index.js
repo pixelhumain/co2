@@ -8,8 +8,52 @@ function isLiveGlobal(){
 * @param string contextParentId indicates the precise parent id 
 * @param strotime dateLimite indicates the date to load news
 */
-var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
+var loading = 	"<div class='loader shadow2 letter-blue text-center margin-bottom-50'>"+
+					"<span style=''>"+
+						"<i class='fa fa-spin fa-circle-o-notch'></i> "+
+						"<span>"+trad.currentlyloading+" ...</span>" + 
+				"</div>";
+
+var loadStream = function(indexMin, indexMax, type, id){ mylog.log("loadStream");
 	loadingData = true;
+	currentIndexMin = indexMin;
+	currentIndexMax = indexMax;
+	if(typeof dateLimit == "undefined") dateLimit = 0;
+
+	//isLive = isLiveBool==true ? "/isLive/true" : "";
+	var url = "news/index/type/"+type+"/id/"+id+isLiveNews+"/date/"+dateLimit+"?tpl=co2&renderPartial=true";
+	$.ajax({ 
+        type: "POST",
+        url: baseUrl+"/"+moduleId+'/'+url,
+        data: { indexMin: indexMin, 
+        		indexMax:indexMax, 
+        		renderPartial:true 
+        	},
+        success:
+            function(data) {
+                if(data){ 
+                	$("#news-list").find(".loader").remove();
+                	$("#news-list").append(data);
+                	if($("#noMoreNews").length<=0)
+						$("#news-list").append(loading);
+                	//bindTags();
+					
+				}
+				loadingData = false;
+				$(".stream-processing").hide();
+            },
+        error:function(xhr, status, error){
+            loadingData = false;
+            $("#news-list").html("erreur");
+        },
+        statusCode:{
+                404: function(){
+                	loadingData = false;
+                    $("#news-list").html("not found");
+            }
+        }
+    });
+	/*loadingData = true;
     indexStep = 5;
     if(typeof indexMin == "undefined") indexMin = 0;
     if(typeof indexMax == "undefined") indexMax = indexStep;
@@ -88,7 +132,7 @@ var loadStream = function(indexMin, indexMax){ mylog.log("loadStream");
 				$(".stream-processing").hide();
 			}
 		});
-	}
+	}*/
 }
 
 var tagsFilterListHTML = "";

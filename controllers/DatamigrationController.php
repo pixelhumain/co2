@@ -3664,6 +3664,201 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 		}else 
 			echo "Tout le monde t'as vu !! reste bien tranquille";
 	}
+	public function actionInsertFoldersElement(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);
+			//$slugcitoyens=PHDB::find(Slug::COLLECTION);
+			$typeEl=array("organizations","projects","events","citoyens");
+			//$slugExist=array();
+			//foreach($slugcitoyens as $data){
+			//	array_push($slugExist,$data["name"]);
+			//}
+			foreach($typeEl as $type){
+				
+				$res=PHDB::find($type,array("documents"=>array('$exists'=>true)));
+				echo "//////////".count($res)." ".$type."/////////////////<br>";
+				$count=0;
+				foreach ($res as $key => $value) {
+					
+						// replace non letter or digits by -
+					var_dump($value["documents"]);	
+					$folders=[];
+					if(@$value["documents"]["image"]){
+						$folders=array_merge($folders,self::prepareFolder($type, $key, $value["documents"]["image"], "image"));	
+					}
+					if(@$value["documents"]["file"]){
+						$folders=array_merge($folders,self::prepareFolder($type, $key, $value["documents"]["file"], "file"));	
+					}
+					var_dump($folders);
+					$count++;
+					
+					
+		 		}
+		 		echo "////////////////".$count." ".$type." traités (comme des animaux) ///////";
+			}
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
+	}
+	public function actionCreateFoldersPathAndDocumentPath(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);	
+			$res=PHDB::find(Folder::COLLECTION);
+			echo "//////////".count($res)." folders vont être épiés traités envoyer à l'abatoire/////////////////<br>";
+			$count=0;
+			foreach ($res as $key => $value) {
+				$docs=PHDB::find(Document::COLLECTION, 
+					array("id"=>$value["contextId"], "type"=>$value["contextType"], "doctype"=>$value["docType"], "collection"=>$value["name"]));
+				$folderPath=Folder::getFolderPath($value);
+				self::createfolder($folderPath);
+				echo "=>>>>>>> folder path : ".$folderPath."<br/><hr>";
+				foreach($docs as $id => $v){
+					$pathDocument=Document::getDocumentPath($v);
+					$newPath=$folderPath."/".$v["name"];
+					echo $id." :: ".$pathDocument."</br>";
+					echo "Move file to :: ".$newPath."</br>";
+					if(file_exists ($pathDocument))
+						rename($pathDocument, $newPath);
+					$count++;
+				}
+				//var_dump($folders);
+				
+	 		}
+	 		echo "////////////////".$count." documents sous de la source de la kilienne ///////";
+			
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
+	}
+	public function actionCreateThumbPath(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);	
+			$docs=PHDB::find(Document::COLLECTION, 
+					array("doctype"=>"image", "folderId"=>array('$exists'=>true)));
+			//echo "=>>>>>>> folder path : ".$folderPath."<br/><hr>";
+			$count=0;
+			foreach($docs as $id => $v){
+				$folderPath=Folder::getFolderPath(Folder::getById($v["folderId"]))."/thumb";
+				self::createfolder($folderPath);
+				
+   				$pathDocument=Yii::app()->params['uploadDir'].$v["moduleId"]."/".$v["folder"]."/thumb/".$v["name"];
+				$newPath=$folderPath."/".$v["name"];
+				echo $id." :: ".$pathDocument."</br>";
+				echo "Move file to :: ".$newPath."</br>";
+				if(file_exists ($pathDocument))
+					rename($pathDocument, $newPath);
+				$count++;
+				//var_dump($folders);
+				
+	 		}
+	 		echo "////////////////".$count." documents sous de la source de la kilienne ///////";
+			
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
+	}
+	public function actionUpdateDocsAndDeleteCollection(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);	
+			$res=PHDB::find(Folder::COLLECTION);
+			echo "//////////".count($res)." folders ont été épiés traités envoyer à l'abatoire/////////////////<br>";
+			$count=0;
+			foreach ($res as $key => $value) {
+				$docs=PHDB::find(Document::COLLECTION, 
+					array("id"=>$value["contextId"], "type"=>$value["contextType"], "doctype"=>$value["docType"], "collection"=>$value["name"]));
+				foreach($docs as $id => $v){
+					echo $id." :: ".$key."</br>";
+					$set=array('$set'=>array("folderId"=>$key), '$unset'=>array("collection"=>true));
+					PHDB::update(
+							Document::COLLECTION,
+							array("_id"=>new MongoId($id)),
+							$set);
+					$count++;
+				}
+				
+	 		}
+	 		echo "////////////////".$count." documents updaté avec le folderId ///////";
+	 		$typeEl=array("organizations","projects","events","citoyens");
+	 		$count=0;
+			foreach($typeEl as $type){
+				
+				$el=PHDB::find($type,array("documents"=>array('$exists'=>true)));
+				//echo "//////////".count($res)." ".$type."/////////////////<br>";
+				foreach ($el as $key => $value) {
+
+					PHDB::update(
+							$type,
+							array("_id"=>new MongoId($key)),
+							array('$unset'=>array("documents"=>true)));	
+					$count++;
+					
+					
+		 		}
+			}
+	 		echo "////////////////".$count." elements ou l'on a supprimer l'arbre documentations ///////";
+			
+		}else 
+			echo "Tout le monde t'as vu !! reste bien tranquille";
+	}
+	public static function createfolder($folderPath){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			echo "/////////////create folder//////////////////////////<br/>";
+
+			$upload_dir = Yii::app()->params['uploadDir']."communecter/";
+			$folderPath=str_replace ( $upload_dir , "" , $folderPath ); 
+			$folderPathExp=explode("/", $folderPath);
+			foreach($folderPathExp as $folder){
+				$upload_dir .= $folder.'/';
+	            echo $upload_dir."<br/>";
+	            if( !file_exists ( $upload_dir ) )
+	               mkdir ( $upload_dir,0775 );
+			 
+	        }
+	    }else{
+	    	echo "Bah alors champion ? douché q'tin reconno";
+	    }
+	}
+	public static function actionChangeFilesCTESurveyDatas(){
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$el=PHDB::find(Document::COLLECTION,array("keySurvey"=>array('$exists'=>true)));
+				//echo "//////////".count($res)." ".$type."/////////////////<br>";
+				$count=0;
+				foreach ($el as $key => $value) {
+					$arraySetted=array('$unset'=>array("keySurvey"=>""), '$set'=>array("surveyId"=>'cte'));
+					//print_r($value);
+					PHDB::update(
+							Document::COLLECTION,
+							array("_id"=>new MongoId($key)),
+							$arraySetted);
+					$count++;
+					
+					
+		 		}
+		 	echo $count." documents qui sont passés à la casserole";
+	    }else{
+	    	echo "Bah alors champion ? douché q'tin reconno";
+	    }
+	}
+
+	public static function prepareFolder($type, $id, $value, $docType, $parentId=null){
+		$foldarray=[];
+		foreach($value as $key => $subs){
+			if($key != "updated"){
+				$newFolder=array("name"=>$key, "docType" => $docType, "contextId"=>$id, "contextType"=> $type, "created"=> @$subs["updated"], "updated"=>@$subs["updated"]);
+				$newFolder["count"]=PHDB::count(Document::COLLECTION, array("type"=>$type, "id"=>$id, "collection"=>$key));
+				if(!empty($parentId))
+					$newFolder["parentId"]=$parentId;
+				PHDB::insert(Folder::COLLECTION,  
+                    $newFolder);
+				array_push($foldarray, $newFolder);
+				if(count($subs)>1)
+					$foldarray=array_merge($foldarray,self::prepareFolder($type, $id, $subs, $docType, (string)$newFolder["_id"]));	
+			}
+		}
+		return $foldarray;
+
+	}
 	public function actionUpdateSlugifyElement(){
 		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			ini_set('memory_limit', '-1');
@@ -4775,6 +4970,203 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 
 		}
 		echo $nbUser;
+	}
+
+
+	public function actionUnifierAnswers() {
+		$nbAnswer = 0;
+		$answers = PHDB::find(	Form::ANSWER_COLLECTION, 
+								array("modifiedByBatch.UnifierAnswers" => array('$exists' => 0)) );
+
+		$unique = array();
+
+
+		$deleted = array();
+		foreach ($answers as $key => $answer) {
+
+			if(empty($unique[$answer["user"]])){
+				$unique[$answer["user"]] = array(
+					"user" => $answer["user"],
+					"name" => $answer["name"],
+					"email" => @$answer["email"],
+					"formId" => @$answer["parentSurvey"],
+					"created" => time(),
+					"session" => $answer["session"],
+					"answers" => array()
+				);
+			}
+
+			if( empty($unique[$answer["user"]]["created"]) && 
+				!empty($answer["created"]) ){
+				$unique[$answer["user"]]["created"] = $answer["created"];
+			}
+
+			if( empty($unique[$answer["user"]]["formId"]) && 
+				!empty($answer["parentSurvey"]) )
+				$unique[$answer["user"]]["formId"] = $answer["parentSurvey"];
+
+
+			if( empty($unique[$answer["user"]]["email"]) && 
+				!empty($answer["email"]) )
+				$unique[$answer["user"]]["email"] = $answer["email"];
+
+
+			if( !empty($answer["answers"]) && 
+				!empty($answer["formId"]) && 
+				in_array($answer["formId"], array("cte1", "cte2", "cte3") ) ) {
+				$unique[$answer["user"]]["answers"][$answer["formId"]]["answers"] = $answer["answers"] ;
+				$unique[$answer["user"]]["answers"][$answer["formId"]]["created"] = $answer["created"] ;
+			}
+
+
+			if( !empty($answer["step"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["step"] = $answer["step"] ;
+			}
+
+			if( !empty($answer["categories"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["categories"] = $answer["categories"] ;
+			}
+
+			if( !empty($answer["comment"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["comment"] = $answer["comment"] ;
+			}
+
+
+			if( !empty($answer["risks"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["risks"] = $answer["risks"] ;
+			}
+
+			if( !empty($answer["eligible"]) && 
+				!empty($answer["formId"]) && 
+				$answer["formId"] ==  "cte") {
+
+				$unique[$answer["user"]]["eligible"] = $answer["eligible"] ;
+			}
+
+			$unique[$answer["user"]]["modifiedByBatch"][] = array("UnifierAnswers" => new MongoDate(time()));
+
+			$deleted[] = new MongoId($key) ;
+		}
+
+		//Rest::json($unique);
+
+		PHDB::remove( Form::ANSWER_COLLECTION , array( "_id" => array('$in' => $deleted) ) );
+
+		foreach ($unique as $key => $value) {
+			PHDB::insert( Form::ANSWER_COLLECTION, $value );
+		}
+
+		echo "Good" ;
+	}
+
+	public function actionLinkParentForm() {
+		$nbUser = 0;
+		$form = Form::getById("cte");
+		$orga=PHDB::findOne($form ["parentType"],array("_id"=>new MongoId($form ["parentId"])), array("name", "links"));
+		$res = array();
+		if(!empty($orga["links"]["projects"] ) ) {
+			foreach ($form["links"]["projectExtern"] as $key => $value){
+				
+				if(empty($orga["links"]["projects"][$key] ) ) {
+					$child = array();
+					$child[] = array( 	"childId" => (String) $form["parentId"],
+										"childType" => $form["parentType"],
+										"childName" => $orga["name"],
+										"roles" =>  (!empty($value["roles"]) ? $value["roles"] : array()) );
+
+					$res[] = Link::multiconnect($child, $key, $value["type"]);
+				
+					$nbUser++;
+				}
+			}
+		}
+		$result = array("nb" => $nbUser,
+						"res" => $res);
+		Rest::json($result);
+	}
+
+	public function actionStepAnswers() {
+		$nbAnswer = 0;
+		$answers = PHDB::find(	Form::ANSWER_COLLECTION, 
+								array("modifiedByBatch.StepAnswers" => array('$exists' => 0)) );
+
+		$res = array();
+		foreach ($answers as $key => $answer) {
+
+			if(empty($answer["step"])){
+				$res [] = PHDB::update(Form::ANSWER_COLLECTION, 
+						  	array("_id"=>new MongoId($key)),
+	                        array(	'$set' => array( "step"=> "dossier")));
+			}
+
+		}
+
+		Rest::json($res);
+	}
+
+	public function actionUpdatePreferencesSendMail() {
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$nbUser = 0;
+			$users = PHDB::find(Person::COLLECTION, array("modifiedByBatch.updatePreferencesSendMail" => array('$exists' => 0)));
+			foreach ($users as $key => $person) {
+				$person["modifiedByBatch"][] = array("updatePreferencesSendMail" => new MongoDate(time()));
+				$person["preferences"]["sendMail"] = true;
+				$res = PHDB::update(Person::COLLECTION, 
+											  	array("_id"=>new MongoId($key)),
+						                        array('$set' => array(	"preferences" => $person["preferences"],
+						                        						"modifiedByBatch" => $person["modifiedByBatch"])
+						                        					)
+						                    );
+
+				if($res["ok"] == 1){
+					$nbUser++;
+				}else{
+					echo "<br/> Error with user id : ".$key;
+				}
+			}
+
+			echo "Number of user with preferences modified : ".$nbUser;
+		}
+	}
+
+
+	public function actionUpdatePreferencesSendMailUserPending() {
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$nbUser = 0;
+			$users = PHDB::find(Person::COLLECTION, array("modifiedByBatch.UpdatePreferencesSendMailUserPending" => array('$exists' => 0), "roles.tobeactivated" => true));
+
+			//Rest::json($users); exit;
+			foreach ($users as $key => $person) {
+				$person["modifiedByBatch"][] = array("UpdatePreferencesSendMailUserPending" => new MongoDate(time()));
+				$person["preferences"]["sendMail"] = false;
+				$res = PHDB::update(Person::COLLECTION, 
+											  	array("_id"=>new MongoId($key)),
+						                        array('$set' => array(	"preferences" => $person["preferences"],
+						                        						"modifiedByBatch" => $person["modifiedByBatch"])
+						                        					)
+						                    );
+
+				if($res["ok"] == 1){
+					$nbUser++;
+				}else{
+					echo "<br/> Error with user id : ".$key;
+				}
+			}
+
+			echo "Number of user with preferences modified : ".$nbUser;
+		}
 	}
 		
 }

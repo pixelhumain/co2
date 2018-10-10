@@ -1473,7 +1473,70 @@ La vie en santé;Santé;;
 	}
 
 	public function actionPdfTest(){
-		Pdf::createPdf();
+		$id = "cte" ;
+		$u = "5ac4c5536ff9928b248b458a";
+		$s = "1";
+		$form = PHDB::findOne( Form::COLLECTION , array("id"=>$id));
+		$forms = PHDB::find( Form::COLLECTION , array("parentSurvey"=>$id));
+		foreach ($forms as $k => $v) {
+			$form["scenario"][$v["id"]]["form"] = $v;
+		}
+		$adminAnswers = PHDB::findOne( Form::ANSWER_COLLECTION , array("formId"=>$id ,"session"=>$s, "user"=> $u) );
+
+		$answers = PHDB::find( Form::ANSWER_COLLECTION , array("parentSurvey"=>$id,"session"=>$s, "user"=> $u ) ) ;
+		foreach ($answers as $k => $v) {
+			$answers[$v["formId"]] = $v;
+		}
+
+		$adminForm = ( Form::canAdmin((string)$form["_id"], $form) ) ? PHDB::findOne( Form::COLLECTION , array("id"=>$id."Admin") ) : PHDB::findOne( Form::COLLECTION , array("id"=>$id."Admin"), array("scenarioAdmin") ) ;
+
+		
+		$userO = Person::getById($u);
+
+
+
+		$params = array(
+			"author" => "Raphael",
+			"title" => "Mon Titre Putain",
+			"subject" => "SUJET",
+			"custom" => $form["custom"],
+			"footer" => true,
+			"tplData" => "cteDossier",
+			"answers" => $answers,
+			"form" => $form,
+			"user" => $userO,
+			"adminForm" => $adminForm,
+			"adminAnswers"=>$adminAnswers,
+			"canSuperAdmin" => Form::canSuperAdmin($form["id"], "1", $form, $adminForm),
+			"canAdmin" => Form::canAdmin( (string)$form["_id"], $form ) ,
+		);
+
+		$html = $this->renderPartial('application.views.pdf.dossierCte', $params, true);
+
+		$params["html"] = $html ;
+		Pdf::createPdf($params);
+	}
+
+	public function actionPdfTest2(){
+		
+		$id = "5b9f6e536ff99204228b4569";
+		$answer = PHDB::findOne( Form::ANSWER_COLLECTION, array("_id"=>new MongoId($id)));
+		$form = PHDB::findOne( Form::COLLECTION , array("id"=>$answer["formId"]));
+
+		$title = ( @$answer["answers"]["cte2"]["answers"]["project"]  ) ?  $answer["answers"]["cte2"]["answers"]["project"]["name"] : "Dossier";
+
+		$params = array(
+			"author" => @$answer["name"],
+			"answer" => $answer,
+			"title" => $title,
+			"subject" => "CTE",
+			"custom" => $form["custom"],
+			"footer" => true,
+			"tplData" => "cteDossier",
+			"form" => $form
+		);
+
+		Rest::json($params); exit;
 	}
 
 
@@ -1680,5 +1743,10 @@ La vie en santé;Santé;;
 		$link = Form::getSurveyByFormId("5b27a1e35a7c00d4d97509d0", Person::COLLECTION, "isAdmin");
 		Rest::json($link);exit;
 
+	}
+
+	public function actionDateForm(){
+		$res = Form::isFinish("cte");
+		Rest::json($res);
 	}
 }

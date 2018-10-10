@@ -17,8 +17,42 @@
 	//lock access if the user doesnt have the good role
 	$accessRoom = @$parentRoom ? Room::getAccessByRole($parentRoom, $myRoles) : ""; 
 	if($accessRoom == "lock") exit;
-?>
 
+?>
+<div class="pageContent">
+	
+	<div class="portfolio-modal modal fade" id="openModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+        <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+                <div class="rl">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="modal-header text-dark">
+                        <h3 class="modal-title text-center" id="ajax-modal-modal-title">
+                            <i class="fa fa-angle-down"></i> <i class="fa " id="ajax-modal-icon"></i> 
+                        </h3>
+                    </div>
+                    
+                    <div id="ajax-modal-modal-body" class="modal-body">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 text-center" style="margin-top:50px;margin-bottom:50px;">
+            <hr>
+            <a href="javascript:" style="font-size: 13px;" type="button" class="" data-dismiss="modal">
+            <i class="fa fa-times"></i> <?php echo Yii::t("common","Back") ?>
+            </a>
+        </div>
+    </div>
+</div>
+</div>
 
 <?php if(@$access=="deny"){ ?>
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -38,7 +72,18 @@
   		<i class="fa fa-connectdevelop"></i> <?php echo @$parentRoom["name"]; ?>
 	</h4>
 	<h3 class=" padding-10  radius-5 col-xs-12 bg-turq text-white text-bold"  >	
-		<?php if(@$action["name"])echo "<i class='fa fa-hashtag'></i> ".@$action["name"];?>
+		<?php 
+			$str = "";
+			if(@$action["name"]) $str = "<i class='fa fa-hashtag'></i> ".@$action["name"];
+			if(@$action["parentSurvey"]){
+				// $url = Yii::app()->createUrl('/survey/co/action/id/'.$action["parentSurvey"]["id"].'/action/'.(String) $action["_id"]);
+
+				$url = Yii::app()->createUrl('/survey/co/action/id/'.(String) $action["_id"]);
+				$str = '<a href="'.$url.'" target="_blank" >'.$str.'</a>';
+			} 
+			echo $str;
+
+			?>
 	</h3>
 </div>
 
@@ -220,20 +265,37 @@
 
 
 		<hr>
+
+	<?php if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  ){ ?>
+		<button class="btn btn-default letter-green bold pull-right btn-assignee" 
+				data-target="#modalAssignMe" data-toggle="modal">
+			<i class="fa fa-handshake-o"></i> 
+			<?php echo Yii::t("rooms","I'll Do it") ?>
+	   	</button>
+	   	<?php 
+
+	   		$urlLink = "#element.invite.type.".Action::COLLECTION.".id.".(string)$action["_id"];
+	   	?>
+	   	<!-- <a 	href="<?php echo $urlLink ; ?>" 
+			class="btn btn-default letter-green bold btn-assignee"
+			data-placement="bottom" 
+			data-original-title="lala" > 
+	        <i class="fa fa-user-plus "></i><?php echo Yii::t("common",'Invite people') ; ?>
+	    </a><br/> -->
+	    <button class="btn btn-default letter-green bold  btn-assignee" 
+				data-target="#modalLinkAction" data-toggle="modal">
+			<i class="fa fa-user-plus "></i> <?php echo Yii::t("common",'Assigner une personne') ; ?>
+	   	</button><br/>
+	<?php }else if( $auth ){ ?>
+		<h5 class="letter-green pull-right"><i class="fa fa-check"></i> Vous participez à cette action</h5>
+	<?php }	?>
+
 	<?php if( @$action["links"]["contributors"] ) {	?>
 		<h4 class="pull-left">
 			<i class="fa fa-angle-down"></i> <i class="fa fa-group"></i> Ils participent à cette action
 		</h4>
 	<?php }	?>
-		<?php if( $auth && !@$action["links"]["contributors"][Yii::app()->session['userId']]  ){ ?>
-			<button class="btn btn-default letter-green bold pull-right btn-assignee" 
-					data-target="#modalAssignMe" data-toggle="modal">
-				<i class="fa fa-handshake-o"></i> 
-				<?php echo Yii::t("rooms","I'll Do it") ?>
-		   	</button>
-		<?php }else if( $auth ){ ?>
-			<h5 class="letter-green pull-right"><i class="fa fa-check"></i> Vous participez à cette action</h5>
-		<?php }	?>
+		
 
 
 	<?php if( @$action["links"]["contributors"] ) {	?>
@@ -291,6 +353,11 @@
 		$(".load-coop-data[data-type='action']").removeClass("active");
 		$(".load-coop-data[data-type='resolution']").removeClass("active");
 		$(".load-coop-data[data-type='action'][data-dataid='"+idAction+"']").addClass("active");
+
+		$('#modifLink').off().click(function() {
+			$('#modalLinkAction').modal("show");
+		});
+
 	});
 
 	

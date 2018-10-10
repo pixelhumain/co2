@@ -930,6 +930,8 @@
 
     var personCOLLECTION = "<?php echo Person::COLLECTION; ?>";
 	var dirHash="<?php echo @$_GET['dir']; ?>";
+	var key="<?php echo @$_GET['key']; ?>";
+	var folderKey="<?php echo @$_GET['folder']; ?>";
 	var roomId = "<?php echo @$_GET['room']; ?>";
 	var proposalId = "<?php echo @$_GET['proposal']; ?>";
 	var resolutionId = "<?php echo @$_GET['resolution']; ?>";
@@ -951,7 +953,7 @@
 			$(".createProjectBtn").show()
 
 		$(".hide-"+contextData.type).hide();
-		getProfilSubview(subView,dirHash);
+		getProfilSubview(subView,dirHash, key, folderKey);
 		
 		//loadActionRoom();
 
@@ -981,10 +983,10 @@
 			$("meta[property='og:image']").attr("content",baseUrl+image);
 		}
 	}
-	function getProfilSubview(sub, dir){ console.log("getProfilSubview", sub, dir);
+	function getProfilSubview(sub, dir,key, folderId){ console.log("getProfilSubview", sub, dir);
 		if(sub!=""){
 			if(sub=="gallery")
-				loadGallery();
+				loadGallery(dir, key, folderKey);
 			if(sub=="library")
 				loadLibrary();
 			else if(sub=="notifications")

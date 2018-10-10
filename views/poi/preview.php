@@ -40,7 +40,17 @@
 		poiAlone["id"] = poiAlone['_id']['$id'];
 		var html = directory.preview(poiAlone);
 	  	$("#poi").html(html);
-
+	  	if($("#poi #container-element-accordeon").length > 0){
+	  		params={
+	  			"images": [],
+	  			"medias": []
+	  		};
+	  		if(typeof poiAlone.images != "undefined")
+	  			params.images=poiAlone.images;
+	  		if(typeof poiAlone.medias != "undefined")
+	  			params.medias=poiAlone.medias;
+	  		ajaxPost("#poi #container-element-accordeon", baseUrl+'/'+moduleId+'/pod/slidermedia', params, function(){},"html");
+	  	}
 	  	initBtnLink();
 
 	  	$("#modal-preview-coop .btn-close-preview, .deleteThisBtn").click(function(){

@@ -23,5 +23,8 @@ class PodController extends CommunecterController {
 	public function actionCircuit(){
     	echo $this->renderPartial("circuit", array(), true);
  	}
+ 	public function actionSliderMedia(){
+    	echo $this->renderPartial("sliderMedia", array("images"=>@$_POST["images"], "medias"=>@$_POST["medias"]), true);
+ 	}
 }
 ?>

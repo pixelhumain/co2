@@ -173,7 +173,7 @@
 							 style="margin-right:10px;height:32px; border-radius:3px;">
 					
 						<span class="pull-left content-comment">						
-							<span class="text-black pull-left">
+							<span class="text-black pull-left col-xs-12 no-padding">
 								<a href="#<?php echo @$slug; ?>" class="text-dark pull-left">
 									<strong><?php echo $comment["author"]["name"]; ?></strong>
 								</a> 
@@ -310,6 +310,7 @@
 
 	var profilThumbImageUrlUser = "<?php echo @$profilThumbImageUrlUser; ?>";
 	var isUpdatedComment=false;
+	var contextPath="<?php echo @$path; ?>";
 	// mylog.log("context");
 	// mylog.dir(context);
 	// mylog.log("comments");
@@ -318,7 +319,7 @@
 	jQuery(document).ready(function() {
 
 		var idTextArea = '#textarea-new-comment<?php echo $idComment; ?>';
-		bindEventTextArea(idTextArea, idComment, contextType, false, "");
+		bindEventTextArea(idTextArea, idComment, contextType, false, "", null, contextPath);
 		bindEventActions();
 
 		mylog.log(".comments-list-<?php echo $idComment; ?> .text-comment");
@@ -430,7 +431,7 @@
 						'	 style="margin-right:10px;height:32px; border-radius:3px;">'+
 					
 						'<span class="pull-left content-comment">'+						
-						'	<span class="text-black">'+
+						'	<span class="text-black col-xs-12 no-padding">'+
 						'		<span class="text-dark"><strong><?php echo @$me["name"]; ?></strong></span><br>'+
 						'		<span class="text-comment">'	+ textComment + "</span>" +
 						'	</span><br>'+
@@ -487,7 +488,7 @@
 
 	
 
-	function saveComment(textComment, parentCommentId, domElement){
+	function saveComment(textComment, parentCommentId, domElement, path){
 		textComment = $.trim(textComment);
 		if(!notEmpty(parentCommentId)) parentCommentId = "";
 		if(textComment == "") {
@@ -503,6 +504,8 @@
 			contextType : contextType,
 			argval : argval
 		};
+		if(notNull(path))
+			newComment.path=path;
 		newComment=mentionsInit.beforeSave(newComment, domElement);
 		$.ajax({
 			url: baseUrl+'/'+moduleId+"/comment/save/",

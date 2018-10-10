@@ -35,10 +35,17 @@ dynForm = {
 	    	});
 	    },
 		afterSave : function(){
-			if( $(uploadObj.domTarget).fineUploader('getUploads').length > 0 )
+			listObject=$(uploadObj.domTarget).fineUploader('getUploads');
+	    	goToUpload=false;
+	    	if(listObject.length > 0){
+	    		$.each(listObject, function(e,v){
+	    			if(v.status == "submitted")
+	    				goToUpload=true;
+	    		});
+	    	}
+			if( goToUpload )
 		    	$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
-		    else 
-		    { 
+		    else { 
 		        dyFObj.closeForm(); 
 		        urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
 	        }

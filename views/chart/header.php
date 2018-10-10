@@ -20,12 +20,12 @@
 <div class="noteWrap col-md-12 col-sm-12 col-xs-12 bg-white">
 <div class="headerChart col-md-12 col-sm-12 col-xs-12 no-padding">
 	<?php if(@$commonsView){ ?>
-	<div class="col-md-6">
+	<!--<div class="col-md-6">
 		<a id="btncommons" href="javascript:;" onclick="switchTypeChartView('commons')" class="btnChart <?php if (@$commonsView) echo "text-green" ?>">
 			<i class="fa fa-circle"></i> <?php echo Yii::t("chart","Commons") ?>
 		</a>
 		<p><?php echo Yii::t("chart","{what} that manages one or several resources openly and transparently whitout appropriating it",array("{what}"=>ucfirst(Yii::t("common",Element::getControlerByCollection($parentType))))) ?></p>
-	</div>
+	</div>-->
 	<?php } ?>
 	<?php if(@$openView){ ?>
 	<div class="col-md-6">
@@ -40,8 +40,8 @@
 			<a href="javascript:;" class="edit-chart btn btn-default letter-blue text-center col-md-12 margin-20" style="font-size:16px;">
 				<span><i class="fa fa-pencil"></i> <?php echo Yii::t("chart","Edit chart") ?> "<?php if(@$commonsView) echo Yii::t("chart","Commons"); else echo Yii::t("chart","Open") ?>"	
 				</span><br/>
-				<span><i class="fa fa-plus"></i> <?php echo Yii::t("chart","Add chart") ?> "<?php if(!@$commonsView) echo Yii::t("chart","Commons"); else echo Yii::t("chart","Open") ?>"
-				</span>
+				<!--<span><i class="fa fa-plus"></i> <?php echo Yii::t("chart","Add chart") ?> "<?php if(!@$commonsView) echo Yii::t("chart","Commons"); else echo Yii::t("chart","Open") ?>"
+				</span>-->
 			</a>
 		</div>
 	<?php } ?>
@@ -58,6 +58,7 @@ if(commonsView==true)
 	chartLoader="commons";
 else if (openView==true)
 	chartLoader="open";
+chartLoader="open";
 jQuery(document).ready(function() {
 	ajaxPost('#chartPad', baseUrl+'/'+moduleId+'/chart/index/type/'+contextType+'/id/'+contextId+'/chart/'+chartLoader, 
 	null,

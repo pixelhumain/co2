@@ -45,7 +45,7 @@ if( @$_GET["el"] || @$custom )
         $c = array( "id"   => (string) $el["_id"],
                    "type" => $stum[0],
                    "title"=> $el["name"],
-                   "url"=> "/custom?el=".$_GET["el"] );
+                   "url"=> "/custom?el=".(!@$_GET["el"]) ? (string) $el["_id"] : @$_GET["el"] );
         
         if(@$el["custom"])
             $c = array_merge( $c , $el["custom"] );
@@ -74,9 +74,9 @@ if( @Yii::app()->session['custom'] ){  ?>
             $(".topLogoAnim").remove();
             $(".logo-menutop, .logoLoginRegister").attr({'src':custom.logo});
         }
-        if( typeof custom != "undefined" && custom.type == "cities" ){
-            setOpenBreadCrum({'cities': custom.id }, true);
-        }
+        if( typeof custom != "undefined" && custom.type == "cities" )
+            setOpenBreadCrum({'cities': custom.id });
+
     };
     custom.initMenu = function(where){
         if(typeof custom.menu != "undefined"){

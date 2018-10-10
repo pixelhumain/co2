@@ -11,6 +11,8 @@ return array(
 	"The member's role has been removed with success" => "Le role de ce membre a été retiré",
 	"Directory" => "Annuaire",
 	"Connect People or Organizations that are part of your Organization" => "Connecter des personnes ou des organisations à votre organisation",
-	"Remove this member" => "Retirer ce membre"
+	"Remove this member" => "Retirer ce membre",
+	"The member's role has been removed with success" => "Le rôle a été supprimé avec succès.",
+	"The member's role has been added with success" => "Le rôle a été ajouté avec succès.",
 );
 ?>

@@ -193,12 +193,7 @@
 
 	<li class="">
 		<a href="javascript:" class="ssmla" id="btn-start-gallery">
-			<i class="fa fa-camera"></i> <?php echo Yii::t("common","Gallery"); ?>
-		</a>
-	</li>
-	<li class="">
-		<a href="javascript:" class="ssmla" id="btn-start-library">
-			<i class="fa fa-book"></i> <?php echo Yii::t("common","Library"); ?>
+			<i class="fa fa-cloud"></i> <?php echo Yii::t("common","Gallery"); ?>
 		</a>
 	</li>
 
@@ -353,13 +348,13 @@
 					<i class="fa fa-clipboard"></i> <?php echo Yii::t("common","My experiences"); ?>
 				</a>
 			</li>
-			<!--<li><hr></li>
+			<!-- <li><hr></li>
 			<li class="">
 				<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 					id="btn-start-networks" class="ssmla">
 					<i class="fa fa-map-o"></i> <?php echo Yii::t("common","My maps"); ?>
 				</a>
-			</li>-->
+			</li> -->
 		<?php } ?>
 		<li><hr></li>
 

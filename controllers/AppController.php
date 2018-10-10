@@ -284,7 +284,7 @@ class AppController extends CommunecterController {
         $this->redirect( Yii::app()->createUrl("/interop") );
     }
 
-    public function actionPage($type, $id, $view=null, $mode=null, $dir=null){
+    public function actionPage($type, $id, $view=null, $mode=null, $dir=null, $key=null, $folder=null){
         CO2Stat::incNbLoad("co2-page");
             
         if( $type == Person::COLLECTION  || $type == Event::COLLECTION || 
@@ -324,6 +324,8 @@ class AppController extends CommunecterController {
                         "type" => @$type,
                         "view" => @$view,
                         "dir" => @$dir,
+                        "key" => @$key,
+                        "folder" => @$folder,
                         "subdomain" => "page",
                         "mainTitle" => "Page perso",
                         "placeholderMainSearch" => "",

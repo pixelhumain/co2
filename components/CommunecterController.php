@@ -125,6 +125,10 @@ class CommunecterController extends Controller
       "list"    => array("href" => "/ph/co2/collections/list"),
       "crud"    => array("href" => "/ph/co2/collections/crud"),
     ),
+    "folder" => array(
+      "list"    => array("href" => "/ph/co2/folder/list"),
+      "crud"    => array("href" => "/ph/co2/folder/crud"),
+    ),
     "tool" => array(
       "get"    => array("href" => "/ph/co2/tool/get")
     ),
@@ -382,6 +386,7 @@ class CommunecterController extends Controller
     ),
     "pod" => array(
       "slideragenda" => array("href" => "/ph/co2/pod/slideragenda", "public" => true),
+      "slidermedia" => array("href" => "/ph/co2/pod/slidermedia", "public" => true),
       "photovideo"   => array("href" => "ph/co2/pod/photovideo"),
       "fileupload"   => array("href" => "ph/co2/pod/fileupload"),
       "activitylist"   => array("href" => "ph/co2/pod/activitylist"),
@@ -419,7 +424,7 @@ class CommunecterController extends Controller
       "resized"             => array("href"=> "/ph/communecter/document/resized", "public" => true),
       "list"                => array("href"=> "/ph/communecter/document/list"),
       "save"                => array("href"=> "/ph/communecter/document/save"),
-      "deleteDocumentById"  => array("href"=> "/ph/communecter/document/deleteDocumentById"),
+      "deletedocumentbyid"  => array("href"=> "/ph/communecter/document/deletedocumentbyid"),
       "removeAndBacktract"  => array("href"=> "/ph/communecter/document/removeAndBacktract"),
       "getlistbyid"         => array("href"=> "ph/communecter/document/getlistbyid"),
       "upload"              => array("href"=> "ph/communecter/document/upload"),

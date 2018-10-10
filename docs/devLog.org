@@ -12,9 +12,28 @@
 ----------------------------------------------------
 ----------------------------------------------------
 
+---- CTE
+* Unifier les answer 
+  co2/datamigration/UnifierAnswers
 
 
+---------------------------------------
+---------- VERSION C0.31 (Les amis d'abord) --------------
+---------------------------------------
+* Bash de donnée création de folders et ordonnance des fichiers suivant dans les folders 
+** Premier bash : "/co2/datamigration/InsertFoldersElement"
+  *** S'appuie sur les éléments ayant organiser des fichiers ou des photos dans des dossiers (element.documentations) et crée les entrée folders en db
+** Second bash : "/co2/datamigration/CreateFoldersPathAndDocumentPath"
+  *** Crée et organise les dossiers dans ph/upload/communecter et déplace les fichiers dans les bons dossiers
+** Troisième bash : "/co2/datamigration/UpdateDocsAndDeleteCollection"
+  *** Indexe les id des folders dans les entrée document et clean l'ancienne data
+** Quatrième Bash : "co2/datamigration/CreateThumbPath"
+  *** Ajoute les folders thumb pour les images décalées dans leurs dossiers (si images)
 
+* Bash sur les documents du CTE déjà uploadé
+** : "/co2/datamigration/ChangeFilesCTESurveyDatas"
+
+  *** Supprime la data mauvaise et ajoute la clé du survey
 ---------------------------------------
 ---------- VERSION C0.30 (warrior flower) --------------
 ---------------------------------------

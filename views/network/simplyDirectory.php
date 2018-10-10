@@ -46,6 +46,7 @@ Yii::app()->theme->baseUrl. '/assets');
 
 <script type="text/javascript">
 var contextMapNetwork = [];
+var contextNow = [];
 var currentKFormType = "";
 var indexStepInit = 100;
 var searchPrefTag = null ;
@@ -107,6 +108,8 @@ jQuery(document).ready(function() {
 	bindButtonOpenForm();
 
 	calendar.init("#profil-content-calendar");
+
+
 
 	startSearchSimply(0, indexStepInit);
 
@@ -281,6 +284,10 @@ function showMapNetwork(show){
 		}, 1000);
 		var timer = setTimeout("Sig.constructUI()", 1000);
 
+		console.log("contextMapNetwork", contextMapNetwork);
+
+
+
 	}else{
 		isMapEnd =false;
 		hideMapLegende();
@@ -309,6 +316,15 @@ function showMapNetwork(show){
 			$("#ajaxSV").show( 700 );
 
 		checkScroll();
+
+		calendar.showCalendar("#profil-content-calendar", contextMapNetwork, "month");
+		$(".fc-today-button").trigger("click");
+		$("#profil-content-calendar").fullCalendar("gotoDate", moment(Date.now()));
+
+		$(window).on('resize', function(){
+			$("#profil-content-calendar").fullCalendar('destroy');
+			calendar.showCalendar("#profil-content-calendar", contextMapNetwork, "month");
+		});
 	}
 }
 
@@ -1265,16 +1281,14 @@ function updateMap(){
 			filteredList = contextMapNetwork;
 		}
 	}
+
 	$.each(filteredList, function(e,v){
 		$(".contain_"+v.type+"_"+v.id).show(700);
 	});
 
+	contextNow = filteredList;
 
-	calendar.showCalendar("#profil-content-calendar", filteredList);
-	$(window).on('resize', function(){
-		$("#profil-content-calendar").fullCalendar('destroy');
-		calendar.showCalendar("#profil-content-calendar", filteredList, "month");
-	});
+	
 	
 
 	countResult=filteredList.length;

@@ -1,5 +1,6 @@
 var calendar = {
     init : function(domCal){
+    	console.log(" calendar2 init ", domCal);
       $("#showHideCalendar").click(function(){
         if($(this).data("hidden")){
           $(this).html("<i class='fa fa-caret-up'></i> "+trad.showcalendar+"</a>");
@@ -19,6 +20,7 @@ var calendar = {
         lazyLoad( baseUrl+'/plugins/fullcalendar/fullcalendar/locale/'+mainLanguage+'.js',null,null,false);*/
     },
     bindEventCalendar : function(){
+    	console.log(" calendar2 bindEventCalendar ");
       //var popoverElement;
 
       $('.popover').mouseenter(function(){
@@ -41,6 +43,7 @@ var calendar = {
       });
     },
     closePopovers : function() {
+    	console.log(" calendar2 closePopovers ");
       calendar.showPopup=false;
       $('.popover').not(this).popover('hide');
     },
@@ -72,8 +75,9 @@ var calendar = {
     showPopup : false,
     //creates fullCalendar
     buildCalObj: function(eventObj) {
+    	console.log(" calendar2 buildCalObj ", eventObj);
         //entries for the calendar
-        //console.log("eventcaleanr",eventObj);
+        //console.log(" calendar2 eventcaleanr",eventObj);
         var taskCal = null;
         if(eventObj.startDate && eventObj.startDate != "") {
             if(typeof eventObj.startDateCal != "undefined")
@@ -107,7 +111,7 @@ var calendar = {
             var organizerName = eventObj.name;
             if(eventObj.organizer != "")
                 organizerName = eventObj.organizer +" : "+ eventObj.name;
-           // console.log("eventObj",eventObj);
+           // console.log(" calendar2 eventObj",eventObj);
             taskCal = {
                 "title" : eventObj.name + " : "+tradCategory[eventObj.typeEvent],
                 
@@ -143,8 +147,9 @@ var calendar = {
         return taskCal;
     },
     showCalendar : function (domElement, events, initMode, initDate) {
+    	console.log(" calendar2 showCalendar ", domElement, events, initMode, initDate);
+    	alert(domElement);
         calendarObject = [];
-        console.log("showCalendar",domElement, events, initMode, initDate);
         if(events){
             $.each(events,function(eventId,eventObj){
                 eventCal = calendar.buildCalObj(eventObj);
@@ -196,15 +201,15 @@ var calendar = {
                 }).popover('show');
             },*/
             eventClick: function (calEvent, jsEvent, view) {
+            	console.log(" calendar2 eventClick ", calEvent, jsEvent, view);
               //closePopovers();
              // calendar.showPopup=true;
-             console.log(jsEvent);
              popoverElement = $(jsEvent.currentTarget);
               
               
             },
             eventRender:function(event, element, view) {
-            console.log("event",event,"element",element);
+                console.log(" calendar2 eventRender event",event,"element",element, "element", view);
                 if(networkJson == "undefined"){
                     popupHtml=calendar.popupHtml(event);
                     element.popover({
@@ -238,7 +243,7 @@ var calendar = {
         dateToShow = new Date();
     },
     setCategoryColor : function(tab){
-      console.log("test setCategoryColor ", tab);
+      console.log(" calendar2 setCategoryColor ", tab);
   		  $(".fc-content").css("color", "white");
   	  	for(var i =0; i<tab.length; i++){
   	  	  	$("."+tab[i]+" .fc-content").css("color", "white");
@@ -246,6 +251,7 @@ var calendar = {
   	  	}
   	},
   	getRandomColor : function() {
+		console.log(" calendar2 getRandomColor ");
   	    var letters = '0123456789ABCDEF'.split('');
   	    var color = '#';
   	    for (var i = 0; i < 6; i++ ) {
@@ -254,18 +260,19 @@ var calendar = {
   	    return color;
   	},
     popupTemplate : function(){
-      template='<div class="popover" style="max-width:300px; no-padding" >'+
-    '<div class="arrow"></div>'+
-    '<div class="popover-header" style="background-color:lightgray;">'+
-    '<button id="closepopover" type="button" class="close margin-right-5" aria-hidden="true">&times;</button>'+
-      '<h3 class="popover-title"></h3>'+
-    '</div>'+
-    '<div class="popover-content no-padding"></div>'+
-    '</div>';
-      return template;
+		console.log(" calendar2 popupTemplate ");
+		template='<div class="popover" style="max-width:300px; no-padding" >'+
+					'<div class="arrow"></div>'+
+					'<div class="popover-header" style="background-color:lightgray;">'+
+					'<button id="closepopover" type="button" class="close margin-right-5" aria-hidden="true">&times;</button>'+
+					'<h3 class="popover-title"></h3>'+
+					'</div>'+
+					'<div class="popover-content no-padding"></div>'+
+					'</div>';
+		return template;
     },
     popupHtml : function(data){
-      console.log("eventPopup",data);
+		console.log(" calendar2 popupHtml ", data);
       var popupContent = "<div class='popup-calendar'>";
   
       var color = "orange";
@@ -273,7 +280,7 @@ var calendar = {
       var imgProfilPath =  assetPath + "/images/thumb/default_events.png";
       if(typeof data.profilMediumImageUrl !== "undefined" && data.profilMediumImageUrl != "") 
         imgProfilPath =  baseUrl + data.profilMediumImageUrl;
-      var icons = '<i class="fa fa-'+ ico + ' text-'+ color +'"></i>';
+      var icons = '<i class="fa fa-'+ ico + ' text-'+ color +'"></i>!!!';
       
       var typeElement = "events";
       var icon = 'fa-calendar';

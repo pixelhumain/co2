@@ -148,7 +148,6 @@ var calendar = {
     },
     showCalendar : function (domElement, events, initMode, initDate) {
     	console.log(" calendar2 showCalendar ", domElement, events, initMode, initDate);
-    	alert(domElement);
         calendarObject = [];
         if(events){
             $.each(events,function(eventId,eventObj){
@@ -157,7 +156,7 @@ var calendar = {
                     calendarObject.push( eventCal );
             });
         }
-        //mylog.log(calendar);
+
         if(typeof initDate != "undefined" && notNull(initDate) ){
           splitInit=initDate.split("-");
           dateToShow = new Date(splitInit[0], splitInit[1]-1, splitInit[2]);

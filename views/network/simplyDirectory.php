@@ -46,7 +46,7 @@ Yii::app()->theme->baseUrl. '/assets');
 
 <script type="text/javascript">
 var contextMapNetwork = [];
-var contextNow = [];
+//var contextNow = [];
 var currentKFormType = "";
 var indexStepInit = 100;
 var searchPrefTag = null ;
@@ -169,7 +169,7 @@ function bindNetwork(){
 	 // mylog.log("bindNetwork");
 	$('#btn-toogle-map').click(function(e){ 
 		showMapNetwork(); 
-		updateMap(); 
+		updateMap();
 	});
 	
 	$('.reset').on('click', function() {
@@ -302,11 +302,31 @@ function showMapNetwork(show){
 			opacity:1
 		}, 'slow' );
 		setTitle(networkJson.skin.title , "", networkJson.skin.title, networkJson.skin.title, networkJson.skin.shortDescription);
-		setTimeout(function(){ 
-			$(".my-main-container").show();
-			if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )
-				$(".main-menu-left").show( 700 );
-		}, 100);
+
+		// setTimeout(function(){ 
+		// 	$(".my-main-container").show();
+		// 	if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )
+		// 		$(".main-menu-left").show( 700 );
+		// 	//$(".fc-month-button").trigger("click");
+
+		// 	calendar.showCalendar("#profil-content-calendar", contextMapNetwork, "month");
+		
+		// 	$("#profil-content-calendar").fullCalendar("gotoDate", moment(Date.now()));
+
+		// 	$(window).on('resize', function(){
+		// 		$("#profil-content-calendar").fullCalendar('destroy');
+		// 		calendar.showCalendar("#profil-content-calendar", contextMapNetwork, "month");
+		// 	});
+
+		// }, 100);
+
+		$(".my-main-container").show();
+		if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )
+			$(".main-menu-left").show( 700 );
+		//$(".fc-month-button").trigger("click");
+
+		
+			
 
 		if(typeof Sig != "undefined" && Sig.currentMarkerPopupOpen != null){
 			Sig.currentMarkerPopupOpen.closePopup();
@@ -316,15 +336,7 @@ function showMapNetwork(show){
 			$("#ajaxSV").show( 700 );
 
 		checkScroll();
-
-		calendar.showCalendar("#profil-content-calendar", contextMapNetwork, "month");
-		$(".fc-today-button").trigger("click");
-		$("#profil-content-calendar").fullCalendar("gotoDate", moment(Date.now()));
-
-		$(window).on('resize', function(){
-			$("#profil-content-calendar").fullCalendar('destroy');
-			calendar.showCalendar("#profil-content-calendar", contextMapNetwork, "month");
-		});
+		$(".fc-month-button").trigger("click");
 	}
 }
 
@@ -982,7 +994,6 @@ function reverseToRepertory(){
 	$("#ficheInfoDetail").hide( 700 );
 	$("#dropdown_search").show();
 	$(".main-col-search").removeClass("col-md-12 col-sm-12").addClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3");
-	//$("#dropdown_search").show();
 	$("#repertory").show();
 	$(".main-menu-left").show( 700 );
 	$html = '<a href="javascript:;" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">'+trad.list+'</a>';
@@ -1286,9 +1297,15 @@ function updateMap(){
 		$(".contain_"+v.type+"_"+v.id).show(700);
 	});
 
-	contextNow = filteredList;
+	//contextNow = filteredList;
 
-	
+	$("#profil-content-calendar").fullCalendar('destroy');
+	calendar.showCalendar("#profil-content-calendar", filteredList, "month");
+	$("#profil-content-calendar").fullCalendar("gotoDate", moment(Date.now()));
+	$(window).on('resize', function(){
+		$("#profil-content-calendar").fullCalendar('destroy');
+		calendar.showCalendar("#profil-content-calendar", filteredList, "month");
+	});
 	
 
 	countResult=filteredList.length;

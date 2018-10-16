@@ -107,7 +107,14 @@ jQuery(document).ready(function() {
 	// // mylog.log("indexStepInit", indexStepInit);
 	bindButtonOpenForm();
 
-	calendar.init("#profil-content-calendar");
+
+	if( typeof networkJson.add != "undefined" && typeof networkJson.add.event != "undefined" && networkJson.add.event == true)
+		calendar.init("#profil-content-calendar");
+	else{
+		
+		$("#profil-content-calendar").hide();
+		$("#showHideCalendar").hide();
+	}
 
 
 
@@ -1161,23 +1168,27 @@ function dateIsGood(event){
 	var before = false;
 	var after = false;
 	if(startDate != "" ){
-		//startDate = moment($("#dateStartFiltre").val(), "DD/MM/YYYY hh:mm").format();
-		//after = moment(startDate).isSameOrAfter(event.startDate);
-		after = moment(event.startDate).isSameOrAfter(startDate);
-		mylog.log("dateIsGood startDate", event.startDate, startDate, moment(startDate).isSameOrAfter(event.startDate), moment(event.startDate).isSameOrAfter(startDate) );
+		// mylog.log("dateIsGood event.startDate", event.name, event.startDate);
+		// mylog.log("dateIsGood startDate", event.name, startDate);
+		// mylog.log("dateIsGood moment(startDate).isSameOrAfter(event.startDate)", event.name, moment(startDate).isSameOrAfter(event.startDate));
+		// mylog.log("dateIsGood moment(event.startDate).isSameOrAfter(startDate)", event.name, moment(event.startDate).isSameOrAfter(startDate));
+		// mylog.log("dateIsGood moment(startDate).isSameOrBefore(event.endDate)", event.name, moment(startDate).isSameOrBefore(event.endDate));
+
+		var afterS = moment(startDate).isSameOrAfter(event.startDate);
+		var beforeS = moment(startDate).isSameOrBefore(event.endDate);
+
+		after = (afterS == true && beforeS == true) ? true : false ;
 	}else
 		after = true;
 
 	if( endDate != ""){
-		//endDate = moment($("#dateEndFiltre").val(), "DD/MM/YYYY hh:mm").format();
-		//before = moment(endDate).isSameOrBefore(event.endDate);
-		before = moment(event.endDate).isSameOrBefore(endDate);
-		mylog.log("dateIsGood endDate", event.endDate, endDate, moment(event.endDate).isSameOrBefore(endDate), moment(endDate).isSameOrBefore(event.endDate));
+		var afterE = moment(endDate).isSameOrAfter(event.startDate);
+		var beforeE = moment(endDate).isSameOrBefore(event.endDate);
+
+		before = (afterE == true && beforeE == true) ? true : false ;
 	}else
 		before = true;
-	mylog.log("dateIsGood after before", after, before, (after == true && before == true) );
 	res = (after == true && before == true) ? true : false ;
-	mylog.log("dateIsGood res", res );
 	return res ;
 }
 
@@ -1209,7 +1220,6 @@ function updateMap(){
 
 	mylog.log("updateMap testNetwork", test);
 
-	 // mylog.log("searchValNetwork", searchValNetwork);
 	var filteredList = [];
 	var add = false;
 	if(test.length > 0){
@@ -1259,6 +1269,7 @@ function updateMap(){
 			startDate != "" || endDate != "" || eventsTypeActived.length  > 0 || 
 			searchValNetwork.length > 0)  {
 			$.each(contextMapNetwork,function(k,v){
+
 				if(	( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
 					( citiesActived.length == 0  || 
@@ -1299,13 +1310,16 @@ function updateMap(){
 
 	//contextNow = filteredList;
 
-	$("#profil-content-calendar").fullCalendar('destroy');
-	calendar.showCalendar("#profil-content-calendar", filteredList, "month");
-	$("#profil-content-calendar").fullCalendar("gotoDate", moment(Date.now()));
-	$(window).on('resize', function(){
+	if( typeof networkJson.add != "undefined" && typeof networkJson.add.event != "undefined" && networkJson.add.event == true){
 		$("#profil-content-calendar").fullCalendar('destroy');
 		calendar.showCalendar("#profil-content-calendar", filteredList, "month");
-	});
+		$("#profil-content-calendar").fullCalendar("gotoDate", moment(Date.now()));
+		$(window).on('resize', function(){
+			$("#profil-content-calendar").fullCalendar('destroy');
+			calendar.showCalendar("#profil-content-calendar", filteredList, "month");
+		});
+	}
+	
 	
 
 	countResult=filteredList.length;

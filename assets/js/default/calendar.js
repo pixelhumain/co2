@@ -111,10 +111,9 @@ var calendar = {
             var organizerName = eventObj.name;
             if(eventObj.organizer != "")
                 organizerName = eventObj.organizer +" : "+ eventObj.name;
-           // console.log(" calendar2 eventObj",eventObj);
+            console.log(" calendar2 eventObj", eventObj);
             taskCal = {
-                "title" : eventObj.name + " : "+tradCategory[eventObj.typeEvent],
-                
+                "title" : eventObj.name + " : " + tradCategory[eventObj.typeEvent],
                 "content" : (eventObj.description && eventObj.description != "" ) ? eventObj.description : "",
                 "start" : startDate.format(),
                 "end" : ( endDate ) ? endDate.format() : startDate.format(),
@@ -262,7 +261,7 @@ var calendar = {
 		console.log(" calendar2 popupTemplate ");
 		template='<div class="popover" style="max-width:300px; no-padding" >'+
 					'<div class="arrow"></div>'+
-					'<div class="popover-header" style="background-color:lightgray;">'+
+					'<div class="popover-header" style="background-color:red;">'+
 					'<button id="closepopover" type="button" class="close margin-right-5" aria-hidden="true">&times;</button>'+
 					'<h3 class="popover-title"></h3>'+
 					'</div>'+

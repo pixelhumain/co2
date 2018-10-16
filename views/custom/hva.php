@@ -47,12 +47,12 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 	</div>
 	<div class="container col-xs-12" >
 		<ul id="ulhva">
-            <li id="menuAccueil" class="active lihva"><a id="btnAccueil" href="javascript:;" class="">Accueil</a></li>
-            <li id="menuOrga" class="lihva "><a id="btnOrga" href="javascript:;" class="">Acteurs</a></li>
-			<li id="menuEvent" class="lihva"><a id="btnEvent" href="javascript:;" class="">Evénements</a></li>
-            <li id="menuAnnonce" class="lihva"><a id="btnAnnonce" href="javascript:;" class="">Annonces</a></li>
-            <li id="menuOrga" class="lihva "><a id="btnRejoindre" href="javascript:;" class="">Rejoindre le réseau</a></li>
-            <li id="menuEvent" class="lihva"><a id="btnQui" href="javascript:;" class="">Qui-sommes nous ?</a></li>
+            <li id="menuAccueil" class="active lihva"><a id="btnAccueil" href="#accueil" class="">Accueil</a></li>
+            <li id="menuOrga" class="lihva "><a id="btnOrga" href="#orga" class="">Acteurs</a></li>
+			<li id="menuEvent" class="lihva"><a id="btnEvent" href="#event" class="">Evénements</a></li>
+            <li id="menuAnnonce" class="lihva"><a id="btnAnnonce" href="#annonce" class="">Annonces</a></li>
+            <li id="menuRejoindre" class="lihva "><a id="btnRejoindre" href="#rejoindre" class="">Rejoindre le réseau</a></li>
+            <li id="menuEvent" class="lihva"><a id="btnQui" href="#qui" class="">Qui-sommes nous ?</a></li>
 		</ul>
         <div id="accueil" class="col-xs-12" style ="padding: 15px; text-align: justify;">
 
@@ -67,10 +67,19 @@ Sed ut odio augue. Integer rhoncus mauris nec accumsan gravida. Nullam finibus u
 
 Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vestibulum dignissim ultrices lacus. Ut auctor lobortis turpis ut ornare. Nulla facilisi. Etiam auctor erat sed imperdiet hendrerit. Morbi eu tincidunt ante. Pellentesque viverra quam purus, et tempor dolor rhoncus eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ac ornare quam. Donec sollicitudin felis mi, eu aliquam lectus interdum eget. Maecenas facilisis maximus quam, et pretium tellus placerat id. 
         </div>
-		<iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
-        <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
-        <iframe id="annonce" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
-        
+        <hr>
+        <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
+		  <iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+        </div>
+        <br/><hr>
+        <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
+            <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+        </div>
+        <br/><hr>
+        <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
+            <iframe id="annonce" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+        </div>
+        <hr>
         <div id="rejoindre" class="col-xs-12" style ="padding: 15px; text-align: justify;">
 
             <h3> Comment nous rejoindre ? </h3>
@@ -82,7 +91,7 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
 ">Hello Asso</a> 
             </span>
         </div>
-
+        <hr>
         <div id="qui" class="col-xs-12">
             Portail HVA qu'est que c'est ? ....
         </div>
@@ -94,81 +103,81 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
 	
 
 	jQuery(document).ready(function() {
-        $("#qui").hide();
-        $('#orga').load(function(){
-            $("#orga").hide();
-        });
+        //$("#qui").hide();
+   //      $('#orga').load(function(){
+   //          $("#orga").hide();
+   //      });
 
-        $('#event').load(function(){
-            $("#event").hide();
-        });
+   //      $('#event').load(function(){
+   //          $("#event").hide();
+   //      });
 
-        $('#annonce').load(function(){
-            $("#annonce").hide();
-        });
+   //      $('#annonce').load(function(){
+   //          $("#annonce").hide();
+   //      });
 
-        $("#btnOrga").click(function(){
-            changeMenu("orga");
-        });
+   //      $("#btnOrga").click(function(){
+   //          changeMenu("orga");
+   //      });
 
-        $("#btnEvent").click(function(){
-        	changeMenu("event");
-        });
+   //      $("#btnEvent").click(function(){
+   //      	changeMenu("event");
+   //      });
 
-        $("#btnAccueil").click(function(){
-            changeMenu("accueil");
-        });
+   //      $("#btnAccueil").click(function(){
+   //          changeMenu("accueil");
+   //      });
 
-        $("#btnQui").click(function(){
-            changeMenu("qui");
-        });
+   //      $("#btnQui").click(function(){
+   //          changeMenu("qui");
+   //      });
 
-        $("#btnAnnonce").click(function(){
-            changeMenu("annonce");
-        });
+   //      $("#btnAnnonce").click(function(){
+   //          changeMenu("annonce");
+   //      });
 
-        $("#btnRejoindre").click(function(){
-            changeMenu("rejoindre");
-   //      	var form = {
-			// 	saveUrl : baseUrl+"/"+moduleId+"/mailmanagement/createandsend/",
-			// 	dynForm : {
-			// 		jsonSchema : {
-			// 			title : "Rejoindre",// trad["Update network"],
-			// 			icon : "fa-key",
-			// 			onLoads : {
-			// 				sub : function(){
-			// 					$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
-			// 								  				  .addClass("bg-dark");
-			// 					//bindDesc("#ajaxFormModal");
-			// 				}
-			// 			},
-			// 			beforeSave : function(){
-			// 				mylog.log("beforeSave");
-   //                          alert("Il manque votre adresse mail pour recevoir ce mail ;)");
-   //                          dyFObj.closeForm();
-			// 		    	//removeFieldUpdateDynForm(contextData.type);
-			// 		    },
-			// 			afterSave : function(data){
-			// 				mylog.dir(data);
-			// 				dyFObj.closeForm();
-			// 			},
-			// 			properties : {
-			// 				name : dyFInputs.text("Nom et Prénom","Nom et Prénom",{ required : true }),
-			// 				orga : dyFInputs.text("Entreprise / Association","Entreprise / Association",{ required : true }),
-			// 				email : dyFInputs.text(),
-			// 				tel : dyFInputs.text("Téléphone", "Téléphone",{ required : true }),
-			// 				ville : dyFInputs.text("Ville", "Ville",{ required : true }),
-			// 				tplMail : dyFInputs.inputHidden("coco@gmail.com"),
-			// 				tplObject : dyFInputs.inputHidden("Inscription sur Portail HVA"),
-			// 				tpl : dyFInputs.inputHidden("hvaRejoindre"),
-			// 			}
-			// 		}
-			// 	}
-			// };
+   //      $("#btnRejoindre").click(function(){
+   //          changeMenu("rejoindre");
+   // //      	var form = {
+			// // 	saveUrl : baseUrl+"/"+moduleId+"/mailmanagement/createandsend/",
+			// // 	dynForm : {
+			// // 		jsonSchema : {
+			// // 			title : "Rejoindre",// trad["Update network"],
+			// // 			icon : "fa-key",
+			// // 			onLoads : {
+			// // 				sub : function(){
+			// // 					$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+			// // 								  				  .addClass("bg-dark");
+			// // 					//bindDesc("#ajaxFormModal");
+			// // 				}
+			// // 			},
+			// // 			beforeSave : function(){
+			// // 				mylog.log("beforeSave");
+   // //                          alert("Il manque votre adresse mail pour recevoir ce mail ;)");
+   // //                          dyFObj.closeForm();
+			// // 		    	//removeFieldUpdateDynForm(contextData.type);
+			// // 		    },
+			// // 			afterSave : function(data){
+			// // 				mylog.dir(data);
+			// // 				dyFObj.closeForm();
+			// // 			},
+			// // 			properties : {
+			// // 				name : dyFInputs.text("Nom et Prénom","Nom et Prénom",{ required : true }),
+			// // 				orga : dyFInputs.text("Entreprise / Association","Entreprise / Association",{ required : true }),
+			// // 				email : dyFInputs.text(),
+			// // 				tel : dyFInputs.text("Téléphone", "Téléphone",{ required : true }),
+			// // 				ville : dyFInputs.text("Ville", "Ville",{ required : true }),
+			// // 				tplMail : dyFInputs.inputHidden("coco@gmail.com"),
+			// // 				tplObject : dyFInputs.inputHidden("Inscription sur Portail HVA"),
+			// // 				tpl : dyFInputs.inputHidden("hvaRejoindre"),
+			// // 			}
+			// // 		}
+			// // 	}
+			// // };
 
-			// dyFObj.openForm(form, "sub");		
+			// // dyFObj.openForm(form, "sub");		
 			
-        });
+   //      });
 
         
 

@@ -69,15 +69,15 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
         </div>
         <hr>
         <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
-		  <iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+		  <iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-xs-12" style="height:650px;"></iframe>
         </div>
         <br/><hr>
         <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
-            <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+            <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-xs-12" style="height:650px;"></iframe>
         </div>
         <br/><hr>
         <div id="annonce" class="col-xs-12" style ="padding: 15px; text-align: justify;">
-            <iframe  src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+            <iframe  src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-xs-12" style="height:650px;"></iframe>
         </div>
         <hr>
         <div id="rejoindre" class="col-xs-12" style ="padding: 15px; text-align: justify;">

@@ -47,12 +47,12 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 	</div>
 	<div class="container col-xs-12" >
 		<ul id="ulhva">
-            <li id="menuAccueil" class="active lihva"><a id="btnAccueil" href="#accueil" class="">Accueil</a></li>
-            <li id="menuOrga" class="lihva "><a id="btnOrga" href="#orga" class="">Acteurs</a></li>
-			<li id="menuEvent" class="lihva"><a id="btnEvent" href="#event" class="">Evénements</a></li>
-            <li id="menuAnnonce" class="lihva"><a id="btnAnnonce" href="#annonce" class="">Annonces</a></li>
-            <li id="menuRejoindre" class="lihva "><a id="btnRejoindre" href="#rejoindre" class="">Rejoindre le réseau</a></li>
-            <li id="menuEvent" class="lihva"><a id="btnQui" href="#qui" class="">Qui-sommes nous ?</a></li>
+            <li id="menuAccueil" class="active lihva"><a id="btnAccueil" href="javascript:;" class="">Accueil</a></li>
+            <li id="menuOrga" class="lihva "><a id="btnOrga" href="javascript:;" class="">Acteurs</a></li>
+			<li id="menuEvent" class="lihva"><a id="btnEvent" href="javascript:;" class="">Evénements</a></li>
+            <li id="menuAnnonce" class="lihva"><a id="btnAnnonce" href="javascript:;" class="">Annonces</a></li>
+            <li id="menuRejoindre" class="lihva "><a id="btnRejoindre" href="javascript:;" class="">Rejoindre le réseau</a></li>
+            <li id="menuEvent" class="lihva"><a id="btnQui" href="javascript:;" class="">Qui-sommes nous ?</a></li>
 		</ul>
         <div id="accueil" class="col-xs-12" style ="padding: 15px; text-align: justify;">
 
@@ -76,8 +76,8 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
             <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
         </div>
         <br/><hr>
-        <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
-            <iframe id="annonce" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
+        <div id="annonce" class="col-xs-12" style ="padding: 15px; text-align: justify;">
+            <iframe  src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-md-10 col-md-offset-1 col-xs-12" style="height:650px;"></iframe>
         </div>
         <hr>
         <div id="rejoindre" class="col-xs-12" style ="padding: 15px; text-align: justify;">
@@ -116,27 +116,30 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
    //          $("#annonce").hide();
    //      });
 
-   //      $("#btnOrga").click(function(){
-   //          changeMenu("orga");
-   //      });
+        $("#btnOrga").click(function(){
+            $('html,body').animate({scrollTop: $("#orga").offset().top}, 'slow');
+        });
 
-   //      $("#btnEvent").click(function(){
-   //      	changeMenu("event");
-   //      });
+        $("#btnEvent").click(function(){
+            $('html,body').animate({scrollTop: $("#event").offset().top}, 'slow');
+        });
 
-   //      $("#btnAccueil").click(function(){
-   //          changeMenu("accueil");
-   //      });
+        $("#btnAccueil").click(function(){
+            $('html,body').animate({scrollTop: $("#accueil").offset().top}, 'slow');
+        });
 
-   //      $("#btnQui").click(function(){
-   //          changeMenu("qui");
-   //      });
+        $("#btnQui").click(function(){
+            $('html,body').animate({scrollTop: $("#qui").offset().top}, 'slow');
+        });
 
-   //      $("#btnAnnonce").click(function(){
-   //          changeMenu("annonce");
-   //      });
+        $("#btnAnnonce").click(function(){
+            //changeMenu("annonce");
+            $('html,body').animate({scrollTop: $("#annonce").offset().top}, 'slow');
+        });
 
-   //      $("#btnRejoindre").click(function(){
+        $("#btnRejoindre").click(function(){
+            $('html,body').animate({scrollTop: $("#rejoindre").offset().top}, 'slow');
+        });
    //          changeMenu("rejoindre");
    // //      	var form = {
 			// // 	saveUrl : baseUrl+"/"+moduleId+"/mailmanagement/createandsend/",

@@ -975,6 +975,11 @@
 			$("#modalItemNotLocated .modal-body").html(popup);
 			$("#modalItemNotLocated #btn-open-details").click(function(){
 				$("#popup"+objectId).click();
+
+				if (typeof networkJson != "undefined" && notNull(networkJson) && notNull(networkJson.dataSrc)){
+					urlCtrl.loadByHash("'+url+'");
+					urlCtrl.loadByHash("'+url+'");
+				}
 			});
 
 			$("#modalItemNotLocated #popup"+objectId).click(function(){

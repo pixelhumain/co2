@@ -105,7 +105,7 @@ function getFileItem(k,v, edit){
 						'<span>'+documents.getIcon(k)+' '+titleDoc+' - <i>'+v.size+'</i></span>'+
 					'</div>'+
 			'<div class="tools tools-right pull-right padding-5">'+
-				' <a href="'+v.imagePath+'" target="_blank" class="margin-right-10">' +
+				' <a href="'+v.docPath+'" target="_blank" class="margin-right-10">' +
 					' <i class="fa fa-upload"></i>'+
 				' </a>';
 		if(edit){

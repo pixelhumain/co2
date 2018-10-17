@@ -118,7 +118,7 @@ function initCountType(){
         });
     }
     else{
-      searchObject.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", /*"news",*/ "classifieds","ressources"];
+      searchObject.countType=["NGO", "Group", "GovernmentOrganization", "LocalBusiness", "citoyens", "projects", "events", /*"places",*/ "poi", /*"news",*/ "classifieds"/*,"ressources"*/];
     }
   }
   else if(searchObject.initType=="ressources") searchObject.countType=["ressources"];

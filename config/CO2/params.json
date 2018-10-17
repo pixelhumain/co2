@@ -293,6 +293,7 @@
 		"#survey": {
 			"inMenu" : false, 
 			"useHeader" : false,
+			"useFilter" : false, 
 			"open" : true,  
 			"subdomain" : "city", 
 			"subdomainName" : "City",
@@ -305,6 +306,7 @@
 		"#admin": {
 			"inMenu" : false, 
 			"useHeader" : false, 
+			"useFilter" : false, 
 			"open" : false, 
 			"subdomain" : "admin", 
 			"subdomainName" : "admin",
@@ -317,6 +319,7 @@
         "#adminpublic": {
             "inMenu" : false, 
             "useHeader" : false, 
+            "useFilter" : false, 
             "open" : false, 
             "subdomain" : "admin", 
             "subdomainName" : "admin",

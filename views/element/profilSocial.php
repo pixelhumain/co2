@@ -257,9 +257,9 @@
 
     			$iconNewsPaper="user-circle"; 
     	  ?>
-		  <button type="button" class="btn btn-default bold hidden-xs btn-start-newsstream">
+		  <!--<button type="button" class="btn btn-default bold hidden-xs btn-start-newsstream">
 		  		<i class="fa fa-rss"></i> <?php echo Yii::t("common","News stream<span class='hidden-sm'></span>") ?>
-		  </button>
+		  </button>-->
 
 		  <?php } else {
 		  		  $iconNewsPaper="rss"; 
@@ -1035,7 +1035,7 @@
 			}
 			
 		} else
-			loadNewsStream(true);
+			loadNewsStream(false);
 	}
 
 

@@ -14,7 +14,8 @@
     //header + menu
     $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "admin") ); 
+                                "page" => "admin",
+                                "useFilter"=>false) ); 
 ?>
 <!-- start: PAGE CONTENT -->
 <style type="text/css">

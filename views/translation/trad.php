@@ -28,6 +28,7 @@ var trad = {
 	"areyouadmin" : "<?php echo Yii::t("common", "Are you admin") ?>",
 	"yes" : "<?php echo Yii::t("common","Yes") ?>",
 	"no" : "<?php echo Yii::t("common","No") ?>",
+	"In" : "<?php echo Yii::t("common","In") ?>",
 	"where" : "<?php echo Yii::t("common","Where") ?>",
 	"type" : "<?php echo Yii::t("common","Type") ?>",
 	"section" : "<?php echo Yii::t("common","Section") ?>",

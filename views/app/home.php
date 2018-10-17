@@ -78,24 +78,24 @@
     .menu-left-home{
         left: 52px;
     }
-    .menu-left-home .link-user-menu{
+    .content-home-user-info .link-user-menu{
         text-decoration: none;
     }
-    .menu-left-home .img-profil{
+    .content-home-user-info .img-profil{
         border-radius:10px;
     }
-    .menu-left-home .username{
+    .content-home-user-info .username{
         font-size: 20px;
         vertical-align: bottom;
         text-decoration: underline;
     }
-    .menu-left-home .username:hover{
+    .content-home-user-info .username:hover{
         color:#4285f4!important;
     }
-    .menu-left-home .label-gammification{
+    .content-home-user-info .label-gammification{
         text-transform: uppercase; 
     }
-    .menu-left-home .label-gammification, .menu-left-home .points-gammification{
+    .content-home-user-info .label-gammification, .content-home-user-info .points-gammification{
         vertical-align: sub;
     }
     #btnGamificationInfos:hover{
@@ -139,7 +139,7 @@
 </style>
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="" id="onepage">
-		<div class="hidden-xs hidden-sm col-md-2 col-lg-3 menu-left-home">
+		<div class="hidden-xs hidden-sm col-md-2 col-lg-3 menu-left-home content-home-user-info">
             <?php 
                // if( isset( Yii::app()->session['userId']) ){
                  //   print_r(Yii::app()->session["user"]);
@@ -149,15 +149,17 @@
                   //$profilThumbImageUrl = Element::getImgProfil($me, "profilThumbImageUrl", );
                   //$countNotifElement = ActivityStream::countUnseenNotifications(Yii::app()->session["userId"], Person::COLLECTION, Yii::app()->session["userId"]);
                 $pointGammif=Gamification::calcPoints( Person::COLLECTION, Yii::app()->session["userId"] );
+                $labelBadgeGammif=Gamification::badge(  Yii::app()->session["userId"], $pointGammif );
+                $iconBadgeGammif=Gamification::badge(  Yii::app()->session["userId"], $pointGammif, $this->module->getParentAssetsUrl() );
             ?>     
             <a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>" class="link-user-menu lbh text-dark no-margin margin-bottom" data-toggle="dropdown">
                 <img class="img-profil" id="" width="25" height="25" src="<?php echo $profilThumbImageUrl ?>" alt="image">            
                 <span class="username"><?php echo "@".Yii::app()->session["user"]["username"] ?></span> 
             </a>
-            <div id="btnGamificationInfos" class="col-xs-12 valueAbout no-padding margin-bottom-10 margin-top-10">
+            <div id="btnGamificationInfos" class="col-xs-12 valueAbout no-padding margin-bottom-10 btnGamificationInfos margin-top-10">
                 <span style="line-height: 25px;"> 
-                    <img class="" width="25" height="25" src="<?php echo  Gamification::badge(  Yii::app()->session["userId"], $pointGammif, $this->module->getParentAssetsUrl() )?>" alt="image">
-                    <span class="label-gammification"><?php echo Gamification::badge(  Yii::app()->session["userId"], $pointGammif )?></span>
+                    <img class="" width="25" height="25" src="<?php echo $iconBadgeGammif ?>" alt="image">
+                    <span class="label-gammification"><?php echo $labelBadgeGammif ?></span>
                     <span class="points-gammification">&middot; <span class="letter-red"><?php echo $pointGammif."</span>"." ".Yii::t("common","points"); ?></span>
                 </span>  
             </div>
@@ -168,7 +170,7 @@
                 <a href="javascript:;" data-form-type="project" class="btn-open-form col-xs-12 no-padding"><i class="fa fa-lightbulb-o bg-purple"></i> <?php echo Yii::t("common", "Reference a project") ?></a>
             </div>
              <div class="contribute-panel col-xs-12 no-padding margin-top-20">
-                <span class="title-rubrique"><?php echo Yii::t("common", "Useful links") ?>Liens utiles</span>
+                <span class="title-rubrique"><?php echo Yii::t("common", "Useful links") ?></span>
                 <a href="#docs.page.elements" class="col-xs-12 no-padding">#<?php echo Yii::t("common","User guide") ?></a><br/>
                 <a href="#settings.index" class="lbh margin-top-10 col-xs-12 no-padding">#<?php echo Yii::t("common", "Settings") ?></a><br/>
                 <a href="javascript:;" class="margin-top-10 col-xs-12 no-padding">#<?php echo Yii::t("common", "Contact us") ?></a><br/>
@@ -178,16 +180,43 @@
             <a href="javascript:;" class="margin-top-10 col-xs-12 no-padding">Concours des assos</a><br/>-->
         </div>
         <div class="col-xs-12 col-sm-9 col-md-7 col-lg-6 col-md-offset-2 col-lg-offset-3" id="home">
+            <div class="content-home-user-info visible-xs col-xs-12 no-padding margin-bottom-10">
+                <a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>" class="link-user-menu lbh text-dark no-margin margin-bottom" data-toggle="dropdown">
+                    <img class="img-profil" id="" width="35" height="35" src="<?php echo $profilThumbImageUrl ?>" alt="image">            
+                    <span class="username" style="font-size:25px;"><?php echo "@".Yii::app()->session["user"]["username"] ?></span> 
+                </a>
+                <strong class="margin-right-5 margin-left-5" style="font-size: 20px;vertical-align: middle;text-align: center;width: 20px;display: inline-block;"> • </strong>
+                <div id="btnGamificationInfos" class="valueAbout no-padding margin-bottom-10 margin-top-10 btnGamificationInfos" style="display: initial;">
+                    <span style="line-height: 25px;"> 
+                        <img class="" width="25" height="25" src="<?php echo $iconBadgeGammif ?>" alt="image">
+                        <span class="label-gammification"><?php echo $labelBadgeGammif ?></span>
+                        <span class="points-gammification">&middot; <span class="letter-red"><?php echo $pointGammif."</span>"." ".Yii::t("common","points"); ?></span>
+                    </span>  
+                </div>
+            </div>
             <div class="col-xs-12 no-padding">
             </div>
             <div class="col-xs-12 no-padding" id="central-container">
             </div>
         </div>
-        <div class="col-md-3 col-lg-3 col-sm-3 hidden-xs" 
-             id="notif-column">
-            <?php if(@$element["custom"] && @$element["custom"]["pubTpl"])
-                echo $this->renderPartial($element["custom"]["pubTpl"]); ?>
-    
+        <div class="col-md-3 col-lg-3 col-sm-3 hidden-xs" id="notif-column">
+             <div class="content-home-user-info visible-sm">
+                <a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>" class="link-user-menu lbh text-dark no-margin margin-bottom" data-toggle="dropdown">
+                    <img class="img-profil" id="" width="25" height="25" src="<?php echo $profilThumbImageUrl ?>" alt="image">            
+                    <span class="username"><?php echo "@".Yii::app()->session["user"]["username"] ?></span> 
+                </a>
+                <div id="btnGamificationInfos" class="col-xs-12 valueAbout no-padding margin-bottom-10 btnGamificationInfos margin-top-10">
+                    <span style="line-height: 25px;"> 
+                        <img class="" width="25" height="25" src="<?php echo $iconBadgeGammif ?>" alt="image">
+                        <span class="label-gammification"><?php echo $labelBadgeGammif ?></span>
+                        <span class="points-gammification">&middot; <span class="letter-red"><?php echo $pointGammif."</span>"." ".Yii::t("common","points"); ?></span>
+                    </span>  
+                </div>
+            </div>
+            <div id="territorial-notif-column">
+                <?php if(@$element["custom"] && @$element["custom"]["pubTpl"])
+                    echo $this->renderPartial($element["custom"]["pubTpl"]); ?>
+            </div>
         </div>
 	</div>
 </div>
@@ -271,7 +300,7 @@ function loadLiveNow () {
           "indexMax" : 30 
         };
 
-        ajaxPost( "#notif-column", baseUrl+'/'+moduleId+'/element/getdatadetail/type/citoyens/id/'+userId+'/dataName/liveNow?tpl=nowList',
+        ajaxPost( "#territorial-notif-column", baseUrl+'/'+moduleId+'/element/getdatadetail/type/citoyens/id/'+userId+'/dataName/liveNow?tpl=nowList',
                         searchParams, function() { 
                         bindLBHLinks();
          } , "html" );
@@ -323,7 +352,7 @@ function toogleNotif(open){
     colNotifOpen = open;
 }
 function initPageInterface(){
-    $("#btnGamificationInfos").off().on("click",function(){
+    $(".btnGamificationInfos").off().on("click",function(){
         $("#modalExplainGamification").modal("show"); 
     });
 	$("#second-search-bar").addClass("input-global-search");

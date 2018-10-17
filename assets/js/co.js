@@ -2981,7 +2981,7 @@ function initKInterface(params){ console.log("initKInterface");
 	$(window).bind("scroll",function(){ 
 		if($(this).scrollTop()<=10)
 			infScroll=true;
-        if( $(this).scrollTop() > 10 && !headerScaling && typeof infScroll != "undefined" && infScroll){
+        if( $(this).scrollTop() > 10 && !headerScaling && typeof infScroll != "undefined" && infScroll && (typeof networkJson == "undefined" || networkJson == null) ) {
         	$("#filter-scopes-menu, #filters-nav, #text-search-menu").hide(200);
         	$(".menu-btn-scope-filter").removeClass("active");
         	$("#vertical .btn-show-filters.hidden-xs").show(200);

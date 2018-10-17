@@ -1787,7 +1787,7 @@ var directory = {
       if(directory.dirLog) mylog.log("----------- classifiedPanelHtml",params,params.name);
 
       str = "";  
-      str += "<div class='col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-md-4 col-sm-6 col-xs-12 searchEntityContainer "+params.type+params.id+" "+params.type+" "+params.elTagsList+" contain_"+params.type+"_"+params.id+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
       
      // directory.colPos = directory.colPos == "left" ? "right" : "left";
@@ -1994,7 +1994,7 @@ var directory = {
     eventPanelHtml : function(params){
       if(directory.dirLog) mylog.log("-----------eventPanelHtml", params);
       str = "";  
-      str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" '>";
+      str += "<div class='col-xs-12 searchEntityContainer "+params.type+" "+params.elTagsList+" contain_"+params.type+"_"+params.id+" '>";
       str +=    "<div class='searchEntity' id='entity"+params.id+"'>";
 
         if(params.updated != null && params.updated.indexOf(trad.ago)>=0 && location.hash == "#agenda")

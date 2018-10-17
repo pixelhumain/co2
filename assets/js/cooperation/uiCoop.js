@@ -682,6 +682,7 @@ var uiCoop = {
 		$("#btn-refresh-action").click(function(){
 			toastr.info(trad["processing"]);
 			var idProposal = $(this).data("id-action");
+			console.log("HERE", contextData.type, contextData.id, "action", null, idProposal);
 			uiCoop.getCoopData(contextData.type, contextData.id, "action", null, idProposal, 
 				function(){
 					uiCoop.minimizeMenuRoom(true);

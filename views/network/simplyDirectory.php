@@ -1,3 +1,30 @@
+<?php
+
+$cssAnsScriptFilesTheme = array(
+	'/plugins/moment/min/moment.min.js' ,
+    '/plugins/moment/min/moment-with-locales.min.js',
+	'/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
+    '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
+    '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
+    
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
+
+$cssAnsScriptFilesModule = array(
+	'/js/default/calendar.js',
+);
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
+
+
+HtmlHelper::registerCssAndScriptsFiles( 
+array(  //'/css/onepage.css',
+	'/css/calendar.css',
+) , 
+Yii::app()->theme->baseUrl. '/assets');
+
+
+?>
+
 <style>
 	.dropdown_searchListNW{
 		min-height: 100%;
@@ -9,12 +36,17 @@
 
 <div class="col-md-12 no-padding" id="repertory" style="background-color: white">
 	<div id="dropdown_search_result" class="col-md-12 col-sm-12 col-xs-12"></div>
+	<div class='col-xs-12 margin-bottom-10'>
+		<a href='javascript:;' id='showHideCalendar' class='text-azure' data-hidden='0'><i class='fa fa-caret-up'></i> Hide calendar</a>
+	</div>
+	<div id='profil-content-calendar' class='col-xs-12 margin-bottom-20'></div>
 	<div id="dropdown_search" class="col-md-12 container list-group-item dropdown_searchListNW"></div>
 </div>
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding" id="ficheInfoDetail"></div>
 
 <script type="text/javascript">
 var contextMapNetwork = [];
+//var contextNow = [];
 var currentKFormType = "";
 var indexStepInit = 100;
 var searchPrefTag = null ;
@@ -58,10 +90,14 @@ jQuery(document).ready(function() {
 	addTooltips();
 	bindNetwork();
 
-	if(location.hash == "" || location.hash == "#network.simplydirectory")
+	if(location.hash == "" || location.hash == "#network.simplydirectory"){
+		mylog.log("here1")
 		showMapNetwork(true);
-	else
+	}
+	else{
+		mylog.log("here2");
 		showMapNetwork(false);
+	}
 
 	$("#right_tool_map").removeClass("hidden-sm").hide( 700 );
 	hideScrollTop = true;
@@ -70,7 +106,21 @@ jQuery(document).ready(function() {
 	setTimeout(function(){ $("#input-communexion").hide(300); }, 300);
 	// // mylog.log("indexStepInit", indexStepInit);
 	bindButtonOpenForm();
+
+
+	if( typeof networkJson.add != "undefined" && typeof networkJson.add.event != "undefined" && networkJson.add.event == true)
+		calendar.init("#profil-content-calendar");
+	else{
+		
+		$("#profil-content-calendar").hide();
+		$("#showHideCalendar").hide();
+	}
+
+
+
 	startSearchSimply(0, indexStepInit);
+
+	
 });
 
 function initVar(){
@@ -126,7 +176,7 @@ function bindNetwork(){
 	 // mylog.log("bindNetwork");
 	$('#btn-toogle-map').click(function(e){ 
 		showMapNetwork(); 
-		updateMap(); 
+		updateMap();
 	});
 	
 	$('.reset').on('click', function() {
@@ -207,7 +257,7 @@ function bindNetwork(){
 }
 
 function showMapNetwork(show){
-	 // mylog.log("showMapNetwork", show, isMapEnd);
+	 mylog.log("showMapNetwork", show, isMapEnd);
 	 // mylog.log("typeof SIG : ", typeof Sig);
 
 	if(typeof Sig == "undefined") show = false;
@@ -241,6 +291,10 @@ function showMapNetwork(show){
 		}, 1000);
 		var timer = setTimeout("Sig.constructUI()", 1000);
 
+		console.log("contextMapNetwork", contextMapNetwork);
+
+
+
 	}else{
 		isMapEnd =false;
 		hideMapLegende();
@@ -255,11 +309,31 @@ function showMapNetwork(show){
 			opacity:1
 		}, 'slow' );
 		setTitle(networkJson.skin.title , "", networkJson.skin.title, networkJson.skin.title, networkJson.skin.shortDescription);
-		setTimeout(function(){ 
-			$(".my-main-container").show();
-			if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )
-				$(".main-menu-left").show( 700 );
-		}, 100);
+
+		// setTimeout(function(){ 
+		// 	$(".my-main-container").show();
+		// 	if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )
+		// 		$(".main-menu-left").show( 700 );
+		// 	//$(".fc-month-button").trigger("click");
+
+		// 	calendar.showCalendar("#profil-content-calendar", contextMapNetwork, "month");
+		
+		// 	$("#profil-content-calendar").fullCalendar("gotoDate", moment(Date.now()));
+
+		// 	$(window).on('resize', function(){
+		// 		$("#profil-content-calendar").fullCalendar('destroy');
+		// 		calendar.showCalendar("#profil-content-calendar", contextMapNetwork, "month");
+		// 	});
+
+		// }, 100);
+
+		$(".my-main-container").show();
+		if( !$('.main-menu-left').is(":visible") && location.hash.indexOf("#page") == -1 )
+			$(".main-menu-left").show( 700 );
+		//$(".fc-month-button").trigger("click");
+
+		
+			
 
 		if(typeof Sig != "undefined" && Sig.currentMarkerPopupOpen != null){
 			Sig.currentMarkerPopupOpen.closePopup();
@@ -269,6 +343,7 @@ function showMapNetwork(show){
 			$("#ajaxSV").show( 700 );
 
 		checkScroll();
+		$(".fc-month-button").trigger("click");
 	}
 }
 
@@ -823,7 +898,7 @@ function breadcrumGuide(level, url){
 }
 
 function getAjaxFiche(url, breadcrumLevel){
-	 // mylog.log("getAjaxFiche Network", url, breadcrumLevel, isMapEnd);
+	mylog.log("getAjaxFiche Network", url, breadcrumLevel, isMapEnd);
 	$("#ficheInfoDetail").empty();
 	if(location.hash == ""){
 		history.pushState(null, "New Title", '?src='+networkParams+url);
@@ -871,7 +946,7 @@ function getAjaxFiche(url, breadcrumLevel){
 				urlHash.indexOf("news") < 0 &&
 				urlHash.indexOf("network") < 0 && 
 				urlHash.indexOf("invite") < 0 ){
-		 // mylog.log("here2");
+		
 		pageView=true;
 		var urlSplit = "";
 		if(urlHash.indexOf("#@") != -1)
@@ -919,14 +994,13 @@ function getAjaxFiche(url, breadcrumLevel){
 
 
 function reverseToRepertory(){
-	 // mylog.log("reverseToRepertory", isMapEnd);
+	mylog.log("reverseToRepertory", isMapEnd);
 	if(isMapEnd)
 		showMapNetwork();
 	updateMap();
 	$("#ficheInfoDetail").hide( 700 );
 	$("#dropdown_search").show();
 	$(".main-col-search").removeClass("col-md-12 col-sm-12").addClass("col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3");
-	//$("#dropdown_search").show();
 	$("#repertory").show();
 	$(".main-menu-left").show( 700 );
 	$html = '<a href="javascript:;" onclick="breadcrumGuide(0)" class="breadcrumAnchor text-dark" style="font-size:20px;">'+trad.list+'</a>';
@@ -1094,23 +1168,27 @@ function dateIsGood(event){
 	var before = false;
 	var after = false;
 	if(startDate != "" ){
-		//startDate = moment($("#dateStartFiltre").val(), "DD/MM/YYYY hh:mm").format();
-		//after = moment(startDate).isSameOrAfter(event.startDate);
-		after = moment(event.startDate).isSameOrAfter(startDate);
-		mylog.log("dateIsGood startDate", event.startDate, startDate, moment(startDate).isSameOrAfter(event.startDate), moment(event.startDate).isSameOrAfter(startDate) );
+		// mylog.log("dateIsGood event.startDate", event.name, event.startDate);
+		// mylog.log("dateIsGood startDate", event.name, startDate);
+		// mylog.log("dateIsGood moment(startDate).isSameOrAfter(event.startDate)", event.name, moment(startDate).isSameOrAfter(event.startDate));
+		// mylog.log("dateIsGood moment(event.startDate).isSameOrAfter(startDate)", event.name, moment(event.startDate).isSameOrAfter(startDate));
+		// mylog.log("dateIsGood moment(startDate).isSameOrBefore(event.endDate)", event.name, moment(startDate).isSameOrBefore(event.endDate));
+
+		var afterS = moment(startDate).isSameOrAfter(event.startDate);
+		var beforeS = moment(startDate).isSameOrBefore(event.endDate);
+
+		after = (afterS == true && beforeS == true) ? true : false ;
 	}else
 		after = true;
 
 	if( endDate != ""){
-		//endDate = moment($("#dateEndFiltre").val(), "DD/MM/YYYY hh:mm").format();
-		//before = moment(endDate).isSameOrBefore(event.endDate);
-		before = moment(event.endDate).isSameOrBefore(endDate);
-		mylog.log("dateIsGood endDate", event.endDate, endDate, moment(event.endDate).isSameOrBefore(endDate), moment(endDate).isSameOrBefore(event.endDate));
+		var afterE = moment(endDate).isSameOrAfter(event.startDate);
+		var beforeE = moment(endDate).isSameOrBefore(event.endDate);
+
+		before = (afterE == true && beforeE == true) ? true : false ;
 	}else
 		before = true;
-	mylog.log("dateIsGood after before", after, before, (after == true && before == true) );
 	res = (after == true && before == true) ? true : false ;
-	mylog.log("dateIsGood res", res );
 	return res ;
 }
 
@@ -1142,7 +1220,6 @@ function updateMap(){
 
 	mylog.log("updateMap testNetwork", test);
 
-	 // mylog.log("searchValNetwork", searchValNetwork);
 	var filteredList = [];
 	var add = false;
 	if(test.length > 0){
@@ -1192,6 +1269,7 @@ function updateMap(){
 			startDate != "" || endDate != "" || eventsTypeActived.length  > 0 || 
 			searchValNetwork.length > 0)  {
 			$.each(contextMapNetwork,function(k,v){
+
 				if(	( 	disableActived == false || 
 						(disableActived == true && typeof v.disabled != "undefined" && v.disabled == true) ) && 
 					( citiesActived.length == 0  || 
@@ -1225,9 +1303,24 @@ function updateMap(){
 			filteredList = contextMapNetwork;
 		}
 	}
+
 	$.each(filteredList, function(e,v){
 		$(".contain_"+v.type+"_"+v.id).show(700);
 	});
+
+	//contextNow = filteredList;
+
+	if( typeof networkJson.add != "undefined" && typeof networkJson.add.event != "undefined" && networkJson.add.event == true){
+		$("#profil-content-calendar").fullCalendar('destroy');
+		calendar.showCalendar("#profil-content-calendar", filteredList, "month");
+		$("#profil-content-calendar").fullCalendar("gotoDate", moment(Date.now()));
+		$(window).on('resize', function(){
+			$("#profil-content-calendar").fullCalendar('destroy');
+			calendar.showCalendar("#profil-content-calendar", filteredList, "month");
+		});
+	}
+	
+	
 
 	countResult=filteredList.length;
 	refreshResultHeader(countResult);

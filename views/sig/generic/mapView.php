@@ -217,6 +217,7 @@
 			      <div class="modal-body"></div>
 			      <div class="modal-footer">
 			        <button type="button" id="btn-open-details" class="btn btn-default btn-sm btn-success" data-dismiss="modal"><i class="fa fa-plus"></i> <?php echo Yii::t("common", "Show the details"); ?></button>
+			        
 			      	<button type="button" class="btn btn-default btn-sm btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <?php echo Yii::t("common", "Close"); ?></button>
 			      </div>
 			    </div>

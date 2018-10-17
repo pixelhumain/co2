@@ -68,7 +68,7 @@
 							+   "<div class='right-col'>";
 					
 			if("undefined" != typeof data['name'])
-				popupContent	+= 	"<div class='info_item pseudo_item_map_list'>" + data['name'] + "</div>";
+				popupContent	+= 	"<div class='info_item pseudo_item_map_list'>!" + data['name'] + "</div>";
 			
 			if("undefined" != typeof data['tags'] && data['tags'] != null){
 				popupContent	+= 	"<div class='info_item items_map_list'>";
@@ -164,7 +164,7 @@
 							+   "<div class='right-col'>";
 					
 			if("undefined" != typeof data['name'])
-				popupContent	+= 	"<div class='info_item pseudo_item_map_list'>" + data['name'] + "</div>";
+				popupContent	+= 	"<div class='info_item pseudo_item_map_list'>m" + data['name'] + "</div>";
 			
 			if("undefined" != typeof data['tags'] && data['tags'] != null){
 				popupContent	+= 	"<div class='info_item items_map_list'>";
@@ -370,7 +370,7 @@
 						+ "<div class='right-col'>";
 				
 			if("undefined" != typeof data['name'])
-			popupContent	+= 	"<div class='info_item pseudo_item_map_list'>" + data['name'] + "</div>";
+			popupContent	+= 	"<div class='info_item pseudo_item_map_list'>l" + data['name'] + "</div>";
 			
 			if("undefined" != typeof allData['tags']){
 				popupContent	+= 	"<div class='info_item items_map_list'>";
@@ -663,7 +663,7 @@
 						 + "<div class='right-col'>";
 						
 						if("undefined" != typeof data['name'])
-						popupContent	+= 	"<div class='info_item pseudo_item_map_list'>" + data['name'] + "</div>";
+						popupContent	+= 	"<div class='info_item pseudo_item_map_list'>g" + data['name'] + "</div>";
 						
 						if("undefined" != typeof data['tags']){
 							popupContent	+= 	"<div class='info_item items_map_list'>";

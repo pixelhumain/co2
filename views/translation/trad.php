@@ -931,9 +931,11 @@ var tradCategory = {
 	"activityCommunecter" : "<?php echo Yii::t("category", "Activity of communecters") ?>",
 	"surveys"          : "<?php echo Yii::t("category", "Surveys") ?>",
 
+	<!-- Key catégorie event -->
 	"contest" :"<?php echo Yii::t("category","Contest") ?>",
 	"festival" :"<?php echo Yii::t("category","Festival") ?>",
 	"market" :"<?php echo Yii::t("category","Market") ?>",
+	"other" :"<?php echo Yii::t("category","Other") ?>",
 	"others" :"<?php echo Yii::t("category","Other") ?>",
 	"concert" :"<?php echo Yii::t("category","Concert") ?>",
 	"exhibition" :"<?php echo Yii::t("category","Exhibition") ?>",
@@ -945,6 +947,9 @@ var tradCategory = {
 	"conference" :"<?php echo Yii::t("category","Conference") ?>",
 	"debate" :"<?php echo Yii::t("category","Debate") ?>",
 	"film" :"<?php echo Yii::t("category","Film") ?>",
+	"crowdfunding" :"<?php echo Yii::t("category","Crowdfunding") ?>",
+
+	<!-- Label catégorie event -->
 	"Contest" :"<?php echo Yii::t("category","Contest") ?>",
 	"Festival" :"<?php echo Yii::t("category","Festival") ?>",
 	"Market" :"<?php echo Yii::t("category","Market") ?>",
@@ -961,6 +966,7 @@ var tradCategory = {
 	"Debate" :"<?php echo Yii::t("category","Debate") ?>",
 	"Film" :"<?php echo Yii::t("category","Film") ?>",
 	"Crowdfunding" :"<?php echo Yii::t("category","Crowdfunding") ?>",
+
 
 	"sharing" : "<?php echo Yii::t("category","Share") ?>", 
 	"donation" : "<?php echo Yii::t("category","Give") ?>", 

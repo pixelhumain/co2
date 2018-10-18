@@ -51,8 +51,22 @@
         max-height: inherit;
         margin-bottom: 0px !important;
     }
-    #slidingDist .slider-selection{
-        background: #e6344d;
+    #ex1Slider{
+        width: 100% !important;
+    }
+    #ex1Slider .slider-selection{
+        background: #e6344d !important;
+    }
+    #ex1Slider .slider-handle.round{
+        background: linear-gradient(to bottom, #e6344d 13%, #e6344d 97%) repeat scroll 0 0 transparent;
+            margin-top: -3px !important;
+            height: 20px;
+            width: 20px;
+    }
+     #ex1Slider .slider-tick.in-selection {
+        background-image: -webkit-linear-gradient(top,#e6344d 0,#e6344d 100%);
+        background-image: -o-linear-gradient(top,#e6344d 0,#e6344d 100%);
+        background-image: linear-gradient(to bottom,#e6344d 0,#e6344d 100%);
     }
 </style>
 
@@ -86,7 +100,7 @@
             <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope["name"]; ?></small>
            
         </h6> 
-        <input id="slidingDist" data-slider-id='ex1Slider' type="text" data-slider-min="0.5" data-slider-max="100" data-slider-step="1" data-slider-value="5"/>
+        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0,5" data-slider-max="100" data-slider-step="1" data-slider-value="5" data-slider-ticks="[0, 100]" data-slider-ticks-snap-bounds="1" data-slider-ticks-labels='["0km", "100km"]'/>
         <!--<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">5</span></span>-->
         <hr class="angle-down">
         <center>
@@ -176,10 +190,24 @@ var userGeoloc=(typeof userConnected.geoPosition != "undefined" && typeof userCo
 jQuery(document).ready(function() {
     // With JQuery
 
-var slider = new Slider("#slidingDist");
-slider.on("slide", function(sliderValue) {
-    document.getElementById("ex6SliderVal").textContent = sliderValue;
-});
+  //  var slider = new Slider("");
+    var slider = new Slider('#ex1', {
+        //tooltip: 'always',
+        ticks: [0.1, 100],
+        ticks_labels: ['100m', '100km'],
+       // formatter: function(value) {
+         //   aroundMe(value);
+        //return 'Current value: ' + value;
+        //}
+    });
+    slider.on("slideStop", function(sliderValue) {
+        aroundMe(sliderValue);
+       // document.getElementById("ex1SliderVal").textContent = sliderValue;
+    });
+    //slider.on("slide", function(sliderValue) {
+        
+        //document.getElementById("ex6SliderVal").textContent = sliderValue;
+    //});
     mylog.log("LIVENOW", localActivity);
     mapElements = localActivity;
     $.each(localActivity, function(key, data){
@@ -193,11 +221,11 @@ slider.on("slide", function(sliderValue) {
     if(notNull(userGeoloc)){
         aroundMe(100);
     }
-    $("#ex6").slider();
+ /*   $("#ex6").slider();
     $("#ex6").on("slide", function(slideEvt) {
          aroundMe(slideEvt.value);
         $("#ex6SliderVal").text(slideEvt.value);
-});
+});*/
     //needed to open preview
     
     // $(".elemt_date").each(function() {

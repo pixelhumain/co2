@@ -15,7 +15,7 @@
     "deviseDefault" : "€",
     "nbAdminModeration" : 3,
     "nbReportCoModeration" : 3,
-    "appRendering":"vertical",
+    "appRendering":"horizontal",
     "onepageKey" : [ "co", "net" ],
     "urlKey":{
     	"eco":"annonces",
@@ -29,7 +29,7 @@
 		
 		"#app.index": {
 			"redirect": {
-				"logged":"search",
+				"logged":"home",
 				"unlogged":"welcome"
 			}
 		},

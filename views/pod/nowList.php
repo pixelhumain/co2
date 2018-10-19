@@ -1,7 +1,7 @@
 <?php 
     $cssAnsScriptFilesTheme = array(
         "/plugins/bootstrap-slider/src/js/bootstrap-slider.js",
-        "/plugins/bootstrap-slider/dist/css/bootstrap-slider.min.css",
+        "/plugins/bootstrap-slider/src/css/bootstrap-slider.min.css",
        /* "/plugins/bootstrap-slider/dependencies/js/highlight.min.js",
         "/plugins/bootstrap-slider/dependencies/css/highlightjs-github-theme.css",
         "/plugins/bootstrap-slider/dependencies/js/modernizr.js",*/

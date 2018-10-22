@@ -191,19 +191,7 @@ jQuery(document).ready(function() {
     // With JQuery
 
   //  var slider = new Slider("");
-    var slider = new Slider('#ex1', {
-        //tooltip: 'always',
-        ticks: [0.1, 100],
-        ticks_labels: ['100m', '100km'],
-       // formatter: function(value) {
-         //   aroundMe(value);
-        //return 'Current value: ' + value;
-        //}
-    });
-    slider.on("slideStop", function(sliderValue) {
-        aroundMe(sliderValue);
-       // document.getElementById("ex1SliderVal").textContent = sliderValue;
-    });
+    
     //slider.on("slide", function(sliderValue) {
         
         //document.getElementById("ex6SliderVal").textContent = sliderValue;
@@ -220,6 +208,19 @@ jQuery(document).ready(function() {
     }
     if(notNull(userGeoloc)){
         aroundMe(100);
+        var slider = new Slider('#ex1', {
+        //tooltip: 'always',
+        ticks: [0.1, 100],
+        ticks_labels: ['100m', '100km'],
+           // formatter: function(value) {
+             //   aroundMe(value);
+            //return 'Current value: ' + value;
+            //}
+        });
+        slider.on("slideStop", function(sliderValue) {
+            aroundMe(sliderValue);
+           // document.getElementById("ex1SliderVal").textContent = sliderValue;
+        });
     }
  /*   $("#ex6").slider();
     $("#ex6").on("slide", function(slideEvt) {

@@ -5,6 +5,7 @@ on garde les librairies specifique au module dans le module
 *******************************************/
 
 	$cssAnsScriptFilesModule = array(
+		"/js/default/loginRegister.js",
 		'/js/co.js',
 		'/js/default/directory.js',
 		'/js/default/index.js',

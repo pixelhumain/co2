@@ -152,7 +152,7 @@
                 $labelBadgeGammif=Gamification::badge(  Yii::app()->session["userId"], $pointGammif );
                 $iconBadgeGammif=Gamification::badge(  Yii::app()->session["userId"], $pointGammif, $this->module->getParentAssetsUrl() );
             ?>     
-            <a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>" class="link-user-menu lbh text-dark no-margin margin-bottom" data-toggle="dropdown">
+            <a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>" class="link-user-menu lbh text-dark no-margin margin-bottom elipsis" data-toggle="dropdown">
                 <img class="img-profil" id="" width="25" height="25" src="<?php echo $profilThumbImageUrl ?>" alt="image">            
                 <span class="username"><?php echo "@".Yii::app()->session["user"]["username"] ?></span> 
             </a>

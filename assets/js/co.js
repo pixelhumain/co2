@@ -2993,6 +2993,11 @@ function initKInterface(params){ console.log("initKInterface");
         //	$("#filter-scopes-menu, #filters-nav").show();
 
     });
+    $(".main-container.vertical .headerSearchContainer").affix({
+          offset: {
+              top: 10
+          }
+    });
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
         var $anchor = $(this);
@@ -3116,6 +3121,7 @@ function initKInterface(params){ console.log("initKInterface");
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];
     }
     console.log("affixTop", affixTop);
+
     /*if(affixTop > 0){
       // Offset for Main Navigation
       $("#affix-sub-menu").affix({

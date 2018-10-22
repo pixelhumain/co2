@@ -42,6 +42,8 @@ function startSearch(indexMin, indexMax, callBack){
           if(loadingData) return;
           
           loadingData = true;
+          scrollH= 0;//($("#filter-thematic-menu").is(":visible")) ? 250 : 81;
+          simpleScroll(scrollH, 200);  
           showIsLoading(true);
 
           mylog.log("startSearch", searchObject.indexMin, indexMax, searchObject.indexStep, searchObject.types);
@@ -365,8 +367,6 @@ function initPageTable(number){
           onPageClick: function (page, evt) {
               // some code
               //alert(page);
-            scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 81;
-            simpleScroll(scrollH);
             pageCount=false;
             searchObject.page=(page-1);
             scrollEnd=false;
@@ -2882,23 +2882,25 @@ var directory = {
            
           mylog.log("-----------headerHtml :"+countHeader);
           resultsStr = (countHeader > 1) ? trad.results : trad.result;
+          titleSize=(searchObject.initType=="classifieds") ? "col-md-8 col-sm-6" : "col-md-9 col-sm-8";
+          toolsSize=(searchObject.initType=="classifieds") ? "col-md-4 col-sm-6" : "col-md-3 col-sm-4";
           headerStr +='<div class="col-xs-12 margin-bottom-10">'+
-                        '<h4 class="elipsis col-md-9 col-sm-8 col-xs-10 no-padding">'+
+                        '<h4 class="elipsis '+titleSize+' col-xs-10 no-padding">'+
                         "<i class='fa fa-angle-down'></i> " + countHeader + " "+resultsStr+" "+
                         '<small>'+
                           directory.searchTypeHtml()+
                         '</small>'+
                       '</h4>'+
-                      '<div class="col-md-3 col-sm-3 col-xs-2 pull-right no-padding text-right">';
-                        if(userId!="" && searchObject.initType=="classifieds"){
-                          headerStr+='<button class="btn btn-default letter-blue addToAlert margin-right-5 tooltips" data-toggle="tooltip" data-placement="bottom" title="'+trad.bealertofnewitems+'" data-value="list" onclick="directory.addToAlert();"><i class="fa fa-bell"></i> <span class="hidden-xs">'+trad.alert+'</span></button>';
-                        }
+                      '<div class="'+toolsSize+' col-xs-2 pull-right no-padding text-right headerSearchTools">';
                          headerStr+='<button class="btn switchDirectoryView ';
                           if(directory.viewMode=="list") headerStr+='active ';
           headerStr+=     'margin-right-5" data-value="list"><i class="fa fa-bars"></i></button>'+
                         '<button class="btn switchDirectoryView ';
                           if(directory.viewMode=="block") headerStr+='active ';
           headerStr+=     '" data-value="block"><i class="fa fa-th-large"></i></button>';
+                          if(userId!="" && searchObject.initType=="classifieds"){
+                          headerStr+='<button class="btn btn-default letter-blue addToAlert margin-left-5 tooltips" data-toggle="tooltip" data-placement="bottom" title="'+trad.bealertofnewitems+'" data-value="list" onclick="directory.addToAlert();"><i class="fa fa-bell"></i> <span class="hidden-xs">'+trad.alert+'</span></button>';
+                          }
                           if(typeof themeParams != "undefined" && themeParams.appRendering !="undefined" && themeParams.appRendering=="vertical"){
           headerStr+=       '<button class="btn-show-map hidden-xs" style="" title="'+trad.showthemap+'" alt="'+trad.Showthemap+'">'+
                               '<i class="fa fa-map-marker"></i> Carte'+

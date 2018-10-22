@@ -171,7 +171,7 @@
             </div>
              <div class="contribute-panel col-xs-12 no-padding margin-top-20">
                 <span class="title-rubrique"><?php echo Yii::t("common", "Useful links") ?></span>
-                <a href="#docs.page.elements" class="col-xs-12 no-padding">#<?php echo Yii::t("common","User guide") ?></a><br/>
+                <a href="#docs.page.elements" class="col-xs-12 no-padding lbh">#<?php echo Yii::t("common","User guide") ?></a><br/>
                 <a href="#settings.index" class="lbh margin-top-10 col-xs-12 no-padding">#<?php echo Yii::t("common", "Settings") ?></a><br/>
                 <a href="javascript:;" class="margin-top-10 col-xs-12 no-padding">#<?php echo Yii::t("common", "Contact us") ?></a><br/>
             </div>

@@ -104,6 +104,7 @@ class CommunecterController extends Controller
       "mailerrordashboard" => array("href" => "/ph/co2/admin/mailerrordashboard"),
       "cities" => array("href" => "/ph/co2/admin/cities"),
       "circuits" => array("href" => "/ph/co2/admin/circuits"),
+      "mailslist" => array("href" => "ph/co2/admin/mailslist"),
     ),
     "docs" => array(
       "index"     => array("href" => "/ph/co2/docs"),
@@ -119,6 +120,7 @@ class CommunecterController extends Controller
       "previewdata"    => array("href" => "/ph/co2/adminpublic/previewdata"),
       "interopproposed" => array("href" => "/ph/co2/adminpublic/interopproposed"),
       "cleantags" => array("href" => "ph/co2/adminpublic/cleantags"),
+      "mailslist" => array("href" => "ph/co2/adminpublic/mailslist"),
     ),
     "collections" => array(
       "add"    => array("href" => "/ph/co2/collections/add"),

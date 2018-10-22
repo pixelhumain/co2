@@ -59,6 +59,13 @@
 				</a>
 			</li>
 			<li class="list-group-item col-md-4 col-sm-6 ">
+				<a class="text-green" id="btn-mailslist" style="cursor:pointer;" href="javascript:;">
+					<i class="fa fa-upload fa-2x"></i>
+					<?php echo Yii::t("common", "Mails"); ?>
+				</a>
+			</li>
+			
+			<li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="letter-blue" id="btn-adddata" style="cursor:pointer;" href="javascript:;">
 					<i class="fa fa-plus fa-2x"></i>
 					<?php echo Yii::t("common", "IMPORT DATA"); ?>
@@ -91,6 +98,7 @@
 					<?php echo Yii::t("admin", "MAILERROR"); ?>
 				</a>
 			</li>
+			
 
 			<!-- <li class="list-group-item col-md-4 col-sm-6 ">
 				<a class="lbh text-red" style="cursor:pointer;" href="#admin.view.openagenda">
@@ -136,6 +144,7 @@
 					<?php echo Yii::t("common", "IMPORT DATA"); ?>
 				</a>
 			</li>
+
 		<?php	} ?>
 		</ul>
 	</div>
@@ -189,8 +198,10 @@
 				loadStatistic();
 			else if(sub=="mailerror")
 				loadMailerror();
-			else if(sub=="adddata")
+			else if(sub=="adddata") 
 				loadAdddata();
+			else if(sub=="mailslist")
+				loadMailslist();
 			/*else if(sub=="backups")
 				loadBackup();
 			else if(sub=="bookings"){
@@ -233,6 +244,13 @@
 			location.hash=hashUrlPage+".view.mailerror";
 			loadMailerror();
 		});
+
+		$("#btn-mailslist").click(function(){
+			location.hash=hashUrlPage+".view.mailslist";
+			loadMailslist();
+		});
+
+		
 		$("#btn-adddata").click(function(){
 			location.hash=hashUrlPage+".view.adddata";
 			loadAdddata();
@@ -295,6 +313,17 @@
 		ajaxPost('#content-view-admin', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
 
 	}
+
+	function loadMailslist(){
+		initDashboard();
+		var url = "adminpublic/mailslist";
+		//showLoader('.content-view-dashboard');
+		$("#goBackToHome").show(700);
+		ajaxPost('#content-view-admin', baseUrl+'/'+moduleId+'/'+url, null, function(){},"html");
+
+	}
+
+
 	function loadStatistic(){
 		initDashboard();
 		var url = "stat/chartglobal";

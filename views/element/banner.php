@@ -217,7 +217,7 @@
 			<span class="pull-left text-white" id="shortDescriptionHeader"><?php echo ucfirst(substr(trim(@$element["shortDescription"]), 0, 180)); ?>
 			</span>	
 		</div>
-		<?php if($edit || $openEdition){ ?>
+		<?php if( ( $edit || $openEdition ) && !empty(Yii::app()->session["userId"])){ ?>
 			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-10 pull-right">
 				<a href="javascript:" class="pull-left btn letter-blue bg-white" id="btnHeaderEditInfos">
 					<i class="fa fa-pencil"></i> <?php echo Yii::t("common", "Edit informations") ?>

@@ -128,6 +128,17 @@
         width: 60px;
         text-align: center;
         margin:0px 15px; 
+        position: relative;
+    }
+    .breadcrumb-gammification .content-level.arrow{
+        top: -25px;
+    }
+    .breadcrumb-gammification .content-level.arrow .fa{
+        font-size: 35px;
+    }
+    .breadcrumb-gammification .content-level .fa-question-circle{
+        font-size: 55px;
+        width: 60px;
     }
     .breadcrumb-gammification .label-level-game{
         font-variant: small-caps;
@@ -139,7 +150,7 @@
 </style>
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="" id="onepage">
-		<div class="hidden-xs hidden-sm col-md-2 col-lg-3 menu-left-home content-home-user-info">
+		<div class="hidden-xs hidden-sm col-md-2 col-lg-2 menu-left-home content-home-user-info">
             <?php 
                // if( isset( Yii::app()->session['userId']) ){
                  //   print_r(Yii::app()->session["user"]);
@@ -179,7 +190,7 @@
             <!--<div class="contribute-panel">
             <a href="javascript:;" class="margin-top-10 col-xs-12 no-padding">Concours des assos</a><br/>-->
         </div>
-        <div class="col-xs-12 col-sm-9 col-md-7 col-lg-6 col-md-offset-2 col-lg-offset-3" id="home">
+        <div class="col-xs-12 col-sm-9 col-md-7 col-lg-7 col-md-offset-2 col-lg-offset-2" id="home">
             <div class="content-home-user-info visible-xs col-xs-12 no-padding margin-bottom-10">
                 <a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>" class="link-user-menu lbh text-dark no-margin margin-bottom" data-toggle="dropdown">
                     <img class="img-profil" id="" width="35" height="35" src="<?php echo $profilThumbImageUrl ?>" alt="image">            
@@ -196,7 +207,7 @@
             </div>
             <div class="col-xs-12 no-padding">
             </div>
-            <div class="col-xs-12 no-padding" id="central-container">
+            <div class="col-xs-12 col-lg-10 col-lg-offset-1 no-padding" id="central-container">
             </div>
         </div>
         <div class="col-md-3 col-lg-3 col-sm-3 hidden-xs" id="notif-column">
@@ -239,12 +250,23 @@
                                 <div class="content-level <?php if(@$v["current"]) echo "current" ?>">
                                     <?php if(@$v["current"]){
                                         echo "<span class='mylevel letter-red'>".Yii::t("common", "You are")."</span>";
+                                        $nextStep=$v["nextStep"];
                                     } ?>
                                     <span class="label-level-game"><?php echo @$v["label"]; ?></span>
                                     <img src="<?php echo @$v["icon"]; ?>"/>
-                                    <span class="nb-points"><?php echo @$v["points"]; ?> pt <?php if($v["points"] > 1) echo "s"; ?></span>
+                                    <span class="nb-points"><?php echo @$v["points"]; ?> pt<?php if($v["points"] > 1) echo "s"; ?></span>
                                 </div>
                             <?php }
+                            if($nextStep !== false){ ?>
+                                <div class="content-level arrow">
+                                    <i class="fa fa-2x fa-arrow-right"/>
+                                </div>
+                                <div class="content-level">
+                                <span class="label-level-game"><?php echo Yii::t("common", "Next to"); ?></span>
+                                    <i class="fa fa-2x fa-question-circle"/>
+                                    <span class="nb-points"><?php echo @$nextStep; ?> pts</span>
+                                </div>
+                           <?php }
                         ?>
                     </div>
 

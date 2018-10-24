@@ -111,7 +111,7 @@
      id="content-social" style="min-height:700px;">
     <?php if(@$type=="events"){ ?>
     <div class="no-padding col-md-10 col-sm-10 col-xs-12 text-left col-sm-offset-1 col-md-offset-1 headerSearchContainer"></div>
-    <div class="col-md-12 no-padding calendar"></div>
+    <div class="col-xs-12 no-padding calendar"></div>
     <div class="responsive-calendar-init hidden"> 
       <div class="responsive-calendar light col-md-12 no-padding">   
           <div class="day-headers">

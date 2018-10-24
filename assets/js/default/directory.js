@@ -463,39 +463,45 @@ function initPageTable(number){
 
   }
 
-  function initBtnAdmin(){ 
-    $(".adminToolBar").each(function(){
-      if($(this).children('button').length == 0){
-        $(this).parent().find(".adminIconDirectory").remove();
-        $(this).remove();
-      }
-    });
-    if(directory.viewMode=="block"){
-      $(".adminIconDirectory, .container-img-profil").mouseenter(function(){
-        $(this).parent().find(".adminToolBar").show();
-      });
-      $(".adminToolBar").mouseleave(function(){
-        $(this).hide();
-      });
-    }
-    mylog.log("initBtnAdmin")
-    $(".disconnectConnection").click(function(){
-      var $this=$(this); 
-      disconnectTo(contextData.type,
-        contextData.id, 
-        $this.data("id"), $this.data("type"), $this.data("connection"),function() {
-          $this.parents().eq($this.data("parent-hide")).fadeOut();   
-        });
-    });
-    $(".acceptAsBtn").off().on("click",function () {
-      validateConnection(contextData.type, contextData.id, $(this).data("id"), $(this).data("type"), $(this).data("connect-validation"), 
-        function() {
-          toastr.success(trad["validationwellregistred"]);
-          urlCtrl.loadByHash(location.hash);
-        }
-      );
-    });
-  }
+	function initBtnAdmin(){ 
+		$(".adminToolBar").each(function(){
+			if($(this).children('button').length == 0){
+				$(this).parent().find(".adminIconDirectory").remove();
+				$(this).remove();
+			}
+		});
+		if(directory.viewMode=="block"){
+			$(".adminIconDirectory, .container-img-profil").mouseenter(function(){
+				$(this).parent().find(".adminToolBar").show();
+			});
+
+			$(".adminToolBar").mouseleave(function(){
+				$(this).hide();
+			});
+		}
+		mylog.log("initBtnAdmin");
+
+		$(".disconnectConnection").click(function(){
+			var $this=$(this); 
+			disconnectTo(	contextData.type,
+							contextData.id, 
+							$this.data("id"), 
+							$this.data("type"), 
+							$this.data("connection"),
+							function() {
+			  					$this.parents().eq($this.data("parent-hide")).fadeOut();   
+			});
+		});
+
+		$(".acceptAsBtn").off().on("click",function () {
+			validateConnection(contextData.type, contextData.id, $(this).data("id"), $(this).data("type"), $(this).data("connect-validation"), 
+				function() {
+				  toastr.success(trad["validationwellregistred"]);
+				  urlCtrl.loadByHash(location.hash);
+				}
+			);
+		});
+	}
 
   function initBtnLink(){ mylog.log("initBtnLink");
     $(".main-btn-create").off().on("click",function(){

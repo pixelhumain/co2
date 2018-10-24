@@ -542,17 +542,8 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 	            		?>
 	            		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
 			  				<li class="text-left">
-				               	<a href="javascript:;" id="" class="bg-white editConfidentialityBtn">
-				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
-				                </a>
-				            </li>
-				            <li class="text-left">
-				            	<!--id="btn-preferences-notifications"-->
-				            	<?php if(in_array($type, [Project::COLLECTION, Organization::COLLECTION, Event::COLLECTION]))
-				            		$urlTo=".page.notificationsCommunity?slug=".$element["slug"];
-				            	?>
-				               	<a href="#settings<?php echo @$urlTo ?>" class="lbh bg-white">
-				                    <i class="fa fa-check"></i> <?php echo Yii::t("common", "Notifications preferences"); ?>
+				                <a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>.view.settings" class="lbh bg-white">
+				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "My parameters") ; ?>
 				                </a>
 				            </li>
 			            <?php } ?>
@@ -639,8 +630,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 
 						<?php if ( Authorisation::canDeleteElement( (String)$element["_id"], $type, Yii::app()->session["userId"]) && 
 									!@$deletePending && 
-									!empty(Yii::app()->session["userId"]) &&
-									$type !=Person::COLLECTION
+									!empty(Yii::app()->session["userId"])
 								) { ?>
 					  			<li class="text-left">
 									<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">

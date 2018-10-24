@@ -38,7 +38,7 @@ function initSearchInterface(){
         startSearch(0, indexStepInit, searchCallback);*/
     });
     $(".btn-tags-start-search").off().on("click", function(){
-        searchObject.tags=$('.tagsFilterInput').val().split(",");
+        searchObject.tags=$('.tagsFilterInput').val();//.split(",");
         searchObject.page=0;
         pageCount=true;
         searchObject.count=true;

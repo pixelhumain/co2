@@ -6,9 +6,10 @@
 
     $imgDefault = $this->module->assetsUrl.'/images/news/profile_default_l.png';
     if(count($news) < 5) { 
-      if(@Yii::app()->session["userId"] && $contextParentId==Yii::app()->session["userId"] && $isLive)
+      if(@Yii::app()->session["userId"] && $contextParentId==Yii::app()->session["userId"] && $isLive){
         $jsonFirstStep=CO2::getContextList("userFirstStep");
         $news=array_merge($news, $jsonFirstStep);
+      }
     }
 ?>
 

@@ -117,9 +117,9 @@
     }
     <?php } ?>
 
-    .live-container{
+   /* .live-container{
         padding-top:50px !important;
-    }
+    }*/
 
 
 @media (min-width: 991px) {

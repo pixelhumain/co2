@@ -216,7 +216,9 @@ if(@$media["object"]){
         </span>
       </div>    
     </small>  
-          <?php if (@Yii::app()->session["userId"]){ ?>
+          
+          <?php if(!@$media["documentation"]){
+                 if (@Yii::app()->session["userId"]){ ?>
               <div class="btn dropdown pull-right no-padding settingsNews">
                 <strong> • </strong> 
                 <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="color:#8b91a0;">
@@ -252,6 +254,7 @@ if(@$media["object"]){
             </small>
 
           </span>
+          <?php } ?>
         </h5>
   </div>
 

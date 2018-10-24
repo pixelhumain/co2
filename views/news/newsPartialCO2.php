@@ -242,7 +242,11 @@ foreach($news as $key => $media){
           media=getMediaFiles(v.media,e);
         else if (v.media.type=="activityStream")
           media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type, null, null, true);
+        else if (v.media.type=="html" && typeof v.documentation != "undefined")
+          media=v.media.content;
         $("#result"+e).html(media);
+        if (v.media.type=="html" && typeof v.documentation != "undefined")
+          bindButtonOpenForm();
 
          $(".videoSignal").off().on("click",function(){
           videoLink = $(this).find(".videoLink").val();

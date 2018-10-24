@@ -117,9 +117,9 @@
     }
     <?php } ?>
 
-    .live-container{
+   /* .live-container{
         padding-top:50px !important;
-    }
+    }*/
 
 
 @media (min-width: 991px) {
@@ -280,10 +280,11 @@ jQuery(document).ready(function() {
 
     if(searchObject.text != "") $(".main-search-bar, #second-search-bar").val(searchObject.text);
 
-    $("#main-search-bar, #main-search-xs-bar").keyup(function(e){
+    $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
+        $("#main-search-xs-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
-        $(".main-search-bar").val($(this).val());
+        
         searchObject.text=$(this).val();
         if(e.keyCode == 13 || $(this).val() == ""){
             spinSearchAddon(true);
@@ -291,10 +292,21 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
         }
     });
-    $("#main-search-bar, #main-search-xs-bar").change(function(){
+    $("#main-search-xs-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
-        $(".main-search-bar").val($(this).val());
-    });
+        $("#main-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        searchObject.text=$(this).val();
+        if(e.keyCode == 13 || $(this).val() == ""){
+            spinSearchAddon(true);
+            startNewsSearch(true); 
+            KScrollTo("#content-social");
+        }
+    })
+   // $("#main-search-bar, #main-search-xs-bar").change(function(){
+     //   $("#second-search-bar").val($(this).val());
+       // $(".main-search-bar").val($(this).val());
+    //});
 
     $("#second-search-bar").keyup(function(e){
         $(".main-search-bar").val($(this).val());

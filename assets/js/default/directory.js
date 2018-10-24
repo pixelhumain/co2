@@ -10,7 +10,7 @@ var timeout = null;
 var searchType = '';
 var searchSType = '';
 //alert("d.js");
-
+var pageEvent=false;
 var loadingData = false;
 var mapElements = new Array(); 
 
@@ -43,7 +43,6 @@ function startSearch(indexMin, indexMax, callBack){
           
           loadingData = true;
           scrollH= 0;//($("#filter-thematic-menu").is(":visible")) ? 250 : 81;
-          simpleScroll(scrollH, 200);  
           showIsLoading(true);
 
           mylog.log("startSearch", searchObject.indexMin, indexMax, searchObject.indexStep, searchObject.types);
@@ -162,12 +161,15 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
     $(".btn-start-search").addClass("bg-azure");
     $(".btn-start-search").removeClass("bg-dark");
     
-    if(indexMin > 0)
-      $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
-    else if(indexMin==0 || typeof pageEvent != "undefined")
+    //if(indexMin > 0)
+    if(indexMin==0 || (typeof pageEvent != "undefined" && pageEvent)){
+      simpleScroll(scrollH, 400);  
       $("#dropdown_search").html("<div class='col-md-12 col-sm-12 text-center search-loader text-dark'>"+
                                     "<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ..."+
                                   "</div>");
+    }else if(indexMin>0)
+      $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
+    
     
     if(isMapEnd)
       $("#map-loading-data").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading);
@@ -229,34 +231,17 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
               }
               else
               {       
-                //ajout du footer      	
-               /* str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
-                str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " "+resultsStr+"</h3>";
-                //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
-                //str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
-                str += "</div>";
-                */
+                //CHARGEMENT DE TYPE SCROLL => ALL ELEMENTS OR MORE THAN ONE TYPE 
                 //si on n'est pas sur une première recherche (chargement de la suite des résultat)
                 if(indexMin > 0 && (typeof pageEvent == "undefined" || !pageEvent)){
-                    //on supprime l'ancien bouton "afficher plus de résultat"
-                   // $("#btnShowMoreResult").remove();
-                    //on supprimer le footer (avec nb résultats)
-                    //$("#footerDropdown").remove();
-
-                    //on calcul la valeur du nouveau scrollTop
-                    //var heightContainer = $(".main-container")[0].scrollHeight - 180;
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").append(str);
-                    //on scroll pour afficher le premier résultat de la dernière recherche
-                    //$(".my-main-container").animate({"scrollTop" : heightContainer}, 1700);
-                    //$(".my-main-container").scrollTop(heightContainer);
+
                     if($(".search-loader").length) $(".search-loader").remove();
                     if($(".pageTable").html()=="" && (searchObject.initType!= "all" || searchObject.types.length==1)){
                       typeElement=(searchObject.types=="persons") ? "citoyens" : searchObject.types;
                       initPageTable(searchAllEngine.searchCount[typeElement]);
                     }
-
-                //si on est sur une première recherche
                 }else{
                     //on affiche le résultat à l'écran
                     $("#dropdown_search").html(str);
@@ -276,28 +261,18 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
                     }
 
                     pageEvent=false;
-                    /*if(typeof myMultiTags != "undefined"){
-                    $.each(myMultiTags, function(key, value){ //mylog.log("binding bold "+key);
-                      $("[data-tag-value='"+key+"'].btn-tag").addClass("bold");
-                    });
-                    }*/
-                  }
-                 // if(directory.viewMode=="block")
-                    //setTimeout(function(){ directory.checkImage(results);}, 500);
-
                 }
-                //remet l'icon "loupe" du bouton search
-                $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
-                //active les link lbh
-                bindLBHLinks();
-                searchObject.count=false;
-                $.unblockUI();
-                $("#map-loading-data").html("");
-                
-                //initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
-                initBtnLink();
-
-    	      //  } //end else (str=="")
+              }
+              //remet l'icon "loupe" du bouton search
+              $(".btn-start-search").html("<i class='fa fa-refresh'></i>");
+              //active les link lbh
+              bindLBHLinks();
+              searchObject.count=false;
+              $.unblockUI();
+              $("#map-loading-data").html("");
+              
+              //initialise les boutons pour garder une entité dans Mon répertoire (boutons links)
+              initBtnLink();
 
               //signal que le chargement est terminé
               loadingData = false;

@@ -25,7 +25,7 @@ function initSearchInterface(){
             tagsArray.push(tag);
             //searchObject.text+="#"+tag+" ";
         });
-        $('#tagsFilterInput').val(tagsArray).trigger("change");
+        $('.tagsFilterInput').val(tagsArray).trigger("change");
         //$("#filter-thematic-menu").hide();
         //$("#main-search-bar, #second-search-bar").val(searchObject.text);
         //mylog.log("myMultiTags", myMultiTags);
@@ -38,7 +38,7 @@ function initSearchInterface(){
         startSearch(0, indexStepInit, searchCallback);*/
     });
     $(".btn-tags-start-search").off().on("click", function(){
-        searchObject.tags=$('#tagsFilterInput').val().split(",");
+        searchObject.tags=$('.tagsFilterInput').val().split(",");
         searchObject.page=0;
         pageCount=true;
         searchObject.count=true;
@@ -49,7 +49,7 @@ function initSearchInterface(){
     });
     $(".btn-tags-refresh").off().on("click", function(){
         searchObject.tags=[];
-        $('#tagsFilterInput').val("").trigger("change");
+        $('.tagsFilterInput').val("").trigger("change");
         searchObject.page=0;
         pageCount=true;
         searchObject.count=true;
@@ -254,10 +254,10 @@ function initClassifiedInterface(){ return;
 function bindLeftMenuFilters () { 
     $(".btn-directory-type").click(function(){
         var typeD = $(this).data("type");
-        scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
+       // scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
         //simpleScroll(scrollH);
        
-        if(typeD == "events"){
+        if(typeD == "events" && searchObject.initType=="events"){
             if($(this).hasClass("active")){
                 $(this).removeClass("active");    
                 delete searchObject.searchSType;
@@ -287,7 +287,6 @@ function bindLeftMenuFilters () {
         searchObject.page=0;
         if(Object.keys(searchObject.countType).length>1) searchObject.count=false; 
         else searchObject.count=true;
-        pageEvent=false;
         searchObject.type=searchType;
         startSearch(0, indexStepInit, searchCallback);
     });
@@ -976,7 +975,7 @@ function activeFiltersInterface(filter,value){
         }
     }
     if(filter=="tags"){
-        $('#tagsFilterInput').val(searchObject.tags).trigger("change");
+        $('.tagsFilterInput').val(searchObject.tags).trigger("change");
         countTags=0;
         labelTags="";
         $.each(searchObject.tags, function(e, v){

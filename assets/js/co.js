@@ -3058,7 +3058,7 @@ function initKInterface(params){ console.log("initKInterface");
         $("#dropdown-dda, .dropdownApps-menuTop").removeClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
-    $("#dropdownApps").click(function(){
+    $(".dropdownApps").click(function(){
 		showFloopDrawer(false);
         showNotif(false);
         $("#dropdown-user, #dropdown-dda").removeClass("open");

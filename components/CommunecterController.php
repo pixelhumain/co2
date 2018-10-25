@@ -401,6 +401,7 @@ class CommunecterController extends Controller
       "notificationscommunity" => array("href" => "/ph/co2/settings/notificationscommunity"),
       "confidentiality" => array("href" => "/ph/co2/settings/confidentiality"),
       "confidentialitycommunity" => array("href" => "/ph/co2/settings/confidentialitycommunity"),
+      "myaccount" => array("href" => "/ph/co2/settings/myaccount"),
     ),
     "bookmark" => array(
       "delete"        => array("href" => "ph/communecter/bookmark/delete"),

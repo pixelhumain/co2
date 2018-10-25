@@ -72,8 +72,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 	}
 	#menu-left > ul > li > a.active, #menu-left > ul > li > a:hover{
 		text-decoration: none;
-		background-color:#E5344D;
-		color: white;
+		color: #E5344D;
 		font-size: 22px;
 	}
 	ul.subMenu > li > a.active, ul.subMenu > li > a:hover{
@@ -188,6 +187,11 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 <div id="menu-left" class="col-md-3 col-sm-2 col-xs-12 shadow2">
   	<ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
   		<li class="col-xs-12 no-padding">
+			<a href="javascript:" class="link-docs-menu down-menu" data-page="myAccount">
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","My Account"); ?>
+			</a>
+		</li>
+  		<li class="col-xs-12 no-padding">
 			<a href="javascript:" class="link-docs-menu down-menu" data-page="confidentiality">
 				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Confidentiality"); ?>
 			</a>
@@ -221,11 +225,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 				</li>
 			</ul>
 		</li>
-		<!--<li class="col-xs-12 no-padding">
-			<a href="javascript:;" class="link-docs-menu down-menu" data-type="contribute">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Chat settings"); ?>
-			</a>
-		</li>-->
 		
 	</ul>
 </div>
@@ -299,7 +298,7 @@ function navInSettings(page){
 	simpleScroll(0);
 	showLoader('#container-settings-view');
 	urlToSend="settings/"+page;
-	if(page=="confidentiality")
+	if(page=="confidentiality" || page=="myAccount")
 		urlToSend+="/type/citoyens/id/"+userId;
 	//if(notNull(dir) && dir !="")
 	//	urlToSend+="dir/"+dir+"/";

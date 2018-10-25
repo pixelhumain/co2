@@ -169,8 +169,9 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 <?php 
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
 
-	if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
-		$this->renderPartial('../element/confirmDeleteModal', array("id" =>(String)$element["_id"], "type"=>$type)); ?>
+	// if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
+	// 	$this->renderPartial('../element/confirmDeleteModal', array("id" =>(String)$element["_id"], "type"=>$type)); 
+	?>
 <?php 
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
@@ -532,28 +533,46 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 			  		</button>-->
 			  		<ul class="dropdown-menu arrow_box menu-params">
 	                	<?php $this->renderPartial('../element/linksMenu', 
-	            			array("linksBtn"=>$linksBtn,
-	            					"elementId"=>(string)$element["_id"],
-	            					"elementType"=>$type,
-	            					"elementName"=> $element["name"],
-	            					"openEdition" => $openEdition,
-	            					"xsView"=>true) 
-	            			); 
-	            		?>
-	            		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
-			  				<li class="text-left">
-				                <a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>.view.settings" class="lbh bg-white">
-				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "My parameters") ; ?>
-				                </a>
-				            </li>
-			            <?php } ?>
-						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
-			  				<li class="text-left">
-				               	<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
-				                    <i class="fa fa-id-badge"></i> <?php echo Yii::t("common", "Edit slug"); ?>
-				                </a>
-				            </li>
-			            <?php } ?>
+													array("linksBtn"=>$linksBtn,
+															"elementId"=>(string)$element["_id"],
+															"elementType"=>$type,
+															"elementName"=> $element["name"],
+															"openEdition" => $openEdition,
+															"xsView"=>true) 
+													); 
+
+	            		if(@Yii::app()->session["userId"] && $edit==true){ 
+
+	            			if($type ==Person::COLLECTION){ ?>
+
+		            			<li class="text-left">
+									<a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>.view.settings.page.myAccount" class="lbh bg-white">
+										<i class="fa fa-cogs"></i> <?php echo Yii::t("common", "My parameters") ; ?>
+									</a>
+								</li>
+
+					<?php 	} else {  ?>
+		            			<li class="text-left">
+									<a href="javascript:;" id="" class="bg-white editConfidentialityBtn">
+										<i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
+										</a>
+								</li>
+
+								<li class="text-left">
+									<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
+										<i class="fa fa-id-badge"></i> <?php echo Yii::t("common", "Edit slug"); ?>
+										</a>
+					            </li>
+
+					            <li class="text-left">
+									<a href='javascript:' id="downloadProfil">
+										<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
+									</a>
+								</li>
+
+					<?php 	}
+
+						} ?>
 						
 						<li>
 							<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
@@ -561,54 +580,42 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 							</a>
 						</li>
 
-			  			<?php if($type !=Person::COLLECTION){ ?>
+			  			<?php 
 
-			  				<?php if($openEdition==true){ ?>
+			  			if($type !=Person::COLLECTION){ 
+
+			  				if($openEdition==true){ ?>
+				  				
 				  				<li class="text-left">
 									<a href="javascript:;" class="btn-show-activity">
 										<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
 									</a>
 								</li>
-							<?php } ?>
-			            <?php } else { ?>
-			            	<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+				<?php 		} 
+						} else { 
 
-			            	<li class="text-left">
-				               	<a href='javascript:;' onclick='rcObj.settings();' >
-									<i class='fa fa-comments'></i> <?php echo Yii::t("common","Chat Settings"); ?>
-								</a>
-				            </li>
+							if(@Yii::app()->session["userId"] && $edit==true){ ?>
 
-							<li class="text-left">
-								<a href='javascript:' id="downloadProfil">
-									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
-								</a>
-							</li>
+				            	<li class="text-left">
+									<a href='javascript:;' onclick='rcObj.settings();' >
+										<i class='fa fa-comments'></i> <?php echo Yii::t("common","Chat Settings"); ?>
+									</a>
+					            </li>
 
-							<li class="text-left">
-				               	<a href='javascript:;' onclick='loadMD()' >
-									<i class='fa fa-file-text-o'></i> <?php echo Yii::t("common","Markdown Version"); ?>
-								</a>
-				            </li>
-							
-							<li class="text-left">
-				               	<a href='javascript:;' onclick='loadMindMap()' >
-									<i class='fa fa-sitemap'></i> <?php echo Yii::t("common","Mindmap View"); ?>
-								</a>
-				            </li>
+								<li class="text-left">
+					               	<a href='javascript:;' onclick='loadMD()' >
+										<i class='fa fa-file-text-o'></i> <?php echo Yii::t("common","Markdown Version"); ?>
+									</a>
+					            </li>
+								
+								<li class="text-left">
+									<a href='javascript:;' onclick='loadMindMap()' >
+										<i class='fa fa-sitemap'></i> <?php echo Yii::t("common","Mindmap View"); ?>
+									</a>
+					            </li>
+					<?php 	}
 
-				            
-							
-							<li class="text-left">
-				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
-									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
-								</a>
-				            </li>
-
-				            <?php }
-
-				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {  
-		                
+				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {
 		               			// $urlNetwork = Element::getUrlMyNetwork((string)$element["_id"], $type); ?>
 
 		               			<!-- <li class="text-left">
@@ -616,7 +623,8 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 										<i class='fa fa-map'></i> <?php //echo Yii::t("common","My network"); ?>
 									</a>
 					            </li> -->
-			            <?php } } ?>
+					<?php 	} 
+			        	} ?>
 						<li class="text-left">
 							<a href='javascript:;' onclick='co.graph()' >
 								<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
@@ -628,23 +636,19 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 							</a>
 						</li>
 
-						<?php if ( Authorisation::canDeleteElement( (String)$element["_id"], $type, Yii::app()->session["userId"]) && 
-									!@$deletePending && 
-									!empty(Yii::app()->session["userId"])
-								) { ?>
-					  			<li class="text-left">
-									<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
-										<i class="fa fa-trash"></i> 
-										<?php 
-											if($type == Person::COLLECTION && (String)$element["_id"] == Yii::app()->session["userId"])
-												echo "Supprimer mon compte";
-											else
-												echo Yii::t("common", "Delete {what}", 
-															array("{what}"=> 
-																Yii::t("common","this ".Element::getControlerByCollection($type)))); 
-										?>
-									</a>
-					            </li>
+						<?php 
+						if ( Authorisation::canDeleteElement( (String)$element["_id"], $type, Yii::app()->session["userId"]) && 
+							!@$deletePending && 
+							!empty(Yii::app()->session["userId"]) && 
+							$type != Person::COLLECTION	) { ?>
+
+				  			<li class="text-left">
+								<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
+									<i class="fa fa-trash"></i> 
+									<?php echo Yii::t("common", "Delete {what}", array("{what}"=> Yii::t("common","this ".Element::getControlerByCollection($type)))); ?>
+								</a>
+				            </li>
+
 			            <?php } ?>
 			  		</ul>
 		  		</li>

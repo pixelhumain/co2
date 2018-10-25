@@ -23,7 +23,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 
 ?>
 <div id="myAccount-settings" class="contain-section-params col-xs-12">
-	<div class="settings-header">
+	<div class="settings-header text-center">
 		<h3 class="title"><i class="fa fa-user-circle "></i> <?php echo Yii::t("settings", "My Account") ?></h3>
 	</div>
 	<div class="col-xs-12 no-padding">

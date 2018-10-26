@@ -3044,7 +3044,7 @@ function initKInterface(params){ console.log("initKInterface");
     });
 
     // 2 events for notifications
-    $('.btn-menu-notif').off().click(function(){
+    $('.btn-menu-notif').click(function(){
       	showNotif();
     });
 	$("#notificationPanelSearch").mouseleave(function(){

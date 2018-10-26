@@ -122,11 +122,6 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
     width:100%;
 }
 
-#onepage section#social-header{
-	margin-top: 8px;
-}
-
-
 #central-container #content-results-profil .coop-wraper{
 	width:31%!important;
 	margin: 0 1% 15px 0 !important;

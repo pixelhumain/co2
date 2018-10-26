@@ -147,18 +147,20 @@
         font-variant: small-caps;
         font-weight: bolder;
     }
+    @media (max-width: 767px){
+        #home{
+            margin-top: 40px;
+        }
+    }
 </style>
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="" id="onepage">
 		<div class="hidden-xs hidden-sm col-md-2 col-lg-2 menu-left-home content-home-user-info">
             <?php 
-               // if( isset( Yii::app()->session['userId']) ){
-                 //   print_r(Yii::app()->session["user"]);
+                $userThumb=Element::getElementSimpleById( Yii::app()->session["userId"], Person::COLLECTION, null, array("profilThumbImageUrl"=>1));
                 $profilThumbImageUrl = $this->module->getParentAssetsUrl().'/images/thumbnail-default.jpg';
-                if(@Yii::app()->session["user"]["profilThumbImageUrl"])
-                    $profilThumbImageUrl=Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->session["user"]["profilThumbImageUrl"];
-                  //$profilThumbImageUrl = Element::getImgProfil($me, "profilThumbImageUrl", );
-                  //$countNotifElement = ActivityStream::countUnseenNotifications(Yii::app()->session["userId"], Person::COLLECTION, Yii::app()->session["userId"]);
+                if(@$userThumb["profilThumbImageUrl"])
+                    $profilThumbImageUrl=Yii::app()->getRequest()->getBaseUrl(true).$userThumb["profilThumbImageUrl"];
                 $pointGammif=Gamification::calcPoints( Person::COLLECTION, Yii::app()->session["userId"] );
                 $labelBadgeGammif=Gamification::badge(  Yii::app()->session["userId"], $pointGammif );
                 $iconBadgeGammif=Gamification::badge(  Yii::app()->session["userId"], $pointGammif, $this->module->getParentAssetsUrl() );

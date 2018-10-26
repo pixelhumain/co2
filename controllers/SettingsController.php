@@ -42,6 +42,17 @@ class SettingsController extends CommunecterController {
  	public function actionNotificationsCommunity(){
     	echo $this->renderPartial("notificationsCommunity", array(), true);
  	}
+
+ 	public function actionMyAccount($type=null,$id=null){
+ 		$element=Element::getElementSimpleById($id, $type, null, array("preferences","name"));
+ 		$params=array(  "element" => @$element, 
+						"type" => $type,
+						"id" => $id,
+		);
+		
+    	echo $this->renderPartial("myAccount", $params, true);
+ 	}
+
  	public function actionIndex($page=null){
  		$params=array(
  			"page"=>@$page,

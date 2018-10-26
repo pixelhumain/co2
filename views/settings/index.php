@@ -45,28 +45,43 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 	}
 	ul.subMenu > li > a{
 		font-size:16px;
+		color: #354C57;
+		width: 100%;
+	    float: left;
+	    padding: 5px 30px;
+	    text-align: left;
 	}
-	#menu-left > ul > li > a, ul.subMenu > li > a{
+	#menu-left > ul > li > a {
 		color: #354C57;
 		width: 100%;
 	    float: left;
 	    padding: 5px 20px;
 	    text-align: left;
 	}
+
+	#menu-left > ul.subMenu > li > a{
+		color: #354C57;
+		width: 100%;
+	    float: left;
+	    padding: 5px 30px;
+	    text-align: left;
+	}
+
 	#menu-left ul li .subMenu, #menu-left > ul > li > a{
 		border-bottom: 1px solid #ccc;
 	}
 	#menu-left > ul > li > a.active, #menu-left > ul > li > a:hover{
 		text-decoration: none;
-		background-color:#E5344D;
-		color: white;
+		color: #E5344D;
 		font-size: 22px;
 	}
 	ul.subMenu > li > a.active, ul.subMenu > li > a:hover{
-		border-left: 4px solid #E5344D;
-		color: #E5344D;
-		font-size:18px;
+		border-left: 4px solid #2BB0C6;
+		color: #2BB0C6;
+		font-size:16px;
 		text-decoration: none;
+		padding-left: 30px;
+		font-weight: bold;
 	}
 	#menu-left ul li a.active span.text-red, #menu-left ul li a:hover span.text-red{
 		color:#354C57 !important;
@@ -171,45 +186,46 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 </div>
 <div id="menu-left" class="col-md-3 col-sm-2 col-xs-12 shadow2">
   	<ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
-		<li class="col-xs-12 no-padding">
-			<a href="javascript:" class="link-docs-menu down-menu" data-page="notificationsAccount">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Notifications"); ?>
+  		<li class="col-xs-12 no-padding">
+			<a href="javascript:" class="link-docs-menu down-menu" data-page="myAccount">
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","My Account"); ?>
 			</a>
-			<ul class="subMenu col-xs-12 no-padding">
-				<li class="col-xs-12 no-padding">
-					<a href="javascript:;" class="link-docs-menu" data-page="notificationsAccount">
-						<?php echo Yii::t("common","Me"); ?>
-					</a>
-				</li>
-				<li class="col-xs-12 no-padding">
-					<a href="javascript:;" class="link-docs-menu" data-page="notificationsCommunity">
-						<?php echo Yii::t("common","My community"); ?>
-					</a>
-				</li>
-			</ul>
 		</li>
-		<!--<li class="col-xs-12 no-padding">
-			<a href="javascript:;" class="link-docs-menu down-menu" data-type="contribute">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("docs","Chat settings"); ?>
-			</a>
-		</li>-->
-		<li class="col-xs-12 no-padding">
+  		<li class="col-xs-12 no-padding">
 			<a href="javascript:" class="link-docs-menu down-menu" data-page="confidentiality">
 				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Confidentiality"); ?>
 			</a>
 			<ul class="subMenu col-xs-12 no-padding">
 				<li class="col-xs-12 no-padding">
 					<a href="javascript:;" class="link-docs-menu" data-page="confidentiality">
-						<?php echo Yii::t("common","Me"); ?>
+						<i class="fa fa-user"></i> <?php echo Yii::t("common","Me"); ?>
 					</a>
 				</li>
 				<li class="col-xs-12 no-padding">
 					<a href="javascript:;" class="link-docs-menu" data-page="confidentialityCommunity">
-						<?php echo Yii::t("common","My community"); ?>
+						<i class="fa fa-users"></i> <?php echo Yii::t("common","My community"); ?>
 					</a>
 				</li>
 			</ul>
 		</li>
+		<li class="col-xs-12 no-padding">
+			<a href="javascript:" class="link-docs-menu down-menu" data-page="notificationsAccount">
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","Notifications & Mails"); ?>
+			</a>
+			<ul class="subMenu col-xs-12 no-padding">
+				<li class="col-xs-12 no-padding">
+					<a href="javascript:;" class="link-docs-menu" data-page="notificationsAccount">
+						<i class="fa fa-user"></i> <?php echo Yii::t("common","Me"); ?>
+					</a>
+				</li>
+				<li class="col-xs-12 no-padding">
+					<a href="javascript:;" class="link-docs-menu" data-page="notificationsCommunity">
+						<i class="fa fa-users"></i> <?php echo Yii::t("common","My community"); ?>
+					</a>
+				</li>
+			</ul>
+		</li>
+		
 	</ul>
 </div>
 <div id="container-settings-view" class="col-md-offset-3 col-md-9 col-sm-12 col-xs-12 no-padding">
@@ -234,16 +250,17 @@ jQuery(document).ready(function() {
 			location.hash=initUrlSettings;
 		}
 	});
+
 	$(".link-docs-menu").off().on("click",function(){
 		if($(this).hasClass("down-menu")){
-			$("#menu-left > ul > li > a").removeClass("active").find("i").removeClass("fa-angle-down").addClass("fa-angle-right");
+			// $("#menu-left > ul > li > a").removeClass("active").find("i").removeClass("fa-angle-down").addClass("fa-angle-right");
 			$(".subMenu .link-docs-menu").removeClass("active");
 			$(this).addClass("active").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
 		}else{
 			$(".subMenu .link-docs-menu").removeClass("active");
 			$(this).addClass("active");
 			if(!$(this).parents().eq(2).find(".link-docs-menu:first").hasClass("active")){
-				$("#menu-left > ul > li > a").removeClass("active").find("i").removeClass("fa-angle-down").addClass("fa-angle-right");
+				// $("#menu-left > ul > li > a").removeClass("active").find("i").removeClass("fa-angle-down").addClass("fa-angle-right");
 				$(this).parents().eq(2).find(".link-docs-menu:first").addClass("active").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
 			}
 			
@@ -258,6 +275,7 @@ jQuery(document).ready(function() {
 		navInSettings($(this).data("page"));
 	});
 	$("#show-menu-xs").click(function(){
+
     if(!$(this).hasClass("show-dir")){
       $(this).addClass("show-dir").data("title", "<?php echo Yii::t("common","Close") ?>").find("i").removeClass("fa-chevron-right").addClass("fa-times");
       $("#menu-left").animate({ left : "0%" }, 400 );
@@ -280,7 +298,7 @@ function navInSettings(page){
 	simpleScroll(0);
 	showLoader('#container-settings-view');
 	urlToSend="settings/"+page;
-	if(page=="confidentiality")
+	if(page=="confidentiality" || page=="myAccount")
 		urlToSend+="/type/citoyens/id/"+userId;
 	//if(notNull(dir) && dir !="")
 	//	urlToSend+="dir/"+dir+"/";

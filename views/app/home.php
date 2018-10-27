@@ -241,10 +241,11 @@
             </div>
             <div class="modal-body center text-dark"> 
                 <span class="text-short-explain">
-                    La valeur par l'<span class="letter-red">usage</span>. <br/>Celle-ci est calculée <span class="letter-red">par rapport à chaque lienque vous faites</span> avec des personnes, organisations, événements, projets.<br/>Pour résumer, la valeur calculée par les liens que vous avez avec votre environnement permet de pondérer <span class="letter-red">votre activité locale</span>.<br/>Plus tard viendront s'ajouter l"échange de ressources, la qualité de vos posts, le nombre de votes et de contributions au système et donc à votre société locale.<br/>
+                    <?php echo Yii::t("docs", "Win points <span class='letter-red'>using {website}</span>.<br/><span class='letter-red'>Each link</span> you did with people, organizations, projects, events <span class='letter-red'>improve your score</span>.<br/> Later will be added <span class='letter-red'>exchanges of ressources</span>, <span class='letter-red'>the number of posts</span> and <span class='letter-red'>your activity on public policy</span>", array("{website}"=> ucfirst(Yii::app()->name))) ?><br/>
                 </span>
                 <div class="content-user-game-info margin-top-20">
-                    <span class="bold">Vous avez aujourd'hui <span class="letter-red"><?php echo $pointGammif ?> point<?php if($pointGammif>1) echo "s" ?></span></span><br/><br/>
+                    <?php $s=($pointGammif>1) ? "s" : ""; $labelTodayScore=Yii::t("docs", "You have today <span class='letter-red'>{points} point".$s."</span>", array("{points}"=>$pointGammif)) ?>
+                    <span class="bold"><?php echo $labelTodayScore ?></span><br/><br/>
                     <div class="breadcrumb-gammification">
                         <?php $level=Gamification::getAllLevelAndCurent($pointGammif, Yii::app()->session["userId"], $this->module->getParentAssetsUrl());
                           //  print_r($level);

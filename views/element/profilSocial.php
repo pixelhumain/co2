@@ -945,10 +945,9 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 
 	jQuery(document).ready(function() {
 		bindButtonMenu();
-		inintDescs();
 		if(typeof contextData.name !="undefined")
 			setTitle("", "", contextData.name);
-
+		inintDescs();
 		if( contextData.type == "events")
 			$(".createProjectBtn").hide()
 		else 

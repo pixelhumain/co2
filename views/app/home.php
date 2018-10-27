@@ -48,7 +48,7 @@
     //donc normalement pas besoin de faire de IF ici
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
-                                "page" => "page",
+                                "page" => "myhome",
                                 "dontShowMenu"=>true,
                                 "useFilter"=>false) ); 
 ?>

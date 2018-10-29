@@ -100,7 +100,7 @@
             <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope["name"]; ?></small>
            
         </h6> 
-        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0,5" data-slider-max="100" data-slider-step="1" data-slider-value="5" data-slider-ticks="[0, 100]" data-slider-ticks-snap-bounds="1" data-slider-ticks-labels='["0km", "100km"]'/>
+        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0,5" data-slider-max="100" data-slider-step="1" data-slider-value="30" data-slider-ticks="[0, 100]" data-slider-ticks-snap-bounds="1" data-slider-ticks-labels='["0km", "100km"]'/>
         <!--<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">5</span></span>-->
         <hr class="angle-down">
         <center>
@@ -207,7 +207,7 @@ jQuery(document).ready(function() {
         initCityView();
     }
     if(notNull(userGeoloc)){
-        aroundMe(100);
+        aroundMe(30);
         var slider = new Slider('#ex1', {
         //tooltip: 'always',
         ticks: [0.1, 100],

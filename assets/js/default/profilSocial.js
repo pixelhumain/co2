@@ -442,17 +442,23 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	}
 
 	if( openEdition || edit ){
-		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections","actionRooms", "ressources"] ) >= 0 ){
+		if( $.inArray( dataName, ["events","projects","organizations","poi","classifieds", "jobs","collections","actionRooms", "ressources"] ) >= 0 ){
 			if(dataName == "collections"){
 				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
 		    	html +=	'<i class="fa fa-plus"></i> '+trad.createcollection+'</a>' ; 
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
-				var formType = (dataName=="classified") ? "classifieds" : elemSpec.ctrl;
+				var formInputBtn='data-form-type="'+elemSpec.ctrl+'"';
+				var labelCreate=trad["create"+elemSpec.ctrl];
+				if($.inArray( dataName , ["ressources","classifieds","jobs"] ) >= 0){
+					formInputBtn='data-form-type="'+dataName+'"';
+					labelCreate=trad["create"+dataName];
+				}
+				
 
-				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" data-form-type="'+formType+'" data-dismiss="modal">';
-		    	html +=	'<i class="fa fa-plus"></i> '+trad["create"+elemSpec.ctrl]+'</button>' ;  
+				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" '+formInputBtn+' data-dismiss="modal">';
+		    	html +=	'<i class="fa fa-plus"></i> '+labelCreate+'</button>' ;  
 		    }
 		}
 	}
@@ -844,7 +850,21 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			
 		}
 		communityStr+="</div>"; 
-	}
+	}/* TODO REFACTOR COMMUNITY AND MUTUALIZE ALL CLASSIFIEDS
+	else if($.inArray( dataName , ["classifieds", "jobs", "ressources"])>=0){
+		communityStr+="<div id='menuCommunity' class='col-md-12 col-sm-12 col-xs-12 padding-20'>";
+		if(contextData.type == "citoyens" ) {
+		communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
+			if(dataName=="follows")
+				communityStr+=' active';		
+		communityStr+='" data-type-dir="follows" data-icon="link">'+
+				'<i class="fa fa-link"></i> <span class="hidden-xs">'+trad.follows+'</span>';
+				if(typeof contextData.links != "undefined" && typeof contextData.links.follows != "undefined")
+		communityStr += "<span class='badge'></span>";
+		communityStr +=	'</a>';
+		}
+		communityStr +='</div>';
+	}*/
 
 	mylog.log("communityStr", n, communityStr);
 
@@ -924,8 +944,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}
 		initBtnLink();
 		initBtnAdmin();
-		bindButtonOpenForm();
-
+		
 		getfilterRoles(listRoles);
 		var dataToMap = data;
 		if(dataName == "collections"){
@@ -958,6 +977,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 											"</span>");
 		toogleNotif(false);
 	}
+	bindButtonOpenForm();
 	if(communityStr != ""){
 		$(".load-coummunity").off().on("click",function(){ 
 			//responsiveMenuLeft();

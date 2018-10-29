@@ -161,6 +161,8 @@ var trad = {
 	"createevent":"<?php echo Yii::t("common","Create an event") ?>",
 	"createpoi":"<?php echo Yii::t("common","Create a point of interest") ?>",
 	"createclassified":"<?php echo Yii::t("common","Create a classified ad") ?>",
+	"createclassifieds":"<?php echo Yii::t("common","Create a classified ad") ?>",
+	"createjobs":"<?php echo Yii::t("common","Create a job offer") ?>",
 	"createressource":"<?php echo Yii::t("common","Create a ressource") ?>",
 	"createressources":"<?php echo Yii::t("common","Create a ressource") ?>",
 	"createcollection":"<?php echo Yii::t("common","Create a new collection") ?>",
@@ -695,6 +697,7 @@ var tradDynForm = {
 	"configNetwork":"<?php echo Yii::t("form","Configure your Network") ?>",
 	"addconfig":"<?php echo Yii::t("form","Create a config") ?>",
 	"addclassified":"<?php echo Yii::t("form","Create a classified") ?>",
+	"addjobs":"<?php echo Yii::t("form","Create a classified") ?>",
 	"addphotos":"<?php echo Yii::t("form","Add photos to the gallery") ?>",
 	"infoaddphoto":"<?php echo Yii::t("form","Stock your photos and share them") ?>",
 	"addurl":"<?php echo Yii::t("form","Add an url") ?>",
@@ -1159,6 +1162,8 @@ var tradCategory = {
 
 	"Type of ressource" :"<?php echo Yii::t("category","Type of ressource") ?>",
 	"Choose a category" :"<?php echo Yii::t("category","Choose a category") ?>",
+
+	"Choose a categoryjobs" :"<?php echo Yii::t("category","Are you searching an offer or you post one") ?>",
 	"Sub category" :"<?php echo Yii::t("category","Sub category") ?>",
 	
 	"service":"<?php echo Yii::t("category","Service") ?>",

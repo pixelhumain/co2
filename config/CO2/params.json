@@ -58,7 +58,7 @@
 			"hash" : "#app.home",
 			"icon" : "", 
 			"mainTitle" : "My citizen network",
-			"placeholderMainSearch" : "love it ...",
+			"placeholderMainSearch" : "search something ...",
 			"lblBtnCreate" : "Create something",
 			"colorBtnCreate" : "green"
 		},
@@ -236,7 +236,7 @@
 			"hash":"#app.page",
 			"icon" : "", 
 			"mainTitle" : "Réseau social citoyen",
-			"placeholderMainSearch" : "search ..."
+			"placeholderMainSearch" : "search something ..."
 		},
 
 		"#info": {

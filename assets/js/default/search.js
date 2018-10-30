@@ -184,7 +184,7 @@ function initSearchInterface(){
 function spinSearchAddon(bool){
     removeClass= (bool) ? "fa-arrow-circle-right" : "fa-spin fa-circle-o-notch";
     addClass= (bool) ? "fa-spin fa-circle-o-notch" : "fa-arrow-circle-right";
-    $(".main-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
+    $(".main-search-bar-addon, .second-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
 }
 function startSearchTerla(indexMin, indexMax, callBack){
     var name = $("#second-search-bar").val() != "" ? $("#second-search-bar").val() : $("#new-search-bar").val();

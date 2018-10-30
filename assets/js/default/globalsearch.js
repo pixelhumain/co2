@@ -21,7 +21,7 @@ function showDropDownGS(show, dom){
   }
 }
 
-var searchTypeGS = [ "persons", "organizations", "projects", "events", "poi", "cities" ];
+var searchTypeGS = [ "persons", "organizations", "projects", "events" ];
 var allSearchTypeGS = [ "persons", "organizations", "projects", "events", "poi", "cities" ];
 
 var loadingDataGS = false;
@@ -42,7 +42,7 @@ function startGlobalSearch(indexMin, indexMax, input){
       var search = $('#second-search-bar').val();
     //if(search == "") search = $('#input-global-search-xs').val();
     if(loadingDataGS || search.length<3) return;
-    
+    spinSearchAddon(true);
     mylog.log("loadingDataGS true");
     loadingDataGS = true;
     
@@ -60,6 +60,11 @@ function startGlobalSearch(indexMin, indexMax, input){
     
     autoCompleteSearchGS(search, indexMin, indexMax, input);
 }
+function spinSearchAddon(bool){
+    removeClass= (bool) ? "fa-arrow-circle-right" : "fa-spin fa-circle-o-notch";
+    addClass= (bool) ? "fa-spin fa-circle-o-notch" : "fa-arrow-circle-right";
+    $(".main-search-bar-addon, .second-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
+}
 
 
 function autoCompleteSearchGS(search, indexMin, indexMax, input){
@@ -67,6 +72,12 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 
 	var data = {"name" : search, "locality" : "", "searchType" : searchTypeGS, "searchBy" : "ALL",
 	"indexMin" : indexMin, "indexMax" : indexMax  };
+	if(!notNull(input)){
+		data.indexStep=10;
+		data.count=true;
+		data.countType = [ "citoyens", "organizations", "projects", "events" ];
+		data.searchType = [ "citoyens", "organizations", "projects", "events" ];
+	}
 	var domTarget = (notNull(input)) ? input+" .dropdown-result-global-search" : ".dropdown-result-global-search";
 	showDropDownGS(true, domTarget);
 	if(indexMin > 0)
@@ -96,13 +107,17 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 			mylog.log("error"); mylog.dir(data);          
 		},
 		success: function(data){
+			spinSearchAddon();
 			if(!data){ toastr.error(data.content); }
 			else{
 				mylog.log("DATA GS");
 				mylog.dir(data);
 
 				var countData = 0;
-				$.each(data.results, function(i, v) { if(v.length!=0){ countData++; } });
+				if(typeof data.count != "undefined")
+					$.each(data.count, function(e, v){countData+=v;});
+				else
+					$.each(data.results, function(i, v) { if(v.length!=0){ countData++; } });
 
 				totalDataGS += countData;
 
@@ -114,10 +129,11 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 				else if(totalDataGS > 1)  totalDataGSMSG = totalDataGS + " "+trad.results;   
 
 				if(totalDataGS > 0){
+					labelSearch=(Object.keys(data.results).length == totalDataGS) ? trad.extendedsearch : "Voir tous les résultats";
 					str += '<div class="text-left col-xs-12" id="footerDropdownGS" style="">';
 					str += "<label class='text-dark margin-top-5'><i class='fa fa-angle-down'></i> " + totalDataGSMSG + "</label>";
 					str += '<a href="#search" class="btn btn-default btn-sm pull-right lbh" id="btnShowMoreResultGS">'+
-					'<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+trad.extendedsearch+
+					'<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+labelSearch+
 					'</a>';
 					str += '</div>';
 					str += "<hr style='margin: 0px; float:left; width:100%;'/>";
@@ -188,8 +204,8 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 					var cityName = (typeof o.address != "undefined" &&
 									o.address != null &&
 									typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
-                  
-					var fullLocality = postalCode + " " + cityName+" ("+o.country+")";
+                  	var countryCode=(typeof o.address != "undefined" && notNull(o.address) && typeof o.address.addressCountry != "undefined") ? "("+o.address.addressCountry+")" : ""; 
+					var fullLocality = postalCode + " " + cityName+" "+countryCode;
 					if(fullLocality == " Addresse non renseignée" || fullLocality == "" || fullLocality == " ") 
 						fullLocality = "<i class='fa fa-ban'></i>";
 					mylog.log("fullLocality", fullLocality);
@@ -463,14 +479,14 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
               }); //end each
 
               //ajout du footer
-              str+="<div class='text-center col-md-12 col-sm-12 col-xs-12 padding-10'>"+
+              /*str+="<div class='text-center col-md-12 col-sm-12 col-xs-12 padding-10'>"+
                       '<label class="text-dark italic"><i class="fa fa-ban"></i> '+trad.youdontfindcityyouwantfor+' "'+search+'"</label><br/>'+
                       '<span class="info letter-blue"><i class="fa fa-info-circle"></i> '+trad.explainnofoundcity+'</span><br/>'+
                       '<button class="btn btn-blue bg-blue text-white main-btn-create" '+
                         'data-target="#dash-create-modal" data-toggle="modal">'+
                           '<i class="fa fa-plus-circle"></i> '+trad.createpage+
                       '</button>'+
-                    "</div>";   
+                    "</div>";   */
               str += '<div class="text-center" id="footerDropdownGS">';
               str += "<label class='text-dark'>" + totalDataGSMSG + "</label><br/>";
               str += '<a href="#search" class="btn btn-default btn-sm lbh" id="btnShowMoreResultGS">'+

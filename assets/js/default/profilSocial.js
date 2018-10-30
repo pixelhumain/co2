@@ -502,7 +502,7 @@ function loadNewsStream(isLiveBool){
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){ 
-				if(typeItem=="citoyens") loadLiveNow();
+				//if(typeItem=="citoyens") loadLiveNow();
 	            $(window).bind("scroll",function(){ 
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();

@@ -171,15 +171,23 @@ function initPageInterface(){
         startGlobalSearch(0, indexStepGS);
     });
 
-    $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
+   $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
         if(e.keyCode == 13){
             searchObject.text=$(this).val();
             myScopes.type="open";
             myScopes.open={};
-            urlCtrl.loadByHash("#search");
-            //startGlobalSearch(0, indexStepGS);
+            //urlCtrl.loadByHash("#search");
+            startGlobalSearch(0, indexStepGS);
          }
+    });
+     $("#second-search-bar-addon").off().on("click", function(){
+        $("#input-search-map").val($("#second-search-bar").val());
+        searchObject.text=$("#second-search-bar").val();
+        myScopes.type="open";
+        myScopes.open={};
+            //urlCtrl.loadByHash("#search");
+            startGlobalSearch(0, indexStepGS);
     });
     
     $("#input-search-map").keyup(function(e){ console.log("keyup #input-search-map");

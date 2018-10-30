@@ -67,9 +67,17 @@ function initWelcomeInterface(){
             searchObject.text=$(this).val();
             myScopes.type="open";
             myScopes.open={};
-            urlCtrl.loadByHash("#search");
-            //startGlobalSearch(0, indexStepGS);
+            //urlCtrl.loadByHash("#search");
+            startGlobalSearch(0, indexStepGS);
          }
+    });
+     $("#second-search-bar-addon").off().on("click", function(){
+        $("#input-search-map").val($("#second-search-bar").val());
+        searchObject.text=$("#second-search-bar").val();
+        myScopes.type="open";
+        myScopes.open={};
+            //urlCtrl.loadByHash("#search");
+            startGlobalSearch(0, indexStepGS);
     });
     
     $("#input-search-map").off().keyup(function(e){ console.log("keyup #input-search-map");

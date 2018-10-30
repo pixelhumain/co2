@@ -1,6 +1,6 @@
 <?php
 $cssJs = array(
-	'/assets/css/freelancer.css',
+	//'/assets/css/freelancer.css',
 );
 HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->theme->baseUrl);
 

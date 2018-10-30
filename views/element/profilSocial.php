@@ -898,7 +898,6 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
-	initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 
     var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false );
@@ -963,7 +962,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 		getContextDataLinks();
 		if(typeof contextData.links != "undefined" && typeof rolesList != "undefined")
 			pushListRoles(contextData.links);
-		
+		initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
 		//Sig.showMapElements(Sig.map, mapElements);
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");

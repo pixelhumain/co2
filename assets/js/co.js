@@ -699,6 +699,7 @@ function  bindLBHLinks() {
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
+		alert("ouii");
 		if( $(this).data("modalshow") ){
 			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
 			if(h.indexOf("#page") >= 0)
@@ -723,8 +724,11 @@ function  bindLBHLinks() {
 		mylog.warn("bindLBHLinks Preview ELEMENT", $(this).attr("href"),$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-		var url = (h.indexOf("#") == 0 ) ? "app/"+ urlCtrl.convertToPath(h) : "app/"+ h;
-		openPreviewElement( baseUrl+'/'+moduleId+"/"+url);
+		urlCtrl.checkSlugUrl(h, function(res){
+			var url = (res.indexOf("#") == 0 ) ? "app/"+ urlCtrl.convertToPath(res) : "app/"+ res;
+			openPreviewElement( baseUrl+'/'+moduleId+"/"+url);	
+		});
+		
 			//smallMenu.open ( getAjax(directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
 	});
 }
@@ -942,7 +946,47 @@ var urlCtrl = {
 		});
 		return res;
 	},
+	checkSlugUrl : function (url, callback){
+		var result=url;
+		if(url.indexOf("#@") >= 0){
+			splitHref=(url.indexOf("?") >= 0) ? url.split("?") : [url];
+			if(splitHref[0] > 2 || splitHref[0].indexOf("#@") >= 0){
+				hashT = (splitHref[0].indexOf("#@") >= 0) ? splitHref[0].replace( "#@","" ) : splitHref[0].replace( "#","" );
+				hashT=hashT.split(".");
+				if(typeof hashT == "string")
+					slug=hashT;
+				else
+					slug=hashT[0];
+				$.ajax({
+		  			type: "POST",
+		  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+		  			dataType: "json",
+		  			success: function(data){
+				  		if(data.result){
+				  			viewPage="";			  			
+				  			if(hashT.length > 1){
+				  				hashT.shift();
+				  				viewPage="/"+hashT.join("/");
+				  			}
 
+				  			var key = hashT[0];
+				  			var get = "";
+				  			if(key.indexOf("?")>-1){
+								get = key.substr(key.indexOf("?"), key.length);
+								key = key.substr(0, key.indexOf("?"), key.length);
+							}
+				  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
+				  			callback('page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get);
+				  		}else
+				  			callback(result);
+		 			}
+				});
+			}else
+				callback(result);
+		}
+		else
+			callback(result);
+	},
 	//back sert juste a differencier un load avec le back btn
 	//ne sert plus, juste a savoir d'ou vient drait l'appel
 	loadByHash : function ( hash , back ) {
@@ -1078,8 +1122,6 @@ var urlCtrl = {
 							if(key.indexOf("?")>-1){
 								get = key.substr(key.indexOf("?"), key.length);
 								key = key.substr(0, key.indexOf("?"), key.length);
-								alert(get);
-								//console.log("load key", key);
 							}
 				  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
 				  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;

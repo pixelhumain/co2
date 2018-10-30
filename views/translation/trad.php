@@ -398,6 +398,7 @@ var trad = {
 	"november":"<?php echo Yii::t("translate","November") ?>",
 	"december":"<?php echo Yii::t("translate","December") ?>",
 	"mypeople":"<?php echo Yii::t("common","My people") ?>",
+	"mycitoyens":"<?php echo Yii::t("common","My people") ?>",
 	"myorganizations":"<?php echo Yii::t("common","My organizations") ?>",
 	"myprojects":"<?php echo Yii::t("common","My projects") ?>",
 	"myevents":"<?php echo Yii::t("common","My events") ?>",

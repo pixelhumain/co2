@@ -346,13 +346,13 @@ class AppController extends CommunecterController {
         //var_dump($params);exit;
 
         if(@$_POST["preview"] == true){
+            //echo "oui";exit;
             $params["preview"]=$_POST["preview"]; 
             if($type == "classifieds") $this->renderPartial('eco.views.co.preview', $params );
            // else if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
             else if($type == "poi") $this->renderPartial('../poi/preview', $params ); 
-            else echo $this->renderPartial("page", $params, true);
+            else $this->renderPartial("../element/onepage", $params);
         }else{
-
             echo $this->renderPartial("page", $params, true);
 	    }
     }

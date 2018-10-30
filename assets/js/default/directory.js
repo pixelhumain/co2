@@ -1263,6 +1263,7 @@ var directory = {
 
 
     var linkAction = ( $.inArray(params.type, ["poi","classifieds","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
+    //params.hash+= ( $.inArray(params.type, ["poi","classifieds","ressources"])>=0 ) ? "" : ".net";
     
 		//var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
 		// if(typeof params.size == "undefined" || params.size == "max")

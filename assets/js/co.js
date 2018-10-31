@@ -699,10 +699,7 @@ function  bindLBHLinks() {
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-		alert("ouii");
-		if( $(this).data("modalshow") ){
-		alert("ici");
-		
+		if( $(this).data("modalshow") ){		
 			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
 			if(h.indexOf("#page") >= 0)
 				url="app/"+url
@@ -711,7 +708,6 @@ function  bindLBHLinks() {
 			
 		}
 		else {
-			alert("ici2");
 			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
 	    	smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url);
 	    	//smallMenu.openAjaxHTML( baseUrl+'/'+moduleId+"/"+url ,"","blockUI",h);

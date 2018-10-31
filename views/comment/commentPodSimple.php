@@ -413,7 +413,7 @@
 								'<div class="col-md-12 pull-left no-padding" id="footer-comments-'+idNewComment+'"></div>'+
 							'</small>'+
 						'</span>'+	
-						'<div id="comments-list-'+idNewComment+'" class="hidden pull-left col-md-11 no-padding answerCommentContainer"></div>' +
+						'<div id="comments-list-'+idNewComment+'" class="hidden pull-left col-xs-11 no-padding answerCommentContainer"></div>' +
 							
 					'</div>';
 

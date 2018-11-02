@@ -12,6 +12,13 @@
 ----------------------------------------------------
 ----------------------------------------------------
 
+---------------------------------------
+---------- VERSION C0.4(Les amis d'abord) --------------
+---------------------------------------
+* Batch pour ajouter le type au links 
+co2/datamigration/SearchLinkMissingType
+
+
 ---- CTE
 * Unifier les answer 
   co2/datamigration/UnifierAnswers

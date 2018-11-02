@@ -33,22 +33,32 @@ if( @$_GET["el"] || @$custom )
         if(@$el["custom"])
             $c = array_merge( $c , $el["custom"] );
 
-        if(@$el["custom"]["logo"]){ 
+        if(@$el["custom"]["logo"])
             $c["logo"]=Yii::app()->getModule("survey")->getAssetsUrl(true).$el["custom"]["logo"];
-        }
+    }
+    else if( @$stum[0] == "costum" ){
+        $c = $el;
     }
     else {
         if($stum[0] == "o")
             $stum[0] = Organization::COLLECTION;
         $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
         
+        if (is_string($stum[1]) && strlen($stum[1]) == 24 && ctype_xdigit($stum[1]) )
+            $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
+        else 
+            $el = Slug::getElementBySlug( $stum[1] )["el"];
+        
         $c = array( "id"   => (string) $el["_id"],
                    "type" => $stum[0],
                    "title"=> $el["name"],
+                   "assetsUrl"=> (@$el["custom"]["module"]) ? Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true) : Yii::app()->getModule($this->module->id)->getAssetsUrl(true),
                    "url"=> "/custom?el=".(!@$_GET["el"]) ? (string) $el["_id"] : @$_GET["el"] );
         
         if(@$el["custom"])
             $c = array_merge( $c , $el["custom"] );
+        else 
+            $c = array_merge( $c , array( "custom" => array( "welcomeTpl" => "../custom/".$stum[1]."/index")) );
 
         if (@$el["custom"]["logo"]) 
             $c["logo"] = Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true).$el["custom"]["logo"];

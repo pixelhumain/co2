@@ -21,7 +21,7 @@ dynForm = {
     	   	},
 	    	sub : function(){
 				if(typeof currentKFormType == "undefined" || currentKFormType == "" || 
-				  currentKFormType == "null" || currentKFormType == null){
+				  currentKFormType == "null" || currentKFormType == null ){
 					currentKFormType = "organization";
 				}else{
 					//alert(currentKFormType)
@@ -40,14 +40,13 @@ dynForm = {
 				$("#ajax-modal .infocustom p").removeClass("text-dark text-red text-purple text-green text-green-poi text-orange text-turq text-yellow text-url text-azure").addClass("text-"+typeObj[currentKFormType].color);
 
 	    		if(contextData && contextData.type && contextData.id ){
-	    			console.log("HERE WE ARE");
-					$('#ajaxFormModal #parentId').val(contextData.id);
+	    			$('#ajaxFormModal #parentId').val(contextData.id);
 	    			$("#ajaxFormModal #parentType").val( contextData.type ); 
 	    		 	$("#ajax-modal-modal-title").append(
 	    		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+
 	    		 														contextData.name+
 	    		 														"</span></small>" );
-	    		}else if(userConnected){
+	    		} else if(userConnected) {  
 					$('#ajaxFormModal #parentId').val( userId );
 					$("#ajaxFormModal #parentType").val( "citoyens" );
 					$("#ajax-modal-modal-title").append(
@@ -111,7 +110,7 @@ dynForm = {
             "preferences[publicFields]" : dyFInputs.inputHidden([]),
             "preferences[privateFields]" : dyFInputs.inputHidden([]),
             "preferences[isOpenData]" : dyFInputs.inputHidden(true),
-            "preferences[isOpenEdition]" : dyFInputs.inputHidden(true)
+            "preferences[isOpenEdition]" : dyFInputs.inputHidden(true),
 	    }
 	}
 };

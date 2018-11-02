@@ -5168,6 +5168,113 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			echo "Number of user with preferences modified : ".$nbUser;
 		}
 	}
+
+
+	public function actionSearchLinkMissingType() {
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$nbUser = 0;
+			$users = PHDB::find(Person::COLLECTION,
+								array('$and' => array(
+									array("links" => array('$exists' => 1)),
+									array('$or' => array(
+										array("links.events.type" => array('$exists' => 0)),
+										array("links.follows.type" => array('$exists' => 0)),
+										array("links.memberOf.type" => array('$exists' => 0)),
+										array("links.projects.type" => array('$exists' => 0))
+
+									))
+								)));
+
+
+
+
+			//Rest::json($users); exit;
+			foreach ($users as $key => $person) {
+				//var_dump($value); echo "<br><br>";
+				if(!empty($person["links"])){
+					$newlinks = $person["links"];
+					$up = false;
+					foreach (@$person["links"] as $connectKey => $links) {
+						if(in_array($connectKey,["follows", "memberOf", "projects", "events"])){
+							foreach($links as $keyLinks => $value){
+								//var_dump($value); echo "<br><br>";
+								if(empty($value["type"])){
+									//Rest::json($newlinks[$connectKey]); exit;
+									//
+									echo $key." ".$person["name"]." > links.".$connectKey.".".$keyLinks." <br/>";
+
+									$type = null ;
+									if($connectKey == "events"){
+										$elt = Element::getSimpleByTypeAndId(Event::COLLECTION, $keyLinks,array("name"));
+										$type = Event::COLLECTION;
+									} else if($connectKey == "projects"){
+										$elt = Element::getSimpleByTypeAndId(Project::COLLECTION, $keyLinks,array("name"));
+										$type = Project::COLLECTION;
+									}else{
+
+										$elt = Element::getSimpleByTypeAndId(Organization::COLLECTION, $keyLinks,array("name"));
+										$type = Organization::COLLECTION;
+
+										if(empty($elt)){
+											$elt = Element::getSimpleByTypeAndId(Person::COLLECTION, $keyLinks,array("name"));
+											$type = Person::COLLECTION;
+										}
+
+										if(empty($elt)){
+											$elt = Element::getSimpleByTypeAndId(Event::COLLECTION, $keyLinks,array("name"));
+											$type = Event::COLLECTION;
+										}
+
+										if(empty($elt)){
+											$elt = Element::getSimpleByTypeAndId(Project::COLLECTION, $keyLinks,array("name"));
+											$type = Project::COLLECTION;
+										}
+
+										if(empty($elt)){
+											$type = null;
+										}
+
+									}
+
+									if(!empty($elt) && !empty($type)){
+										$up = true;
+										$value["type"] = $type;
+										$newlinks[$connectKey][$keyLinks] = $value;
+									}
+									
+
+								}
+								
+								
+
+
+								
+							}
+						}
+					}
+
+					if($up === true){
+						$person["modifiedByBatch"][] = array("SearchLinkMissingType" => new MongoDate(time()));
+						//Rest::json($newlinks); exit;
+
+						$res = PHDB::update(Person::COLLECTION, 
+									array("_id"=>new MongoId($key)),
+									array('$set' => array("links" => $newlinks )) );
+
+						if($res["ok"] == 1){
+							$nbUser++;
+						}else{
+							echo "<br/> Error with user id : ".$key;
+						}
+					}
+					
+				}
+				
+			}
+
+			echo "Number of user with preferences modified : ".$nbUser;
+		}
+	}
 		
 }
 

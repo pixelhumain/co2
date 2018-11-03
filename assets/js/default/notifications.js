@@ -281,6 +281,8 @@ function buildNotifications(list, element, event, elementType, elementId)
 			//}
 			if( notifObj.timestamp > maxNotifTimestamp[targetNotif(element)])
 				maxNotifTimestamp[targetNotif(element)] = notifObj.timestamp;
+			if(notNull(event) && event=="refresh")
+				$(".notifList"+element+" .notif_"+notifKey).remove();
 		});
 		setTimeout( function(){
 	    	//notifCount(false, element);

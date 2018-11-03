@@ -1116,8 +1116,12 @@ var directory = {
         str += "<small class='letter-light bold'><i class='fa fa-clock-o'></i> "+params.updatedLbl+"</small>";
       
       if(typeof(params.statusLink)!="undefined"){
-        if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+        if(typeof(params.statusLink.isAdmin)!="undefined" 
+          && typeof(params.statusLink.isAdminPending)=="undefined" 
+          && typeof(params.statusLink.isAdminInviting)=="undefined"
+          && typeof(params.statusLink.toBeValidated)=="undefined"){
           str+="<br><span class='text-red'>"+trad.administrator+"</span>";
+        }
         if(typeof(params.statusLink.isAdminInviting)!="undefined"){
           str+="<br><span class='text-red'>"+trad.invitingToAdmin+"</span>";
         }
@@ -1302,7 +1306,10 @@ var directory = {
 				"</a>";  
 		
 		if(typeof(params.statusLink)!="undefined"){
-			if(typeof(params.statusLink.isAdmin)!="undefined" && typeof(params.statusLink.isAdminPending)=="undefined" && typeof(params.statusLink.isAdminInviting)=="undefined")
+			if(typeof(params.statusLink.isAdmin)!="undefined"
+         && typeof(params.statusLink.isAdminPending)=="undefined"
+          && typeof(params.statusLink.isAdminInviting)=="undefined"
+            && typeof(params.statusLink.toBeValidated)=="undefined")
 				str+="<span class='text-red'>"+trad.administrator+"</span>";
 			if(typeof(params.statusLink.isAdminInviting)!="undefined"){
 				str+="<span class='text-red'>"+trad.invitingToAdmin+"</span>";

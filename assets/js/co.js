@@ -607,7 +607,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
         );
     }
 	else{
-		messageBox=trad["suretojoin"+parentType];;
+		messageBox=(userId==childId) ? trad["suretojoin"+parentType] : trad.validateaddedofthisuser;
 		if (connectType=="admin")
 			messageBox += " " + trad["as"+connectType];
 		bootbox.dialog({

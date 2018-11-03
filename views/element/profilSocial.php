@@ -170,8 +170,8 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 <?php 
 	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
-    <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
+    <!-- <section class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header" 
     	<?php if (!@$element["profilBannereUrl"] || (@$element["profilBannereUrl"] && empty($element["profilBannereUrl"]))){ ?> 

@@ -741,7 +741,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 			var id = $(this).data("id");
 			var type = $(this).data("type");
 			var name = $(this).data("name");
-			var profilThumbImageUrl = $(this).data("profilThumbImageUrl");
+			var profilThumbImageUrl = $(this).data("profilthumbimageurl");
 			mylog.log(".add-invite", id, type, name, profilThumbImageUrl);
 
 			var inMyC = inMyLinks(type,id);
@@ -933,7 +933,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 		if(type ==  "invites" )
 			type = "citoyens";
 		var inMyContact = (!searchInContactsList) ? inMyContacts(type,id) : false;
-		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ? baseUrl + elem.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+type+".png";		
+		var profilThumbImageUrl = (typeof elem.profilThumbImageUrl != "undefined" && elem.profilThumbImageUrl != "") ?  elem.profilThumbImageUrl : parentModuleUrl + "/images/thumb/default_"+type+".png";		
 		var str = "<div class='col-xs-12 listInviteElement no-padding'>";
 			var classStr = "col-xs-10";
 			if(invite == true){
@@ -960,7 +960,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 					'data-type-list="'+typeList+'" ' +
 					" data-type='"+type+"' >";
 				bgThumb=(type=="citoyens") ? "yellow" : "green";
-					str += '<img src="'+ profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+'" height="35" width="35"> ';
+					str += '<img src="'+ baseUrl + profilThumbImageUrl+'" class="thumb-send-to col-xs-3 bg-'+bgThumb+'" height="35" width="35"> ';
 				/*else {
 					if(type == "citoyens")
 						str += '<i class="fa fa-user "></i> ';

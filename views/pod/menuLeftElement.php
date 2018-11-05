@@ -320,13 +320,13 @@
 					<i class="fa fa-clipboard"></i> <?php echo Yii::t("common","My experiences"); ?>
 				</a>
 			</li>
-			 <li><hr></li>
+			<!--  <li><hr></li>
 			<li class="">
 				<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 					id="btn-start-networks" class="ssmla">
-					<i class="fa fa-map-o"></i> <?php echo Yii::t("common","My maps"); ?>
+					<i class="fa fa-map-o"></i> <?php //echo Yii::t("common","My maps"); ?>
 				</a>
-			</li> 
+			</li>  -->
 		<?php } ?>
 		<li><hr></li>
 

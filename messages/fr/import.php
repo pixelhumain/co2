@@ -41,6 +41,12 @@ return array(
 	"211" => "Cette username a été généré automatique à partir du nom de l'utilisateur.",
 	"212" => "Le Type \"Groupe\"  a été attribué a cette organisation. Veuilliez changer le type de l'organisation s'il ne correspond pas à ce type.",
 	"250" => "L'entité a été mis a jour.",
+
+	//Trad
+	"add my mapping." => "ajouter mon mapping.",
+	"Grab the name your mapping" => "Saisir le nom de votre mapping",
+	"Add my mapping" => "Ajouter mon mapping",
+	"Add the mapping, this allow you to reuse" => "Ajouter un mapping, vous permettrez de le réutiliser",
 );
 
 ?>

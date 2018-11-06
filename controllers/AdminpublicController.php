@@ -19,6 +19,8 @@ class AdminpublicController extends CommunecterController {
 		// captcha action renders the CAPTCHA image displayed on the contact page
 		//'index'   				=> 'citizenToolKit.controllers.adminpublic.IndexAction',
 		'createfile' => 'citizenToolKit.controllers.adminpublic.CreateFileAction',
+		'setmapping' => 'citizenToolKit.controllers.adminpublic.SetMappingAction',
+		'deletemapping' =>'citizenToolKit.controllers.adminpublic.DeleteMappingAction',
 		'adddata' => 'citizenToolKit.controllers.adminpublic.AddDataAction',
 	    'adddataindb' => 'citizenToolKit.controllers.adminpublic.AddDataInDbAction',
 	    'sourceadmin' => 'citizenToolKit.controllers.adminpublic.SourceadminAction',

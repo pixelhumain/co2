@@ -23,9 +23,10 @@
         </p>
         <br>
         	<?php echo Yii::t('common','You can add bellow the reason why you want to delete this element :') ;?>
-        <textarea id="reason" class="" rows="2" style="width: 100%" placeholder="Laisser une raison... (optionnel)"></textarea>
+        <textarea id="reason" class="" rows="2" style="width: 100%" placeholder="Laisser une raison... ou pas (optionnel)"></textarea>
       </div>
       <div class="modal-footer">
+				<!-- Utilisation du bouton confirmDeleteElement -->
        <button id="confirmDeleteElement" type="button" class="btn btn-warning"><?php echo Yii::t('common','I confim the delete !');?></button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo Yii::t('common','No');?></button>
       </div>
@@ -47,14 +48,15 @@
 	       	dataType: "json",
 	    	success: function(data){
 		    	if(data.result){
-					toastr.success(data.msg);
-					console.log("Retour de delete : "+data.status);
-					if (data.status == "deleted") 
-						urlCtrl.loadByHash("#search");
-					else 
-						urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id);
-		    	}else{
-		    		toastr.error(data.msg);
+						toastr.success(data.msg);
+						console.log("Retour de delete : "+data.status);
+						if (data.status == "deleted") 
+							urlCtrl.loadByHash("#search"); //envoie l'utilisateur la barre de recherche
+						else 
+							urlCtrl.loadByHash("#page.type."+contextData.type+".id."+contextData.id); //Une autre page
+						}
+					else{
+		    		toastr.error(data.msg); 
 		    	}
 		    },
 		    error: function(data){

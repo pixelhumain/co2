@@ -6,24 +6,26 @@ var maxNotifTimestamp = {
 var indexMinNotif=0;
 var endLoadingNotifs=false;
 function showNotif(show){
+	stopTrigger=false;
 	if(typeof show == "undefined"){
 		if($("#notificationPanelSearch").css("display") == "none") show = true; 
-    	else show = false;
+    	else stopTrigger = true;
     }
+    if(!stopTrigger){
+	    if(show){
+	    	endLoadingNotifs=false;
+	    	$('#notificationPanelSearch').show("fast");
+	    	markAllAsSeen(false,"");
+	    	refreshNotifications(userId,"citoyens","");
+	    }
+		else 	 $('#notificationPanelSearch').hide("fast");
 
-    if(show){
-    	endLoadingNotifs=false;
-    	$('#notificationPanelSearch').show("fast");
-    	markAllAsSeen(false,"");
-    	refreshNotifications(userId,"citoyens","");
-    }
-	else 	 $('#notificationPanelSearch').hide("fast");
-
-	
-	$("#dropdown-user").removeClass("open");
-    $("#dropdown-dda").removeClass("open");
-    
-    showFloopDrawer(false);
+		
+		$("#dropdown-user").removeClass("open");
+	    $("#dropdown-dda").removeClass("open");
+	    
+	    showFloopDrawer(false);
+	}
 }
 
 function bindNotifEvents(element, event, elementType, elementId ){ console.log("bindNotifEvents");

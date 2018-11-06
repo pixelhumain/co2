@@ -170,12 +170,13 @@ var Login = function() {
 										else{
 											if(location.hash.indexOf("#page") >= 0)
 						        				window.location.reload();
-						        			else if( url.split("/").length - 1 <= 3 ) {
-						        				location.hash='#page.type.citoyens.id.'+userId;
-						        				window.location.reload();
-						        			}
+						        			//else if( url.split("/").length - 1 <= 3 ) {
+						        				//location.hash='#page.type.citoyens.id.'+userId;
+						        				//window.location.reload();
+						        			//}
 						        			else {
-						        				location.hash='#page.type.citoyens.id.'+userId;
+						        				//themeParams[]
+						        			//	location.hash='#page.type.citoyens.id.'+userId;
 						        				window.location.reload();
 					        				}
 										}
@@ -184,12 +185,12 @@ var Login = function() {
 							}else{
 			        			if(location.hash.indexOf("#page") >= 0)
 			        				window.location.reload();
-			        			else if( url.split("/").length - 1 <= 3 ) {
-			        				location.hash='#page.type.citoyens.id.'+userId;
-			        				window.location.reload();
-			        			}
+			        		//	else if( url.split("/").length - 1 <= 3 ) {
+			        		//		location.hash='#page.type.citoyens.id.'+userId;
+			        		//		window.location.reload();
+			        		//	}
 			        			else {
-			        				location.hash='#page.type.citoyens.id.'+userId;
+			        		//		location.hash='#page.type.citoyens.id.'+userId;
 			        				window.location.reload();
 		        				}
 		        			}

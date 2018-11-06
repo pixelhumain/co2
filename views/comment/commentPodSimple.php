@@ -198,7 +198,7 @@
 							</span><br>
 							<small class="bold">
 							<?php if(@Yii::app()->session["userId"] && !@$comment["rating"]){ ?>
-								 <div class="col-md-12 pull-left no-padding" id="footer-comments-<?php echo @(string)$comment["_id"]; ?>" style="padding-left: 15px !important;"></div>
+								 <div class="col-xs-12 pull-left no-padding" id="footer-comments-<?php echo @(string)$comment["_id"]; ?>" style="padding-left: 15px !important;"></div>
 								<?php /*if(@$canComment){ ?>
 								<?php 
 									$lblReply = Yii::t("common","Answer");
@@ -416,7 +416,7 @@
 						'		<span class="text-comment">'	+ textComment + "</span>" +
 						'	</span><br>'+
 							'<small class="bold">' +
-								'<div class="col-md-12 pull-left no-padding" id="footer-comments-'+idNewComment+'" style="padding-left:15px !important;"></div>'+
+								'<div class="col-xs-12 pull-left no-padding" id="footer-comments-'+idNewComment+'" style="padding-left:15px !important;"></div>'+
 							'</small>'+
 						'</span>'+	
 						'<div id="comments-list-'+idNewComment+'" class="hidden pull-left col-xs-11 no-padding answerCommentContainer"></div>' +

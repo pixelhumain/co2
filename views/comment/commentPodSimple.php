@@ -39,6 +39,12 @@
 		max-width:80%;
 		min-height: 35px;
 	}
+	.comment-container-white{
+		background-color: rgba(231, 231, 231, 0.62);
+    	border-radius: 35px;
+    	padding: 7px 20px;
+    	margin-bottom: 5px;
+	}
 	.answerCommentContainer {
 	    margin-left: 45px;
 	    margin-top: 5px;
@@ -124,8 +130,8 @@
 
 			
 			<div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-top-15 container-txtarea">
-				<img src="<?php echo $profilThumbImageUrlUser; ?>" class="img-responsive pull-left" 
-					 style="margin-right:6px;height:32px; border-radius:3px;">
+				<img src="<?php echo $profilThumbImageUrlUser; ?>" class="img-responsive pull-left img-circle" 
+					 style="margin-right:6px;height:32px;">
 
 				<div id="container-txtarea-<?php echo $idComment; ?>" class="content-new-comment">
 					<div style="" class="ctnr-txtarea">
@@ -169,11 +175,11 @@
 					<div class="col-xs-12 no-padding margin-top-5 item-comment <?php echo $hiddenClass.' '.$classArgument; ?>" 
 						 id="item-comment-<?php echo $comment["_id"]; ?>">
 
-						<img src="<?php echo $profilThumbImageUrl; ?>" class="img-responsive pull-left" 
-							 style="margin-right:10px;height:32px; border-radius:3px;">
+						<img src="<?php echo $profilThumbImageUrl; ?>" class="img-responsive pull-left img-circle" 
+							 style="margin-right:5px; margin-top:10px; height:32px;">
 					
-						<span class="pull-left content-comment">						
-							<span class="text-black pull-left col-xs-12 no-padding">
+						<span class="pull-left content-comment col-xs-12 no-padding">						
+							<span class="text-black pull-left col-xs-12 comment-container-white">
 								<a href="#<?php echo @$slug; ?>" class="text-dark pull-left">
 									<strong><?php echo $comment["author"]["name"]; ?></strong>
 								</a> 
@@ -192,7 +198,7 @@
 							</span><br>
 							<small class="bold">
 							<?php if(@Yii::app()->session["userId"] && !@$comment["rating"]){ ?>
-								 <div class="col-md-12 pull-left no-padding" id="footer-comments-<?php echo @(string)$comment["_id"]; ?>"></div>
+								 <div class="col-md-12 pull-left no-padding" id="footer-comments-<?php echo @(string)$comment["_id"]; ?>" style="padding-left: 15px !important;"></div>
 								<?php /*if(@$canComment){ ?>
 								<?php 
 									$lblReply = Yii::t("common","Answer");
@@ -401,16 +407,16 @@
 
 		var html = '<div class="col-xs-12 no-padding margin-top-5 item-comment '+classArgument+'" id="item-comment-'+idNewComment+'">'+
 
-						'<img src="<?php echo @$profilThumbImageUrlUser; ?>" class="img-responsive pull-left" '+
-						'	 style="margin-right:10px;height:32px; border-radius:3px;">'+
+						'<img src="<?php echo @$profilThumbImageUrlUser; ?>" class="img-responsive pull-left img-circle" '+
+						'	 style="margin-right:5px;margin-top:10px;height:32px;">'+
 					
-						'<span class="pull-left content-comment">'+						
-						'	<span class="text-black col-xs-12 no-padding">'+
+						'<span class="pull-left content-comment col-xs-12 no-padding">'+						
+						'	<span class="text-black col-xs-12 comment-container-white">'+
 						'		<span class="text-dark"><strong><?php echo @$me["name"]; ?></strong></span><br>'+
 						'		<span class="text-comment">'	+ textComment + "</span>" +
 						'	</span><br>'+
 							'<small class="bold">' +
-								'<div class="col-md-12 pull-left no-padding" id="footer-comments-'+idNewComment+'"></div>'+
+								'<div class="col-md-12 pull-left no-padding" id="footer-comments-'+idNewComment+'" style="padding-left:15px !important;"></div>'+
 							'</small>'+
 						'</span>'+	
 						'<div id="comments-list-'+idNewComment+'" class="hidden pull-left col-xs-11 no-padding answerCommentContainer"></div>' +

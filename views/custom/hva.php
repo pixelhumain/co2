@@ -62,48 +62,10 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
             <li id="menuRejoindre" class="lihva "><a id="btnRejoindre" href="javascript:;" class="">Rejoindre le réseau</a></li>
             <li id="menuEvent" class="lihva"><a id="btnQui" href="javascript:;" class="">Qui-sommes nous ?</a></li>
 		</ul>
-        <div id="accueil" class="col-xs-12" style ="padding: 15px; text-align: justify;">
+        <div id="accueil" class="col-xs-12" style ="padding: 15px; text-align: justify; margin-left: 20px">
 
-                <img src="http://www.catalunyaexperience.fr/wp-content/uploads/2015/03/001-ES1308N-0740-1024x683.jpg" style="width : 500px" class="col-md-6 col-xs-12">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id laoreet nulla. Suspendisse purus sapien, molestie a feugiat ut, varius vitae sapien. Suspendisse et mauris vitae turpis gravida placerat sagittis id lectus. Etiam a molestie erat. Fusce euismod faucibus quam, in sodales odio bibendum non. Cras eu nisi elit. Donec tempus malesuada massa, quis gravida massa mollis eu.
-
-In sem metus, aliquam in viverra at, tincidunt at ipsum. Fusce viverra sollicitudin quam in eleifend. Phasellus aliquam at erat at dictum. Vivamus non massa vel justo tempor pharetra eu suscipit nibh. Mauris ante eros, finibus eu suscipit ultricies, gravida ac augue. Integer tortor nisl, egestas eu condimentum eget, commodo eget augue. In non dolor bibendum, placerat purus quis, fermentum tellus. Aenean at lorem non elit condimentum molestie ac vitae odio. Sed facilisis dui ac nisi consectetur placerat. Aliquam maximus elit et urna efficitur, non suscipit leo iaculis. Ut a diam sit amet mi semper vestibulum. Etiam a velit aliquam, varius metus sit amet, accumsan justo.
-
-Nullam nec facilisis lectus, sit amet tempor ipsum. Proin tempor nisi a odio imperdiet, ac imperdiet nisi tincidunt. Maecenas a turpis eget dolor semper congue non ut nisl. Mauris blandit nibh sit amet lorem finibus egestas. Curabitur varius massa vitae justo porta luctus sed sit amet est. Sed lacus libero, volutpat ut metus nec, blandit suscipit risus. Suspendisse eget porta ligula. Integer sed orci vel libero porta rutrum. Morbi ante eros, hendrerit placerat ornare ac, ultricies interdum odio. Donec eu finibus quam. Aliquam id quam non mi accumsan vulputate. Nullam elementum eros sed vulputate pharetra. Nunc consequat diam eu venenatis sodales. Quisque elementum turpis lorem, eget commodo ante maximus sit amet. Sed ac massa scelerisque, dapibus libero et, tristique orci.
-
-Sed ut odio augue. Integer rhoncus mauris nec accumsan gravida. Nullam finibus urna metus, sit amet viverra sem volutpat a. Duis bibendum nisl ac ipsum egestas commodo. Fusce rhoncus magna ac ornare viverra. Quisque ac nisi nec nulla condimentum venenatis eu sit amet nisi. Sed fermentum eros mi, eu rutrum nisl maximus sit amet. Maecenas eu tortor non magna accumsan fermentum sit amet ut elit. Sed a odio sapien. Nam at ex ut sapien blandit accumsan. Quisque quis hendrerit mi, sit amet congue nisl.
-
-Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vestibulum dignissim ultrices lacus. Ut auctor lobortis turpis ut ornare. Nulla facilisi. Etiam auctor erat sed imperdiet hendrerit. Morbi eu tincidunt ante. Pellentesque viverra quam purus, et tempor dolor rhoncus eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ac ornare quam. Donec sollicitudin felis mi, eu aliquam lectus interdum eget. Maecenas facilisis maximus quam, et pretium tellus placerat id. 
-        </div>
-        <hr>
-        <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
-		  <iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-xs-12" style="height:650px;"></iframe>
-        </div>
-        <br/><hr>
-        <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
-            <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-xs-12" style="height:650px;"></iframe>
-        </div>
-        <br/><hr>
-        <div id="annonce" class="col-xs-12" style ="padding: 15px; text-align: justify;">
-            <iframe  src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-xs-12" style="height:650px;"></iframe>
-        </div>
-        <hr>
-        <div id="rejoindre" class="col-xs-12" style ="padding: 15px; text-align: justify;">
-
-            <h3> Comment nous rejoindre ? </h3>
-
-            <span>
-                C'est simple il suffit de remplir 
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc8yce4HQQJHflDViNR_NDdlK9t7n3qoD2EjTQKWqNQLzcx8A/viewform?c=0&w=1&usp=mail_form_link">ce questionnaire</a>  <br/> <br/>
-                Et de faire l'adhésion sur <a href="https://www.helloasso.com/associations/le-chaudron/adhesions/adhesion-portail-hva
-">Hello Asso</a> 
-            </span>
-        </div>
-        <hr>
-        <div id="qui" class="col-xs-12">
-            <h3> Qui nous sommes ? </h3>
-
-            Nous sommes un collectif d'acteurs de la <b>Haute Vallée de l'Aude (HVA)</b> fortement impliqués dans l'économie sociale, solidaire et écologique de ce territoire.<br/><br/>
+<!--                 <img src="http://www.catalunyaexperience.fr/wp-content/uploads/2015/03/001-ES1308N-0740-1024x683.jpg" style="width : 500px" class="col-md-6 col-xs-12"> -->
+Nous sommes un collectif d'acteurs de la <b>Haute Vallée de l'Aude (HVA)</b> fortement impliqués dans l'économie sociale, solidaire et écologique de ce territoire.<br/><br/>
             Nous vous proposons ce site internet novateur et collaboratif qui a pour objectifs de :
             <br/><br/>
             <ul class="niv1">
@@ -131,6 +93,62 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
              (ex : échange, don, emploi,...).</li>
 
             </ul>
+        </div>
+        <hr>
+        <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
+		  <iframe id="orga" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAorga') ; ?>" class="col-xs-12" style="height:650px;"></iframe>
+        </div>
+        <br/><hr>
+        <div class="col-xs-12" style ="padding: 15px; text-align: justify;">
+            <iframe id="event" src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAevent') ; ?>" class="col-xs-12" style="height:650px;"></iframe>
+        </div>
+        <br/><hr>
+        <div id="annonce" class="col-xs-12" style ="padding: 15px; text-align: justify;">
+            <iframe  src="<?php echo Yii::app()->createUrl('/network/default/index/?src=HVAannonce') ; ?>" class="col-xs-12" style="height:650px;"></iframe>
+        </div>
+        <hr>
+        <div id="rejoindre" class="col-xs-12" style ="padding: 15px; text-align: justify; margin-left: 20px">
+
+            <h3> Comment nous rejoindre ? </h3>
+
+            <span>
+                C'est simple il suffit de remplir 
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc8yce4HQQJHflDViNR_NDdlK9t7n3qoD2EjTQKWqNQLzcx8A/viewform?c=0&w=1&usp=mail_form_link">ce questionnaire</a>  <br/> <br/>
+                Et de faire l'adhésion sur <a href="https://www.helloasso.com/associations/le-chaudron/adhesions/adhesion-portail-hva
+">Hello Asso</a> 
+            </span>
+        </div>
+        <hr>
+        <div id="qui" class="col-xs-12" style="padding: 15px; text-align: justify; margin-left: 20px">
+            <h3> Qui nous sommes ? </h3>
+            En  2016 à Greffeil ont eu lieu les rencontres annuelles des amis de François De Ravignan ayant pour thème <b>''Relier les Initiatives de la Haute Vallée de l'Aude''. </b>
+            Les échanges sur ce sujet ont permis de mettre en exergue un ensemble de constats assez particuliers:<br/><br/>
+            <ul class="niv1">
+            <li><b>Un foisonnement d'acteurs et de structures collectives</b>, pour la plupart nouvellement arrivés sur ce territoire, œuvrant principalement dans des domaines sociaux, environnementaux et culturels et portés par une vision commune d'un vivre ensemble bienveillant, épanouissant et réjouissant.</li>
+
+            <li>Mais ce tissu, quoique dynamique, souffre d'un manque de réelles synergies entre les initiateurs et de carence de visibilité de leurs actions, les deux étant souvent liées à des problématiques rurales et organisationnelles.</li>
+            <li><b>Un besoin apparaissait donc en faveur de la valorisation et du renforcement de ces ressources et de ces potentialités locales inscrites dans une démarche de développement social et économique local.</b></li>
+            </ul><br/><br/>
+            Les rencontres suivantes des ami-es de François de Ravignan à Serres, Luc/Aude, Festes, Rouvenac, ...ainsi que plusieurs ateliers organisés par des acteurs-initiateurs locaux intéressés à creuser ce sujet, ont montré une convergence d'idées et des pistes de propositions qui exprimaient :
+
+            <ul class="niv1">
+                <li><b>Une perception commune</b> que la co-construction d’événements ainsi que leurs efforts de publication pour promouvoir leurs activités était sacrément chronophages et énergivores avec parfois au final des ressentis de faible efficacité et de gaspillage, tous deux créateurs de frustration.</li>
+
+                <li><b>Le souhait de renforcer</b> les liens entre les nouveaux ''arrivants''  sur ce territoire cosmopolite et les habitants autochtones aux structures plus institutionnelles.</li>
+
+                <li>S'est aussi <b>affichée une volonté</b> d'orientation ''éthique'' respectant les valeurs d'une démarche solidaire et écologique dans un cadre d'un développement local de transition.</li>
+            </ul>
+
+            <br/>
+
+            Pour donner une autre dimension à leurs actions, il s'avérait ainsi nécessaire de faciliter leur mise en réseau par la mutualisation de leurs différents canaux d'informations et donc de <b>créer un outil de communication collaboratif dans la contribution et la diffusion.</b>
+            
+            <br/>  <br/>
+            En se réunissant plus fréquemment depuis le début d'année 2018, un collectif composé d'une quinzaine d'acteurs locaux s'est alors attelé à élaborer <b>un portail numérique</b> convivial, facile, rapide et actualisé.
+            <br/>  <br/>
+
+            Il voit ainsi le jour en cette fin d'année 2018 !
+            
         </div>
 	</div>
 

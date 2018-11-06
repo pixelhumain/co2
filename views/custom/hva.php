@@ -39,6 +39,14 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 #ulhva .active {
     background-color: #de2147;
 }
+
+.niv1 {
+    margin-left: 50px;
+}
+.niv1 .niv2 {
+    margin-left: 50px;
+}
+
 </style>
 
 <div class="col-xs-12" >
@@ -93,7 +101,36 @@ Pellentesque tristique facilisis massa, vel blandit lacus pellentesque sed. Vest
         </div>
         <hr>
         <div id="qui" class="col-xs-12">
-            Portail HVA qu'est que c'est ? ....
+            <h3> Qui nous sommes ? </h3>
+
+            Nous sommes un collectif d'acteurs de la <b>Haute Vallée de l'Aude (HVA)</b> fortement impliqués dans l'économie sociale, solidaire et écologique de ce territoire.<br/><br/>
+            Nous vous proposons ce site internet novateur et collaboratif qui a pour objectifs de :
+            <br/><br/>
+            <ul class="niv1">
+            <li><b>Promouvoir les activités des acteurs locaux par une vitrine qui : </b><br/><br/>
+                <ul  class="niv2">
+            <li>Augmente leur visibilité et leur mutualisation.</li>
+            <li>Allège leurs efforts de communication en réduisant leurs coûts de conception, de publication et de distribution de leurs informations.</li>
+            <li>Consolide leur ancrage au sein du territoire en accroissant leur panel d'utilisateurs, de consommateurs.</li></ul>
+        </li><br/>
+        <li>
+            <b>Offrir aux habitants et aux visiteurs un espace dédié qui :</b><br/><br/>
+            <ul  class="niv2">
+             <li> Concentre, classe et filtre les informations pour faciliter la recherche, le choix et l'identification </li>
+             <li> Encourage la rencontre, l'échange intergénérationnel, la participation, l'implication.</li>
+             <li> Aide à la découverte des nombreuses et dynamiques ressources locales.</li>
+            </ul>
+        </li>
+            </ul>
+            Ce portail numérique interactif et convivial présente :<br/><br/>
+            <ul  class="niv1">
+            <li><b>Un agenda des événements locaux</b> avec son calendrier, sa carte et des filtres par thèmes
+             (ex: stage, concert, conférence,...).</li>
+            <li><b>Un répertoire des acteurs et des structures</b> avec sa carte et des filtres par domaines d'activités (ex : culture, environnement, alimentation,...).</li>
+            <li><b>Une page ''annonces''</b> avec sa carte et des filtres par thèmes
+             (ex : échange, don, emploi,...).</li>
+
+            </ul>
         </div>
 	</div>
 

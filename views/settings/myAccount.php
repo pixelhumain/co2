@@ -27,28 +27,15 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 		<h3 class="title"><i class="fa fa-user-circle "></i> <?php echo Yii::t("settings", "My Account") ?></h3>
 	</div>
 	<div class="col-xs-12 no-padding">
-		<h4 style="text-transform: none;" ><i class="fa fa-unlock-alt  "></i> <?php echo Yii::t("common","Change password"); ?></h4>
-		<div class="sub-cat">
-			Si vous souhaitez changer de mot de passe :
-			<a href="javascript:;" id="btn-update-password-setting" class="btn btn-default btn-sm"> <i class="fa fa-pencil "></i> </a>
-
-		</div>
+		<h4 style="text-transform: none;" ><i class="fa fa-unlock-alt  "></i> <?php echo Yii::t("common","Change password"); ?> <a href="javascript:;" id="btn-update-password-setting" class="btn btn-success btn-sm"> <i class="fa fa-pencil "></i> </a> </h4>
 	</div>
 
 	<div class="block-account col-xs-12 no-padding">
-		<h4 style="text-transform: none;"><i class="fa fa-id-badge"></i> <?php echo Yii::t("common", "Edit slug"); ?></h4>
-		<div class="sub-cat">
-			Si vous souhaitez changer votre url : <a href="javascript:;" onclick="updateSlug();" id="" class="btn btn-default btn-sm"> <i class="fa fa-pencil "></i> </a>
-
-		</div>
+		<h4 style="text-transform: none;"><i class="fa fa-id-badge"></i> <?php echo Yii::t("common", "Edit slug"); ?> <a href="javascript:;" onclick="updateSlug();" id="" class="btn btn-success btn-sm"> <i class="fa fa-pencil "></i> </a></h4>
 	</div>
 
 	<div class="block-account col-xs-12 no-padding">
-		<h4 style="text-transform: none;"><i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?></h4>
-		<div class="sub-cat">
-			Pour télécharger votre profil : 
-			<a href="javascript:;" id="downloadProfil-setting" class="btn btn-default btn-sm"> <i class="fa fa-pencil "></i> </a>
-		</div>
+		<h4 style="text-transform: none;"><i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?> <a href="javascript:;" id="downloadProfil-setting" class="btn btn-success btn-sm"> <i class="fa fa-pencil "></i> </a> </h4>
 	</div>
 
 
@@ -61,12 +48,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 
 	?>
 	<div class="block-account col-xs-12 no-padding">
-		<h4 style="text-transform: none;"><i class='fa fa-trash '></i> <?php echo "Supprimer mon compte"; ?></h4>
-		<div class="sub-cat" >
-			Si vous souhaitez supprimer votre compte : 
-			<a href="javascript:;" id="btn-delete-element-setting" class="btn btn-danger btn-sm"> <i class="fa fa-trash "></i> </a>
-		</div>
-	</div>
+		<h4 style="text-transform: none;"><i class='fa fa-trash '></i> <?php echo "Supprimer mon compte"; ?> <a href="javascript:;" id="btn-delete-element-setting" class="btn btn-danger btn-sm"> <i class="fa fa-trash "></i> </a></h4>
 
 <?php } ?>
 </div>

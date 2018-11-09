@@ -543,6 +543,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 		});
 
 		$('#modal-invite #btnValider').click(function(e){
+			$('#modal-invite #btnValider').prop("disabled", true);
 			mylog.log("#modal-invite #btnValider", Object.keys(listInvite.organizations).length, Object.keys(listInvite.citoyens).length);
 			if( Object.keys(listInvite.organizations).length > 0 || 
 				Object.keys(listInvite.citoyens).length > 0 || 

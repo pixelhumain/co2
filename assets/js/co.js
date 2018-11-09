@@ -2419,6 +2419,18 @@ var collection = {
 			//console.warn("applying Color",what,id)
 		}
 	},
+	isFavorites : function (type, id){
+		res=false;
+		if(userConnected && userConnected.collections){
+			$.each(userConnected.collections, function(name, listCol){
+				if(typeof listCol[type] != "undefined" && typeof listCol[type][id] != "undefined"){
+					res=name;
+					return false;
+				}
+			});
+		}
+		return res;
+	},
 	add2fav : function (what,id,col){
 		var collection = (typeof col == "undefined") ? "favorites" : col;
 		if(userId){
@@ -2438,7 +2450,7 @@ var collection = {
               				} 
 						}else{*/
 							$(el).removeClass("text-yellow"); 
-							$(el).children("i").removeClass("fa-star text-yellow").addClass('fa-star-o');
+							$(el).find("i").removeClass("fa-star text-yellow").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
 						//}
 					}
@@ -2453,7 +2465,7 @@ var collection = {
               			}
 						else*/
 							$(el).addClass("text-yellow"); 
-							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-yellow');
+							$(el).find("i").removeClass("fa-star-o").addClass('fa-star text-yellow');
 
 						if(!userConnected.collections)
 							userConnected.collections = {};

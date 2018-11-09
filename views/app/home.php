@@ -21,17 +21,17 @@
   HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->assetsUrl);
 
     $cssAnsScriptFilesTheme = array(
-        "/plugins/jquery-cropbox/jquery.cropbox.css",
-        "/plugins/jquery-cropbox/jquery.cropbox.js",
+        /*"/plugins/jquery-cropbox/jquery.cropbox.css",
+        "/plugins/jquery-cropbox/jquery.cropbox.js",*/
         // SHOWDOWN
         '/plugins/showdown/showdown.min.js',
         //MARKDOWN
         '/plugins/to-markdown/to-markdown.js',
-        '/plugins/jquery.qrcode/jquery-qrcode.min.js',
+     /*   '/plugins/jquery.qrcode/jquery-qrcode.min.js',
         '/plugins/fullcalendar/fullcalendar/fullcalendar.min.js',
         '/plugins/fullcalendar/fullcalendar/fullcalendar.css', 
         '/plugins/fullcalendar/fullcalendar/locale/'.Yii::app()->language.'.js',
-        
+        */
         
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);

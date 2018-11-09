@@ -541,7 +541,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 	            			if($type ==Person::COLLECTION){ ?>
 
 		            			<li class="text-left">
-									<a href="#page.type.<?php echo Person::COLLECTION ?>.id.<?php echo Yii::app()->session["userId"] ?>.view.settings.page.myAccount" class="lbh bg-white">
+									<a href="#settings.page.myAccount" class="lbh bg-white">
 										<i class="fa fa-cogs"></i> <?php echo Yii::t("common", "My parameters") ; ?>
 									</a>
 								</li>

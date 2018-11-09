@@ -2,6 +2,8 @@
     $cssAnsScriptFilesModule = array(
     '/plugins/jquery-simplePagination/jquery.simplePagination.js',
     '/plugins/jquery-simplePagination/simplePagination.css',
+    '/plugins/facemotion/faceMocion.css',
+    '/plugins/facemotion/faceMocion.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
     $cssAnsScriptFilesModule = array(

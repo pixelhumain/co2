@@ -9,6 +9,7 @@ on garde les librairies specifique au module dans le module
 		'/js/co.js',
 		'/js/default/directory.js',
 		'/js/default/index.js',
+		'/js/default/notifications.js',
 		//'/js/default/directory.js',
 		'/js/dataHelpers.js',
 		'/js/sig/localisationHtml5.js',

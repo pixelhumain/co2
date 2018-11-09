@@ -493,12 +493,12 @@ function initPageTable(number){
         dyFObj.openForm(type);
     });
     $('.tooltips').tooltip();
-    $(".dirStar").each(function(i,el){
-      collection.applyColor($(el).data('type'),$(el).data('id'));
-    });
+//    $(".dirStar").each(function(i,el){
+  //    collection.applyColor($(el).data('type'),$(el).data('id'));
+    //});
     bindLBHLinks();
   	//parcours tous les boutons link pour vérifier si l'entité est déjà dans mon répertoire
-  	$.each( $(".followBtn"), function(index, value){
+  	/*$.each( $(".followBtn"), function(index, value){
     	var id = $(value).attr("data-id");
    		var type = $(value).attr("data-type");
       //mylog.log("error type :", type);
@@ -531,7 +531,7 @@ function initPageTable(number){
 			  $(value).attr("data-ownerlink","unfollow");
         $(value).addClass("followBtn");
    		}
-   	});
+   	});*/
 
   	//on click sur les boutons link
 	$(".followBtn").off().on("click", function(){
@@ -550,10 +550,8 @@ function initPageTable(number){
 		mylog.log(".followBtn",type);
 		type = (type == "person") ? "people" : dyFInputs.get(type).col;
 		mylog.log(".followBtn",type);
-
 		var thiselement = this;
 		$(this).html("<i class='fa fa-spin fa-circle-o-notch text-azure'></i>");
-		//mylog.log(formData);
 		var linkType = (type == "events") ? "connect" : "follow";
 		if ($(this).attr("data-ownerlink")=="follow"){
 			$.ajax({
@@ -564,9 +562,11 @@ function initPageTable(number){
 				success: function(data) {
 					if(data.result){
 						toastr.success(data.msg);	
-						$(thiselement).html("<i class='fa fa-unlink text-green'></i>");
-						$(thiselement).attr("data-ownerlink","unfollow");
-						$(thiselement).attr("data-original-title", (type == "events") ? trad.notparticipateanymore : trad.notfollowanymore);
+            labelLink=(type == "events") ? trad.alreadyAttendee : trad.alreadyFollow;
+            $(thiselement).html("<small><i class='fa fa-unlink'></i> "+labelLink+"</small>");
+						$(thiselement).addClass("text-green");
+            $(thiselement).attr("data-ownerlink","unfollow");
+						$(thiselement).attr("data-original-title", labelLink);
 						//var parent  = (notNull(data.parentEntity) ? data.parentEntity : data.parent) ;
 						addFloopEntity(id, type, data.parent);
 					}
@@ -585,9 +585,11 @@ function initPageTable(number){
 				success: function(data){
 					mylog.log("YOYOY", data);
 					if ( data && data.result ) {
-						$(thiselement).html("<i class='fa fa-chain'></i>");
+            labelLink=(type == "events") ? trad.participate : trad.Follow;
+						$(thiselement).html("<small><i class='fa fa-chain'></i> "+labelLink+"</small>");
 						$(thiselement).attr("data-ownerlink","follow");
-						$(thiselement).attr("data-original-title", (type == "events") ? trad.participate : trad.Follow);
+						$(thiselement).attr("data-original-title", labelLink);
+            $(thiselement).removeClass("text-green");
 						removeFloopEntity(data.parentId, type);
             toastrMsg=(type == "events") ? trad.younotparticipateanymore : trad["You are not following"];
 						toastr.success(toastrMsg+" "+data.parent.name);
@@ -1150,17 +1152,18 @@ var directory = {
         });
       }
 
-      var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classifieds"])>=0 )  ? false : true;
+      //var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classifieds"])>=0 )  ? false : true;
       if(typeof params.edit  != "undefined" && notNull(params.edit))
         str += this.getAdminToolBar(params);
 
-      mylog.log("isFollowed ?", params.isFollowed, params.id, inMyContacts(params.typeSig, params.id), 
-                addFollowBtn, location.hash.indexOf("#page") < 0);
+    //  mylog.log("isFollowed ?", params.isFollowed, params.id, inMyContacts(params.typeSig, params.id), 
+      //          addFollowBtn, location.hash.indexOf("#page") < 0);
 
-      if(userId != null && userId != "" && params.id != userId && 
-        !inMyContacts(params.typeSig, params.id) && addFollowBtn && 
-        location.hash.indexOf("#page") < 0){
-        isFollowed=false;
+      
+      if(userId != null && userId != "" && typeof params.id != "undefined" && typeof params.type != "undefined") 
+        str+=directory.socialToolsHtml(params);
+
+        /*isFollowed=false;
 
         if(typeof params.isFollowed != "undefined" ) isFollowed=true;
         
@@ -1179,7 +1182,7 @@ var directory = {
          userId != null && userId != "")
       str += "<button id='btn-share-"+params.type+"' class='pull-left text-light btn btn-link no-padding btn-share'"+
                                     " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
-                                    "<small><i class='fa fa-retweet'></i> "+trad["share"]+"</small></button> ";
+                                    "<small><i class='fa fa-retweet'></i> "+trad["share"]+"</small></button> ";*/
 
       str += "</div>";
 
@@ -1223,54 +1226,19 @@ var directory = {
 		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 
 
-		var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
+		//var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
     if(typeof params.edit  != "undefined" && notNull(params.edit))
 		  str += this.getAdminToolBar(params);
 
-		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
-			isFollowed=false;
-
-			if(typeof params.isFollowed != "undefined" )
-        if(params.type=="events"){
-				  isFollowed=true;
-    			mylog.log("isFollowed", params.isFollowed, isFollowed);
-    			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
-    			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-    					' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-    					" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-    					"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-    			 "</a>";
-        }
-		}
-
-		
-    
-    /*if(params.type=="events"){
-      if(params.updated != null && params.updated.indexOf(trad.ago)>=0)
-         params.updated = trad.rightnow;
-
-      if(params.updated != null && !params.useMinSize)
-        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
-
-    }else{*/
-      if( params.tobeactivated == true ){
-        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["Wait for confirmation"]+" </span></div>";
-      }else{
-        timeAction= /*(params.type=="events") ? trad.created :*/ trad.actif;
-        if(params.updated != null )
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
-      //}
-      }
+    if( params.tobeactivated == true ){
+      str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["Wait for confirmation"]+" </span></div>";
+    }else{
+      timeAction= /*(params.type=="events") ? trad.created :*/ trad.actif;
+      if(params.updated != null )
+        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
+    }
       
-
-    
-
-
-    var linkAction = ( $.inArray(params.type, ["poi","classifieds","ressources"])>=0 ) ? " lbh-preview-element" : " lbh";
-    //params.hash+= ( $.inArray(params.type, ["poi","classifieds","ressources"])>=0 ) ? "" : ".net";
-    
-		//var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
-		// if(typeof params.size == "undefined" || params.size == "max")
+    var linkAction = ( $.inArray(params.type, ["poi","classifieds"])>=0 ) ? " lbh-preview-element" : " lbh";
     if(typeof params.imgType !="undefined" && params.imgType=="banner"){
   		str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
           str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
@@ -1351,13 +1319,82 @@ var directory = {
       str += dateFormated+countSubEvents;
     }
     str += "<div class='entityDescription'>" + ( (params.shortDescription == null ) ? "" : params.shortDescription ) + "</div>";
+   
   	str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+      if(typeof params.counts != "undefined"){
+        str+="<div class='col-xs-12 no-padding communityCounts'>";
+        $.each(params.counts, function (key, count){
+          iconLink=(key=="followers") ? "link" : "group";
+            str +=  "<small class='pull-left lbh letter-light bg-transparent url elipsis bold countMembers margin-right-10'>"+
+                      "<i class='fa fa-"+iconLink+"'></i> "+ count + " " + trad[key] +
+                    "</small>";
+        });
+        str+="</div>";
+      }
+
+      if(userId != null && userId != "" && typeof params.id != "undefined" && typeof params.type != "undefined") 
+        str+=directory.socialToolsHtml(params);  
+      str += "</div>";
   	str += "</div>";
   	str += "</div>";
   	str += "</div>";
   	str += "</div>";
   	return str;
 	},
+  socialToolsHtml: function(params){
+    str="<div class='col-xs-12 no-padding actionSocialBtn margin-bottom-5'>";
+        if(params.id != userId && $.inArray(params.type, ["events", "organizations", "citoyens","projects"])>=0){
+          tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
+          classBind="followBtn";
+          if(typeof myContacts[params.type] != "undefined" && typeof myContacts[params.type][params.id] != "undefined"){
+            if(typeof myContacts[params.type][params.id].isFollowed != "undefined" || params.type=="events"){
+              tip = (params.type == "events") ? trad["alreadyAttendee"] : trad['alreadyFollow'];
+              strLink="<i class='fa fa-unlink'></i> "+tip;
+              actionType="unfollow";
+              classBind+=" text-green";
+            }else{
+              classBind="text-green disabled";
+              titleMember=(params.type=="organizations")?trad.alreadyMember : trad.alreadyContributor; 
+              strLink="<i class='fa fa-user-circle'></i> "+titleMember;
+            }
+          }else{
+            strLink="<i class='fa fa-link fa-rotate-270'></i> "+tip;
+            actionType="follow";
+          }
+          
+          //mylog.log("isFollowed", params.isFollowed, isFollowed);
+          str += "<button class='pull-left btn btn-link no-padding margin-right-10 btn-element-panel-link "+classBind+"'" + 
+                  ' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
+                  " data-ownerlink='"+actionType+"' data-id='"+params.id+"' data-type='"+params.type+"'"+
+                  " data-name='"+params.name+"'>"+ // data-isFollowed='"+isFollowed+"'
+                  "<small>"+strLink+"</small>"+ 
+                "</button>";
+        }else if($.inArray(params.type, ["poi","classifieds"])>=0){
+            isInFavorite=collection.isFavorites(params.type, params.id);
+            tip="<i class='fa fa-star-o'></i> ";
+            col=null;
+            classBtn="";
+            actionFav="onclick='collection.add2fav(\""+params.type+"\",\""+params.id+"\")'";
+            if(isInFavorite){
+              if(isInFavorite != "favorites")
+                actionFav="onclick='collection.add2fav(\""+params.type+"\",\""+params.id+"\", \""+isInFavorite+"\")'";
+              classBtn="letter-yellow-k";
+              tip="<i class='fa fa-star'></i> ";
+            }
+            tip+=trad.Favorites;
+            str += "<button "+actionFav+" class='dirStar star_"+params.type+"_"+params.id+" btn btn-link no-padding margin-right-10 pull-left "+classBtn+"'" +
+                  " data-id='"+params.id+"' data-type='"+params.type+"'>"+
+                    "<small>"+tip+"</small>"+
+                  "</button>";
+          
+        }
+        if(params.type != "citoyens")
+        str += "<button id='btn-share-"+params.type+"' class='pull-left btn no-padding  btn-link btn-share'"+
+                                      " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
+                                      "<small><i class='fa fa-retweet'></i> "+trad["share"]+"</small></button> ";
+        str += "</div>";
+      return str;
+  },
   // interopPanelHtml : function(params){
   //     mylog.log("----------- interopPanelHtml OLD",params, params.type,params.name, params.url);
 

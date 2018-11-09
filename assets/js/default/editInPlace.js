@@ -753,8 +753,8 @@ function bindAboutPodElement() {
     							hashPage=location.hash.split(".view");
     							strHash=".view"+hashPage[1];
     						}	
-    						location.hash = data.resultGoods.values.slug+strHash;
-    						hashUrlPage="#"+data.resultGoods.values.slug;
+    						location.hash = "@"+data.resultGoods.values.slug+strHash;
+    						hashUrlPage="#@"+data.resultGoods.values.slug;
 							contextData.slug=data.resultGoods.values.slug;
 							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
 							//loadDataDirectory(connectType, "user", true);

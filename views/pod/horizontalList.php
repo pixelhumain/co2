@@ -1,7 +1,8 @@
 <style type="text/css">
 	.containerStatus{
 		width: 100%;
-		/*border-bottom: 1px solid #eee;*/
+		display: inline-block;
+		background: none;
 	}
 	.containerStatus .imageProfil{
 		margin-top: 10px;

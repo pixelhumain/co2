@@ -81,36 +81,6 @@ function resizeInterface()
 
 }
 
-function initNotifications(){
-	
-	$('.btn-menu-notif').off().click(function(){
-	  mylog.log("click notification main-top-menu");
-      showNotif();
-    });
-    /*$('.my-main-container .btn-menu-notif').off().click(function(){
-	  mylog.log("click notification my-main-container");
-      showNotif();
-    });*/
-}
-function showNotif(show){
-	if(typeof show == "undefined"){
-		if($("#notificationPanelSearch").css("display") == "none") show = true; 
-    	else show = false;
-    }
-
-    if(show){
-    	$('#notificationPanelSearch').show("fast");
-    	markAllAsSeen(false,"");
-    	refreshNotifications(userId,"citoyens","","menuTop");
-
-    }
-	else 	 $('#notificationPanelSearch').hide("fast");
-
-	
-	$("#dropdown-user, #dropdown-dda, .dropdownApps-menuTop").removeClass("open");
-    showFloopDrawer(false);
-}
-
 function checkScroll(){
 	$(".main-top-menu").animate({
  							top: 0,

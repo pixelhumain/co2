@@ -6,7 +6,9 @@
 
 	$cssAnsScriptFilesTheme = array(
 		"/plugins/Chart-2.6.0/Chart.min.js",
-		"/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css"
+		"/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css",
+		'/plugins/facemotion/faceMocion.css',
+   	  '/plugins/facemotion/faceMocion.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 

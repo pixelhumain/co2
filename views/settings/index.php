@@ -254,7 +254,7 @@ jQuery(document).ready(function() {
 	$(".link-docs-menu").off().on("click",function(){
 		if($(this).hasClass("down-menu")){
 			// $("#menu-left > ul > li > a").removeClass("active").find("i").removeClass("fa-angle-down").addClass("fa-angle-right");
-			$(".subMenu .link-docs-menu").removeClass("active");
+			$(".link-docs-menu").removeClass("active");
 			$(this).addClass("active").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
 		}else{
 			$(".subMenu .link-docs-menu").removeClass("active");

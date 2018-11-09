@@ -188,7 +188,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
   	<ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
   		<li class="col-xs-12 no-padding">
 			<a href="javascript:" class="link-docs-menu down-menu" data-page="myAccount">
-				<i class="fa fa-angle-right"></i> <?php echo Yii::t("common","My Account"); ?>
+				<i class="fa fa-angle-right"></i> <?php echo Yii::t("settings","My Account"); ?>
 			</a>
 		</li>
   		<li class="col-xs-12 no-padding">

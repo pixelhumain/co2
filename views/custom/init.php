@@ -44,6 +44,7 @@ if( @$_GET["el"] || @$custom )
             $stum[0] = Organization::COLLECTION;
         $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
         
+        //soit on a un ID soit un slug
         if (is_string($stum[1]) && strlen($stum[1]) == 24 && ctype_xdigit($stum[1]) )
             $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
         else 

@@ -1152,17 +1152,18 @@ var directory = {
         });
       }
 
-      var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classifieds"])>=0 )  ? false : true;
+      //var addFollowBtn = ( $.inArray(params.type, ["news", "poi", "ressources", "classifieds"])>=0 )  ? false : true;
       if(typeof params.edit  != "undefined" && notNull(params.edit))
         str += this.getAdminToolBar(params);
 
-      mylog.log("isFollowed ?", params.isFollowed, params.id, inMyContacts(params.typeSig, params.id), 
-                addFollowBtn, location.hash.indexOf("#page") < 0);
+    //  mylog.log("isFollowed ?", params.isFollowed, params.id, inMyContacts(params.typeSig, params.id), 
+      //          addFollowBtn, location.hash.indexOf("#page") < 0);
 
-      if(userId != null && userId != "" && params.id != userId && 
-        !inMyContacts(params.typeSig, params.id) && addFollowBtn && 
-        location.hash.indexOf("#page") < 0){
-        isFollowed=false;
+      
+      if(userId != null && userId != "" && typeof params.id != "undefined" && typeof params.type != "undefined") 
+        str+=directory.socialToolsHtml(params);
+
+        /*isFollowed=false;
 
         if(typeof params.isFollowed != "undefined" ) isFollowed=true;
         
@@ -1181,7 +1182,7 @@ var directory = {
          userId != null && userId != "")
       str += "<button id='btn-share-"+params.type+"' class='pull-left text-light btn btn-link no-padding btn-share'"+
                                     " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
-                                    "<small><i class='fa fa-retweet'></i> "+trad["share"]+"</small></button> ";
+                                    "<small><i class='fa fa-retweet'></i> "+trad["share"]+"</small></button> ";*/
 
       str += "</div>";
 
@@ -1225,54 +1226,19 @@ var directory = {
 		str +=    '<div class="searchEntity" id="entity'+params.id+'">';
 
 
-		var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
+		//var addFollowBtn = ( $.inArray(params.type, ["poi","ressources"])>=0 )  ? false : true;
     if(typeof params.edit  != "undefined" && notNull(params.edit))
 		  str += this.getAdminToolBar(params);
 
-		if(userId != null && userId != "" && params.id != userId && !inMyContacts(params.typeSig, params.id) && addFollowBtn && location.hash.indexOf("#page") < 0){
-			isFollowed=false;
-
-			if(typeof params.isFollowed != "undefined" )
-        if(params.type=="events"){
-				  isFollowed=true;
-    			mylog.log("isFollowed", params.isFollowed, isFollowed);
-    			tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
-    			str += "<a href='javascript:;' class='btn btn-default btn-sm btn-add-to-directory bg-white tooltips followBtn'" + 
-    					' data-toggle="tooltip" data-placement="left" data-original-title="'+tip+'"'+
-    					" data-ownerlink='follow' data-id='"+params.id+"' data-type='"+params.type+"' data-name='"+params.name+"' data-isFollowed='"+isFollowed+"'>"+
-    					"<i class='fa fa-chain'></i>"+ //fa-bookmark fa-rotate-270
-    			 "</a>";
-        }
-		}
-
-		
-    
-    /*if(params.type=="events"){
-      if(params.updated != null && params.updated.indexOf(trad.ago)>=0)
-         params.updated = trad.rightnow;
-
-      if(params.updated != null && !params.useMinSize)
-        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> " + params.updated + "</div>";
-
-    }else{*/
-      if( params.tobeactivated == true ){
-        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["Wait for confirmation"]+" </span></div>";
-      }else{
-        timeAction= /*(params.type=="events") ? trad.created :*/ trad.actif;
-        if(params.updated != null )
-          str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
-      //}
-      }
+    if( params.tobeactivated == true ){
+      str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+trad["Wait for confirmation"]+" </span></div>";
+    }else{
+      timeAction= /*(params.type=="events") ? trad.created :*/ trad.actif;
+      if(params.updated != null )
+        str += "<div class='dateUpdated'><i class='fa fa-flash'></i> <span class='hidden-xs'>"+timeAction+" </span>" + params.updated + "</div>";
+    }
       
-
-    
-
-
     var linkAction = ( $.inArray(params.type, ["poi","classifieds"])>=0 ) ? " lbh-preview-element" : " lbh";
-    //params.hash+= ( $.inArray(params.type, ["poi","classifieds","ressources"])>=0 ) ? "" : ".net";
-    
-		//var linkAction = ( typeof modules[params.type] != "undefined" && modules[params.type].lbhp == true ) ? " lbhp' data-modalshow='"+params.id+"' data-modalshow='"+params.id+"' " : " lbh'";
-		// if(typeof params.size == "undefined" || params.size == "max")
     if(typeof params.imgType !="undefined" && params.imgType=="banner"){
   		str += "<a href='"+params.hash+"' class='container-img-banner add2fav "+linkAction+">" + params.imgBanner + "</a>";
           str += "<div class='padding-10 informations tooltips'  data-toggle='tooltip' data-placement='top' data-original-title='"+tipIsInviting+"'>";
@@ -1366,9 +1332,18 @@ var directory = {
         str+="</div>";
       }
 
-      if(userId != null && userId != "" && typeof params.id != "undefined" && typeof params.type != "undefined"){ 
-        str+="<div class='col-xs-12 no-padding actionSocialBtn margin-bottom-5'>";
-        if(params.id != userId && addFollowBtn && $.inArray(params.type, ["events", "organizations", "citoyens","projects"])>=0){
+      if(userId != null && userId != "" && typeof params.id != "undefined" && typeof params.type != "undefined") 
+        str+=directory.socialToolsHtml(params);  
+      str += "</div>";
+  	str += "</div>";
+  	str += "</div>";
+  	str += "</div>";
+  	str += "</div>";
+  	return str;
+	},
+  socialToolsHtml: function(params){
+    str="<div class='col-xs-12 no-padding actionSocialBtn margin-bottom-5'>";
+        if(params.id != userId && $.inArray(params.type, ["events", "organizations", "citoyens","projects"])>=0){
           tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
           classBind="followBtn";
           if(typeof myContacts[params.type] != "undefined" && typeof myContacts[params.type][params.id] != "undefined"){
@@ -1403,7 +1378,7 @@ var directory = {
             if(isInFavorite){
               if(isInFavorite != "favorites")
                 actionFav="onclick='collection.add2fav(\""+params.type+"\",\""+params.id+"\", \""+isInFavorite+"\")'";
-              classBtn="text-yellow";
+              classBtn="letter-yellow-k";
               tip="<i class='fa fa-star'></i> ";
             }
             tip+=trad.Favorites;
@@ -1417,15 +1392,9 @@ var directory = {
         str += "<button id='btn-share-"+params.type+"' class='pull-left btn no-padding  btn-link btn-share'"+
                                       " data-ownerlink='share' data-id='"+params.id+"' data-type='"+params.type+"'>"+
                                       "<small><i class='fa fa-retweet'></i> "+trad["share"]+"</small></button> ";
-        str += "</div>";  
-      }
-      str += "</div>";
-  	str += "</div>";
-  	str += "</div>";
-  	str += "</div>";
-  	str += "</div>";
-  	return str;
-	},
+        str += "</div>";
+      return str;
+  },
   // interopPanelHtml : function(params){
   //     mylog.log("----------- interopPanelHtml OLD",params, params.type,params.name, params.url);
 

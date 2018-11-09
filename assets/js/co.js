@@ -2449,8 +2449,8 @@ var collection = {
                 				$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o'); 
               				} 
 						}else{*/
-							$(el).removeClass("text-yellow"); 
-							$(el).find("i").removeClass("fa-star text-yellow").addClass('fa-star-o');
+							$(el).removeClass("letter-yellow-k"); 
+							$(el).find("i").removeClass("fa-star letter-yellow-k").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
 						//}
 					}
@@ -2464,8 +2464,8 @@ var collection = {
               				}
               			}
 						else*/
-							$(el).addClass("text-yellow"); 
-							$(el).find("i").removeClass("fa-star-o").addClass('fa-star text-yellow');
+							$(el).addClass("letter-yellow-k"); 
+							$(el).find("i").removeClass("fa-star-o").addClass('fa-star letter-yellow-k');
 
 						if(!userConnected.collections)
 							userConnected.collections = {};

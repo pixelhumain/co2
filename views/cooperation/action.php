@@ -288,6 +288,10 @@
 	   	</button><br/>
 	<?php }else if( $auth ){ ?>
 		<h5 class="letter-green pull-right"><i class="fa fa-check"></i> Vous participez à cette action</h5>
+		<button class="btn btn-default letter-green bold  btn-assignee" 
+				data-target="#modalLinkAction" data-toggle="modal">
+			<i class="fa fa-user-plus "></i> <?php echo Yii::t("common",'Assigner une personne') ; ?>
+	   	</button><br/>
 	<?php }	?>
 
 	<?php if( @$action["links"]["contributors"] ) {	?>

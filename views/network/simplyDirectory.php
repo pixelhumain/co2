@@ -659,6 +659,12 @@ function dataSuccess(data, indexMin, indexMax, locality){
 	//affiche les éléments sur la carte
 	Sig.restartMap();
 	Sig.showMapElements(Sig.map, mapElements);
+	if(typeof mapElements != "undefined")
+		Sig.showMapElements(Sig.map, mapElements);
+	else if(notNull(networkJson) && notNull(networkJson.skin) && notNull(networkJson.skin.initmap))
+		Sig.centerPopupMarker(networkJson.skin.initmap, 8);
+
+	//Sig.centerPopupMarker([ 43.0542733, 2.51247145749955 ], 8);
 	//on affiche le nombre de résultat en bas
 	var s = "";
 	var length = ($( "div.searchEntity" ).length);
@@ -1326,7 +1332,13 @@ function updateMap(){
 	refreshResultHeader(countResult);
 	 // mylog.log("filteredList", filteredList);
 	Sig.restartMap();
-	Sig.showMapElements(Sig.map,filteredList);
+	mylog.log("test", filteredList.length);
+	if(filteredList.length > 0)
+		Sig.showMapElements(Sig.map,filteredList);
+	else if(notNull(networkJson) && notNull(networkJson.skin) && notNull(networkJson.skin.initmap))
+		Sig.centerPopupMarker(networkJson.skin.initmap, 12);
+
+	//Sig.centerPopupMarker([ 43.0542733, 2.51247145749955 ], 8);
 	$.unblockUI();
 }
 

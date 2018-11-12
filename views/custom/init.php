@@ -42,6 +42,9 @@ if( @$_GET["el"] || @$custom )
     else {
         if($stum[0] == "o")
             $stum[0] = Organization::COLLECTION;
+        if($stum[0] == "p")
+            $stum[0] = Project::COLLECTION;
+        
         $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
         
         //soit on a un ID soit un slug
@@ -64,8 +67,8 @@ if( @$_GET["el"] || @$custom )
         if (@$el["custom"]["logo"]) 
             $c["logo"] = Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true).$el["custom"]["logo"];
         else if( @$el["profilImageUrl"] ) {
-            $c["logo"] = $el["profilImageUrl"];
-            $el["custom"]["logo"]=$el["profilImageUrl"];
+            $c["logo"] = Yii::app()->createUrl($el["profilImageUrl"]);
+            $el["custom"]["logo"]=Yii::app()->createUrl($el["profilImageUrl"]);
         }
     }
 
@@ -130,14 +133,14 @@ if( @Yii::app()->session['custom'] ){  ?>
     ;}
    
     <?php if( @Yii::app()->session['custom']["logo"]){ ?>
-        
-        
+        color1=(typeof custom.color1 != "undefined") ? custom.color1 : "#ff9205";
+        color2=(typeof custom.color1 != "undefined") ? custom.color2 : "#3dd4ed";
         themeObj.blockUi = {
             processingMsg :'<div class="lds-css ng-scope">'+
                     '<div style="width:100%;height:100%" class="lds-dual-ring">'+
                         '<img src="'+custom.logo+'" class="loadingPageImg" height=80>'+
-                        '<div style="border-color: transparent #ff9205 transparent #ff9205;"></div>'+
-                        '<div style="border-color: transparent #3dd4ed transparent #3dd4ed;"></div>'+
+                        '<div style="border-color: transparent '+color1+' transparent '+color1+';"></div>'+
+                        '<div style="border-color: transparent '+color2+' transparent '+color2+';"></div>'+
                     '</div>'+
                 '</div>', 
             errorMsg : '<img src="'+custom.logo+'" class="logo-menutop" height=80>'+

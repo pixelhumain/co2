@@ -33,6 +33,10 @@
         max-height: 250px;
         overflow-y: scroll;
     }
+    .populateAroundMe.text-explain{
+        overflow-y: inherit;
+        box-shadow: none !important;
+    }
     #localActivity{
         position: absolute;
         right: 101%;
@@ -52,7 +56,8 @@
         margin-bottom: 0px !important;
     }
     #ex1Slider{
-        width: 100% !important;
+        width: 90% !important;
+        margin-left: 5%;
     }
     #ex1Slider .slider-selection{
         background: #e6344d !important;
@@ -67,6 +72,13 @@
         background-image: -webkit-linear-gradient(top,#e6344d 0,#e6344d 100%);
         background-image: -o-linear-gradient(top,#e6344d 0,#e6344d 100%);
         background-image: linear-gradient(to bottom,#e6344d 0,#e6344d 100%);
+    }
+    .title-pod-now{
+        font-size: 15px !important;
+        font-weight: 800;
+        margin-bottom: 10px !important;
+        width: 100%;
+        float: left;
     }
 </style>
 
@@ -85,24 +97,23 @@
     ?>
     <?php } else { ?>
         <h6 class="no-margin header-nowList" style="font-size:13px">
-            <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> 
+         <!--   <i class="fa fa-cog letter-red hidden"></i> <i class="fa fa-bell"></i> 
             <?php echo Yii::t("common","Territorial activity") ?>
 
-            <br>
-            
-            <small class="text-red"><i class="fa fa-home"></i> <span class="city-name-around"></span></small>
-
-            <div class="results-in-my-city">
-            </div>
-            <br>
-            
-
-            <small class="text-red"><i class="fa fa-map-marker"></i> <?php echo $scope["name"]; ?></small>
-           
+            <br>-->
+            <small class="text-red title-pod-now"><i class="fa fa-home"></i> <span class="city-name-around"></span></small>
         </h6> 
+        <div class="results-in-my-city">
+        </div>
+        <hr class="angle-down">
+        <h6 class="no-margin header-nowList" style="font-size:13px">
+        
+
+            <small class="text-red title-pod-now"><i class="fa fa-street-view"></i> <?php echo Yii::t("common", "Around me") ?></small> <!--<?php echo $scope["name"]; ?>-->
+        </h6>   
         <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0,5" data-slider-max="100" data-slider-step="1" data-slider-value="30" data-slider-ticks="[0, 100]" data-slider-ticks-snap-bounds="1" data-slider-ticks-labels='["0km", "100km"]'/>
         <!--<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">5</span></span>-->
-        <hr class="angle-down">
+        <!--<hr class="angle-down">-->
         <center>
             <button class="btn btn-default btn-sm btn-show-onmap block" id="btn-show-activity-onmap">
                 <i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Show on the map") ?>
@@ -212,21 +223,12 @@ jQuery(document).ready(function() {
         //tooltip: 'always',
         ticks: [0.1, 100],
         ticks_labels: ['100m', '100km'],
-           // formatter: function(value) {
-             //   aroundMe(value);
-            //return 'Current value: ' + value;
-            //}
+           
         });
         slider.on("slideStop", function(sliderValue) {
             aroundMe(sliderValue);
-           // document.getElementById("ex1SliderVal").textContent = sliderValue;
         });
     }
- /*   $("#ex6").slider();
-    $("#ex6").on("slide", function(slideEvt) {
-         aroundMe(slideEvt.value);
-        $("#ex6SliderVal").text(slideEvt.value);
-});*/
     //needed to open preview
     
     // $(".elemt_date").each(function() {
@@ -239,8 +241,6 @@ jQuery(document).ready(function() {
         Sig.showMapElements(Sig.map, localActivity, "clock-o", "Activité territoriale");
         showMap(true);
     });
-    //$('#mapLegende').html("<i class='fa fa-clock-o'></i> Activité territoriale");
-    //$('#mapLegende').show();
 
     $(".btn-communecter").click(function(){
         communecterUser();
@@ -273,8 +273,6 @@ function bindAroundEvent(){
             $("#localActivity").removeClass("hidden");
             $("#localActivity, .podAroundMeNow").off().mouseleave(function(){
                 $("#localActivity").hide();
-                //$(this).addClass("hidden").html("");
-                //$(".el-nowList").removeClass("hidden");
             });
             bindLBHLinks();
             initBtnShare();
@@ -323,14 +321,28 @@ function initCityView(){
                     if(typeof data.count != "undefined" && Object.keys(data.count).length > 0){
                         $(".city-name-around").html(trad.In+" "+nameCommunexion);
                         html="";
+                        total=0;
                         $.each(data.count, function(e, v ){
                             if(v > 0){
+                                total+=v;
                                 typeSearch= (e=="citoyens") ? "persons" : e;
                                 urlSearch="#search?types="+typeSearch+"&scopeType=communexion&cities="+keyCommunexion;
                                 colorBtn=(typeof typeObj[e].sameAs != "undefined") ? typeObj[typeObj[e].sameAs].color : typeObj[e].color; 
                                 html+="<a href='"+urlSearch+"' class='lbh text-"+colorBtn+"'> <span class='badge bg-"+colorBtn+"'>"+v+"</span> "+trad[e]+"</a><br/>";
                             }
                         });
+                        if(total == 0){
+                            html='<h4 class="no-margin" style="font-size:13px">'+
+                                '<small class="text-red"><i class="fa fa-map-o"></i> <?php echo Yii::t("home","Be the first to reference an element on your territory") ?>.</small>'+
+                            '</h4>'+
+                            '<br>'+
+                            '<span style="font-family: 11px;">'+
+                                '<i class="fa fa-creative-commons"></i> <?php echo Yii::t("home","You are the main protagonist to create its free and open map") ?>.'+
+                                '<br>'+
+                                '<i class="fa fa-magic"></i> <?php echo Yii::t("home","Reference your city hall, a NGO, a local business, a place or an initiative <b>you know around you</b>.")?><br>'+
+                            '</span>';
+                        
+                        }
                         $(".results-in-my-city").html(html);
                         bindLBHLinks();
                     }
@@ -367,9 +379,20 @@ function aroundMe(dist){
                 {
                     if(typeof data.results != "undefined" && Object.keys(data.results).length > 0){
                         populatePodAroudMe(data.results);
+                        $("#btn-show-activity-onmap").show(700);
                         bindAroundEvent();
                     }else{
-                        $(".populateAroundMe").html("<span>Nada, be the first adding smthg</span>");
+                        html='<h4 class="no-margin" style="font-size:13px">'+
+                                '<small class="text-red"><i class="fa fa-rss"></i> <?php echo Yii::t("home","No activity around you. Be the first to show that your territory is moving") ?>.</small>'+
+                            '</h4>'+
+                            '<br>'+
+                            '<span style="font-family: 11px;">'+
+                                '<i class="fa fa-plus-circle"></i> <?php echo Yii::t("home","Add an event, a point of interest, a classified") ?>.'+
+                                '<br><br>'+
+                                '<i class="fa fa-magic"></i> <?php echo Yii::t("home","If nobody shares what he knows, nothing could be commonly bigger.")?><br>'+
+                            '</span>';
+                        $("#btn-show-activity-onmap").hide(700);
+                        $(".populateAroundMe").html(html).addClass("text-explain");
                     }
                 }
             }
@@ -424,7 +447,7 @@ function populatePodAroudMe(results){
                 //'<div class="previewLocalActivity hidden" id="localActivity'+v.type+idEl+'">'+
             str+='</div>';
     });
-    $(".populateAroundMe").html(str);
+    $(".populateAroundMe").html(str).removeClass("text-explain");
 }
 function enlargeNow() { 
     if(!$(".col-feed.closed").length){

@@ -1305,7 +1305,7 @@ var smallMenu = {
 			//this uses blockUI
 			if(type == "blockUI"){
 				colorCSS = (color == "black") ? 'rgba(0,0,0,0.70)' : 'rgba(256,256,256,0.85)';
-				colorCSS = (color == "black") ? '#fff' : '#000';
+				colorText = (color == "black") ? '#fff' : '#000';
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",

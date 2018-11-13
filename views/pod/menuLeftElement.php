@@ -66,12 +66,12 @@
 		}
 	</style>
 	<div class="pull-left col-xs-12 no-padding margin-bottom-15 shadow2 boxBtnLink">
-        	<?php $this->renderPartial('../element/linksMenu', 
-    			array("linksBtn"=>$linksBtn,
-    					"elementId"=>(string)$element["_id"],
-    					"elementType"=>$type,
-    					"elementName"=> $element["name"],
-    					"openEdition" => $openEdition) 
+        	<?php $this->renderPartial('co2.views.element.linksMenu', 
+    			array(  "linksBtn"      => $linksBtn,
+    					"elementId"   => (string)$element["_id"],
+    					"elementType" => $type,
+    					"elementName" => $element["name"],
+    					"openEdition" => $openEdition ) 
     			); 
     		?>
 	</div>

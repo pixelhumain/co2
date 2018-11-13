@@ -37,7 +37,7 @@
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
-	$id = $_GET['id'];
+	//$id = $_GET['id'];
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 
 	
@@ -168,7 +168,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 	// 	$this->renderPartial('../element/confirmDeleteModal', array("id" =>(String)$element["_id"], "type"=>$type)); 
 	?>
 <?php 
-	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
+	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('co2.views.element.confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
     <!-- <section class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
@@ -186,7 +186,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 	    <?php } ?>
         
         <?php 
-	    	$this->renderPartial('../element/banner', 
+	    	$this->renderPartial('co2.views.element.banner', 
 			        			array(	"iconColor"=>$iconColor,
 			        					"icon"=>$icon,
 			        					"type"=>$type,
@@ -211,7 +211,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 					 );
 				else $images="";	
 				
-				$this->renderPartial('../pod/fileupload', 
+				$this->renderPartial('co2.views.pod.fileupload', 
 								array("itemId" => (string) $element["_id"],
 									  "itemName" => $element["name"],
 									  "type" => $type,
@@ -527,7 +527,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 						<i class="fa fa-chevron-down"></i>
 			  		</button>-->
 			  		<ul class="dropdown-menu arrow_box menu-params">
-	                	<?php $this->renderPartial('../element/linksMenu', 
+	                	<?php $this->renderPartial('co2.views.element.linksMenu', 
 													array("linksBtn"=>$linksBtn,
 															"elementId"=>(string)$element["_id"],
 															"elementType"=>$type,
@@ -690,7 +690,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
                             "iconColor" => $iconColor
                         );
 
-    	$this->renderPartial('../cooperation/pod/modals', $params ); 
+    	$this->renderPartial('co2.views.cooperation.pod.modals', $params ); 
     ?>
 
 	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 
@@ -705,7 +705,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
                                 "linksBtn" => $linksBtn
                                 );
 
-	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
+	    	$this->renderPartial('co2.views.pod.menuLeftElement', $params ); 
 	    ?>
 	</div>
 
@@ -857,7 +857,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
 
-		<?php $this->renderPartial('../pod/qrcode',array(		"type" => @$type,
+		<?php $this->renderPartial('co2.views.pod.qrcode',array(		"type" => @$type,
 																"name" => @$element['name'],
 																"address" => @$address,
 																"address2" => @$address2,
@@ -887,7 +887,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 </div>	
 
 <?php 
-	$this->renderPartial('../pod/confidentiality',
+	$this->renderPartial('co2.views.pod.confidentiality',
 			array(  "element" => @$element, 
 					"type" => @$type, 
 					"edit" => @$edit,

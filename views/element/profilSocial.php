@@ -548,9 +548,15 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 
 					<?php 	} else {  ?>
 		            			<li class="text-left">
-									<a href="javascript:;" id="" class="bg-white editConfidentialityBtn">
+									<a href="#settings.page.confidentialityCommunity?slug=<?php echo $element['slug'] ; ?>" id="" class="bg-white ">
 										<i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
 										</a>
+								</li>
+
+								<li class="text-left">
+									<a href="#settings.page.notificationsCommunity?slug=<?php echo $element['slug'] ; ?>" class="lbh bg-white">
+										<i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Notifications preferences"); ?>
+									</a>
 								</li>
 
 								<li class="text-left">

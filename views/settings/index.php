@@ -45,43 +45,28 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 	}
 	ul.subMenu > li > a{
 		font-size:16px;
-		color: #354C57;
-		width: 100%;
-	    float: left;
-	    padding: 5px 30px;
-	    text-align: left;
 	}
-	#menu-left > ul > li > a {
+	#menu-left > ul > li > a, ul.subMenu > li > a{
 		color: #354C57;
 		width: 100%;
 	    float: left;
 	    padding: 5px 20px;
 	    text-align: left;
 	}
-
-	#menu-left > ul.subMenu > li > a{
-		color: #354C57;
-		width: 100%;
-	    float: left;
-	    padding: 5px 30px;
-	    text-align: left;
-	}
-
 	#menu-left ul li .subMenu, #menu-left > ul > li > a{
 		border-bottom: 1px solid #ccc;
 	}
 	#menu-left > ul > li > a.active, #menu-left > ul > li > a:hover{
 		text-decoration: none;
-		color: #E5344D;
+		background-color:#E5344D;
+		color: white;
 		font-size: 22px;
 	}
 	ul.subMenu > li > a.active, ul.subMenu > li > a:hover{
-		border-left: 4px solid #2BB0C6;
-		color: #2BB0C6;
-		font-size:16px;
+		border-left: 4px solid #E5344D;
+		color: #E5344D;
+		font-size:18px;
 		text-decoration: none;
-		padding-left: 30px;
-		font-weight: bold;
 	}
 	#menu-left ul li a.active span.text-red, #menu-left ul li a:hover span.text-red{
 		color:#354C57 !important;
@@ -97,7 +82,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 	}
 	ul.subMenu{
 		/*display:none;*/
-
 	}
 	ul.subMenu{
 		padding-left: 30px
@@ -172,7 +156,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 	}
   
 }
-
 @media (min-width: 991px) {
   #menu-left {
     left:0 !important;
@@ -241,6 +224,7 @@ jQuery(document).ready(function() {
 		initSettings(page);
 	else
 		initSettings("notificationsAccount");
+	
 	$("#close-settings").off().on("click",function(){
 		$("#modal-settings").hide(300);
 		if(initUrlSettings.indexOf("#settings") >= 0)

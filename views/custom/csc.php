@@ -2,27 +2,6 @@
 <div class="pageContent">
 
 
-<!--<div id="affix-sub-menu" class="hidden-xs affix">
-    <div id="territorial-menu" class="col-md-10 col-sm-10 col-xs-12 margin-bottom-10">
-        <?php //if(false){
-            $params = CO2::getThemeParams();
-            foreach ($params["pages"] as $key => $value) {
-                if(@$value["inMenu"]==true && @$value["open"]==true){ ?>
-                    <a href="javascript:;" data-hash="<?php echo $key; ?>" 
-                    class="<?php echo $key; ?>ModBtn btn btn-link pull-left btn-menu-to-app hidden-top link-submenu-header lbh-menu-app">
-                            
-                    <i class="fa fa-<?php echo $value["icon"]; ?>"></i>
-                    <span class="<?php echo str_replace("#","",$key); ?>ModSpan"><?php echo Yii::t("common", $value["subdomainName"]); ?></span>
-                    <span class="<?php echo @$value["notif"]; ?> topbar-badge badge animated bounceIn badge-warning"></span>
-                    <?php if(@$value["notif"]){ ?>
-                    <?php } ?>
-                </a>  
-            <?php   }
-            } ?>
-    </div>
-</div>-->
-
-
 <style type="text/css">
   #customHeader{
     margin-top: 0px;

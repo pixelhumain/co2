@@ -1075,7 +1075,8 @@ var urlCtrl = {
 			else
 	       		showPanel(panelName,null,title);
 	       	
-	    }*/  else if( hash.indexOf("#settings") >= 0 ){
+	    }*/  
+	    else if( hash.indexOf("#settings") >= 0 ){
 	    	if(userId == "" )
 	    		$('#modalLogin').modal("show");
 	    	else{
@@ -1130,8 +1131,9 @@ var urlCtrl = {
 		 			}
 				});
 			}else{
-				if(typeof custom == "undefined" || typeof custom.url=="undefined")	
+				//if(typeof custom == "undefined" || typeof custom.url=="undefined")	
 					showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
+				//else
 			}
 		}
 	    else if ( moduleId != activeModuleId) {
@@ -3098,6 +3100,8 @@ function initKInterface(params){ console.log("initKInterface");
         	$(".menu-btn-scope-filter").removeClass("active");
         	$("#vertical .btn-show-filters.hidden-xs").show(200);
         	headerHeightPos(true);
+        	if(typeof themeParams.numberOfApp != "undefined" && themeParams.numberOfApp<=1)
+        		$("#mainNav").addClass("borderShadow");
         	headerScaling=false;
         	infScroll=false;
         }

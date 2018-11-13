@@ -24,8 +24,6 @@
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 
-   // $params = CO2::getThemeParams();
-
     $maxImg = 5;
 
     $page = "search";

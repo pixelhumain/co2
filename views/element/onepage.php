@@ -19,8 +19,6 @@
 			  '/plugins/to-markdown/to-markdown.js',
 			  ), Yii::app()->request->baseUrl);
 
-	$themeParams = CO2::getThemeParams();
-
 	$imgDefault = $this->module->assetsUrl.'/images/news/profile_default_l.png';
 
 	//récupération du type de l'element
@@ -48,7 +46,7 @@
 								"#page.type.".$type.".id.".$element["_id"];
    
 	//$hashOnepage = $hash.".".$themeParams["onepageKey"][0];
-	$hashOnepage = "#page.type.".$type.".id.".$element["_id"].".view.".$themeParams["onepageKey"][0];
+	$hashOnepage = "#page.type.".$type.".id.".$element["_id"].".view.".Yii::app()->session['paramsConfig']["onepageKey"][0];
 
     $typeItemHead = $typeItem;
     if($typeItem == "organizations" && @$element["type"]) $typeItemHead = $element["type"];
@@ -124,7 +122,7 @@
 			<i class="fa fa-user-circle"></i> Visualiser comme un visiteur
 		</a>
 	<?php }else if(@$_GET["mode"]=="noedit"){ ?>
-		<a href="<?php echo $hash.".".$themeParams["onepageKey"][0]; ?>" 
+		<a href="<?php echo $hash.".".Yii::app()->session['paramsConfig']["onepageKey"][0]; ?>" 
 			class="btn btn-link bg-red letter-white font-blackoutM btn-onepage-quickview lbh">
 			<i class="fa fa-cogs"></i> Activer l'edition de la page
 		</a>

@@ -34,18 +34,19 @@ class AppController extends CommunecterController {
 
         //Yii::app()->theme = "CO2";
         Yii::app()->session["theme"] = "CO2";
-        $params = CO2::getThemeParams();
+       // $params = CO2::getThemeParams();
         
-        $hash = (@Yii::app()->session["userId"]) ? $params["pages"]["#app.index"]["redirect"]["logged"] : $params["pages"]["#app.index"]["redirect"]["unlogged"];
+        $hash = (@Yii::app()->session["userId"]) ? Yii::app()->session['paramsConfig']["pages"]["#app.index"]["redirect"]["logged"] : Yii::app()->session['paramsConfig']["pages"]["#app.index"]["redirect"]["unlogged"];
         $params = array("type" => @$type );
 
         if(!@$hash || @$hash=="") $hash="search";
         //echo @$hash; exit;
-        if(@$hash == "web"){
+        if(@$hash == "web")
             self::actionWeb();
-        }else{
+        else if($hash=="annonces")
+            self::actionAnnonces();
+        else
            echo $this->renderPartial($hash, $params, true);
-        }
     }
 
 

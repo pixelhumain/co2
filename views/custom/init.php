@@ -42,6 +42,9 @@ if( @$_GET["el"] || @$custom )
     else {
         if($stum[0] == "o")
             $stum[0] = Organization::COLLECTION;
+        if( empty($stum[0]) && empty($stum[1])){
+            throw new CTKException("Cannot get Ellement : check type, ID or Slug");
+        }
         $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
         
         //soit on a un ID soit un slug

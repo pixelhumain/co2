@@ -312,12 +312,16 @@ class AppController extends CommunecterController {
             $element = Survey::getById($id);
         }
 
+        //element deleted 
         if( (!empty($element["status"]) && $element["status"] == "deleted") ||  
             (!empty($element["tobeactivated"]) && $element["tobeactivated"] == true) )
              $this->redirect( Yii::app()->createUrl($controller->module->id) );
+
+        //visibility authoraizations
         if(!Preference::isPublicElement(@$element["preferences"]) &&
              (!@Yii::app()->session["userId"] || !Authorisation::canSeePrivateElement(@$element["links"], $type, $id, $element["creator"], @$element["parentType"], @$element["parentId"])))
             $this->redirect( Yii::app()->createUrl($controller->module->id) );
+
         if(@$element["parentId"] && @$element["parentType"] && 
             $element["parentId"] != "dontKnow" && $element["parentType"] != "dontKnow")
             $element['parent'] = Element::getSimpleByTypeAndId( $element["parentType"], $element["parentId"]);
@@ -325,6 +329,7 @@ class AppController extends CommunecterController {
         if(@$element["organizerId"] && @$element["organizerType"] && 
             $element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow")
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
+        
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,

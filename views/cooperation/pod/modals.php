@@ -112,7 +112,7 @@
       </div>
        -->
        <div class="modal-body padding-25">
-		<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$type)); ?>
+		<?php $this->renderPartial('co2.views.cooperation.pod.home', array("type"=>$type)); ?>
       </div>
       <div class="modal-footer">
       	<div id="modalAction" style="display:inline"></div>

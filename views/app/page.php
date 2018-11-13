@@ -1,6 +1,6 @@
 <?php 
     
-    $this->renderPartial("../news/newsAssets");
+    $this->renderPartial("co2.views.news.newsAssets");
 
 	HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css') , Yii::app()->theme->baseUrl. '/assets');
 	//$cssAnsScriptFilesModule = array('');
@@ -31,11 +31,12 @@
                $type == Project::COLLECTION || $type == Organization::COLLECTION || 
                $type == Place::COLLECTION){
     			$params = array("element"=>$element , 
+                                "id" => @$id,
+                                "type" => @$type,
     							"page" => "page",
     							"edit"=>$edit,
     							"openEdition" => $openEdition,
     							"linksBtn" => $linksBtn,
-    							"type" => $type,
     							"isLinked" => $isLinked,
     							"controller" => $controller,
     							"countStrongLinks" => $countStrongLinks,
@@ -45,11 +46,11 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if(Yii::app()->params["CO2DomainName"] == "terla")
-                    $this->renderPartial('../element/terla/index', $params );
+                    $this->renderPartial('co2.views.element.terla.index', $params );
                 else if(in_array($view, $onepageKey)) 
-                    $this->renderPartial("../element/onepage", $params);
+                    $this->renderPartial("co2.views.element.onepage", $params);
                 else 
-                    $this->renderPartial('../element/profilSocial', $params ); 
+                    $this->renderPartial('co2.views.element.profilSocial', $params ); 
             }
 
             if($type == News::COLLECTION){
@@ -62,7 +63,7 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
-                $this->renderPartial('../news/standalone', $params ); 
+                $this->renderPartial('co2.views.news.standalone', $params ); 
             }
 
             if($type == Product::COLLECTION){
@@ -75,9 +76,9 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if(($element["creator"]==Yii::app()->session["userId"] || @Yii::app()->session["superAdmin"]) && $view != "show")
-                    $this->renderPartial('../element/terla/dashboard', $params );
+                    $this->renderPartial('co2.views.element.terla.dashboard', $params );
                 else
-                    $this->renderPartial('../element/standalone', $params ); 
+                    $this->renderPartial('co2.views.element.standalone', $params ); 
             }
             if($type == Service::COLLECTION){
                 $params = array("element"=>$element , 
@@ -89,9 +90,9 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if($element["creator"]==Yii::app()->session["userId"] && $view != "show")
-                    $this->renderPartial('../element/terla/dashboard', $params );
+                    $this->renderPartial('co2.views.element.terla.dashboard', $params );
                 else
-                    $this->renderPartial('../element/standalone', $params ); 
+                    $this->renderPartial('co2.views.element.standalone', $params ); 
             }
             if($type == Survey::COLLECTION){
                 $params = array("survey"=>$element , 
@@ -100,7 +101,7 @@
                                 "controller" => $controller,
                                 );
 
-                $this->renderPartial('../survey/entryStandalone', $params ); 
+                $this->renderPartial('co2.views.survey.entryStandalone', $params ); 
             }
 
             if($type == Classified::COLLECTION){
@@ -137,7 +138,7 @@
                                 "type" => $type,
                                 "controller" => $controller,
                                 );
-                $this->renderPartial('../poi/standalone', $params ); 
+                $this->renderPartial('co2.views.poi.standalone', $params ); 
             }
 		?>
 	</div>

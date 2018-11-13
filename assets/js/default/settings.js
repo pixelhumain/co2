@@ -337,7 +337,7 @@ var settings = {
 	    	$("#modal-delete-element").modal("show");
 	    });
 
-	    $("#downloadProfil").click(function () {
+	    $("#downloadProfil-setting").click(function () {
 			$.ajax({
 				url: baseUrl+"/"+moduleId+"/data/get/type/citoyens/id/"+contextData.id ,
 				type: 'POST',

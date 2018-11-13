@@ -2997,6 +2997,65 @@ function showLoader(id){
 	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 }
 
+function updateSlug() {
+		/*var type=type;
+		var canEdit=canEdit;
+		var hasRc=hasRc;*/
+		var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
+				timer : false,
+				dynForm : {
+					jsonSchema : {
+						title : tradDynForm.updateslug,// trad["Update network"],
+						icon : "fa-key",
+						onLoads : {
+							sub : function(){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  				  .addClass("bg-dark");
+								//bindDesc("#ajaxFormModal");
+							}
+						},
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	//removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							dyFObj.closeForm();
+							toastr.success("Votre identifiant URL a bien été enregistré");
+							strHash="";
+    						if(location.hash.indexOf(".view")>0){
+    							hashPage=location.hash.split(".view");
+    							strHash=".view"+hashPage[1];
+    						}	
+    						location.hash = "@"+data.resultGoods.values.slug+strHash;
+    						hashUrlPage="#@"+data.resultGoods.values.slug;
+							contextData.slug=data.resultGoods.values.slug;
+							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
+							//loadDataDirectory(connectType, "user", true);
+							//changeHiddenFields();
+						},
+						properties : {
+							info : {
+				                inputType : "custom",
+				                html:"<p class='text-dark'><i class='fa fa-info-circle'></i> "+tradDynForm.infoslug+"<hr></p>",
+				            },
+				            block : dyFInputs.inputHidden(),
+							id : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(), 
+							slug : dyFInputs.slug(tradDynForm.slug,tradDynForm.slug,{minlength:3/*, uniqueSlug:true*/}),
+						}
+					}
+				}
+			};
+		var dataUpdate = {
+			block : "info",
+	        id : contextData.id,
+	        typeElement : contextData.type,
+	        slug : contextData.slug,	
+		};
+		dyFObj.openForm(form, "sub", dataUpdate);		
+	}
+
 function bindButtonOpenForm(){ 
 	//window select open form type (selectCreate)
 	$(".btn-open-form").off().on("click",function(){

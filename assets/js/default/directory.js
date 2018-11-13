@@ -188,7 +188,7 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
             loadingData = false;     
         },
         success: function(data){ 
-            mylog.log(">>> success autocomplete search", data); //mylog.dir(data);
+            mylog.log(">>> success autocomplete search !!!! ", data); //mylog.dir(data);
             if(!data){ 
               toastr.error(data.content); 
             } 
@@ -303,6 +303,8 @@ function autoCompleteSearch(indexMin, indexMax, callBack){
               directory.switcherViewer(results);
             //affiche les éléments sur la carte
             console.log("mapElements", results);
+
+            Sig.clearMap();
             Sig.showMapElements(Sig.map, mapElements, "search", "Résultats de votre recherche");
             $(".btn-show-map").off().click(function(){
               if(typeof formInMap != "undefined" && formInMap.actived == true)

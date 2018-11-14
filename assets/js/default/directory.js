@@ -1875,6 +1875,8 @@ var directory = {
             
             if(typeof params.description != "undefined" && params.description != "")
             str += "<div class='entityDescription'>" + params.description + "</div>";
+            if(params.preferences != null && typeof params.preferences.private != "undefined")
+              str += "<div class='col-xs-12 text-red no-padding'> <i class='fa fa-lock'></i> " + tradDynForm.private + "</div>";
             
 
             var thisLocality = "";

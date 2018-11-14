@@ -114,8 +114,7 @@ Nous sommes un collectif d'acteurs de la <b>Haute Vallée de l'Aude (HVA)</b> fo
             <span>
                 C'est simple il suffit de remplir 
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSc8yce4HQQJHflDViNR_NDdlK9t7n3qoD2EjTQKWqNQLzcx8A/viewform?c=0&w=1&usp=mail_form_link">ce questionnaire</a>  <br/> <br/>
-                Et de faire l'adhésion sur <a href="https://www.helloasso.com/associations/le-chaudron/adhesions/adhesion-portail-hva
-">Hello Asso</a> 
+                Et de faire l'adhésion sur portailhva@gmail.com
             </span>
         </div>
         <hr>

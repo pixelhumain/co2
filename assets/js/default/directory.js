@@ -1875,7 +1875,7 @@ var directory = {
             
             if(typeof params.description != "undefined" && params.description != "")
             str += "<div class='entityDescription'>" + params.description + "</div>";
-            if(params.preferences != null && typeof params.preferences.private != "undefined")
+            if(params.preferences != null && typeof params.preferences.private != "undefined" && params.preferences.private)
               str += "<div class='col-xs-12 text-red no-padding'> <i class='fa fa-lock'></i> " + tradDynForm.private + "</div>";
             
 

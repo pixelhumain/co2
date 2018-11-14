@@ -369,11 +369,12 @@
 		if(typeof(object.mentions) != "undefined"){
 		    textComment = mentionsInit.addMentionInText(textComment, object.mentions);
 		}
+		alert(textComment);
 		textComment = linkify(textComment);
 		if(notNull(getText) && getText)
 			return textComment;
 		else
-			$("#item-comment-"+objectId+" .text-comment").html(textComment);
+			$("#text-comment-"+objectId).html(textComment);
 	}
 
 	function bindEventActions(){

@@ -48,7 +48,6 @@ if( @$_GET["el"] || @$custom )
         if( empty($stum[0]) && empty($stum[1])){
             throw new CTKException("Cannot get Ellement : check type, ID or Slug");
         }
-        $el = Element::getByTypeAndId( $stum[0] , $stum[1] );
         
         //soit on a un ID soit un slug
         if (is_string($stum[1]) && strlen($stum[1]) == 24 && ctype_xdigit($stum[1]) )
@@ -73,9 +72,11 @@ if( @$_GET["el"] || @$custom )
             $c["logo"] = Yii::app()->createUrl($el["profilImageUrl"]);
             $el["custom"]["logo"]=Yii::app()->createUrl($el["profilImageUrl"]);
         }
+        $c["request"]["sourceKey"]=[$el["slug"]];
     }
 
     Yii::app()->session['custom'] = $c;
+    CO2::filterThemeInCustom(Yii::app()->session["paramsConfig"]);
             
 } else {
     Yii::app()->session["custom"] = null; 
@@ -86,6 +87,8 @@ if( @Yii::app()->session['custom'] ){  ?>
 
 <script type="text/javascript">
     var custom = <?php echo json_encode(Yii::app()->session['custom']) ?>;
+    //if(typeof custom.appRendering != "undefined")
+    themeParams=<?php echo json_encode(Yii::app()->session['paramsConfig']) ?>;
     custom.init = function(where){
         if(custom.logo){
             $(".topLogoAnim").remove();
@@ -93,10 +96,14 @@ if( @Yii::app()->session['custom'] ){  ?>
         }
         if( typeof custom != "undefined" && custom.type == "cities" )
             setOpenBreadCrum({'cities': custom.id });
+        if(typeof custom.filters != "undefined"){
+            if(typeof custom.filters.sourceKey != "undefined")
+                searchObject.sourceKey=custom.request.sourceKey;
+        }
 
     };
     custom.initMenu = function(where){
-        if(typeof custom.menu != "undefined"){
+        /*if(typeof custom.menu != "undefined"){
             $.each(custom.menu, function(e,v){
                 if(e=="all" && typeof v.label != "undefined")
                     $(".searchModSpan").text(v.label);
@@ -107,29 +114,31 @@ if( @Yii::app()->session['custom'] ){  ?>
                 if(e=="classifieds" && typeof v.label != "undefined")
                     $(".annoncesModSpan").text(v.label);
             });
-        }
+        }*/
         if(typeof custom.menuTop != "undefined"){
             $.each(custom.menuTop, function(e,v){
-                if(e=="DDA")
+                if(e=="DDA" && !v)
                     $(".btn-dashboard-dda").remove();
-                if(e=="donate")
+                if(e=="donate" && !v)
                     $(".donation-btn").remove();
-                if(e=="communexion"){
+                if(e=="communexion" && !v){
                     $(".communexion-btn").remove();
                     //$(".communecter-btn").parent().remove();
                 }
-                if(e=="location")
+                if(e=="location" && !v)
                     $(".menu-btn-scope-filter").remove();
-                if(e=="documentation")
+                if(e=="documentation" && !v)
                     $(".documentation-btn").remove();
-                if(e=="statistics")
+                if(e=="statistics" && !v)
                     $(".statistics-btn").remove();
-                if(e=="search")
+                if(e=="search" && !v)
                     $("#second-search-bar").remove();
-                if(e=="app")
+                if(e=="app" && !v)
                     $("#dropdownApps").remove();
-                if(e=="map")
+                if(e=="map" && !v)
                     $("#btn-show-map").remove();
+                if(e=="home" && !v)
+                    $(".btn-menu-home").remove();
 
             });
         }

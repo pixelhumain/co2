@@ -260,9 +260,8 @@
 			<li><hr></li>
 			<?php }  ?>
 		<?php }  ?>
-		<?php $paramsApp = CO2::getThemeParams(); 
-				if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
-				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
+		<?php  if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				    Yii::app()->session['paramsConfig']["pages"]["#annonces"]["open"] == true){ ?>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classifieds" data-icon="bullhorn">
 					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
@@ -304,7 +303,7 @@
 		
 
 		<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
-				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
+				    Yii::app()->session['paramsConfig']["pages"]["#annonces"]["open"] == true){ ?>
 			<li><hr></li>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="surveys" data-icon="gavel">

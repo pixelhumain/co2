@@ -24,8 +24,7 @@
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="" id="onepage">
 		<?php 
-            $params = CO2::getThemeParams();
-            $onepageKey = $params["onepageKey"];
+            $onepageKey = @Yii::app()->session['paramsConfig']["onepageKey"];
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
                $type == Project::COLLECTION || $type == Organization::COLLECTION || 

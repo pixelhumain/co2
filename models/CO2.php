@@ -65,6 +65,7 @@ class CO2 {
             )
         );
     }
+    
     public static function getThemeParams($domainName=null){
     	$domainName = @$domainName ? $domainName : Yii::app()->params["CO2DomainName"];
     	
@@ -75,7 +76,42 @@ class CO2 {
 		$params = json_decode($str, true);
     	return $params;
     }
+    /*public static function getThemeParams($domainName=null){
+        $domainName = @$domainName ? $domainName : Yii::app()->params["CO2DomainName"];
+        
+        $layoutPath ="../../modules/co2/config/".$domainName."/params.json";
 
+        $str = file_get_contents($layoutPath);
+
+        $params = json_decode($str, true);
+        return $params;
+    }*/
+    public static function filterThemeInCustom($params){
+        $menuApp=array("classifieds"=>"#annonces", "all"=>"#search", "events"=>"#agenda", "news"=>"#live");
+        //filter menu app custom 
+        if(@Yii::app()->session["custom"]["menu"]){
+            $countApp=0;
+            foreach($menuApp as $key => $hash){
+                if(@Yii::app()->session["custom"]["menu"][$key]){
+                    $countApp++;
+                    if(@Yii::app()->session["custom"]["menu"][$key]["label"])
+                        $params["pages"][$hash]["subdomainName"]=Yii::app()->session["custom"]["menu"][$key]["label"];
+                    if(@Yii::app()->session["custom"]["menu"][$key]["icon"])
+                        $params["pages"][$hash]["icon"]=Yii::app()->session["custom"]["menu"][$key]["icon"];
+                }else{
+                    unset($params["pages"][$hash]);
+                }
+            }
+            $params["numberOfApp"]=$countApp;
+        }
+        if(@Yii::app()->session["custom"]["appRendering"])
+            $params["appRendering"]=Yii::app()->session["custom"]["appRendering"];
+        if(@Yii::app()->session["custom"]["redirect"])
+            $params["pages"]["#app.index"]["redirect"]=Yii::app()->session["custom"]["redirect"];
+        if(@Yii::app()->session["custom"]["add"])
+            $params["add"]=Yii::app()->session["custom"]["add"];
+        Yii::app()->session["paramsConfig"]=$params;
+    }
 
     public static function getContextList($contextName, $domainName=null){
     	$domainName = @$domainName ? $domainName : Yii::app()->params["CO2DomainName"];

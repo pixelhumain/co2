@@ -1356,6 +1356,7 @@ var directory = {
               classBind+=" text-green";
             }else{
               classBind="text-green disabled";
+              actionType="";
               titleMember=(params.type=="organizations")?trad.alreadyMember : trad.alreadyContributor; 
               strLink="<i class='fa fa-user-circle'></i> "+titleMember;
             }

@@ -289,7 +289,6 @@ var isLiveBool=true;
 jQuery(document).ready(function() {
     bindLBHLinks();
 	initKInterface({"affixTop":0});
-	$("#mainNav").addClass("affix");
 	initPageInterface();
     loadNewsStream(isLiveBool);
     // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
@@ -388,6 +387,7 @@ function initPageInterface(){
 
     $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
+        $("#second-search-xs-bar").val($("#second-search-bar").val());
         if(e.keyCode == 13){
             searchObject.text=$(this).val();
             myScopes.type="open";
@@ -396,7 +396,18 @@ function initPageInterface(){
             startGlobalSearch(0, indexStepGS);
          }
     });
-     $("#second-search-bar-addon").off().on("click", function(){
+    $("#second-search-xs-bar").keyup(function(e){ console.log("keyup #second-search-bar");
+        $("#input-search-map").val($("#second-search-xs-bar").val());
+        $("#second-search-bar").val($("#second-search-xs-bar").val());
+        if(e.keyCode == 13){
+            searchObject.text=$(this).val();
+            myScopes.type="open";
+            myScopes.open={};
+            //urlCtrl.loadByHash("#search");
+            startGlobalSearch(0, indexStepGS);
+         }
+    });
+     $("#second-search-bar-addon, #second-search-xs-bar-addon").off().on("click", function(){
         $("#input-search-map").val($("#second-search-bar").val());
         searchObject.text=$("#second-search-bar").val();
         myScopes.type="open";

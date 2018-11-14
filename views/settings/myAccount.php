@@ -54,8 +54,8 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
 </div>
 
 <script type="text/javascript">
-var element = <?php echo json_encode(@$element) ?>;
+contextData = <?php echo json_encode(@$element) ?>;
 jQuery(document).ready(function() {
-	settings.bindMyAccountSettings(element);
+	settings.bindMyAccountSettings(contextData);
 });
 </script>

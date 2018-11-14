@@ -16,7 +16,6 @@
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->baseUrl); 
     
-    $paramsApp = CO2::getThemeParams();
 ?>
 
 <style>
@@ -171,7 +170,7 @@
 <script type="text/javascript" >
 
 var currentCategory = "";
-var titlePage = "<?php echo Yii::app()->params["CO2DomainName"]=="kgougle" ? "Kgougle" : @$paramsApp["pages"]["#web"]["subdomainName"]; ?>";
+var titlePage = "<?php echo Yii::app()->params["CO2DomainName"]=="kgougle" ? "Kgougle" : @$Yii::app()->session['paramsConfig']["pages"]["#web"]["subdomainName"]; ?>";
 
 jQuery(document).ready(function() {
     initKInterface({"affixTop":250});

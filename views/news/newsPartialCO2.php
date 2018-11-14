@@ -88,8 +88,7 @@ foreach($news as $key => $media){
     <div class="timeline-panel"
          id="nbAbuse<?php echo @$media["reportAbuseCount"]; ?>">
          <?php 
-            $params = CO2::getThemeParams();
-            $abuseMax = $params["nbReportCoModeration"];
+            $abuseMax = Yii::app()->session['paramsConfig']["nbReportCoModeration"];
 
             if( @$media["reportAbuseCount"] >= $abuseMax){ ?>
            <h6 class="pull-left">

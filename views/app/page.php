@@ -24,8 +24,7 @@
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="" id="onepage">
 		<?php 
-            $params = CO2::getThemeParams();
-            $onepageKey = $params["onepageKey"];
+            $onepageKey = @Yii::app()->session['paramsConfig']["onepageKey"];
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
                $type == Project::COLLECTION || $type == Organization::COLLECTION || 
@@ -155,7 +154,7 @@ var indexStepGS = 20;
 jQuery(document).ready(function() {
     
 	initKInterface({"affixTop":0});
-	$("#mainNav").addClass("affix");
+	//$("#mainNav").addClass("affix");
 	initPageInterface();
     // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
@@ -172,8 +171,9 @@ function initPageInterface(){
         startGlobalSearch(0, indexStepGS);
     });
 
-   $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
+    $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
+        $("#second-search-xs-bar").val($("#second-search-bar").val());
         if(e.keyCode == 13){
             searchObject.text=$(this).val();
             myScopes.type="open";
@@ -182,7 +182,18 @@ function initPageInterface(){
             startGlobalSearch(0, indexStepGS);
          }
     });
-     $("#second-search-bar-addon").off().on("click", function(){
+    $("#second-search-xs-bar").keyup(function(e){ console.log("keyup #second-search-bar");
+        $("#input-search-map").val($("#second-search-xs-bar").val());
+        $("#second-search-bar").val($("#second-search-xs-bar").val());
+        if(e.keyCode == 13){
+            searchObject.text=$(this).val();
+            myScopes.type="open";
+            myScopes.open={};
+            //urlCtrl.loadByHash("#search");
+            startGlobalSearch(0, indexStepGS);
+         }
+    });
+     $("#second-search-bar-addon, #second-search-xs-bar-addon").off().on("click", function(){
         $("#input-search-map").val($("#second-search-bar").val());
         searchObject.text=$("#second-search-bar").val();
         myScopes.type="open";

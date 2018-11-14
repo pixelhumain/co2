@@ -209,12 +209,15 @@ var formInMap = {
 		});
 
 		$('[name="newElement_city"]').focusout(function(){
-			if(notNull(formInMap.timeoutAddCity)) 
-				clearTimeout(formInMap.timeoutAddCity);
-			if( $('[name="dropdown-newElement_city-found"]').length )
-				formInMap.timeoutAddCity = setTimeout(function(){ $("#dropdown-newElement_city-found").hide(); }, 200);
-			/*if( $('[name="dropdown-newElement_locality-found"]').length )
-				formInMap.timeoutAddCity = setTimeout(function(){ $("#dropdown-newElement_locality-found").hide(); }, 200);*/
+			if($('[name="newElement_city"]').val().trim().length > 1){
+				if(notNull(formInMap.timeoutAddCity)) 
+					clearTimeout(formInMap.timeoutAddCity);
+				if( $('[name="dropdown-newElement_city-found"]').length )
+					formInMap.timeoutAddCity = setTimeout(function(){ $("#dropdown-newElement_city-found").hide(); }, 200);
+				/*if( $('[name="dropdown-newElement_locality-found"]').length )
+					formInMap.timeoutAddCity = setTimeout(function(){ $("#dropdown-newElement_locality-found").hide(); }, 200);*/
+			
+			}
 		});
 
 		$('[name="newElement_city"]').focus(function(){

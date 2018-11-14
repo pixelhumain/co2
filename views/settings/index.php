@@ -11,7 +11,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 <style type="text/css">
 	#menu-left{
 		position: fixed;
-    	z-index: 100000;
+    	/*z-index: 100000;*/
 	    bottom: 0;
 	    top: 60px;
 	    left: 0;
@@ -21,7 +21,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
 	}
 	#header-settings{
 		position: fixed;
-		z-index: 100000;
+		/*z-index: 100000;*/
 		top: 0px;
 		left: 0px;
 		height: 60px;

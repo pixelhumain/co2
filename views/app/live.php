@@ -42,16 +42,10 @@
     $page = "live";
     //$randImg = 1;
 
-    $params = CO2::getThemeParams();
+  
 ?>
 
 <style>
-    <?php if($params["title"] != "Kgougle") { ?>
-   /* header {
-      background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/live/pexels-<?php echo $randImg; ?>.jpeg") top center;
-        min-height:300px;
-    }*/
-    <?php } ?>
      
 	/*.scope-min-header{
         float: left;
@@ -183,7 +177,7 @@ var allNewsType = ["news"];//, "idea", "question", "announce", "information"];
 //var page = "<?php echo $page; ?>";
 searchObject.initType="news";
 <?php if(Yii::app()->params["CO2DomainName"] == "kgougle") $page = "freedom"; ?>
-var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
+var titlePage = "<?php echo @Yii::app()->session['paramsConfig']["pages"]["#".$page]["subdomainName"]; ?>";
 
 var scrollEnd = false;
 /*<?php if(@$type && !empty($type)){ ?>

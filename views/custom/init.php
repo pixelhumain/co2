@@ -59,7 +59,7 @@ if( @$_GET["el"] || @$custom )
                    "type" => $stum[0],
                    "title"=> $el["name"],
                    "assetsUrl"=> (@$el["custom"]["module"]) ? Yii::app()->getModule($el["custom"]["module"])->getAssetsUrl(true) : Yii::app()->getModule($this->module->id)->getAssetsUrl(true),
-                   "url"=> "/custom?el=".(!@$_GET["el"]) ? (string) $el["_id"] : @$_GET["el"] );
+                   "url"=> "/custom?el=".$_GET["el"] );
         
         if(@$el["custom"])
             $c = array_merge( $c , $el["custom"] );

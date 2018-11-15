@@ -127,6 +127,21 @@
 							</a>
 						</div>
 					</div>
+
+					<div class="col-sm-4 col-xs-4 text-right padding-10 margin-top-10">
+						<i class="fa fa-message"></i> <strong><?php echo Yii::t("common","Badge") ;?> :</strong>
+					</div>
+					<div class="col-sm-8 col-xs-8 text-left padding-10">
+						<div class="btn-group btn-group-badge inline-block">
+							<button class="btn btn-default confidentialitySettings" type="badge" value="true">
+								<i class="fa fa-group"></i> <?php echo Yii::t("common","Yes"); ?>
+							</button>
+							<button class="btn btn-default confidentialitySettings" type="badge" value="false">
+								<i class="fa fa-user-secret"></i> <?php echo Yii::t("common","No"); ?>
+							</button>
+						</div>
+					</div>
+
 					<?php if($type != Person::COLLECTION){ ?>
 						<div class="col-sm-4 col-xs-4 text-right padding-10 margin-top-10">
 							<i class="fa fa-message"></i> <strong><?php echo Yii::t("common","Open Edition") ;?> :</strong>

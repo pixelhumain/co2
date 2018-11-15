@@ -38,8 +38,6 @@ class Co2Module extends CWebModule {
 		// import the module-level models and components
 		$this->setImport(array(
 			'citizenToolKit.models.*',
-			'ressources.models.*',
-			//'classifieds.models.*',
 			'eco.models.*',
 			'places.models.*',
 			'chat.models.*',

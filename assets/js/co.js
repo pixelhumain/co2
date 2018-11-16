@@ -530,6 +530,7 @@ function follow(parentType, parentId, childId, childType, callback){
 	});
 }
 
+//connectTo('organizations','5bec0a4c6ff992d6208b457e', '55e042ffe41d754428848363', 'citoyens', 'admin','','true')
 function connectTo(parentType, parentId, childId, childType, connectType, parentName, actionAdmin) {
 	if(parentType=="events" && connectType=="attendee")
 		$(".connectBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");

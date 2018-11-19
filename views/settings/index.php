@@ -241,6 +241,7 @@ jQuery(document).ready(function() {
 			$(".link-docs-menu").removeClass("active");
 			$(this).addClass("active").find("i").removeClass("fa-angle-right").addClass("fa-angle-down");
 		}else{
+			$(".link-docs-menu").removeClass("active");
 			$(".subMenu .link-docs-menu").removeClass("active");
 			$(this).addClass("active");
 			if(!$(this).parents().eq(2).find(".link-docs-menu:first").hasClass("active")){

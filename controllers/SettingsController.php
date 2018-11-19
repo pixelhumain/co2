@@ -44,8 +44,9 @@ class SettingsController extends CommunecterController {
  	}
 
  	public function actionMyAccount($type=null,$id=null){
- 		$element=Element::getElementSimpleById($id, $type, null, array("preferences","name"));
+ 		$element=Element::getElementSimpleById($id, $type, null, array("preferences","name", "slug"));
  		$element["id"] = $id;
+ 		$element["type"] = $type;
  		$params=array(  "element" => @$element, 
 						"type" => $type,
 						"id" => $id,

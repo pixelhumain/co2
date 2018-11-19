@@ -333,6 +333,84 @@
 					?>	
 				</div>
 			</div>
+			
+			<div class="col-md-12 col-sm-12 col-xs-12 contentInformation no-padding">
+				<div class="col-md-4 col-sm-4 col-xs-4 hidden-xs labelAbout padding-10">
+					<span><i class="fa fa-hashtag"></i></span> <?php echo Yii::t("common","Badge"); ?>
+				</div>
+				<div id="tbadgeAbout" class="col-md-8 col-sm-8 col-xs-12 valueAbout padding-10">
+					<span class="visible-xs pull-left margin-right-5">
+						<i class="fa fa-hashtag"></i> <?php echo Yii::t("common","Badge"); ?> :
+					</span>
+					<style type="text/css">
+						.badgePH{ 
+							cursor: pointer;
+							display: inline-block;
+							margin-right: 10px;
+						}
+						.badgePH .fa-stack .main { font-size:2.2em}
+						.badgePH .fa-stack .mainTop { margin-top:-3px}
+						.badgePH .fa-stack .fa-circle-o{ font-size:4em;}
+						/* Tooltip container */
+						.opendata .mainTop{
+						    color: black;
+						    font-size: 1.3em;
+						    padding: 5px;
+						}
+						.opendata .main{
+						    color: #00cc00;
+						}
+					</style>
+					
+					<?php 
+					if( $type==Person::COLLECTION && !empty($element["badges"])){
+						
+							if( Badge::checkBadgeInListBadges("crowdfunder", $element["badges"]) ){?>
+								<div class="badgePH pull-left" data-title="CROWDFUNDER">
+									<span class="fa-stack tooltips" style="margin-bottom:5px" data-toggle="tooltip" data-placement="bottom" title='<?php echo Yii::t("badge","crowdfunder", null, Yii::app()->controller->module->id)?>'>
+										<i class="fa fa-bookmark main fa-2x fa-stack-1x text-green"></i>
+										<i class="fa fa-euro mainTop fa-stack-1x text-white"></i>
+									</span>
+								</div>
+							<?php } 
+
+							if( Badge::checkBadgeInListBadges("developper", $element["badges"]) ){?>
+								<div class="badgePH pull-left" data-title="DEVELOPPER">
+									<span class="fa-stack tooltips" data-toggle="tooltip" data-placement="bottom" title='<?php echo Yii::t("badge","developper", null, Yii::app()->controller->module->id)?>'>
+										<i class="fa fa-keyboard-o main fa-2x fa-stack-1x text-red"></i>
+										<?php /* ?><i class="fa fa-circle-o fa-4x stack-right-bottom text-yellow"></i>*/?>
+									</span>
+								</div>
+							<?php } 
+							
+							if( Badge::checkBadgeInListBadges("opendata", $element["badges"]) ){?>
+								<div class="badgePH pull-left" data-title="OPENDATA">
+									<span class="fa-stack tooltips opendata" style="margin-bottom:5px" data-toggle="tooltip" data-placement="bottom" title='<?php echo Yii::t("badge","opendata", null, Yii::app()->controller->module->id)?>'>
+										<i class="fa fa-database main fa-stack-1x text-orange"></i>
+										<i class="fa fa-share-alt  mainTop fa-stack-1x text-black"></i>
+									</span>
+								</div>
+							<?php } 
+
+							if( $badges = Badge::getBadgesByLinks($element["links"]) ){ 
+								foreach ($badges as $key => $b) {
+								?>
+								<div class="badgePH pull-left">
+									<span class="fa-stack tooltips" style="margin-bottom:5px" data-toggle="tooltip" data-placement="bottom" title='<?php echo $b["name"]?>'>
+										<?php if(@$b["img"]){ ?>
+										<img src="<?php echo $b["img"]?>" class="img-circle" style="height:40px" >
+										<?php } else { ?>
+											<i class="fa fa-<?php echo Element::getFaIcon ( $b["type"] ) ?> main fa-2x fa-stack-1x text-red"></i>
+										<?php } ?>
+									</span>
+								</div>
+							<?php }
+							} ?>
+
+
+						<?php } ?>
+				</div>
+			</div>
 	</div>
 	
 </div>

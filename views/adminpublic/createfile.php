@@ -1038,7 +1038,7 @@ function createStepTwo(data){
 		$("#divUpdate").hide();
 	}
 
-	nameUpdate = '<input type="text" name="nameMappingUpdate" id="nameMappingUpdate" value='+data.nameUpdate+'>';
+	var nameUpdate = '<input type="text" name="nameMappingUpdate" id="nameMappingUpdate" value='+data.mapping.name+'>';
 	$("#divSaisirNameUpdate").html(nameUpdate);
 	
 	//mylog.log("listElt",listElt);

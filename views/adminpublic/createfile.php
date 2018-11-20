@@ -94,7 +94,7 @@ $this->renderPartial($layoutPath.'header',
 				<div class="homestead text-white" id="menu-step-3">
 					<i class="fa fa-2x fa-circle-o"></i><br/><?php echo Yii::t("common", "Visualisation"); ?>
 				</div>
-				<div class="homestead text-black"><i class="fa fa-2x fa-info-circle"></i><br/><a href="https://wiki.communecter.org/fr/importer-des-donn%C3%A9es.html"  target="_blank" class="homestead text-black"><?php echo Yii::t("import", "Documentation"); ?></a></div>
+				<!-- <div class="homestead text-black"><i class="fa fa-2x fa-info-circle"></i><br/><a href="https://wiki.communecter.org/fr/importer-des-donn%C3%A9es.html"  target="_blank" class="homestead text-black"><?php //echo Yii::t("import", "Documentation"); ?></a></div> -->
 			</div>
 		</center>
 		<!-- SOURCE STEP1 -->
@@ -125,7 +125,7 @@ $this->renderPartial($layoutPath.'header',
 				<?php
 					if(!empty($allMappings)){
 						foreach ($allMappings as $key => $value){
-							if($userId == $value["userId"] || $value["userId"] == "0"){
+							if(empty($value["userId"]) || ( $userId == $value["userId"] || $value["userId"] == "0") ) {
 								echo '<option value="'.$key .'">'.$value["name"].'</option>';
 							}
 						}
@@ -177,7 +177,7 @@ $this->renderPartial($layoutPath.'header',
 		<!-- MAPPING STEP2 -->
 
 <!-- Modal AJOUT MAPPING -->
-<div id="modal-ajout-element" class="modal fade" role="dialog">
+<div id="modal-ajout-element" class="modal fade" role="dialog" style="z-index: 100000;">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -204,7 +204,7 @@ $this->renderPartial($layoutPath.'header',
 </div>
 
 <!-- Modal UPDATE MAPPING -->
-<div id="modal-update-element" class="modal fade" role="dialog">
+<div id="modal-update-element" class="modal fade" role="dialog" style="z-index: 100000;">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -231,7 +231,7 @@ $this->renderPartial($layoutPath.'header',
 </div>
 
 <!-- Modal SUPPRIME MAPPING -->
-<div id="modal-delete-element" class="modal fade" role="dialog">
+<div id="modal-delete-element" class="modal fade" role="dialog" style="z-index: 100000;">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -1024,19 +1024,16 @@ function createStepTwo(data){
 		$("#nbLigneMapping").val(nbLigneMapping);
 	}
 
-
-	if(data.idMapping == "-1" || data.idMapping == "5b0d1b379eaf44ea598b4580" || data.idMapping == "5b0d1b379eaf44ea598b4581" || data.idMapping == "5b0d1b379eaf44ea598b4582" || data.idMapping == "5b0d1b379eaf44ea598b4583" || data.idMapping == "5b1654d39eaf4427171cd718")
-	{
+	console.log("DATA", data);
+	if(typeof data.idMapping == "undefined" || data.idMapping == "-1" ){
 		$("#divAjout").show();
 		$("#divUpdate").hide();
 	}
-	else if(data.idMapping != "")
-	{
+	else if(data.idMapping != ""){
 		$("#divAjout").hide();
 		$("#divUpdate").show();
 	}
-	else
-	{
+	else{
 		$("#divAjout").hide();
 		$("#divUpdate").hide();
 	}
@@ -1402,7 +1399,7 @@ function setMappings(params)
 
 }
 
-/*
+
 function switchChamp(){
 	selectSource = $("#selectSource option:selected").val();
 	hiddenSwitch = $("#hiddenSwitch").val();

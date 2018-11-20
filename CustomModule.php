@@ -45,7 +45,7 @@ class CustomModule extends CWebModule {
 		// import the module-level models and components
 		$this->setImport(array(
 			'citizenToolKit.models.*',
-			'ressources.models.*',
+			//'ressources.models.*',
 			'eco.models.*',
 			'places.models.*',
 			'chat.models.*',

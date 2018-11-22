@@ -872,7 +872,10 @@ var tradDynForm = {
 	"explainvisibleproject": "<?php echo Yii::t("form", "<b>Private :</b> Project visible only by its contributors and create contents accessible only by its community<br/><b>Public :</b> Project visible in search engine and communication available for all") ?>",
 	"makeressourcevisible": "<?php echo Yii::t("form", "Make the ressource publicly visible") ?>",
 	"explainvisibleressource": "<?php echo Yii::t("form", "<b>Private :</b> Ressource visible only by person or community (member & admin) who post it<br/><b>Public :</b> Ressource visible by all") ?>",
+	"whoiscarrytheproject": "<?php echo Yii::t("form", "Who is carrying the project") ?>",
 	"tooManyItemsError": "<?php echo Yii::t("form", "You can&#146;t upload {netItems} items.  Item limit is {itemLimit}.") ?>",
+	"addtothelist":"<?php echo Yii::t("form", "Add to the list") ?>",
+	"changetheelement":"<?php echo Yii::t("form", "Change the element") ?>",
 };
 
 var tradCategory = {

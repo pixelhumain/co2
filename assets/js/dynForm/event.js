@@ -127,6 +127,26 @@ dynForm = {
 	            }
             },
 	        organizerType : dyFInputs.inputHidden(),
+	        organizor : {
+	            inputType : "finder",
+	            label : tradDynForm.whoorganizedevent,
+	           	initType: ["projects", "organizations"],
+    			multiple : true,
+    			openSearch :true,
+    			init: function(){
+    				finder.init("organizor");
+    			}
+			},
+	        parent : {
+	            inputType : "finder",
+	            label : tradDynForm.ispartofevent,
+	           	multiple : false,
+    			initType: ["events"],
+    			openSearch :true,
+    			init: function(){
+    				finder.init("parent");
+    			}
+			},
 	        parentId :{
 	         	label : tradDynForm.ispartofevent+" ?",
             	inputType : "select",

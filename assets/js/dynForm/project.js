@@ -48,6 +48,18 @@ dynForm = {
 			        similarLink : dyFInputs.similarLink,
 		            parentType : dyFInputs.inputHidden(),
 		            parentId : dyFInputs.inputHidden(),
+		            parent : {
+			            inputType : "finder",
+			            label : tradDynForm.whoiscarrytheproject,
+			           	multiple : true,
+			           	rules : { required : true },
+            			initType: ["organizations", "projects"],
+            			openSearch :true
+			        },/*dyFInputs.finder("Qui est le porteur du projet", 
+												{"multiple" : true,
+            										  "initType": "organizations, projects",
+            										  "open" :true
+            							            		}),*/
 		          	public : dyFInputs.checkboxSimple("true", "public", 
             										 {"onText" : trad.yes,
             										  "offText": trad.no,

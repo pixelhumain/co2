@@ -555,7 +555,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 
 								<li class="text-left">
 									<a href="#settings.page.notificationsCommunity?slug=<?php echo $element['slug'] ; ?>" class="lbh bg-white">
-										<i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Notifications preferences"); ?>
+										<i class="fa fa-bell"></i> <?php echo Yii::t("common", "Notifications preferences"); ?>
 									</a>
 								</li>
 

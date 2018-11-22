@@ -173,7 +173,7 @@
 	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Place::COLLECTION){ 
 		if(@$element["properties"] && @$element["properties"]["chart"]) 
 			$countChart=count($element["properties"]["chart"]); 
-		if(@$countChart || $edit || $openEdition){ ?>
+		if(@$countChart || (($edit || $openEdition) && @Yii::app()->session["userId"])){ ?>
 			<li class="">
 				<a href="javascript:" class="ssmla <?php if(@$countChart) echo "btn-start-chart"; else echo "edit-chart"; ?>">
 					<i class="fa fa-heartbeat"></i> <?php echo Yii::t("chart", "Our values"); if(@$countChart) echo " (".$countChart.")" ?>

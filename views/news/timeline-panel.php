@@ -216,7 +216,9 @@ if(@$media["object"]){
         </span>
       </div>    
     </small>  
-          <?php if (@Yii::app()->session["userId"]){ ?>
+          
+          <?php if(!@$media["documentation"]){
+                 if (@Yii::app()->session["userId"]){ ?>
               <div class="btn dropdown pull-right no-padding settingsNews">
                 <strong> • </strong> 
                 <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="color:#8b91a0;">
@@ -235,7 +237,7 @@ if(@$media["object"]){
                     <?php }
                 } ?> 
                 <?php if (!@$media["reportAbuse"] || (@$media["reportAbuse"] && !@$media["reportAbuse"][@Yii::app()->session["userId"]])) { ?>
-                    <li><a href="javascript:;" class="newsReport" onclick="newsReportAbuse(this,'<?php echo $key ?>')" data-id="<?php echo $key ?>"><small><i class="fa fa-flag"></i> <?php echo Yii::t("common", "Report an abuse")?></small></a></li>
+                    <li><a href="javascript:;" class="reportAbuse" data-id="<?php echo $key ?>" data-type="<?php echo News::COLLECTION ?>"><small><i class="fa fa-flag"></i> <?php echo Yii::t("common", "Report an abuse")?></small></a></li>
                 <?php } ?>
                 </ul>
               </div>
@@ -252,6 +254,7 @@ if(@$media["object"]){
             </small>
 
           </span>
+          <?php } ?>
         </h5>
   </div>
 

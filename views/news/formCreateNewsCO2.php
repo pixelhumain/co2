@@ -185,7 +185,7 @@
       "restricted"=>array(
         "icon"=>"rss",
         "label"=>ucfirst(Yii::t("common", "followers")),
-        "explain"=>Yii::t("news", "Posted on followers and members wall and visible to all on this wall")//Visible to all on this wall and published on community's network",
+        "explain"=>Yii::t("news", "Posted on followers and members wall and visible to all on this wall")
       ),
       "private"=>array(
         "icon"=>"users",
@@ -384,7 +384,7 @@
   if($contextParentType != "city"){
     Menu::news($type);
     //$this->renderPartial('../default/panels/toolbar'); 
-    $sizeForm="col-sm-12 col-xs-12"; 
+    $sizeForm="col-xs-12"; 
   }else
     $sizeForm="col-xs-12 col-sm-10 col-sm-offset-1";
 

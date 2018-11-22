@@ -42,16 +42,10 @@
     $page = "live";
     //$randImg = 1;
 
-    $params = CO2::getThemeParams();
+  
 ?>
 
 <style>
-    <?php if($params["title"] != "Kgougle") { ?>
-   /* header {
-      background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/live/pexels-<?php echo $randImg; ?>.jpeg") top center;
-        min-height:300px;
-    }*/
-    <?php } ?>
      
 	/*.scope-min-header{
         float: left;
@@ -117,9 +111,9 @@
     }
     <?php } ?>
 
-    .live-container{
+   /* .live-container{
         padding-top:50px !important;
-    }
+    }*/
 
 
 @media (min-width: 991px) {
@@ -183,7 +177,7 @@ var allNewsType = ["news"];//, "idea", "question", "announce", "information"];
 //var page = "<?php echo $page; ?>";
 searchObject.initType="news";
 <?php if(Yii::app()->params["CO2DomainName"] == "kgougle") $page = "freedom"; ?>
-var titlePage = "<?php echo @$params["pages"]["#".$page]["subdomainName"]; ?>";
+var titlePage = "<?php echo @Yii::app()->session['paramsConfig']["pages"]["#".$page]["subdomainName"]; ?>";
 
 var scrollEnd = false;
 /*<?php if(@$type && !empty($type)){ ?>
@@ -280,10 +274,11 @@ jQuery(document).ready(function() {
 
     if(searchObject.text != "") $(".main-search-bar, #second-search-bar").val(searchObject.text);
 
-    $("#main-search-bar, #main-search-xs-bar").keyup(function(e){
+    $("#main-search-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
+        $("#main-search-xs-bar").val($(this).val());
         $("#input-search-map").val($(this).val());
-        $(".main-search-bar").val($(this).val());
+        
         searchObject.text=$(this).val();
         if(e.keyCode == 13 || $(this).val() == ""){
             spinSearchAddon(true);
@@ -291,10 +286,21 @@ jQuery(document).ready(function() {
             KScrollTo("#content-social");
         }
     });
-    $("#main-search-bar, #main-search-xs-bar").change(function(){
+    $("#main-search-xs-bar").keyup(function(e){
         $("#second-search-bar").val($(this).val());
-        $(".main-search-bar").val($(this).val());
-    });
+        $("#main-search-bar").val($(this).val());
+        $("#input-search-map").val($(this).val());
+        searchObject.text=$(this).val();
+        if(e.keyCode == 13 || $(this).val() == ""){
+            spinSearchAddon(true);
+            startNewsSearch(true); 
+            KScrollTo("#content-social");
+        }
+    })
+   // $("#main-search-bar, #main-search-xs-bar").change(function(){
+     //   $("#second-search-bar").val($(this).val());
+       // $(".main-search-bar").val($(this).val());
+    //});
 
     $("#second-search-bar").keyup(function(e){
         $(".main-search-bar").val($(this).val());

@@ -1,6 +1,6 @@
 
 <!-- ************ MAIN MODAL CO-SPACE ********************** -->
-<div class="modal fade" tabindex="-1" role="dialog" id="modalCoop">
+<div class="modal fade" tabindex="-1" role="dialog" id="modalCoop" style="z-index: 100000">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -112,7 +112,7 @@
       </div>
        -->
        <div class="modal-body padding-25">
-		<?php $this->renderPartial('../cooperation/pod/home', array("type"=>$type)); ?>
+		<?php $this->renderPartial('co2.views.cooperation.pod.home', array("type"=>$type)); ?>
       </div>
       <div class="modal-footer">
       	<div id="modalAction" style="display:inline"></div>

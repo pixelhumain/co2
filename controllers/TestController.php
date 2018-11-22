@@ -1749,4 +1749,10 @@ La vie en santé;Santé;;
 		$res = Form::isFinish("cte");
 		Rest::json($res);
 	}
+
+	public function actionMongoIdTest(){
+		Rest::json(MongoId::isValid("54c0965cf6b95c141800a521cp97421") );
+	}
+
+	
 }

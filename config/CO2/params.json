@@ -15,27 +15,49 @@
     "deviseDefault" : "€",
     "nbAdminModeration" : 3,
     "nbReportCoModeration" : 3,
-    
+    "appRendering":"vertical",
     "onepageKey" : [ "co", "net" ],
-
+    "urlKey":{
+    	"eco":"annonces",
+    	"search":"search",
+    	"live":"live",
+    	"page":"page",
+    	"agenda":"agenda",
+    	"index":"index"
+    },
 	"pages" : {
 		
 		"#app.index": {
 			"redirect": {
-				"logged":"search",
+				"logged":"home",
 				"unlogged":"welcome"
 			}
 		},
 
 		"#welcome": {
 			"inMenu" : false, 
-			"useHeader" : false, 
+			"useHeader" : true, 
+			"useFilter" : false, 
 			"open" : true, 
 			"subdomain" : "welcome", 
-			"subdomainName" : "Home",
+			"subdomainName" : "About",
 			"hash" : "#app.welcome",
 			"icon" : "", 
 			"mainTitle" : "Réseau sociétal <span class='text-red'>territorial</span>",
+			"placeholderMainSearch" : "search something ...",
+			"lblBtnCreate" : "Create something",
+			"colorBtnCreate" : "green"
+		},
+		"#myhome": {
+			"inMenu" : false, 
+			"useHeader" : true, 
+			"useFilter" : false, 
+			"open" : true, 
+			"subdomain" : "home", 
+			"subdomainName" : "My home",
+			"hash" : "#app.home",
+			"icon" : "", 
+			"mainTitle" : "My citizen network",
 			"placeholderMainSearch" : "search something ...",
 			"lblBtnCreate" : "Create something",
 			"colorBtnCreate" : "green"
@@ -57,11 +79,13 @@
 		"#search": {
 			"inMenu" : true, 
 			"useHeader" : true, 
+			"useFilter" : true,
 			"open" : true, 
 			"subdomain" : "search", 
-			"subdomainName" : "All",
+			"subdomainName" : "Search",
 			"hash" : "#app.search",
 			"icon" : "search", 
+			"type" : "all",
 			"mainTitle" : "<span class='text-red'>Territorial</span> search engine",
 			"placeholderMainSearch" : "what are you looking for ?",
 			"lblBtnCreate" : "Create a page",
@@ -82,6 +106,7 @@
 		"#web":
       	  	{ "inMenu" : true, 
               "useHeader" : true, 
+              "useFilter" : false,
               "open" : false, 
               "subdomain" : "web", 
               "subdomainName" : "Web",
@@ -105,10 +130,12 @@
 		"#live": {
 			"inMenu" : true, 
 			"useHeader" : true, 
+			"useFilter" : true,
 			"open" : true, 
 			"subdomain" : "live", 
-			"subdomainName" : "News feed",
+			"subdomainName" : "Live",
 			"hash":"#app.live",
+			"type" : "news",
 			"icon" : "newspaper-o", 
 			"mainTitle" : "<span class='text-red'>CO</span>mmon live",
 			"placeholderMainSearch" : "search in live ...",
@@ -122,11 +149,13 @@
 		"#agenda": {
 			"inMenu" : true, 
 			"useHeader" : true, 
+			"useFilter" : true,
 			"open" : true, 
 			"subdomain" : "agenda", 
 			"subdomainName" : "Events",
 			"hash":"#app.agenda",
 			"icon" : "calendar", 
+			"type" : "events",
 			"mainTitle" : "<span class='text-red'>C</span>Ommon agenda",
 			"placeholderMainSearch" : "search an event ...",
 			"lblBtnCreate" : "Create an event",
@@ -142,12 +171,14 @@
 		"#annonces": {
 			"inMenu" : true, 
 			"useHeader" : true, 
+			"useFilter" : true,
 			"open" : true, 
 			"subdomain" : "annonces", 
-			"subdomainName" : "classifieds",
+			"subdomainName" : "Classifieds",
 			"hash" : "#eco",
 			"module":"eco",
 			"icon" : "bullhorn", 
+			"type" : "classifieds",
 			"mainTitle" : "Classified ads",
 			"placeholderMainSearch" : "search among classifieds ...",
 			"lblBtnCreate" : "Create a classified ad",
@@ -197,14 +228,15 @@
 
 		"#page": {
 			"inMenu" : false, 
-			"useHeader" : false, 
+			"useHeader" : true,
+			"useFilter" : false, 
 			"open" : true, 
 			"subdomain" : "page", 
 			"subdomainName" : "page",
 			"hash":"#app.page",
 			"icon" : "", 
 			"mainTitle" : "Réseau social citoyen",
-			"placeholderMainSearch" : "search ..."
+			"placeholderMainSearch" : "search something ..."
 		},
 
 		"#info": {
@@ -261,6 +293,7 @@
 		"#survey": {
 			"inMenu" : false, 
 			"useHeader" : false,
+			"useFilter" : false, 
 			"open" : true,  
 			"subdomain" : "city", 
 			"subdomainName" : "City",
@@ -273,6 +306,7 @@
 		"#admin": {
 			"inMenu" : false, 
 			"useHeader" : false, 
+			"useFilter" : false, 
 			"open" : false, 
 			"subdomain" : "admin", 
 			"subdomainName" : "admin",
@@ -285,6 +319,7 @@
         "#adminpublic": {
             "inMenu" : false, 
             "useHeader" : false, 
+            "useFilter" : false, 
             "open" : false, 
             "subdomain" : "admin", 
             "subdomainName" : "admin",

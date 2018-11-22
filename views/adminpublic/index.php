@@ -31,6 +31,12 @@
 				</a>
 			</li>
 			
+			<li class="list-group-item col-md-4 col-sm-6 ">
+				<a class="lbh text-red" style="cursor:pointer;" href="#adminpublic.mailslist">
+					<i class="fa fa-plus fa-2x"></i>
+					<?php echo Yii::t("common", "Mails"); ?>
+				</a>
+			</li>
 			<!--<li class="list-group-item text-red col-md-4 col-sm-6 ">
 				<a class="lbh" style="cursor:pointer;" href="#adminpublic.chart">
 					<i class="fa fa-plus fa-2x"></i>

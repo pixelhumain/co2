@@ -25,7 +25,7 @@ function initSearchInterface(){
             tagsArray.push(tag);
             //searchObject.text+="#"+tag+" ";
         });
-        $('#tagsFilterInput').val(tagsArray).trigger("change");
+        $('.tagsFilterInput').val(tagsArray).trigger("change");
         //$("#filter-thematic-menu").hide();
         //$("#main-search-bar, #second-search-bar").val(searchObject.text);
         //mylog.log("myMultiTags", myMultiTags);
@@ -38,7 +38,7 @@ function initSearchInterface(){
         startSearch(0, indexStepInit, searchCallback);*/
     });
     $(".btn-tags-start-search").off().on("click", function(){
-        searchObject.tags=$('#tagsFilterInput').val().split(",");
+        searchObject.tags=$('.tagsFilterInput').val();//.split(",");
         searchObject.page=0;
         pageCount=true;
         searchObject.count=true;
@@ -49,7 +49,7 @@ function initSearchInterface(){
     });
     $(".btn-tags-refresh").off().on("click", function(){
         searchObject.tags=[];
-        $('#tagsFilterInput').val("").trigger("change");
+        $('.tagsFilterInput').val("").trigger("change");
         searchObject.page=0;
         pageCount=true;
         searchObject.count=true;
@@ -176,12 +176,15 @@ function initSearchInterface(){
         if(type=="vote") type="entry";
         dyFObj.openForm(type);
     });
+    if(typeof themeParams!="undefined" && typeof themeParams.appRendering != "undefined" && themeParams.appRendering=="vertical"){
+        $(".headerSearchContainer, .bodySearchContainer").removeClass("col-md-10 col-sm-10 col-sm-offset-1 col-md-offset-1");
+    }
     
 }
 function spinSearchAddon(bool){
     removeClass= (bool) ? "fa-arrow-circle-right" : "fa-spin fa-circle-o-notch";
     addClass= (bool) ? "fa-spin fa-circle-o-notch" : "fa-arrow-circle-right";
-    $(".main-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
+    $(".main-search-bar-addon, .second-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
 }
 function startSearchTerla(indexMin, indexMax, callBack){
     var name = $("#second-search-bar").val() != "" ? $("#second-search-bar").val() : $("#new-search-bar").val();
@@ -251,10 +254,10 @@ function initClassifiedInterface(){ return;
 function bindLeftMenuFilters () { 
     $(".btn-directory-type").click(function(){
         var typeD = $(this).data("type");
-        scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
+       // scrollH= ($("#filter-thematic-menu").is(":visible")) ? 250 : 91;
         //simpleScroll(scrollH);
        
-        if(typeD == "events"){
+        if(typeD == "events" && searchObject.initType=="events"){
             if($(this).hasClass("active")){
                 $(this).removeClass("active");    
                 delete searchObject.searchSType;
@@ -284,7 +287,6 @@ function bindLeftMenuFilters () {
         searchObject.page=0;
         if(Object.keys(searchObject.countType).length>1) searchObject.count=false; 
         else searchObject.count=true;
-        pageEvent=false;
         searchObject.type=searchType;
         startSearch(0, indexStepInit, searchCallback);
     });
@@ -577,106 +579,105 @@ function interopSearch(keyS, nameS){
         SEARCH ENGINE
 -------------------------------*/
 function constructSearchObjectAndGetParams(){
-  onchangeClick=false;
-  getStatus="";//location.hash+"?";
-  var searchConstruct={};
-  if(searchObject.text != ""){
-    searchConstruct.name=searchObject.text;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="text="+searchObject.text;
-  }
-  if(typeof searchObject.types != "undefined" && searchObject.types.length==1 && (searchObject.initType=="all" || searchObject.initType=="news")){
-    if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.types == "undefined"){
+    onchangeClick=false;
+    getStatus="";//location.hash+"?";
+    var searchConstruct={};
+    if(searchObject.text != ""){
+        searchConstruct.name=searchObject.text;
         getStatus+=(getStatus!="") ? "&":"";
-        getStatus+="types="+searchObject.types.join(",");
+        getStatus+="text="+searchObject.text;
     }
-    searchConstruct.searchType=searchObject.types;
-  }else{
-    searchConstruct.searchType=searchObject.types;
-  }
-  if(typeof searchObject.tags != "undefined" && searchObject.tags.length > 0){
-    searchConstruct.searchTags=searchObject.tags;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="tags="+searchObject.tags.join(",");
-  }
-  if(typeof searchObject.page != "undefined" && searchObject.page>0){
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="page="+(searchObject.page+1);
-  }
-  if(typeof searchObject.searchSType != "undefined"){
-    if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.searchSType == "undefined"){
+    if(typeof searchObject.types != "undefined" && searchObject.types.length==1 && (searchObject.initType=="all" || searchObject.initType=="news")){
+        if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.types == "undefined"){
+            getStatus+=(getStatus!="") ? "&":"";
+            getStatus+="types="+searchObject.types.join(",");
+        }
+        searchConstruct.searchType=searchObject.types;
+    }else{
+        searchConstruct.searchType=searchObject.types;
+    }
+    if(typeof searchObject.tags != "undefined" && searchObject.tags.length > 0){
+        searchConstruct.searchTags=searchObject.tags;
         getStatus+=(getStatus!="") ? "&":"";
-        getStatus+="searchSType="+searchObject.searchSType;
+        getStatus+="tags="+searchObject.tags.join(",");
     }
-    searchConstruct.searchSType = searchObject.searchSType;
-  }
-  if(typeof searchObject.section != "undefined"){
-    if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.section == "undefined"){
+    if(typeof searchObject.page != "undefined" && searchObject.page>0){
         getStatus+=(getStatus!="") ? "&":"";
-        getStatus+="section="+searchObject.section;
+        getStatus+="page="+(searchObject.page+1);
     }
-    searchConstruct.section = searchObject.section;
-  }
-  if(typeof searchObject.category != "undefined"){
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="category="+searchObject.category;
-    searchConstruct.category = searchObject.category;
-  }
-  if(typeof searchObject.subType != "undefined"){
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="subType="+searchObject.subType;
-    searchConstruct.subType = searchObject.subType;
-  }
-  if(typeof searchObject.priceMin != "undefined"){
-    searchConstruct.priceMin = searchObject.priceMin; 
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="priceMin="+searchObject.priceMin;
-  }
-  if(typeof searchObject.priceMax != "undefined"){
-    searchConstruct.priceMax = searchObject.priceMax;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="priceMax="+searchObject.priceMax;
-  }
-  if(typeof searchObject.devise != "undefined"){ 
-    searchConstruct.devise = searchObject.devise;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="devise="+searchObject.devise;
-  }
-  if(typeof searchObject.startDate != "undefined"){
-    if(searchObject.text==""){
-      getStatus+=(getStatus!="") ? "&":"";
-      getStatus+="startDate="+searchObject.startDate;
-      searchConstruct.startDate = searchObject.startDate;
-      $(".calendar").show(700);
-    }else
-      $(".calendar").hide(700);
-  }
-  if(typeof searchObject.endDate != "undefined"){
-    if(searchObject.text==""){
-      getStatus+=(getStatus!="") ? "&":"";
-      getStatus+="endDate="+searchObject.endDate;
-      searchConstruct.endDate = searchObject.endDate;
+    if(typeof searchObject.searchSType != "undefined"){
+        if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.searchSType == "undefined"){
+            getStatus+=(getStatus!="") ? "&":"";
+            getStatus+="searchSType="+searchObject.searchSType;
+        }
+        searchConstruct.searchSType = searchObject.searchSType;
     }
-  }
-  
-  if(typeof searchObject.source != "undefined"){ 
-    searchConstruct.source = searchObject.source;
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="source="+searchObject.source;
-  }
+    if(typeof searchObject.section != "undefined"){
+        if(typeof searchObject.forced == "undefined" || typeof searchObject.forced.section == "undefined"){
+            getStatus+=(getStatus!="") ? "&":"";
+            getStatus+="section="+searchObject.section;
+        }
+        searchConstruct.section = searchObject.section;
+    }
+    if(typeof searchObject.category != "undefined"){
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="category="+searchObject.category;
+        searchConstruct.category = searchObject.category;
+    }
+    if(typeof searchObject.subType != "undefined"){
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="subType="+searchObject.subType;
+        searchConstruct.subType = searchObject.subType;
+    }
+    if(typeof searchObject.priceMin != "undefined"){
+        searchConstruct.priceMin = searchObject.priceMin; 
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="priceMin="+searchObject.priceMin;
+    }
+    if(typeof searchObject.priceMax != "undefined"){
+        searchConstruct.priceMax = searchObject.priceMax;
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="priceMax="+searchObject.priceMax;
+    }
+    if(typeof searchObject.devise != "undefined"){ 
+        searchConstruct.devise = searchObject.devise;
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="devise="+searchObject.devise;
+    }
+    if(typeof searchObject.startDate != "undefined"){
+        if(searchObject.text==""){
+          getStatus+=(getStatus!="") ? "&":"";
+          getStatus+="startDate="+searchObject.startDate;
+          searchConstruct.startDate = searchObject.startDate;
+          $(".calendar").show(700);
+        }else
+          $(".calendar").hide(700);
+    }
+    if(typeof searchObject.endDate != "undefined"){
+        if(searchObject.text==""){
+          getStatus+=(getStatus!="") ? "&":"";
+          getStatus+="endDate="+searchObject.endDate;
+          searchConstruct.endDate = searchObject.endDate;
+        }
+    } 
+    if(typeof searchObject.source != "undefined"){ 
+        searchConstruct.source = searchObject.source;
+        getStatus+=(getStatus!="") ? "&":"";
+        getStatus+="source="+searchObject.source;
+    }
 
-  if(typeof searchObject.indexMin != "undefined" && notNull(searchObject.indexMin)){
-    searchConstruct.indexMin=searchObject.indexMin;
-  }
-  if(typeof searchObject.initType != "undefined")
-    searchConstruct.initType=searchObject.initType;
-  if(typeof searchObject.count != "undefined" && searchObject.count)
-    searchConstruct.count=searchObject.count;
-  if(typeof searchObject.ranges != "undefined")
-    searchConstruct.ranges=searchObject.ranges;
-  if(typeof searchObject.countType != "undefined")
-    searchConstruct.countType=searchObject.countType;
-
+    if(typeof searchObject.indexMin != "undefined" && notNull(searchObject.indexMin))
+        searchConstruct.indexMin=searchObject.indexMin;
+    if(typeof searchObject.initType != "undefined")
+        searchConstruct.initType=searchObject.initType;
+    if(typeof searchObject.count != "undefined" && searchObject.count)
+        searchConstruct.count=searchObject.count;
+    if(typeof searchObject.ranges != "undefined")
+        searchConstruct.ranges=searchObject.ranges;
+    if(typeof searchObject.countType != "undefined")
+        searchConstruct.countType=searchObject.countType;
+    if(typeof searchObject.sourceKey != "undefined")
+        searchConstruct.sourceKey=searchObject.sourceKey;
   /*if(typeof custom != "undefined"){
     getStatus+=(getStatus!="") ? "&":"";
     getStatus+="city="+custom.id;
@@ -973,7 +974,7 @@ function activeFiltersInterface(filter,value){
         }
     }
     if(filter=="tags"){
-        $('#tagsFilterInput').val(searchObject.tags).trigger("change");
+        $('.tagsFilterInput').val(searchObject.tags).trigger("change");
         countTags=0;
         labelTags="";
         $.each(searchObject.tags, function(e, v){

@@ -104,7 +104,7 @@
 			            	'</li>';
 ?>
 		<?php if(!@$xsView){ ?>
-			<a href="javascript:;" class="btn-o menu-linksBtn" onclick="connectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','<?php echo $linksBtn["connectAs"] ?>','<?php echo addslashes($elementName)?>')"> 
+			<a href="javascript:;" class="btn-o menu-linksBtn" onclick="connectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','<?php echo $linksBtn["connectAs"] ?>')"> 
 				<i class="fa fa-link"></i> <?php echo Yii::t("common","Be {what}", array("{what}"=> Yii::t("common",$linksBtn["connectAs"]))); ?> 
 			</a>
 		<?php } ?>
@@ -150,14 +150,14 @@
 			            <?php if (!@$linksBtn["isAdmin"]){ 
 			            	$visibleXsLinks.='<li class="text-left visible-xs">'.
 				               	'<a href="javascript:;" class="bg-white" '.
-				               		'onclick="connectTo(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\',\'admin\',\''.addslashes($elementName).'\')">'.
+				               		'onclick="connectTo(\''.$elementType.'\',\''.$elementId.'\',\''.Yii::app()->session["userId"].'\',\''.Person  ::COLLECTION.'\',\'admin\')">'.
 				                    '<i class="fa fa-user-plus"></i> '.Yii::t("common", "Become administrator").
 				                '</a>'.
 			            	'</li>';
 			            ?>
 			            	<?php if(!@$xsView){ ?>
 				            <li class="text-left">
-				               	<a href="javascript:;" class="bg-white" onclick="connectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','admin','<?php echo addslashes($elementName)?>')">
+				               	<a href="javascript:;" class="bg-white" onclick="connectTo('<?php echo $elementType ?>','<?php echo $elementId ?>','<?php echo Yii::app()->session["userId"] ?>','<?php echo Person  ::COLLECTION ?>','admin')">
 				                    <i class="fa fa-user-plus"></i> <?php echo Yii::t("common", "Become administrator"); ?>
 				                </a>
 				            </li>

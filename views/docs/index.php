@@ -357,13 +357,13 @@ jQuery(document).ready(function() {
   });
 });
 function initDocs(page, dir){
-	if(urlBackDocs.indexOf("#docs") >= 0){
+	if(urlBackHistory.indexOf("#docs") >= 0){
 		if(userId!="")
 			$("#close-docs").attr("href","#page.type.citoyens.id."+userId);
 		else
 			$("#close-docs").attr("href","#search");
 	}else
-		$("#close-docs").attr("href",urlBackDocs);
+		$("#close-docs").attr("href",urlBackHistory);
 	navInDocs(page, dir);
 	$(".link-docs-menu[data-type='"+page+"'][data-dir='"+dir+"']").addClass("active");
 	if(!$(".link-docs-menu[data-type='"+page+"'][data-dir='"+dir+"']").hasClass("down-menu"))

@@ -7,16 +7,16 @@
 //liste des types à afficher avec leurs icons
 var floopContactTypes = [	{ name : "projects", 		color: "purple"	, icon:"lightbulb-o"	},
 							{ name : "events", 			color: "orange"	, icon:"calendar"		},
-							{ name : "people",  		color: "yellow"	, icon:"user"			},
+							{ name : "citoyens",  		color: "yellow"	, icon:"user"			},
 							{ name : "organizations", 	color: "green" 	, icon:"group"			}];
 							
-var openPanelType = { 	"people" 		 : "citoyens",
+var openPanelType = { 	"citoyens" 		 : "citoyens",
 						"organizations"  : "organizations",
 						"projects" 	 	 : "projects",
 						"events" 		 : "events",
 					};
 
-var tooltips_lbl = { 	"people" 		  : "Ajouter quelqu'un à votre répertoire.",
+var tooltips_lbl = { 	"citoyens" 		  : "Ajouter quelqu'un à votre répertoire.",
 						"organizations"   : "Créer une nouvelle organisation",
 						"projects" 	 	  : "Créer un nouveau projet",
 						"projectsHistory" : trad.showhideoldprojects,
@@ -46,6 +46,7 @@ function buildListContactHtml(contacts, myId){
 							'<button id="btnFloopClose"><i class="fa fa-times"></i></button>' +
 							
 						'</div>';
+						HTML += '<i class="fa fa-search" style="padding:15px 0px 15px 11px;"></i><input type="text" id="search-contact" class="form-control" placeholder="'+trad.searchnamepostalcity+'">';
 		HTML += 		'<div class="floopScroll">' ;
 							
 						$.each(floopContactTypes, function(key, type){
@@ -56,7 +57,7 @@ function buildListContactHtml(contacts, myId){
 							//si aucun élément, on affiche pas cette section
 							//if(n > 0){
 							var urlBtnAdd = "";
-							if(type.name == "people") 		 urlBtnAdd = "dyFObj.openForm( 'person')";
+							if(type.name == "citoyens") 		 urlBtnAdd = "dyFObj.openForm( 'person')";
 							if(type.name == "organizations") urlBtnAdd = "dyFObj.openForm( 'organization')";
 							if(type.name == "events") 		 urlBtnAdd = "dyFObj.openForm( 'event')";
 							if(type.name == "projects") 	 urlBtnAdd = "dyFObj.openForm( 'project')";
@@ -100,7 +101,7 @@ function buildListContactHtml(contacts, myId){
 						'</div>'+
 					  '</div>' +
 					  '</div>';
-		HTML += '<i class="fa fa-search" style="padding:15px 0px 15px 11px;"></i><input type="text" id="search-contact" class="form-control" placeholder="'+trad.searchnamepostalcity+'">';
+		
 				
 
 		return HTML;
@@ -115,8 +116,8 @@ function getFloopItem(id, type, value){
 	var cp = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.postalCode != "undefined") ? value.address.postalCode : typeof value.cp != "undefined" ? value.cp : "";
 	var city = (typeof value.address != "undefined" && notNull(value.address) && typeof value.address.addressLocality != "undefined") ? value.address.addressLocality : "";
 	defaultImg=type.name;
-	if(defaultImg=="people")
-		defaultImg="citoyens";
+	//if(defaultImg=="people")
+	//	defaultImg="citoyens";
 	var profilThumbImageUrl = (typeof value.profilThumbImageUrl != "undefined" && value.profilThumbImageUrl != "") ? baseUrl + value.profilThumbImageUrl : assetPath + "/images/thumb/default_"+defaultImg+".png";
 	var id = (typeof value._id != "undefined" && typeof value._id.$id != "undefined") ? value._id.$id : id;
 	var path = "#page.type."+openPanelType[type.name]+".id."+id;
@@ -277,12 +278,11 @@ function checkFloopSearch(thisElement, searchVal, type){
 function addFloopEntity(entityId, entityType, entityValue){
 	mylog.log("addFloopEntity", entityId, entityType, entityValue);
 	//Exception with citoyens collection which is managed like people in display
-	if(entityType == "citoyens") entityType = "people";
+	//if(entityType == "citoyens") entityType = "people";
 
-	floopContacts[entityType].push(entityValue);
+	floopContacts[entityType][entityId]=entityValue;
 
 	var type = getFloopContactTypes(entityType);
-	//mylog.log("getFloopContactTypes", entityType, type);
 
 	//We check if the element is already displayed
 	if($('#floopItem-'+type.name+'-'+entityId).length < 1){
@@ -312,24 +312,21 @@ function addFloopEntity(entityId, entityType, entityValue){
 
 //ajout d'un élément dans la liste
 function removeFloopEntity(entityId, entityType){
-	if(entityType == "citoyens") entityType = "people";
+	//if(entityType == "citoyens") entityType = "people";
 	type = getFloopContactTypes(entityType);
 	removeFromMyContacts(entityId, entityType);
 	$('#floopItem-'+type.name+'-'+entityId).remove();
 }
 //ajout d'un élément dans la liste
 function changeNameFloopEntity(entityId, entityType, entityName){
-	if(entityType == "citoyens") entityType = "people";
+	//if(entityType == "citoyens") entityType = "people";
 	type = getFloopContactTypes(entityType);
 	//removeFromMyContacts(entityId, entityType);
 	$('#floopItem-'+type.name+'-'+entityId).find(".name-contact").text(entityName);
 }
 function removeFromMyContacts(entityId, entityType){
-	$.each(floopContacts[entityType], function(e, v){
-		if(notNull(v) && typeof v._id != "undefined" && v._id.$id==entityId){
-			floopContacts[entityType].splice(e, 1);
-		}
-	});
+	if(typeof floopContacts[entityType][entityId] != "undefined")
+		delete floopContacts[entityType][entityId];
 }
 function showHideOldElements(type) {
 	$(".oldFloopDrawer"+type).toggle("slow");

@@ -214,42 +214,7 @@ function bindButtonMenu(){
 		}
 	});
 
-	$("#btn-update-password").off().on( "click", function(){
-		var form = {
-			saveUrl : baseUrl+"/"+moduleId+"/person/changepassword",
-			dynForm : {
-				jsonSchema : {
-					title : trad["Change password"],
-					icon : "fa-key",
-					onLoads : {
-				    	//pour creer un subevnt depuis un event existant
-				    	onload : function(){
-				    		//dyFInputs.setHeader("bg-green");
-
-				    		$("#ajax-modal .modal-header").addClass("bg-dark");
-			                $("#ajax-modal .infocustom p").addClass("text-dark");
-			    	   	}
-			    	},
-					afterSave : function(data){
-						dyFObj.closeForm();
-					},
-					properties : {
-						mode : dyFInputs.inputHidden(),
-						userId : dyFInputs.inputHidden(),
-						oldPassword : dyFInputs.password(trad["Old password"]),
-						newPassword : dyFInputs.password("", { required : true, minlength : 8 } ),
-						newPassword2 : dyFInputs.password(trad["Repeat your new password"], {required : true, minlength : 8, equalTo : "#ajaxFormModal #newPassword"})	
-					}
-				}
-			}
-		};
-
-		var dataUpdate = {
-			mode : "changePassword",
-	        userId : userId
-	    };
-		dyFObj.openForm(form, null, dataUpdate);
-	});
+	
 
 	
 	$("#btn-update-coop").click(function(){
@@ -286,29 +251,7 @@ function bindButtonMenu(){
     $("#div-select-create").removeClass("hidden");
 
 
-	$("#downloadProfil").click(function () {
-		$.ajax({
-			url: baseUrl+"/"+moduleId+"/data/get/type/citoyens/id/"+contextData.id ,
-			type: 'POST',
-			dataType: 'json',
-			async:false,
-			crossDomain:true,
-			complete: function () {},
-			success: function (obj){
-				mylog.log("obj", obj);
-				$("<a/>", {
-				    "download": "profil.json",
-				    "href" : "data:application/json," + encodeURIComponent(JSON.stringify(obj))
-				  }).appendTo("body")
-				  .click(function() {
-				    $(this).remove()
-				  })[0].click() ;
-			},
-			error: function (error) {
-				
-			}
-		});
-	});
+	
 
     $(".confidentialitySettings").click(function(){
     	param = new Object;
@@ -349,7 +292,12 @@ function bindButtonMenu(){
 			});
     	}
     });
-
+	$("#btn-preferences-notifications").off().on("click", function(){
+		responsiveMenuLeft();
+		//location.hash=hashUrlPage+".view.networks";
+		//history.pushState(null, "New Title", hashUrlPage+".view.contacts");
+		loadSettings();
+	});
     $("#inviteBtn").on("click", function(){
     	mylog.log("invite");
     	$("#modal-invite").modal("show");
@@ -359,6 +307,30 @@ function bindButtonMenu(){
     	mylog.log("Delete Element");
     	$("#modal-delete-element").modal("show");
     });
+
+    $("#downloadProfil").click(function () {
+			$.ajax({
+				url: baseUrl+"/"+moduleId+"/data/get/type/citoyens/id/"+contextData.id ,
+				type: 'POST',
+				dataType: 'json',
+				async:false,
+				crossDomain:true,
+				complete: function () {},
+				success: function (obj){
+					mylog.log("obj", obj);
+					$("<a/>", {
+					    "download": "profil.json",
+					    "href" : "data:application/json," + encodeURIComponent(JSON.stringify(obj))
+					  }).appendTo("body")
+					  .click(function() {
+					    $(this).remove()
+					  })[0].click() ;
+				},
+				error: function (error) {
+					
+				}
+			});
+		});
 
 	$(".panel-btn-confidentiality .btn").click(function(){
 		var type = $(this).attr("type");
@@ -470,17 +442,23 @@ function getLabelTitleDir(dataName, dataIcon, countData, n){
 	}
 
 	if( openEdition || edit ){
-		if( $.inArray( dataName, ["events","projects","organizations","poi","classified","collections","actionRooms", "ressources"] ) >= 0 ){
+		if( $.inArray( dataName, ["events","projects","organizations","poi","classifieds", "jobs","collections","actionRooms", "ressources"] ) >= 0 ){
 			if(dataName == "collections"){
 				html += '<a class="btn btn-sm btn-link bg-green-k pull-right " href="javascript:;" onclick="collection.crud()">';
 		    	html +=	'<i class="fa fa-plus"></i> '+trad.createcollection+'</a>' ; 
 			}
 			else {
 				var elemSpec = dyFInputs.get(dataName);
-				var formType = (dataName=="classified") ? "classifieds" : elemSpec.ctrl;
+				var formInputBtn='data-form-type="'+elemSpec.ctrl+'"';
+				var labelCreate=trad["create"+elemSpec.ctrl];
+				if($.inArray( dataName , ["ressources","classifieds","jobs"] ) >= 0){
+					formInputBtn='data-form-type="'+dataName+'"';
+					labelCreate=trad["create"+dataName];
+				}
+				
 
-				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" data-form-type="'+formType+'" data-dismiss="modal">';
-		    	html +=	'<i class="fa fa-plus"></i> '+trad["create"+elemSpec.ctrl]+'</button>' ;  
+				html += '<button class="btn btn-sm btn-link bg-green-k pull-right btn-open-form" '+formInputBtn+' data-dismiss="modal">';
+		    	html +=	'<i class="fa fa-plus"></i> '+labelCreate+'</button>' ;  
 		    }
 		}
 	}
@@ -524,7 +502,7 @@ function loadNewsStream(isLiveBool){
 		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 			null,
 			function(){ 
-				if(typeItem=="citoyens") loadLiveNow();
+				//if(typeItem=="citoyens") loadLiveNow();
 	            $(window).bind("scroll",function(){ 
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();
@@ -537,30 +515,6 @@ function loadNewsStream(isLiveBool){
 		},"html");
 	}, 700);
 }
-function loadSettings(){
-	mylog.log("confidentiality", seePreferences);
-	loadNewsStream(true);
-	history.pushState(null, "New Title", hashUrlPage);
-	$("#modal-confidentiality").modal("show");
-	if(seePreferences=="true"){
-		param = new Object;
-    	param.name = "seePreferences";
-    	param.value = false;
-    	param.pk = contextData.id;
-		$.ajax({
-	        type: "POST",
-	        url: baseUrl+"/"+moduleId+"/element/updatefields/type/"+contextData.type,
-	        data: param,
-	       	dataType: "json",
-	    	success: function(data){
-		    	if(data.result){
-					$("#divSeePreferencesHeader").addClass("hidden");
-					$('#editConfidentialityBtn').removeClass("btn-red");
-		    	}
-		    }
-		});
-	}
-}
 function loadGallery(dir, key, folderId){
 	toogleNotif(false);
 	var url = "gallery/index/type/"+typeItem+"/id/"+contextData.id;
@@ -572,6 +526,14 @@ function loadGallery(dir, key, folderId){
 
 	if(notNull(folderId))
 		url+="/folderId/"+folderId;
+	showLoader('#central-container');
+	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+		null,
+		function(){},"html");
+}
+function loadPreferences(){
+	toogleNotif(false);
+	var url = "pod/preferences";
 	showLoader('#central-container');
 	ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
 		null,
@@ -806,7 +768,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 	
 	$.each(data, function(key, val){ 
 		mylog.log("rolesShox",key, val);
-		if(typeof key != "undefined" && ( (typeof val.id != "undefined" || typeof val["_id"] != "undefined") || contextType == "contacts") ) n++; 
+		if(typeof key != "undefined" && ( (typeof val.id != "undefined" || typeof val["_id"] != "undefined") || contextType == "contacts") || dataName=="collections" ) n++; 
 		if(typeof val.rolesLink != "undefined"){
 			mylog.log(val.rolesLink);
 			$.each(val.rolesLink, function(i,v){
@@ -888,7 +850,21 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 			
 		}
 		communityStr+="</div>"; 
-	}
+	}/* TODO REFACTOR COMMUNITY AND MUTUALIZE ALL CLASSIFIEDS
+	else if($.inArray( dataName , ["classifieds", "jobs", "ressources"])>=0){
+		communityStr+="<div id='menuCommunity' class='col-md-12 col-sm-12 col-xs-12 padding-20'>";
+		if(contextData.type == "citoyens" ) {
+		communityStr+='<a href="javascript:" class="ssmla uppercase load-coummunity';
+			if(dataName=="follows")
+				communityStr+=' active';		
+		communityStr+='" data-type-dir="follows" data-icon="link">'+
+				'<i class="fa fa-link"></i> <span class="hidden-xs">'+trad.follows+'</span>';
+				if(typeof contextData.links != "undefined" && typeof contextData.links.follows != "undefined")
+		communityStr += "<span class='badge'></span>";
+		communityStr +=	'</a>';
+		}
+		communityStr +='</div>';
+	}*/
 
 	mylog.log("communityStr", n, communityStr);
 
@@ -968,8 +944,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 		}
 		initBtnLink();
 		initBtnAdmin();
-		bindButtonOpenForm();
-
+		
 		getfilterRoles(listRoles);
 		var dataToMap = data;
 		if(dataName == "collections"){
@@ -1002,6 +977,7 @@ function displayInTheContainer(data, dataName, dataIcon, contextType, edit){
 											"</span>");
 		toogleNotif(false);
 	}
+	bindButtonOpenForm();
 	if(communityStr != ""){
 		$(".load-coummunity").off().on("click",function(){ 
 			//responsiveMenuLeft();

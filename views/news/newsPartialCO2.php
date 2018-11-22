@@ -88,8 +88,7 @@ foreach($news as $key => $media){
     <div class="timeline-panel"
          id="nbAbuse<?php echo @$media["reportAbuseCount"]; ?>">
          <?php 
-            $params = CO2::getThemeParams();
-            $abuseMax = $params["nbReportCoModeration"];
+            $abuseMax = Yii::app()->session['paramsConfig']["nbReportCoModeration"];
 
             if( @$media["reportAbuseCount"] >= $abuseMax){ ?>
            <h6 class="pull-left">
@@ -126,7 +125,7 @@ foreach($news as $key => $media){
       ?>
       <?php if(isset(Yii::app()->session["userId"])) { ?>
       <div class="timeline-footer pull-left col-md-12 col-sm-12 col-xs-12 padding-top-5">
-          <div class="col-md-12 pull-left padding-5" id="footer-media-<?php echo @$media["_id"]; ?>"></div>
+          <div class="col-xs-12 pull-left padding-5" id="footer-news-<?php echo @$media["_id"]; ?>"></div>
           <div class="col-md-12 col-sm-12 col-xs-12 no-padding pull-left margin-top-10" id="commentContent<?php echo @$media["_id"]; ?>"></div>
       </div>     
       <?php } ?>
@@ -242,7 +241,11 @@ foreach($news as $key => $media){
           media=getMediaFiles(v.media,e);
         else if (v.media.type=="activityStream")
           media=directory.showResultsDirectoryHtml(new Array(v.media.object),v.media.object.type, null, null, true);
+        else if (v.media.type=="html" && typeof v.documentation != "undefined")
+          media=v.media.content;
         $("#result"+e).html(media);
+        if (v.media.type=="html" && typeof v.documentation != "undefined")
+          bindButtonOpenForm();
 
          $(".videoSignal").off().on("click",function(){
           videoLink = $(this).find(".videoLink").val();
@@ -277,7 +280,7 @@ foreach($news as $key => $media){
       uiModeration.getNewsToModerate(newsid);
     });
     <?php if(isset(Yii::app()->session["userId"])) { ?>
-      initCommentsTools(news);
+      initCommentsTools(news, "news");
     <?php } ?>
 
     

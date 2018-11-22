@@ -13,7 +13,11 @@
 	  '/css/timeline2.css',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule,Yii::app()->theme->baseUrl."/assets");
-
+    $cssAnsScriptFilesTheme = array(
+        // SHOWDOWN
+        '/plugins/showdown/showdown.min.js',   
+    );
+    HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 ?>
 <style>
     .timeline > li{

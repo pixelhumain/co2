@@ -37,7 +37,7 @@
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 	
-	$id = $_GET['id'];
+	//$id = $_GET['id'];
 	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
 
 	
@@ -59,6 +59,10 @@
 
     $useBorderElement = false;
     if(@Yii::app()->params["front"]) $front = Yii::app()->params["front"];
+
+    $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
+$me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
+$this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].'.mainMenu', array("me"=>$me) );
 ?>
 <style>
 	
@@ -118,11 +122,6 @@
     width:100%;
 }
 
-#onepage section#social-header{
-	margin-top: 8px;
-}
-
-
 #central-container #content-results-profil .coop-wraper{
 	width:31%!important;
 	margin: 0 1% 15px 0 !important;
@@ -165,13 +164,14 @@
 <?php 
 	$auth = Authorisation::canParticipate(Yii::app()->session['userId'], $type, (string)$element["_id"]);
 
-	if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
-		$this->renderPartial('../element/confirmDeleteModal', array("id" =>(String)$element["_id"], "type"=>$type)); ?>
+	// if (Authorisation::canDeleteElement((String)$element["_id"], $type, Yii::app()->session["userId"]) && !@$deletePending) 
+	// 	$this->renderPartial('../element/confirmDeleteModal', array("id" =>(String)$element["_id"], "type"=>$type)); 
+	?>
 <?php 
-	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('../element/confirmDeletePendingModal', array(	"element"=>$element)); ?>
+	if (@$element["status"] == "deletePending" && Authorisation::isElementAdmin((String)$element["_id"], $type, Yii::app()->session["userId"])) $this->renderPartial('co2.views.element.confirmDeletePendingModal', array(	"element"=>$element)); ?>
 
-    <!-- <section class="col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
-<div class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 no-padding">	
+    <!-- <section class="col-lg-offset-1 col-lg-10 col-md-12 col-sm-12 col-xs-12 header" id="header"></section> -->
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">	
     <!-- Header -->
     <section class="col-md-12 col-sm-12 col-xs-12" id="social-header" 
     	<?php if (!@$element["profilBannereUrl"] || (@$element["profilBannereUrl"] && empty($element["profilBannereUrl"]))){ ?> 
@@ -186,7 +186,7 @@
 	    <?php } ?>
         
         <?php 
-	    	$this->renderPartial('../element/banner', 
+	    	$this->renderPartial('co2.views.element.banner', 
 			        			array(	"iconColor"=>$iconColor,
 			        					"icon"=>$icon,
 			        					"type"=>$type,
@@ -211,7 +211,7 @@
 					 );
 				else $images="";	
 				
-				$this->renderPartial('../pod/fileupload', 
+				$this->renderPartial('co2.views.pod.fileupload', 
 								array("itemId" => (string) $element["_id"],
 									  "itemName" => $element["name"],
 									  "type" => $type,
@@ -257,9 +257,9 @@
 
     			$iconNewsPaper="user-circle"; 
     	  ?>
-		  <button type="button" class="btn btn-default bold hidden-xs btn-start-newsstream">
+		  <!--<button type="button" class="btn btn-default bold hidden-xs btn-start-newsstream">
 		  		<i class="fa fa-rss"></i> <?php echo Yii::t("common","News stream<span class='hidden-sm'></span>") ?>
-		  </button>
+		  </button>-->
 
 		  <?php } else {
 		  		  $iconNewsPaper="rss"; 
@@ -527,29 +527,53 @@
 						<i class="fa fa-chevron-down"></i>
 			  		</button>-->
 			  		<ul class="dropdown-menu arrow_box menu-params">
-	                	<?php $this->renderPartial('../element/linksMenu', 
-	            			array("linksBtn"=>$linksBtn,
-	            					"elementId"=>(string)$element["_id"],
-	            					"elementType"=>$type,
-	            					"elementName"=> $element["name"],
-	            					"openEdition" => $openEdition,
-	            					"xsView"=>true) 
-	            			); 
-	            		?>
-	            		<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
-			  				<li class="text-left">
-				               	<a href="javascript:;" id="" class="bg-white editConfidentialityBtn">
-				                    <i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
-				                </a>
-				            </li>
-			            <?php } ?>
-						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
-			  				<li class="text-left">
-				               	<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
-				                    <i class="fa fa-id-badge"></i> <?php echo Yii::t("common", "Edit slug"); ?>
-				                </a>
-				            </li>
-			            <?php } ?>
+	                	<?php $this->renderPartial('co2.views.element.linksMenu', 
+													array("linksBtn"=>$linksBtn,
+															"elementId"=>(string)$element["_id"],
+															"elementType"=>$type,
+															"elementName"=> $element["name"],
+															"openEdition" => $openEdition,
+															"xsView"=>true) 
+													); 
+
+	            		if(@Yii::app()->session["userId"] && $edit==true){ 
+
+	            			if($type ==Person::COLLECTION){ ?>
+
+		            			<li class="text-left">
+									<a href="#settings.page.myAccount" class="lbh bg-white">
+										<i class="fa fa-cogs"></i> <?php echo Yii::t("common", "My parameters") ; ?>
+									</a>
+								</li>
+
+					<?php 	} else {  ?>
+		            			<li class="text-left">
+									<a href="#settings.page.confidentialityCommunity?slug=<?php echo $element['slug'] ; ?>" id="" class="bg-white ">
+										<i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Confidentiality params"); ?>
+										</a>
+								</li>
+
+								<li class="text-left">
+									<a href="#settings.page.notificationsCommunity?slug=<?php echo $element['slug'] ; ?>" class="lbh bg-white">
+										<i class="fa fa-cogs"></i> <?php echo Yii::t("common", "Notifications preferences"); ?>
+									</a>
+								</li>
+
+								<li class="text-left">
+									<a href="javascript:;" onclick="updateSlug();" id="" class="bg-white">
+										<i class="fa fa-id-badge"></i> <?php echo Yii::t("common", "Edit slug"); ?>
+										</a>
+					            </li>
+
+					            <li class="text-left">
+									<a href='javascript:' id="downloadProfil">
+										<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
+									</a>
+								</li>
+
+					<?php 	}
+
+						} ?>
 						
 						<li>
 							<a href="javascript:;" onclick="showDefinition('qrCodeContainerCl',true)">
@@ -557,54 +581,42 @@
 							</a>
 						</li>
 
-			  			<?php if($type !=Person::COLLECTION){ ?>
+			  			<?php 
 
-			  				<?php if($openEdition==true){ ?>
+			  			if($type !=Person::COLLECTION){ 
+
+			  				if($openEdition==true){ ?>
+				  				
 				  				<li class="text-left">
 									<a href="javascript:;" class="btn-show-activity">
 										<i class="fa fa-history"></i> <?php echo Yii::t("common","History")?> 
 									</a>
 								</li>
-							<?php } ?>
-			            <?php } else { ?>
-			            	<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
+				<?php 		} 
+						} else { 
 
-			            	<li class="text-left">
-				               	<a href='javascript:;' onclick='rcObj.settings();' >
-									<i class='fa fa-comments'></i> <?php echo Yii::t("common","Chat Settings"); ?>
-								</a>
-				            </li>
+							if(@Yii::app()->session["userId"] && $edit==true){ ?>
 
-							<li class="text-left">
-								<a href='javascript:' id="downloadProfil">
-									<i class='fa fa-download'></i> <?php echo Yii::t("common", "Download your profil") ?>
-								</a>
-							</li>
+				            	<li class="text-left">
+									<a href='javascript:;' onclick='rcObj.settings();' >
+										<i class='fa fa-comments'></i> <?php echo Yii::t("common","Chat Settings"); ?>
+									</a>
+					            </li>
 
-							<li class="text-left">
-				               	<a href='javascript:;' onclick='loadMD()' >
-									<i class='fa fa-file-text-o'></i> <?php echo Yii::t("common","Markdown Version"); ?>
-								</a>
-				            </li>
-							
-							<li class="text-left">
-				               	<a href='javascript:;' onclick='loadMindMap()' >
-									<i class='fa fa-sitemap'></i> <?php echo Yii::t("common","Mindmap View"); ?>
-								</a>
-				            </li>
+								<li class="text-left">
+					               	<a href='javascript:;' onclick='loadMD()' >
+										<i class='fa fa-file-text-o'></i> <?php echo Yii::t("common","Markdown Version"); ?>
+									</a>
+					            </li>
+								
+								<li class="text-left">
+									<a href='javascript:;' onclick='loadMindMap()' >
+										<i class='fa fa-sitemap'></i> <?php echo Yii::t("common","Mindmap View"); ?>
+									</a>
+					            </li>
+					<?php 	}
 
-				            
-							
-							<li class="text-left">
-				               	<a href='javascript:;' id="btn-update-password" class='text-red'>
-									<i class='fa fa-key'></i> <?php echo Yii::t("common","Change password"); ?>
-								</a>
-				            </li>
-
-				            <?php }
-
-				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {  
-		                
+				            if(	Preference::showPreference($element, $type, "directory", Yii::app()->session["userId"])) {
 		               			// $urlNetwork = Element::getUrlMyNetwork((string)$element["_id"], $type); ?>
 
 		               			<!-- <li class="text-left">
@@ -612,7 +624,8 @@
 										<i class='fa fa-map'></i> <?php //echo Yii::t("common","My network"); ?>
 									</a>
 					            </li> -->
-			            <?php } } ?>
+					<?php 	} 
+			        	} ?>
 						<li class="text-left">
 							<a href='javascript:;' onclick='co.graph()' >
 								<i class='fa fa-share-alt'></i> <?php echo Yii::t("common","Graph View"); ?>
@@ -624,24 +637,19 @@
 							</a>
 						</li>
 
-						<?php if ( Authorisation::canDeleteElement( (String)$element["_id"], $type, Yii::app()->session["userId"]) && 
-									!@$deletePending && 
-									!empty(Yii::app()->session["userId"]) &&
-									$type !=Person::COLLECTION
-								) { ?>
-					  			<li class="text-left">
-									<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
-										<i class="fa fa-trash"></i> 
-										<?php 
-											if($type == Person::COLLECTION && (String)$element["_id"] == Yii::app()->session["userId"])
-												echo "Supprimer mon compte";
-											else
-												echo Yii::t("common", "Delete {what}", 
-															array("{what}"=> 
-																Yii::t("common","this ".Element::getControlerByCollection($type)))); 
-										?>
-									</a>
-					            </li>
+						<?php 
+						if ( Authorisation::canDeleteElement( (String)$element["_id"], $type, Yii::app()->session["userId"]) && 
+							!@$deletePending && 
+							!empty(Yii::app()->session["userId"]) && 
+							$type != Person::COLLECTION	) { ?>
+
+				  			<li class="text-left">
+								<a href="javascript:;" id="btn-delete-element" class="bg-white text-red" data-toggle="modal">
+									<i class="fa fa-trash"></i> 
+									<?php echo Yii::t("common", "Delete {what}", array("{what}"=> Yii::t("common","this ".Element::getControlerByCollection($type)))); ?>
+								</a>
+				            </li>
+
 			            <?php } ?>
 			  		</ul>
 		  		</li>
@@ -682,7 +690,7 @@
                             "iconColor" => $iconColor
                         );
 
-    	$this->renderPartial('../cooperation/pod/modals', $params ); 
+    	$this->renderPartial('co2.views.cooperation.pod.modals', $params ); 
     ?>
 
 	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 
@@ -697,7 +705,7 @@
                                 "linksBtn" => $linksBtn
                                 );
 
-	    	$this->renderPartial('../pod/menuLeftElement', $params ); 
+	    	$this->renderPartial('co2.views.pod.menuLeftElement', $params ); 
 	    ?>
 	</div>
 
@@ -849,7 +857,7 @@
 	    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 margin-top-<?php echo $marginCentral; ?>" id="central-container">
 		</div>
 
-		<?php $this->renderPartial('../pod/qrcode',array(		"type" => @$type,
+		<?php $this->renderPartial('co2.views.pod.qrcode',array(		"type" => @$type,
 																"name" => @$element['name'],
 																"address" => @$address,
 																"address2" => @$address2,
@@ -879,7 +887,7 @@
 </div>	
 
 <?php 
-	$this->renderPartial('../pod/confidentiality',
+	$this->renderPartial('co2.views.pod.confidentiality',
 			array(  "element" => @$element, 
 					"type" => @$type, 
 					"edit" => @$edit,
@@ -896,7 +904,6 @@
 
 <script type="text/javascript">
 	var contextData = <?php echo json_encode( Element::getElementForJS(@$element, @$type) ); ?>; 
-	initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
 	mylog.log("init contextData", contextData);
     var params = <?php echo json_encode(@$params); ?>; 
     var edit =  ( ( '<?php echo (@$edit == true); ?>' == "1") ? true : false );
@@ -943,10 +950,9 @@
 
 	jQuery(document).ready(function() {
 		bindButtonMenu();
-		inintDescs();
 		if(typeof contextData.name !="undefined")
 			setTitle("", "", contextData.name);
-
+		inintDescs();
 		if( contextData.type == "events")
 			$(".createProjectBtn").hide()
 		else 
@@ -962,7 +968,7 @@
 		getContextDataLinks();
 		if(typeof contextData.links != "undefined" && typeof rolesList != "undefined")
 			pushListRoles(contextData.links);
-		
+		initMetaPage(contextData.name,contextData.shortDescription,contextData.profilImageUrl);
 		//Sig.showMapElements(Sig.map, mapElements);
 		var elemSpec = dyFInputs.get("<?php echo $type?>");
 		buildQRCode( elemSpec.ctrl ,"<?php echo (string)$element["_id"]?>");
@@ -1026,7 +1032,7 @@
 			}
 			
 		} else
-			loadNewsStream(true);
+			loadNewsStream(false);
 	}
 
 

@@ -104,6 +104,7 @@ class CommunecterController extends Controller
       "mailerrordashboard" => array("href" => "/ph/co2/admin/mailerrordashboard"),
       "cities" => array("href" => "/ph/co2/admin/cities"),
       "circuits" => array("href" => "/ph/co2/admin/circuits"),
+      "mailslist" => array("href" => "ph/co2/admin/mailslist"),
     ),
     "docs" => array(
       "index"     => array("href" => "/ph/co2/docs"),
@@ -115,10 +116,13 @@ class CommunecterController extends Controller
       "createfile" => array("href" => "/ph/co2/adminpublic/createfile"),
       "sourceadmin" => array("href" => "/ph/co2/adminpublic/sourceadmin"),
       "assigndata"    => array("href" => "/ph/co2/adminpublic/assigndata"),
+      "setmapping" => array("href" => "/ph/co2/adminpublic/setmapping/"),
+      "deletemapping" => array("href" => "/ph/co2/adminpublic/deletemapping/"),
       "getdatabyurl"   => array("href" => "/ph/co2/adminpublic/getdatabyurl"),
       "previewdata"    => array("href" => "/ph/co2/adminpublic/previewdata"),
       "interopproposed" => array("href" => "/ph/co2/adminpublic/interopproposed"),
       "cleantags" => array("href" => "ph/co2/adminpublic/cleantags"),
+      "mailslist" => array("href" => "ph/co2/adminpublic/mailslist"),
     ),
     "collections" => array(
       "add"    => array("href" => "/ph/co2/collections/add"),
@@ -391,6 +395,15 @@ class CommunecterController extends Controller
       "fileupload"   => array("href" => "ph/co2/pod/fileupload"),
       "activitylist"   => array("href" => "ph/co2/pod/activitylist"),
       "circuit"      => array("href" => "/ph/co2/pod/circuit"),
+      "preferences"      => array("href" => "/ph/co2/pod/preferences"),
+    ),
+    "settings" => array(
+      "index" => array("href" => "/ph/co2/settings/index", "public" => true),
+      "notificationsaccount" => array("href" => "/ph/co2/settings/notificationsaccount"),
+      "notificationscommunity" => array("href" => "/ph/co2/settings/notificationscommunity"),
+      "confidentiality" => array("href" => "/ph/co2/settings/confidentiality"),
+      "confidentialitycommunity" => array("href" => "/ph/co2/settings/confidentialitycommunity"),
+      "myaccount" => array("href" => "/ph/co2/settings/myaccount"),
     ),
     "bookmark" => array(
       "delete"        => array("href" => "ph/communecter/bookmark/delete"),
@@ -487,6 +500,7 @@ class CommunecterController extends Controller
     ),
     "action"=> array(
        "addaction"   => array("href" => "/ph/co2/action/addaction"),
+       "list"   => array("href" => "/ph/co2/action/list"),
     ),
     "notification"=> array(
       "getnotifications"          => array("href" => "/ph/co2/notification/get","json" => true),
@@ -556,6 +570,7 @@ class CommunecterController extends Controller
     ),
     "app" => array(
       "welcome"             => array('href' => "/ph/co2/app/welcome",         "public" => true),
+      "home"             => array('href' => "/ph/co2/app/home",         "public" => true),
       "index"             => array('href' => "/ph/co2/app/index",             "public" => true),
       "web"               => array('href' => "/ph/co2/app/web",               "public" => true),
       "websearch"         => array('href' => "/ph/co2/app/websearch",         "public" => true),

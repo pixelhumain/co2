@@ -12,6 +12,13 @@
 ----------------------------------------------------
 ----------------------------------------------------
 
+---------------------------------------
+---------- VERSION C0.4(Les amis d'abord) --------------
+---------------------------------------
+* Batch pour ajouter le type au links 
+co2/datamigration/SearchLinkMissingType
+
+
 ---- CTE
 * Unifier les answer 
   co2/datamigration/UnifierAnswers
@@ -95,7 +102,7 @@ Migration des ressources dans classified et refactor sur les "classified" qui de
 [X] Mergin all branches - Terla / Territorial / Lieux 2.0 / Dev / Master
 [ ] Preferences
 
-
+[ ] Check on prod Db if data users.preferences.publicFields is well an array for user and not an object 
 
 
 ---------------------------------------

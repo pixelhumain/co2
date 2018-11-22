@@ -7,7 +7,6 @@
 		$sigParams[$element] = isset($sigParams[$element]) ? $sigParams[$element] : false;
 	}
 	
-    $params = CO2::getThemeParams();
 ?>
 <div class="sigModule<?php echo $sigParams['sigKey']; ?>">
 	<div class="mapCanvas" id="mapCanvas<?php echo $sigParams['sigKey']; ?>">
@@ -131,9 +130,9 @@
 							}*/
 						?>
 						<?php
-							if(isset($params["lockedOnCountry"])){
+							if(isset(Yii::app()->session['paramsConfig']["lockedOnCountry"])){
 								echo "<option value=''>".Yii::t("common", "Choose a country")."</option>";
-								$asort = array($params["lockedOnCountry"]); 
+								$asort = array(Yii::app()->session['paramsConfig']["lockedOnCountry"]); 
 								foreach ( $asort as $key => $value) {
 									echo "<option value='".$value["countryCode"]."'>".$value["name"]."</option>";
 									error_log($value["countryCode"]." - ".$value["name"]);

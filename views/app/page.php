@@ -1,6 +1,6 @@
 <?php 
     
-    $this->renderPartial("../news/newsAssets");
+    $this->renderPartial("co2.views.news.newsAssets");
 
 	HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css') , Yii::app()->theme->baseUrl. '/assets');
 	//$cssAnsScriptFilesModule = array('');
@@ -17,24 +17,25 @@
         $this->renderPartial($layoutPath.'header', 
                         array(  "layoutPath"=>$layoutPath , 
                                 "page" => "page",
-                                "dontShowMenu"=>true) ); 
+                                "dontShowMenu"=>true,
+                                "useFilter"=>false) ); 
 ?>
 
 <div class="col-md-12 col-sm-12 col-xs-12 no-padding social-main-container">
 	<div class="" id="onepage">
 		<?php 
-            $params = CO2::getThemeParams();
-            $onepageKey = $params["onepageKey"];
+            $onepageKey = @Yii::app()->session['paramsConfig']["onepageKey"];
         
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
                $type == Project::COLLECTION || $type == Organization::COLLECTION || 
                $type == Place::COLLECTION){
     			$params = array("element"=>$element , 
+                                "id" => @$id,
+                                "type" => @$type,
     							"page" => "page",
     							"edit"=>$edit,
     							"openEdition" => $openEdition,
     							"linksBtn" => $linksBtn,
-    							"type" => $type,
     							"isLinked" => $isLinked,
     							"controller" => $controller,
     							"countStrongLinks" => $countStrongLinks,
@@ -44,11 +45,11 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if(Yii::app()->params["CO2DomainName"] == "terla")
-                    $this->renderPartial('../element/terla/index', $params );
+                    $this->renderPartial('co2.views.element.terla.index', $params );
                 else if(in_array($view, $onepageKey)) 
-                    $this->renderPartial("../element/onepage", $params);
+                    $this->renderPartial("co2.views.element.onepage", $params);
                 else 
-                    $this->renderPartial('../element/profilSocial', $params ); 
+                    $this->renderPartial('co2.views.element.profilSocial', $params ); 
             }
 
             if($type == News::COLLECTION){
@@ -61,7 +62,7 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
-                $this->renderPartial('../news/standalone', $params ); 
+                $this->renderPartial('co2.views.news.standalone', $params ); 
             }
 
             if($type == Product::COLLECTION){
@@ -74,9 +75,9 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if(($element["creator"]==Yii::app()->session["userId"] || @Yii::app()->session["superAdmin"]) && $view != "show")
-                    $this->renderPartial('../element/terla/dashboard', $params );
+                    $this->renderPartial('co2.views.element.terla.dashboard', $params );
                 else
-                    $this->renderPartial('../element/standalone', $params ); 
+                    $this->renderPartial('co2.views.element.standalone', $params ); 
             }
             if($type == Service::COLLECTION){
                 $params = array("element"=>$element , 
@@ -88,9 +89,9 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
                 if($element["creator"]==Yii::app()->session["userId"] && $view != "show")
-                    $this->renderPartial('../element/terla/dashboard', $params );
+                    $this->renderPartial('co2.views.element.terla.dashboard', $params );
                 else
-                    $this->renderPartial('../element/standalone', $params ); 
+                    $this->renderPartial('co2.views.element.standalone', $params ); 
             }
             if($type == Survey::COLLECTION){
                 $params = array("survey"=>$element , 
@@ -99,7 +100,7 @@
                                 "controller" => $controller,
                                 );
 
-                $this->renderPartial('../survey/entryStandalone', $params ); 
+                $this->renderPartial('co2.views.survey.entryStandalone', $params ); 
             }
 
             if($type == Classified::COLLECTION){
@@ -136,7 +137,7 @@
                                 "type" => $type,
                                 "controller" => $controller,
                                 );
-                $this->renderPartial('../poi/standalone', $params ); 
+                $this->renderPartial('co2.views.poi.standalone', $params ); 
             }
 		?>
 	</div>
@@ -153,7 +154,7 @@ var indexStepGS = 20;
 jQuery(document).ready(function() {
     
 	initKInterface({"affixTop":0});
-	$("#mainNav").addClass("affix");
+	//$("#mainNav").addClass("affix");
 	initPageInterface();
     // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
@@ -172,13 +173,33 @@ function initPageInterface(){
 
     $("#second-search-bar").keyup(function(e){ console.log("keyup #second-search-bar");
         $("#input-search-map").val($("#second-search-bar").val());
+        $("#second-search-xs-bar").val($("#second-search-bar").val());
         if(e.keyCode == 13){
             searchObject.text=$(this).val();
             myScopes.type="open";
             myScopes.open={};
-            urlCtrl.loadByHash("#search");
-            //startGlobalSearch(0, indexStepGS);
+            //urlCtrl.loadByHash("#search");
+            startGlobalSearch(0, indexStepGS);
          }
+    });
+    $("#second-search-xs-bar").keyup(function(e){ console.log("keyup #second-search-bar");
+        $("#input-search-map").val($("#second-search-xs-bar").val());
+        $("#second-search-bar").val($("#second-search-xs-bar").val());
+        if(e.keyCode == 13){
+            searchObject.text=$(this).val();
+            myScopes.type="open";
+            myScopes.open={};
+            //urlCtrl.loadByHash("#search");
+            startGlobalSearch(0, indexStepGS);
+         }
+    });
+     $("#second-search-bar-addon, #second-search-xs-bar-addon").off().on("click", function(){
+        $("#input-search-map").val($("#second-search-bar").val());
+        searchObject.text=$("#second-search-bar").val();
+        myScopes.type="open";
+        myScopes.open={};
+            //urlCtrl.loadByHash("#search");
+            startGlobalSearch(0, indexStepGS);
     });
     
     $("#input-search-map").keyup(function(e){ console.log("keyup #input-search-map");

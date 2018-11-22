@@ -66,12 +66,12 @@
 		}
 	</style>
 	<div class="pull-left col-xs-12 no-padding margin-bottom-15 shadow2 boxBtnLink">
-        	<?php $this->renderPartial('../element/linksMenu', 
-    			array("linksBtn"=>$linksBtn,
-    					"elementId"=>(string)$element["_id"],
-    					"elementType"=>$type,
-    					"elementName"=> $element["name"],
-    					"openEdition" => $openEdition) 
+        	<?php $this->renderPartial('co2.views.element.linksMenu', 
+    			array(  "linksBtn"      => $linksBtn,
+    					"elementId"   => (string)$element["_id"],
+    					"elementType" => $type,
+    					"elementName" => $element["name"],
+    					"openEdition" => $openEdition ) 
     			); 
     		?>
 	</div>
@@ -210,14 +210,6 @@
 			 			Preference::showPreference( $element, $type, "directory", Yii::app()->session["userId"]) ) ) { ?>
 
 		
-		<?php if($type == Person::COLLECTION ) { ?> 
-		<!--<li class="">
-			<a href="javascript:" class="ssmla capitalize load-data-directory" 
-				data-type-dir="<?php echo @Element::$connectAs[$type]; ?>" data-icon="users">
-				<i class="fa fa-link"></i> <?php echo Yii::t("common","Community"); ?>
-			</a>
-		</li>-->
-		<?php } ?>
 		<?php if($type == Person::COLLECTION ) 
 			$connectCommunity=@Element::$connectAs[$type];
 		 else 
@@ -229,23 +221,6 @@
 				<i class="fa fa-users"></i> <?php echo Yii::t("common","Community"); ?>
 			</a>
 		</li>
-		
-		<?php if($type != Person::COLLECTION && $type != Event::COLLECTION) { ?>
-		<!--<li class="">
-			<a href="javascript:" class="ssmla capitalize load-data-directory" 
-				data-type-dir="followers" data-icon="link">
-				<i class="fa fa-link"></i> <?php echo Yii::t("common","followers"); ?>
-			</a>
-		</li>-->
-		<?php } ?>
-		<?php if($type != Person::COLLECTION) { ?>
-		<!--<li class="">
-			<a href="javascript:" class="ssmla capitalize load-data-directory" 
-				data-type-dir="guests" data-icon="send">
-				<i class="fa fa-send"></i> <?php echo Yii::t("common","Guests"); ?>
-			</a>
-		</li>-->
-		<?php } ?>
 		
 
 		<?php if ($type==Person::COLLECTION){ ?>
@@ -285,9 +260,15 @@
 			<li><hr></li>
 			<?php }  ?>
 		<?php }  ?>
-			
-		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
-				  $type==Event::COLLECTION || $type==Person::COLLECTION || $type==Place::COLLECTION ){  
+		<?php  if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				    Yii::app()->session['paramsConfig']["pages"]["#annonces"]["open"] == true){ ?>
+			<li class="">
+				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classifieds" data-icon="bullhorn">
+					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
+				</a>
+			</li>
+		<?php } ?>	
+		<?php if (in_array($type, [Project::COLLECTION, Organization::COLLECTION, Event::COLLECTION, Person::COLLECTION, Place::COLLECTION])){  
 					if(!@$front || (@$front && $front["poi"])){ 
 		?>
 			<li>
@@ -319,20 +300,10 @@
 		<?php }  
 		} ?>
 
-		<?php $paramsApp = CO2::getThemeParams(); 
-				if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
-				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
-			<li><hr></li>
-			<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classifieds" data-icon="bullhorn">
-					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
-				</a>
-			</li>
-		<?php } ?>
+		
 
-		<?php $paramsApp = CO2::getThemeParams(); 
-				if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
-				    $paramsApp["pages"]["#annonces"]["open"] == true){ ?>
+		<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
+				    Yii::app()->session['paramsConfig']["pages"]["#annonces"]["open"] == true){ ?>
 			<li><hr></li>
 			<li class="">
 				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="surveys" data-icon="gavel">
@@ -348,13 +319,13 @@
 					<i class="fa fa-clipboard"></i> <?php echo Yii::t("common","My experiences"); ?>
 				</a>
 			</li>
-			<!-- <li><hr></li>
+			<!--  <li><hr></li>
 			<li class="">
 				<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
 					id="btn-start-networks" class="ssmla">
-					<i class="fa fa-map-o"></i> <?php echo Yii::t("common","My maps"); ?>
+					<i class="fa fa-map-o"></i> <?php //echo Yii::t("common","My maps"); ?>
 				</a>
-			</li> -->
+			</li>  -->
 		<?php } ?>
 		<li><hr></li>
 

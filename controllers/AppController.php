@@ -34,18 +34,19 @@ class AppController extends CommunecterController {
 
         //Yii::app()->theme = "CO2";
         Yii::app()->session["theme"] = "CO2";
-        $params = CO2::getThemeParams();
+       // $params = CO2::getThemeParams();
         
-        $hash = (@Yii::app()->session["userId"]) ? $params["pages"]["#app.index"]["redirect"]["logged"] : $params["pages"]["#app.index"]["redirect"]["unlogged"];
+        $hash = (@Yii::app()->session["userId"]) ? Yii::app()->session['paramsConfig']["pages"]["#app.index"]["redirect"]["logged"] : Yii::app()->session['paramsConfig']["pages"]["#app.index"]["redirect"]["unlogged"];
         $params = array("type" => @$type );
 
         if(!@$hash || @$hash=="") $hash="search";
         //echo @$hash; exit;
-        if(@$hash == "web"){
+        if(@$hash == "web")
             self::actionWeb();
-        }else{
+        else if($hash=="annonces")
+            self::actionAnnonces();
+        else
            echo $this->renderPartial($hash, $params, true);
-        }
     }
 
 
@@ -283,7 +284,12 @@ class AppController extends CommunecterController {
         //echo "Hello there "; echo Yii::app()->createUrl("/interop/co/index"); exit; 
         $this->redirect( Yii::app()->createUrl("/interop") );
     }
-
+    public function actionHome(){
+        CO2Stat::incNbLoad("co2-home");
+        if( !@Yii::app()->session["userId"] )
+             $this->redirect( Yii::app()->createUrl($controller->module->id) );
+            echo $this->renderPartial("home", array(), true);
+    }
     public function actionPage($type, $id, $view=null, $mode=null, $dir=null, $key=null, $folder=null){
         CO2Stat::incNbLoad("co2-page");
             
@@ -307,12 +313,16 @@ class AppController extends CommunecterController {
             $element = Survey::getById($id);
         }
 
+        //element deleted 
         if( (!empty($element["status"]) && $element["status"] == "deleted") ||  
             (!empty($element["tobeactivated"]) && $element["tobeactivated"] == true) )
              $this->redirect( Yii::app()->createUrl($controller->module->id) );
+
+        //visibility authoraizations
         if(!Preference::isPublicElement(@$element["preferences"]) &&
              (!@Yii::app()->session["userId"] || !Authorisation::canSeePrivateElement(@$element["links"], $type, $id, $element["creator"], @$element["parentType"], @$element["parentId"])))
             $this->redirect( Yii::app()->createUrl($controller->module->id) );
+
         if(@$element["parentId"] && @$element["parentType"] && 
             $element["parentId"] != "dontKnow" && $element["parentType"] != "dontKnow")
             $element['parent'] = Element::getSimpleByTypeAndId( $element["parentType"], $element["parentId"]);
@@ -320,6 +330,7 @@ class AppController extends CommunecterController {
         if(@$element["organizerId"] && @$element["organizerType"] && 
             $element["organizerId"] != "dontKnow" && $element["organizerType"] != "dontKnow")
             $element['organizer'] = Element::getByTypeAndId( $element["organizerType"], $element["organizerId"]);
+        
         $params = array("id" => @$id,
                         "type" => @$type,
                         "view" => @$view,
@@ -341,13 +352,13 @@ class AppController extends CommunecterController {
         //var_dump($params);exit;
 
         if(@$_POST["preview"] == true){
+            //echo "oui";exit;
             $params["preview"]=$_POST["preview"]; 
             if($type == "classifieds") $this->renderPartial('eco.views.co.preview', $params );
            // else if($type == "ressources") $this->renderPartial('ressources.views.co.preview', $params ); 
             else if($type == "poi") $this->renderPartial('../poi/preview', $params ); 
-            else echo $this->renderPartial("page", $params, true);
+            else $this->renderPartial("../element/onepage", $params);
         }else{
-
             echo $this->renderPartial("page", $params, true);
 	    }
     }

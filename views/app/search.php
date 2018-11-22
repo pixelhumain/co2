@@ -2,6 +2,8 @@
     $cssAnsScriptFilesModule = array(
     '/plugins/jquery-simplePagination/jquery.simplePagination.js',
     '/plugins/jquery-simplePagination/simplePagination.css',
+    '/plugins/facemotion/faceMocion.css',
+    '/plugins/facemotion/faceMocion.js',
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
     $cssAnsScriptFilesModule = array(
@@ -21,8 +23,6 @@
 
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
-
-    $params = CO2::getThemeParams();
 
     $maxImg = 5;
 
@@ -47,8 +47,9 @@
     $this->renderPartial($layoutPath.'header', 
                             array(  "layoutPath"=>$layoutPath ,
                                     "page" => $page,
-                                    "type" => @$type,
-                                    "dontShowMenu"=> (!@$dontShowMenu) ? true : false ) ); 
+                                    "type" => @$type)
+                                    //"dontShowMenu"=> (!@$dontShowMenu) ? true : false )
+                        ); 
 
 
     $randImg = rand(1, $maxImg);
@@ -66,8 +67,7 @@
         /*opacity: 0.3;
         background-color: black;*/
     }
-    <?php if($params["title"] != "Kgougle") {} ?>
-   /* header {
+      /* header {
       background: url("<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/background-header/<?php echo $page; ?>/pexels-<?php echo $randImg; ?>.jpeg") center center;
       /*opacity: 0.3;
       background-color: black;*/
@@ -110,7 +110,8 @@
 <div class="col-md-12 col-sm-12 col-xs-12 bg-white no-padding shadow pageContent" 
      id="content-social" style="min-height:700px;">
     <?php if(@$type=="events"){ ?>
-    <div class="col-md-12 no-padding calendar"></div>
+    <div class="no-padding col-md-10 col-sm-10 col-xs-12 text-left col-sm-offset-1 col-md-offset-1 headerSearchContainer"></div>
+    <div class="col-xs-12 no-padding calendar"></div>
     <div class="responsive-calendar-init hidden"> 
       <div class="responsive-calendar light col-md-12 no-padding">   
           <div class="day-headers">
@@ -143,8 +144,7 @@
 
 var type = "<?php echo @$type ? $type : 'all'; ?>";
 var typeInit = "<?php echo @$type ? $type : 'all'; ?>";
-var page = "<?php echo @$page; ?>";
-var titlePage = "<?php echo Yii::t("common",@$params["pages"]["#".$page]["subdomainName"]); ?>";
+
 var pageCount=false;
 searchObject.count=true;
 searchObject.initType=typeInit;
@@ -160,7 +160,7 @@ var currentKFormType = "";
 
 jQuery(document).ready(function() {
     
-    setTitle(titlePage, "", titlePage);
+
     
     initCountType();
     var typeUrl = "?nopreload=true";

@@ -590,22 +590,19 @@ function builHtmlAuthorImageObject(obj){ //mylog.log("[[[[[[[[[[[[[[[[[[[[[[[[[[
 	}
 	return iconStr;
 }
-function actionOnNews(news,action,method,reason, comment) {
+/*function actionOnNews(news,action,method, detail) {
 	
 	var type="news";
 	if(typeof parentTypeComment != "undefined")
 		type = parentTypeComment;
-	
 	params=new Object,
 	params.id=news.data("id"),
 	params.collection=type,
 	params.action=action;
-	if(reason != ""){
-		params.reason=reason;
+	if(notNull(detail)){
+		params.details=detail;
 	}
-	if(comment != ""){
-		params.comment=comment;
-	}
+	
 	if(method){
 		params.unset=method;
 	}
@@ -649,9 +646,10 @@ function actionOnNews(news,action,method,reason, comment) {
         		toastr.error("Error calling the serveur : contact your administrator.");
         	}
 	});
-}
+}*/
 
-function voteCheckAction(idVote, newsObj) {
+/*function voteCheckAction(idVote, newsObj) {
+	alert("oui");
 	var voteUpCount = reportAbuseCount = voteDownCount = 0;
 	textUp="text-dark";
 	textDown="text-dark";
@@ -684,11 +682,11 @@ function voteCheckAction(idVote, newsObj) {
 			"<a href='javascript:;' class='newsVoteDown' onclick='newsVoteDown(this, \""+idVote+"\")' data-count='"+voteDownCount+"' data-id='"+idVote+"' data-type='"+newsObj.target.type+"'><span class='label "+textDown+"'>"+voteDownCount+" <i class='fa fa-thumbs-down'></i></span></a>"+
 			"<a href='javascript:;' class='newsReportAbuse' onclick='newsReportAbuse(this, \""+idVote+"\")' data-count='"+reportAbuseCount+"' data-id='"+idVote+"' data-type='"+newsObj.target.type+"'><span class='label "+textReportAbuse+"'>"+reportAbuseCount+" <i class='fa fa-flag'></i></span></a>";
 	return voteHtml;
-}
+}*/
 
-function manageModeContext(id) {
+/*function manageModeContext(id) {
 	mylog.log("manageModeContext");
-	listXeditables = [/*'#newsContent'+id,*/ '#newsTitle'+id];
+	listXeditables = [/*'#newsContent'+id,'#newsTitle'+id];
 	if (mode == "view") {
 		//$('.editable-project').editable('toggleDisabled');
 		$.each(listXeditables, function(i,value) {
@@ -703,9 +701,9 @@ function manageModeContext(id) {
 			$(value).editable('toggleDisabled');
 		});
 	}
-}
+}*/
 
-function initXEditable() {
+/*function initXEditable() {
 	mylog.log("initXEditable");
 	$.fn.editable.defaults.mode = 'inline';
 	$('.editable-news').editable({
@@ -746,9 +744,9 @@ function initXEditable() {
 	//         	toastr.error(data.msg);  
 	//     },
 	// });
-}
+}*/
 
-function showComments(id){
+/*function showComments(id){
 		// $.blockUI({
 		// 	message : '<div class=""><h2 class="homestead text-dark" style="padding:40px;"><i class="fa fa-spin fa-refresh"></i> Chargement des commentaires ...</h2></div>', 
 		// 	onOverlayClick: $.unblockUI,
@@ -769,8 +767,8 @@ function showComments(id){
 			mylog.log("scroll TO : ", $('#newsFeed'+id).position().top);
 			
 		}
-}
-function newsVoteUp($this, id){
+}*/
+/*function newsVoteUp($this, id){
 	if($(".newsVoteDown[data-id='"+id+"']").children(".label").hasClass("text-orange"))
 			toastr.info(trad["removeopinionbefore"]);
 	else{	
@@ -802,8 +800,8 @@ function newsVoteDown($this, id){
 		disableOtherNewsAction($($this), '.newsVoteDown', method);
 		$($this).children(".label").html($($this).data("count")+" <i class='fa fa-thumbs-down'></i>");
 	}
-}
-function newsReportAbuse($this, id){
+}*/
+/*function newsReportAbuse($this, id){
 	
 	//toastr.info('This vote has been well registred');
 	if($($this).children(".label").hasClass("text-red")){
@@ -817,7 +815,7 @@ function newsReportAbuse($this, id){
 	
 	//disableOtherAction($($this), '.commentReportAbuse', method);
 	$($this).children(".label").html($($this).data("count")+" <i class='fa fa-flag'></i>");
-}
+}*/
 
 function reportNewsAbuse($this,action, method) {
 	// mylog.log(contextId);
@@ -851,9 +849,9 @@ function reportNewsAbuse($this,action, method) {
 		      className: "btn-primary",
 		      callback: function() {
 		      	// var reason = $('#reason').val();
-		      	var reason = $("#reason input[type='radio']:checked").val();
-		      	var reasonComment = $("#reasonComment").val();
-		      	actionOnNews($($this),action,method, reason, reasonComment);
+		      	var reason = {"reason" : $("#reason input[type='radio']:checked").val(), "comment": $("#reasonComment").val()};
+		      	//var reasonComment = $("#reasonComment").val();
+		      	actionOnMedia($($this), action,method, reason);
 		      	$this.children(".label").removeClass("text-dark").addClass("text-red");
 		      }
 		    },
@@ -865,7 +863,7 @@ function reportNewsAbuse($this,action, method) {
 	}
 }
 
-function disableOtherNewsAction($this,action,method){
+/*function disableOtherNewsAction($this,action,method){
 	if(method){
 		if (action == ".newsVoteUp")
 			$this.children(".label").removeClass("text-green").addClass("text-dark");
@@ -882,18 +880,18 @@ function disableOtherNewsAction($this,action,method){
 		//if (action == ".commentReportAbuse")
 		//	$this.children(".label").removeClass("text-dark").addClass("text-red");
 	}
-}
-function blankNews(id){
+}*/
+/*function blankNews(id){
 /*	$.blockUI({
 			message : '<div class="newsContent"><h2 class="homestead text-dark" style="padding:40px;"><i class="fa fa-spin fa-refresh"></i> Chargement de l\'actualité ...</h2></div>', 
 			onOverlayClick: $.unblockUI,
 			css: {"text-align": "left", "cursor":"default"}
 		});
 		getAjax('.newsContent',baseUrl+'/'+moduleId+"/news/detail/id/"+id,function(){ 
-		},"html");*/
+		},"html");
 	window.open(baseUrl+'/#news.detail.id.'+id,'_blank');
-}
-function getMentionLabel(news){
+}*/
+/*function getMentionLabel(news){
 	countMentions = news.mentions.length;
 	target="";
 	mentionMe=false;
@@ -914,21 +912,4 @@ function getMentionLabel(news){
 		}
 	});
 	return target;
-}
-function addMentionInText(textNews,mentions){
-	$.each(mentions, function( index, value ){
-   		array = textNews.split(value.value);
-   		mylog.log(array);
-   		if(value.type == "organizations")
-   			controler = "organization";
-   		else
-   			controler = "person"; 
-   		textNews=array[0]+
-   					"<span class='lbh' onclick='urlCtrl.loadByHash(\"#page.type."+value.type+".id."+value.id+"\")' onmouseover='$(this).addClass(\"text-blue\");this.style.cursor=\"pointer\";' onmouseout='$(this).removeClass(\"text-blue\");' style='color: #719FAB;'>"+
-   						value.name+
-   					"</span>"+
-   				array[1];
-   					
-	});
-	return textNews;
-}
+}*/

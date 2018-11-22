@@ -37,8 +37,7 @@ function checkPoll(){
 	//returning multple server checks in a unique ajax call
 	if(userId){
 		_checkLoggued();
-		if(typeof refreshNotifications != "undefined")
-		refreshNotifications(userId,"citoyens","");
+		if(typeof refreshNotifications != "undefined") refreshNotifications(userId,"citoyens","");
 	}
 	
 	//according to the loaded page 
@@ -531,6 +530,7 @@ function follow(parentType, parentId, childId, childType, callback){
 	});
 }
 
+//connectTo('organizations','5bec0a4c6ff992d6208b457e', '55e042ffe41d754428848363', 'citoyens', 'admin','','true')
 function connectTo(parentType, parentId, childId, childType, connectType, parentName, actionAdmin) {
 	if(parentType=="events" && connectType=="attendee")
 		$(".connectBtn").removeClass("fa-link").addClass("fa-spinner fa-spin");
@@ -608,7 +608,7 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
         );
     }
 	else{
-		messageBox=trad["suretojoin"+parentType];;
+		messageBox=(userId==childId) ? trad["suretojoin"+parentType] : trad.validateaddedofthisuser;
 		if (connectType=="admin")
 			messageBox += " " + trad["as"+connectType];
 		bootbox.dialog({
@@ -658,6 +658,22 @@ function connectTo(parentType, parentId, childId, childType, connectType, parent
 	}
 }		
 
+function loadSettings(hash){
+	$("#modal-settings").show();
+	var url = "settings/index";
+	if(typeof hash != "undefined" && hash.indexOf("page") >= 0){
+		hashT=hash.split(".");
+		url += "/page/"+hashT[2];
+		if(hash.indexOf("to") >= 0){
+			url += "/to/"+hashT[4];
+		}
+	}
+	showLoader('#modal-settings');
+	ajaxPost('#modal-settings', baseUrl+'/'+moduleId+'/'+url, 
+		null,
+		function(){},"html");
+}
+
 var CoAllReadyLoad = false;
 function  bindLBHLinks() { 
 	$(".lbh").unbind("click").on("click",function(e) {  	
@@ -684,7 +700,7 @@ function  bindLBHLinks() {
 		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-		if( $(this).data("modalshow") ){
+		if( $(this).data("modalshow") ){		
 			url = (h.indexOf("#") == 0 ) ? urlCtrl.convertToPath(h) : h;
 			if(h.indexOf("#page") >= 0)
 				url="app/"+url
@@ -708,8 +724,11 @@ function  bindLBHLinks() {
 		mylog.warn("bindLBHLinks Preview ELEMENT", $(this).attr("href"),$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
-		var url = (h.indexOf("#") == 0 ) ? "app/"+ urlCtrl.convertToPath(h) : "app/"+ h;
-		openPreviewElement( baseUrl+'/'+moduleId+"/"+url);
+		urlCtrl.checkSlugUrl(h, function(res){
+			var url = (res.indexOf("#") == 0 ) ? "app/"+ urlCtrl.convertToPath(res) : "app/"+ res;
+			openPreviewElement( baseUrl+'/'+moduleId+"/"+url);	
+		});
+		
 			//smallMenu.open ( getAjax(directory.preview( mapElements[ $(this).data("modalshow") ],h ) );
 	});
 }
@@ -927,7 +946,47 @@ var urlCtrl = {
 		});
 		return res;
 	},
+	checkSlugUrl : function (url, callback){
+		var result=url;
+		if(url.indexOf("#@") >= 0){
+			splitHref=(url.indexOf("?") >= 0) ? url.split("?") : [url];
+			if(splitHref[0] > 2 || splitHref[0].indexOf("#@") >= 0){
+				hashT = (splitHref[0].indexOf("#@") >= 0) ? splitHref[0].replace( "#@","" ) : splitHref[0].replace( "#","" );
+				hashT=hashT.split(".");
+				if(typeof hashT == "string")
+					slug=hashT;
+				else
+					slug=hashT[0];
+				$.ajax({
+		  			type: "POST",
+		  			url: baseUrl+"/"+moduleId+"/slug/getinfo/key/"+slug,
+		  			dataType: "json",
+		  			success: function(data){
+				  		if(data.result){
+				  			viewPage="";			  			
+				  			if(hashT.length > 1){
+				  				hashT.shift();
+				  				viewPage="/"+hashT.join("/");
+				  			}
 
+				  			var key = hashT[0];
+				  			var get = "";
+				  			if(key.indexOf("?")>-1){
+								get = key.substr(key.indexOf("?"), key.length);
+								key = key.substr(0, key.indexOf("?"), key.length);
+							}
+				  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
+				  			callback('page/type/'+data.contextType+'/id/'+data.contextId+viewPage+get);
+				  		}else
+				  			callback(result);
+		 			}
+				});
+			}else
+				callback(result);
+		}
+		else
+			callback(result);
+	},
 	//back sert juste a differencier un load avec le back btn
 	//ne sert plus, juste a savoir d'ou vient drait l'appel
 	loadByHash : function ( hash , back ) {
@@ -1017,7 +1076,17 @@ var urlCtrl = {
 			else
 	       		showPanel(panelName,null,title);
 	       	
-	    }*/  else if( hash.indexOf("#gallery.index.id") >= 0 ){
+	    }*/  
+	    else if( hash.indexOf("#settings") >= 0 ){
+	    	if(userId == "" )
+	    		$('#modalLogin').modal("show");
+	    	else{
+	        	loadSettings(hash);
+	        	setTimeout(function(){ $(".progressTop").val(100)}, 10);
+ 				$(".progressTop").fadeOut(200);
+	    	}
+	       	
+	    }  else if( hash.indexOf("#gallery.index.id") >= 0 ){
 	        hashT = hash.split(".");
 	        showAjaxPanel( baseUrl+'/'+ moduleId + '/'+hash.replace( "#","" ).replace( /\./g,"/" ), 'ACTIONS in this '+typesLabels[hashT[3]],'rss' );
 	    }
@@ -1054,8 +1123,6 @@ var urlCtrl = {
 							if(key.indexOf("?")>-1){
 								get = key.substr(key.indexOf("?"), key.length);
 								key = key.substr(0, key.indexOf("?"), key.length);
-								alert(get);
-								//console.log("load key", key);
 							}
 				  			//console.log("HASH:", key, get, CO2params["onepageKey"], ($.inArray(key, CO2params["onepageKey"])));
 				  			if($.inArray(key, CO2params["onepageKey"])>-1) viewPage = "/view/"+key;
@@ -1065,8 +1132,9 @@ var urlCtrl = {
 		 			}
 				});
 			}else{
-				if(typeof custom == "undefined" || typeof custom.url=="undefined")	
+				//if(typeof custom == "undefined" || typeof custom.url=="undefined")	
 					showAjaxPanel( baseUrl+'/'+ moduleId + '/app/index', 'Home','home' );
+				//else
 			}
 		}
 	    else if ( moduleId != activeModuleId) {
@@ -1240,7 +1308,7 @@ var smallMenu = {
 			//this uses blockUI
 			if(type == "blockUI"){
 				colorCSS = (color == "black") ? 'rgba(0,0,0,0.70)' : 'rgba(256,256,256,0.85)';
-				colorCSS = (color == "black") ? '#fff' : '#000';
+				colorText = (color == "black") ? '#fff' : '#000';
 				$.blockUI({ 
 					//title : 'Welcome to your page', 
 					message : (content) ? content : "<div class='blockContent'></div>",
@@ -1334,7 +1402,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 				if(mapEnd)
 					showMap(true);
 
-				
+				if(userId!="")
 					addBtnSwitch();
 				
 
@@ -2354,6 +2422,18 @@ var collection = {
 			//console.warn("applying Color",what,id)
 		}
 	},
+	isFavorites : function (type, id){
+		res=false;
+		if(userConnected && userConnected.collections){
+			$.each(userConnected.collections, function(name, listCol){
+				if(typeof listCol[type] != "undefined" && typeof listCol[type][id] != "undefined"){
+					res=name;
+					return false;
+				}
+			});
+		}
+		return res;
+	},
 	add2fav : function (what,id,col){
 		var collection = (typeof col == "undefined") ? "favorites" : col;
 		if(userId){
@@ -2372,8 +2452,8 @@ var collection = {
                 				$(".favorisMenu").children("i").removeClass("fa-star").addClass('fa-star-o'); 
               				} 
 						}else{*/
-							$(el).removeClass("text-yellow"); 
-							$(el).children("i").removeClass("fa-star text-yellow").addClass('fa-star-o');
+							$(el).removeClass("letter-yellow-k"); 
+							$(el).find("i").removeClass("fa-star letter-yellow-k").addClass('fa-star-o');
 							delete userConnected.collections[collection][what][id];
 						//}
 					}
@@ -2387,8 +2467,8 @@ var collection = {
               				}
               			}
 						else*/
-							$(el).addClass("text-yellow"); 
-							$(el).children("i").removeClass("fa-star-o").addClass('fa-star text-yellow');
+							$(el).addClass("letter-yellow-k"); 
+							$(el).find("i").removeClass("fa-star-o").addClass('fa-star letter-yellow-k');
 
 						if(!userConnected.collections)
 							userConnected.collections = {};
@@ -2920,6 +3000,65 @@ function showLoader(id){
 	$(id).html("<center><i class='fa fa-spin fa-refresh margin-top-50 fa-2x'></i></center>");
 }
 
+function updateSlug() {
+		/*var type=type;
+		var canEdit=canEdit;
+		var hasRc=hasRc;*/
+		var form = {
+				saveUrl : baseUrl+"/"+moduleId+"/element/updateblock/",
+				timer : false,
+				dynForm : {
+					jsonSchema : {
+						title : tradDynForm.updateslug,// trad["Update network"],
+						icon : "fa-key",
+						onLoads : {
+							sub : function(){
+								$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+											  				  .addClass("bg-dark");
+								//bindDesc("#ajaxFormModal");
+							}
+						},
+						beforeSave : function(){
+							mylog.log("beforeSave");
+					    	//removeFieldUpdateDynForm(contextData.type);
+					    },
+						afterSave : function(data){
+							dyFObj.closeForm();
+							toastr.success("Votre identifiant URL a bien été enregistré");
+							strHash="";
+    						if(location.hash.indexOf(".view")>0){
+    							hashPage=location.hash.split(".view");
+    							strHash=".view"+hashPage[1];
+    						}	
+    						location.hash = "@"+data.resultGoods.values.slug+strHash;
+    						hashUrlPage="#@"+data.resultGoods.values.slug;
+							contextData.slug=data.resultGoods.values.slug;
+							//rcObj.loadChat(data.resultGoods.values.slug,type,canEdit,hasRc);
+							//loadDataDirectory(connectType, "user", true);
+							//changeHiddenFields();
+						},
+						properties : {
+							info : {
+				                inputType : "custom",
+				                html:"<p class='text-dark'><i class='fa fa-info-circle'></i> "+tradDynForm.infoslug+"<hr></p>",
+				            },
+				            block : dyFInputs.inputHidden(),
+							id : dyFInputs.inputHidden(),
+							typeElement : dyFInputs.inputHidden(), 
+							slug : dyFInputs.slug(tradDynForm.slug,tradDynForm.slug,{minlength:3/*, uniqueSlug:true*/}),
+						}
+					}
+				}
+			};
+		var dataUpdate = {
+			block : "info",
+	        id : contextData.id,
+	        typeElement : contextData.type,
+	        slug : contextData.slug,	
+		};
+		dyFObj.openForm(form, "sub", dataUpdate);		
+	}
+
 function bindButtonOpenForm(){ 
 	//window select open form type (selectCreate)
 	$(".btn-open-form").off().on("click",function(){
@@ -2960,13 +3099,21 @@ function initKInterface(params){ console.log("initKInterface");
         if( $(this).scrollTop() > 10 && !headerScaling && typeof infScroll != "undefined" && infScroll && (typeof networkJson == "undefined" || networkJson == null) ) {
         	$("#filter-scopes-menu, #filters-nav, #text-search-menu").hide(200);
         	$(".menu-btn-scope-filter").removeClass("active");
+        	$("#vertical .btn-show-filters.hidden-xs").show(200);
         	headerHeightPos(true);
+        	if(typeof themeParams.numberOfApp != "undefined" && themeParams.numberOfApp<=1)
+        		$("#mainNav").addClass("borderShadow");
         	headerScaling=false;
         	infScroll=false;
         }
         //else
         //	$("#filter-scopes-menu, #filters-nav").show();
 
+    });
+    $(".main-container.vertical .headerSearchContainer").affix({
+          offset: {
+              top: 10
+          }
     });
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $('.page-scroll a').bind('click', function(event) {
@@ -3013,6 +3160,13 @@ function initKInterface(params){ console.log("initKInterface");
         showFloopDrawer(false);
     });
 
+    // 2 events for notifications
+    $('.btn-menu-notif').click(function(){
+      	showNotif();
+    });
+	$("#notificationPanelSearch").mouseleave(function(){
+		showNotif(false);
+	});
 
     $(".btn-show-mainmenu").click(function(){
         showFloopDrawer(false);
@@ -3021,7 +3175,7 @@ function initKInterface(params){ console.log("initKInterface");
         $("#dropdown-dda, .dropdownApps-menuTop").removeClass("open");
         //clearTimeout(timerCloseDropdownUser);
     });
-    $("#dropdownApps").click(function(){
+    $(".dropdownApps").click(function(){
 		showFloopDrawer(false);
         showNotif(false);
         $("#dropdown-user, #dropdown-dda").removeClass("open");
@@ -3084,6 +3238,7 @@ function initKInterface(params){ console.log("initKInterface");
     	if(typeof params["affixTop"] != "undefined") affixTop = params["affixTop"];
     }
     console.log("affixTop", affixTop);
+
     /*if(affixTop > 0){
       // Offset for Main Navigation
       $("#affix-sub-menu").affix({

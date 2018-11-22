@@ -209,7 +209,7 @@
                                 </span><br><br>
                             <?php } ?>
                             <span class="badge padding-10 bold bg-white shadow2 letter-green">
-                                <h5 class="no-margin"><?php echo $item["price"]; ?> <?php echo $item["devise"]; ?></h5 class="no-margin">
+                                <h5 class="no-margin"><?php echo $item["price"]; ?> <?php echo @$item["devise"]; ?></h5 class="no-margin">
                             </span>
                         </div>
                     <?php } ?>

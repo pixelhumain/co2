@@ -5275,6 +5275,51 @@ if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
 			echo "Number of user with preferences modified : ".$nbUser;
 		}
 	}
+
+	public function actionHotfixAddressCPMissing() {
+		if( Role::isSuperAdmin(Role::getRolesUserId(Yii::app()->session["userId"]) )){
+			$nbUser = 0;
+			$types = array(Organization::COLLECTION, Project::COLLECTION, Event::COLLECTION);
+
+			foreach ($types as $keyT => $valT) {
+				$elts = PHDB::find($valT, 
+					array("modifiedByBatch.HotfixAddressCPMissing" => array('$exists' => 0), 
+							"address.addressCountry" => "FR",
+							"address.postalCode" => array('$exists' => 0)));
+
+				//Rest::json($elts); exit;
+				foreach ($elts as $keyE => $elt) {
+					$elt["modifiedByBatch"][] = array("HotfixAddressCPMissing" => new MongoDate(time()));
+
+					$city = City::getById($elt["address"]["localityId"], array("postalCodes"));
+					$cp = "NUUUUUUUULLLLLLL";
+					foreach ($city["postalCodes"] as $keyPC => $valPC) {
+						$cp = $valPC["postalCode"];
+						break;
+					}
+
+
+					$elt["address"]["postalCode"] = $cp ;
+					echo "<br/>  ".$keyE." : ".$valT." : ".$elt["name"]." :: ".$cp;
+					$res = PHDB::update($valT, 
+									  	array("_id"=>new MongoId($keyE)),
+				                        array('$set' => array(	"address" => $elt["address"],
+				                        						"modifiedByBatch" => $elt["modifiedByBatch"])
+				                        					)
+				                    );
+
+					if($res["ok"] == 1){
+						$nbUser++;
+					}else{
+						echo "<br/> Error with user id : ".$key;
+					}
+				}
+			}
+			
+
+			echo "Number of user with preferences modified : ".$nbUser;
+		}
+	}
 		
 }
 

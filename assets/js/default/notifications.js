@@ -5,6 +5,12 @@ var maxNotifTimestamp = {
 };
 var indexMinNotif=0;
 var endLoadingNotifs=false;
+function resetNotifTimestamp(){
+	maxNotifTimestamp = {
+		element : 0,
+		user : 0
+	};	
+}
 function showNotif(show){
 	stopTrigger=false;
 	if(typeof show == "undefined"){

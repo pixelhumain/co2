@@ -1083,7 +1083,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 			organizations : {}
 		} ;
 
-		$.each(myContacts.people, function(key, value){
+		$.each(myContacts.citoyens, function(key, value){
 			mylog.log("myContacts.people", value);
 			listMyContacts.citoyens[value._id.$id] = { 
 				name : value.name,

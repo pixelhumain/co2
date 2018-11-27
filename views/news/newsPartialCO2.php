@@ -158,7 +158,7 @@ foreach($news as $key => $media){
     if($("#noMoreNews").length)
       scrollEnd=true;
 
-    Sig.showMapElements(Sig.map, news, "search", "Auteurs");
+//    Sig.showMapElements(Sig.map, news, "search", "Auteurs");
     
 
     //alert("bind me");

@@ -2988,10 +2988,19 @@ var directory = {
                           "parentId":userId,
                           "parentType":"citoyens",
                           "url":location.hash,
+                          "searchUrl":getParamsUrlForAlert(),
                           "alert":$("input[name='awesomeness']:checked").val(),
                           "name":$("#nameFavorite").val(),
                           "type":"research"
                         }
+                        if(typeof custom != "undefined"){
+                          formData.mailParams={
+                            logo : custom.logo,
+                            title : custom.title,
+                            url : custom.url
+                          };
+                        }
+                        //var urlToSearch=getParamsUrlForAlert();;
                         mylog.log(formData);
                         $.ajax({
                           type: "POST",

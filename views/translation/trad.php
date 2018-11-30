@@ -37,6 +37,8 @@ var trad = {
 	"subcategory" : "<?php echo Yii::t("common","Subcategory") ?>",
 	"datasource" : "<?php echo Yii::t("common","Source data") ?>",
 	"tags" : "<?php echo Yii::t("common","Tags") ?>",
+	"themes" : "<?php echo Yii::t("common","Themes") ?>",
+	"writekeywords" : "<?php echo Yii::t("common","Write the keyword you want...") ?>",
 	"price" : "<?php echo Yii::t("common","Price") ?>",
 	"noone":"<?php echo Yii::t("common","No one") ?>",
 	"cancel" : "<?php echo Yii::t("common","Cancel") ?>",

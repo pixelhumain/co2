@@ -127,7 +127,7 @@ function getCommunexionLabel(){
 		$("#communexion-news-btn, #communexion-btn").hide();
 	}
 };
-function getUrlSearchLocality(urlGet){
+function getUrlSearchLocality(urlGet, alert){
 	var urlScopeCity = [];
 	var urlScopeCp = [];
 	var urlScopeZone = [];
@@ -136,7 +136,7 @@ function getUrlSearchLocality(urlGet){
 	if(notNull(searchingOnLoc)){
 		$.each(searchingOnLoc, function(key, value){
 			mylog.log("getMultiScopeForSearch value.active", value.active);
-			if(typeof custom == "undefined" || typeof custom.scopes == "undefined" || typeof custom.scopes[key] == "undefined" ){
+			if(typeof custom == "undefined" || typeof custom.scopes == "undefined" || typeof custom.scopes[key] == "undefined" || notNull(alert) ){
 				if(value.active == true){
 					if(value.type == "cities"){
 						keyScope=(typeof value.postalCode == "undefined") ? value.id : value.id+"cp"+value.postalCode;

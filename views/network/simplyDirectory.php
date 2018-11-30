@@ -1170,6 +1170,7 @@ function andAndOr(allFiltres){
 }
 
 function dateIsGood(event){
+	mylog.log("dateIsGood event", event);
 	var res = false;
 	var before = false;
 	var after = false;
@@ -1180,21 +1181,31 @@ function dateIsGood(event){
 		// mylog.log("dateIsGood moment(event.startDate).isSameOrAfter(startDate)", event.name, moment(event.startDate).isSameOrAfter(startDate));
 		// mylog.log("dateIsGood moment(startDate).isSameOrBefore(event.endDate)", event.name, moment(startDate).isSameOrBefore(event.endDate));
 
-		var afterS = moment(startDate).isSameOrAfter(event.startDate);
-		var beforeS = moment(startDate).isSameOrBefore(event.endDate);
-
-		after = (afterS == true && beforeS == true) ? true : false ;
+		var afterS = moment(event.startDate).isSameOrAfter(startDate);
+		// var beforeS = ( ( endDate == "") ? moment(startDate).isSameOrBefore(event.endDate) : true );
+		// beforeS = true ;
+		mylog.log("dateIsGood afterS", afterS, startDate, event.startDate);
+		// mylog.log("dateIsGood beforeS", beforeS, startDate, event.endDate);
+		// after = (afterS == true && beforeS == true) ? true : false ;
+		after = afterS ;
 	}else
 		after = true;
 
 	if( endDate != ""){
-		var afterE = moment(endDate).isSameOrAfter(event.startDate);
-		var beforeE = moment(endDate).isSameOrBefore(event.endDate);
+		// var afterE = ( ( startDate == "") ? moment(endDate).isSameOrAfter(event.startDate) : true );
+		var beforeE =  moment(event.endDate).isSameOrBefore(endDate);
 
-		before = (afterE == true && beforeE == true) ? true : false ;
+		//afterE = true ;
+		// mylog.log("dateIsGood afterS", afterS);
+		mylog.log("dateIsGood beforeE", beforeE);
+		// before = (afterE == true && beforeE == true) ? true : false ;
+		before = beforeE ;
 	}else
 		before = true;
+	mylog.log("dateIsGood after", after);
+	mylog.log("dateIsGood before", before);
 	res = (after == true && before == true) ? true : false ;
+	mylog.log("dateIsGood res", res);
 	return res ;
 }
 

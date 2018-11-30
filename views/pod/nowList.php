@@ -103,9 +103,8 @@
             <br>-->
             <small class="text-red title-pod-now"><i class="fa fa-home"></i> <span class="city-name-around"></span></small>
         </h6> 
-        <div class="results-in-my-city">
+        <div class="results-in-my-city margin-bottom-20">
         </div>
-        <hr class="angle-down">
         <h6 class="no-margin header-nowList" style="font-size:13px">
         
 

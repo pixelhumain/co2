@@ -548,7 +548,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 			if( Object.keys(listInvite.organizations).length > 0 || 
 				Object.keys(listInvite.citoyens).length > 0 || 
 				Object.keys(listInvite.invites).length > 0 ) {
-				mylog.log("#modal-invite #btnValider here");
+				mylog.log("#modal-invite #btnValider");
 				// $('#modal-invite #btnValider').prop("disabled", true);
 				// $('#modal-invite #btnValider').html("<i class='fa fa-spin fa-circle-o-notch'></i> ");
 
@@ -1083,7 +1083,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssJs, Yii::app()->getRequest()->getBase
 			organizations : {}
 		} ;
 
-		$.each(myContacts.people, function(key, value){
+		$.each(myContacts.citoyens, function(key, value){
 			mylog.log("myContacts.people", value);
 			listMyContacts.citoyens[value._id.$id] = { 
 				name : value.name,

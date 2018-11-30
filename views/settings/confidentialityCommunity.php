@@ -72,5 +72,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->requ
 <script type="text/javascript">
 jQuery(document).ready(function() {
 	settings.getCommunitySettings("confidentiality");
+	if(searchInCommunity!=""){
+		$("#search-in-settings").val(searchInCommunity);
+   		settings.filterSettingsCommunity(searchInCommunity);
+   	}
 });
 </script>

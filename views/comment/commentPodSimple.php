@@ -131,7 +131,7 @@
 			
 			<div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-top-15 container-txtarea">
 				<img src="<?php echo $profilThumbImageUrlUser; ?>" class="img-responsive pull-left img-circle" 
-					 style="margin-right:6px;height:32px;">
+					 style="margin-right:6px;height:32px; width:32px;">
 
 				<div id="container-txtarea-<?php echo $idComment; ?>" class="content-new-comment">
 					<div style="" class="ctnr-txtarea">
@@ -176,7 +176,7 @@
 						 id="item-comment-<?php echo $comment["_id"]; ?>">
 
 						<img src="<?php echo $profilThumbImageUrl; ?>" class="img-responsive pull-left img-circle" 
-							 style="margin-right:5px; margin-top:10px; height:32px;">
+							 style="margin-right:5px; margin-top:10px; height:32px;width: 32px;">
 					
 						<span class="pull-left content-comment col-xs-12 no-padding">						
 							<span class="text-black pull-left col-xs-12 comment-container-white">
@@ -408,7 +408,7 @@
 		var html = '<div class="col-xs-12 no-padding margin-top-5 item-comment '+classArgument+'" id="item-comment-'+idNewComment+'">'+
 
 						'<img src="<?php echo @$profilThumbImageUrlUser; ?>" class="img-responsive pull-left img-circle" '+
-						'	 style="margin-right:5px;margin-top:10px;height:32px;">'+
+						'	 style="margin-right:5px;margin-top:10px;height:32px;width:32px;">'+
 					
 						'<span class="pull-left content-comment col-xs-12 no-padding">'+						
 						'	<span class="text-black col-xs-12 comment-container-white">'+

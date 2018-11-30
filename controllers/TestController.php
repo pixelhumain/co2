@@ -314,6 +314,8 @@ class TestController extends CommunecterController {
 public function actionTest() {
 
   	echo "<br/>*************************************<br/>";
+  	RocketChat::post("co_log","test test test"); 
+  	echo "<br/>*************************************<br/>";
   	/*$allOrganizations = PHDB::findAndSort ( Organization::COLLECTION ,array("disabled" => array('$exists' => false)), 
 	  												array("updated" => -1, "name" => 1), 100, 
 

@@ -524,11 +524,11 @@
           <?php if($contextParentType == Organization::COLLECTION || $contextParentType == Project::COLLECTION || $contextParentType == Event::COLLECTION){ ?>
           <div class="dropdown no-padding pull-right">
             <a data-toggle="dropdown" class="btn btn-default" id="btn-toogle-dropdown-targetIsAuthor" href="#">
-            <?php if(@$parent["profilThumbImageUrl"]){ ?>
-              <img height=20 width=20 src='<?php echo Yii::app()->getRequest()->getBaseUrl(true).$parent["profilThumbImageUrl"] ?>'>
-            <?php } else{ ?>
-              <img height=20 width=20 src='<?php echo $this->module->assetsUrl.'/images/thumb/default_'.$contextParentType.'.png' ?>'>  
-            <?php } ?>
+              <?php if(@Yii::app()->session["user"]["profilThumbImageUrl"]){ ?>
+              <img height=20 width=20 src='<?php echo Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->session["user"]["profilThumbImageUrl"]; ?>'>
+              <?php } else {  ?>
+                <img height=20 width=20 src='<?php echo $this->module->assetsUrl.'/images/thumb/default_citoyens.png' ?>'>  
+              <?php } ?>
               <i class="fa fa-caret-down" style="font-size:inherit;"></i>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -556,7 +556,7 @@
                 </a>
               </li>
             </ul>
-            <input type="hidden" id="authorIsTarget" value="1"/>
+            <input type="hidden" id="authorIsTarget" value="0"/>
           </div>  
             <?php } ?>    
           <?php } ?>

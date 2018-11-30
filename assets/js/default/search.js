@@ -13,7 +13,14 @@ function initSearchInterface(){
     $(".scope-header-filter").off().on("click",function(){
         $("#searchOnCity").trigger("click");
     });
-    
+    $('#tagsFilterInput, #tagsFilterInput-xs').select2({tags:[trad.writekeywords]});
+    //$('').select2({tags:["Write keyword"]});
+    /*$('#tagsFilterInput').on("change", function(){
+        $('#tagsFilterInput-xs').val($(this).val().split(",")).trigger("change");
+    });*/
+    $('#tagsFilterInput-xs').on("change", function(){
+        $('#tagsFilterInput').val($(this).val().split(",")).trigger("change");
+    });
     $(".btn-select-filliaire").off().on("click",function(){
         mylog.log(".btn-select-filliaire");
         var fKey = $(this).data("fkey");
@@ -25,7 +32,8 @@ function initSearchInterface(){
             tagsArray.push(tag);
             //searchObject.text+="#"+tag+" ";
         });
-        $('.tagsFilterInput').val(tagsArray).trigger("change");
+        $('#tagsFilterInput-xs').val(tagsArray).trigger("change");
+        //$('').val(tagsArray).trigger("change");
         //$("#filter-thematic-menu").hide();
         //$("#main-search-bar, #second-search-bar").val(searchObject.text);
         //mylog.log("myMultiTags", myMultiTags);
@@ -38,10 +46,11 @@ function initSearchInterface(){
         startSearch(0, indexStepInit, searchCallback);*/
     });
     $(".btn-tags-start-search").off().on("click", function(){
-        searchObject.tags=$('.tagsFilterInput').val();//.split(",");
+        searchObject.tags=$('#tagsFilterInput').val().split(",");
         searchObject.page=0;
         pageCount=true;
         searchObject.count=true;
+        $('#tagsFilterInput-xs').val(searchObject.tags).trigger("change");
         if(typeof searchObject.ranges != "undefined") searchAllEngine.initSearch();
         $(".dropdown-tags").removeClass("open");
         activeTagsFilter();
@@ -49,7 +58,7 @@ function initSearchInterface(){
     });
     $(".btn-tags-refresh").off().on("click", function(){
         searchObject.tags=[];
-        $('.tagsFilterInput').val("").trigger("change");
+        $('#tagsFilterInput-xs').val("").trigger("change");
         searchObject.page=0;
         pageCount=true;
         searchObject.count=true;
@@ -678,11 +687,6 @@ function constructSearchObjectAndGetParams(){
         searchConstruct.countType=searchObject.countType;
     if(typeof searchObject.sourceKey != "undefined")
         searchConstruct.sourceKey=searchObject.sourceKey;
-  /*if(typeof custom != "undefined"){
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="city="+custom.id;
-  }*/
-
   // Locality
   getStatus=getUrlSearchLocality(getStatus);
   searchConstruct.locality = getSearchLocalityObject();
@@ -705,6 +709,22 @@ function constructSearchObjectAndGetParams(){
     historyReplace=false;
 
   return searchConstruct;
+}
+function getParamsUrlForAlert(){
+    arrayToSearch=["text","types", "tags", "searchSType","section", "category", "subType","priceMin", "priceMax", "devise","startDate","endDate","source", "sourceKey"];
+    getStatus="";//location.hash+"?";
+    $.each(arrayToSearch, function(e,label){
+        if(typeof searchObject[label] != "undefined"){
+            value=(Array.isArray(searchObject[label])) ? searchObject[label].join(",") : searchObject[label];
+            getStatus+=((getStatus!="") ? "&":"")+label+"="+value;
+//            getStatus+=;
+        }
+    });
+    // Locality
+    getStatus=getUrlSearchLocality(getStatus, true);
+    //Construct url with all necessar params
+    hashT=location.hash.split("?");
+    return hashT[0].substring(0)+"?"+getStatus;
 }
 function countActiveFilters(){
     count=$("#filters-nav .dropdown .dropdown-toggle.active").length;
@@ -810,7 +830,7 @@ function activeTagsFilter(){
     if(labelEnd!="")
         $(".dropdown-tags .dropdown-toggle").addClass("active").html(labelEnd+" <i class='fa fa-angle-down'></i>");
     else
-        $(".dropdown-tags .dropdown-toggle").removeClass("active").html(trad.tags+" <i class='fa fa-angle-down'></i>");
+        $(".dropdown-tags .dropdown-toggle").removeClass("active").html(trad.themes+" <i class='fa fa-angle-down'></i>");
 }     
 function initCategoriesApp(type){
     str='';
@@ -974,7 +994,7 @@ function activeFiltersInterface(filter,value){
         }
     }
     if(filter=="tags"){
-        $('.tagsFilterInput').val(searchObject.tags).trigger("change");
+        $('#tagsFilterInput, #tagsFilterInput-xs').val(searchObject.tags).trigger("change");
         countTags=0;
         labelTags="";
         $.each(searchObject.tags, function(e, v){

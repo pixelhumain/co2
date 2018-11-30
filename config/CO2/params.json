@@ -241,7 +241,8 @@
 
 		"#info": {
 			"inMenu" : false, 
-			"useHeader" : false, 
+			"useHeader" : true, 
+			"useFilter" : false, 
 			"open" : true, 
 			"subdomain" : "apropos", 
 			"subdomainName" : "Info",

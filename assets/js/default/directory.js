@@ -1892,7 +1892,7 @@ var directory = {
             if(typeof params.contactInfo != "undefined" && params.contactInfo != "")
             str += "<div class='entityType letter-green'><i class='fa fa-address-card'></i> " + params.contactInfo + "</div>";
          
-            str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
+            str += "<div class='tagsContainer text-red col-xs-12 no-padding margin-bottom-5'>"+params.tagsLbl+"</div>";
 
             
             if(params.startDate != null)
@@ -2988,10 +2988,19 @@ var directory = {
                           "parentId":userId,
                           "parentType":"citoyens",
                           "url":location.hash,
+                          "searchUrl":getParamsUrlForAlert(),
                           "alert":$("input[name='awesomeness']:checked").val(),
                           "name":$("#nameFavorite").val(),
                           "type":"research"
                         }
+                        if(typeof custom != "undefined"){
+                          formData.mailParams={
+                            logo : custom.logo,
+                            title : custom.title,
+                            url : custom.url
+                          };
+                        }
+                        //var urlToSearch=getParamsUrlForAlert();;
                         mylog.log(formData);
                         $.ajax({
                           type: "POST",

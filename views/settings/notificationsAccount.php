@@ -119,14 +119,12 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
         <hr>
         <div class="col-xs-12 text-center padding-10" 
 						 style="border: 1px solid rgba(128, 128, 128, 0.3); margin: 10px;">
-        <h5><i class="fa fa-angle-down"></i> <?php echo Yii::t("settings", "Low")?>:</h5>
+		 <h5><i class="fa fa-angle-down"></i> <?php echo Yii::t("settings", "High")?></h5>
         <small>
-        <i class="fa fa-envelope-o" style="width:20px;"></i> <b><?php echo Yii::t("settings","Invitation to join an organization, a project or an event")?></b><br>
-        <i class="fa fa-check" style="width:20px;"></i> <b><?php echo Yii::t("settings","Confirmation to be part of an organization, a project or an event")?></b><br>
-        <i class="fa fa-comment" style="width:20px;"></i> <b><?php echo Yii::t("settings","Message about one of your classified or a ressource") ?></b><br>
+        <i class="fa fa-user-plus" style="width:20px;"></i> <b><?php echo Yii::t("settings","Registration of people you invited")?></b><br>
         </small>
         <hr>
-        <h5><i class="fa fa-angle-down"></i> <?php echo Yii::t("settings", "By default")?>:</h5>
+        <h5><i class="fa fa-angle-down"></i> <?php echo Yii::t("settings", "By default")?></h5>
         <small>
         <i class="fa fa-newspaper-o" style="width:20px;"></i> <b><?php echo Yii::t("settings","Someone writes a news on your wall")?></b><br>
         <i class="fa fa-thumbs-up" style="width:20px;"></i> <b><?php echo Yii::t("settings","Activity on your post (comment, like, unlike)")?></b><br>
@@ -134,9 +132,11 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->
         <i class="fa fa-rss" style="width:20px;"></i> <b><?php echo Yii::t("settings","You have a new follower") ?></b><br>
         </small>
         <hr>
-        <h5><i class="fa fa-angle-down"></i> <?php echo Yii::t("settings", "High")?>:</h5>
+        <h5><i class="fa fa-angle-down"></i> <?php echo Yii::t("settings", "Low")?></h5>
         <small>
-        <i class="fa fa-user-plus" style="width:20px;"></i> <b><?php echo Yii::t("settings","Registration of people you invited")?></b><br>
+        <i class="fa fa-envelope-o" style="width:20px;"></i> <b><?php echo Yii::t("settings","Invitation to join an organization, a project or an event")?></b><br>
+        <i class="fa fa-check" style="width:20px;"></i> <b><?php echo Yii::t("settings","Confirmation to be part of an organization, a project or an event")?></b><br>
+        <i class="fa fa-comment" style="width:20px;"></i> <b><?php echo Yii::t("settings","Message about one of your classified or a ressource") ?></b><br>
         </small>
         </div>
     </div>

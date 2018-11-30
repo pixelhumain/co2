@@ -687,11 +687,6 @@ function constructSearchObjectAndGetParams(){
         searchConstruct.countType=searchObject.countType;
     if(typeof searchObject.sourceKey != "undefined")
         searchConstruct.sourceKey=searchObject.sourceKey;
-  /*if(typeof custom != "undefined"){
-    getStatus+=(getStatus!="") ? "&":"";
-    getStatus+="city="+custom.id;
-  }*/
-
   // Locality
   getStatus=getUrlSearchLocality(getStatus);
   searchConstruct.locality = getSearchLocalityObject();
@@ -714,6 +709,22 @@ function constructSearchObjectAndGetParams(){
     historyReplace=false;
 
   return searchConstruct;
+}
+function getParamsUrlForAlert(){
+    arrayToSearch=["text","types", "tags", "searchSType","section", "category", "subType","priceMin", "priceMax", "devise","startDate","endDate","source", "sourceKey"];
+    getStatus="";//location.hash+"?";
+    $.each(arrayToSearch, function(e,label){
+        if(typeof searchObject[label] != "undefined"){
+            value=(Array.isArray(searchObject[label])) ? searchObject[label].join(",") : searchObject[label];
+            getStatus+=((getStatus!="") ? "&":"")+label+"="+value;
+//            getStatus+=;
+        }
+    });
+    // Locality
+    getStatus=getUrlSearchLocality(getStatus, true);
+    //Construct url with all necessar params
+    hashT=location.hash.split("?");
+    return hashT[0].substring(0)+"?"+getStatus;
 }
 function countActiveFilters(){
     count=$("#filters-nav .dropdown .dropdown-toggle.active").length;

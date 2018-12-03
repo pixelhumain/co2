@@ -392,7 +392,25 @@
 								</div>
 							<?php } 
 
-							 } ?>
+							// if( $badges = Badge::getBadgesByLinks($element["links"]) ){ 
+							// 	foreach ($badges as $key => $b) {
+								?>
+								<!-- <div class="badgePH pull-left">
+									<span class="fa-stack tooltips" style="margin-bottom:5px" data-toggle="tooltip" data-placement="bottom" title='<?php echo $b["name"]?>'>
+										<?php if(@$b["img"]){ ?>
+										<img src="<?php echo $b["img"]?>" class="img-circle" style="height:40px" >
+										<?php } else { ?>
+											<i class="fa fa-<?php echo Element::getFaIcon ( $b["type"] ) ?> main fa-2x fa-stack-1x text-red"></i>
+										<?php } ?>
+									</span>
+								</div> -->
+							<?php 
+						// }
+						// 	} 
+							?>
+
+
+						<?php } ?>
 				</div>
 			</div>
 	</div>

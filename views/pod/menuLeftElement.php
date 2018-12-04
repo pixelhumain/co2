@@ -77,7 +77,7 @@
 	</div>
 <?php } ?>
 
-<ul id="subsubMenuLeft" class="pull-left">
+<ul id="subsubMenuLeft" class="pull-left col-xs-12 no-padding">
 	
 <?php if (($edit==true || $openEdition==true) && @Yii::app()->session["userId"]){ ?>
 		<li class="visible-xs">
@@ -122,226 +122,83 @@
 							data-original-title="<?php echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" > 
 					        <i class="fa fa-user-plus "></i><?php echo $inviteText ?>
 					    </a>
-						<!-- <a href="javascript:;" class="tooltips ssmla text-red" 
-						data-placement="bottom" 
-						data-original-title="<?php //echo Yii::t("common","Invite {what} {where}",array("{what}"=> Yii::t("common",$inviteLink),"{where}"=>Yii::t("common", $whereConnect))); ?>" 
-						data-toggle="modal" 
-						data-target="<?php //echo $modalTarget ?>">
-							<i class="fa fa-user-plus "></i> <?php // echo $inviteText ?>
-						</a> -->
 					</li>
 					<li><hr></li>
 		<?php 	}
 	}	?>
-	<?php if(@Yii::app()->session["userId"] && 
-		 $type==Person::COLLECTION && 
-		 (string)$element["_id"]==Yii::app()->session["userId"]){ 
-
-		$iconNewsPaper="user-circle"; 
+	<?php 
+		// MENU LEFT OF THE ELEMENT 
+		// - List of this menu is define on the document CO2/config/CO2/params.json at @element.menuLeft
+		// - $variable stocked in session variable {paramsConfig} during the initialization in mainSearch.php with @CO2::getThemeParams()  
+		// - customized if necessary with @CO2::filterThemeInCustom() during the process in co2/views/custom/init.php 
+		foreach($themeParams["element"]["menuLeft"] as $key => $v){ 
+			if(!@$v["typeAllow"] || in_array($type, $v["typeAllow"])){ 
+				$labelButon=($key=="events" && $type=="events")? Yii::t("common","Program"): Yii::t("common", $v["label"]);
+				$showBtn=true;
+				$attrHtml="";
+				// Case special for values menu 
+				// 1-- If no chart already fulfill, redirection on chart forms
+				// 2-- If no chart already fulfill & user can't edit, the button is hide
+				if($key=="chart"){	
+					$countChart=(@$element["properties"] && @$element["properties"]["chart"]) ? count($element["properties"]["chart"]): 0; 
+					$v["class"].=($countChart > 0) ? " btn-start-chart": " edit-chart";
+					$labelButon.=($countChart > 0) ? " (".$countChart.")": "";
+					if($countChart < 1 && !$edit && !$openEdition && !@Yii::app()->session["userId"])
+						$showBtn=false;
+				}
+				// Case in directory or other button who used data attribute
+				// @data-dir of community depends on context type (ex: citoyens=>memberOf || organizations=>members...) 
+				if(@$v["dataAttr"]){
+					foreach($v["dataAttr"] as $attr => $value){
+						if($key=="community" && empty($value))
+							$dataValue=($type == Person::COLLECTION) ? @Element::$connectAs[$type] : @Element::$connectTypes[$type];
+						else
+							$dataValue=$value;
+						$attrHtml.=" data-".$attr."='".$dataValue."' ";
+					}
+				}	
+				if(in_array($key, ["community", "projects", "events", "collections", "classifieds", "ressources", "jobs"])
+					&& $type == Person::COLLECTION 
+					&& !Preference::showPreference( $element, $type, "directory", Yii::app()->session["userId"]) )
+					$showBtn=false;
+				if($showBtn){
+				?>
+				<li class="<?php if(@$v["visibleXs"]) echo "visible-xs" ?>">
+					<a href="javascript:;" id="<?php echo @$v["id"] ?>" class="<?php echo $v["class"] ?>" <?php echo $attrHtml ?>>
+						<i class="fa <?php echo $v["icon"] ?>"></i> <?php echo $labelButon; ?>
+					</a>
+				</li>
+				<?php if(@$v["separator"]) { ?> 
+					<li><hr></li>
+				<?php } } ?>
+		<?php  } }
 	?>
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////
+	///// Button not integrated for the moment :: NOTIFICATIONS XS-VIEW / MAP CREATOR / ONE PAGE VIEW ////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 	<li class="visible-xs">
-		<a href="javascript:" class="ssmla btn-start-newsstream">	
-			<i class="fa fa-rss"></i> Fil d'actualités
-		</a>
-	</li>
-
-	<?php } else {
-			$iconNewsPaper="rss"; 
-		}
-	?>
-	<li class="visible-xs">
-		<a href="javascript:" class="ssmla btn-start-mystream">		
-		  	<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper"); ?>
-		</a>
-	</li>
-	<?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
-		<li class="visible-xs">
 			<a href="javascript:" class="ssmla btn-start-notifications">
 		  	<i class="fa fa-bell"></i><?php if (@Yii::app()->session["userId"] == $element["_id"]) echo "Mes n"; else echo "N"; ?>otifications
 		  	<span class="badge notifications-countElement <?php if(!@$countNotifElement || (@$countNotifElement && $countNotifElement=="0")) echo 'badge-transparent hide'; else echo 'badge-success'; ?>">
 		  		<?php echo @$countNotifElement ?>
 		  	</span>
 		  	</a>
-		</li>
-	<?php } ?>
-	<li class="">
-		<a href="javascript:" class="ssmla" id="btn-start-detail">
-			<i class="fa fa-info-circle"></i> <?php echo Yii::t("common","About"); ?>
-		</a>
-	</li>	
-
-	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Place::COLLECTION){ 
-		if(@$element["properties"] && @$element["properties"]["chart"]) 
-			$countChart=count($element["properties"]["chart"]); 
-		if(@$countChart || (($edit || $openEdition) && @Yii::app()->session["userId"])){ ?>
-			<li class="">
-				<a href="javascript:" class="ssmla <?php if(@$countChart) echo "btn-start-chart"; else echo "edit-chart"; ?>">
-					<i class="fa fa-heartbeat"></i> <?php echo Yii::t("chart", "Our values"); if(@$countChart) echo " (".$countChart.")" ?>
-				</a>
-			</li>
-	<?php } } ?>
-
-	<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Event::COLLECTION || $type==Place::COLLECTION){ ?>
-	<li class="">
-		<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
-			id="btn-start-contacts" class="ssmla">
-			<i class="fa fa-envelope"></i> <?php echo Yii::t("common","Contact us"); ?>
-		</a>
-	</li>
-	<?php } ?>
-	             
-
-	<li class="">
-		<a href="javascript:" class="ssmla" id="btn-start-gallery">
-			<i class="fa fa-cloud"></i> <?php echo Yii::t("common","Gallery"); ?>
-		</a>
-	</li>
-
-	
-	<!--<li class="">
-		<a href="javascript:" class="ssmla" id="btn-start-urls">
-			<i class="fa fa-external-link"></i> <?php echo Yii::t("common","Urls"); ?>
-		</a>
-	</li>
-	-->
-	<li><hr></li>
-	<?php if(	$type != Poi::COLLECTION 
-				&& ( 	$type != Person::COLLECTION || 
-			 			Preference::showPreference( $element, $type, "directory", Yii::app()->session["userId"]) ) ) { ?>
-
-		
-		<?php if($type == Person::COLLECTION ) 
-			$connectCommunity=@Element::$connectAs[$type];
-		 else 
-		 	$connectCommunity=@Element::$connectTypes[$type];
-		?>
+		</li> 
 		<li class="">
-			<a href="javascript:" class="ssmla capitalize load-data-directory load-data-community" 
-				data-type-dir="<?php echo @$connectCommunity; ?>" data-icon="users">
-				<i class="fa fa-users"></i> <?php echo Yii::t("common","Community"); ?>
+			<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
+				id="btn-start-networks" class="ssmla">
+				<i class="fa fa-map-o"></i> <?php //echo Yii::t("common","My maps"); ?>
 			</a>
-		</li>
-		
-
-		<?php if ($type==Person::COLLECTION){ ?>
-			<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="collections" data-icon="star">
-					<i class="fa fa-star"></i> <?php echo Yii::t("common","Collections"); ?>
-				</a>
-			</li>
-
-			<li><hr></li>
-		<?php } ?>
-		
-		<?php if(!@$front || (@$front && $front["event"]==true)){ 
-			if($type==Event::COLLECTION)
-				$label=Yii::t("common","Program");
-			else
-				$label=Yii::t("common","Agenda");
-			?>
-			<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="events" data-icon="calendar">
-					<i class="fa fa-calendar"></i> <?php echo $label; ?>
-				</a>
-			</li>
-			<?php if ($type==Person::COLLECTION || $type==Place::COLLECTION ){ ?>
-			<!--<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="organizations" data-icon="group">
-					<i class="fa fa-group"></i>  <?php echo Yii::t("common","Organizations"); ?>
-				</a>
-			</li>-->
-			<?php }  ?>
-			<?php if ($type==Person::COLLECTION || $type==Project::COLLECTION || $type==Organization::COLLECTION || $type==Place::COLLECTION){ ?>
-			<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="projects" data-icon="lightbulb-o">
-					<i class="fa fa-lightbulb-o"></i>  <?php echo Yii::t("common","Projects"); ?>
-				</a>
-			</li>
-			<li><hr></li>
-			<?php }  ?>
-		<?php }  ?>
-		<?php  if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
-				    Yii::app()->session['paramsConfig']["pages"]["#annonces"]["open"] == true){ ?>
-			<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="classifieds" data-icon="bullhorn">
-					<i class="fa fa-bullhorn"></i> <?php echo Yii::t("common","Classifieds"); ?>
-				</a>
-			</li>
-		<?php } ?>	
-		<?php if (in_array($type, [Project::COLLECTION, Organization::COLLECTION, Event::COLLECTION, Person::COLLECTION, Place::COLLECTION])){  
-					if(!@$front || (@$front && $front["poi"])){ 
-		?>
+		</li>  
+		<?php if (in_array($type,[Project::COLLECTION,Organization::COLLECTION,Event::COLLECTION,Person::COLLECTION])){  
+			$hash = @$element["slug"] ? "#".$element["slug"] : "#page.type.".$type.".id.".$element["_id"]; ?>
 			<li>
-				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="ressources" data-icon="cubes">
-					<i class="fa fa-cubes"></i> <?php echo Yii::t("common","Ressources"); ?>
+				<a href="<?php echo $hash; ?>.net"  class="lbh letter-blue">
+					<i class="fa fa-desktop"></i> <?php echo Yii::t("common","My web page"); ?>
 				</a>
 			</li>			
-		<?php }  
-		} ?>
-		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION){  
-					if(!@$front || (@$front && $front["poi"])){ 
-		?>
-			<li>
-				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="jobs" data-icon="briefcase">
-					<i class="fa fa-briefcase"></i> <?php echo Yii::t("common","Jobs"); ?>
-				</a>
-			</li>			
-		<?php }  
-		} ?>
-		<?php if ($type==Project::COLLECTION || $type==Organization::COLLECTION || 
-				  $type==Event::COLLECTION || $type==Person::COLLECTION || $type==Place::COLLECTION ){  
-					if(!@$front || (@$front && $front["poi"])){ 
-		?>
-			<li>
-				<a href="javascript:"  class="ssmla load-data-directory" data-type-dir="poi" data-icon="map-marker">
-					<i class="fa fa-map-marker"></i> <?php echo Yii::t("common","Points of interest"); ?>
-				</a>
-			</li>			
-		<?php }  
-		} ?>
-
-		
-
-		<?php if( $type!=Event::COLLECTION && ( !@$front || (@$front && $front["need"]==true)) &&
-				    Yii::app()->session['paramsConfig']["pages"]["#annonces"]["open"] == true){ ?>
-			<li><hr></li>
-			<li class="">
-				<a href="javascript:" class="ssmla load-data-directory" data-type-dir="surveys" data-icon="gavel">
-					<i class="fa fa-gavel"></i> <?php echo Yii::t("common","Surveys"); ?>
-				</a>
-			</li>
 		<?php } ?>
-
-		<?php if( $type==Person::COLLECTION ){ ?>
-			<li><hr></li>
-			<li class="">
-				<a href="javascript:" class="ssmla" id="btn-start-curiculum">
-					<i class="fa fa-clipboard"></i> <?php echo Yii::t("common","My experiences"); ?>
-				</a>
-			</li>
-			<!--  <li><hr></li>
-			<li class="">
-				<a href="javascript:" data-toggle="modal" data-target="#selectCreate" 
-					id="btn-start-networks" class="ssmla">
-					<i class="fa fa-map-o"></i> <?php //echo Yii::t("common","My maps"); ?>
-				</a>
-			</li>  -->
-		<?php } ?>
-		<li><hr></li>
-
-	<?php } ?>
-
-	<?php if (in_array($type,[Project::COLLECTION,Organization::COLLECTION,Event::COLLECTION,Person::COLLECTION])){  
-			$hash = @$element["slug"] ? 
-					"#".$element["slug"] :
-					"#page.type.".$type.".id.".$element["_id"];
-	?>
-		<!--<li>
-			<a href="<?php echo $hash; ?>.net"  class="lbh letter-blue">
-				<i class="fa fa-desktop"></i> <?php echo Yii::t("common","My web page"); ?>
-			</a>
-		</li>-->			
-	<?php } ?>
+	//////////////// END LIST OF BUTTON NOT INTEGRATED //////////////////////////////////////////////// -->
 </ul>
 
 

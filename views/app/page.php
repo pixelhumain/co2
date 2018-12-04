@@ -25,7 +25,6 @@
 	<div class="" id="onepage">
 		<?php 
             $onepageKey = @Yii::app()->session['paramsConfig']["onepageKey"];
-        
             if($type == Person::COLLECTION  || $type == Event::COLLECTION || 
                $type == Project::COLLECTION || $type == Organization::COLLECTION || 
                $type == Place::COLLECTION){

@@ -133,7 +133,7 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFiles, Yii::app()->theme->ba
     position: fixed;
 }
 #modal-confidentiality{
-	z-index: 20000;
+	z-index: 200000;
 }
 @media (max-width: 991px) {
  /* .open-type-filter{

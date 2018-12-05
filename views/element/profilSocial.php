@@ -58,6 +58,8 @@
     $iconColor = Element::getColorIcon($typeItemHead) ? Element::getColorIcon($typeItemHead) : "";
 
     $useBorderElement = false;
+    $pageConfig=(@Yii::app()->session['paramsConfig']["element"]) ? Yii::app()->session['paramsConfig']["element"] : null;
+    $addConfig=(@Yii::app()->session['paramsConfig']["add"]) ? Yii::app()->session['paramsConfig']["add"] : null; 
     if(@Yii::app()->params["front"]) $front = Yii::app()->params["front"];
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
@@ -228,7 +230,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
     
     <div class="col-md-9 col-sm-9 col-lg-10 col-xs-12 pull-right sub-menu-social no-padding">
 
-    	<div class="btn-group inline">
+    	<div class="btn-group btn-left inline">
 
     	  <?php 
     	  	$imgDefault = $this->module->assetsUrl.'/images/thumbnail-default.jpg';
@@ -251,23 +253,8 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 				</div>
 	    	  </div>
     	  </div>
-    	  <?php if(@Yii::app()->session["userId"] && 
-    			 $type==Person::COLLECTION && 
-    			 (string)$element["_id"]==Yii::app()->session["userId"]){ 
-
-    			$iconNewsPaper="user-circle"; 
-    	  ?>
-		  <!--<button type="button" class="btn btn-default bold hidden-xs btn-start-newsstream">
-		  		<i class="fa fa-rss"></i> <?php echo Yii::t("common","News stream<span class='hidden-sm'></span>") ?>
-		  </button>-->
-
-		  <?php } else {
-		  		  $iconNewsPaper="rss"; 
-		  		}
-		  ?>
-
 		  <button type="button" class="btn btn-default bold hidden-xs btn-start-mystream">
-		  		<i class="fa fa-<?php echo $iconNewsPaper ?>"></i> <?php echo Yii::t("common","Newspaper"); ?>
+		  		<i class="fa fa-rss"></i> <?php echo Yii::t("common","Newspaper"); ?>
 		  </button>
 
 		  <?php if((@Yii::app()->session["userId"] && $isLinked==true) || @Yii::app()->session["userId"] == $element["_id"]){ ?>
@@ -284,18 +271,9 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 		  </button>
 		  <?php } ?>
 
-		  <script type="text/javascript">
-	  	  	
-			   /*alert( "x<?php echo (@$edit && $edit) || (@$openEdition && $openEdition) ?>"+
-			           "x<?php echo Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id);  ?>"+
-			           "x<?php echo Link::isLinked((string)$element["_id"], $type, Yii::app()->session["userId"]);   ?>");
-    			*/
-	  	  </script>
-
+		  
 		  <?php if(@Yii::app()->session["userId"] && Yii::app()->params['rocketchatEnabled'] )
-		 //  	echo "Authorisation::canEditItem : ".Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id);
-			// echo "<br/>Link::isLinked : ".Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"]);
-	  		if( 
+			if( 
 	  			($type==Person::COLLECTION) ||
 	  			//admins can create rooms
 	  			( Authorisation::canEditItem(Yii::app()->session['userId'], $type, $id) ) ||
@@ -436,21 +414,6 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 				<?php } ?>
 		  <?php } ?>
 
-			
-		  <?php /*if(@Yii::app()->session["userId"])
-		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION || $type == Event::COLLECTION ){ ?>
-		  
-		  <span class="dropdown" id="dropdown-apps">
-	            <button type="button" class="dropdown-toggle btn btn-default bold hidden-xs letter-turq" 
-	            		id="open-co-tools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" style="border-right:0px!important;">
-				  		<i class="fa fa-th"></i> <?php echo Yii::t("cooperation", "CO.tools"); ?>
-				</button>
-	            <div class="dropdown-menu arrow_box" aria-labelledby="open-co-tools">
-	                <a class="dropdown-item padding-5 text-center col-xs-6" href="javascript:;" onclick="dyFObj.openForm('cotools')" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-plus-circle fa-2x"></i><br/><?php echo Yii::t("common","Add a tool") ?></a>
-	            </div>
-	        </span>
-		  <?php } */?>
-
 		  <?php if(@Yii::app()->session["userId"])
 		  		if( $type == Organization::COLLECTION || $type == Project::COLLECTION ){ ?>
 		  <button type="button" class="btn btn-default bold hidden-xs letter-turq" data-toggle="modal" data-target="#modalCoop" 
@@ -471,33 +434,19 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 		  		<i class="fa fa-plus-circle fa-2x"></i> <?php //echo Yii::t("common", "Créer") ?>
 		  </button>
 		  <?php } ?>
-
-		  <?php /* Links in new TAB
-		  if(@Yii::app()->session["userId"])
-  		if( ($type!=Person::COLLECTION && ((@$edit && $edit) || (@$openEdition && $openEdition))) || 
-  			($type==Person::COLLECTION) ||
-  			(Link::isLinked((string)$element["_id"],$type,Yii::app()->session["userId"])))
-  			{ 
-  				//todo : elements members of
-  				$loadChat = '/'.$this->module->id.'/rocketchat/chat/name/'.$element["name"].'/type/'.$type;
-  				if($type == Person::COLLECTION)
-  				{
-  				 	$loadChat = '/'.$this->module->id.'/rocketchat/chat/name/'.$element["username"].'/type/'.$type;
-  					if( (string)$element["_id"]==@Yii::app()->session["userId"] )
-  						$loadChat = '/'.$this->module->id.'/rocketchat';
-  				}
-  				?> 
-			  	<a href="<?php echo $loadChat;?>" target="_blanck" class="btn btn-default bold letter-red hidden-xs" style="border-right:0px!important;">
-			  		<i class="fa fa-comments fa-2x"></i> 
-			  	</a>
-			<?php } */?>
 		</div>
 		
+		
 		<div class="btn-group pull-right">
-	  	
+			<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
+		  		<button 	class='btn btn-default bold btn-share letter-green' style="border:0px!important;"
+							data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
+	                    	data-isShared='false'>
+	                    	<i class='fa fa-share'></i> <span class="hidden-xs"><?php echo Yii::t("common","Share") ?></span>
+	          	</button>
+	         <?php } ?>
 			<?php 
-				$role = Role::getRolesUserId(@Yii::app()->session["userId"]) ; 
-        
+			$role = Role::getRolesUserId(@Yii::app()->session["userId"]) ; 
 			if($element["_id"] == Yii::app()->session["userId"] && 
 			   (Role::isSuperAdmin($role) || Role::isSourceAdmin($role) )) { ?>
 			  <!--<button type="button" class="btn btn-default bold lbh" data-hash="#admin">
@@ -509,11 +458,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 			  	<i class="fa fa-grav letter-red"></i> <span class="hidden-xs hidden-sm hidden-md"></span>
 			  </button>
 			  <?php } ?>
-
-		</div>
-
-		<div class="btn-group pull-right" id="paramsMenu">
-			<ul class="nav navbar-nav">
+			<ul class="nav navbar-nav" id="paramsMenu">
 				<li class="dropdown">
 					<button type="button" class="btn btn-default bold">
 						<?php if(@Yii::app()->session["userId"] && $edit==true){ ?>
@@ -527,15 +472,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 						<i class="fa fa-chevron-down"></i>
 			  		</button>-->
 			  		<ul class="dropdown-menu arrow_box menu-params">
-	                	<?php $this->renderPartial('co2.views.element.linksMenu', 
-													array("linksBtn"=>$linksBtn,
-															"elementId"=>(string)$element["_id"],
-															"elementType"=>$type,
-															"elementName"=> $element["name"],
-															"openEdition" => $openEdition,
-															"xsView"=>true) 
-													); 
-
+	                	<?php  
 	            		if(@Yii::app()->session["userId"] && $edit==true){ 
 
 	            			if($type ==Person::COLLECTION){ ?>
@@ -655,16 +592,6 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 		  		</li>
 		  	</ul>
 		</div>
-
-	  	<?php if(isset(Yii::app()->session["userId"]) && $typeItem!=Person::COLLECTION){ ?>
-			<div class="btn-group pull-right">
-			  	<button 	class='btn btn-default bold btn-share pull-right  letter-green' style="border:0px!important;"
-							data-ownerlink='share' data-id='<?php echo $element["_id"]; ?>' data-type='<?php echo $typeItem; ?>' 
-	                    	data-isShared='false'>
-	                    	<i class='fa fa-share'></i> <span class="hidden-xs"><?php echo Yii::t("common","Share") ?></span>
-	          	</button>
-	        </div>
-	    <?php } ?>
 	</div>
 
 	
@@ -702,13 +629,113 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
                                 "countNotifElement"=>@$countNotifElement,
                                 "invitedMe" => @$invitedMe,
                                 "openEdition" => $openEdition,
-                                "linksBtn" => $linksBtn
+                                "linksBtn" => $linksBtn,
+                                "themeParams"=>@Yii::app()->session['paramsConfig']
                                 );
 
 	    	$this->renderPartial('co2.views.pod.menuLeftElement', $params ); 
 	    ?>
 	</div>
-
+	<?php $addElement=array(
+        Organization::TYPE_GROUP => array(
+            "label"=>Yii::t("common","Group"),
+            "icon"=>"fa-circle-o",
+            "formType"=>"organization",
+            "type"=>Organization::COLLECTION,
+            "formSubType"=>Organization::TYPE_GROUP,
+            "color"=> "turq",
+            "description"=>Yii::t("form","Create a group<br>Share your interest<br>Speak Diffuse Have fun"),           
+            "typeAllow"=>array(Person::COLLECTION)        
+        ),
+        Organization::TYPE_NGO => array(
+            "label"=>Yii::t("common","NGO"),
+            "icon"=>"fa-group",
+            "formType"=>"organization",
+            "type"=>Organization::COLLECTION,
+            "formSubType"=>Organization::TYPE_NGO,
+            "color"=>"green",
+            "description"=>Yii::t("form", "Make visible your NGO<br>Manage the community<br>Share your news"),           
+            "typeAllow"=>array(Person::COLLECTION)
+        ),
+        Organization::TYPE_BUSINESS => array(
+            "label"=>Yii::t("common","Local business"),
+            "icon"=>"fa-industry",
+            "formType"=>"organization",
+            "type"=>Organization::COLLECTION,
+            "formSubType"=>Organization::TYPE_BUSINESS,
+            "color"=>"azure",
+            "description"=>Yii::t("form", "Make visible your company<br>Find new customer<br>Manage your contacts"),           
+            "typeAllow"=>array(Person::COLLECTION)
+        ),
+        Organization::TYPE_GOV => array(
+            "label"=>Yii::t("common","Government Organization"),
+            "icon"=>"fa-university",
+            "formType"=>"organization",
+            "formSubType"=>Organization::TYPE_GOV,
+            "color"=> "red",
+            "description"=>Yii::t("form", "Town hall, schools, etc...<br>Share your news<br>Share events"),           
+            "typeAllow"=>array(Person::COLLECTION)
+        ),
+        "contacts" => array(
+            "label"=>Yii::t("common","Contact"),
+            "icon"=>"fa-envelope",
+            "formType"=>"contactPoint",
+            "color"=> "blue",
+            "description"=>Yii::t("form", "Define roles of everyone<br>Communicate easily<br>Internal and external"),
+            "typeAllow"=>array(Person::COLLECTION, Organization::COLLECTION, Project::COLLECTION)
+        ),
+        Project::COLLECTION => array(
+            "label"=>Yii::t("common","Project"),
+            "icon"=>Project::ICON,
+            "formType"=>"project",
+            "color"=> "purple",
+            "description"=>Yii::t("form", "Make visible a project<br>Find support<br>Build a community"),
+            "typeAllow"=>array(Person::COLLECTION, Organization::COLLECTION, Project::COLLECTION)
+        ),
+        Event::COLLECTION => array(
+            "label"=>Yii::t("common","Event"),
+            "icon"=>Event::ICON,
+            "formType"=>"event",
+            "description"=> Yii::t("form", "Diffuse an event<br>Invite attendees<br>Communicate to your network"),
+            "color"=> "orange",
+            "typeAllow"=>array(Person::COLLECTION, Organization::COLLECTION, Project::COLLECTION)
+        ),
+        Classified::COLLECTION => array(
+            "label"=>Yii::t("common","Classified"),
+            "icon"=>Classified::ICON,
+            "formType"=>"classifieds",
+            "color"=> "azure",
+            "description"=>Yii::t("form","Create a classified ad<br>To share To give To sell To rent<br>Material Property Job"),
+            "typeAllow"=>array(Person::COLLECTION, Organization::COLLECTION, Project::COLLECTION)
+        ),
+        Classified::TYPE_RESSOURCES => array(
+            "label"=>Yii::t("common","Ressource"),
+            "icon"=>Classified::ICON_RESSOURCES,
+            "formType"=>"ressources",
+            "color"=> "vine",
+            "description"=>"Partager des ressources<br>des outils, des documents<br> des compétences et des besoins"
+        ),
+        Classified::TYPE_JOBS => array(
+            "label"=>Yii::t("common","Jobs"),
+            "icon"=>Classified::ICON_JOBS,
+            "formType"=>"jobs",
+            "color"=> "yellow-k",
+            "description"=>"Ajouter les stages, les formations ou les offres d'emploi que vous proposez"
+        
+        ),
+        Poi::COLLECTION => array(
+            "label"=>Yii::t("common","Point of interest"),
+            "icon"=>Poi::ICON,
+            "formType"=>"poi",
+            "color"=> "green-k",
+            "description"=> Yii::t("form","Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory")
+        )
+    );
+    //Filtering button add element if custom
+    if(@$addConfig){
+        foreach($addElement as $key=>$v)
+            if(!@$addConfig[$key] && (!@$v["type"] || !@$addConfig[$v["type"]])) unset($addElement[$key]);
+    } ?>
 	<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 padding-50 margin-top-50 links-main-menu hidden" 
 		 id="div-select-create">
 		<div class="col-md-12 col-sm-12 col-xs-12 padding-15 shadow2 bg-white ">
@@ -726,90 +753,20 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 	       </h4>
 
 	        <div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
-
-	        <button data-form-type="event"  data-dismiss="modal"
-	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-orange">
-	            <h6><i class="fa fa-calendar fa-2x bg-orange"></i><br> <?php echo Yii::t("common", "Event") ?></h6>
-	            <small><?php echo Yii::t("form", "Diffuse an event<br>Invite attendees<br>Communicate to your network") ?></small>
-	        </button>
-	        <button data-form-type="classifieds"  data-dismiss="modal"
-	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-event">
-	            <h6><i class="fa fa-bullhorn fa-2x bg-azure"></i><br> <?php echo Yii::t("common", "Classified") ?></h6>
-	            <small><?php echo Yii::t("form","Create a classified ad<br>To share To give To sell To rent<br>Material Property Job") ?></small>
-	        </button>
-
-	        
-	        <!--<button data-form-type="url" data-dismiss="modal"
-	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-url">
-	            <h6><i class="fa fa-link fa-2x bg-url"></i><br> <?php echo Yii::t("common", "URL") ?></h6>
-	            <small><?php echo Yii::t("form","Share a link<br>Your favorites websites<br>Important news...") ?></small>
-	        </button>-->
-
-
-
-			<button data-form-type="contactPoint"  data-dismiss="modal"
-	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-blue hide-citoyens">
-	            <h6><i class="fa fa-envelope fa-2x bg-blue"></i><br> <?php echo Yii::t("common","Contact") ?></h6>
-	            <small><?php echo Yii::t("form", "Define roles of everyone<br>Communicate easily<br>Internal and external") ?></small>
-	        </button>
-
-	        	<?php if(in_array($type, [Person::COLLECTION, Organization::COLLECTION, Project::COLLECTION])){ ?>
-		        <button data-form-type="project"  data-dismiss="modal"
-		                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-purple hide-event">
-		            <h6><i class="fa fa-lightbulb-o fa-2x bg-purple"></i><br> <?php echo Yii::t("common", "Project") ?></h6>
-		            <small><?php echo Yii::t("form", "Make visible a project<br>Find support<br>Build a community") ?></small>
-		        </button>
-		        <?php } ?>
-			<!--<div class="section-create-page">-->
-	        	<?php if($type==Person::COLLECTION){ ?>
-
-	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GROUP; ?>"  data-dismiss="modal"
-	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 letter-turq">
-	                <h6><i class="fa fa-circle-o fa-2x bg-turq"></i><br> <?php echo Yii::t("common", "Group") ?></h6>
-	                <small><?php echo Yii::t("form","Create a group<br>Share your interest<br>Speak Diffuse Have fun") ?></small>
-	            </button>
-
-	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_NGO; ?>"  data-dismiss="modal"
-	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green">
-	                <h6><i class="fa fa-group fa-2x bg-green"></i><br> <?php echo Yii::t("common", "NGO") ?></h6>
-	                <small><?php echo Yii::t("form","Make visible your NGO<br>Manage the community<br>Share your news") ?></small>
-	            </button>
-	            
-	            
-	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_BUSINESS; ?>"  data-dismiss="modal"
-	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure">
-	                <h6><i class="fa fa-industry fa-2x bg-azure"></i><br> <?php echo Yii::t("common", "Local Business") ?></h6>
-	                <small><?php echo Yii::t("form","Make visible your company<br>Find new customer<br>Manage your contacts") ?></small>
-	            </button>
-
-	            <button data-form-type="organization" data-form-subtype="<?php echo Organization::TYPE_GOV; ?>"  
-	                    data-dismiss="modal"
-	                    class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-red">
-	                <h6><i class="fa fa-university fa-2x bg-red"></i><br> <?php echo Yii::t("common", "Government Organization") ?></h6>
-	                <small><?php echo Yii::t("form","Town hall, schools, etc...<br>Share your news<br>Share events") ?></small>
-	            </button>	 
-	            <?php } ?>           
-	       <!-- </div>-->
-			<?php /*
-	        <button data-form-type="place"  data-dismiss="modal"
-	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-azure hide-place">
-	            <h6><i class="fa fa-home fa-2x bg-azure"></i><br> Lieu</h6>
-	            <small>Localiser des lieux importants<br>Partager ses ressources<br> ses compétence et ses besoins</small>
-	        </button>
-			*/ ?>
-	        <button data-form-type="ressources"  data-dismiss="modal"
-	            class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-vine">
-	            <h6><i class="fa fa-cube fa-2x bg-vine"></i><br> Ressource</h6>
-	            <small>Partager des ressources<br>des outils, des documents<br> des compétences et des besoins</small>
-	        </button>
-
-	        <button data-form-type="poi"  data-dismiss="modal"
-	                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-green-poi">
-	            <h6><i class="fa fa-map-marker fa-2x bg-green-poi"></i><br> <?php echo Yii::t("common", "Point of interest") ?></h6>
-	            <small><?php echo Yii::t("form","Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory") ?></small>
-	        </button>
-
-
+	        <?php foreach($addElement as $key => $v){
+	        	if(!@$v["typeAllow"] || in_array($type, $v["typeAllow"])){ ?>
+	        		<button data-form-type="<?php echo $v["formType"] ?>" 
+	        			<?php if(@$v["formSubType"]){ ?>
+	        			data-form-subtype="<?php echo $v["formSubType"] ?>" 
+	        			<?php } ?>
+	        			data-dismiss="modal"
+		                class="btn btn-link btn-open-form col-xs-6 col-sm-6 col-md-4 col-lg-4 text-<?php echo $v["color"] ?>">
+		            	<h6><i class="fa <?php echo @$v["icon"] ?> fa-2x bg-<?php echo @$v["color"] ?>"></i><br> <?php echo $v["label"] ?></h6>
+		            	<small><?php echo $v["description"] ?></small>
+		        	</button>
+	        	<?php }
+	        }
+	        ?>
 	    </div>
     </div>
 
@@ -913,7 +870,8 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
     var liveScopeType = "";
     var subView="<?php echo @$_GET['view']; ?>";
     var navInSlug=false;
-   
+   	var pageConfig=<?php echo json_encode($pageConfig) ?>;
+   	if(notNull(pageConfig) && typeof pageConfig.initView != "undefined" && subView=="") subView=pageConfig.initView;
     if(typeof contextData.slug != "undefined")
      	navInSlug=true;
    

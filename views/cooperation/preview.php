@@ -8,7 +8,11 @@
 		"/plugins/Chart-2.6.0/Chart.min.js",
 		"/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css",
 		'/plugins/facemotion/faceMocion.css',
-   	  '/plugins/facemotion/faceMocion.js',
+   		'/plugins/facemotion/faceMocion.js',
+		'/plugins/underscore-master/underscore.js',
+		'/plugins/jquery-mentions-input-master/jquery.mentionsInput.js',
+		'/plugins/jquery-mentions-input-master/jquery.mentionsInput.css',
+		'/plugins/jquery-mentions-input-master/lib/jquery.events.input.js',
 	);
 	HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
 

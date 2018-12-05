@@ -77,7 +77,7 @@
         initCommentsTools(new Array(news));
       <?php } ?>
       
-      $(".timeline_text").html(text);
+      $(".timeline_text").html(linkify(text));
     	//showCommentsTools(news["_id"]['$id']);
     }
 	});

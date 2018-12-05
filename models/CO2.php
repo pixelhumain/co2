@@ -104,6 +104,34 @@ class CO2 {
             }
             $params["numberOfApp"]=$countApp;
         }
+        if(@Yii::app()->session["custom"]["element"]){
+            if(@Yii::app()->session["custom"]["element"]["initView"])
+                $params["element"]["initView"]=@Yii::app()->session["custom"]["element"]["initView"];
+            if(@Yii::app()->session["custom"]["element"]["menuLeft"]){
+                foreach($params["element"]["menuLeft"] as $key => $v){
+                    if(@Yii::app()->session["custom"]["element"]["menuLeft"][$key]){
+                        if(@Yii::app()->session["custom"]["element"]["menuLeft"][$key]["label"])
+                            $params["element"]["menuLeft"][$key]["label"]=Yii::app()->session["custom"]["element"]["menuLeft"][$key]["label"];
+                        if(@Yii::app()->session["custom"]["element"]["menuLeft"][$key]["icon"])
+                            $params["element"]["menuLeft"][$key]["icon"]=Yii::app()->session["custom"]["element"]["menuLeft"][$key]["icon"];
+                    }else{
+                        unset($params["element"]["menuLeft"][$key]);
+                    }
+                }
+            }
+           /* if(@Yii::app()->session["custom"]["element"]["menuTop"]){
+                foreach($params["element"]["menuTop"] as $key => $v){
+                    if(@Yii::app()->session["custom"]["element"]["menuTop"][$key]){
+                        if(@Yii::app()->session["custom"]["element"]["menuTop"][$key]["label"])
+                            $params["element"]["menuTop"][$key]["label"]=Yii::app()->session["custom"]["element"]["menuTop"][$key]["label"];
+                        if(@Yii::app()->session["custom"]["element"]["menuTop"][$key]["icon"])
+                            $params["element"]["menuTop"][$key]["icon"]=Yii::app()->session["custom"]["element"]["menuTop"][$key]["icon"];
+                    }else{
+                        unset($params["element"]["menuTop"][$key]);
+                    }
+                }
+            }*/
+        }
         if(@Yii::app()->session["custom"]["appRendering"])
             $params["appRendering"]=Yii::app()->session["custom"]["appRendering"];
         if(@Yii::app()->session["custom"]["redirect"])

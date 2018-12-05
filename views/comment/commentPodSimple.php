@@ -131,7 +131,7 @@
 			
 			<div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-top-15 container-txtarea">
 				<img src="<?php echo $profilThumbImageUrlUser; ?>" class="img-responsive pull-left img-circle" 
-					 style="margin-right:6px;height:32px;">
+					 style="margin-right:6px;height:32px; width:32px;">
 
 				<div id="container-txtarea-<?php echo $idComment; ?>" class="content-new-comment">
 					<div style="" class="ctnr-txtarea">
@@ -176,7 +176,7 @@
 						 id="item-comment-<?php echo $comment["_id"]; ?>">
 
 						<img src="<?php echo $profilThumbImageUrl; ?>" class="img-responsive pull-left img-circle" 
-							 style="margin-right:5px; margin-top:10px; height:32px;">
+							 style="margin-right:5px; margin-top:10px; height:32px;width: 32px;">
 					
 						<span class="pull-left content-comment col-xs-12 no-padding">						
 							<span class="text-black pull-left col-xs-12 comment-container-white">
@@ -373,7 +373,7 @@
 		if(notNull(getText) && getText)
 			return textComment;
 		else
-			$("#text-comment-"+objectId).html(textComment);
+			$(".text-comment-"+objectId).html(textComment);
 	}
 
 	function bindEventActions(){
@@ -398,39 +398,7 @@
 	}
 	
 
-	function showOneComment(newComment, idComment, isAnswer, idNewComment, argval, mentionsArray){
-		textComent=mentionAndLinkify(idNewComment,newComment, true);
-		var classArgument = "";
-		if(argval == "up") classArgument = "bg-green-comment";
-		if(argval == "down") classArgument = "bg-red-comment";
-		if(argval == "") classArgument = "bg-white-comment";
-
-		var html = '<div class="col-xs-12 no-padding margin-top-5 item-comment '+classArgument+'" id="item-comment-'+idNewComment+'">'+
-
-						'<img src="<?php echo @$profilThumbImageUrlUser; ?>" class="img-responsive pull-left img-circle" '+
-						'	 style="margin-right:5px;margin-top:10px;height:32px;">'+
-					
-						'<span class="pull-left content-comment col-xs-12 no-padding">'+						
-						'	<span class="text-black col-xs-12 comment-container-white">'+
-						'		<span class="text-dark"><strong><?php echo @$me["name"]; ?></strong></span><br>'+
-						'		<span class="text-comment">'	+ textComment + "</span>" +
-						'	</span><br>'+
-							'<small class="bold">' +
-								'<div class="col-xs-12 pull-left no-padding" id="footer-comments-'+idNewComment+'" style="padding-left:15px !important;"></div>'+
-							'</small>'+
-						'</span>'+	
-						'<div id="comments-list-'+idNewComment+'" class="hidden pull-left col-xs-11 no-padding answerCommentContainer"></div>' +
-							
-					'</div>';
-
-		if(!isAnswer){
-			$("#comments-list-<?php echo $idComment; ?>").prepend(html);
-			$("#comments-list-<?php echo $idComment; ?>").find(".noComment").remove();
-		}else{
-			$('#container-txtarea-'+idComment).after(html);
-		}
-		initCommentsTools({newComment}, "comments", true, idComment);
-	}
+	
 
 	
 

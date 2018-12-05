@@ -329,5 +329,147 @@
             "mainTitle" : "Partie Admin Public",
             "placeholderMainSearch" : "Admin Public ..."
         }
+	},
+	"element":{
+		"initView": "",
+		"menuLeft":{
+			"newspaper":{
+				"label": "Newspaper",
+				"icon":"fa-rss",
+				"class":"ssmla btn-start-mystream",
+				"visibleXs":true
+			},
+			"detail":{
+				"label": "About",
+				"icon":"fa-info-circle",
+				"class":"ssmla",
+				"id":"btn-start-detail"
+			},
+			"chart":{
+				"label": "Our values",
+				"icon":"fa-heartbeat",
+				"class":"ssmla",
+				"typeAllow":["projects", "organizations", "events", "places"]
+			},
+			"contact":{
+				"label": "Contact",
+				"icon":"fa-envelope",
+				"class":"ssmla",
+				"id":"btn-start-contacts",
+				"dataAttr":{
+					"toggle":"modal",
+					"target":"#selectCreate"
+				},
+				"typeAllow":["projects", "organizations", "events", "places"]
+			},
+			"gallery":{
+				"label": "Gallery",
+				"icon":"fa-cloud",
+				"class":"ssmla",
+				"id":"btn-start-gallery",
+				"separator":true
+			},
+			"community":{
+				"label": "Community",
+				"icon":"fa-users",
+				"class":"ssmla capitalize load-data-directory load-data-community",
+				"dataAttr":{
+					"type-dir":"",
+					"icon":"users"
+				}
+			},
+			"collections":{
+				"label": "Collections",
+				"icon":"fa-star",
+				"class":"ssmla load-data-directory",
+				"separator":true,
+				"dataAttr":{
+					"type-dir":"collections",
+					"icon":"star"
+				},
+				"typeAllow":["citoyens"]
+			},
+			"events":{
+				"label":"Agenda",
+				"icon":"fa-calendar",
+				"class":"ssmla load-data-directory",
+				"dataAttr":{
+					"type-dir":"events",
+					"icon":"calendar"
+				}
+			},
+			"projects":{
+				"label":"Projects",
+				"icon":"fa-lightbulb-o",
+				"class":"ssmla load-data-directory",
+				"separator":true,
+				"dataAttr":{
+					"type-dir":"projects",
+					"icon":"lightbulb-o"
+				},
+				"typeAllow":["projects","citoyens","organizations","places"]
+			},
+			"classifieds":{
+				"label":"Classifieds",
+				"icon":"fa-bullhorn",
+				"class":"ssmla load-data-directory",
+				"dataAttr":{
+					"type-dir":"classifieds",
+					"icon":"bullhorn"
+				},
+				"typeAllow":["projects","citoyens","organizations","places"]	
+			},
+			"ressources":{
+				"label":"Ressources",
+				"icon":"fa-cubes",
+				"class":"ssmla load-data-directory",
+				"dataAttr":{
+					"type-dir":"ressources",
+					"icon":"cubes"
+				}	
+			},
+			"jobs":{
+				"label":"Jobs",
+				"icon":"fa-briefcase",
+				"class":"ssmla load-data-directory",
+				"dataAttr":{
+					"type-dir":"jobs",
+					"icon":"briefcase"
+				},
+				"typeAllow":["projects","citoyens","organizations"]
+			},
+			"pois":{
+				"label":"Points of interest",
+				"icon":"fa-map-marker",
+				"class":"ssmla load-data-directory",
+				"dataAttr":{
+					"type-dir":"poi",
+					"icon":"map-marker"
+				},
+				"separator":true
+			},
+			"surveys":{
+				"label":"Surveys",
+				"icon":"fa-gavel",
+				"class":"ssmla load-data-directory",
+				"dataAttr":{
+					"type-dir":"surveys",
+					"icon":"gavel"
+				},
+				"separator":true,
+				"typeAllow":["projects","citoyens","organizations"]
+			},
+			"cv":{
+				"label":"My experiences",
+				"icon":"fa-clipboard",
+				"class":"ssmla",
+				"id":"btn-start-curiculum",
+				"separator":true,
+				"typeAllow":["citoyens"]
+			}
+		},
+		"menuTop":{
+
+		}
 	}
 }

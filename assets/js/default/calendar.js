@@ -208,7 +208,7 @@ var calendar = {
             },
             eventRender:function(event, element, view) {
                 console.log(" calendar2 eventRender event",event,"element",element, "element", view);
-                if(networkJson == "undefined"){
+                if(typeof networkJson == "undefined"){
                     popupHtml=calendar.popupHtml(event);
                     element.popover({
                         html:true,

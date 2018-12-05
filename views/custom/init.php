@@ -76,12 +76,11 @@ if( @$_GET["el"] || @$custom )
     }
 
     Yii::app()->session['custom'] = $c;
-    CO2::filterThemeInCustom(Yii::app()->session["paramsConfig"]);
-            
+    CO2::filterThemeInCustom(Yii::app()->session["paramsConfig"]);      
 } else {
     Yii::app()->session["custom"] = null; 
-    //delete custom; ?>
-<?php }
+    //delete custom; 
+}
 
 if( @Yii::app()->session['custom'] ){  ?>
 

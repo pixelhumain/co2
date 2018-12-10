@@ -201,7 +201,7 @@
 				  		<?php 
 				  			if(@$post["type"] == Room::CONTROLLER && $auth){ 
 				  		?>
-							<a href="javascript:dyFObj.openForm('proposal')" class="letter-green btn-add">
+							<a href="javascript:uploadObj.set();dyFObj.openForm('proposal');" class="letter-green btn-add">
 						  		<i class="fa fa-plus-circle tooltips"  data-placement='top'  data-toogle='tooltips'
 						  			data-original-title="<?php echo Yii::t("cooperation", "Add proposal") ?>"></i> 
 						  		<span class="hidden-min hidden-sm"><?php echo Yii::t("cooperation", "Add proposal") ?></span>

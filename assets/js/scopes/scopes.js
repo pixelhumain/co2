@@ -76,15 +76,17 @@ function appendHeaderFilterActive(title, count){
 	mylog.log("appendHeaderFilterActive", title, count);
 	var labelHeader = trad.where+" ?"
 	myScopes.countActive = 0;
-	$.each(myScopes[myScopes.type], function(key, value){
-		if(typeof value.name == "undefined") value.name = value.id;
-		if(value.active){
-			if(myScopes.countActive==0) labelHeader="";
-			myScopes.countActive++;
-			if(myScopes.countActive <= 2)
-				labelHeader+= (labelHeader!="") ? ", "+value.name : value.name;
-		}
-	});
+	if(notNull(myScopes[myScopes.type])){
+		$.each(myScopes[myScopes.type], function(key, value){
+			if(typeof value.name == "undefined") value.name = value.id;
+			if(value.active){
+				if(myScopes.countActive==0) labelHeader="";
+				myScopes.countActive++;
+				if(myScopes.countActive <= 2)
+					labelHeader+= (labelHeader!="") ? ", "+value.name : value.name;
+			}
+		});
+	}
 	var incrStr = (myScopes.countActive > 2) ? " +"+(myScopes.countActive-2): ""; 
 	$(".menu-btn-scope-filter .header-label-scope").html(labelHeader+incrStr);
 

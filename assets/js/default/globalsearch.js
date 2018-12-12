@@ -86,7 +86,7 @@ function autoCompleteSearchGS(search, indexMin, indexMax, input){
 		$(domTarget).html("<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</h5>");  
 	}
 
-	showIsLoading(true);
+//	showIsLoading(true);
 
 	if(search.indexOf("co.") === 0 ){
 		searchT = search.split(".");

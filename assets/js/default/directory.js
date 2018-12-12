@@ -992,7 +992,7 @@ var directory = {
     //linkAction = "lbh-preview-element";
     
     console.log("linkAction", linkAction);
-    var onepageKey = CO2params["onepageKey"][0];
+    var onepageKey = (typeof CO2params != "undefined") ? CO2params["onepageKey"][0] : ".co";
 
     params.htmlIco ="<i class='fa "+ params.ico +" fa-2x letter-"+params.color+"'></i>";
 
@@ -1348,7 +1348,7 @@ var directory = {
         if(params.id != userId && $.inArray(params.type, ["events", "organizations", "citoyens","projects"])>=0){
           tip = (params.type == "events") ? trad["participate"] : trad['Follow'];
           classBind="followBtn";
-          if(typeof myContacts[params.type] != "undefined" && typeof myContacts[params.type][params.id] != "undefined"){
+          if(notNull(myContacts) && typeof myContacts[params.type] != "undefined" && typeof myContacts[params.type][params.id] != "undefined"){
             if(typeof myContacts[params.type][params.id].isFollowed != "undefined" || params.type=="events"){
               tip = (params.type == "events") ? trad["alreadyAttendee"] : trad['alreadyFollow'];
               strLink="<i class='fa fa-unlink'></i> "+tip;
@@ -3344,9 +3344,7 @@ var directory = {
                       //template principal
                     }else{
                       mylog.log("template principal",params,params.type, itemType);
-
-
-                      if((typeof directory.viewMode != "undefined" && directory.viewMode=="list" && !notNull(viewMode))  && $.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classifieds"] )>=0) 
+                      if((((typeof directory.viewMode != "undefined" && directory.viewMode=="list" && !notNull(viewMode))) || (notNull(viewMode) && viewMode=="list"))  && $.inArray(params.type, ["citoyens","organizations","projects","events","poi","news","places","ressources","classifieds"] )>=0) 
                        str += directory.lightPanelHtml(params);  
                       else{ 
                         if(params.type == "cities")

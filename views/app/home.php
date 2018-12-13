@@ -290,7 +290,7 @@ jQuery(document).ready(function() {
     bindLBHLinks();
 	initKInterface({"affixTop":0});
 	initPageInterface();
-    loadNewsStream(isLiveBool);
+    loadMyStream();
     // var tpl = '<?php //echo @$_GET["tpl"] ? $_GET["tpl"] : "profilSocial"; ?>';
 	// getAjax('#onepage' ,baseUrl+'/'+moduleId+"/element/detail/type/"+type+"/id/"+id+"/view/"+view+"?tpl="+tpl,function(){ 
 	// 	initPageInterface();
@@ -331,7 +331,7 @@ function loadLiveNow () {
     //}
 }
 
-function loadNewsStream(isLiveBool){
+function loadMyStream(isLiveBool){
     var url = "news/co/index/type/citoyens/id/"+userId;//+"/isLive/true/date/"+dateLimit;
     setTimeout(function(){ //attend que le scroll retourn en haut (kscrollto)
         showLoader('#central-container');
@@ -342,16 +342,7 @@ function loadNewsStream(isLiveBool){
             },
             function(){ 
                 loadLiveNow();
-                /*$(window).bind("scroll",function(){ 
-                    if(!loadingData && !scrollEnd && colNotifOpen){
-                          var heightWindow = $("html").height() - $("body").height();
-                          if( $(this).scrollTop() >= heightWindow - 1000){
-                            loadStream(currentIndexMin+indexStep, currentIndexMax+indexStep, "citoyens", userId);
-                          }
-                    }
-                });
-                loadingData = false;*/
-        },"html");
+            },"html");
     }, 700);
 }
 var colNotifOpen = true;

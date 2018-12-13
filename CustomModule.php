@@ -47,6 +47,7 @@ class CustomModule extends CWebModule {
 			'citizenToolKit.models.*',
 			//'ressources.models.*',
 			'map.models.*',
+			'news.models.*',
 			'eco.models.*',
 			'places.models.*',
 			'chat.models.*',

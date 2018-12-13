@@ -332,7 +332,7 @@ function loadLiveNow () {
 }
 
 function loadMyStream(isLiveBool){
-    var url = "news/co/index/type/citoyens/id/"+userId;//+"/isLive/true/date/"+dateLimit;
+    var url = "news/co/index/type/citoyens/id/"+userId+"/isLive/true";///date/"+dateLimit;
     setTimeout(function(){ //attend que le scroll retourn en haut (kscrollto)
         showLoader('#central-container');
         ajaxPost('#central-container', baseUrl+'/'+url, 

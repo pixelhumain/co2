@@ -66,8 +66,8 @@ var uiCoop = {
 			var status = $(this).data("status");
 			var dataId = $(this).data("dataid");
 			//mylog.log("LOAD COOP DATA", contextData.type, contextData.id, type, status, dataId);
-			pid = (contextData && contextData.id) ? contextData.id : userId;
-	    	ptype = (contextData && contextData.type) ? contextData.type : "citoyens";
+			pid = (notNull(contextData) && contextData.id) ? contextData.id : userId;
+	    	ptype = (notNull(contextData) && contextData.type) ? contextData.type : "citoyens";
 			uiCoop.getCoopData(ptype, pid, type, status, dataId);
 		});
 	},

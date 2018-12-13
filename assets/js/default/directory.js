@@ -776,7 +776,7 @@ function initPageTable(number){
 
       $.ajax({
         type: "POST",
-        url: baseUrl+"/"+moduleId+"/news/share",
+        url: baseUrl+"/news/co/share",
         data : formData,
         dataType: "json",
         success: function(data){

@@ -1,6 +1,6 @@
 <?php 
     
-    $this->renderPartial("co2.views.news.newsAssets");
+    //$this->renderPartial("co2.views.news.newsAssets");
 
 	HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css') , Yii::app()->theme->baseUrl. '/assets');
 	//$cssAnsScriptFilesModule = array('');

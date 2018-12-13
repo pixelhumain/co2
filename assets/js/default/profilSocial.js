@@ -488,22 +488,21 @@ function loadNewsStream(isLiveBool){
 
 	KScrollTo("#profil_imgPreview");
 	//isLiveNews=isLiveBool;
-	isLiveNews = isLiveBool==true ? "/isLive/true" : ""; 
-	dateLimit = 0;
-	scrollEnd = false;
-	loadingData = true;
-	toogleNotif(true);
+	//isLiveNews = isLiveBool==true ? "/isLive/true" : ""; 
+	//dateLimit = 0;
+	//scrollEnd = false;
+	//loadingData = true;
+	//toogleNotif(true);
 
-	var url = "news/index/type/"+typeItem+"/id/"+contextData.id+isLiveNews+"/date/"+dateLimit+
-			  "?isFirst=1&tpl=co2&renderPartial=true";
+	var url = "news/co/index/type/"+typeItem+"/id/"+contextData.id;
 	
 	setTimeout(function(){ //attend que le scroll retourn en haut (kscrollto)
 		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
+		ajaxPost('#central-container', baseUrl+'/'+url, 
 			null,
 			function(){ 
 				//if(typeItem=="citoyens") loadLiveNow();
-	            $(window).bind("scroll",function(){ 
+	/*            $(window).bind("scroll",function(){ 
 				    if(!loadingData && !scrollEnd && colNotifOpen){
 				          var heightWindow = $("html").height() - $("body").height();
 				          if( $(this).scrollTop() >= heightWindow - 1000){
@@ -511,7 +510,7 @@ function loadNewsStream(isLiveBool){
 				          }
 				    }
 				});
-				loadingData = false;
+				loadingData = false;*/
 		},"html");
 	}, 700);
 }

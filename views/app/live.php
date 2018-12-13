@@ -1,6 +1,6 @@
 <?php 
 
-    $this->renderPartial("../news/newsAssets");
+   // $this->renderPartial("../news/newsAssets");
     
 	HtmlHelper::registerCssAndScriptsFiles( 
 			array('/css/timeline2.css',

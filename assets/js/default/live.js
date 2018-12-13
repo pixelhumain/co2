@@ -110,7 +110,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 	var urlCtrl = ""
 	if(liveScopeType == "global") {
 		thisType = "city";
-		urlCtrl = "/news/index/type/city/isLive/true";
+		urlCtrl = "/news/co/index/type/city/isLive/true";
 	}
 	var dataSearch=constructSearchObjectAndGetParams();
 	//var searchLocality = getSearchLocalityObject();
@@ -131,7 +131,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		$("#newsstream").html(loading);
 		simpleScroll(0, 500);
 		//KScrollTo("#container-scope-filter");
-		ajaxPost("#newsstream",baseUrl+"/"+moduleId+urlCtrl+"/date/0"+isFirstParam,dataSearch, function(news){
+		ajaxPost("#newsstream",baseUrl+"/"+urlCtrl+"/date/0"+isFirstParam,{search : dataSearch}, function(news){
 			//showTagsScopesMin(".list_tags_scopes");
 			 $(window).bind("scroll",function(){ 
 	    		if(!loadingData && !scrollEnd){
@@ -178,8 +178,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 		console.log("data",dataSearch);
 		$.ajax({
 		        type: "POST",
-		        url: baseUrl+"/"+moduleId+urlCtrl+"/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2",
-		       	data: dataSearch,
+		        url: baseUrl+"/"+urlCtrl+"/date/"+dateLimit+"?tpl=co2&renderPartial=true&nbCol=2",
+		       	data: {search:dataSearch},
 		    	success: function(data){
 					if(data){
 						$("#newsstream").find(".loader").remove();

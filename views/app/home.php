@@ -35,7 +35,7 @@
         
     );
     HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesTheme, Yii::app()->request->baseUrl);
-    $this->renderPartial("../news/newsAssets");
+    //$this->renderPartial("../news/newsAssets");
 
 	HtmlHelper::registerCssAndScriptsFiles( array('/css/default/directory.css') , Yii::app()->theme->baseUrl. '/assets');
 	//$cssAnsScriptFilesModule = array('');
@@ -330,26 +330,19 @@ function loadLiveNow () {
          } , "html" );
     //}
 }
+
 function loadNewsStream(isLiveBool){
-
-    KScrollTo("#profil_imgPreview");
-    //isLiveNews=isLiveBool;
-    isLiveNews = isLiveBool==true ? "/isLive/true" : ""; 
-    dateLimit = 0;
-    scrollEnd = false;
-    loadingData = true;
-    toogleNotif(true);
-
-    var url = "news/index/type/citoyens/id/"+userId+isLiveNews+"/date/"+dateLimit+
-              "?isFirst=1&tpl=co2&renderPartial=true";
-    
+    var url = "news/co/index/type/citoyens/id/"+userId;//+"/isLive/true/date/"+dateLimit;
     setTimeout(function(){ //attend que le scroll retourn en haut (kscrollto)
         showLoader('#central-container');
-        ajaxPost('#central-container', baseUrl+'/'+moduleId+'/'+url, 
-            null,
+        ajaxPost('#central-container', baseUrl+'/'+url, 
+            {
+                nbCol: 1,
+                inline : true
+            },
             function(){ 
                 loadLiveNow();
-                $(window).bind("scroll",function(){ 
+                /*$(window).bind("scroll",function(){ 
                     if(!loadingData && !scrollEnd && colNotifOpen){
                           var heightWindow = $("html").height() - $("body").height();
                           if( $(this).scrollTop() >= heightWindow - 1000){
@@ -357,7 +350,7 @@ function loadNewsStream(isLiveBool){
                           }
                     }
                 });
-                loadingData = false;
+                loadingData = false;*/
         },"html");
     }, 700);
 }

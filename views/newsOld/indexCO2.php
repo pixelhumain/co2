@@ -188,7 +188,7 @@ function initTags(){
     tagsNews = <?php echo json_encode($tags); ?>;
   }*/
   /////// A réintégrer pour la version last
-  var $scrollElement = $(".my-main-container");
+  //var $scrollElement = $(".my-main-container");
 
   
   $('#tags').select2({tags:tagsNews});

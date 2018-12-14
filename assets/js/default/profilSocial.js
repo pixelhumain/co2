@@ -1,6 +1,5 @@
 function initDateHeaderPage(params){
 	var str = directory.getDateFormated(params);
-	//$(".section-date").prepend(str);
 	$(".header-banner").html(str);
 }
 
@@ -485,13 +484,10 @@ function loadAdminDashboard(week){
 }
 
 function loadNewsStream(isLiveBool){
-
 	KScrollTo("#profil_imgPreview");
-	var url = "news/co/index/type/"+typeItem+"/id/"+contextData.id;
-	
 	setTimeout(function(){ //attend que le scroll retourn en haut (kscrollto)
 		showLoader('#central-container');
-		ajaxPost('#central-container', baseUrl+'/'+url, 
+		ajaxPost('#central-container', baseUrl+"/news/co/index/type/"+typeItem+"/id/"+contextData.id, 
 			{nbCol:1},
 			function(){},"html");
 	}, 700);

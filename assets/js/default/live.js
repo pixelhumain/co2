@@ -102,17 +102,13 @@ function startNewsSearch(isFirst){
 
 
 
-function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
-	var isFirstParam = isFirst ? "?isFirst=1&tpl=co2" : "?tpl=co2";
-	isFirstParam += "&nbCol=2";
-	
-	var thisType="ko";
-	var urlCtrl = ""
-	if(liveScopeType == "global") {
-		thisType = "city";
-		urlCtrl = "/news/co/index/type/city/isLive/true";
-	}
-	var dataSearch=constructSearchObjectAndGetParams();
+function showNewsStream(){
+//	var urlCtrl = ""
+	//if(liveScopeType == "global") {
+	//	thisType = "city";
+	var	urlCtrl = "/news/co/index/type/city/isLive/true";
+//	}
+	//var dataSearch=constructSearchObjectAndGetParams();
 	//var searchLocality = getSearchLocalityObject();
 	//mylog.log("searchLocality", searchLocality);
 	/*var dataSearch = {
@@ -122,18 +118,18 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
       "textSearch" : searchObject.text,
       "searchTag" : ($('#searchTags').length ) ? $('#searchTags').val().split(',') : [] ,
     };*/
-  var loading = "<div class='loader bold letter-blue shadow2 text-center'>"+
+ 	var loading = "<div class='loader bold letter-blue shadow2 text-center'>"+
 					"<i class='fa fa-spin fa-circle-o-notch'></i> "+
 					"<span>"+trad.currentlyloading+" ...</span>" + 
 				"</div>";
 
-	if(isFirst){ //render HTML for 1st load
+	//if(isFirst){ //render HTML for 1st load
 		$("#newsstream").html(loading);
 		simpleScroll(0, 500);
 		//KScrollTo("#container-scope-filter");
-		ajaxPost("#newsstream",baseUrl+"/"+urlCtrl+"/date/0"+isFirstParam,{search : dataSearch}, function(news){
+		ajaxPost("#newsstream",baseUrl+"/"+urlCtrl,null, function(news){ spinSearchAddon();}, "html");
 			//showTagsScopesMin(".list_tags_scopes");
-			 $(window).bind("scroll",function(){ 
+	/*		 $(window).bind("scroll",function(){ 
 	    		if(!loadingData && !scrollEnd){
 	         		var heightWindow = $("html").height() - $("body").height();
 	         		if( $(this).scrollTop() >= heightWindow - 1000){
@@ -156,11 +152,8 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 			}
 			//else
 			//	showFormBlock(false);
-			spinSearchAddon();
-			bindTags();
-			if($("#noMoreNews").length<=0)
-				$("#newsstream").append(loading);
 			
+			bindTags();
 			//$("#formCreateNewsTemp").appendTo("#modal-create-anc #formCreateNews");
 			//$("#info-write-msg").html("<?php echo Yii::t("common","Write a public message visible on the wall of selected places") ?>");
 			//$("#info-write-msg").html("Conseil : donnez un maximum de détails");
@@ -200,7 +193,7 @@ function showNewsStream(isFirst){ mylog.log("showNewsStream freedom");
 				}
 			});
 	}
-	$("#dropdown_search").hide(300);
+	$("#dropdown_search").hide(300);*/
 
 	
 }

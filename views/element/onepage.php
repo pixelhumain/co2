@@ -575,7 +575,7 @@
                             "iconColor" => $iconColor
                         );
 
-    	$this->renderPartial('../cooperation/pod/modals', $paramsCoop ); 
+    	$this->renderPartial('dda.views.co.pod.modals', $paramsCoop ); 
     ?>
 
 

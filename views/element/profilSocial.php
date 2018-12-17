@@ -617,7 +617,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
                             "iconColor" => $iconColor
                         );
 
-    	$this->renderPartial('co2.views.cooperation.pod.modals', $params ); 
+    	$this->renderPartial('dda.views.co.pod.modals', $params ); 
     ?>
 
 	<div id="menu-left-container" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 profilSocial hidden-xs" 
@@ -980,7 +980,7 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 				loadSettings();
 			else if(sub=="coop"){
 				onchangeClick=false;
-				loadCoop(roomId, proposalId, resolutionId, actionId);
+				uiCoop.loadCoop(roomId, proposalId, resolutionId, actionId);
 			}
 			else if(sub=="networks"){
 				loadNetworks();
@@ -992,56 +992,5 @@ $this->renderPartial( $layoutPath.'modals.'.Yii::app()->params["CO2DomainName"].
 		} else
 			loadNewsStream(false);
 	}
-
-
-
-function loadCoop(roomId, proposalId, resolutionId, actionId){
-	/*console.log("loadCoop", userId);
-	if(userId == "") {
-		toastr.info("Vous devez êtres connecté pour accéder à cet espace coopératif");
-		loadNewsStream();
-		return;
-	}*/
-
-	roomId 		= (roomId != "") 	 ? roomId 		: null;
-	proposalId  = (proposalId != "") ? proposalId 	: null;
-	resolutionId  = (resolutionId != "") ? resolutionId 	: null;
-	actionId 	= (actionId != "") 	 ? actionId 	: null;
-
-	toastr.info(trad["processing"]);
-	
-	uiCoop.startUI(false);
-	
-	setTimeout(function(){	
-		uiCoop.getCoopData(contextData.type, contextData.id, "room", null, roomId, function(){ 
-			//toastr.success(trad["processing ok"]);
-			$("#modalCoop").modal("show");
-
-			var type = null;
-			var id = null;
-
-			if(proposalId != null){
-				type = "proposal"; id = proposalId;
-			}
-
-			if(actionId != null){
-				type = "action"; id = actionId;
-			}
-
-			if(resolutionId != null){
-				type = "resolution"; id = resolutionId;
-			}
-
-			console.log("getCoopData??", contextData.type, contextData.id, type, null, id);
-
-			if(type != null) 
-			uiCoop.getCoopData(contextData.type, contextData.id, type, null, id);
-
-			setTimeout(function(){
-				loadNewsStream(true);
-			}, 5000);
-		});
-	}, 1500);
-}
 
 </script>

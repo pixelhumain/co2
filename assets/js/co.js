@@ -3318,7 +3318,7 @@ var dashboard = {
 		} else {
 			$.ajax({
 				type: "POST",
-				url: baseUrl+'/'+moduleId+"/cooperation/getmydashboardcoop/",
+				url: baseUrl+'/dda/getmydashboardcoop/',
 				//dataType: "json",
 				success: function(view){
 					mylog.log("loadDashboardDDA ok");

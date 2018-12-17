@@ -61,7 +61,7 @@
                 if(@$members) $params["members"] = $members;
                 if(@$invitedMe) $params["invitedMe"] = $invitedMe;
 
-                $this->renderPartial('co2.views.news.standalone', $params ); 
+                $this->renderPartial('news.views.co.standalone', $params ); 
             }
 
             if($type == Product::COLLECTION){
